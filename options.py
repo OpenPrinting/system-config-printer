@@ -23,6 +23,48 @@ import gobject
 import gtk
 import cups
 import ppdippstr
+import re
+
+# Special IPP type
+class IPPResolution(tuple):
+    def __new__ (cls, values):
+        try:
+            cls.UNITS_BY_VAL = { cups.IPP_RES_UNITS_INCH: "dpi",
+                                 cups.IPP_RES_UNITS_CM: "dpc" }
+            cls.UNITS_DEFAULT = cups.IPP_RES_UNITS_INCH
+        except AttributeError:
+            # Requires pycups > 1.9.55
+            cls.UNITS_BY_VAL = { 3: "dpi",
+                                  4: "dpc" }
+            cls.UNITS_DEFAULT = 3
+
+        cls.UNITS_BY_STR = {}
+        for v, s in cls.UNITS_BY_VAL.iteritems ():
+            cls.UNITS_BY_STR[s] = v
+
+        if isinstance (values, str):
+            matches = re.match ("(\d+)\D+(\d+)(.*)", values).groups ()
+            xres = int (matches[0])
+            yres = int (matches[1])
+            units = cls.UNITS_BY_STR.get (matches[2], cls.UNITS_DEFAULT)
+        else:
+            xres = values[0]
+            yres = values[1]
+            units = values[2]
+
+        self = tuple.__new__ (cls, (xres, yres, units))
+        self.xres = xres
+        self.yres = yres
+        self.units = units
+        return self
+
+    def __init__ (self, values):
+        return tuple.__init__ (self, (self.xres, self.yres, self.units))
+
+    def __str__ (self):
+        return "%sx%s%s" % (self.xres, self.yres,
+                            self.UNITS_BY_VAL.get (self.units,
+                                                   self.UNITS_DEFAULT))
 
 def OptionWidget(name, v, s, on_change):
     if isinstance(v, list):
@@ -136,7 +178,7 @@ class OptionAlwaysShown(OptionInterface):
         if (supported != None and
             self.use_supported):
             if (type(self.widget) == gtk.ComboBox and
-                self.ipp_type == str):
+                (self.ipp_type == str or self.ipp_type == IPPResolution)):
                 model = self.widget.get_model ()
                 model.clear ()
                 translations = ppdippstr.job_options.get (self.name)
@@ -146,13 +188,17 @@ class OptionAlwaysShown(OptionInterface):
                     i = 0
 
                 for each in supported:
+                    txt = each
+                    if self.ipp_type != str:
+                        txt = str (self.ipp_type (each))
+
                     if translations:
-                        self.combobox_map.append (each)
-                        text = translations.get (each)
+                        self.combobox_map.append (txt)
+                        text = translations.get (txt)
                         self.combobox_dict[each] = text
                         i += 1
                     else:
-                        text = each
+                        text = txt
 
                     iter = model.append ()
                     model.set_value (iter, 0, text)
@@ -180,11 +226,12 @@ class OptionAlwaysShown(OptionInterface):
         if t == gtk.SpinButton:
             return self.widget.set_value (ipp_value)
         elif t == gtk.ComboBox:
-            if self.ipp_type == str and self.combobox_map == None:
+            if ((self.ipp_type == str or self.ipp_type == IPPResolution)
+                and self.combobox_map == None):
                 model = self.widget.get_model ()
                 iter = model.get_iter_first ()
                 while (iter != None and
-                       model.get_value (iter, 0) != ipp_value):
+                       self.ipp_type (model.get_value (iter, 0)) != ipp_value):
                     iter = model.iter_next (iter)
                 if iter:
                     self.widget.set_active_iter (iter)
@@ -217,7 +264,7 @@ class OptionAlwaysShown(OptionInterface):
         elif t == gtk.ComboBox:
             if self.combobox_map:
                 return self.combobox_map[self.widget.get_active()]
-            if self.ipp_type == str:
+            if self.ipp_type == str or self.ipp_type == IPPResolution:
                 return self.widget.get_active_text ()
             return self.ipp_type (self.widget.get_active ())
         elif t == gtk.CheckButton:

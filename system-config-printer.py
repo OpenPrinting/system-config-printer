@@ -342,6 +342,10 @@ class GUI(GtkGUI, monitor.Watcher):
                               "cmbJOSides", "btnJOResetSides",
                               "cmbJOHoldUntil", "btnJOResetHoldUntil",
                               "cmbJOOutputOrder", "btnJOResetOutputOrder",
+                              "cmbJOPrintQuality", "btnJOResetPrintQuality",
+                              "cmbJOPrinterResolution",
+                              "btnJOResetPrinterResolution",
+                              "cmbJOOutputBin", "btnJOResetOutputBin",
                               "cbJOMirror", "btnJOResetMirror",
                               "sbJOScaling", "btnJOResetScaling",
                               "sbJOSaturation", "btnJOResetSaturation",
@@ -804,6 +808,14 @@ class GUI(GtkGUI, monitor.Watcher):
                         [[_("Normal")],
                          [_("Reverse")]]),
 
+                       (self.cmbJOPrintQuality,
+                        [[_("Draft")],
+                         [_("Normal")],
+                         [_("High")]]),
+
+                       (self.cmbJOPrinterResolution, []),
+
+                       (self.cmbJOOutputBin, []),
                        ]:
             model = gtk.ListStore (gobject.TYPE_STRING)
             for row in opts:
@@ -897,6 +909,24 @@ class GUI(GtkGUI, monitor.Watcher):
                                             combobox_map =
                                             [ "normal",
                                               "reverse" ]),
+
+                 options.OptionAlwaysShown ("print-quality", int, 3,
+                                            self.cmbJOPrintQuality,
+                                            self.btnJOResetPrintQuality,
+                                            combobox_map = [ 3, 4, 5 ]),
+
+                 options.OptionAlwaysShown ("printer-resolution",
+                                            options.IPPResolution,
+                                            options.IPPResolution((300,300,3)),
+                                            self.cmbJOPrinterResolution,
+                                            self.btnJOResetPrinterResolution,
+                                            use_supported = True),
+
+                 options.OptionAlwaysShown ("output-bin", str,
+                                            "face-up",
+                                            self.cmbJOOutputBin,
+                                            self.btnJOResetOutputBin,
+                                            use_supported = True),
 
                  options.OptionAlwaysShown ("mirror", bool, False,
                                             self.cbJOMirror,
@@ -2273,6 +2303,8 @@ class GUI(GtkGUI, monitor.Watcher):
                 if (option.is_changed() or
                     (saveall and
                      option.get_current_value () != option.get_default())):
+                    debugprint ("Set %s = %s" % (option.name,
+                                                 option.get_current_value()))
                     printer.setOption(option.name, option.get_current_value())
 
         except cups.IPPError, (e, s):
