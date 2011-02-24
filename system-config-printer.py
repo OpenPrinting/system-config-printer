@@ -2038,8 +2038,14 @@ class GUI(GtkGUI, monitor.Watcher):
 
     def add_job_option(self, name, value = "", supported = "", is_new=True,
                        editable=True):
-        option = options.OptionWidget(name, value, supported,
-                                      self.option_changed)
+        try:
+            option = options.OptionWidget(name, value, supported,
+                                          self.option_changed)
+        except ValueError:
+            # We can't deal with this option type for some reason.
+            nonfatalException ()
+            return
+
         option.is_new = is_new
         self.other_job_options.append (option)
         self.draw_other_job_options (editable=editable)
