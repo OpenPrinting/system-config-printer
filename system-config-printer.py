@@ -2654,6 +2654,9 @@ class GUI(GtkGUI, monitor.Watcher):
         for option in self.printer.attributes.keys ():
             if self.server_side_options.has_key (option):
                 continue
+            if option == "output-mode":
+                # Not settable
+                continue
             value = self.printer.attributes[option]
             if self.printer.possible_attributes.has_key (option):
                 supported = self.printer.possible_attributes[option][1]
