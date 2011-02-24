@@ -366,7 +366,6 @@ class OptionSelectOne(Option):
 
 class OptionSelectOneResolution(OptionSelectOne):
     def __init__(self, name, value, supported, on_change):
-        print "Resolution"
         try:
             self.UNITS_BY_VAL = { cups.IPP_RES_UNITS_INCH: "dpi",
                                   cups.IPP_RES_UNITS_CM: "dpc" }
@@ -381,10 +380,8 @@ class OptionSelectOneResolution(OptionSelectOne):
         for v, s in self.UNITS_BY_VAL.iteritems ():
             self.UNITS_BY_STR[s] = v
 
-        print value, supported
         value = self.string (value)
         supported = map (self.string, supported)
-        print value, supported
         OptionSelectOne.__init__ (self, name, value, supported, on_change)
 
     def string(self, value):
