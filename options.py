@@ -1,6 +1,6 @@
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008, 2009, 2010 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 ##  Florian Festi <ffesti@redhat.com>
@@ -21,6 +21,7 @@
 
 import gobject
 import gtk
+import cups
 import ppdippstr
 
 def OptionWidget(name, v, s, on_change):
@@ -50,7 +51,9 @@ def OptionWidget(name, v, s, on_change):
             return OptionNumeric(name, v, s, on_change)
         elif isinstance(s, list):
             for sv in s:
-                if not isinstance(sv, int):
+                if isinstance(sv, tuple) and len (sv) == 3:
+                    return OptionSelectOneResolution(name, v, s, on_change)
+                elif not isinstance(sv, int):
                     return OptionSelectOne(name, v, s, on_change)
             try:
                 v = int(v)
@@ -341,7 +344,6 @@ class OptionSelectOne(Option):
 
         self.selector = gtk.combo_box_new_text()
         
-        
         selected = None
         for nr, choice in enumerate(supported):
             self.selector.append_text(str(choice))
@@ -359,6 +361,43 @@ class OptionSelectOne(Option):
 
     def get_current_value(self):
         return self.selector.get_active_text()
+
+# ---------------------------------------------------------------------------
+
+class OptionSelectOneResolution(OptionSelectOne):
+    def __init__(self, name, value, supported, on_change):
+        print "Resolution"
+        try:
+            self.UNITS_BY_VAL = { cups.IPP_RES_UNITS_INCH: "dpi",
+                                  cups.IPP_RES_UNITS_CM: "dpc" }
+            self.UNITS_DEFAULT = cups.IPP_RES_UNITS_INCH
+        except AttributeError:
+            # Requires pycups > 1.9.55
+            self.UNITS_BY_VAL = { 3: "dpi",
+                                  4: "dpc" }
+            self.UNITS_DEFAULT = 3
+
+        self.UNITS_BY_STR = {}
+        for v, s in self.UNITS_BY_VAL.iteritems ():
+            self.UNITS_BY_STR[s] = v
+
+        print value, supported
+        value = self.string (value)
+        supported = map (self.string, supported)
+        print value, supported
+        OptionSelectOne.__init__ (self, name, value, supported, on_change)
+
+    def string(self, value):
+        return "%sx%s%s" % (value[0], value[1],
+                            self.UNITS_BY_VAL.get (value[2], ""))
+
+    def value(self, string):
+        matches = re.match ("(\d+)\D+(\d+)(.*)", string).groups ()
+        return (int (matches[0]), int (matches[1]),
+                self.UNITS_BY_STR.get (matches[2], self.UNITS_DEFAULT))
+
+    def get_current_value(self):
+        return self.value (self.selector.get_active_text())
 
 # ---------------------------------------------------------------------------
 
