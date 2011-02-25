@@ -550,6 +550,10 @@ class NewPrinterGUI(GtkGUI):
         self.btnNetworkFind.set_sensitive (True)
         self.lblNetworkFindNotFound.hide ()
 
+        # Clear out any previous list of makes.
+        model = self.tvNPMakes.get_model()
+        model.clear()
+
         try:
             self.cups = authconn.Connection (parent=self.NewPrinterWindow,
                                              host=self._host,
@@ -716,6 +720,7 @@ class NewPrinterGUI(GtkGUI):
     def change_ppd_have_devs_and_ppds (self, ppdsloader):
         self._getPPDs_reply (ppdsloader)
         if not self.ppds:
+            self.setNPButtons()
             return
 
         self.exactdrivermatch = False
@@ -1242,7 +1247,8 @@ class NewPrinterGUI(GtkGUI):
                         downloadable_selected = True
 
                 self.btnNPForward.set_sensitive(bool(
-                        self.rbtnNPFoomatic.get_active() or
+                        (self.rbtnNPFoomatic.get_active() and
+                         self.tvNPMakes.get_cursor()[0] != None) or
                         self.filechooserPPD.get_filename() or
                         downloadable_selected))
                 return
