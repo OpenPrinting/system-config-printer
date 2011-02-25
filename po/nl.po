@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: system-config-printer.master.nl\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2011-02-17 16:17+0000\n"
+"POT-Creation-Date: 2011-02-25 09:57+0000\n"
 "PO-Revision-Date: 2010-07-04 13:22+0200\n"
 "Last-Translator: Geert Warrink <geert.warrink@onsnet.nu>\n"
 "Language-Team: Fedora\n"
@@ -62,11 +62,11 @@ msgstr "Opnieuw proberen"
 msgid "Operation canceled"
 msgstr "Bewerking afgebroken"
 
-#: ../authconn.py:32 ../pysmb.py:123
+#: ../authconn.py:32 ../pysmb.py:123 ../ui/NewPrinterWindow.glade.h:94
 msgid "Username:"
 msgstr "Gebruikersnaam:"
 
-#: ../authconn.py:33 ../pysmb.py:129
+#: ../authconn.py:33 ../pysmb.py:129 ../ui/NewPrinterWindow.glade.h:63
 msgid "Password:"
 msgstr "Wachtwoord:"
 
@@ -333,7 +333,8 @@ msgstr "Taak attributen"
 
 #: ../jobviewer.py:706 ../jobviewer.py:1002 ../jobviewer.py:1704
 #: ../jobviewer.py:1734 ../jobviewer.py:2104 ../jobviewer.py:2109
-#: ../jobviewer.py:2123 ../jobviewer.py:2202 ../printerproperties.py:1541
+#: ../jobviewer.py:2123 ../jobviewer.py:2202 ../printerproperties.py:1582
+#: ../ui/NewPrinterWindow.glade.h:92
 #: ../troubleshoot/ChooseNetworkPrinter.py:100
 #: ../troubleshoot/ChooseNetworkPrinter.py:101
 #: ../troubleshoot/ChooseNetworkPrinter.py:104
@@ -408,6 +409,7 @@ msgid "Save File"
 msgstr "Bestand opslaan"
 
 #: ../jobviewer.py:1449 ../system-config-printer.py:258
+#: ../ui/NewPrinterWindow.glade.h:57
 #: ../troubleshoot/ChooseNetworkPrinter.py:35
 #: ../troubleshoot/ChoosePrinter.py:36 ../troubleshoot/DeviceListed.py:36
 msgid "Name"
@@ -594,7 +596,7 @@ msgstr "115200"
 #. See section 4.2.6 of this document for explanation of finishing types:
 #. ftp://ftp.pwg.org/pub/pwg/candidates/cs-ippfinishings10-20010205-5100.1.pdf
 #: ../newprinter.py:299 ../newprinter.py:310 ../newprinter.py:3267
-#: ../ppdippstr.py:63 ../printerproperties.py:264
+#: ../ppdippstr.py:63 ../printerproperties.py:268
 msgid "None"
 msgstr "Geen"
 
@@ -626,11 +628,11 @@ msgstr "RTS/CTS (Hardware)"
 msgid "DTR/DSR (Hardware)"
 msgstr "DTR/DSR (Hardware)"
 
-#: ../newprinter.py:330 ../printerproperties.py:218
+#: ../newprinter.py:330 ../printerproperties.py:222
 msgid "Members of this class"
 msgstr "Leden van deze klasse"
 
-#: ../newprinter.py:332 ../printerproperties.py:219
+#: ../newprinter.py:332 ../printerproperties.py:223
 msgid "Others"
 msgstr "Anderen"
 
@@ -654,7 +656,7 @@ msgstr "Modellen"
 msgid "Drivers"
 msgstr "Stuurprogramma's"
 
-#: ../newprinter.py:338
+#: ../newprinter.py:338 ../ui/NewPrinterWindow.glade.h:35
 msgid "Downloadable Drivers"
 msgstr "Stuurprogramma's te downloaden"
 
@@ -688,7 +690,7 @@ msgstr "Alle bestanden (*)"
 msgid "Search"
 msgstr "Zoeken"
 
-#: ../newprinter.py:611 ../newprinter.py:632
+#: ../newprinter.py:611 ../newprinter.py:632 ../ui/NewPrinterWindow.glade.h:59
 msgid "New Printer"
 msgstr "Nieuwe printer"
 
@@ -843,7 +845,7 @@ msgstr "LPD/LPR wachtrij"
 msgid "Windows Printer via SAMBA"
 msgstr "Windows Printer via SAMBA"
 
-#: ../newprinter.py:2376
+#: ../newprinter.py:2376 ../ui/NewPrinterWindow.glade.h:48
 msgid "IPP"
 msgstr "IPP"
 
@@ -903,7 +905,7 @@ msgstr "Lokale printer gedetecteerd door de Hardware Abstraction Layer (HAL)."
 msgid "Searching for printers"
 msgstr "Zoeken naar printers"
 
-#: ../newprinter.py:2769
+#: ../newprinter.py:2769 ../ui/NewPrinterWindow.glade.h:60
 msgid "No printer was found at that address."
 msgstr "Op dat adres werd geen printer aangetroffen."
 
@@ -1004,7 +1006,7 @@ msgid "adding printer %s"
 msgstr "printer %s toevoegen"
 
 #: ../newprinter.py:3570 ../newprinter.py:3581 ../newprinter.py:3598
-#: ../printerproperties.py:921 ../system-config-printer.py:1682
+#: ../printerproperties.py:957 ../system-config-printer.py:1682
 #: ../system-config-printer.py:1707
 #, python-format
 msgid "modifying printer %s"
@@ -1316,199 +1318,207 @@ msgid "Busy"
 msgstr "Bezig"
 
 #. Printer state reasons list
-#: ../printerproperties.py:200
+#: ../printerproperties.py:204
 msgid "Message"
 msgstr "Bericht"
 
-#: ../printerproperties.py:220
+#: ../printerproperties.py:224
 msgid "Users"
 msgstr "Gebruikers"
 
-#: ../printerproperties.py:243
+#: ../printerproperties.py:247
 msgid "Portrait (no rotation)"
 msgstr "Portret (geen draaiing)"
 
-#: ../printerproperties.py:244
+#: ../printerproperties.py:248
 msgid "Landscape (90 degrees)"
 msgstr "Landschap (90 graden)"
 
-#: ../printerproperties.py:245
+#: ../printerproperties.py:249
 msgid "Reverse landscape (270 degrees)"
 msgstr "Gedraaid landschap (270 graden)"
 
-#: ../printerproperties.py:246
+#: ../printerproperties.py:250
 msgid "Reverse portrait (180 degrees)"
 msgstr "Gedraaid portret (180 graden)"
 
-#: ../printerproperties.py:252
+#: ../printerproperties.py:256
 msgid "Left to right, top to bottom"
 msgstr "Links naar rechts, boven naar onder"
 
-#: ../printerproperties.py:253
+#: ../printerproperties.py:257
 msgid "Left to right, bottom to top"
 msgstr "Links naar rechts, onder naar boven"
 
-#: ../printerproperties.py:254
+#: ../printerproperties.py:258
 msgid "Right to left, top to bottom"
 msgstr "Rechts naar links, boven naar onder"
 
-#: ../printerproperties.py:255
+#: ../printerproperties.py:259
 msgid "Right to left, bottom to top"
 msgstr "Rechts naar links, onder naar boven"
 
-#: ../printerproperties.py:256
+#: ../printerproperties.py:260
 msgid "Top to bottom, left to right"
 msgstr "Boven naar onder, links naar rechts"
 
-#: ../printerproperties.py:257
+#: ../printerproperties.py:261
 msgid "Top to bottom, right to left"
 msgstr "Boven naar onder, rechts naar links"
 
-#: ../printerproperties.py:258
+#: ../printerproperties.py:262
 msgid "Bottom to top, left to right"
 msgstr "Onder naar boven, links naar rechts"
 
-#: ../printerproperties.py:259
+#: ../printerproperties.py:263
 msgid "Bottom to top, right to left"
 msgstr "Onder naar boven, rechts naar links"
 
-#: ../printerproperties.py:265
+#: ../printerproperties.py:269
 msgid "Staple"
 msgstr "Vastnieten"
 
-#: ../printerproperties.py:266
+#: ../printerproperties.py:270
 msgid "Punch"
 msgstr "Perforeren"
 
-#: ../printerproperties.py:267
+#: ../printerproperties.py:271
 msgid "Cover"
 msgstr "Voorblad"
 
-#: ../printerproperties.py:268
+#: ../printerproperties.py:272
 msgid "Bind"
 msgstr "Binden"
 
-#: ../printerproperties.py:269
+#: ../printerproperties.py:273
 msgid "Saddle stitch"
 msgstr "Zadel steek"
 
-#: ../printerproperties.py:270
+#: ../printerproperties.py:274
 msgid "Edge stitch"
 msgstr "Kantsteek"
 
-#: ../printerproperties.py:271
+#: ../printerproperties.py:275
 msgid "Fold"
 msgstr "Vouwen"
 
-#: ../printerproperties.py:272
+#: ../printerproperties.py:276
 msgid "Trim"
 msgstr "Bijknippen"
 
-#: ../printerproperties.py:273
+#: ../printerproperties.py:277
 msgid "Bale"
 msgstr "Baal"
 
-#: ../printerproperties.py:274
+#: ../printerproperties.py:278
 msgid "Booklet maker"
 msgstr "Boekje maken"
 
-#: ../printerproperties.py:275
+#: ../printerproperties.py:279
 msgid "Job offset"
 msgstr "Opdracht offset"
 
-#: ../printerproperties.py:276
+#: ../printerproperties.py:280
 msgid "Staple (top left)"
 msgstr "Nieten (linksboven)"
 
-#: ../printerproperties.py:277
+#: ../printerproperties.py:281
 msgid "Staple (bottom left)"
 msgstr "Nieten (linksonder)"
 
-#: ../printerproperties.py:278
+#: ../printerproperties.py:282
 msgid "Staple (top right)"
 msgstr "Nieten (rechtsboven)"
 
-#: ../printerproperties.py:279
+#: ../printerproperties.py:283
 msgid "Staple (bottom right)"
 msgstr "Nieten (rechtsonder)"
 
-#: ../printerproperties.py:280
+#: ../printerproperties.py:284
 msgid "Edge stitch (left)"
 msgstr "Kantsteek (links)"
 
-#: ../printerproperties.py:281
+#: ../printerproperties.py:285
 msgid "Edge stitch (top)"
 msgstr "Kantsteek (boven)"
 
-#: ../printerproperties.py:282
+#: ../printerproperties.py:286
 msgid "Edge stitch (right)"
 msgstr "Kantsteek (rechts)"
 
-#: ../printerproperties.py:283
+#: ../printerproperties.py:287
 msgid "Edge stitch (bottom)"
 msgstr "Kantsteek (onder)"
 
-#: ../printerproperties.py:284
+#: ../printerproperties.py:288
 msgid "Staple dual (left)"
 msgstr "Dubbel nieten (links)"
 
-#: ../printerproperties.py:285
+#: ../printerproperties.py:289
 msgid "Staple dual (top)"
 msgstr "Dubbel nieten (boven)"
 
-#: ../printerproperties.py:286
+#: ../printerproperties.py:290
 msgid "Staple dual (right)"
 msgstr "Dubbel nieten (rechts)"
 
-#: ../printerproperties.py:287
+#: ../printerproperties.py:291
 msgid "Staple dual (bottom)"
 msgstr "Dubbel nieten (onder)"
 
-#: ../printerproperties.py:288
+#: ../printerproperties.py:292
 msgid "Bind (left)"
 msgstr "Binden (links)"
 
-#: ../printerproperties.py:289
+#: ../printerproperties.py:293
 msgid "Bind (top)"
 msgstr "Binden (boven)"
 
-#: ../printerproperties.py:290
+#: ../printerproperties.py:294
 msgid "Bind (right)"
 msgstr "Binden (rechts)"
 
-#: ../printerproperties.py:291
+#: ../printerproperties.py:295
 msgid "Bind (bottom)"
 msgstr "Binden (onder)"
 
-#: ../printerproperties.py:296
+#: ../printerproperties.py:300
 msgid "One-sided"
 msgstr "Enkelzijdig"
 
-#: ../printerproperties.py:297
+#: ../printerproperties.py:301
 msgid "Two-sided (long edge)"
 msgstr "Dubbelzijdig (lange kant)"
 
-#: ../printerproperties.py:298
+#: ../printerproperties.py:302
 msgid "Two-sided (short edge)"
 msgstr "Dubbelzijdig (korte kant)"
 
-#: ../printerproperties.py:303
+#: ../printerproperties.py:307 ../printerproperties.py:312
 msgid "Normal"
 msgstr "Normaal"
 
-#: ../printerproperties.py:304
+#: ../printerproperties.py:308
 msgid "Reverse"
 msgstr "Omgekeerd"
 
-#: ../printerproperties.py:325
+#: ../printerproperties.py:311
+msgid "Draft"
+msgstr ""
+
+#: ../printerproperties.py:313
+msgid "High"
+msgstr ""
+
+#: ../printerproperties.py:337
 msgid "Automatic rotation"
 msgstr "Automatische draaiing"
 
-#: ../printerproperties.py:546
+#: ../printerproperties.py:576
 msgid "CUPS test page"
 msgstr "CUPS test pagina"
 
-#: ../printerproperties.py:547
+#: ../printerproperties.py:577
 msgid ""
 "Typically shows whether all jets on a print head are functioning and that "
 "the print feed mechanisms are working properly."
@@ -1516,13 +1526,13 @@ msgstr ""
 "Laat gewoonlijk zien of alle jets in een printkop werken en dat het print "
 "toevoer mechanisme juist werkt."
 
-#: ../printerproperties.py:554
+#: ../printerproperties.py:584
 #, python-format
 msgid "Printer Properties - '%s' on %s"
 msgstr "Printer eigenschappen – ‘%s’ op ‘%s’"
 
 #. The Conflict button was pressed.
-#: ../printerproperties.py:561
+#: ../printerproperties.py:591
 msgid ""
 "There are conflicting options.\n"
 "Changes can only be applied after\n"
@@ -1532,24 +1542,24 @@ msgstr ""
 "Veranderingen kunnen alleen worden toegepast\n"
 "nadat deze conflicten zijn opgelost."
 
-#: ../printerproperties.py:881
+#: ../printerproperties.py:917
 msgid "Installable Options"
 msgstr "Opties te installeren"
 
-#: ../printerproperties.py:882
+#: ../printerproperties.py:918 ../ui/PrinterPropertiesDialog.glade.h:63
 msgid "Printer Options"
 msgstr "Printe ropties"
 
-#: ../printerproperties.py:919
+#: ../printerproperties.py:955
 #, python-format
 msgid "modifying class %s"
 msgstr "aanpassen klasse %s"
 
-#: ../printerproperties.py:936
+#: ../printerproperties.py:972
 msgid "This will delete this class!"
 msgstr "Dit zal deze klasse verwijderen!"
 
-#: ../printerproperties.py:937
+#: ../printerproperties.py:973
 msgid "Proceed anyway?"
 msgstr "Toch doorgaan?"
 
@@ -1557,19 +1567,19 @@ msgstr "Toch doorgaan?"
 #. but we have never fetched the server settings to see whether
 #. the server is publishing shared printers.  Fetch the settings
 #. now so that we can update the "not published" label if necessary.
-#: ../printerproperties.py:1027 ../serversettings.py:192
+#: ../printerproperties.py:1065 ../serversettings.py:192
 msgid "fetching server settings"
 msgstr "server instellingen ophalen"
 
-#: ../printerproperties.py:1109
+#: ../printerproperties.py:1147
 msgid "printing test page"
 msgstr "bezig met afdrukken test pagina"
 
-#: ../printerproperties.py:1122 ../printerproperties.py:1157
+#: ../printerproperties.py:1160 ../printerproperties.py:1195
 msgid "Not possible"
 msgstr "Niet mogelijk"
 
-#: ../printerproperties.py:1123 ../printerproperties.py:1158
+#: ../printerproperties.py:1161 ../printerproperties.py:1196
 msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
@@ -1577,43 +1587,43 @@ msgstr ""
 "De server op afstand heeft de printopdracht niet geaccepteerd, "
 "waarschijnlijk omdat de printer niet gedeeld is."
 
-#: ../printerproperties.py:1135 ../printerproperties.py:1150
+#: ../printerproperties.py:1173 ../printerproperties.py:1188
 msgid "Submitted"
 msgstr "Ingediend"
 
-#: ../printerproperties.py:1136
+#: ../printerproperties.py:1174
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr "Test pagina ingediend als opdracht %d"
 
-#: ../printerproperties.py:1143
+#: ../printerproperties.py:1181
 msgid "sending maintenance command"
 msgstr "bezig met versturen onderhoud commando"
 
-#: ../printerproperties.py:1151
+#: ../printerproperties.py:1189
 #, python-format
 msgid "Maintenance command submitted as job %d"
 msgstr "Onderhoud commando ingediend als afdruk taak %d"
 
-#: ../printerproperties.py:1238 ../printerproperties.py:1243
-#: ../printerproperties.py:1339
+#: ../printerproperties.py:1276 ../printerproperties.py:1281
+#: ../printerproperties.py:1377
 msgid "Error"
 msgstr "Fout"
 
-#: ../printerproperties.py:1239
+#: ../printerproperties.py:1277
 msgid "The PPD file for this queue is damaged."
 msgstr ""
 
-#: ../printerproperties.py:1244
+#: ../printerproperties.py:1282
 msgid "There was a problem connecting to the CUPS server."
 msgstr "Er was een probleem bij het verbinden met de CUPS server."
 
-#: ../printerproperties.py:1340
+#: ../printerproperties.py:1378
 #, python-format
 msgid "Option '%s' has value '%s' and cannot be edited."
 msgstr "Optie ‘%s’ heeft waarde ‘%s’ en kan niet bewerkt worden."
 
-#: ../printerproperties.py:1450
+#: ../printerproperties.py:1491
 msgid "Marker levels are not reported for this printer."
 msgstr "Markeer niveaus wordt niet gemeld bij deze printer"
 
@@ -1656,7 +1666,7 @@ msgstr "Ins_tellingen..."
 msgid "Adjust server settings"
 msgstr "Server instellingen aanpassen"
 
-#: ../system-config-printer.py:223
+#: ../system-config-printer.py:223 ../ui/PrintersWindow.glade.h:9
 msgid "_Printer"
 msgstr "_Printer"
 
@@ -1764,8 +1774,8 @@ msgstr "Service structuur niet beschikbaar."
 msgid "Cannot start service on remote server"
 msgstr "Kan geen service opstarten op server op afstand"
 
-#: ../system-config-printer.py:1143
-#, python-format
+#: ../system-config-printer.py:1143 ../ui/ConnectingDialog.glade.h:2
+#, no-c-format, python-format
 msgid "<i>Opening connection to %s</i>"
 msgstr "<i>Verbinding met %s openen</i>"
 
@@ -1854,7 +1864,9 @@ msgstr ""
 msgid "Would you like to print a test page?"
 msgstr "Wil je een test pagina afdrukken?"
 
-#: ../system-config-printer.py:1948 ../troubleshoot/PrintTestPage.py:72
+#. Not more than 25 characters
+#: ../system-config-printer.py:1948 ../ui/PrinterPropertiesDialog.glade.h:61
+#: ../troubleshoot/PrintTestPage.py:72
 msgid "Print Test Page"
 msgstr "Test pagina afdrukken"
 
@@ -1882,6 +1894,968 @@ msgstr ""
 "Printer ‘%s’ vereist het programma ‘%s’, maar dit programma is momenteel "
 "niet geïnstalleerd. Installeer dit programma voordat deze printer wordt "
 "gebruikt."
+
+#: ../ui/AboutDialog.glade.h:1
+msgid "A CUPS configuration tool."
+msgstr "Een CUPS configuratie gereedschap."
+
+#: ../ui/AboutDialog.glade.h:2
+#, fuzzy
+msgid "Copyright © 2006-2008 Red Hat, Inc."
+msgstr "Copyright &#xA9; 2006-2008 Red Hat, Inc."
+
+#: ../ui/AboutDialog.glade.h:3
+msgid ""
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with "
+"this program; if not, write to the Free Software Foundation, Inc., 675 Mass "
+"Ave, Cambridge, MA 02139, USA."
+msgstr ""
+"Dit programma is vrije software; Je kunt het verspreiden en/of wijzigen "
+"onder de bepalingen van de GNU General Public License, zoals uitgegeven door "
+"de Free Software Foundation; zowel versie 2 van de licentie, of (naar vrije "
+"keuze) een latere versie.\n"
+"\n"
+"Dit programma is verspreid met de hoop dat het nuttig zal zijn, maar ZONDER "
+"ENIGE GARANTIE; zelfs zonder de impliciete garantie van VERKOOPBAARHEID of "
+"GESCHIKTHEID VOOR EEN BEPAALD DOEL. Zie de GNU General Public License voor "
+"meer details.\n"
+"\n"
+"Je moet een kopie van de GNU General Public License, samen met dit "
+"programma, ontvangen hebben; indien dat niet het geval is kun je schrijven "
+"naar de Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, "
+"USA."
+
+#. TRANSLATORS: Replace this string with your names, one name per line.  Thank you very much for your effort on translating system-config-printer and all our other tools!
+#: ../ui/AboutDialog.glade.h:9
+msgid "translator-credits"
+msgstr ""
+"Tino Meinen <a.t.meinen@chello.nl>\n"
+"Peter van Egdom <p.van.egdom@gmail.com>\n"
+"Stijn Bibaer <stijn.bibaer@pandora.be>\n"
+"Bart Couvreur <couf@fedoraproject.org>\n"
+"Reinout van Schouwen <reinouts@gnome.org>\n"
+"Geert Warrink <geert.warrink@onsnet.nu>"
+
+#: ../ui/ConnectDialog.glade.h:1
+msgid "CUPS _server:"
+msgstr "CUPS _server:"
+
+#: ../ui/ConnectDialog.glade.h:2
+msgid "Connect to CUPS server"
+msgstr "Verbinden met CUPS server"
+
+#: ../ui/ConnectDialog.glade.h:3
+msgid "Require _encryption"
+msgstr "Versleu_teling vereisen"
+
+#: ../ui/ConnectingDialog.glade.h:3
+msgid "<span weight=\"bold\" size=\"larger\">Connecting to CUPS server</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">Verbinden met CUPS server</span>"
+
+#: ../ui/ConnectingDialog.glade.h:4
+msgid "Connecting to CUPS server"
+msgstr "Verbinden met CUPS server"
+
+#: ../ui/InstallDialog.glade.h:1
+msgid "_Install"
+msgstr "I_nstalleren"
+
+#: ../ui/JobsWindow.glade.h:1
+msgid "Refresh job list"
+msgstr "Vernieuw afdruk taken lijst"
+
+#: ../ui/JobsWindow.glade.h:2
+msgid "Show _completed jobs"
+msgstr "V_oltooide opdrachten tonen"
+
+#: ../ui/JobsWindow.glade.h:3
+msgid "Show completed jobs"
+msgstr "Voltooide opdrachten tonen"
+
+#: ../ui/JobsWindow.glade.h:4
+msgid "_Refresh"
+msgstr "_Vernieuwen"
+
+#: ../ui/NewPrinterName.glade.h:1
+msgid "Duplicate Printer"
+msgstr "Printer dupliceren"
+
+#: ../ui/NewPrinterName.glade.h:2
+msgid "New name for the printer"
+msgstr "Nieuwe naam voor de printer"
+
+#: ../ui/NewPrinterWindow.glade.h:1
+msgid "<b>Authentication</b>"
+msgstr "<b>Authenticatie</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:2
+msgid "<b>Description</b>"
+msgstr "<b>Omschrijving</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:3
+msgid "<b>Description</b> (optional)"
+msgstr "<b>Omschrijving</b> (optioneel)"
+
+#: ../ui/NewPrinterWindow.glade.h:4
+msgid "<b>Enter device URI</b>"
+msgstr "<b>Voer apparaat URI in</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:5
+msgid "<b>IPP Printer</b>"
+msgstr "<b>IPP printer</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:6
+msgid "<b>License Terms</b>"
+msgstr "<b>Licentievoorwaarden</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:7
+msgid "<b>Location of the LPD network printer</b>"
+msgstr "<b>Locatie van de LPD netwerkprinter</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:8
+msgid "<b>Location of the network printer</b>"
+msgstr "<b>Locatie van de netwerkprinter</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:9
+msgid "<b>Location</b> (optional)"
+msgstr "<b>Locatie</b> (optioneel)"
+
+#: ../ui/NewPrinterWindow.glade.h:10
+msgid "<b>Network Printer</b>"
+msgstr "<b>Netwerkprinter</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:11
+msgid "<b>Note</b>"
+msgstr "<b>Opmerking</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:12
+msgid "<b>Output Quality</b>"
+msgstr "<b>Afdrukkwaliteit</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:13
+msgid "<b>Printer Name</b>"
+msgstr "<b>Printer naam</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:14
+msgid "<b>SMB Printer</b>"
+msgstr "<b>SMB printer</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:15
+msgid "<b>Select Driver</b>"
+msgstr "<b>Stuurprogramma selecteren</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:16
+msgid "<b>Settings of the serial port</b>"
+msgstr "<b>Instelling van de seriële poort</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:17
+msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
+msgstr "<i>smb://[werkgroep/]server[:poort]/printer</i>"
+
+#: ../ui/NewPrinterWindow.glade.h:18
+msgid "<span weight=\"bold\" size=\"larger\">Choose Class Members</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">Klasse leden kiezen</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:19
+msgid "<span weight=\"bold\" size=\"larger\">Choose Driver</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">Stuurprogramma kiezen</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:20
+msgid "<span weight=\"bold\" size=\"larger\">Describe Printer</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">Printer beschrijven</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:21
+msgid "<span weight=\"bold\" size=\"larger\">Existing Settings</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">Bestaande instellingen</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:22
+msgid "<span weight=\"bold\" size=\"larger\">Installable Options</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">Te installeren opties</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:23
+msgid "<span weight=\"bold\" size=\"larger\">Select Device</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">Apparaat selecteren</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:24
+msgid "Baud Rate"
+msgstr "Baud rate"
+
+#: ../ui/NewPrinterWindow.glade.h:25
+msgid "Browse..."
+msgstr "Bladeren..."
+
+#: ../ui/NewPrinterWindow.glade.h:26
+msgid "Change PPD"
+msgstr "Verander PPD"
+
+#: ../ui/NewPrinterWindow.glade.h:27
+msgid "Class Members"
+msgstr "Klasse leden"
+
+#: ../ui/NewPrinterWindow.glade.h:28
+msgid "Comments..."
+msgstr "Opmerkingen..."
+
+#: ../ui/NewPrinterWindow.glade.h:29
+msgid "Connection"
+msgstr "Verbinding"
+
+#: ../ui/NewPrinterWindow.glade.h:30
+msgid "Data Bits"
+msgstr "Data bits"
+
+#: ../ui/NewPrinterWindow.glade.h:31 ../ui/PrinterPropertiesDialog.glade.h:29
+msgid "Description:"
+msgstr "Omschrijving:"
+
+#: ../ui/NewPrinterWindow.glade.h:32
+msgid "Device"
+msgstr "Apparaat"
+
+#: ../ui/NewPrinterWindow.glade.h:33 ../troubleshoot/DeviceListed.py:40
+msgid "Device URI"
+msgstr "Apparaat URI"
+
+#: ../ui/NewPrinterWindow.glade.h:34
+msgid "Device description."
+msgstr "Apparaat omschrijving."
+
+#: ../ui/NewPrinterWindow.glade.h:36
+msgid "Driver details"
+msgstr "Stuurprogramma details"
+
+#: ../ui/NewPrinterWindow.glade.h:37
+msgid "Empty"
+msgstr "Leeg"
+
+#: ../ui/NewPrinterWindow.glade.h:38
+msgid "Flow Control"
+msgstr "Flow controle"
+
+#: ../ui/NewPrinterWindow.glade.h:39
+msgid ""
+"For example:\n"
+"ipp://cups-server/printers/printer-queue\n"
+"ipp://printer.mydomain/ipp"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:42
+msgid ""
+"For the printer you have selected there are drivers available for download."
+msgstr ""
+"Er zijn stuurprogramma's te downloaden voor de printer die je geselecteerd "
+"hebt."
+
+#: ../ui/NewPrinterWindow.glade.h:43
+msgid "Free software"
+msgstr "Vrije software"
+
+#: ../ui/NewPrinterWindow.glade.h:44
+msgid "Graphics:"
+msgstr "Afbeeldingen:"
+
+#: ../ui/NewPrinterWindow.glade.h:45
+msgid "Host:"
+msgstr "Host:"
+
+#: ../ui/NewPrinterWindow.glade.h:46
+msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
+msgstr "Leesbare omschrijving zoals \"HP LaserJet met duplexer\""
+
+#: ../ui/NewPrinterWindow.glade.h:47
+msgid "Human-readable location such as \"Lab 1\""
+msgstr "Leesbare locatie zoals \"Lab 1\""
+
+#: ../ui/NewPrinterWindow.glade.h:49 ../ui/PrinterPropertiesDialog.glade.h:39
+msgid "Installed Options"
+msgstr "Geïnstalleerde opties"
+
+#: ../ui/NewPrinterWindow.glade.h:50
+#, fuzzy
+msgid "JetDirect"
+msgstr "DirectJet"
+
+#: ../ui/NewPrinterWindow.glade.h:51
+msgid "LPD"
+msgstr "LPD"
+
+#: ../ui/NewPrinterWindow.glade.h:52
+msgid "License:"
+msgstr "Licentie:"
+
+#: ../ui/NewPrinterWindow.glade.h:53
+msgid "Line art:"
+msgstr "Line art:"
+
+# aanpassen hier iets beter dan bewerken.
+#: ../ui/NewPrinterWindow.glade.h:54
+msgid "Local Driver"
+msgstr "Lokaal stuurprogramma"
+
+#: ../ui/NewPrinterWindow.glade.h:55
+msgid "Make and model:"
+msgstr "Fabrikant en model:"
+
+#: ../ui/NewPrinterWindow.glade.h:56
+msgid "Manufacturer"
+msgstr "Fabrikant"
+
+#: ../ui/NewPrinterWindow.glade.h:58
+msgid "Network"
+msgstr "Netwerk"
+
+#: ../ui/NewPrinterWindow.glade.h:61
+msgid "No, I do not accept this license"
+msgstr "Nee, ik accepteer deze licentie niet"
+
+#: ../ui/NewPrinterWindow.glade.h:62
+msgid "Parity"
+msgstr "Pariteit"
+
+#: ../ui/NewPrinterWindow.glade.h:64
+msgid "Patented algorithms"
+msgstr "Gepatenteerde algoritmes "
+
+#: ../ui/NewPrinterWindow.glade.h:65
+msgid "Photo:"
+msgstr "Foto:"
+
+#: ../ui/NewPrinterWindow.glade.h:66
+msgid "Port number:"
+msgstr "Poort nummer:"
+
+#: ../ui/NewPrinterWindow.glade.h:67
+#, fuzzy
+msgid ""
+"PostScript Printer Description (PPD) files can often be found on the driver "
+"disk that comes with the printer. For PostScript printers they are often "
+"part of the Windows<sup>®</sup> driver."
+msgstr ""
+"PostScript Printer Description (PPD) bestanden kunnen vaak worden gevonden "
+"op de stuurprogramma CD die meegeleverd wordt bij de printer. Voor "
+"PostScript printers maken ze meestal deel uit van het Windows<sup>&#xAE;</"
+"sup> stuurprogramma."
+
+#: ../ui/NewPrinterWindow.glade.h:68
+msgid "Printer model:"
+msgstr "Printer model:"
+
+#: ../ui/NewPrinterWindow.glade.h:69
+msgid "Probe"
+msgstr "Detecteren"
+
+#: ../ui/NewPrinterWindow.glade.h:70
+msgid "Prompt user if authentication is required"
+msgstr "Gebruiker vragen als authenticatie vereist is"
+
+#: ../ui/NewPrinterWindow.glade.h:71
+msgid "Provide PPD file"
+msgstr "PPD bestand opgeven"
+
+#: ../ui/NewPrinterWindow.glade.h:72
+msgid "Queue:"
+msgstr "Wachtrij:"
+
+#: ../ui/NewPrinterWindow.glade.h:73
+msgid "SCSI"
+msgstr "SCSI"
+
+#: ../ui/NewPrinterWindow.glade.h:74
+msgid "SMB"
+msgstr "SMB"
+
+#: ../ui/NewPrinterWindow.glade.h:75
+msgid "Search for a printer driver to download"
+msgstr "Zoeken naar een te downloaden printer stuurprogramma"
+
+#: ../ui/NewPrinterWindow.glade.h:76
+msgid "Searching..."
+msgstr "Bezig met zoeken...."
+
+#: ../ui/NewPrinterWindow.glade.h:77
+msgid "Select printer from database"
+msgstr "Selecteer een printer uit de database"
+
+#: ../ui/NewPrinterWindow.glade.h:78
+msgid "Serial"
+msgstr "Serieel"
+
+#: ../ui/NewPrinterWindow.glade.h:79
+msgid "Set authentication details now"
+msgstr "Authenticatie details nu instellen"
+
+#: ../ui/NewPrinterWindow.glade.h:80
+msgid "Short name for this printer such as \"laserjet\""
+msgstr "Korte naam voor deze printer, bijvoorbeeld ‘laserjet’"
+
+#: ../ui/NewPrinterWindow.glade.h:81
+msgid "Supplier:"
+msgstr "Leverancier:"
+
+#: ../ui/NewPrinterWindow.glade.h:82
+msgid "Support:"
+msgstr "Ondersteuning:"
+
+#: ../ui/NewPrinterWindow.glade.h:83
+msgid "Text:"
+msgstr "Tekst:"
+
+#: ../ui/NewPrinterWindow.glade.h:84
+msgid ""
+"The foomatic printer database contains various manufacturer provided "
+"PostScript Printer Description (PPD) files and also can generate PPD files "
+"for a large number of (non PostScript) printers. But in general manufacturer "
+"provided PPD files provide better access to the specific features of the "
+"printer."
+msgstr ""
+"De foomatic printer database bevat diverse door de fabrikant geleverde "
+"PostScript Printer Description (PPD)-bestanden en kan ook PPD bestanden "
+"genereren voor een groot aantal (niet-PostScript) printers. Echter, meestal "
+"bieden de door de fabrikant geleverde PPD bestanden betere toegang tot de "
+"specifieke functies van de printer."
+
+#: ../ui/NewPrinterWindow.glade.h:85
+msgid ""
+"These drivers do not come from your operating system supplier and will not "
+"be covered by their commercial support.  See the support and license terms "
+"of the driver's supplier."
+msgstr ""
+"Deze stuurprogramma's zijn niet afkomstig van jouw besturingssysteem "
+"leverancier en vallen niet onder zijn commerciële ondersteuning. Zie de "
+"ondersteuning en licentie voorwaarden van de stuurprogramma leverancier."
+
+#: ../ui/NewPrinterWindow.glade.h:86
+msgid ""
+"This driver supports additional hardware that may be installed in the "
+"printer."
+msgstr ""
+"Dit stuurprogramma ondersteunt extra apparatuur die in de printer "
+"geïnstalleerd kan zijn."
+
+#: ../ui/NewPrinterWindow.glade.h:87
+msgid ""
+"This is done by assuming that options with the same name do have the same "
+"meaning. Settings of options that are not present in the new PPD will be "
+"lost and options only present in the new PPD will be set to default."
+msgstr ""
+"Dit is gedaan door ervan uit te gaan dat opties met dezelfde naam ook "
+"dezelfde betekenis hebben. Instellingen van opties die niet aanwezig zijn in "
+"het nieuwe PPD bestand zullen verloren gaan en opties die alleen aanwezig "
+"zijn in het nieuwe PPD bestand zullen worden ingesteld naar de "
+"standaardwaarde."
+
+#: ../ui/NewPrinterWindow.glade.h:88
+msgid ""
+"This way all current option settings will be lost. The default settings of "
+"the new PPD will be used. "
+msgstr ""
+"Op deze manier zullen alle huidige ingestelde opties verloren gaan. De "
+"standaardinstellingen van de nieuwe PPD zullen worden gebruikt. "
+
+#: ../ui/NewPrinterWindow.glade.h:89
+msgid "Try to copy the option settings over from the old PPD. "
+msgstr "Probeer de ingestelde opties te kopiëren vanaf de oude PPD. "
+
+#: ../ui/NewPrinterWindow.glade.h:90
+msgid "Try to transfer the current settings"
+msgstr "Probeer de huidige instellingen over te brengen"
+
+#: ../ui/NewPrinterWindow.glade.h:91
+msgid "URI:"
+msgstr "URI:"
+
+#: ../ui/NewPrinterWindow.glade.h:93
+msgid "Use the new PPD (Postscript Printer Description) as is."
+msgstr "Gebruik de nieuwe PPD (Postscript Printer Description) zoals het is."
+
+#: ../ui/NewPrinterWindow.glade.h:95
+msgid ""
+"With this choice no driver download will be performed. In the next steps a "
+"locally installed driver will be selected."
+msgstr ""
+"Met deze keuze zal er geen stuurprogramma worden gedownload. In de volgende "
+"stappen zal een lokaal geïnstalleerd stuurprogramma geselecteerd worden."
+
+#: ../ui/NewPrinterWindow.glade.h:96
+msgid "Yes, I accept this license"
+msgstr "Ja, ik accepteer deze licentieovereenkomst"
+
+#: ../ui/NewPrinterWindow.glade.h:97
+msgid "_Search"
+msgstr "_Zoeken"
+
+#: ../ui/NewPrinterWindow.glade.h:98
+msgid "_Verify..."
+msgstr "_Verifiëren..."
+
+#: ../ui/NewPrinterWindow.glade.h:99
+msgid "license"
+msgstr "licentie"
+
+#: ../ui/NewPrinterWindow.glade.h:100 ../ui/PrinterPropertiesDialog.glade.h:81
+msgid "move left"
+msgstr "schuif links"
+
+#: ../ui/NewPrinterWindow.glade.h:101 ../ui/PrinterPropertiesDialog.glade.h:82
+msgid "move right"
+msgstr "schuif rechts"
+
+#: ../ui/NewPrinterWindow.glade.h:102
+msgid "short description"
+msgstr "korte omschrijving"
+
+#: ../ui/NewPrinterWindow.glade.h:103
+msgid "supplier"
+msgstr "leverancier"
+
+#: ../ui/NewPrinterWindow.glade.h:104
+msgid "support contacts"
+msgstr "ondersteuning contact"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:1
+msgid " "
+msgstr " "
+
+#: ../ui/PrinterPropertiesDialog.glade.h:2
+msgid "<b>Banner</b>"
+msgstr "<b>Banier</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:3
+msgid "<b>Common Options</b>"
+msgstr "<b>Algemene opties</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:4
+msgid "<b>Image Options</b>"
+msgstr "<b>Afbeelding opties</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:5
+msgid "<b>Ink/Toner Levels</b>"
+msgstr "<b>Inkt/Toner niveaus</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:6
+msgid "<b>Other Options (Advanced)</b>"
+msgstr "<b>Andere opties (geavanceerd)</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:7
+msgid "<b>Policies</b>"
+msgstr "<b>Tactiek</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:8
+msgid "<b>Settings</b>"
+msgstr "<b>Instellingen</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:9
+msgid "<b>State</b>"
+msgstr "<b>Status</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:10
+msgid "<b>Status Messages</b>"
+msgstr "<b>Status berichten</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:11
+msgid "<b>Tests and Maintenance</b>"
+msgstr "<b>Testen en onderhoud</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:12
+msgid "<b>Text Options</b>"
+msgstr "<b>Tekst opties</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:13
+msgid ""
+"<i>Not published\n"
+"See server settings</i>"
+msgstr ""
+"<i>Niet gepubliceerd\n"
+"Zie server instellingen</i>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:15
+msgid "Accepting jobs"
+msgstr "Accepteert taken"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:16
+msgid "Access Control"
+msgstr "Toegangscontrole"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:17
+msgid "Add or Remove Members"
+msgstr "Leden toevoegen of verwijderen"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:18
+msgid "Allow printing for everyone except these users:"
+msgstr "Afdrukken voor iedereen toestaan, behalve voor deze gebruikers:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:19
+msgid "Bottom margin:"
+msgstr "Ondermarge:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:20
+msgid "Brightness:"
+msgstr "Helderheid:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:21
+msgid "Change..."
+msgstr "Veranderen..."
+
+#: ../ui/PrinterPropertiesDialog.glade.h:22
+msgid "Characters per inch:"
+msgstr "Karakters per inch:"
+
+#. Not more than 25 characters
+#: ../ui/PrinterPropertiesDialog.glade.h:24
+msgid "Clean Print Heads"
+msgstr "Print koppen schoonmaken"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:25
+msgid "Co_nflicts"
+msgstr "Co_nflicteert"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:26
+msgid "Columns:"
+msgstr "Kolommen:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:27
+msgid "Copies:"
+msgstr "Exemplaren:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:28
+msgid "Deny printing for everyone except these users:"
+msgstr "Afdrukken voor iedereen verbieden, behalve voor deze gebruikers:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:30
+msgid "Device URI:"
+msgstr "Apparaat URI:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:31
+msgid "Enabled"
+msgstr "Aangezet"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:32
+msgid "Ending Banner:"
+msgstr "Eind banier:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:33
+msgid "Error Policy: \t"
+msgstr "Fouten tactiek: \t"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:34
+msgid "Finishings:"
+msgstr "Nabewerking:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:35
+msgid "Gamma:"
+msgstr "Gamma:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:36
+msgid "Hold until:"
+msgstr "Vasthouden tot:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:37
+msgid "Hue adjustment:"
+msgstr "Tint aanpassing:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:38
+msgid "Ink/Toner Levels"
+msgstr "Inkt/Toner niveaus"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:40
+msgid "Job Options"
+msgstr "Taak opties"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:41
+msgid "Job priority:"
+msgstr "Taak prioriteit:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:42
+msgid "Left margin:"
+msgstr "Linkermarge:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:43
+msgid "Lines per inch:"
+msgstr "Regels per inch:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:44
+msgid "Location:"
+msgstr "Locatie:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:45
+msgid "Make and Model:"
+msgstr "Merk en model:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:46
+msgid "Media:"
+msgstr "Media:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:47
+msgid "Members"
+msgstr "Leden"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:48
+msgid "Mirror"
+msgstr "Spiegel"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:49
+msgid "More"
+msgstr "Meer"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:50
+msgid "Operation Policy:"
+msgstr "Operationele tactiek:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:51
+msgid "Orientation:"
+msgstr "Oriëntatie:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:52
+#, fuzzy
+msgid "Output bin:"
+msgstr "Output volgorde:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:53
+msgid "Output order:"
+msgstr "Output volgorde:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:54
+msgid "Pages per side layout:"
+msgstr "Opmaak van pagina's per kant:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:55
+msgid "Pages per side:"
+msgstr "Pagina's per kant:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:56
+msgid "Policies"
+msgstr "Tactieken"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:57
+msgid "Pretty print"
+msgstr "Mooi afdrukken"
+
+#. Not more than 25 characters
+#: ../ui/PrinterPropertiesDialog.glade.h:59
+msgid "Print Self-Test Page"
+msgstr "Test pagina afdrukken"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:62
+#, fuzzy
+msgid "Print quality:"
+msgstr "Printer status:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:64
+msgid "Printer Properties"
+msgstr "Printer eigenschappen"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:65
+msgid "Printer State:"
+msgstr "Printer status:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:66
+#, fuzzy
+msgid "Printer resolution:"
+msgstr "Printer locatie"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:67
+msgid "Reset"
+msgstr "Opnieuw initialiseren"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:68
+msgid "Right margin:"
+msgstr "Rechtermarge:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:69
+msgid "Saturation:"
+msgstr "Verzadiging:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:70
+msgid "Scale to fit"
+msgstr "Schalen tot het past"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:71
+msgid "Scaling:"
+msgstr "Schalen:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:72
+msgid "Settings"
+msgstr "Instellingen"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:73
+msgid "Shared"
+msgstr "Gedeeld"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:74
+msgid "Sides:"
+msgstr "Zijden:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:75
+msgid ""
+"Specify the default job options for this printer.  Jobs arriving at this "
+"print server will have these options added if they are not already set by "
+"the application."
+msgstr ""
+"Specificeer de standaard taak opties voor deze printer. Taken die op deze "
+"print server arriveren zullen deze opties toegevoegd krijgen als ze niet "
+"door de toepassing zelf zijn ingesteld."
+
+#: ../ui/PrinterPropertiesDialog.glade.h:76
+msgid "Starting Banner:"
+msgstr "Begin banier:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:77
+msgid "There are no status messages for this printer."
+msgstr "Er zijn geen status berichten voor deze printer."
+
+#: ../ui/PrinterPropertiesDialog.glade.h:78
+msgid "To add a new option, enter its name in the box below and click to add."
+msgstr ""
+"Om een nieuwe optie toe te voegen, voer de naam in het vak hieronder in en "
+"klik om toe te voegen."
+
+#: ../ui/PrinterPropertiesDialog.glade.h:79
+msgid "Top margin:"
+msgstr "Bovenmarge:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:80
+msgid "Word wrap"
+msgstr "Regels afbreken"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:83
+msgid "points"
+msgstr "punten"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:84
+msgid "user"
+msgstr "gebruiker"
+
+#: ../ui/PrintersWindow.glade.h:1
+msgid ""
+"Printing service not available.  Start the service on this computer or "
+"connect to another server."
+msgstr ""
+"Afdruk service niet beschikbaar.  Start de service op voor deze computer of "
+"verbindt met een andere server."
+
+#: ../ui/PrintersWindow.glade.h:2
+msgid "Start Service"
+msgstr "Start service op"
+
+#: ../ui/PrintersWindow.glade.h:3
+msgid "System-Config-Printer"
+msgstr "System-Config-Printer"
+
+#: ../ui/PrintersWindow.glade.h:4
+msgid "There are no printers configured yet."
+msgstr "Er zijn nog geen printers geconfigureerd."
+
+#: ../ui/PrintersWindow.glade.h:5
+msgid "_Discovered Printers"
+msgstr "Gevon_den printers"
+
+#: ../ui/PrintersWindow.glade.h:6
+msgid "_Group"
+msgstr "_Groep"
+
+#: ../ui/PrintersWindow.glade.h:7
+msgid "_Groups"
+msgstr "_Groepen"
+
+#: ../ui/PrintersWindow.glade.h:8
+msgid "_Help"
+msgstr "_Hulp"
+
+#: ../ui/PrintersWindow.glade.h:10
+msgid "_Server"
+msgstr "_Server"
+
+#: ../ui/PrintersWindow.glade.h:11
+msgid "_View"
+msgstr "_Weergeven"
+
+#: ../ui/ServerSettingsDialog.glade.h:1
+msgid "<b>Basic Server Settings</b>"
+msgstr "<b>Standaard server instellingen</b>"
+
+#: ../ui/ServerSettingsDialog.glade.h:2
+msgid "<b>Browse servers</b>"
+msgstr "<b>Servers doorbladeren</b>"
+
+#: ../ui/ServerSettingsDialog.glade.h:3
+msgid "<b>Job history</b>"
+msgstr "<b>Taak geschiedenis</b>"
+
+#: ../ui/ServerSettingsDialog.glade.h:4
+msgid "Advanced Server Settings"
+msgstr "Geavanceerde server instellingen"
+
+#: ../ui/ServerSettingsDialog.glade.h:5
+msgid "Allow _remote administration"
+msgstr "_Beheer op afstand toestaan"
+
+#: ../ui/ServerSettingsDialog.glade.h:6
+msgid "Allow _users to cancel any job (not just their own)"
+msgstr ""
+"_Gebruikers toestaan om elke opdracht te annuleren (niet alleen die van "
+"hunzelf)"
+
+#: ../ui/ServerSettingsDialog.glade.h:7
+msgid "Allow printing from the _Internet"
+msgstr "Afdrukken vanaf het Inter_net toestaan"
+
+#: ../ui/ServerSettingsDialog.glade.h:8
+msgid "Do not preserve job history"
+msgstr "Taak geschiedenis niet bijhouden"
+
+#: ../ui/ServerSettingsDialog.glade.h:9
+msgid "Preserve job files (allow reprinting)"
+msgstr "Taak bestanden bewaren (maakt opnieuw afdrukken mogelijk)"
+
+#: ../ui/ServerSettingsDialog.glade.h:10
+msgid "Preserve job history but not files"
+msgstr "Taak geschiedenis bijhouden maar niet de bestanden"
+
+#: ../ui/ServerSettingsDialog.glade.h:11
+msgid "Save _debugging information for troubleshooting"
+msgstr "_Debug informatie opslaan om problemen op te lossen"
+
+#: ../ui/ServerSettingsDialog.glade.h:12
+msgid "Server Settings"
+msgstr "Server instellingen"
+
+#: ../ui/ServerSettingsDialog.glade.h:13
+msgid ""
+"Usually print servers broadcast their queues. Specify print servers below to "
+"periodically ask for queues instead."
+msgstr ""
+"Afdruk servers maken gewoonlijk hun wachtrijen bekend. Geef hieronder afdruk "
+"servers op waaraan periodiek naar hun wachtrijen wordt geïnformeerd."
+
+#: ../ui/ServerSettingsDialog.glade.h:14
+msgid "_Publish shared printers connected to this system"
+msgstr "Gedeelde _printers verbonden met dit systeem publiceren"
+
+#: ../ui/ServerSettingsDialog.glade.h:15
+msgid "_Show printers shared by other systems"
+msgstr "Door andere sys_temen gedeelde printers tonen"
+
+#: ../ui/SMBBrowseDialog.glade.h:1
+msgid "SMB Browser"
+msgstr "SMB browser"
+
+#: ../ui/statusicon_popupmenu.glade.h:1
+msgid "_Hide"
+msgstr "_Verbergen"
+
+#: ../ui/WaitWindow.glade.h:1
+msgid "Please Wait"
+msgstr "Even geduld"
 
 #: ../system-config-printer.desktop.in.h:1
 msgid "Configure printers"
@@ -2137,10 +3111,6 @@ msgid ""
 msgstr ""
 "Selecteer het apparaat dat je wilt gebruiken uit de onderstaande lijst. Als "
 "deze er niet in voorkomt, selecteer dan ‘Niet getoond’."
-
-#: ../troubleshoot/DeviceListed.py:40
-msgid "Device URI"
-msgstr "Apparaat URI"
 
 #: ../troubleshoot/ErrorLogCheckpoint.py:31
 msgid "Debugging"
@@ -2479,742 +3449,11 @@ msgstr "Print wachtrij applet"
 msgid "System tray icon for managing print jobs"
 msgstr "Systeem vak icoon voor het beheren van printopdrachten"
 
-#~ msgid "A CUPS configuration tool."
-#~ msgstr "Een CUPS configuratie gereedschap."
-
-#~ msgid "Copyright &#xA9; 2006-2008 Red Hat, Inc."
-#~ msgstr "Copyright &#xA9; 2006-2008 Red Hat, Inc."
-
-#~ msgid ""
-#~ "This program is free software; you can redistribute it and/or modify it "
-#~ "under the terms of the GNU General Public License as published by the "
-#~ "Free Software Foundation; either version 2 of the License, or (at your "
-#~ "option) any later version.\n"
-#~ "\n"
-#~ "This program is distributed in the hope that it will be useful, but "
-#~ "WITHOUT ANY WARRANTY; without even the implied warranty of "
-#~ "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General "
-#~ "Public License for more details.\n"
-#~ "\n"
-#~ "You should have received a copy of the GNU General Public License along "
-#~ "with this program; if not, write to the Free Software Foundation, Inc., "
-#~ "675 Mass Ave, Cambridge, MA 02139, USA."
-#~ msgstr ""
-#~ "Dit programma is vrije software; Je kunt het verspreiden en/of wijzigen "
-#~ "onder de bepalingen van de GNU General Public License, zoals uitgegeven "
-#~ "door de Free Software Foundation; zowel versie 2 van de licentie, of "
-#~ "(naar vrije keuze) een latere versie.\n"
-#~ "\n"
-#~ "Dit programma is verspreid met de hoop dat het nuttig zal zijn, maar "
-#~ "ZONDER ENIGE GARANTIE; zelfs zonder de impliciete garantie van "
-#~ "VERKOOPBAARHEID of GESCHIKTHEID VOOR EEN BEPAALD DOEL. Zie de GNU General "
-#~ "Public License voor meer details.\n"
-#~ "\n"
-#~ "Je moet een kopie van de GNU General Public License, samen met dit "
-#~ "programma, ontvangen hebben; indien dat niet het geval is kun je "
-#~ "schrijven naar de Free Software Foundation, Inc., 675 Mass Ave, "
-#~ "Cambridge, MA 02139, USA."
-
-#~ msgid "translator-credits"
-#~ msgstr ""
-#~ "Tino Meinen <a.t.meinen@chello.nl>\n"
-#~ "Peter van Egdom <p.van.egdom@gmail.com>\n"
-#~ "Stijn Bibaer <stijn.bibaer@pandora.be>\n"
-#~ "Bart Couvreur <couf@fedoraproject.org>\n"
-#~ "Reinout van Schouwen <reinouts@gnome.org>\n"
-#~ "Geert Warrink <geert.warrink@onsnet.nu>"
-
-#~ msgid "CUPS _server:"
-#~ msgstr "CUPS _server:"
-
-#~ msgid "Connect to CUPS server"
-#~ msgstr "Verbinden met CUPS server"
-
-#~ msgid "Require _encryption"
-#~ msgstr "Versleu_teling vereisen"
-
-#~ msgid ""
-#~ "<span weight=\"bold\" size=\"larger\">Connecting to CUPS server</span>"
-#~ msgstr ""
-#~ "<span weight=\"bold\" size=\"larger\">Verbinden met CUPS server</span>"
-
-#~ msgid "Connecting to CUPS server"
-#~ msgstr "Verbinden met CUPS server"
-
-#~ msgid "_Install"
-#~ msgstr "I_nstalleren"
-
-#~ msgid "Refresh job list"
-#~ msgstr "Vernieuw afdruk taken lijst"
-
-#~ msgid "Show _completed jobs"
-#~ msgstr "V_oltooide opdrachten tonen"
-
-#~ msgid "Show completed jobs"
-#~ msgstr "Voltooide opdrachten tonen"
-
-#~ msgid "_Refresh"
-#~ msgstr "_Vernieuwen"
-
-#~ msgid "Duplicate Printer"
-#~ msgstr "Printer dupliceren"
-
-#~ msgid "New name for the printer"
-#~ msgstr "Nieuwe naam voor de printer"
-
-#~ msgid "<b>Authentication</b>"
-#~ msgstr "<b>Authenticatie</b>"
-
-#~ msgid "<b>Description</b>"
-#~ msgstr "<b>Omschrijving</b>"
-
-#~ msgid "<b>Description</b> (optional)"
-#~ msgstr "<b>Omschrijving</b> (optioneel)"
-
-#~ msgid "<b>Enter device URI</b>"
-#~ msgstr "<b>Voer apparaat URI in</b>"
-
-#~ msgid "<b>IPP Printer</b>"
-#~ msgstr "<b>IPP printer</b>"
-
-#~ msgid "<b>License Terms</b>"
-#~ msgstr "<b>Licentievoorwaarden</b>"
-
-#~ msgid "<b>Location of the LPD network printer</b>"
-#~ msgstr "<b>Locatie van de LPD netwerkprinter</b>"
-
-#~ msgid "<b>Location of the network printer</b>"
-#~ msgstr "<b>Locatie van de netwerkprinter</b>"
-
-#~ msgid "<b>Location</b> (optional)"
-#~ msgstr "<b>Locatie</b> (optioneel)"
-
-#~ msgid "<b>Network Printer</b>"
-#~ msgstr "<b>Netwerkprinter</b>"
-
-#~ msgid "<b>Note</b>"
-#~ msgstr "<b>Opmerking</b>"
-
-#~ msgid "<b>Output Quality</b>"
-#~ msgstr "<b>Afdrukkwaliteit</b>"
-
-#~ msgid "<b>Printer Name</b>"
-#~ msgstr "<b>Printer naam</b>"
-
-#~ msgid "<b>SMB Printer</b>"
-#~ msgstr "<b>SMB printer</b>"
-
-#~ msgid "<b>Select Driver</b>"
-#~ msgstr "<b>Stuurprogramma selecteren</b>"
-
-#~ msgid "<b>Settings of the serial port</b>"
-#~ msgstr "<b>Instelling van de seriële poort</b>"
-
-#~ msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
-#~ msgstr "<i>smb://[werkgroep/]server[:poort]/printer</i>"
-
-#~ msgid "<span weight=\"bold\" size=\"larger\">Choose Class Members</span>"
-#~ msgstr "<span weight=\"bold\" size=\"larger\">Klasse leden kiezen</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"larger\">Choose Driver</span>"
-#~ msgstr "<span weight=\"bold\" size=\"larger\">Stuurprogramma kiezen</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"larger\">Describe Printer</span>"
-#~ msgstr "<span weight=\"bold\" size=\"larger\">Printer beschrijven</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"larger\">Existing Settings</span>"
-#~ msgstr "<span weight=\"bold\" size=\"larger\">Bestaande instellingen</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"larger\">Installable Options</span>"
-#~ msgstr "<span weight=\"bold\" size=\"larger\">Te installeren opties</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"larger\">Select Device</span>"
-#~ msgstr "<span weight=\"bold\" size=\"larger\">Apparaat selecteren</span>"
-
-#~ msgid "Baud Rate"
-#~ msgstr "Baud rate"
-
-#~ msgid "Browse..."
-#~ msgstr "Bladeren..."
-
-#~ msgid "Change PPD"
-#~ msgstr "Verander PPD"
-
-#~ msgid "Class Members"
-#~ msgstr "Klasse leden"
-
-#~ msgid "Comments..."
-#~ msgstr "Opmerkingen..."
-
-#~ msgid "Connection"
-#~ msgstr "Verbinding"
-
-#~ msgid "Data Bits"
-#~ msgstr "Data bits"
-
-#~ msgid "Description:"
-#~ msgstr "Omschrijving:"
-
-#~ msgid "Device"
-#~ msgstr "Apparaat"
-
-#~ msgid "Device description."
-#~ msgstr "Apparaat omschrijving."
-
-#~ msgid "Driver details"
-#~ msgstr "Stuurprogramma details"
-
-#~ msgid "Empty"
-#~ msgstr "Leeg"
-
-#~ msgid "Flow Control"
-#~ msgstr "Flow controle"
-
-#~ msgid ""
-#~ "For the printer you have selected there are drivers available for "
-#~ "download."
-#~ msgstr ""
-#~ "Er zijn stuurprogramma's te downloaden voor de printer die je "
-#~ "geselecteerd hebt."
-
-#~ msgid "Free software"
-#~ msgstr "Vrije software"
-
-#~ msgid "Graphics:"
-#~ msgstr "Afbeeldingen:"
-
-#~ msgid "Host:"
-#~ msgstr "Host:"
-
-#~ msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
-#~ msgstr "Leesbare omschrijving zoals \"HP LaserJet met duplexer\""
-
-#~ msgid "Human-readable location such as \"Lab 1\""
-#~ msgstr "Leesbare locatie zoals \"Lab 1\""
-
-#~ msgid "Installed Options"
-#~ msgstr "Geïnstalleerde opties"
-
-#, fuzzy
-#~ msgid "JetDirect"
-#~ msgstr "DirectJet"
-
-#~ msgid "LPD"
-#~ msgstr "LPD"
-
-#~ msgid "License:"
-#~ msgstr "Licentie:"
-
-#~ msgid "Line art:"
-#~ msgstr "Line art:"
-
-# aanpassen hier iets beter dan bewerken.
-#~ msgid "Local Driver"
-#~ msgstr "Lokaal stuurprogramma"
-
-#~ msgid "Make and model:"
-#~ msgstr "Fabrikant en model:"
-
-#~ msgid "Manufacturer"
-#~ msgstr "Fabrikant"
-
-#~ msgid "Network"
-#~ msgstr "Netwerk"
-
-#~ msgid "No, I do not accept this license"
-#~ msgstr "Nee, ik accepteer deze licentie niet"
-
-#~ msgid "Parity"
-#~ msgstr "Pariteit"
-
-#~ msgid "Patented algorithms"
-#~ msgstr "Gepatenteerde algoritmes "
-
-#~ msgid "Photo:"
-#~ msgstr "Foto:"
-
-#~ msgid "Port number:"
-#~ msgstr "Poort nummer:"
-
-#~ msgid ""
-#~ "PostScript Printer Description (PPD) files can often be found on the "
-#~ "driver disk that comes with the printer. For PostScript printers they are "
-#~ "often part of the Windows<sup>&#xAE;</sup> driver."
-#~ msgstr ""
-#~ "PostScript Printer Description (PPD) bestanden kunnen vaak worden "
-#~ "gevonden op de stuurprogramma CD die meegeleverd wordt bij de printer. "
-#~ "Voor PostScript printers maken ze meestal deel uit van het "
-#~ "Windows<sup>&#xAE;</sup> stuurprogramma."
-
-#~ msgid "Printer model:"
-#~ msgstr "Printer model:"
-
-#~ msgid "Probe"
-#~ msgstr "Detecteren"
-
-#~ msgid "Prompt user if authentication is required"
-#~ msgstr "Gebruiker vragen als authenticatie vereist is"
-
-#~ msgid "Provide PPD file"
-#~ msgstr "PPD bestand opgeven"
-
-#~ msgid "Queue:"
-#~ msgstr "Wachtrij:"
-
-#~ msgid "SCSI"
-#~ msgstr "SCSI"
-
-#~ msgid "SMB"
-#~ msgstr "SMB"
-
-#~ msgid "Search for a printer driver to download"
-#~ msgstr "Zoeken naar een te downloaden printer stuurprogramma"
-
-#~ msgid "Searching..."
-#~ msgstr "Bezig met zoeken...."
-
-#~ msgid "Select printer from database"
-#~ msgstr "Selecteer een printer uit de database"
-
-#~ msgid "Serial"
-#~ msgstr "Serieel"
-
-#~ msgid "Set authentication details now"
-#~ msgstr "Authenticatie details nu instellen"
-
-#~ msgid "Short name for this printer such as \"laserjet\""
-#~ msgstr "Korte naam voor deze printer, bijvoorbeeld ‘laserjet’"
-
-#~ msgid "Supplier:"
-#~ msgstr "Leverancier:"
-
-#~ msgid "Support:"
-#~ msgstr "Ondersteuning:"
-
-#~ msgid "Text:"
-#~ msgstr "Tekst:"
-
-#~ msgid ""
-#~ "The foomatic printer database contains various manufacturer provided "
-#~ "PostScript Printer Description (PPD) files and also can generate PPD "
-#~ "files for a large number of (non PostScript) printers. But in general "
-#~ "manufacturer provided PPD files provide better access to the specific "
-#~ "features of the printer."
-#~ msgstr ""
-#~ "De foomatic printer database bevat diverse door de fabrikant geleverde "
-#~ "PostScript Printer Description (PPD)-bestanden en kan ook PPD bestanden "
-#~ "genereren voor een groot aantal (niet-PostScript) printers. Echter, "
-#~ "meestal bieden de door de fabrikant geleverde PPD bestanden betere "
-#~ "toegang tot de specifieke functies van de printer."
-
-#~ msgid ""
-#~ "These drivers do not come from your operating system supplier and will "
-#~ "not be covered by their commercial support.  See the support and license "
-#~ "terms of the driver's supplier."
-#~ msgstr ""
-#~ "Deze stuurprogramma's zijn niet afkomstig van jouw besturingssysteem "
-#~ "leverancier en vallen niet onder zijn commerciële ondersteuning. Zie de "
-#~ "ondersteuning en licentie voorwaarden van de stuurprogramma leverancier."
-
-#~ msgid ""
-#~ "This driver supports additional hardware that may be installed in the "
-#~ "printer."
-#~ msgstr ""
-#~ "Dit stuurprogramma ondersteunt extra apparatuur die in de printer "
-#~ "geïnstalleerd kan zijn."
-
-#~ msgid ""
-#~ "This is done by assuming that options with the same name do have the same "
-#~ "meaning. Settings of options that are not present in the new PPD will be "
-#~ "lost and options only present in the new PPD will be set to default."
-#~ msgstr ""
-#~ "Dit is gedaan door ervan uit te gaan dat opties met dezelfde naam ook "
-#~ "dezelfde betekenis hebben. Instellingen van opties die niet aanwezig zijn "
-#~ "in het nieuwe PPD bestand zullen verloren gaan en opties die alleen "
-#~ "aanwezig zijn in het nieuwe PPD bestand zullen worden ingesteld naar de "
-#~ "standaardwaarde."
-
-#~ msgid ""
-#~ "This way all current option settings will be lost. The default settings "
-#~ "of the new PPD will be used. "
-#~ msgstr ""
-#~ "Op deze manier zullen alle huidige ingestelde opties verloren gaan. De "
-#~ "standaardinstellingen van de nieuwe PPD zullen worden gebruikt. "
-
-#~ msgid "Try to copy the option settings over from the old PPD. "
-#~ msgstr "Probeer de ingestelde opties te kopiëren vanaf de oude PPD. "
-
-#~ msgid "Try to transfer the current settings"
-#~ msgstr "Probeer de huidige instellingen over te brengen"
-
-#~ msgid "URI:"
-#~ msgstr "URI:"
-
-#~ msgid "Use the new PPD (Postscript Printer Description) as is."
-#~ msgstr ""
-#~ "Gebruik de nieuwe PPD (Postscript Printer Description) zoals het is."
-
-#~ msgid ""
-#~ "With this choice no driver download will be performed. In the next steps "
-#~ "a locally installed driver will be selected."
-#~ msgstr ""
-#~ "Met deze keuze zal er geen stuurprogramma worden gedownload. In de "
-#~ "volgende stappen zal een lokaal geïnstalleerd stuurprogramma geselecteerd "
-#~ "worden."
-
-#~ msgid "Yes, I accept this license"
-#~ msgstr "Ja, ik accepteer deze licentieovereenkomst"
-
-#~ msgid "_Search"
-#~ msgstr "_Zoeken"
-
-#~ msgid "_Verify..."
-#~ msgstr "_Verifiëren..."
-
-#~ msgid "license"
-#~ msgstr "licentie"
-
-#~ msgid "move left"
-#~ msgstr "schuif links"
-
-#~ msgid "move right"
-#~ msgstr "schuif rechts"
-
-#~ msgid "short description"
-#~ msgstr "korte omschrijving"
-
-#~ msgid "supplier"
-#~ msgstr "leverancier"
-
-#~ msgid "support contacts"
-#~ msgstr "ondersteuning contact"
-
-#~ msgid " "
-#~ msgstr " "
-
-#~ msgid "<b>Banner</b>"
-#~ msgstr "<b>Banier</b>"
-
-#~ msgid "<b>Common Options</b>"
-#~ msgstr "<b>Algemene opties</b>"
-
-#~ msgid "<b>Image Options</b>"
-#~ msgstr "<b>Afbeelding opties</b>"
-
-#~ msgid "<b>Ink/Toner Levels</b>"
-#~ msgstr "<b>Inkt/Toner niveaus</b>"
-
-#~ msgid "<b>Other Options (Advanced)</b>"
-#~ msgstr "<b>Andere opties (geavanceerd)</b>"
-
-#~ msgid "<b>Policies</b>"
-#~ msgstr "<b>Tactiek</b>"
-
-#~ msgid "<b>Settings</b>"
-#~ msgstr "<b>Instellingen</b>"
-
-#~ msgid "<b>State</b>"
-#~ msgstr "<b>Status</b>"
-
-#~ msgid "<b>Status Messages</b>"
-#~ msgstr "<b>Status berichten</b>"
-
-#~ msgid "<b>Tests and Maintenance</b>"
-#~ msgstr "<b>Testen en onderhoud</b>"
-
-#~ msgid "<b>Text Options</b>"
-#~ msgstr "<b>Tekst opties</b>"
-
-#~ msgid ""
-#~ "<i>Not published\n"
-#~ "See server settings</i>"
-#~ msgstr ""
-#~ "<i>Niet gepubliceerd\n"
-#~ "Zie server instellingen</i>"
-
-#~ msgid "Accepting jobs"
-#~ msgstr "Accepteert taken"
-
-#~ msgid "Access Control"
-#~ msgstr "Toegangscontrole"
-
-#~ msgid "Add or Remove Members"
-#~ msgstr "Leden toevoegen of verwijderen"
-
-#~ msgid "Allow printing for everyone except these users:"
-#~ msgstr "Afdrukken voor iedereen toestaan, behalve voor deze gebruikers:"
-
-#~ msgid "Bottom margin:"
-#~ msgstr "Ondermarge:"
-
-#~ msgid "Brightness:"
-#~ msgstr "Helderheid:"
-
-#~ msgid "Change..."
-#~ msgstr "Veranderen..."
-
-#~ msgid "Characters per inch:"
-#~ msgstr "Karakters per inch:"
-
-#~ msgid "Clean Print Heads"
-#~ msgstr "Print koppen schoonmaken"
-
-#~ msgid "Co_nflicts"
-#~ msgstr "Co_nflicteert"
-
-#~ msgid "Columns:"
-#~ msgstr "Kolommen:"
-
-#~ msgid "Copies:"
-#~ msgstr "Exemplaren:"
-
-#~ msgid "Deny printing for everyone except these users:"
-#~ msgstr "Afdrukken voor iedereen verbieden, behalve voor deze gebruikers:"
-
-#~ msgid "Device URI:"
-#~ msgstr "Apparaat URI:"
-
-#~ msgid "Enabled"
-#~ msgstr "Aangezet"
-
-#~ msgid "Ending Banner:"
-#~ msgstr "Eind banier:"
-
-#~ msgid "Error Policy: \t"
-#~ msgstr "Fouten tactiek: \t"
-
-#~ msgid "Finishings:"
-#~ msgstr "Nabewerking:"
-
-#~ msgid "Gamma:"
-#~ msgstr "Gamma:"
-
-#~ msgid "Hold until:"
-#~ msgstr "Vasthouden tot:"
-
-#~ msgid "Hue adjustment:"
-#~ msgstr "Tint aanpassing:"
-
-#~ msgid "Ink/Toner Levels"
-#~ msgstr "Inkt/Toner niveaus"
-
-#~ msgid "Job Options"
-#~ msgstr "Taak opties"
-
-#~ msgid "Job priority:"
-#~ msgstr "Taak prioriteit:"
-
-#~ msgid "Left margin:"
-#~ msgstr "Linkermarge:"
-
-#~ msgid "Lines per inch:"
-#~ msgstr "Regels per inch:"
-
-#~ msgid "Location:"
-#~ msgstr "Locatie:"
-
-#~ msgid "Make and Model:"
-#~ msgstr "Merk en model:"
-
-#~ msgid "Media:"
-#~ msgstr "Media:"
-
-#~ msgid "Members"
-#~ msgstr "Leden"
-
-#~ msgid "Mirror"
-#~ msgstr "Spiegel"
-
-#~ msgid "More"
-#~ msgstr "Meer"
-
-#~ msgid "Operation Policy:"
-#~ msgstr "Operationele tactiek:"
-
-#~ msgid "Orientation:"
-#~ msgstr "Oriëntatie:"
-
-#~ msgid "Output order:"
-#~ msgstr "Output volgorde:"
-
-#~ msgid "Pages per side layout:"
-#~ msgstr "Opmaak van pagina's per kant:"
-
-#~ msgid "Pages per side:"
-#~ msgstr "Pagina's per kant:"
-
-#~ msgid "Policies"
-#~ msgstr "Tactieken"
-
-#~ msgid "Pretty print"
-#~ msgstr "Mooi afdrukken"
-
-#~ msgid "Print Self-Test Page"
-#~ msgstr "Test pagina afdrukken"
-
-#~ msgid "Printer Properties"
-#~ msgstr "Printer eigenschappen"
-
-#~ msgid "Printer State:"
-#~ msgstr "Printer status:"
-
-#~ msgid "Reset"
-#~ msgstr "Opnieuw initialiseren"
-
-#~ msgid "Right margin:"
-#~ msgstr "Rechtermarge:"
-
-#~ msgid "Saturation:"
-#~ msgstr "Verzadiging:"
-
-#~ msgid "Scale to fit"
-#~ msgstr "Schalen tot het past"
-
-#~ msgid "Scaling:"
-#~ msgstr "Schalen:"
-
-#~ msgid "Settings"
-#~ msgstr "Instellingen"
-
-#~ msgid "Shared"
-#~ msgstr "Gedeeld"
-
-#~ msgid "Sides:"
-#~ msgstr "Zijden:"
-
-#~ msgid ""
-#~ "Specify the default job options for this printer.  Jobs arriving at this "
-#~ "print server will have these options added if they are not already set by "
-#~ "the application."
-#~ msgstr ""
-#~ "Specificeer de standaard taak opties voor deze printer. Taken die op deze "
-#~ "print server arriveren zullen deze opties toegevoegd krijgen als ze niet "
-#~ "door de toepassing zelf zijn ingesteld."
-
-#~ msgid "Starting Banner:"
-#~ msgstr "Begin banier:"
-
-#~ msgid "There are no status messages for this printer."
-#~ msgstr "Er zijn geen status berichten voor deze printer."
-
-#~ msgid ""
-#~ "To add a new option, enter its name in the box below and click to add."
-#~ msgstr ""
-#~ "Om een nieuwe optie toe te voegen, voer de naam in het vak hieronder in "
-#~ "en klik om toe te voegen."
-
-#~ msgid "Top margin:"
-#~ msgstr "Bovenmarge:"
-
-#~ msgid "Word wrap"
-#~ msgstr "Regels afbreken"
-
-#~ msgid "points"
-#~ msgstr "punten"
-
-#~ msgid "user"
-#~ msgstr "gebruiker"
-
-#~ msgid ""
-#~ "Printing service not available.  Start the service on this computer or "
-#~ "connect to another server."
-#~ msgstr ""
-#~ "Afdruk service niet beschikbaar.  Start de service op voor deze computer "
-#~ "of verbindt met een andere server."
-
-#~ msgid "Start Service"
-#~ msgstr "Start service op"
-
-#~ msgid "System-Config-Printer"
-#~ msgstr "System-Config-Printer"
-
-#~ msgid "There are no printers configured yet."
-#~ msgstr "Er zijn nog geen printers geconfigureerd."
-
-#~ msgid "_Discovered Printers"
-#~ msgstr "Gevon_den printers"
-
-#~ msgid "_Group"
-#~ msgstr "_Groep"
-
-#~ msgid "_Groups"
-#~ msgstr "_Groepen"
-
-#~ msgid "_Help"
-#~ msgstr "_Hulp"
-
-#~ msgid "_Server"
-#~ msgstr "_Server"
-
 #~ msgid "_Troubleshoot"
 #~ msgstr "Problemen _oplossen"
 
-#~ msgid "_View"
-#~ msgstr "_Weergeven"
-
-#~ msgid "<b>Basic Server Settings</b>"
-#~ msgstr "<b>Standaard server instellingen</b>"
-
-#~ msgid "<b>Browse servers</b>"
-#~ msgstr "<b>Servers doorbladeren</b>"
-
-#~ msgid "<b>Job history</b>"
-#~ msgstr "<b>Taak geschiedenis</b>"
-
-#~ msgid "Advanced Server Settings"
-#~ msgstr "Geavanceerde server instellingen"
-
-#~ msgid "Allow _remote administration"
-#~ msgstr "_Beheer op afstand toestaan"
-
-#~ msgid "Allow _users to cancel any job (not just their own)"
-#~ msgstr ""
-#~ "_Gebruikers toestaan om elke opdracht te annuleren (niet alleen die van "
-#~ "hunzelf)"
-
-#~ msgid "Allow printing from the _Internet"
-#~ msgstr "Afdrukken vanaf het Inter_net toestaan"
-
-#~ msgid "Do not preserve job history"
-#~ msgstr "Taak geschiedenis niet bijhouden"
-
-#~ msgid "Preserve job files (allow reprinting)"
-#~ msgstr "Taak bestanden bewaren (maakt opnieuw afdrukken mogelijk)"
-
-#~ msgid "Preserve job history but not files"
-#~ msgstr "Taak geschiedenis bijhouden maar niet de bestanden"
-
-#~ msgid "Save _debugging information for troubleshooting"
-#~ msgstr "_Debug informatie opslaan om problemen op te lossen"
-
-#~ msgid "Server Settings"
-#~ msgstr "Server instellingen"
-
-#~ msgid ""
-#~ "Usually print servers broadcast their queues. Specify print servers below "
-#~ "to periodically ask for queues instead."
-#~ msgstr ""
-#~ "Afdruk servers maken gewoonlijk hun wachtrijen bekend. Geef hieronder "
-#~ "afdruk servers op waaraan periodiek naar hun wachtrijen wordt "
-#~ "geïnformeerd."
-
-#~ msgid "_Publish shared printers connected to this system"
-#~ msgstr "Gedeelde _printers verbonden met dit systeem publiceren"
-
-#~ msgid "_Show printers shared by other systems"
-#~ msgstr "Door andere sys_temen gedeelde printers tonen"
-
-#~ msgid "SMB Browser"
-#~ msgstr "SMB browser"
-
 #~ msgid "_Configure Printers"
 #~ msgstr "Printers _configureren"
-
-#~ msgid "_Hide"
-#~ msgstr "_Verbergen"
-
-#~ msgid "Please Wait"
-#~ msgstr "Even geduld"
 
 #~ msgid "Cancel, pause, resume or reprint jobs"
 #~ msgstr "Afdruk taken annuleren, pauzeren, hervatten of opnieuw afdrukken"

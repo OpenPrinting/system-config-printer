@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mk\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2011-02-17 16:17+0000\n"
+"POT-Creation-Date: 2011-02-25 09:57+0000\n"
 "PO-Revision-Date: 2004-10-18 22:16+0200\n"
 "Last-Translator: Arangel Angov <ufo@linux.net.mk>\n"
 "Language-Team: Macedonian <ossm-members@hedona.on.net.mk>\n"
@@ -61,12 +61,12 @@ msgstr "Тест"
 msgid "Operation canceled"
 msgstr "Име на опција"
 
-#: ../authconn.py:32 ../pysmb.py:123
+#: ../authconn.py:32 ../pysmb.py:123 ../ui/NewPrinterWindow.glade.h:94
 #, fuzzy
 msgid "Username:"
 msgstr "Корисничко име:"
 
-#: ../authconn.py:33 ../pysmb.py:129
+#: ../authconn.py:33 ../pysmb.py:129 ../ui/NewPrinterWindow.glade.h:63
 msgid "Password:"
 msgstr "Лозинка:"
 
@@ -354,7 +354,8 @@ msgstr ""
 
 #: ../jobviewer.py:706 ../jobviewer.py:1002 ../jobviewer.py:1704
 #: ../jobviewer.py:1734 ../jobviewer.py:2104 ../jobviewer.py:2109
-#: ../jobviewer.py:2123 ../jobviewer.py:2202 ../printerproperties.py:1541
+#: ../jobviewer.py:2123 ../jobviewer.py:2202 ../printerproperties.py:1582
+#: ../ui/NewPrinterWindow.glade.h:92
 #: ../troubleshoot/ChooseNetworkPrinter.py:100
 #: ../troubleshoot/ChooseNetworkPrinter.py:101
 #: ../troubleshoot/ChooseNetworkPrinter.py:104
@@ -430,6 +431,7 @@ msgid "Save File"
 msgstr ""
 
 #: ../jobviewer.py:1449 ../system-config-printer.py:258
+#: ../ui/NewPrinterWindow.glade.h:57
 #: ../troubleshoot/ChooseNetworkPrinter.py:35
 #: ../troubleshoot/ChoosePrinter.py:36 ../troubleshoot/DeviceListed.py:36
 msgid "Name"
@@ -621,7 +623,7 @@ msgstr ""
 #. See section 4.2.6 of this document for explanation of finishing types:
 #. ftp://ftp.pwg.org/pub/pwg/candidates/cs-ippfinishings10-20010205-5100.1.pdf
 #: ../newprinter.py:299 ../newprinter.py:310 ../newprinter.py:3267
-#: ../ppdippstr.py:63 ../printerproperties.py:264
+#: ../ppdippstr.py:63 ../printerproperties.py:268
 msgid "None"
 msgstr "Ништо"
 
@@ -654,11 +656,11 @@ msgstr ""
 msgid "DTR/DSR (Hardware)"
 msgstr ""
 
-#: ../newprinter.py:330 ../printerproperties.py:218
+#: ../newprinter.py:330 ../printerproperties.py:222
 msgid "Members of this class"
 msgstr ""
 
-#: ../newprinter.py:332 ../printerproperties.py:219
+#: ../newprinter.py:332 ../printerproperties.py:223
 msgid "Others"
 msgstr ""
 
@@ -686,7 +688,7 @@ msgstr "Модел"
 msgid "Drivers"
 msgstr "Драјвер"
 
-#: ../newprinter.py:338
+#: ../newprinter.py:338 ../ui/NewPrinterWindow.glade.h:35
 #, fuzzy
 msgid "Downloadable Drivers"
 msgstr "Достапни драјвери:"
@@ -720,7 +722,7 @@ msgstr ""
 msgid "Search"
 msgstr "Предупредување"
 
-#: ../newprinter.py:611 ../newprinter.py:632
+#: ../newprinter.py:611 ../newprinter.py:632 ../ui/NewPrinterWindow.glade.h:59
 #, fuzzy
 msgid "New Printer"
 msgstr "Печатач:"
@@ -887,7 +889,7 @@ msgstr ""
 msgid "Windows Printer via SAMBA"
 msgstr "Windows податоци (SMB) за печатачот"
 
-#: ../newprinter.py:2376
+#: ../newprinter.py:2376 ../ui/NewPrinterWindow.glade.h:48
 #, fuzzy
 msgid "IPP"
 msgstr "IP:"
@@ -944,7 +946,7 @@ msgstr ""
 msgid "Searching for printers"
 msgstr "Својства на делење"
 
-#: ../newprinter.py:2769
+#: ../newprinter.py:2769 ../ui/NewPrinterWindow.glade.h:60
 msgid "No printer was found at that address."
 msgstr ""
 
@@ -1049,7 +1051,7 @@ msgid "adding printer %s"
 msgstr "Додади нова задача за печатење"
 
 #: ../newprinter.py:3570 ../newprinter.py:3581 ../newprinter.py:3598
-#: ../printerproperties.py:921 ../system-config-printer.py:1682
+#: ../printerproperties.py:957 ../system-config-printer.py:1682
 #: ../system-config-printer.py:1707
 #, fuzzy, python-format
 msgid "modifying printer %s"
@@ -1380,242 +1382,250 @@ msgid "Busy"
 msgstr ""
 
 #. Printer state reasons list
-#: ../printerproperties.py:200
+#: ../printerproperties.py:204
 msgid "Message"
 msgstr ""
 
-#: ../printerproperties.py:220
+#: ../printerproperties.py:224
 #, fuzzy
 msgid "Users"
 msgstr "Корисник"
 
-#: ../printerproperties.py:243
+#: ../printerproperties.py:247
 msgid "Portrait (no rotation)"
 msgstr ""
 
-#: ../printerproperties.py:244
+#: ../printerproperties.py:248
 #, fuzzy
 msgid "Landscape (90 degrees)"
 msgstr "Пејсаж (%s или %s)"
 
-#: ../printerproperties.py:245
+#: ../printerproperties.py:249
 msgid "Reverse landscape (270 degrees)"
 msgstr ""
 
-#: ../printerproperties.py:246
+#: ../printerproperties.py:250
 msgid "Reverse portrait (180 degrees)"
 msgstr ""
 
-#: ../printerproperties.py:252
+#: ../printerproperties.py:256
 msgid "Left to right, top to bottom"
 msgstr ""
 
-#: ../printerproperties.py:253
+#: ../printerproperties.py:257
 msgid "Left to right, bottom to top"
 msgstr ""
 
-#: ../printerproperties.py:254
+#: ../printerproperties.py:258
 msgid "Right to left, top to bottom"
 msgstr ""
 
-#: ../printerproperties.py:255
+#: ../printerproperties.py:259
 msgid "Right to left, bottom to top"
 msgstr ""
 
-#: ../printerproperties.py:256
+#: ../printerproperties.py:260
 msgid "Top to bottom, left to right"
 msgstr ""
 
-#: ../printerproperties.py:257
+#: ../printerproperties.py:261
 msgid "Top to bottom, right to left"
 msgstr ""
 
-#: ../printerproperties.py:258
+#: ../printerproperties.py:262
 msgid "Bottom to top, left to right"
 msgstr ""
 
-#: ../printerproperties.py:259
+#: ../printerproperties.py:263
 msgid "Bottom to top, right to left"
 msgstr ""
 
-#: ../printerproperties.py:265
+#: ../printerproperties.py:269
 msgid "Staple"
 msgstr ""
 
-#: ../printerproperties.py:266
+#: ../printerproperties.py:270
 msgid "Punch"
 msgstr ""
 
-#: ../printerproperties.py:267
+#: ../printerproperties.py:271
 msgid "Cover"
 msgstr ""
 
-#: ../printerproperties.py:268
+#: ../printerproperties.py:272
 msgid "Bind"
 msgstr ""
 
-#: ../printerproperties.py:269
+#: ../printerproperties.py:273
 msgid "Saddle stitch"
 msgstr ""
 
-#: ../printerproperties.py:270
+#: ../printerproperties.py:274
 msgid "Edge stitch"
 msgstr ""
 
-#: ../printerproperties.py:271
+#: ../printerproperties.py:275
 #, fuzzy
 msgid "Fold"
 msgstr "Фолио"
 
-#: ../printerproperties.py:272
+#: ../printerproperties.py:276
 msgid "Trim"
 msgstr ""
 
-#: ../printerproperties.py:273
+#: ../printerproperties.py:277
 #, fuzzy
 msgid "Bale"
 msgstr "Вредност"
 
-#: ../printerproperties.py:274
+#: ../printerproperties.py:278
 msgid "Booklet maker"
 msgstr ""
 
-#: ../printerproperties.py:275
+#: ../printerproperties.py:279
 msgid "Job offset"
 msgstr ""
 
-#: ../printerproperties.py:276
+#: ../printerproperties.py:280
 msgid "Staple (top left)"
 msgstr ""
 
-#: ../printerproperties.py:277
+#: ../printerproperties.py:281
 msgid "Staple (bottom left)"
 msgstr ""
 
-#: ../printerproperties.py:278
+#: ../printerproperties.py:282
 msgid "Staple (top right)"
 msgstr ""
 
-#: ../printerproperties.py:279
+#: ../printerproperties.py:283
 msgid "Staple (bottom right)"
 msgstr ""
 
-#: ../printerproperties.py:280
+#: ../printerproperties.py:284
 msgid "Edge stitch (left)"
 msgstr ""
 
-#: ../printerproperties.py:281
+#: ../printerproperties.py:285
 msgid "Edge stitch (top)"
 msgstr ""
 
-#: ../printerproperties.py:282
+#: ../printerproperties.py:286
 msgid "Edge stitch (right)"
 msgstr ""
 
-#: ../printerproperties.py:283
+#: ../printerproperties.py:287
 msgid "Edge stitch (bottom)"
 msgstr ""
 
-#: ../printerproperties.py:284
+#: ../printerproperties.py:288
 msgid "Staple dual (left)"
 msgstr ""
 
-#: ../printerproperties.py:285
+#: ../printerproperties.py:289
 msgid "Staple dual (top)"
 msgstr ""
 
-#: ../printerproperties.py:286
+#: ../printerproperties.py:290
 msgid "Staple dual (right)"
 msgstr ""
 
-#: ../printerproperties.py:287
+#: ../printerproperties.py:291
 msgid "Staple dual (bottom)"
 msgstr ""
 
-#: ../printerproperties.py:288
+#: ../printerproperties.py:292
 msgid "Bind (left)"
 msgstr ""
 
-#: ../printerproperties.py:289
+#: ../printerproperties.py:293
 msgid "Bind (top)"
 msgstr ""
 
-#: ../printerproperties.py:290
+#: ../printerproperties.py:294
 msgid "Bind (right)"
 msgstr ""
 
-#: ../printerproperties.py:291
+#: ../printerproperties.py:295
 msgid "Bind (bottom)"
 msgstr ""
 
-#: ../printerproperties.py:296
+#: ../printerproperties.py:300
 msgid "One-sided"
 msgstr ""
 
-#: ../printerproperties.py:297
+#: ../printerproperties.py:301
 msgid "Two-sided (long edge)"
 msgstr ""
 
-#: ../printerproperties.py:298
+#: ../printerproperties.py:302
 msgid "Two-sided (short edge)"
 msgstr ""
 
-#: ../printerproperties.py:303
+#: ../printerproperties.py:307 ../printerproperties.py:312
 msgid "Normal"
 msgstr ""
 
-#: ../printerproperties.py:304
+#: ../printerproperties.py:308
 #, fuzzy
 msgid "Reverse"
 msgstr "_Избриши"
 
-#: ../printerproperties.py:325
+#: ../printerproperties.py:311
+msgid "Draft"
+msgstr ""
+
+#: ../printerproperties.py:313
+msgid "High"
+msgstr ""
+
+#: ../printerproperties.py:337
 msgid "Automatic rotation"
 msgstr ""
 
-#: ../printerproperties.py:546
+#: ../printerproperties.py:576
 #, fuzzy
 msgid "CUPS test page"
 msgstr "_CUPS тест страница"
 
-#: ../printerproperties.py:547
+#: ../printerproperties.py:577
 msgid ""
 "Typically shows whether all jets on a print head are functioning and that "
 "the print feed mechanisms are working properly."
 msgstr ""
 
-#: ../printerproperties.py:554
+#: ../printerproperties.py:584
 #, fuzzy, python-format
 msgid "Printer Properties - '%s' on %s"
 msgstr "Опции за филтер"
 
 #. The Conflict button was pressed.
-#: ../printerproperties.py:561
+#: ../printerproperties.py:591
 msgid ""
 "There are conflicting options.\n"
 "Changes can only be applied after\n"
 "these conflicts are resolved."
 msgstr ""
 
-#: ../printerproperties.py:881
+#: ../printerproperties.py:917
 msgid "Installable Options"
 msgstr ""
 
-#: ../printerproperties.py:882
+#: ../printerproperties.py:918 ../ui/PrinterPropertiesDialog.glade.h:63
 #, fuzzy
 msgid "Printer Options"
 msgstr "Опции за филтер"
 
-#: ../printerproperties.py:919
+#: ../printerproperties.py:955
 #, python-format
 msgid "modifying class %s"
 msgstr ""
 
-#: ../printerproperties.py:936
+#: ../printerproperties.py:972
 msgid "This will delete this class!"
 msgstr ""
 
-#: ../printerproperties.py:937
+#: ../printerproperties.py:973
 msgid "Proceed anyway?"
 msgstr ""
 
@@ -1623,54 +1633,54 @@ msgstr ""
 #. but we have never fetched the server settings to see whether
 #. the server is publishing shared printers.  Fetch the settings
 #. now so that we can update the "not published" label if necessary.
-#: ../printerproperties.py:1027 ../serversettings.py:192
+#: ../printerproperties.py:1065 ../serversettings.py:192
 #, fuzzy
 msgid "fetching server settings"
 msgstr "Опции за драјверот"
 
-#: ../printerproperties.py:1109
+#: ../printerproperties.py:1147
 #, fuzzy
 msgid "printing test page"
 msgstr "Забелешки од печатачот:"
 
-#: ../printerproperties.py:1122 ../printerproperties.py:1157
+#: ../printerproperties.py:1160 ../printerproperties.py:1195
 msgid "Not possible"
 msgstr ""
 
-#: ../printerproperties.py:1123 ../printerproperties.py:1158
+#: ../printerproperties.py:1161 ../printerproperties.py:1196
 msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
 msgstr ""
 
-#: ../printerproperties.py:1135 ../printerproperties.py:1150
+#: ../printerproperties.py:1173 ../printerproperties.py:1188
 msgid "Submitted"
 msgstr ""
 
-#: ../printerproperties.py:1136
+#: ../printerproperties.py:1174
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr ""
 
-#: ../printerproperties.py:1143
+#: ../printerproperties.py:1181
 msgid "sending maintenance command"
 msgstr ""
 
-#: ../printerproperties.py:1151
+#: ../printerproperties.py:1189
 #, python-format
 msgid "Maintenance command submitted as job %d"
 msgstr ""
 
-#: ../printerproperties.py:1238 ../printerproperties.py:1243
-#: ../printerproperties.py:1339
+#: ../printerproperties.py:1276 ../printerproperties.py:1281
+#: ../printerproperties.py:1377
 msgid "Error"
 msgstr "Грешка"
 
-#: ../printerproperties.py:1239
+#: ../printerproperties.py:1277
 msgid "The PPD file for this queue is damaged."
 msgstr ""
 
-#: ../printerproperties.py:1244
+#: ../printerproperties.py:1282
 #, fuzzy
 msgid "There was a problem connecting to the CUPS server."
 msgstr ""
@@ -1678,12 +1688,12 @@ msgstr ""
 "до '%s' задачата:\n"
 "\n"
 
-#: ../printerproperties.py:1340
+#: ../printerproperties.py:1378
 #, python-format
 msgid "Option '%s' has value '%s' and cannot be edited."
 msgstr ""
 
-#: ../printerproperties.py:1450
+#: ../printerproperties.py:1491
 msgid "Marker levels are not reported for this printer."
 msgstr ""
 
@@ -1733,7 +1743,7 @@ msgstr "Поставување"
 msgid "Adjust server settings"
 msgstr "Опции за драјверот"
 
-#: ../system-config-printer.py:223
+#: ../system-config-printer.py:223 ../ui/PrintersWindow.glade.h:9
 #, fuzzy
 msgid "_Printer"
 msgstr "Печатач: "
@@ -1856,8 +1866,8 @@ msgstr "Нема достапни опции за овој драјвер."
 msgid "Cannot start service on remote server"
 msgstr ""
 
-#: ../system-config-printer.py:1143
-#, python-format
+#: ../system-config-printer.py:1143 ../ui/ConnectingDialog.glade.h:2
+#, no-c-format, python-format
 msgid "<i>Opening connection to %s</i>"
 msgstr ""
 
@@ -1957,7 +1967,9 @@ msgstr ""
 msgid "Would you like to print a test page?"
 msgstr "Дали сакате да испечатите тест страница?"
 
-#: ../system-config-printer.py:1948 ../troubleshoot/PrintTestPage.py:72
+#. Not more than 25 characters
+#: ../system-config-printer.py:1948 ../ui/PrinterPropertiesDialog.glade.h:61
+#: ../troubleshoot/PrintTestPage.py:72
 #, fuzzy
 msgid "Print Test Page"
 msgstr "Забелешки од печатачот:"
@@ -1983,6 +1995,1026 @@ msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "
 "Please install it before using this printer."
 msgstr ""
+
+#: ../ui/AboutDialog.glade.h:1
+#, fuzzy
+msgid "A CUPS configuration tool."
+msgstr "Конфигурација за печатачот"
+
+#: ../ui/AboutDialog.glade.h:2
+msgid "Copyright © 2006-2008 Red Hat, Inc."
+msgstr ""
+
+#: ../ui/AboutDialog.glade.h:3
+msgid ""
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with "
+"this program; if not, write to the Free Software Foundation, Inc., 675 Mass "
+"Ave, Cambridge, MA 02139, USA."
+msgstr ""
+
+#. TRANSLATORS: Replace this string with your names, one name per line.  Thank you very much for your effort on translating system-config-printer and all our other tools!
+#: ../ui/AboutDialog.glade.h:9
+msgid "translator-credits"
+msgstr ""
+
+#: ../ui/ConnectDialog.glade.h:1
+#, fuzzy
+msgid "CUPS _server:"
+msgstr "Сервер:"
+
+#: ../ui/ConnectDialog.glade.h:2
+#, fuzzy
+msgid "Connect to CUPS server"
+msgstr ""
+"Со појави проблем при пракање на %s\n"
+"до '%s' задачата:\n"
+"\n"
+
+#: ../ui/ConnectDialog.glade.h:3
+#, fuzzy
+msgid "Require _encryption"
+msgstr "Опис"
+
+#: ../ui/ConnectingDialog.glade.h:3
+msgid "<span weight=\"bold\" size=\"larger\">Connecting to CUPS server</span>"
+msgstr ""
+
+#: ../ui/ConnectingDialog.glade.h:4
+#, fuzzy
+msgid "Connecting to CUPS server"
+msgstr ""
+"Со појави проблем при пракање на %s\n"
+"до '%s' задачата:\n"
+"\n"
+
+#: ../ui/InstallDialog.glade.h:1
+#, fuzzy
+msgid "_Install"
+msgstr "Драјвер за печатачот"
+
+#: ../ui/JobsWindow.glade.h:1
+msgid "Refresh job list"
+msgstr ""
+
+#: ../ui/JobsWindow.glade.h:2
+#, fuzzy
+msgid "Show _completed jobs"
+msgstr "Коментар"
+
+#: ../ui/JobsWindow.glade.h:3
+#, fuzzy
+msgid "Show completed jobs"
+msgstr "Коментар"
+
+#: ../ui/JobsWindow.glade.h:4
+#, fuzzy
+msgid "_Refresh"
+msgstr "_Избриши"
+
+#: ../ui/NewPrinterName.glade.h:1
+#, fuzzy
+msgid "Duplicate Printer"
+msgstr "Ова е описот на печатачот."
+
+#: ../ui/NewPrinterName.glade.h:2
+#, fuzzy
+msgid "New name for the printer"
+msgstr "Jetdirect печатач"
+
+#: ../ui/NewPrinterWindow.glade.h:1
+#, fuzzy
+msgid "<b>Authentication</b>"
+msgstr "Автентикација"
+
+#: ../ui/NewPrinterWindow.glade.h:2
+#, fuzzy
+msgid "<b>Description</b>"
+msgstr "Опис"
+
+#: ../ui/NewPrinterWindow.glade.h:3
+#, fuzzy
+msgid "<b>Description</b> (optional)"
+msgstr "Опис"
+
+#: ../ui/NewPrinterWindow.glade.h:4
+#, fuzzy
+msgid "<b>Enter device URI</b>"
+msgstr "Уред печатач"
+
+#: ../ui/NewPrinterWindow.glade.h:5
+#, fuzzy
+msgid "<b>IPP Printer</b>"
+msgstr "Модел на печатачот"
+
+#: ../ui/NewPrinterWindow.glade.h:6
+#, fuzzy
+msgid "<b>License Terms</b>"
+msgstr "Модел на печатачот"
+
+#: ../ui/NewPrinterWindow.glade.h:7
+#, fuzzy
+msgid "<b>Location of the LPD network printer</b>"
+msgstr "Печатач:"
+
+#: ../ui/NewPrinterWindow.glade.h:8
+#, fuzzy
+msgid "<b>Location of the network printer</b>"
+msgstr "Печатач:"
+
+#: ../ui/NewPrinterWindow.glade.h:9
+#, fuzzy
+msgid "<b>Location</b> (optional)"
+msgstr "Опис"
+
+#: ../ui/NewPrinterWindow.glade.h:10
+#, fuzzy
+msgid "<b>Network Printer</b>"
+msgstr "Печатач:"
+
+#: ../ui/NewPrinterWindow.glade.h:11
+#, fuzzy
+msgid "<b>Note</b>"
+msgstr "Модел на печатачот"
+
+#: ../ui/NewPrinterWindow.glade.h:12
+#, fuzzy
+msgid "<b>Output Quality</b>"
+msgstr "Модел на печатачот"
+
+#: ../ui/NewPrinterWindow.glade.h:13
+#, fuzzy
+msgid "<b>Printer Name</b>"
+msgstr "Модел на печатачот"
+
+#: ../ui/NewPrinterWindow.glade.h:14
+#, fuzzy
+msgid "<b>SMB Printer</b>"
+msgstr "Модел на печатачот"
+
+#: ../ui/NewPrinterWindow.glade.h:15
+#, fuzzy
+msgid "<b>Select Driver</b>"
+msgstr "Модел на печатачот"
+
+#: ../ui/NewPrinterWindow.glade.h:16
+#, fuzzy
+msgid "<b>Settings of the serial port</b>"
+msgstr "Печатач:"
+
+#: ../ui/NewPrinterWindow.glade.h:17
+msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:18
+msgid "<span weight=\"bold\" size=\"larger\">Choose Class Members</span>"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:19
+msgid "<span weight=\"bold\" size=\"larger\">Choose Driver</span>"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:20
+msgid "<span weight=\"bold\" size=\"larger\">Describe Printer</span>"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:21
+msgid "<span weight=\"bold\" size=\"larger\">Existing Settings</span>"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:22
+msgid "<span weight=\"bold\" size=\"larger\">Installable Options</span>"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:23
+msgid "<span weight=\"bold\" size=\"larger\">Select Device</span>"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:24
+msgid "Baud Rate"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:25
+msgid "Browse..."
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:26
+#, fuzzy
+msgid "Change PPD"
+msgstr "Измени тип"
+
+#: ../ui/NewPrinterWindow.glade.h:27
+msgid "Class Members"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:28
+#, fuzzy
+msgid "Comments..."
+msgstr "Коментар"
+
+#: ../ui/NewPrinterWindow.glade.h:29
+#, fuzzy
+msgid "Connection"
+msgstr "_Дејствие"
+
+#: ../ui/NewPrinterWindow.glade.h:30
+#, fuzzy
+msgid "Data Bits"
+msgstr "Детали"
+
+#: ../ui/NewPrinterWindow.glade.h:31 ../ui/PrinterPropertiesDialog.glade.h:29
+#, fuzzy
+msgid "Description:"
+msgstr "Опис"
+
+#: ../ui/NewPrinterWindow.glade.h:32
+#, fuzzy
+msgid "Device"
+msgstr "Уред"
+
+#: ../ui/NewPrinterWindow.glade.h:33 ../troubleshoot/DeviceListed.py:40
+#, fuzzy
+msgid "Device URI"
+msgstr "Уред: "
+
+#: ../ui/NewPrinterWindow.glade.h:34
+#, fuzzy
+msgid "Device description."
+msgstr "Опис"
+
+#: ../ui/NewPrinterWindow.glade.h:36
+#, fuzzy
+msgid "Driver details"
+msgstr "Драјвер"
+
+#: ../ui/NewPrinterWindow.glade.h:37
+msgid "Empty"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:38
+msgid "Flow Control"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:39
+msgid ""
+"For example:\n"
+"ipp://cups-server/printers/printer-queue\n"
+"ipp://printer.mydomain/ipp"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:42
+msgid ""
+"For the printer you have selected there are drivers available for download."
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:43
+msgid "Free software"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:44
+msgid "Graphics:"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:45
+#, fuzzy
+msgid "Host:"
+msgstr "IP на хост"
+
+#: ../ui/NewPrinterWindow.glade.h:46
+msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:47
+msgid "Human-readable location such as \"Lab 1\""
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:49 ../ui/PrinterPropertiesDialog.glade.h:39
+#, fuzzy
+msgid "Installed Options"
+msgstr "Опции за филтер"
+
+#: ../ui/NewPrinterWindow.glade.h:50
+#, fuzzy
+msgid "JetDirect"
+msgstr "jetdirect"
+
+#: ../ui/NewPrinterWindow.glade.h:51
+msgid "LPD"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:52
+msgid "License:"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:53
+#, fuzzy
+msgid "Line art:"
+msgstr "Забелешки од печатачот:"
+
+#: ../ui/NewPrinterWindow.glade.h:54
+#, fuzzy
+msgid "Local Driver"
+msgstr "Уреди локален печатач"
+
+#: ../ui/NewPrinterWindow.glade.h:55
+#, fuzzy
+msgid "Make and model:"
+msgstr "Потребен е модел и серија.\n"
+
+#: ../ui/NewPrinterWindow.glade.h:56
+msgid "Manufacturer"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:58
+#, fuzzy
+msgid "Network"
+msgstr "Печатач:"
+
+#: ../ui/NewPrinterWindow.glade.h:61
+msgid "No, I do not accept this license"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:62
+#, fuzzy
+msgid "Parity"
+msgstr "Печатач: "
+
+#: ../ui/NewPrinterWindow.glade.h:64
+msgid "Patented algorithms"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:65
+#, fuzzy
+msgid "Photo:"
+msgstr "Порта: "
+
+#: ../ui/NewPrinterWindow.glade.h:66
+msgid "Port number:"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:67
+msgid ""
+"PostScript Printer Description (PPD) files can often be found on the driver "
+"disk that comes with the printer. For PostScript printers they are often "
+"part of the Windows<sup>®</sup> driver."
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:68
+#, fuzzy
+msgid "Printer model:"
+msgstr "Модел на печатачот"
+
+#: ../ui/NewPrinterWindow.glade.h:69
+msgid "Probe"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:70
+#, fuzzy
+msgid "Prompt user if authentication is required"
+msgstr "Автентикација"
+
+#: ../ui/NewPrinterWindow.glade.h:71
+#, fuzzy
+msgid "Provide PPD file"
+msgstr "Невалидна вредност"
+
+#: ../ui/NewPrinterWindow.glade.h:72
+msgid "Queue:"
+msgstr "Задача:"
+
+#: ../ui/NewPrinterWindow.glade.h:73
+msgid "SCSI"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:74
+msgid "SMB"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:75
+msgid "Search for a printer driver to download"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:76
+#, fuzzy
+msgid "Searching..."
+msgstr "Предупредување"
+
+#: ../ui/NewPrinterWindow.glade.h:77
+msgid "Select printer from database"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:78
+#, fuzzy
+msgid "Serial"
+msgstr "Општо"
+
+#: ../ui/NewPrinterWindow.glade.h:79
+#, fuzzy
+msgid "Set authentication details now"
+msgstr "Автентикација"
+
+#: ../ui/NewPrinterWindow.glade.h:80
+msgid "Short name for this printer such as \"laserjet\""
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:81
+#, fuzzy
+msgid "Supplier:"
+msgstr "Порта:"
+
+#: ../ui/NewPrinterWindow.glade.h:82
+#, fuzzy
+msgid "Support:"
+msgstr "Порта:"
+
+#: ../ui/NewPrinterWindow.glade.h:83
+#, fuzzy
+msgid "Text:"
+msgstr "_Тест"
+
+#: ../ui/NewPrinterWindow.glade.h:84
+msgid ""
+"The foomatic printer database contains various manufacturer provided "
+"PostScript Printer Description (PPD) files and also can generate PPD files "
+"for a large number of (non PostScript) printers. But in general manufacturer "
+"provided PPD files provide better access to the specific features of the "
+"printer."
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:85
+msgid ""
+"These drivers do not come from your operating system supplier and will not "
+"be covered by their commercial support.  See the support and license terms "
+"of the driver's supplier."
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:86
+msgid ""
+"This driver supports additional hardware that may be installed in the "
+"printer."
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:87
+msgid ""
+"This is done by assuming that options with the same name do have the same "
+"meaning. Settings of options that are not present in the new PPD will be "
+"lost and options only present in the new PPD will be set to default."
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:88
+msgid ""
+"This way all current option settings will be lost. The default settings of "
+"the new PPD will be used. "
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:89
+msgid "Try to copy the option settings over from the old PPD. "
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:90
+msgid "Try to transfer the current settings"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:91
+msgid "URI:"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:93
+msgid "Use the new PPD (Postscript Printer Description) as is."
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:95
+msgid ""
+"With this choice no driver download will be performed. In the next steps a "
+"locally installed driver will be selected."
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:96
+msgid "Yes, I accept this license"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:97
+#, fuzzy
+msgid "_Search"
+msgstr "Предупредување"
+
+#: ../ui/NewPrinterWindow.glade.h:98
+#, fuzzy
+msgid "_Verify..."
+msgstr "Одреди..."
+
+#: ../ui/NewPrinterWindow.glade.h:99
+msgid "license"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:100 ../ui/PrinterPropertiesDialog.glade.h:81
+msgid "move left"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:101 ../ui/PrinterPropertiesDialog.glade.h:82
+msgid "move right"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:102
+#, fuzzy
+msgid "short description"
+msgstr "Краток опис:"
+
+#: ../ui/NewPrinterWindow.glade.h:103
+#, fuzzy
+msgid "supplier"
+msgstr "Порта:"
+
+#: ../ui/NewPrinterWindow.glade.h:104
+msgid "support contacts"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:1
+msgid " "
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:2
+#, fuzzy
+msgid "<b>Banner</b>"
+msgstr "Модел на печатачот"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:3
+#, fuzzy
+msgid "<b>Common Options</b>"
+msgstr "Опис"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:4
+#, fuzzy
+msgid "<b>Image Options</b>"
+msgstr "Опис"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:5
+#, fuzzy
+msgid "<b>Ink/Toner Levels</b>"
+msgstr "Уред печатач"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:6
+#, fuzzy
+msgid "<b>Other Options (Advanced)</b>"
+msgstr "Опис"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:7
+#, fuzzy
+msgid "<b>Policies</b>"
+msgstr "Модел на печатачот"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:8
+#, fuzzy
+msgid "<b>Settings</b>"
+msgstr "Опис"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:9
+#, fuzzy
+msgid "<b>State</b>"
+msgstr "Модел на печатачот"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:10
+#, fuzzy
+msgid "<b>Status Messages</b>"
+msgstr "Модел на печатачот"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:11
+msgid "<b>Tests and Maintenance</b>"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:12
+#, fuzzy
+msgid "<b>Text Options</b>"
+msgstr "Опис"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:13
+msgid ""
+"<i>Not published\n"
+"See server settings</i>"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:15
+#, fuzzy
+msgid "Accepting jobs"
+msgstr "Опции за задача"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:16
+msgid "Access Control"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:17
+msgid "Add or Remove Members"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:18
+msgid "Allow printing for everyone except these users:"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:19
+#, fuzzy
+msgid "Bottom margin:"
+msgstr "Долна маргина (поени):"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:20
+msgid "Brightness:"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:21
+#, fuzzy
+msgid "Change..."
+msgstr "_Делење..."
+
+#: ../ui/PrinterPropertiesDialog.glade.h:22
+#, fuzzy
+msgid "Characters per inch:"
+msgstr "Карактери на инч"
+
+#. Not more than 25 characters
+#: ../ui/PrinterPropertiesDialog.glade.h:24
+#, fuzzy
+msgid "Clean Print Heads"
+msgstr "Печатач: "
+
+#: ../ui/PrinterPropertiesDialog.glade.h:25
+msgid "Co_nflicts"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:26
+#, fuzzy
+msgid "Columns:"
+msgstr "Коментар"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:27
+msgid "Copies:"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:28
+msgid "Deny printing for everyone except these users:"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:30
+#, fuzzy
+msgid "Device URI:"
+msgstr "Уред:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:31
+msgid "Enabled"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:32
+msgid "Ending Banner:"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:33
+#, fuzzy
+msgid "Error Policy: \t"
+msgstr "Име на опција"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:34
+#, fuzzy
+msgid "Finishings:"
+msgstr "Крај"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:35
+msgid "Gamma:"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:36
+msgid "Hold until:"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:37
+msgid "Hue adjustment:"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:38
+#, fuzzy
+msgid "Ink/Toner Levels"
+msgstr "Уред печатач"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:40
+#, fuzzy
+msgid "Job Options"
+msgstr "Опции за филтер"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:41
+msgid "Job priority:"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:42
+#, fuzzy
+msgid "Left margin:"
+msgstr "Лева маргина (поени):"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:43
+#, fuzzy
+msgid "Lines per inch:"
+msgstr "Линии на инч"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:44
+#, fuzzy
+msgid "Location:"
+msgstr "_Дејствие"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:45
+#, fuzzy
+msgid "Make and Model:"
+msgstr "Потребен е модел и серија.\n"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:46
+msgid "Media:"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:47
+msgid "Members"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:48
+#, fuzzy
+msgid "Mirror"
+msgstr "Грешка"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:49
+#, fuzzy
+msgid "More"
+msgstr "Модел"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:50
+#, fuzzy
+msgid "Operation Policy:"
+msgstr "Име на опција"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:51
+#, fuzzy
+msgid "Orientation:"
+msgstr "Опции за филтер"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:52
+msgid "Output bin:"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:53
+msgid "Output order:"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:54
+#, fuzzy
+msgid "Pages per side layout:"
+msgstr "Наслов на страницата"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:55
+#, fuzzy
+msgid "Pages per side:"
+msgstr "Наслов на страницата"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:56
+#, fuzzy
+msgid "Policies"
+msgstr "Модел на печатачот"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:57
+#, fuzzy
+msgid "Pretty print"
+msgstr "Jetdirect печатач"
+
+#. Not more than 25 characters
+#: ../ui/PrinterPropertiesDialog.glade.h:59
+#, fuzzy
+msgid "Print Self-Test Page"
+msgstr "Забелешки од печатачот:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:62
+#, fuzzy
+msgid "Print quality:"
+msgstr "Забелешки од печатачот:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:64
+#, fuzzy
+msgid "Printer Properties"
+msgstr "Опции за филтер"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:65
+#, fuzzy
+msgid "Printer State:"
+msgstr "Забелешки од печатачот:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:66
+#, fuzzy
+msgid "Printer resolution:"
+msgstr "Опции за филтер"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:67
+#, fuzzy
+msgid "Reset"
+msgstr "Тест"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:68
+#, fuzzy
+msgid "Right margin:"
+msgstr "Десна маргина (поени):"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:69
+#, fuzzy
+msgid "Saturation:"
+msgstr "_Дејствие"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:70
+msgid "Scale to fit"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:71
+msgid "Scaling:"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:72
+#, fuzzy
+msgid "Settings"
+msgstr "Поставување"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:73
+msgid "Shared"
+msgstr "Споделено"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:74
+#, fuzzy
+msgid "Sides:"
+msgstr "Големина на страницата"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:75
+msgid ""
+"Specify the default job options for this printer.  Jobs arriving at this "
+"print server will have these options added if they are not already set by "
+"the application."
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:76
+msgid "Starting Banner:"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:77
+#, fuzzy
+msgid "There are no status messages for this printer."
+msgstr "Еве ги пораките кои што се појавија во логот со грешки:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:78
+msgid "To add a new option, enter its name in the box below and click to add."
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:79
+#, fuzzy
+msgid "Top margin:"
+msgstr "Горна маргина (поени):"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:80
+msgid "Word wrap"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:83
+msgid "points"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:84
+#, fuzzy
+msgid "user"
+msgstr "Корисник"
+
+#: ../ui/PrintersWindow.glade.h:1
+msgid ""
+"Printing service not available.  Start the service on this computer or "
+"connect to another server."
+msgstr ""
+
+#: ../ui/PrintersWindow.glade.h:2
+msgid "Start Service"
+msgstr ""
+
+#: ../ui/PrintersWindow.glade.h:3
+#, fuzzy
+msgid "System-Config-Printer"
+msgstr "Конфигурирај печатачи"
+
+#: ../ui/PrintersWindow.glade.h:4
+msgid "There are no printers configured yet."
+msgstr ""
+
+#: ../ui/PrintersWindow.glade.h:5
+#, fuzzy
+msgid "_Discovered Printers"
+msgstr "Забелешки од драјверот:"
+
+#: ../ui/PrintersWindow.glade.h:6
+msgid "_Group"
+msgstr ""
+
+#: ../ui/PrintersWindow.glade.h:7
+msgid "_Groups"
+msgstr ""
+
+#: ../ui/PrintersWindow.glade.h:8
+msgid "_Help"
+msgstr "_Помош"
+
+#: ../ui/PrintersWindow.glade.h:10
+#, fuzzy
+msgid "_Server"
+msgstr "Сервер"
+
+#: ../ui/PrintersWindow.glade.h:11
+#, fuzzy
+msgid "_View"
+msgstr "Ново"
+
+#: ../ui/ServerSettingsDialog.glade.h:1
+#, fuzzy
+msgid "<b>Basic Server Settings</b>"
+msgstr "Опции за драјверот"
+
+#: ../ui/ServerSettingsDialog.glade.h:2
+#, fuzzy
+msgid "<b>Browse servers</b>"
+msgstr "Разгледани задачи"
+
+#: ../ui/ServerSettingsDialog.glade.h:3
+#, fuzzy
+msgid "<b>Job history</b>"
+msgstr "Модел на печатачот"
+
+#: ../ui/ServerSettingsDialog.glade.h:4
+#, fuzzy
+msgid "Advanced Server Settings"
+msgstr "Опции за драјверот"
+
+#: ../ui/ServerSettingsDialog.glade.h:5
+msgid "Allow _remote administration"
+msgstr ""
+
+#: ../ui/ServerSettingsDialog.glade.h:6
+msgid "Allow _users to cancel any job (not just their own)"
+msgstr ""
+
+#: ../ui/ServerSettingsDialog.glade.h:7
+msgid "Allow printing from the _Internet"
+msgstr ""
+
+#: ../ui/ServerSettingsDialog.glade.h:8
+msgid "Do not preserve job history"
+msgstr ""
+
+#: ../ui/ServerSettingsDialog.glade.h:9
+msgid "Preserve job files (allow reprinting)"
+msgstr ""
+
+#: ../ui/ServerSettingsDialog.glade.h:10
+msgid "Preserve job history but not files"
+msgstr ""
+
+#: ../ui/ServerSettingsDialog.glade.h:11
+msgid "Save _debugging information for troubleshooting"
+msgstr ""
+
+#: ../ui/ServerSettingsDialog.glade.h:12
+#, fuzzy
+msgid "Server Settings"
+msgstr "Опции за драјверот"
+
+#: ../ui/ServerSettingsDialog.glade.h:13
+msgid ""
+"Usually print servers broadcast their queues. Specify print servers below to "
+"periodically ask for queues instead."
+msgstr ""
+
+#: ../ui/ServerSettingsDialog.glade.h:14
+msgid "_Publish shared printers connected to this system"
+msgstr ""
+
+#: ../ui/ServerSettingsDialog.glade.h:15
+msgid "_Show printers shared by other systems"
+msgstr ""
+
+#: ../ui/SMBBrowseDialog.glade.h:1
+msgid "SMB Browser"
+msgstr ""
+
+#: ../ui/statusicon_popupmenu.glade.h:1
+#, fuzzy
+msgid "_Hide"
+msgstr "_Помош"
+
+#: ../ui/WaitWindow.glade.h:1
+#, fuzzy
+msgid "Please Wait"
+msgstr ""
+"Применувам промени.\n"
+"Ве молам почекајте..."
 
 #: ../system-config-printer.desktop.in.h:1
 #, fuzzy
@@ -2249,11 +3281,6 @@ msgid ""
 "Please select the device you want to use from the list below. If it does not "
 "appear in the list, select 'Not listed'."
 msgstr ""
-
-#: ../troubleshoot/DeviceListed.py:40
-#, fuzzy
-msgid "Device URI"
-msgstr "Уред: "
 
 #: ../troubleshoot/ErrorLogCheckpoint.py:31
 msgid "Debugging"
@@ -2592,439 +3619,8 @@ msgid "System tray icon for managing print jobs"
 msgstr ""
 
 #, fuzzy
-#~ msgid "A CUPS configuration tool."
-#~ msgstr "Конфигурација за печатачот"
-
-#, fuzzy
-#~ msgid "CUPS _server:"
-#~ msgstr "Сервер:"
-
-#, fuzzy
-#~ msgid "Connect to CUPS server"
-#~ msgstr ""
-#~ "Со појави проблем при пракање на %s\n"
-#~ "до '%s' задачата:\n"
-#~ "\n"
-
-#, fuzzy
-#~ msgid "Require _encryption"
-#~ msgstr "Опис"
-
-#, fuzzy
-#~ msgid "Connecting to CUPS server"
-#~ msgstr ""
-#~ "Со појави проблем при пракање на %s\n"
-#~ "до '%s' задачата:\n"
-#~ "\n"
-
-#, fuzzy
-#~ msgid "_Install"
-#~ msgstr "Драјвер за печатачот"
-
-#, fuzzy
-#~ msgid "Show _completed jobs"
-#~ msgstr "Коментар"
-
-#, fuzzy
-#~ msgid "Show completed jobs"
-#~ msgstr "Коментар"
-
-#, fuzzy
-#~ msgid "_Refresh"
-#~ msgstr "_Избриши"
-
-#, fuzzy
-#~ msgid "Duplicate Printer"
-#~ msgstr "Ова е описот на печатачот."
-
-#, fuzzy
-#~ msgid "New name for the printer"
-#~ msgstr "Jetdirect печатач"
-
-#, fuzzy
-#~ msgid "<b>Authentication</b>"
-#~ msgstr "Автентикација"
-
-#, fuzzy
-#~ msgid "<b>Description</b>"
-#~ msgstr "Опис"
-
-#, fuzzy
-#~ msgid "<b>Description</b> (optional)"
-#~ msgstr "Опис"
-
-#, fuzzy
-#~ msgid "<b>Enter device URI</b>"
-#~ msgstr "Уред печатач"
-
-#, fuzzy
-#~ msgid "<b>IPP Printer</b>"
-#~ msgstr "Модел на печатачот"
-
-#, fuzzy
-#~ msgid "<b>License Terms</b>"
-#~ msgstr "Модел на печатачот"
-
-#, fuzzy
-#~ msgid "<b>Location of the LPD network printer</b>"
-#~ msgstr "Печатач:"
-
-#, fuzzy
-#~ msgid "<b>Location of the network printer</b>"
-#~ msgstr "Печатач:"
-
-#, fuzzy
-#~ msgid "<b>Network Printer</b>"
-#~ msgstr "Печатач:"
-
-#, fuzzy
-#~ msgid "<b>Note</b>"
-#~ msgstr "Модел на печатачот"
-
-#, fuzzy
-#~ msgid "<b>Printer Name</b>"
-#~ msgstr "Модел на печатачот"
-
-#, fuzzy
-#~ msgid "<b>SMB Printer</b>"
-#~ msgstr "Модел на печатачот"
-
-#, fuzzy
-#~ msgid "<b>Select Driver</b>"
-#~ msgstr "Модел на печатачот"
-
-#, fuzzy
-#~ msgid "Change PPD"
-#~ msgstr "Измени тип"
-
-#, fuzzy
-#~ msgid "Comments..."
-#~ msgstr "Коментар"
-
-#, fuzzy
-#~ msgid "Connection"
-#~ msgstr "_Дејствие"
-
-#, fuzzy
-#~ msgid "Data Bits"
-#~ msgstr "Детали"
-
-#, fuzzy
-#~ msgid "Description:"
-#~ msgstr "Опис"
-
-#, fuzzy
-#~ msgid "Device"
-#~ msgstr "Уред"
-
-#, fuzzy
-#~ msgid "Device description."
-#~ msgstr "Опис"
-
-#, fuzzy
-#~ msgid "Driver details"
-#~ msgstr "Драјвер"
-
-#, fuzzy
-#~ msgid "Host:"
-#~ msgstr "IP на хост"
-
-#, fuzzy
-#~ msgid "Installed Options"
-#~ msgstr "Опции за филтер"
-
-#, fuzzy
-#~ msgid "JetDirect"
-#~ msgstr "jetdirect"
-
-#, fuzzy
-#~ msgid "Line art:"
-#~ msgstr "Забелешки од печатачот:"
-
-#, fuzzy
-#~ msgid "Local Driver"
-#~ msgstr "Уреди локален печатач"
-
-#, fuzzy
-#~ msgid "Make and model:"
-#~ msgstr "Потребен е модел и серија.\n"
-
-#, fuzzy
-#~ msgid "Network"
-#~ msgstr "Печатач:"
-
-#, fuzzy
-#~ msgid "Parity"
-#~ msgstr "Печатач: "
-
-#, fuzzy
-#~ msgid "Photo:"
-#~ msgstr "Порта: "
-
-#, fuzzy
-#~ msgid "Printer model:"
-#~ msgstr "Модел на печатачот"
-
-#, fuzzy
-#~ msgid "Prompt user if authentication is required"
-#~ msgstr "Автентикација"
-
-#, fuzzy
-#~ msgid "Provide PPD file"
-#~ msgstr "Невалидна вредност"
-
-#~ msgid "Queue:"
-#~ msgstr "Задача:"
-
-#, fuzzy
-#~ msgid "Searching..."
-#~ msgstr "Предупредување"
-
-#, fuzzy
-#~ msgid "Serial"
-#~ msgstr "Општо"
-
-#, fuzzy
-#~ msgid "Set authentication details now"
-#~ msgstr "Автентикација"
-
-#, fuzzy
-#~ msgid "Supplier:"
-#~ msgstr "Порта:"
-
-#, fuzzy
-#~ msgid "Support:"
-#~ msgstr "Порта:"
-
-#, fuzzy
-#~ msgid "Text:"
-#~ msgstr "_Тест"
-
-#, fuzzy
-#~ msgid "_Search"
-#~ msgstr "Предупредување"
-
-#, fuzzy
-#~ msgid "_Verify..."
-#~ msgstr "Одреди..."
-
-#, fuzzy
-#~ msgid "short description"
-#~ msgstr "Краток опис:"
-
-#, fuzzy
-#~ msgid "supplier"
-#~ msgstr "Порта:"
-
-#, fuzzy
-#~ msgid "<b>Banner</b>"
-#~ msgstr "Модел на печатачот"
-
-#, fuzzy
-#~ msgid "<b>Common Options</b>"
-#~ msgstr "Опис"
-
-#, fuzzy
-#~ msgid "<b>Image Options</b>"
-#~ msgstr "Опис"
-
-#, fuzzy
-#~ msgid "<b>Ink/Toner Levels</b>"
-#~ msgstr "Уред печатач"
-
-#, fuzzy
-#~ msgid "<b>Other Options (Advanced)</b>"
-#~ msgstr "Опис"
-
-#, fuzzy
-#~ msgid "<b>Policies</b>"
-#~ msgstr "Модел на печатачот"
-
-#, fuzzy
-#~ msgid "<b>Settings</b>"
-#~ msgstr "Опис"
-
-#, fuzzy
-#~ msgid "<b>State</b>"
-#~ msgstr "Модел на печатачот"
-
-#, fuzzy
-#~ msgid "<b>Text Options</b>"
-#~ msgstr "Опис"
-
-#, fuzzy
-#~ msgid "Accepting jobs"
-#~ msgstr "Опции за задача"
-
-#, fuzzy
-#~ msgid "Bottom margin:"
-#~ msgstr "Долна маргина (поени):"
-
-#, fuzzy
-#~ msgid "Change..."
-#~ msgstr "_Делење..."
-
-#, fuzzy
-#~ msgid "Characters per inch:"
-#~ msgstr "Карактери на инч"
-
-#, fuzzy
-#~ msgid "Clean Print Heads"
-#~ msgstr "Печатач: "
-
-#, fuzzy
-#~ msgid "Columns:"
-#~ msgstr "Коментар"
-
-#, fuzzy
-#~ msgid "Device URI:"
-#~ msgstr "Уред:"
-
-#, fuzzy
-#~ msgid "Finishings:"
-#~ msgstr "Крај"
-
-#, fuzzy
-#~ msgid "Ink/Toner Levels"
-#~ msgstr "Уред печатач"
-
-#, fuzzy
-#~ msgid "Job Options"
-#~ msgstr "Опции за филтер"
-
-#, fuzzy
-#~ msgid "Left margin:"
-#~ msgstr "Лева маргина (поени):"
-
-#, fuzzy
-#~ msgid "Lines per inch:"
-#~ msgstr "Линии на инч"
-
-#, fuzzy
-#~ msgid "Location:"
-#~ msgstr "_Дејствие"
-
-#, fuzzy
-#~ msgid "Make and Model:"
-#~ msgstr "Потребен е модел и серија.\n"
-
-#, fuzzy
-#~ msgid "Mirror"
-#~ msgstr "Грешка"
-
-#, fuzzy
-#~ msgid "More"
-#~ msgstr "Модел"
-
-#, fuzzy
-#~ msgid "Operation Policy:"
-#~ msgstr "Име на опција"
-
-#, fuzzy
-#~ msgid "Orientation:"
-#~ msgstr "Опции за филтер"
-
-#, fuzzy
-#~ msgid "Pages per side:"
-#~ msgstr "Наслов на страницата"
-
-#, fuzzy
-#~ msgid "Pretty print"
-#~ msgstr "Jetdirect печатач"
-
-#, fuzzy
-#~ msgid "Print Self-Test Page"
-#~ msgstr "Забелешки од печатачот:"
-
-#, fuzzy
-#~ msgid "Printer Properties"
-#~ msgstr "Опции за филтер"
-
-#, fuzzy
-#~ msgid "Printer State:"
-#~ msgstr "Забелешки од печатачот:"
-
-#, fuzzy
-#~ msgid "Reset"
-#~ msgstr "Тест"
-
-#, fuzzy
-#~ msgid "Right margin:"
-#~ msgstr "Десна маргина (поени):"
-
-#, fuzzy
-#~ msgid "Saturation:"
-#~ msgstr "_Дејствие"
-
-#, fuzzy
-#~ msgid "Settings"
-#~ msgstr "Поставување"
-
-#~ msgid "Shared"
-#~ msgstr "Споделено"
-
-#, fuzzy
-#~ msgid "Sides:"
-#~ msgstr "Големина на страницата"
-
-#, fuzzy
-#~ msgid "There are no status messages for this printer."
-#~ msgstr "Еве ги пораките кои што се појавија во логот со грешки:"
-
-#, fuzzy
-#~ msgid "Top margin:"
-#~ msgstr "Горна маргина (поени):"
-
-#, fuzzy
-#~ msgid "user"
-#~ msgstr "Корисник"
-
-#, fuzzy
-#~ msgid "System-Config-Printer"
-#~ msgstr "Конфигурирај печатачи"
-
-#, fuzzy
-#~ msgid "_Discovered Printers"
-#~ msgstr "Забелешки од драјверот:"
-
-#~ msgid "_Help"
-#~ msgstr "_Помош"
-
-#, fuzzy
-#~ msgid "_Server"
-#~ msgstr "Сервер"
-
-#, fuzzy
-#~ msgid "_View"
-#~ msgstr "Ново"
-
-#, fuzzy
-#~ msgid "<b>Basic Server Settings</b>"
-#~ msgstr "Опции за драјверот"
-
-#, fuzzy
-#~ msgid "<b>Browse servers</b>"
-#~ msgstr "Разгледани задачи"
-
-#, fuzzy
-#~ msgid "<b>Job history</b>"
-#~ msgstr "Модел на печатачот"
-
-#, fuzzy
-#~ msgid "Advanced Server Settings"
-#~ msgstr "Опции за драјверот"
-
-#, fuzzy
-#~ msgid "Server Settings"
-#~ msgstr "Опции за драјверот"
-
-#, fuzzy
 #~ msgid "_Configure Printers"
 #~ msgstr "Конфигурирај печатачи"
-
-#, fuzzy
-#~ msgid "_Hide"
-#~ msgstr "_Помош"
 
 #, fuzzy
 #~ msgid "_Settings"

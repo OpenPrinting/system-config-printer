@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: te\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2011-02-17 16:17+0000\n"
+"POT-Creation-Date: 2011-02-25 09:57+0000\n"
 "PO-Revision-Date: 2007-01-16 11:47+0530\n"
 "Last-Translator: Sree Ganesh <sthottem@redhat.com>\n"
 "Language-Team: Telugu <en@li.org>\n"
@@ -57,11 +57,11 @@ msgstr ""
 msgid "Operation canceled"
 msgstr "కార్య విధానం:"
 
-#: ../authconn.py:32 ../pysmb.py:123
+#: ../authconn.py:32 ../pysmb.py:123 ../ui/NewPrinterWindow.glade.h:94
 msgid "Username:"
 msgstr "వినియోగదారునిపేరు:"
 
-#: ../authconn.py:33 ../pysmb.py:129
+#: ../authconn.py:33 ../pysmb.py:129 ../ui/NewPrinterWindow.glade.h:63
 msgid "Password:"
 msgstr "అనుమతిపదం:"
 
@@ -342,7 +342,8 @@ msgstr ""
 
 #: ../jobviewer.py:706 ../jobviewer.py:1002 ../jobviewer.py:1704
 #: ../jobviewer.py:1734 ../jobviewer.py:2104 ../jobviewer.py:2109
-#: ../jobviewer.py:2123 ../jobviewer.py:2202 ../printerproperties.py:1541
+#: ../jobviewer.py:2123 ../jobviewer.py:2202 ../printerproperties.py:1582
+#: ../ui/NewPrinterWindow.glade.h:92
 #: ../troubleshoot/ChooseNetworkPrinter.py:100
 #: ../troubleshoot/ChooseNetworkPrinter.py:101
 #: ../troubleshoot/ChooseNetworkPrinter.py:104
@@ -418,6 +419,7 @@ msgid "Save File"
 msgstr "ఒక ఫైలుని ఎన్నుకో"
 
 #: ../jobviewer.py:1449 ../system-config-printer.py:258
+#: ../ui/NewPrinterWindow.glade.h:57
 #: ../troubleshoot/ChooseNetworkPrinter.py:35
 #: ../troubleshoot/ChoosePrinter.py:36 ../troubleshoot/DeviceListed.py:36
 msgid "Name"
@@ -606,7 +608,7 @@ msgstr ""
 #. See section 4.2.6 of this document for explanation of finishing types:
 #. ftp://ftp.pwg.org/pub/pwg/candidates/cs-ippfinishings10-20010205-5100.1.pdf
 #: ../newprinter.py:299 ../newprinter.py:310 ../newprinter.py:3267
-#: ../ppdippstr.py:63 ../printerproperties.py:264
+#: ../ppdippstr.py:63 ../printerproperties.py:268
 #, fuzzy
 msgid "None"
 msgstr "ఏదీకాదు"
@@ -640,11 +642,11 @@ msgstr ""
 msgid "DTR/DSR (Hardware)"
 msgstr ""
 
-#: ../newprinter.py:330 ../printerproperties.py:218
+#: ../newprinter.py:330 ../printerproperties.py:222
 msgid "Members of this class"
 msgstr "ఈ తరగతి సభ్యులు"
 
-#: ../newprinter.py:332 ../printerproperties.py:219
+#: ../newprinter.py:332 ../printerproperties.py:223
 msgid "Others"
 msgstr "ఇతరులు"
 
@@ -669,7 +671,7 @@ msgstr "మాదిరులు"
 msgid "Drivers"
 msgstr "డ్రైవర్లు"
 
-#: ../newprinter.py:338
+#: ../newprinter.py:338 ../ui/NewPrinterWindow.glade.h:35
 msgid "Downloadable Drivers"
 msgstr ""
 
@@ -703,7 +705,7 @@ msgstr ""
 msgid "Search"
 msgstr "ముద్రకం కోసం కొత్త పేరు"
 
-#: ../newprinter.py:611 ../newprinter.py:632
+#: ../newprinter.py:611 ../newprinter.py:632 ../ui/NewPrinterWindow.glade.h:59
 msgid "New Printer"
 msgstr "కొత్త ముద్రకం"
 
@@ -867,7 +869,7 @@ msgstr "LPD"
 msgid "Windows Printer via SAMBA"
 msgstr ""
 
-#: ../newprinter.py:2376
+#: ../newprinter.py:2376 ../ui/NewPrinterWindow.glade.h:48
 msgid "IPP"
 msgstr "IPP"
 
@@ -926,7 +928,7 @@ msgstr "స్థానిక ముద్రకం Hardware Abstraction Layer (
 msgid "Searching for printers"
 msgstr "ముద్రకం కోసం కొత్త పేరు"
 
-#: ../newprinter.py:2769
+#: ../newprinter.py:2769 ../ui/NewPrinterWindow.glade.h:60
 msgid "No printer was found at that address."
 msgstr ""
 
@@ -1027,7 +1029,7 @@ msgid "adding printer %s"
 msgstr "ముద్రకాలను ఆకృతీకరించు"
 
 #: ../newprinter.py:3570 ../newprinter.py:3581 ../newprinter.py:3598
-#: ../printerproperties.py:921 ../system-config-printer.py:1682
+#: ../printerproperties.py:957 ../system-config-printer.py:1682
 #: ../system-config-printer.py:1707
 #, fuzzy, python-format
 msgid "modifying printer %s"
@@ -1352,214 +1354,222 @@ msgid "Busy"
 msgstr "వత్తిడి"
 
 #. Printer state reasons list
-#: ../printerproperties.py:200
+#: ../printerproperties.py:204
 msgid "Message"
 msgstr ""
 
-#: ../printerproperties.py:220
+#: ../printerproperties.py:224
 msgid "Users"
 msgstr "వినియోగదారులు"
 
-#: ../printerproperties.py:243
+#: ../printerproperties.py:247
 msgid "Portrait (no rotation)"
 msgstr ""
 
-#: ../printerproperties.py:244
+#: ../printerproperties.py:248
 msgid "Landscape (90 degrees)"
 msgstr ""
 
-#: ../printerproperties.py:245
+#: ../printerproperties.py:249
 msgid "Reverse landscape (270 degrees)"
 msgstr ""
 
-#: ../printerproperties.py:246
+#: ../printerproperties.py:250
 msgid "Reverse portrait (180 degrees)"
 msgstr ""
 
-#: ../printerproperties.py:252
+#: ../printerproperties.py:256
 msgid "Left to right, top to bottom"
 msgstr ""
 
-#: ../printerproperties.py:253
+#: ../printerproperties.py:257
 msgid "Left to right, bottom to top"
 msgstr ""
 
-#: ../printerproperties.py:254
+#: ../printerproperties.py:258
 msgid "Right to left, top to bottom"
 msgstr ""
 
-#: ../printerproperties.py:255
+#: ../printerproperties.py:259
 msgid "Right to left, bottom to top"
 msgstr ""
 
-#: ../printerproperties.py:256
+#: ../printerproperties.py:260
 msgid "Top to bottom, left to right"
 msgstr ""
 
-#: ../printerproperties.py:257
+#: ../printerproperties.py:261
 msgid "Top to bottom, right to left"
 msgstr ""
 
-#: ../printerproperties.py:258
+#: ../printerproperties.py:262
 msgid "Bottom to top, left to right"
 msgstr ""
 
-#: ../printerproperties.py:259
+#: ../printerproperties.py:263
 msgid "Bottom to top, right to left"
 msgstr ""
 
-#: ../printerproperties.py:265
+#: ../printerproperties.py:269
 #, fuzzy
 msgid "Staple"
 msgstr "ఆగింది"
 
-#: ../printerproperties.py:266
+#: ../printerproperties.py:270
 msgid "Punch"
 msgstr ""
 
-#: ../printerproperties.py:267
+#: ../printerproperties.py:271
 msgid "Cover"
 msgstr ""
 
-#: ../printerproperties.py:268
+#: ../printerproperties.py:272
 msgid "Bind"
 msgstr ""
 
-#: ../printerproperties.py:269
+#: ../printerproperties.py:273
 msgid "Saddle stitch"
 msgstr ""
 
-#: ../printerproperties.py:270
+#: ../printerproperties.py:274
 msgid "Edge stitch"
 msgstr ""
 
-#: ../printerproperties.py:271
+#: ../printerproperties.py:275
 msgid "Fold"
 msgstr ""
 
-#: ../printerproperties.py:272
+#: ../printerproperties.py:276
 msgid "Trim"
 msgstr ""
 
-#: ../printerproperties.py:273
+#: ../printerproperties.py:277
 msgid "Bale"
 msgstr ""
 
-#: ../printerproperties.py:274
+#: ../printerproperties.py:278
 msgid "Booklet maker"
 msgstr ""
 
-#: ../printerproperties.py:275
+#: ../printerproperties.py:279
 msgid "Job offset"
 msgstr ""
 
-#: ../printerproperties.py:276
+#: ../printerproperties.py:280
 msgid "Staple (top left)"
 msgstr ""
 
-#: ../printerproperties.py:277
+#: ../printerproperties.py:281
 msgid "Staple (bottom left)"
 msgstr ""
 
-#: ../printerproperties.py:278
+#: ../printerproperties.py:282
 msgid "Staple (top right)"
 msgstr ""
 
-#: ../printerproperties.py:279
+#: ../printerproperties.py:283
 msgid "Staple (bottom right)"
 msgstr ""
 
-#: ../printerproperties.py:280
+#: ../printerproperties.py:284
 msgid "Edge stitch (left)"
 msgstr ""
 
-#: ../printerproperties.py:281
+#: ../printerproperties.py:285
 msgid "Edge stitch (top)"
 msgstr ""
 
-#: ../printerproperties.py:282
+#: ../printerproperties.py:286
 msgid "Edge stitch (right)"
 msgstr ""
 
-#: ../printerproperties.py:283
+#: ../printerproperties.py:287
 msgid "Edge stitch (bottom)"
 msgstr ""
 
-#: ../printerproperties.py:284
+#: ../printerproperties.py:288
 msgid "Staple dual (left)"
 msgstr ""
 
-#: ../printerproperties.py:285
+#: ../printerproperties.py:289
 msgid "Staple dual (top)"
 msgstr ""
 
-#: ../printerproperties.py:286
+#: ../printerproperties.py:290
 msgid "Staple dual (right)"
 msgstr ""
 
-#: ../printerproperties.py:287
+#: ../printerproperties.py:291
 msgid "Staple dual (bottom)"
 msgstr ""
 
-#: ../printerproperties.py:288
+#: ../printerproperties.py:292
 msgid "Bind (left)"
 msgstr ""
 
-#: ../printerproperties.py:289
+#: ../printerproperties.py:293
 msgid "Bind (top)"
 msgstr ""
 
-#: ../printerproperties.py:290
+#: ../printerproperties.py:294
 msgid "Bind (right)"
 msgstr ""
 
-#: ../printerproperties.py:291
+#: ../printerproperties.py:295
 msgid "Bind (bottom)"
 msgstr ""
 
-#: ../printerproperties.py:296
+#: ../printerproperties.py:300
 msgid "One-sided"
 msgstr ""
 
-#: ../printerproperties.py:297
+#: ../printerproperties.py:301
 msgid "Two-sided (long edge)"
 msgstr ""
 
-#: ../printerproperties.py:298
+#: ../printerproperties.py:302
 msgid "Two-sided (short edge)"
 msgstr ""
 
-#: ../printerproperties.py:303
+#: ../printerproperties.py:307 ../printerproperties.py:312
 msgid "Normal"
 msgstr ""
 
-#: ../printerproperties.py:304
+#: ../printerproperties.py:308
 #, fuzzy
 msgid "Reverse"
 msgstr "పాఠ పుటను ముద్రించు"
 
-#: ../printerproperties.py:325
+#: ../printerproperties.py:311
+msgid "Draft"
+msgstr ""
+
+#: ../printerproperties.py:313
+msgid "High"
+msgstr ""
+
+#: ../printerproperties.py:337
 msgid "Automatic rotation"
 msgstr ""
 
-#: ../printerproperties.py:546
+#: ../printerproperties.py:576
 #, fuzzy
 msgid "CUPS test page"
 msgstr "పాఠ పుటను ముద్రించు"
 
-#: ../printerproperties.py:547
+#: ../printerproperties.py:577
 msgid ""
 "Typically shows whether all jets on a print head are functioning and that "
 "the print feed mechanisms are working properly."
 msgstr ""
 
-#: ../printerproperties.py:554
+#: ../printerproperties.py:584
 #, fuzzy, python-format
 msgid "Printer Properties - '%s' on %s"
 msgstr "ముద్రణా ఐచ్ఛికాలు"
 
 #. The Conflict button was pressed.
-#: ../printerproperties.py:561
+#: ../printerproperties.py:591
 #, fuzzy
 msgid ""
 "There are conflicting options.\n"
@@ -1570,24 +1580,24 @@ msgstr ""
 "మార్పులు మాత్రమే అనువర్తించ బడతాయి\n"
 "ఈ విభేదకాలు తొలగించిన తరువాత మాత్రమే."
 
-#: ../printerproperties.py:881
+#: ../printerproperties.py:917
 msgid "Installable Options"
 msgstr "సంస్థాపించగల ఐచ్ఛికాలు"
 
-#: ../printerproperties.py:882
+#: ../printerproperties.py:918 ../ui/PrinterPropertiesDialog.glade.h:63
 msgid "Printer Options"
 msgstr "ముద్రణా ఐచ్ఛికాలు"
 
-#: ../printerproperties.py:919
+#: ../printerproperties.py:955
 #, python-format
 msgid "modifying class %s"
 msgstr ""
 
-#: ../printerproperties.py:936
+#: ../printerproperties.py:972
 msgid "This will delete this class!"
 msgstr "ఇది ఈ తరగతిని తొలగిస్తుంది!"
 
-#: ../printerproperties.py:937
+#: ../printerproperties.py:973
 msgid "Proceed anyway?"
 msgstr "ఏమైనప్పటికీ కొనసాగించు?"
 
@@ -1595,64 +1605,64 @@ msgstr "ఏమైనప్పటికీ కొనసాగించు?"
 #. but we have never fetched the server settings to see whether
 #. the server is publishing shared printers.  Fetch the settings
 #. now so that we can update the "not published" label if necessary.
-#: ../printerproperties.py:1027 ../serversettings.py:192
+#: ../printerproperties.py:1065 ../serversettings.py:192
 #, fuzzy
 msgid "fetching server settings"
 msgstr "<b>ప్రాధమిక సర్వరు అమర్పులు</b>"
 
-#: ../printerproperties.py:1109
+#: ../printerproperties.py:1147
 #, fuzzy
 msgid "printing test page"
 msgstr "పాఠ పుటను ముద్రించు"
 
-#: ../printerproperties.py:1122 ../printerproperties.py:1157
+#: ../printerproperties.py:1160 ../printerproperties.py:1195
 msgid "Not possible"
 msgstr "సాధ్యంకాదు"
 
-#: ../printerproperties.py:1123 ../printerproperties.py:1158
+#: ../printerproperties.py:1161 ../printerproperties.py:1196
 msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
 msgstr "ఈ రిమోట్ సర్వరు ముద్రక పనిని మద్దతివ్వటంలేదు, సాధారణంగా ముద్రకం పంచుకోబడకపోవటంవల్ల కావచ్చు"
 
-#: ../printerproperties.py:1135 ../printerproperties.py:1150
+#: ../printerproperties.py:1173 ../printerproperties.py:1188
 msgid "Submitted"
 msgstr "సమర్పించబడింది"
 
-#: ../printerproperties.py:1136
+#: ../printerproperties.py:1174
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr "ఉద్యోగంగా పరిశీలనా పుట సమర్పించబదింది %d"
 
-#: ../printerproperties.py:1143
+#: ../printerproperties.py:1181
 msgid "sending maintenance command"
 msgstr ""
 
-#: ../printerproperties.py:1151
+#: ../printerproperties.py:1189
 #, fuzzy, python-format
 msgid "Maintenance command submitted as job %d"
 msgstr "ఉద్యోగంగా పరిశీలనా పుట సమర్పించబదింది %d"
 
-#: ../printerproperties.py:1238 ../printerproperties.py:1243
-#: ../printerproperties.py:1339
+#: ../printerproperties.py:1276 ../printerproperties.py:1281
+#: ../printerproperties.py:1377
 msgid "Error"
 msgstr ""
 
-#: ../printerproperties.py:1239
+#: ../printerproperties.py:1277
 msgid "The PPD file for this queue is damaged."
 msgstr ""
 
-#: ../printerproperties.py:1244
+#: ../printerproperties.py:1282
 #, fuzzy
 msgid "There was a problem connecting to the CUPS server."
 msgstr "CUPS అమలులో ఒక దోషం: '%s'."
 
-#: ../printerproperties.py:1340
+#: ../printerproperties.py:1378
 #, python-format
 msgid "Option '%s' has value '%s' and cannot be edited."
 msgstr ""
 
-#: ../printerproperties.py:1450
+#: ../printerproperties.py:1491
 msgid "Marker levels are not reported for this printer."
 msgstr ""
 
@@ -1700,7 +1710,7 @@ msgstr "అమర్పులు"
 msgid "Adjust server settings"
 msgstr "<b>ప్రాధమిక సర్వరు అమర్పులు</b>"
 
-#: ../system-config-printer.py:223
+#: ../system-config-printer.py:223 ../ui/PrintersWindow.glade.h:9
 #, fuzzy
 msgid "_Printer"
 msgstr "ముద్రకం"
@@ -1823,8 +1833,8 @@ msgstr ""
 msgid "Cannot start service on remote server"
 msgstr ""
 
-#: ../system-config-printer.py:1143
-#, python-format
+#: ../system-config-printer.py:1143 ../ui/ConnectingDialog.glade.h:2
+#, no-c-format, python-format
 msgid "<i>Opening connection to %s</i>"
 msgstr ""
 
@@ -1919,7 +1929,9 @@ msgstr ""
 msgid "Would you like to print a test page?"
 msgstr ""
 
-#: ../system-config-printer.py:1948 ../troubleshoot/PrintTestPage.py:72
+#. Not more than 25 characters
+#: ../system-config-printer.py:1948 ../ui/PrinterPropertiesDialog.glade.h:61
+#: ../troubleshoot/PrintTestPage.py:72
 msgid "Print Test Page"
 msgstr "పాఠ పుటను ముద్రించు"
 
@@ -1947,6 +1959,1021 @@ msgid ""
 msgstr ""
 "'%s' ముద్రకంకు %s పరిక్రమం కావలసి ఉంది కానీ ఇది ప్రస్తుతం సంస్థాపించబడలేదు.  ఈ ముద్రకాన్ని "
 "ఉపయోగించటానికి ముందే దీన్ని సంస్థాపించండి."
+
+#: ../ui/AboutDialog.glade.h:1
+#, fuzzy
+msgid "A CUPS configuration tool."
+msgstr "ముద్రక ఆకృతీకరణ - %s"
+
+#: ../ui/AboutDialog.glade.h:2
+#, fuzzy
+msgid "Copyright © 2006-2008 Red Hat, Inc."
+msgstr "కాపీ హక్కు 2006, 2007 Red Hat, Inc."
+
+#: ../ui/AboutDialog.glade.h:3
+msgid ""
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with "
+"this program; if not, write to the Free Software Foundation, Inc., 675 Mass "
+"Ave, Cambridge, MA 02139, USA."
+msgstr ""
+
+#. TRANSLATORS: Replace this string with your names, one name per line.  Thank you very much for your effort on translating system-config-printer and all our other tools!
+#: ../ui/AboutDialog.glade.h:9
+msgid "translator-credits"
+msgstr ""
+
+#: ../ui/ConnectDialog.glade.h:1
+#, fuzzy
+msgid "CUPS _server:"
+msgstr "CUPS సర్వరు:"
+
+#: ../ui/ConnectDialog.glade.h:2
+msgid "Connect to CUPS server"
+msgstr "CUPS సర్వరుకి అనుసంధించు"
+
+#: ../ui/ConnectDialog.glade.h:3
+#, fuzzy
+msgid "Require _encryption"
+msgstr "కావలసిన encryption"
+
+#: ../ui/ConnectingDialog.glade.h:3
+#, fuzzy
+msgid "<span weight=\"bold\" size=\"larger\">Connecting to CUPS server</span>"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">అనుమతిపదం కావాలి</span>\n"
+"\n"
+
+#: ../ui/ConnectingDialog.glade.h:4
+#, fuzzy
+msgid "Connecting to CUPS server"
+msgstr "CUPS సర్వరుకి అనుసంధించు"
+
+#: ../ui/InstallDialog.glade.h:1
+#, fuzzy
+msgid "_Install"
+msgstr "తప్పిపోయిన డ్రైవరు"
+
+#: ../ui/JobsWindow.glade.h:1
+msgid "Refresh job list"
+msgstr ""
+
+#: ../ui/JobsWindow.glade.h:2
+#, fuzzy
+msgid "Show _completed jobs"
+msgstr "వ్యాఖ్య"
+
+#: ../ui/JobsWindow.glade.h:3
+#, fuzzy
+msgid "Show completed jobs"
+msgstr "వ్యాఖ్య"
+
+#: ../ui/JobsWindow.glade.h:4
+msgid "_Refresh"
+msgstr ""
+
+#: ../ui/NewPrinterName.glade.h:1
+#, fuzzy
+msgid "Duplicate Printer"
+msgstr "సిద్ధ ముద్రకాన్ని చేయి"
+
+#: ../ui/NewPrinterName.glade.h:2
+msgid "New name for the printer"
+msgstr "ముద్రకం కోసం కొత్త పేరు"
+
+#: ../ui/NewPrinterWindow.glade.h:1
+#, fuzzy
+msgid "<b>Authentication</b>"
+msgstr "<b>ప్రామాణీకరణ</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:2
+msgid "<b>Description</b>"
+msgstr "<b>వర్ణన</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:3
+msgid "<b>Description</b> (optional)"
+msgstr "<b>వర్ణన</b> (ఐచ్ఛిక)"
+
+#: ../ui/NewPrinterWindow.glade.h:4
+#, fuzzy
+msgid "<b>Enter device URI</b>"
+msgstr "సాధన URIని ప్రవేశపెట్టు"
+
+#: ../ui/NewPrinterWindow.glade.h:5
+#, fuzzy
+msgid "<b>IPP Printer</b>"
+msgstr "<b>ముద్రకం పేరు</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:6
+#, fuzzy
+msgid "<b>License Terms</b>"
+msgstr "<b>ముద్రకం పేరు</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:7
+msgid "<b>Location of the LPD network printer</b>"
+msgstr "<b>LPD నెట్వర్కు ముద్రకం స్థానం</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:8
+msgid "<b>Location of the network printer</b>"
+msgstr "<b>నెట్వర్కు ముద్రకం స్థానం</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:9
+msgid "<b>Location</b> (optional)"
+msgstr "<b>స్థానం</b> (ఐచ్ఛికం)"
+
+#: ../ui/NewPrinterWindow.glade.h:10
+#, fuzzy
+msgid "<b>Network Printer</b>"
+msgstr "కొత్త ముద్రకం"
+
+#: ../ui/NewPrinterWindow.glade.h:11
+#, fuzzy
+msgid "<b>Note</b>"
+msgstr "<b>స్థితి</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:12
+#, fuzzy
+msgid "<b>Output Quality</b>"
+msgstr "<b>స్థితి</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:13
+msgid "<b>Printer Name</b>"
+msgstr "<b>ముద్రకం పేరు</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:14
+#, fuzzy
+msgid "<b>SMB Printer</b>"
+msgstr "<b>ముద్రకం పేరు</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:15
+#, fuzzy
+msgid "<b>Select Driver</b>"
+msgstr "<b>సిద్ధ ముద్రకం</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:16
+msgid "<b>Settings of the serial port</b>"
+msgstr "<b>వరుస క్రమ పోర్టు అమర్పులు</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:17
+msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
+msgstr "<i>smb://[workgroup/]server[:port]/printer</i>"
+
+#: ../ui/NewPrinterWindow.glade.h:18
+#, fuzzy
+msgid "<span weight=\"bold\" size=\"larger\">Choose Class Members</span>"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">అనుమతిపదం కావాలి</span>\n"
+"\n"
+
+#: ../ui/NewPrinterWindow.glade.h:19
+#, fuzzy
+msgid "<span weight=\"bold\" size=\"larger\">Choose Driver</span>"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">అనుమతిపదం కావాలి</span>\n"
+"\n"
+
+#: ../ui/NewPrinterWindow.glade.h:20
+#, fuzzy
+msgid "<span weight=\"bold\" size=\"larger\">Describe Printer</span>"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">అనుమతిపదం కావాలి</span>\n"
+"\n"
+
+#: ../ui/NewPrinterWindow.glade.h:21
+#, fuzzy
+msgid "<span weight=\"bold\" size=\"larger\">Existing Settings</span>"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">అనుమతిపదం కావాలి</span>\n"
+"\n"
+
+#: ../ui/NewPrinterWindow.glade.h:22
+#, fuzzy
+msgid "<span weight=\"bold\" size=\"larger\">Installable Options</span>"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">అనుమతిపదం కావాలి</span>\n"
+"\n"
+
+#: ../ui/NewPrinterWindow.glade.h:23
+#, fuzzy
+msgid "<span weight=\"bold\" size=\"larger\">Select Device</span>"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">అనుమతిపదం కావాలి</span>\n"
+"\n"
+
+#: ../ui/NewPrinterWindow.glade.h:24
+msgid "Baud Rate"
+msgstr "బౌడ్ స్థాయి"
+
+#: ../ui/NewPrinterWindow.glade.h:25
+msgid "Browse..."
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:26
+#, fuzzy
+msgid "Change PPD"
+msgstr "డ్రైవును మార్చు"
+
+#: ../ui/NewPrinterWindow.glade.h:27
+msgid "Class Members"
+msgstr "తరగతి సభ్యులు"
+
+#: ../ui/NewPrinterWindow.glade.h:28
+#, fuzzy
+msgid "Comments..."
+msgstr "వ్యాఖ్య"
+
+#: ../ui/NewPrinterWindow.glade.h:29
+#, fuzzy
+msgid "Connection"
+msgstr "అనుసంధిస్తోంది"
+
+#: ../ui/NewPrinterWindow.glade.h:30
+msgid "Data Bits"
+msgstr "సమాచార బిట్లు"
+
+#: ../ui/NewPrinterWindow.glade.h:31 ../ui/PrinterPropertiesDialog.glade.h:29
+msgid "Description:"
+msgstr "వర్ణన:"
+
+#: ../ui/NewPrinterWindow.glade.h:32
+msgid "Device"
+msgstr "సాధనం"
+
+#: ../ui/NewPrinterWindow.glade.h:33 ../troubleshoot/DeviceListed.py:40
+msgid "Device URI"
+msgstr "సాధనం URI"
+
+#: ../ui/NewPrinterWindow.glade.h:34
+msgid "Device description."
+msgstr "సాధనం వర్ణన."
+
+#: ../ui/NewPrinterWindow.glade.h:36
+#, fuzzy
+msgid "Driver details"
+msgstr "డ్రైవర్లు"
+
+#: ../ui/NewPrinterWindow.glade.h:37
+msgid "Empty"
+msgstr "ఖాళీ"
+
+#: ../ui/NewPrinterWindow.glade.h:38
+msgid "Flow Control"
+msgstr "ప్రవాహ నియంత్రణ"
+
+#: ../ui/NewPrinterWindow.glade.h:39
+msgid ""
+"For example:\n"
+"ipp://cups-server/printers/printer-queue\n"
+"ipp://printer.mydomain/ipp"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:42
+msgid ""
+"For the printer you have selected there are drivers available for download."
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:43
+msgid "Free software"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:44
+msgid "Graphics:"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:45
+#, fuzzy
+msgid "Host:"
+msgstr "ఆతిధేయనామం"
+
+#: ../ui/NewPrinterWindow.glade.h:46
+msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
+msgstr "మనిషి చదవగల వర్ణన \"Duplexer తో HP LaserJet\" వంటివి"
+
+#: ../ui/NewPrinterWindow.glade.h:47
+msgid "Human-readable location such as \"Lab 1\""
+msgstr "మనిషి చదవగల స్థానం \"Lab 1\" వంటివి"
+
+#: ../ui/NewPrinterWindow.glade.h:49 ../ui/PrinterPropertiesDialog.glade.h:39
+#, fuzzy
+msgid "Installed Options"
+msgstr "సంస్థాపించగల ఐచ్ఛికాలు"
+
+#: ../ui/NewPrinterWindow.glade.h:50
+#, fuzzy
+msgid "JetDirect"
+msgstr "ప్రత్యక్ష Jet"
+
+#: ../ui/NewPrinterWindow.glade.h:51
+msgid "LPD"
+msgstr "LPD"
+
+#: ../ui/NewPrinterWindow.glade.h:52
+#, fuzzy
+msgid "License:"
+msgstr "విధానాలు"
+
+#: ../ui/NewPrinterWindow.glade.h:53
+#, fuzzy
+msgid "Line art:"
+msgstr "ముద్రక స్థితి:"
+
+#: ../ui/NewPrinterWindow.glade.h:54
+#, fuzzy
+msgid "Local Driver"
+msgstr "స్థానిక ముద్రకాలు"
+
+#: ../ui/NewPrinterWindow.glade.h:55
+#, fuzzy
+msgid "Make and model:"
+msgstr "తయారుచెయి మరియూ మాదిరి:"
+
+#: ../ui/NewPrinterWindow.glade.h:56
+msgid "Manufacturer"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:58
+#, fuzzy
+msgid "Network"
+msgstr "కొత్త ముద్రకం"
+
+#: ../ui/NewPrinterWindow.glade.h:61
+#, fuzzy
+msgid "No, I do not accept this license"
+msgstr "అనుమతించే పనులు"
+
+#: ../ui/NewPrinterWindow.glade.h:62
+msgid "Parity"
+msgstr "సాదృశ్యం"
+
+#: ../ui/NewPrinterWindow.glade.h:64
+msgid "Patented algorithms"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:65
+msgid "Photo:"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:66
+#, fuzzy
+msgid "Port number:"
+msgstr "పోర్టు సంఖ్య"
+
+#: ../ui/NewPrinterWindow.glade.h:67
+#, fuzzy
+msgid ""
+"PostScript Printer Description (PPD) files can often be found on the driver "
+"disk that comes with the printer. For PostScript printers they are often "
+"part of the Windows<sup>®</sup> driver."
+msgstr ""
+"ముద్రకంతో వచ్చే పోస్టు స్క్రిప్టు ముద్రకం వర్ణన (PPD) ఫైళ్లు ఎక్కువగా డ్రైవు డిస్కులో కనబడుతునాయి. "
+"పోస్టు స్క్రిప్టు ముద్రకాలు ఎక్కువగా విండోస్ డ్రైవర్ <sup>®</sup>లలో భాగంగా ఉంటాయి."
+
+#: ../ui/NewPrinterWindow.glade.h:68
+#, fuzzy
+msgid "Printer model:"
+msgstr "ముద్రకం పేరు"
+
+#: ../ui/NewPrinterWindow.glade.h:69
+msgid "Probe"
+msgstr "ప్రోబే"
+
+#: ../ui/NewPrinterWindow.glade.h:70
+#, fuzzy
+msgid "Prompt user if authentication is required"
+msgstr "<b>ప్రామాణీకరణ</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:71
+#, fuzzy
+msgid "Provide PPD file"
+msgstr "PPD ఫైలుని సమకూర్చు"
+
+#: ../ui/NewPrinterWindow.glade.h:72
+msgid "Queue:"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:73
+msgid "SCSI"
+msgstr "SCSI"
+
+#: ../ui/NewPrinterWindow.glade.h:74
+msgid "SMB"
+msgstr "SMB"
+
+#: ../ui/NewPrinterWindow.glade.h:75
+msgid "Search for a printer driver to download"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:76
+#, fuzzy
+msgid "Searching..."
+msgstr "ముద్రకం కోసం కొత్త పేరు"
+
+#: ../ui/NewPrinterWindow.glade.h:77
+#, fuzzy
+msgid "Select printer from database"
+msgstr "సమాచారనిధినుండీ ముద్రకాన్ని ఎన్నుకో"
+
+#: ../ui/NewPrinterWindow.glade.h:78
+msgid "Serial"
+msgstr "క్రమం"
+
+#: ../ui/NewPrinterWindow.glade.h:79
+#, fuzzy
+msgid "Set authentication details now"
+msgstr "<b>ప్రామాణీకరణ</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:80
+msgid "Short name for this printer such as \"laserjet\""
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:81
+msgid "Supplier:"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:82
+msgid "Support:"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:83
+#, fuzzy
+msgid "Text:"
+msgstr "పాఠ పుటను ముద్రించు"
+
+#: ../ui/NewPrinterWindow.glade.h:84
+msgid ""
+"The foomatic printer database contains various manufacturer provided "
+"PostScript Printer Description (PPD) files and also can generate PPD files "
+"for a large number of (non PostScript) printers. But in general manufacturer "
+"provided PPD files provide better access to the specific features of the "
+"printer."
+msgstr ""
+"ఈ foomatic ముద్రక సమాచారనిధి పెక్కు ఉత్పత్తులచే సమకూర్చబడిన PostScript Printer "
+"Description (PPD) ఫైళ్లు మరియూ పెద్దసంఖ్యలో PPD (PostScript కాని) ఫైళ్లను ముద్రకాలకోసం "
+"నిష్పాదిస్తుంది. కానీ సాధారణ ఉత్పత్తులలో PPD ఫైళ్లు ముద్రకం యొక్క ప్రత్యేక లక్షణాలను "
+"సమకూర్చగలుగుతుంది."
+
+#: ../ui/NewPrinterWindow.glade.h:85
+msgid ""
+"These drivers do not come from your operating system supplier and will not "
+"be covered by their commercial support.  See the support and license terms "
+"of the driver's supplier."
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:86
+msgid ""
+"This driver supports additional hardware that may be installed in the "
+"printer."
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:87
+msgid ""
+"This is done by assuming that options with the same name do have the same "
+"meaning. Settings of options that are not present in the new PPD will be "
+"lost and options only present in the new PPD will be set to default."
+msgstr ""
+"ఐచ్ఛికాలను అదేపేరుతో ఊహించటంవల్ల అదే అర్ధాన్ని ఇవ్వటం వల్ల జరిగింది. ఐచ్ఛికం యొక్క అమర్పులు కొత్త "
+"PPDలో లేవు ప్రస్తుత PPDలో సిద్ధంగా అమర్చబడటం లేదా వా.టిని పోగొట్టుకోవటం జరుగుతుంది."
+
+#: ../ui/NewPrinterWindow.glade.h:88
+msgid ""
+"This way all current option settings will be lost. The default settings of "
+"the new PPD will be used. "
+msgstr "ఈ విధంగా ప్రస్తుత అన్ని ఐచ్ఛికాల అమర్పులూ పోతాయి. కొత్త PPD యొక్క సిద్ధ అమర్పు వాడాలి. "
+
+#: ../ui/NewPrinterWindow.glade.h:89
+msgid "Try to copy the option settings over from the old PPD. "
+msgstr "పాత PPDనుండీ ఐచ్ఛిక అమర్పులను కాపీచేయటానికి ప్రయత్నించు. "
+
+#: ../ui/NewPrinterWindow.glade.h:90
+msgid "Try to transfer the current settings"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:91
+msgid "URI:"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:93
+msgid "Use the new PPD (Postscript Printer Description) as is."
+msgstr "కొత్త PPDని (Postscript Printer Description) ఉన్నట్లుగానే ఉపయోగించు."
+
+#: ../ui/NewPrinterWindow.glade.h:95
+msgid ""
+"With this choice no driver download will be performed. In the next steps a "
+"locally installed driver will be selected."
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:96
+#, fuzzy
+msgid "Yes, I accept this license"
+msgstr "అనుమతించే పనులు"
+
+#: ../ui/NewPrinterWindow.glade.h:97
+#, fuzzy
+msgid "_Search"
+msgstr "ముద్రకం కోసం కొత్త పేరు"
+
+#: ../ui/NewPrinterWindow.glade.h:98
+msgid "_Verify..."
+msgstr "సరిచూడు... (_V)"
+
+#: ../ui/NewPrinterWindow.glade.h:99
+#, fuzzy
+msgid "license"
+msgstr "విధానాలు"
+
+#: ../ui/NewPrinterWindow.glade.h:100 ../ui/PrinterPropertiesDialog.glade.h:81
+#, fuzzy
+msgid "move left"
+msgstr "కాపీహక్కు"
+
+#: ../ui/NewPrinterWindow.glade.h:101 ../ui/PrinterPropertiesDialog.glade.h:82
+#, fuzzy
+msgid "move right"
+msgstr "కాపీహక్కు"
+
+#: ../ui/NewPrinterWindow.glade.h:102
+#, fuzzy
+msgid "short description"
+msgstr "వర్ణన:"
+
+#: ../ui/NewPrinterWindow.glade.h:103
+msgid "supplier"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:104
+msgid "support contacts"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:1
+msgid " "
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:2
+msgid "<b>Banner</b>"
+msgstr "<b>బేనరు</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:3
+#, fuzzy
+msgid "<b>Common Options</b>"
+msgstr "<b>అనుసంధానాన్ని ఎన్నుకో</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:4
+#, fuzzy
+msgid "<b>Image Options</b>"
+msgstr "<b>అమర్పులు</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:5
+#, fuzzy
+msgid "<b>Ink/Toner Levels</b>"
+msgstr "<b>బేనరు</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:6
+#, fuzzy
+msgid "<b>Other Options (Advanced)</b>"
+msgstr "<b>అమర్పులు</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:7
+msgid "<b>Policies</b>"
+msgstr "<b>విధానాలు</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:8
+msgid "<b>Settings</b>"
+msgstr "<b>అమర్పులు</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:9
+msgid "<b>State</b>"
+msgstr "<b>స్థితి</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:10
+#, fuzzy
+msgid "<b>Status Messages</b>"
+msgstr "<b>స్థితి</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:11
+msgid "<b>Tests and Maintenance</b>"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:12
+#, fuzzy
+msgid "<b>Text Options</b>"
+msgstr "<b>అమర్పులు</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:13
+msgid ""
+"<i>Not published\n"
+"See server settings</i>"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:15
+msgid "Accepting jobs"
+msgstr "అనుమతించే పనులు"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:16
+#, fuzzy
+msgid "Access Control"
+msgstr "అనుమతించదగ్గ నియంత్రణ"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:17
+msgid "Add or Remove Members"
+msgstr "సభ్యూలను కలుపు లేదా తొలగించు"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:18
+msgid "Allow printing for everyone except these users:"
+msgstr "ఈ వినియోగదారులను మినహాయించి ప్రతిఒక్కరికీ ముద్రణకి అనుమతించు:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:19
+#, fuzzy
+msgid "Bottom margin:"
+msgstr "స్థానం:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:20
+msgid "Brightness:"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:21
+msgid "Change..."
+msgstr "మార్చు..."
+
+#: ../ui/PrinterPropertiesDialog.glade.h:22
+msgid "Characters per inch:"
+msgstr ""
+
+#. Not more than 25 characters
+#: ../ui/PrinterPropertiesDialog.glade.h:24
+#, fuzzy
+msgid "Clean Print Heads"
+msgstr "ముద్రకం"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:25
+#, fuzzy
+msgid "Co_nflicts"
+msgstr "తో భేదాలు:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:26
+#, fuzzy
+msgid "Columns:"
+msgstr "వ్యాఖ్యలు: "
+
+#: ../ui/PrinterPropertiesDialog.glade.h:27
+msgid "Copies:"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:28
+msgid "Deny printing for everyone except these users:"
+msgstr "ఈ వినియోగదారులకుకాక ప్రతి ఒక్కరికొరకూ Deny ముద్రణ:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:30
+msgid "Device URI:"
+msgstr "సాధనం URI:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:31
+msgid "Enabled"
+msgstr "సాధ్యం"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:32
+msgid "Ending Banner:"
+msgstr "బానర్ చివర:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:33
+msgid "Error Policy: \t"
+msgstr "దోష విధానం: \t"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:34
+msgid "Finishings:"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:35
+msgid "Gamma:"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:36
+msgid "Hold until:"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:37
+msgid "Hue adjustment:"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:38
+#, fuzzy
+msgid "Ink/Toner Levels"
+msgstr "<b>బేనరు</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:40
+msgid "Job Options"
+msgstr "పని ఐచ్ఛికాలు"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:41
+msgid "Job priority:"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:42
+#, fuzzy
+msgid "Left margin:"
+msgstr "స్థానం:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:43
+#, fuzzy
+msgid "Lines per inch:"
+msgstr "ముద్రక స్థితి:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:44
+msgid "Location:"
+msgstr "స్థానం:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:45
+msgid "Make and Model:"
+msgstr "తయారుచెయి మరియూ మాదిరి:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:46
+msgid "Media:"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:47
+msgid "Members"
+msgstr "సభ్యులు"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:48
+msgid "Mirror"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:49
+#, fuzzy
+msgid "More"
+msgstr "మాదిరులు"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:50
+msgid "Operation Policy:"
+msgstr "కార్య విధానం:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:51
+#, fuzzy
+msgid "Orientation:"
+msgstr "ముద్రణా ఐచ్ఛికాలు"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:52
+msgid "Output bin:"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:53
+msgid "Output order:"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:54
+#, fuzzy
+msgid "Pages per side layout:"
+msgstr "ముద్రక స్థితి:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:55
+#, fuzzy
+msgid "Pages per side:"
+msgstr "ముద్రక స్థితి:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:56
+msgid "Policies"
+msgstr "విధానాలు"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:57
+#, fuzzy
+msgid "Pretty print"
+msgstr "ముద్రకాలను తొలగించు"
+
+#. Not more than 25 characters
+#: ../ui/PrinterPropertiesDialog.glade.h:59
+#, fuzzy
+msgid "Print Self-Test Page"
+msgstr "పాఠ పుటను ముద్రించు"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:62
+#, fuzzy
+msgid "Print quality:"
+msgstr "ముద్రక స్థితి:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:64
+#, fuzzy
+msgid "Printer Properties"
+msgstr "ముద్రణా ఐచ్ఛికాలు"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:65
+msgid "Printer State:"
+msgstr "ముద్రక స్థితి:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:66
+#, fuzzy
+msgid "Printer resolution:"
+msgstr "ముద్రణా ఐచ్ఛికాలు"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:67
+#, fuzzy
+msgid "Reset"
+msgstr "పాఠ పుటను ముద్రించు"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:68
+#, fuzzy
+msgid "Right margin:"
+msgstr "స్థానం:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:69
+#, fuzzy
+msgid "Saturation:"
+msgstr "స్థానం:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:70
+msgid "Scale to fit"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:71
+msgid "Scaling:"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:72
+msgid "Settings"
+msgstr "అమర్పులు"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:73
+msgid "Shared"
+msgstr "భాగస్వామ్యం"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:74
+msgid "Sides:"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:75
+msgid ""
+"Specify the default job options for this printer.  Jobs arriving at this "
+"print server will have these options added if they are not already set by "
+"the application."
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:76
+msgid "Starting Banner:"
+msgstr "స్ట్రింగ్ బేనరు:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:77
+#, fuzzy
+msgid "There are no status messages for this printer."
+msgstr "ముద్రకం కోసం కొత్త పేరు"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:78
+msgid "To add a new option, enter its name in the box below and click to add."
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:79
+#, fuzzy
+msgid "Top margin:"
+msgstr "స్థానం:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:80
+msgid "Word wrap"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:83
+msgid "points"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:84
+#, fuzzy
+msgid "user"
+msgstr "వినియోగదారులు"
+
+#: ../ui/PrintersWindow.glade.h:1
+msgid ""
+"Printing service not available.  Start the service on this computer or "
+"connect to another server."
+msgstr ""
+
+#: ../ui/PrintersWindow.glade.h:2
+msgid "Start Service"
+msgstr ""
+
+#: ../ui/PrintersWindow.glade.h:3
+msgid "System-Config-Printer"
+msgstr "కంప్యూటరు-ఆకృతి-ముద్రకం"
+
+#: ../ui/PrintersWindow.glade.h:4
+msgid "There are no printers configured yet."
+msgstr ""
+
+#: ../ui/PrintersWindow.glade.h:5
+#, fuzzy
+msgid "_Discovered Printers"
+msgstr "ముద్రకాలను ఆకృతీకరించు"
+
+#: ../ui/PrintersWindow.glade.h:6
+msgid "_Group"
+msgstr ""
+
+#: ../ui/PrintersWindow.glade.h:7
+msgid "_Groups"
+msgstr ""
+
+#: ../ui/PrintersWindow.glade.h:8
+msgid "_Help"
+msgstr "సహాయం (_H)"
+
+#: ../ui/PrintersWindow.glade.h:10
+#, fuzzy
+msgid "_Server"
+msgstr "సర్వరుకు వెళ్లు (_G)"
+
+#: ../ui/PrintersWindow.glade.h:11
+#, fuzzy
+msgid "_View"
+msgstr "ఫైలు (_F)"
+
+#: ../ui/ServerSettingsDialog.glade.h:1
+msgid "<b>Basic Server Settings</b>"
+msgstr "<b>ప్రాధమిక సర్వరు అమర్పులు</b>"
+
+#: ../ui/ServerSettingsDialog.glade.h:2
+#, fuzzy
+msgid "<b>Browse servers</b>"
+msgstr "గోటో సర్వరు"
+
+#: ../ui/ServerSettingsDialog.glade.h:3
+#, fuzzy
+msgid "<b>Job history</b>"
+msgstr "<b>స్థితి</b>"
+
+#: ../ui/ServerSettingsDialog.glade.h:4
+#, fuzzy
+msgid "Advanced Server Settings"
+msgstr "<b>ప్రాధమిక సర్వరు అమర్పులు</b>"
+
+#: ../ui/ServerSettingsDialog.glade.h:5
+#, fuzzy
+msgid "Allow _remote administration"
+msgstr "సుదూర నిర్వహణ అనుమతించు"
+
+#: ../ui/ServerSettingsDialog.glade.h:6
+#, fuzzy
+msgid "Allow _users to cancel any job (not just their own)"
+msgstr "వినియోగదారుని ఏ పనైనా రద్దుచేయటానికి అనుమతించు (కేవలం వారి సొంతం కానిది)"
+
+#: ../ui/ServerSettingsDialog.glade.h:7
+#, fuzzy
+msgid "Allow printing from the _Internet"
+msgstr "ఈ వినియోగదారులను మినహాయించి ప్రతిఒక్కరికీ ముద్రణకి అనుమతించు:"
+
+#: ../ui/ServerSettingsDialog.glade.h:8
+msgid "Do not preserve job history"
+msgstr ""
+
+#: ../ui/ServerSettingsDialog.glade.h:9
+msgid "Preserve job files (allow reprinting)"
+msgstr ""
+
+#: ../ui/ServerSettingsDialog.glade.h:10
+msgid "Preserve job history but not files"
+msgstr ""
+
+#: ../ui/ServerSettingsDialog.glade.h:11
+#, fuzzy
+msgid "Save _debugging information for troubleshooting"
+msgstr "డిబగ్గింగ్ సమాచారాన్ని troubleshooting కోసం భద్రపరువు"
+
+#: ../ui/ServerSettingsDialog.glade.h:12
+#, fuzzy
+msgid "Server Settings"
+msgstr "సర్వరు అమర్పులు"
+
+#: ../ui/ServerSettingsDialog.glade.h:13
+msgid ""
+"Usually print servers broadcast their queues. Specify print servers below to "
+"periodically ask for queues instead."
+msgstr ""
+
+#: ../ui/ServerSettingsDialog.glade.h:14
+#, fuzzy
+msgid "_Publish shared printers connected to this system"
+msgstr "ఈ కంప్యూటరుకి అనుసంధించబడ్డ భాగస్వామ్య ప్రకటిత ముద్రకాలు"
+
+#: ../ui/ServerSettingsDialog.glade.h:15
+#, fuzzy
+msgid "_Show printers shared by other systems"
+msgstr "వేరే కంప్యూటర్లచేత పంచుకోబడుతున్న ముద్రకాలను చూపించు"
+
+#: ../ui/SMBBrowseDialog.glade.h:1
+msgid "SMB Browser"
+msgstr ""
+
+#: ../ui/statusicon_popupmenu.glade.h:1
+#, fuzzy
+msgid "_Hide"
+msgstr "ఫైలు (_F)"
+
+#: ../ui/WaitWindow.glade.h:1
+msgid "Please Wait"
+msgstr ""
 
 #: ../system-config-printer.desktop.in.h:1
 msgid "Configure printers"
@@ -2203,10 +3230,6 @@ msgid ""
 "Please select the device you want to use from the list below. If it does not "
 "appear in the list, select 'Not listed'."
 msgstr ""
-
-#: ../troubleshoot/DeviceListed.py:40
-msgid "Device URI"
-msgstr "సాధనం URI"
 
 #: ../troubleshoot/ErrorLogCheckpoint.py:31
 msgid "Debugging"
@@ -2535,570 +3558,8 @@ msgid "System tray icon for managing print jobs"
 msgstr ""
 
 #, fuzzy
-#~ msgid "A CUPS configuration tool."
-#~ msgstr "ముద్రక ఆకృతీకరణ - %s"
-
-#, fuzzy
-#~ msgid "Copyright &#xA9; 2006-2008 Red Hat, Inc."
-#~ msgstr "కాపీ హక్కు 2006, 2007 Red Hat, Inc."
-
-#, fuzzy
-#~ msgid "CUPS _server:"
-#~ msgstr "CUPS సర్వరు:"
-
-#~ msgid "Connect to CUPS server"
-#~ msgstr "CUPS సర్వరుకి అనుసంధించు"
-
-#, fuzzy
-#~ msgid "Require _encryption"
-#~ msgstr "కావలసిన encryption"
-
-#, fuzzy
-#~ msgid ""
-#~ "<span weight=\"bold\" size=\"larger\">Connecting to CUPS server</span>"
-#~ msgstr ""
-#~ "<span weight=\"bold\" size=\"larger\">అనుమతిపదం కావాలి</span>\n"
-#~ "\n"
-
-#, fuzzy
-#~ msgid "Connecting to CUPS server"
-#~ msgstr "CUPS సర్వరుకి అనుసంధించు"
-
-#, fuzzy
-#~ msgid "_Install"
-#~ msgstr "తప్పిపోయిన డ్రైవరు"
-
-#, fuzzy
-#~ msgid "Show _completed jobs"
-#~ msgstr "వ్యాఖ్య"
-
-#, fuzzy
-#~ msgid "Show completed jobs"
-#~ msgstr "వ్యాఖ్య"
-
-#, fuzzy
-#~ msgid "Duplicate Printer"
-#~ msgstr "సిద్ధ ముద్రకాన్ని చేయి"
-
-#~ msgid "New name for the printer"
-#~ msgstr "ముద్రకం కోసం కొత్త పేరు"
-
-#, fuzzy
-#~ msgid "<b>Authentication</b>"
-#~ msgstr "<b>ప్రామాణీకరణ</b>"
-
-#~ msgid "<b>Description</b>"
-#~ msgstr "<b>వర్ణన</b>"
-
-#~ msgid "<b>Description</b> (optional)"
-#~ msgstr "<b>వర్ణన</b> (ఐచ్ఛిక)"
-
-#, fuzzy
-#~ msgid "<b>Enter device URI</b>"
-#~ msgstr "సాధన URIని ప్రవేశపెట్టు"
-
-#, fuzzy
-#~ msgid "<b>IPP Printer</b>"
-#~ msgstr "<b>ముద్రకం పేరు</b>"
-
-#, fuzzy
-#~ msgid "<b>License Terms</b>"
-#~ msgstr "<b>ముద్రకం పేరు</b>"
-
-#~ msgid "<b>Location of the LPD network printer</b>"
-#~ msgstr "<b>LPD నెట్వర్కు ముద్రకం స్థానం</b>"
-
-#~ msgid "<b>Location of the network printer</b>"
-#~ msgstr "<b>నెట్వర్కు ముద్రకం స్థానం</b>"
-
-#~ msgid "<b>Location</b> (optional)"
-#~ msgstr "<b>స్థానం</b> (ఐచ్ఛికం)"
-
-#, fuzzy
-#~ msgid "<b>Network Printer</b>"
-#~ msgstr "కొత్త ముద్రకం"
-
-#, fuzzy
-#~ msgid "<b>Note</b>"
-#~ msgstr "<b>స్థితి</b>"
-
-#, fuzzy
-#~ msgid "<b>Output Quality</b>"
-#~ msgstr "<b>స్థితి</b>"
-
-#~ msgid "<b>Printer Name</b>"
-#~ msgstr "<b>ముద్రకం పేరు</b>"
-
-#, fuzzy
-#~ msgid "<b>SMB Printer</b>"
-#~ msgstr "<b>ముద్రకం పేరు</b>"
-
-#, fuzzy
-#~ msgid "<b>Select Driver</b>"
-#~ msgstr "<b>సిద్ధ ముద్రకం</b>"
-
-#~ msgid "<b>Settings of the serial port</b>"
-#~ msgstr "<b>వరుస క్రమ పోర్టు అమర్పులు</b>"
-
-#~ msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
-#~ msgstr "<i>smb://[workgroup/]server[:port]/printer</i>"
-
-#, fuzzy
-#~ msgid "<span weight=\"bold\" size=\"larger\">Choose Class Members</span>"
-#~ msgstr ""
-#~ "<span weight=\"bold\" size=\"larger\">అనుమతిపదం కావాలి</span>\n"
-#~ "\n"
-
-#, fuzzy
-#~ msgid "<span weight=\"bold\" size=\"larger\">Choose Driver</span>"
-#~ msgstr ""
-#~ "<span weight=\"bold\" size=\"larger\">అనుమతిపదం కావాలి</span>\n"
-#~ "\n"
-
-#, fuzzy
-#~ msgid "<span weight=\"bold\" size=\"larger\">Describe Printer</span>"
-#~ msgstr ""
-#~ "<span weight=\"bold\" size=\"larger\">అనుమతిపదం కావాలి</span>\n"
-#~ "\n"
-
-#, fuzzy
-#~ msgid "<span weight=\"bold\" size=\"larger\">Existing Settings</span>"
-#~ msgstr ""
-#~ "<span weight=\"bold\" size=\"larger\">అనుమతిపదం కావాలి</span>\n"
-#~ "\n"
-
-#, fuzzy
-#~ msgid "<span weight=\"bold\" size=\"larger\">Installable Options</span>"
-#~ msgstr ""
-#~ "<span weight=\"bold\" size=\"larger\">అనుమతిపదం కావాలి</span>\n"
-#~ "\n"
-
-#, fuzzy
-#~ msgid "<span weight=\"bold\" size=\"larger\">Select Device</span>"
-#~ msgstr ""
-#~ "<span weight=\"bold\" size=\"larger\">అనుమతిపదం కావాలి</span>\n"
-#~ "\n"
-
-#~ msgid "Baud Rate"
-#~ msgstr "బౌడ్ స్థాయి"
-
-#, fuzzy
-#~ msgid "Change PPD"
-#~ msgstr "డ్రైవును మార్చు"
-
-#~ msgid "Class Members"
-#~ msgstr "తరగతి సభ్యులు"
-
-#, fuzzy
-#~ msgid "Comments..."
-#~ msgstr "వ్యాఖ్య"
-
-#, fuzzy
-#~ msgid "Connection"
-#~ msgstr "అనుసంధిస్తోంది"
-
-#~ msgid "Data Bits"
-#~ msgstr "సమాచార బిట్లు"
-
-#~ msgid "Description:"
-#~ msgstr "వర్ణన:"
-
-#~ msgid "Device"
-#~ msgstr "సాధనం"
-
-#~ msgid "Device description."
-#~ msgstr "సాధనం వర్ణన."
-
-#, fuzzy
-#~ msgid "Driver details"
-#~ msgstr "డ్రైవర్లు"
-
-#~ msgid "Empty"
-#~ msgstr "ఖాళీ"
-
-#~ msgid "Flow Control"
-#~ msgstr "ప్రవాహ నియంత్రణ"
-
-#, fuzzy
-#~ msgid "Host:"
-#~ msgstr "ఆతిధేయనామం"
-
-#~ msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
-#~ msgstr "మనిషి చదవగల వర్ణన \"Duplexer తో HP LaserJet\" వంటివి"
-
-#~ msgid "Human-readable location such as \"Lab 1\""
-#~ msgstr "మనిషి చదవగల స్థానం \"Lab 1\" వంటివి"
-
-#, fuzzy
-#~ msgid "Installed Options"
-#~ msgstr "సంస్థాపించగల ఐచ్ఛికాలు"
-
-#, fuzzy
-#~ msgid "JetDirect"
-#~ msgstr "ప్రత్యక్ష Jet"
-
-#~ msgid "LPD"
-#~ msgstr "LPD"
-
-#, fuzzy
-#~ msgid "Line art:"
-#~ msgstr "ముద్రక స్థితి:"
-
-#, fuzzy
-#~ msgid "Local Driver"
-#~ msgstr "స్థానిక ముద్రకాలు"
-
-#, fuzzy
-#~ msgid "Make and model:"
-#~ msgstr "తయారుచెయి మరియూ మాదిరి:"
-
-#, fuzzy
-#~ msgid "Network"
-#~ msgstr "కొత్త ముద్రకం"
-
-#, fuzzy
-#~ msgid "No, I do not accept this license"
-#~ msgstr "అనుమతించే పనులు"
-
-#~ msgid "Parity"
-#~ msgstr "సాదృశ్యం"
-
-#, fuzzy
-#~ msgid "Port number:"
-#~ msgstr "పోర్టు సంఖ్య"
-
-#, fuzzy
-#~ msgid ""
-#~ "PostScript Printer Description (PPD) files can often be found on the "
-#~ "driver disk that comes with the printer. For PostScript printers they are "
-#~ "often part of the Windows<sup>&#xAE;</sup> driver."
-#~ msgstr ""
-#~ "ముద్రకంతో వచ్చే పోస్టు స్క్రిప్టు ముద్రకం వర్ణన (PPD) ఫైళ్లు ఎక్కువగా డ్రైవు డిస్కులో "
-#~ "కనబడుతునాయి. పోస్టు స్క్రిప్టు ముద్రకాలు ఎక్కువగా విండోస్ డ్రైవర్ <sup>®</sup>లలో భాగంగా ఉంటాయి."
-
-#, fuzzy
-#~ msgid "Printer model:"
-#~ msgstr "ముద్రకం పేరు"
-
-#~ msgid "Probe"
-#~ msgstr "ప్రోబే"
-
-#, fuzzy
-#~ msgid "Prompt user if authentication is required"
-#~ msgstr "<b>ప్రామాణీకరణ</b>"
-
-#, fuzzy
-#~ msgid "Provide PPD file"
-#~ msgstr "PPD ఫైలుని సమకూర్చు"
-
-#~ msgid "SCSI"
-#~ msgstr "SCSI"
-
-#~ msgid "SMB"
-#~ msgstr "SMB"
-
-#, fuzzy
-#~ msgid "Searching..."
-#~ msgstr "ముద్రకం కోసం కొత్త పేరు"
-
-#, fuzzy
-#~ msgid "Select printer from database"
-#~ msgstr "సమాచారనిధినుండీ ముద్రకాన్ని ఎన్నుకో"
-
-#~ msgid "Serial"
-#~ msgstr "క్రమం"
-
-#, fuzzy
-#~ msgid "Set authentication details now"
-#~ msgstr "<b>ప్రామాణీకరణ</b>"
-
-#, fuzzy
-#~ msgid "Text:"
-#~ msgstr "పాఠ పుటను ముద్రించు"
-
-#~ msgid ""
-#~ "The foomatic printer database contains various manufacturer provided "
-#~ "PostScript Printer Description (PPD) files and also can generate PPD "
-#~ "files for a large number of (non PostScript) printers. But in general "
-#~ "manufacturer provided PPD files provide better access to the specific "
-#~ "features of the printer."
-#~ msgstr ""
-#~ "ఈ foomatic ముద్రక సమాచారనిధి పెక్కు ఉత్పత్తులచే సమకూర్చబడిన PostScript Printer "
-#~ "Description (PPD) ఫైళ్లు మరియూ పెద్దసంఖ్యలో PPD (PostScript కాని) ఫైళ్లను ముద్రకాలకోసం "
-#~ "నిష్పాదిస్తుంది. కానీ సాధారణ ఉత్పత్తులలో PPD ఫైళ్లు ముద్రకం యొక్క ప్రత్యేక లక్షణాలను "
-#~ "సమకూర్చగలుగుతుంది."
-
-#~ msgid ""
-#~ "This is done by assuming that options with the same name do have the same "
-#~ "meaning. Settings of options that are not present in the new PPD will be "
-#~ "lost and options only present in the new PPD will be set to default."
-#~ msgstr ""
-#~ "ఐచ్ఛికాలను అదేపేరుతో ఊహించటంవల్ల అదే అర్ధాన్ని ఇవ్వటం వల్ల జరిగింది. ఐచ్ఛికం యొక్క అమర్పులు కొత్త "
-#~ "PPDలో లేవు ప్రస్తుత PPDలో సిద్ధంగా అమర్చబడటం లేదా వా.టిని పోగొట్టుకోవటం జరుగుతుంది."
-
-#~ msgid ""
-#~ "This way all current option settings will be lost. The default settings "
-#~ "of the new PPD will be used. "
-#~ msgstr "ఈ విధంగా ప్రస్తుత అన్ని ఐచ్ఛికాల అమర్పులూ పోతాయి. కొత్త PPD యొక్క సిద్ధ అమర్పు వాడాలి. "
-
-#~ msgid "Try to copy the option settings over from the old PPD. "
-#~ msgstr "పాత PPDనుండీ ఐచ్ఛిక అమర్పులను కాపీచేయటానికి ప్రయత్నించు. "
-
-#~ msgid "Use the new PPD (Postscript Printer Description) as is."
-#~ msgstr "కొత్త PPDని (Postscript Printer Description) ఉన్నట్లుగానే ఉపయోగించు."
-
-#, fuzzy
-#~ msgid "Yes, I accept this license"
-#~ msgstr "అనుమతించే పనులు"
-
-#, fuzzy
-#~ msgid "_Search"
-#~ msgstr "ముద్రకం కోసం కొత్త పేరు"
-
-#~ msgid "_Verify..."
-#~ msgstr "సరిచూడు... (_V)"
-
-#, fuzzy
-#~ msgid "license"
-#~ msgstr "విధానాలు"
-
-#, fuzzy
-#~ msgid "move left"
-#~ msgstr "కాపీహక్కు"
-
-#, fuzzy
-#~ msgid "move right"
-#~ msgstr "కాపీహక్కు"
-
-#, fuzzy
-#~ msgid "short description"
-#~ msgstr "వర్ణన:"
-
-#~ msgid "<b>Banner</b>"
-#~ msgstr "<b>బేనరు</b>"
-
-#, fuzzy
-#~ msgid "<b>Common Options</b>"
-#~ msgstr "<b>అనుసంధానాన్ని ఎన్నుకో</b>"
-
-#, fuzzy
-#~ msgid "<b>Image Options</b>"
-#~ msgstr "<b>అమర్పులు</b>"
-
-#, fuzzy
-#~ msgid "<b>Ink/Toner Levels</b>"
-#~ msgstr "<b>బేనరు</b>"
-
-#, fuzzy
-#~ msgid "<b>Other Options (Advanced)</b>"
-#~ msgstr "<b>అమర్పులు</b>"
-
-#~ msgid "<b>Policies</b>"
-#~ msgstr "<b>విధానాలు</b>"
-
-#~ msgid "<b>Settings</b>"
-#~ msgstr "<b>అమర్పులు</b>"
-
-#~ msgid "<b>State</b>"
-#~ msgstr "<b>స్థితి</b>"
-
-#, fuzzy
-#~ msgid "<b>Status Messages</b>"
-#~ msgstr "<b>స్థితి</b>"
-
-#, fuzzy
-#~ msgid "<b>Text Options</b>"
-#~ msgstr "<b>అమర్పులు</b>"
-
-#~ msgid "Accepting jobs"
-#~ msgstr "అనుమతించే పనులు"
-
-#, fuzzy
-#~ msgid "Access Control"
-#~ msgstr "అనుమతించదగ్గ నియంత్రణ"
-
-#~ msgid "Add or Remove Members"
-#~ msgstr "సభ్యూలను కలుపు లేదా తొలగించు"
-
-#~ msgid "Allow printing for everyone except these users:"
-#~ msgstr "ఈ వినియోగదారులను మినహాయించి ప్రతిఒక్కరికీ ముద్రణకి అనుమతించు:"
-
-#~ msgid "Change..."
-#~ msgstr "మార్చు..."
-
-#, fuzzy
-#~ msgid "Clean Print Heads"
-#~ msgstr "ముద్రకం"
-
-#, fuzzy
-#~ msgid "Co_nflicts"
-#~ msgstr "తో భేదాలు:"
-
-#, fuzzy
-#~ msgid "Columns:"
-#~ msgstr "వ్యాఖ్యలు: "
-
-#~ msgid "Deny printing for everyone except these users:"
-#~ msgstr "ఈ వినియోగదారులకుకాక ప్రతి ఒక్కరికొరకూ Deny ముద్రణ:"
-
-#~ msgid "Device URI:"
-#~ msgstr "సాధనం URI:"
-
-#~ msgid "Enabled"
-#~ msgstr "సాధ్యం"
-
-#~ msgid "Ending Banner:"
-#~ msgstr "బానర్ చివర:"
-
-#~ msgid "Error Policy: \t"
-#~ msgstr "దోష విధానం: \t"
-
-#, fuzzy
-#~ msgid "Ink/Toner Levels"
-#~ msgstr "<b>బేనరు</b>"
-
-#~ msgid "Job Options"
-#~ msgstr "పని ఐచ్ఛికాలు"
-
-#~ msgid "Location:"
-#~ msgstr "స్థానం:"
-
-#~ msgid "Make and Model:"
-#~ msgstr "తయారుచెయి మరియూ మాదిరి:"
-
-#~ msgid "Members"
-#~ msgstr "సభ్యులు"
-
-#, fuzzy
-#~ msgid "More"
-#~ msgstr "మాదిరులు"
-
-#~ msgid "Operation Policy:"
-#~ msgstr "కార్య విధానం:"
-
-#, fuzzy
-#~ msgid "Orientation:"
-#~ msgstr "ముద్రణా ఐచ్ఛికాలు"
-
-#, fuzzy
-#~ msgid "Pages per side:"
-#~ msgstr "ముద్రక స్థితి:"
-
-#~ msgid "Policies"
-#~ msgstr "విధానాలు"
-
-#, fuzzy
-#~ msgid "Pretty print"
-#~ msgstr "ముద్రకాలను తొలగించు"
-
-#, fuzzy
-#~ msgid "Print Self-Test Page"
-#~ msgstr "పాఠ పుటను ముద్రించు"
-
-#, fuzzy
-#~ msgid "Printer Properties"
-#~ msgstr "ముద్రణా ఐచ్ఛికాలు"
-
-#~ msgid "Printer State:"
-#~ msgstr "ముద్రక స్థితి:"
-
-#, fuzzy
-#~ msgid "Reset"
-#~ msgstr "పాఠ పుటను ముద్రించు"
-
-#, fuzzy
-#~ msgid "Saturation:"
-#~ msgstr "స్థానం:"
-
-#~ msgid "Settings"
-#~ msgstr "అమర్పులు"
-
-#~ msgid "Shared"
-#~ msgstr "భాగస్వామ్యం"
-
-#~ msgid "Starting Banner:"
-#~ msgstr "స్ట్రింగ్ బేనరు:"
-
-#, fuzzy
-#~ msgid "There are no status messages for this printer."
-#~ msgstr "ముద్రకం కోసం కొత్త పేరు"
-
-#, fuzzy
-#~ msgid "Top margin:"
-#~ msgstr "స్థానం:"
-
-#, fuzzy
-#~ msgid "user"
-#~ msgstr "వినియోగదారులు"
-
-#~ msgid "System-Config-Printer"
-#~ msgstr "కంప్యూటరు-ఆకృతి-ముద్రకం"
-
-#, fuzzy
-#~ msgid "_Discovered Printers"
-#~ msgstr "ముద్రకాలను ఆకృతీకరించు"
-
-#~ msgid "_Help"
-#~ msgstr "సహాయం (_H)"
-
-#, fuzzy
-#~ msgid "_Server"
-#~ msgstr "సర్వరుకు వెళ్లు (_G)"
-
-#, fuzzy
-#~ msgid "_View"
-#~ msgstr "ఫైలు (_F)"
-
-#~ msgid "<b>Basic Server Settings</b>"
-#~ msgstr "<b>ప్రాధమిక సర్వరు అమర్పులు</b>"
-
-#, fuzzy
-#~ msgid "<b>Browse servers</b>"
-#~ msgstr "గోటో సర్వరు"
-
-#, fuzzy
-#~ msgid "<b>Job history</b>"
-#~ msgstr "<b>స్థితి</b>"
-
-#, fuzzy
-#~ msgid "Advanced Server Settings"
-#~ msgstr "<b>ప్రాధమిక సర్వరు అమర్పులు</b>"
-
-#, fuzzy
-#~ msgid "Allow _remote administration"
-#~ msgstr "సుదూర నిర్వహణ అనుమతించు"
-
-#, fuzzy
-#~ msgid "Allow _users to cancel any job (not just their own)"
-#~ msgstr "వినియోగదారుని ఏ పనైనా రద్దుచేయటానికి అనుమతించు (కేవలం వారి సొంతం కానిది)"
-
-#, fuzzy
-#~ msgid "Allow printing from the _Internet"
-#~ msgstr "ఈ వినియోగదారులను మినహాయించి ప్రతిఒక్కరికీ ముద్రణకి అనుమతించు:"
-
-#, fuzzy
-#~ msgid "Save _debugging information for troubleshooting"
-#~ msgstr "డిబగ్గింగ్ సమాచారాన్ని troubleshooting కోసం భద్రపరువు"
-
-#, fuzzy
-#~ msgid "Server Settings"
-#~ msgstr "సర్వరు అమర్పులు"
-
-#, fuzzy
-#~ msgid "_Publish shared printers connected to this system"
-#~ msgstr "ఈ కంప్యూటరుకి అనుసంధించబడ్డ భాగస్వామ్య ప్రకటిత ముద్రకాలు"
-
-#, fuzzy
-#~ msgid "_Show printers shared by other systems"
-#~ msgstr "వేరే కంప్యూటర్లచేత పంచుకోబడుతున్న ముద్రకాలను చూపించు"
-
-#, fuzzy
 #~ msgid "_Configure Printers"
 #~ msgstr "ముద్రకాలను ఆకృతీకరించు"
-
-#, fuzzy
-#~ msgid "_Hide"
-#~ msgstr "ఫైలు (_F)"
 
 #, fuzzy
 #~ msgid "_Settings"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: system-config-printer\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2011-02-17 16:17+0000\n"
+"POT-Creation-Date: 2011-02-25 09:57+0000\n"
 "PO-Revision-Date: 2010-05-15 11:55+0100\n"
 "Last-Translator: Miloš Komarčević <kmilos@gmail.com>\n"
 "Language-Team: Serbian <trans-sr@lists.fedoraproject.org>\n"
@@ -57,11 +57,11 @@ msgstr "Pokušaj ponovo"
 msgid "Operation canceled"
 msgstr "Radnja otkazana"
 
-#: ../authconn.py:32 ../pysmb.py:123
+#: ../authconn.py:32 ../pysmb.py:123 ../ui/NewPrinterWindow.glade.h:94
 msgid "Username:"
 msgstr "Ime korisnika:"
 
-#: ../authconn.py:33 ../pysmb.py:129
+#: ../authconn.py:33 ../pysmb.py:129 ../ui/NewPrinterWindow.glade.h:63
 msgid "Password:"
 msgstr "Lozinka:"
 
@@ -331,7 +331,8 @@ msgstr "Osobine posla"
 
 #: ../jobviewer.py:706 ../jobviewer.py:1002 ../jobviewer.py:1704
 #: ../jobviewer.py:1734 ../jobviewer.py:2104 ../jobviewer.py:2109
-#: ../jobviewer.py:2123 ../jobviewer.py:2202 ../printerproperties.py:1541
+#: ../jobviewer.py:2123 ../jobviewer.py:2202 ../printerproperties.py:1582
+#: ../ui/NewPrinterWindow.glade.h:92
 #: ../troubleshoot/ChooseNetworkPrinter.py:100
 #: ../troubleshoot/ChooseNetworkPrinter.py:101
 #: ../troubleshoot/ChooseNetworkPrinter.py:104
@@ -405,6 +406,7 @@ msgid "Save File"
 msgstr "Sačuvaj datoteku"
 
 #: ../jobviewer.py:1449 ../system-config-printer.py:258
+#: ../ui/NewPrinterWindow.glade.h:57
 #: ../troubleshoot/ChooseNetworkPrinter.py:35
 #: ../troubleshoot/ChoosePrinter.py:36 ../troubleshoot/DeviceListed.py:36
 msgid "Name"
@@ -586,7 +588,7 @@ msgstr "115200"
 #. See section 4.2.6 of this document for explanation of finishing types:
 #. ftp://ftp.pwg.org/pub/pwg/candidates/cs-ippfinishings10-20010205-5100.1.pdf
 #: ../newprinter.py:299 ../newprinter.py:310 ../newprinter.py:3267
-#: ../ppdippstr.py:63 ../printerproperties.py:264
+#: ../ppdippstr.py:63 ../printerproperties.py:268
 msgid "None"
 msgstr "Ništa"
 
@@ -618,11 +620,11 @@ msgstr "RTS/CTS (hardverska)"
 msgid "DTR/DSR (Hardware)"
 msgstr "DTR/DSR (hardverska)"
 
-#: ../newprinter.py:330 ../printerproperties.py:218
+#: ../newprinter.py:330 ../printerproperties.py:222
 msgid "Members of this class"
 msgstr "Članovi ove klase"
 
-#: ../newprinter.py:332 ../printerproperties.py:219
+#: ../newprinter.py:332 ../printerproperties.py:223
 msgid "Others"
 msgstr "Ostali"
 
@@ -646,7 +648,7 @@ msgstr "Modeli"
 msgid "Drivers"
 msgstr "Upravljački programi"
 
-#: ../newprinter.py:338
+#: ../newprinter.py:338 ../ui/NewPrinterWindow.glade.h:35
 msgid "Downloadable Drivers"
 msgstr "Preuzimljivi upravljački programi"
 
@@ -679,7 +681,7 @@ msgstr "Sve datoteke (*)"
 msgid "Search"
 msgstr "Pretraga"
 
-#: ../newprinter.py:611 ../newprinter.py:632
+#: ../newprinter.py:611 ../newprinter.py:632 ../ui/NewPrinterWindow.glade.h:59
 msgid "New Printer"
 msgstr "Novi štampač"
 
@@ -835,7 +837,7 @@ msgstr "LPD/LPR red"
 msgid "Windows Printer via SAMBA"
 msgstr "Windows štampač preko SAMBA-e"
 
-#: ../newprinter.py:2376
+#: ../newprinter.py:2376 ../ui/NewPrinterWindow.glade.h:48
 msgid "IPP"
 msgstr "IPP"
 
@@ -896,7 +898,7 @@ msgstr ""
 msgid "Searching for printers"
 msgstr "Traži štampače"
 
-#: ../newprinter.py:2769
+#: ../newprinter.py:2769 ../ui/NewPrinterWindow.glade.h:60
 msgid "No printer was found at that address."
 msgstr "Štampač nije pronađen na toj adresi"
 
@@ -996,7 +998,7 @@ msgid "adding printer %s"
 msgstr "dodajem štampač %s"
 
 #: ../newprinter.py:3570 ../newprinter.py:3581 ../newprinter.py:3598
-#: ../printerproperties.py:921 ../system-config-printer.py:1682
+#: ../printerproperties.py:957 ../system-config-printer.py:1682
 #: ../system-config-printer.py:1707
 #, python-format
 msgid "modifying printer %s"
@@ -1308,199 +1310,207 @@ msgid "Busy"
 msgstr "Zauzet"
 
 #. Printer state reasons list
-#: ../printerproperties.py:200
+#: ../printerproperties.py:204
 msgid "Message"
 msgstr "Poruka"
 
-#: ../printerproperties.py:220
+#: ../printerproperties.py:224
 msgid "Users"
 msgstr "Korisnici"
 
-#: ../printerproperties.py:243
+#: ../printerproperties.py:247
 msgid "Portrait (no rotation)"
 msgstr "Portret (bez rotacije)"
 
-#: ../printerproperties.py:244
+#: ../printerproperties.py:248
 msgid "Landscape (90 degrees)"
 msgstr "Pejzaž (90 stepeni)"
 
-#: ../printerproperties.py:245
+#: ../printerproperties.py:249
 msgid "Reverse landscape (270 degrees)"
 msgstr "Obrnuti pejzaž (270 stepeni)"
 
-#: ../printerproperties.py:246
+#: ../printerproperties.py:250
 msgid "Reverse portrait (180 degrees)"
 msgstr "Obrnuti portret (180 stepeni)"
 
-#: ../printerproperties.py:252
+#: ../printerproperties.py:256
 msgid "Left to right, top to bottom"
 msgstr "S leva na desno, odozgo ka dnu"
 
-#: ../printerproperties.py:253
+#: ../printerproperties.py:257
 msgid "Left to right, bottom to top"
 msgstr "S leva na desno, odozdo ka vrhu"
 
-#: ../printerproperties.py:254
+#: ../printerproperties.py:258
 msgid "Right to left, top to bottom"
 msgstr "S desna na levo, odozgo ka dnu"
 
-#: ../printerproperties.py:255
+#: ../printerproperties.py:259
 msgid "Right to left, bottom to top"
 msgstr "S desna na levo, odozdo ka vrhu"
 
-#: ../printerproperties.py:256
+#: ../printerproperties.py:260
 msgid "Top to bottom, left to right"
 msgstr "Odozgo ka dnu, s leva na desno"
 
-#: ../printerproperties.py:257
+#: ../printerproperties.py:261
 msgid "Top to bottom, right to left"
 msgstr "Odozgo ka dnu, s desna na levo"
 
-#: ../printerproperties.py:258
+#: ../printerproperties.py:262
 msgid "Bottom to top, left to right"
 msgstr "Odozdo ka vrhu, s leva na desno"
 
-#: ../printerproperties.py:259
+#: ../printerproperties.py:263
 msgid "Bottom to top, right to left"
 msgstr "Odozdo ka vrhu, s desna na levo"
 
-#: ../printerproperties.py:265
+#: ../printerproperties.py:269
 msgid "Staple"
 msgstr "Zaheftaj"
 
-#: ../printerproperties.py:266
+#: ../printerproperties.py:270
 msgid "Punch"
 msgstr "Probuši"
 
-#: ../printerproperties.py:267
+#: ../printerproperties.py:271
 msgid "Cover"
 msgstr "Ukoriči"
 
-#: ../printerproperties.py:268
+#: ../printerproperties.py:272
 msgid "Bind"
 msgstr "Poveži"
 
-#: ../printerproperties.py:269
+#: ../printerproperties.py:273
 msgid "Saddle stitch"
 msgstr "Šav po povoju"
 
-#: ../printerproperties.py:270
+#: ../printerproperties.py:274
 msgid "Edge stitch"
 msgstr "Šav po ivici"
 
-#: ../printerproperties.py:271
+#: ../printerproperties.py:275
 msgid "Fold"
 msgstr "Presavij"
 
-#: ../printerproperties.py:272
+#: ../printerproperties.py:276
 msgid "Trim"
 msgstr "Opseci"
 
-#: ../printerproperties.py:273
+#: ../printerproperties.py:277
 msgid "Bale"
 msgstr "Umotaj"
 
-#: ../printerproperties.py:274
+#: ../printerproperties.py:278
 msgid "Booklet maker"
 msgstr "Proizvođač brošure"
 
-#: ../printerproperties.py:275
+#: ../printerproperties.py:279
 msgid "Job offset"
 msgstr "Pomak posla"
 
-#: ../printerproperties.py:276
+#: ../printerproperties.py:280
 msgid "Staple (top left)"
 msgstr "Zaheftaj (gore levo)"
 
-#: ../printerproperties.py:277
+#: ../printerproperties.py:281
 msgid "Staple (bottom left)"
 msgstr "Zaheftaj (dole levo)"
 
-#: ../printerproperties.py:278
+#: ../printerproperties.py:282
 msgid "Staple (top right)"
 msgstr "Zaheftaj (gore desno)"
 
-#: ../printerproperties.py:279
+#: ../printerproperties.py:283
 msgid "Staple (bottom right)"
 msgstr "Zaheftaj (dole desno)"
 
-#: ../printerproperties.py:280
+#: ../printerproperties.py:284
 msgid "Edge stitch (left)"
 msgstr "Šav po ivici (levo)"
 
-#: ../printerproperties.py:281
+#: ../printerproperties.py:285
 msgid "Edge stitch (top)"
 msgstr "Šav po ivici (vrh)"
 
-#: ../printerproperties.py:282
+#: ../printerproperties.py:286
 msgid "Edge stitch (right)"
 msgstr "Šav po ivici (desno)"
 
-#: ../printerproperties.py:283
+#: ../printerproperties.py:287
 msgid "Edge stitch (bottom)"
 msgstr "Šav po ivici (dno)"
 
-#: ../printerproperties.py:284
+#: ../printerproperties.py:288
 msgid "Staple dual (left)"
 msgstr "Zaheftaj dvostruko (levo)"
 
-#: ../printerproperties.py:285
+#: ../printerproperties.py:289
 msgid "Staple dual (top)"
 msgstr "Zaheftaj dvostruko (vrh)"
 
-#: ../printerproperties.py:286
+#: ../printerproperties.py:290
 msgid "Staple dual (right)"
 msgstr "Zaheftaj dvostruko (desno)"
 
-#: ../printerproperties.py:287
+#: ../printerproperties.py:291
 msgid "Staple dual (bottom)"
 msgstr "Zaheftaj dvostruko (dno)"
 
-#: ../printerproperties.py:288
+#: ../printerproperties.py:292
 msgid "Bind (left)"
 msgstr "Poveži (levo)"
 
-#: ../printerproperties.py:289
+#: ../printerproperties.py:293
 msgid "Bind (top)"
 msgstr "Poveži (vrh)"
 
-#: ../printerproperties.py:290
+#: ../printerproperties.py:294
 msgid "Bind (right)"
 msgstr "Poveži (desno)"
 
-#: ../printerproperties.py:291
+#: ../printerproperties.py:295
 msgid "Bind (bottom)"
 msgstr "Poveži (dno)"
 
-#: ../printerproperties.py:296
+#: ../printerproperties.py:300
 msgid "One-sided"
 msgstr "Jednostrano"
 
-#: ../printerproperties.py:297
+#: ../printerproperties.py:301
 msgid "Two-sided (long edge)"
 msgstr "Dvostrano (duga ivica)"
 
-#: ../printerproperties.py:298
+#: ../printerproperties.py:302
 msgid "Two-sided (short edge)"
 msgstr "Dvostrano (kratka ivica)"
 
-#: ../printerproperties.py:303
+#: ../printerproperties.py:307 ../printerproperties.py:312
 msgid "Normal"
 msgstr "Obično"
 
-#: ../printerproperties.py:304
+#: ../printerproperties.py:308
 msgid "Reverse"
 msgstr "Obrni"
 
-#: ../printerproperties.py:325
+#: ../printerproperties.py:311
+msgid "Draft"
+msgstr ""
+
+#: ../printerproperties.py:313
+msgid "High"
+msgstr ""
+
+#: ../printerproperties.py:337
 msgid "Automatic rotation"
 msgstr "Samostalna rotacija"
 
-#: ../printerproperties.py:546
+#: ../printerproperties.py:576
 msgid "CUPS test page"
 msgstr "Probna CUPS stranica"
 
-#: ../printerproperties.py:547
+#: ../printerproperties.py:577
 msgid ""
 "Typically shows whether all jets on a print head are functioning and that "
 "the print feed mechanisms are working properly."
@@ -1508,13 +1518,13 @@ msgstr ""
 "Obično pokazuje da li su sve mlaznice na glavi za štampanje funkcionalne i "
 "da li su mehanizmi za uvlačenje na štampaču ispravni."
 
-#: ../printerproperties.py:554
+#: ../printerproperties.py:584
 #, python-format
 msgid "Printer Properties - '%s' on %s"
 msgstr "Osobine štampača - „%s“ na %s"
 
 #. The Conflict button was pressed.
-#: ../printerproperties.py:561
+#: ../printerproperties.py:591
 msgid ""
 "There are conflicting options.\n"
 "Changes can only be applied after\n"
@@ -1524,24 +1534,24 @@ msgstr ""
 "Promene će biti primenjene kada\n"
 "se sukobi razreše."
 
-#: ../printerproperties.py:881
+#: ../printerproperties.py:917
 msgid "Installable Options"
 msgstr "Opcije koje se mogu instalirati"
 
-#: ../printerproperties.py:882
+#: ../printerproperties.py:918 ../ui/PrinterPropertiesDialog.glade.h:63
 msgid "Printer Options"
 msgstr "Opcije štampača"
 
-#: ../printerproperties.py:919
+#: ../printerproperties.py:955
 #, python-format
 msgid "modifying class %s"
 msgstr "izmenjujem klasu %s"
 
-#: ../printerproperties.py:936
+#: ../printerproperties.py:972
 msgid "This will delete this class!"
 msgstr "Ovo će izbrisati ovu klasu!"
 
-#: ../printerproperties.py:937
+#: ../printerproperties.py:973
 msgid "Proceed anyway?"
 msgstr "Svakako nastavi?"
 
@@ -1549,19 +1559,19 @@ msgstr "Svakako nastavi?"
 #. but we have never fetched the server settings to see whether
 #. the server is publishing shared printers.  Fetch the settings
 #. now so that we can update the "not published" label if necessary.
-#: ../printerproperties.py:1027 ../serversettings.py:192
+#: ../printerproperties.py:1065 ../serversettings.py:192
 msgid "fetching server settings"
 msgstr "dobavljam postavke servera"
 
-#: ../printerproperties.py:1109
+#: ../printerproperties.py:1147
 msgid "printing test page"
 msgstr "štampam probnu stranicu"
 
-#: ../printerproperties.py:1122 ../printerproperties.py:1157
+#: ../printerproperties.py:1160 ../printerproperties.py:1195
 msgid "Not possible"
 msgstr "Nije moguće"
 
-#: ../printerproperties.py:1123 ../printerproperties.py:1158
+#: ../printerproperties.py:1161 ../printerproperties.py:1196
 msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
@@ -1569,43 +1579,43 @@ msgstr ""
 "Udaljeni server nije prihvatio posao za štampanje, najverovatnije zato što "
 "štampač nije deljen."
 
-#: ../printerproperties.py:1135 ../printerproperties.py:1150
+#: ../printerproperties.py:1173 ../printerproperties.py:1188
 msgid "Submitted"
 msgstr "Poslato"
 
-#: ../printerproperties.py:1136
+#: ../printerproperties.py:1174
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr "Probna stranica je poslata kao posao %d"
 
-#: ../printerproperties.py:1143
+#: ../printerproperties.py:1181
 msgid "sending maintenance command"
 msgstr "šaljem naredbu za održavanje"
 
-#: ../printerproperties.py:1151
+#: ../printerproperties.py:1189
 #, python-format
 msgid "Maintenance command submitted as job %d"
 msgstr "Naredba za održavanje je poslata kao posao %d"
 
-#: ../printerproperties.py:1238 ../printerproperties.py:1243
-#: ../printerproperties.py:1339
+#: ../printerproperties.py:1276 ../printerproperties.py:1281
+#: ../printerproperties.py:1377
 msgid "Error"
 msgstr "Greška"
 
-#: ../printerproperties.py:1239
+#: ../printerproperties.py:1277
 msgid "The PPD file for this queue is damaged."
 msgstr ""
 
-#: ../printerproperties.py:1244
+#: ../printerproperties.py:1282
 msgid "There was a problem connecting to the CUPS server."
 msgstr "Greška tokom povezivanja na CUPS server."
 
-#: ../printerproperties.py:1340
+#: ../printerproperties.py:1378
 #, python-format
 msgid "Option '%s' has value '%s' and cannot be edited."
 msgstr "Vrednost opcije „%s“ je „%s“ i ne može biti uređivana."
 
-#: ../printerproperties.py:1450
+#: ../printerproperties.py:1491
 msgid "Marker levels are not reported for this printer."
 msgstr "Nivoi mastila se ne izveštavaju za ovaj štampač."
 
@@ -1646,7 +1656,7 @@ msgstr "Po_stavke..."
 msgid "Adjust server settings"
 msgstr "Podesite postavke servera"
 
-#: ../system-config-printer.py:223
+#: ../system-config-printer.py:223 ../ui/PrintersWindow.glade.h:9
 msgid "_Printer"
 msgstr "Š_tampač"
 
@@ -1754,8 +1764,8 @@ msgstr ""
 msgid "Cannot start service on remote server"
 msgstr ""
 
-#: ../system-config-printer.py:1143
-#, python-format
+#: ../system-config-printer.py:1143 ../ui/ConnectingDialog.glade.h:2
+#, no-c-format, python-format
 msgid "<i>Opening connection to %s</i>"
 msgstr "<i>Otvaram vezu sa %s</i>"
 
@@ -1844,7 +1854,9 @@ msgstr ""
 msgid "Would you like to print a test page?"
 msgstr "Da li bi željeli odštampati probnu stranicu?"
 
-#: ../system-config-printer.py:1948 ../troubleshoot/PrintTestPage.py:72
+#. Not more than 25 characters
+#: ../system-config-printer.py:1948 ../ui/PrinterPropertiesDialog.glade.h:61
+#: ../troubleshoot/PrintTestPage.py:72
 msgid "Print Test Page"
 msgstr "Odštampaj probnu stranicu"
 
@@ -1869,6 +1881,961 @@ msgid ""
 msgstr ""
 "Štampač „%s“ zahteva „%s“ program ali on nije trenutno instaliran.  Molim "
 "instalirajte ga pre korišćenja štampača."
+
+#: ../ui/AboutDialog.glade.h:1
+msgid "A CUPS configuration tool."
+msgstr "CUPS alat za podešavanje."
+
+#: ../ui/AboutDialog.glade.h:2
+#, fuzzy
+msgid "Copyright © 2006-2008 Red Hat, Inc."
+msgstr "Autorska prava &#xA9; 2006-2008 Red Hat, Inc."
+
+#: ../ui/AboutDialog.glade.h:3
+msgid ""
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with "
+"this program; if not, write to the Free Software Foundation, Inc., 675 Mass "
+"Ave, Cambridge, MA 02139, USA."
+msgstr ""
+"Ovaj program je slobodan softver; možete ga razdeljivati i/ili izmenjivati "
+"pod uslovima GNU Opšte javne licence kao što je objavila Fondacija slobodnog "
+"softvera; ili licencom verzije 2, ili (po vašem izboru) bilo kojom kasnijom "
+"verzijom.\n"
+"\n"
+"Ovaj program se razdeljuje u nadi da će biti od koristi, ali BEZ IKAKVE "
+"GARANCIJE; čak i bez podrazumevane garancije PRIKLADNOSTI ZA PRODAJU ili "
+"PODOBNOSTI ZA POSEBNU NAMENU.  Pogledajte GNU Opštu javnu licencu za više "
+"detalja.\n"
+"\n"
+"Trebalo bi da ste primili uzorak GNU Opšte javne licence uz ovaj program; "
+"ako niste, pišite Fondaciji slobodnog softvera: Free Software Foundation, "
+"Inc., 675 Mass Ave, Cambridge, MA 02139, USA."
+
+#. TRANSLATORS: Replace this string with your names, one name per line.  Thank you very much for your effort on translating system-config-printer and all our other tools!
+#: ../ui/AboutDialog.glade.h:9
+msgid "translator-credits"
+msgstr ""
+"Igor Miletić <grejigl-gnomeprevod@yahoo.ca>\n"
+"Miloš Komarčević <kmilos@gmail.com>"
+
+#: ../ui/ConnectDialog.glade.h:1
+msgid "CUPS _server:"
+msgstr "CUPS _server:"
+
+#: ../ui/ConnectDialog.glade.h:2
+msgid "Connect to CUPS server"
+msgstr "Spoji na CUPS server"
+
+#: ../ui/ConnectDialog.glade.h:3
+msgid "Require _encryption"
+msgstr "Zahtevaj šifriranj_e"
+
+#: ../ui/ConnectingDialog.glade.h:3
+msgid "<span weight=\"bold\" size=\"larger\">Connecting to CUPS server</span>"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">Povezujem se sa CUPS serverom</span>"
+
+#: ../ui/ConnectingDialog.glade.h:4
+msgid "Connecting to CUPS server"
+msgstr "Povezujem se sa CUPS serverom"
+
+#: ../ui/InstallDialog.glade.h:1
+msgid "_Install"
+msgstr "_Instaliraj"
+
+#: ../ui/JobsWindow.glade.h:1
+msgid "Refresh job list"
+msgstr "Osveži spisak poslova"
+
+#: ../ui/JobsWindow.glade.h:2
+msgid "Show _completed jobs"
+msgstr "Pokaži _završene poslove"
+
+#: ../ui/JobsWindow.glade.h:3
+msgid "Show completed jobs"
+msgstr "Pokaži završene poslove"
+
+#: ../ui/JobsWindow.glade.h:4
+msgid "_Refresh"
+msgstr "_Osveži"
+
+#: ../ui/NewPrinterName.glade.h:1
+msgid "Duplicate Printer"
+msgstr "Udvostruči štampač"
+
+#: ../ui/NewPrinterName.glade.h:2
+msgid "New name for the printer"
+msgstr "Novo ime za štampač"
+
+#: ../ui/NewPrinterWindow.glade.h:1
+msgid "<b>Authentication</b>"
+msgstr "<b>Autentifikacija</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:2
+msgid "<b>Description</b>"
+msgstr "<b>Opis</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:3
+msgid "<b>Description</b> (optional)"
+msgstr "<b>Opis</b> (neobavezno)"
+
+#: ../ui/NewPrinterWindow.glade.h:4
+msgid "<b>Enter device URI</b>"
+msgstr "<b>Unesite URI uređaja</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:5
+msgid "<b>IPP Printer</b>"
+msgstr "<b>IPP štampač</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:6
+msgid "<b>License Terms</b>"
+msgstr "<b>Licencni termini</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:7
+msgid "<b>Location of the LPD network printer</b>"
+msgstr "<b>Lokacija LPD mrežnog štampača</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:8
+msgid "<b>Location of the network printer</b>"
+msgstr "<b>Lokacije mrežnog štampača</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:9
+msgid "<b>Location</b> (optional)"
+msgstr "<b>Lokacija</b> (neobavezno)"
+
+#: ../ui/NewPrinterWindow.glade.h:10
+msgid "<b>Network Printer</b>"
+msgstr "<b>Mrežni štampač</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:11
+msgid "<b>Note</b>"
+msgstr "<b>Napomena</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:12
+msgid "<b>Output Quality</b>"
+msgstr "<b>Kvalitet</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:13
+msgid "<b>Printer Name</b>"
+msgstr "<b>Ime štampača</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:14
+msgid "<b>SMB Printer</b>"
+msgstr "<b>SMB štampač</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:15
+msgid "<b>Select Driver</b>"
+msgstr "<b>Izaberite upravljački program</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:16
+msgid "<b>Settings of the serial port</b>"
+msgstr "<b>Postavke serijskog porta</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:17
+msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
+msgstr "<i>smb://[RadnaGrupa/]server[:port]/štampač</i>"
+
+#: ../ui/NewPrinterWindow.glade.h:18
+msgid "<span weight=\"bold\" size=\"larger\">Choose Class Members</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">Izaberite članove klase</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:19
+msgid "<span weight=\"bold\" size=\"larger\">Choose Driver</span>"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">Izaberite upravljački program</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:20
+msgid "<span weight=\"bold\" size=\"larger\">Describe Printer</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">Opišite štampač</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:21
+msgid "<span weight=\"bold\" size=\"larger\">Existing Settings</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">Postojeće postavke</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:22
+msgid "<span weight=\"bold\" size=\"larger\">Installable Options</span>"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">Opcije koje se mogu instalirati</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:23
+msgid "<span weight=\"bold\" size=\"larger\">Select Device</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">Izaberite uređaj</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:24
+msgid "Baud Rate"
+msgstr "Brzina u bodima"
+
+#: ../ui/NewPrinterWindow.glade.h:25
+msgid "Browse..."
+msgstr "Razgledaj..."
+
+#: ../ui/NewPrinterWindow.glade.h:26
+msgid "Change PPD"
+msgstr "Promeni PPD"
+
+#: ../ui/NewPrinterWindow.glade.h:27
+msgid "Class Members"
+msgstr "Članovi klase"
+
+#: ../ui/NewPrinterWindow.glade.h:28
+msgid "Comments..."
+msgstr "Primedbe..."
+
+#: ../ui/NewPrinterWindow.glade.h:29
+msgid "Connection"
+msgstr "Konekcija"
+
+#: ../ui/NewPrinterWindow.glade.h:30
+msgid "Data Bits"
+msgstr "Bitovi podataka"
+
+#: ../ui/NewPrinterWindow.glade.h:31 ../ui/PrinterPropertiesDialog.glade.h:29
+msgid "Description:"
+msgstr "Opis:"
+
+#: ../ui/NewPrinterWindow.glade.h:32
+msgid "Device"
+msgstr "Uređaj"
+
+#: ../ui/NewPrinterWindow.glade.h:33 ../troubleshoot/DeviceListed.py:40
+msgid "Device URI"
+msgstr "URI uređaja"
+
+#: ../ui/NewPrinterWindow.glade.h:34
+msgid "Device description."
+msgstr "Opis uređaja."
+
+#: ../ui/NewPrinterWindow.glade.h:36
+msgid "Driver details"
+msgstr "Detalji upravljačkog programa"
+
+#: ../ui/NewPrinterWindow.glade.h:37
+msgid "Empty"
+msgstr "Prazno"
+
+#: ../ui/NewPrinterWindow.glade.h:38
+msgid "Flow Control"
+msgstr "Kontrola toka"
+
+#: ../ui/NewPrinterWindow.glade.h:39
+msgid ""
+"For example:\n"
+"ipp://cups-server/printers/printer-queue\n"
+"ipp://printer.mydomain/ipp"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:42
+msgid ""
+"For the printer you have selected there are drivers available for download."
+msgstr ""
+"Za štampač koji ste izabrali dostupni su upravljački programi koje možete "
+"preuzeti."
+
+#: ../ui/NewPrinterWindow.glade.h:43
+msgid "Free software"
+msgstr "Slobodni softver"
+
+#: ../ui/NewPrinterWindow.glade.h:44
+msgid "Graphics:"
+msgstr "Grafika:"
+
+#: ../ui/NewPrinterWindow.glade.h:45
+msgid "Host:"
+msgstr "Domaćin:"
+
+#: ../ui/NewPrinterWindow.glade.h:46
+msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
+msgstr ""
+"Opis koji je ljudima razumljiv kao „HP LaserJet sa obostranim štampanjem“"
+
+#: ../ui/NewPrinterWindow.glade.h:47
+msgid "Human-readable location such as \"Lab 1\""
+msgstr "Lokacija koja je ljudima razumljiva kao „Kancelarija 1“"
+
+#: ../ui/NewPrinterWindow.glade.h:49 ../ui/PrinterPropertiesDialog.glade.h:39
+msgid "Installed Options"
+msgstr "Instalirane opcije"
+
+#: ../ui/NewPrinterWindow.glade.h:50
+#, fuzzy
+msgid "JetDirect"
+msgstr "DirectJet"
+
+#: ../ui/NewPrinterWindow.glade.h:51
+msgid "LPD"
+msgstr "LPD"
+
+#: ../ui/NewPrinterWindow.glade.h:52
+msgid "License:"
+msgstr "Licenca:"
+
+#: ../ui/NewPrinterWindow.glade.h:53
+msgid "Line art:"
+msgstr "Crtež:"
+
+#: ../ui/NewPrinterWindow.glade.h:54
+msgid "Local Driver"
+msgstr "Lokalni upravljački program"
+
+#: ../ui/NewPrinterWindow.glade.h:55
+msgid "Make and model:"
+msgstr "Marka i model:"
+
+#: ../ui/NewPrinterWindow.glade.h:56
+msgid "Manufacturer"
+msgstr "Proizvođač"
+
+#: ../ui/NewPrinterWindow.glade.h:58
+msgid "Network"
+msgstr "Mreža"
+
+#: ../ui/NewPrinterWindow.glade.h:61
+msgid "No, I do not accept this license"
+msgstr "Ne, ne prihvatam ovu licencu"
+
+#: ../ui/NewPrinterWindow.glade.h:62
+msgid "Parity"
+msgstr "Parnost"
+
+#: ../ui/NewPrinterWindow.glade.h:64
+msgid "Patented algorithms"
+msgstr "Patentirani algoritmi"
+
+#: ../ui/NewPrinterWindow.glade.h:65
+msgid "Photo:"
+msgstr "Foto:"
+
+#: ../ui/NewPrinterWindow.glade.h:66
+msgid "Port number:"
+msgstr "Broj porta:"
+
+#: ../ui/NewPrinterWindow.glade.h:67
+#, fuzzy
+msgid ""
+"PostScript Printer Description (PPD) files can often be found on the driver "
+"disk that comes with the printer. For PostScript printers they are often "
+"part of the Windows<sup>®</sup> driver."
+msgstr ""
+"Datoteke opisa PostScript štampača (PPD - PostScript Printer Description) se "
+"često mogu naći na disku upravljačkog programa koji dođe uz štampač. One su "
+"često deo Windows<sup>&#xAE;</sup> upravljačkog programa za PostScript "
+"štampače."
+
+#: ../ui/NewPrinterWindow.glade.h:68
+msgid "Printer model:"
+msgstr "Model štampača:"
+
+#: ../ui/NewPrinterWindow.glade.h:69
+msgid "Probe"
+msgstr "Ispitaj"
+
+#: ../ui/NewPrinterWindow.glade.h:70
+msgid "Prompt user if authentication is required"
+msgstr "Pošalji upit korisniku ako je autentifikacija potrebna"
+
+#: ../ui/NewPrinterWindow.glade.h:71
+msgid "Provide PPD file"
+msgstr "Priložite PPD datoteku"
+
+#: ../ui/NewPrinterWindow.glade.h:72
+msgid "Queue:"
+msgstr "Red:"
+
+#: ../ui/NewPrinterWindow.glade.h:73
+msgid "SCSI"
+msgstr "SCSI"
+
+#: ../ui/NewPrinterWindow.glade.h:74
+msgid "SMB"
+msgstr "SMB"
+
+#: ../ui/NewPrinterWindow.glade.h:75
+msgid "Search for a printer driver to download"
+msgstr "Tražite upravljački program za preuzimanje"
+
+#: ../ui/NewPrinterWindow.glade.h:76
+msgid "Searching..."
+msgstr "Pretražujem..."
+
+#: ../ui/NewPrinterWindow.glade.h:77
+msgid "Select printer from database"
+msgstr "Izaberite štampač iz baze podataka"
+
+#: ../ui/NewPrinterWindow.glade.h:78
+msgid "Serial"
+msgstr "Serijski"
+
+#: ../ui/NewPrinterWindow.glade.h:79
+msgid "Set authentication details now"
+msgstr "Postavite detalje za autentifikaciju sada"
+
+#: ../ui/NewPrinterWindow.glade.h:80
+msgid "Short name for this printer such as \"laserjet\""
+msgstr "Kratko ime za ovaj štampač kao „laserjet“"
+
+#: ../ui/NewPrinterWindow.glade.h:81
+msgid "Supplier:"
+msgstr "Opskrbljivač:"
+
+#: ../ui/NewPrinterWindow.glade.h:82
+msgid "Support:"
+msgstr "Podrška:"
+
+#: ../ui/NewPrinterWindow.glade.h:83
+msgid "Text:"
+msgstr "Tekst:"
+
+#: ../ui/NewPrinterWindow.glade.h:84
+msgid ""
+"The foomatic printer database contains various manufacturer provided "
+"PostScript Printer Description (PPD) files and also can generate PPD files "
+"for a large number of (non PostScript) printers. But in general manufacturer "
+"provided PPD files provide better access to the specific features of the "
+"printer."
+msgstr ""
+"Foomatic baza štampača sadrži razne datoteke Opisa PostScript štampača (PPD) "
+"dostavljene od proizvođača. Takođe može napraviti PPD datoteke za veliki "
+"broj (ne PostScript) štampača. Ali u opštem slučaju PPD datoteke dostavljene "
+"od proizvođača daju bolji pristup posebnim alatima štampača."
+
+#: ../ui/NewPrinterWindow.glade.h:85
+msgid ""
+"These drivers do not come from your operating system supplier and will not "
+"be covered by their commercial support.  See the support and license terms "
+"of the driver's supplier."
+msgstr ""
+"Ovi upravljački programi ne dolaze od kompanije koja pravi operativni "
+"sistem, i zbog toga nisu pokriveni njihovom komercijalnom podrškom.  "
+"Pogledajte termine podrške i licence opskrbljivača ovih upravljačkih "
+"programa."
+
+#: ../ui/NewPrinterWindow.glade.h:86
+msgid ""
+"This driver supports additional hardware that may be installed in the "
+"printer."
+msgstr ""
+"Ovaj upravljački program podržava dodatni hardver koji može biti instaliran "
+"u štampaču."
+
+#: ../ui/NewPrinterWindow.glade.h:87
+msgid ""
+"This is done by assuming that options with the same name do have the same "
+"meaning. Settings of options that are not present in the new PPD will be "
+"lost and options only present in the new PPD will be set to default."
+msgstr ""
+"Ovo se radi pretpostavljajući da opcije sa istim imenom imaju i isto "
+"značenje. Postavke opcija koje nisu u novom PPD-u će biti izgubljene i samo "
+"opcije koje postoje u novom PPD-u će biti postavljene na podrazumevano."
+
+#: ../ui/NewPrinterWindow.glade.h:88
+msgid ""
+"This way all current option settings will be lost. The default settings of "
+"the new PPD will be used. "
+msgstr ""
+"Ovako će sve trenutne opcije postavke biti izgubljene. Podrazumevane "
+"postavke novog PPD-a će biti upotrebljena."
+
+#: ../ui/NewPrinterWindow.glade.h:89
+msgid "Try to copy the option settings over from the old PPD. "
+msgstr "Pokušajte da umnožite opcije postavke iz starog PPD-a. "
+
+#: ../ui/NewPrinterWindow.glade.h:90
+msgid "Try to transfer the current settings"
+msgstr "Pokušaj da preneseš tekuće postavke"
+
+#: ../ui/NewPrinterWindow.glade.h:91
+msgid "URI:"
+msgstr "URI:"
+
+#: ../ui/NewPrinterWindow.glade.h:93
+msgid "Use the new PPD (Postscript Printer Description) as is."
+msgstr "Koristi novi PPD (Opis PostScript štampača) bez promena."
+
+#: ../ui/NewPrinterWindow.glade.h:95
+msgid ""
+"With this choice no driver download will be performed. In the next steps a "
+"locally installed driver will be selected."
+msgstr ""
+"Sa ovim izborom neće biti preuzimanja upravljačkog programa. U sledećim "
+"koracima lokalno instalirani upravljački program će biti izabran."
+
+#: ../ui/NewPrinterWindow.glade.h:96
+msgid "Yes, I accept this license"
+msgstr "Da, prihvatam ovu licencu"
+
+#: ../ui/NewPrinterWindow.glade.h:97
+msgid "_Search"
+msgstr "Pre_traga"
+
+#: ../ui/NewPrinterWindow.glade.h:98
+msgid "_Verify..."
+msgstr "Pro_veri..."
+
+#: ../ui/NewPrinterWindow.glade.h:99
+msgid "license"
+msgstr "licenca"
+
+#: ../ui/NewPrinterWindow.glade.h:100 ../ui/PrinterPropertiesDialog.glade.h:81
+msgid "move left"
+msgstr "pomeri levo"
+
+#: ../ui/NewPrinterWindow.glade.h:101 ../ui/PrinterPropertiesDialog.glade.h:82
+msgid "move right"
+msgstr "pomeri desno"
+
+#: ../ui/NewPrinterWindow.glade.h:102
+msgid "short description"
+msgstr "kratak opis"
+
+#: ../ui/NewPrinterWindow.glade.h:103
+msgid "supplier"
+msgstr "opskrbljivač"
+
+#: ../ui/NewPrinterWindow.glade.h:104
+msgid "support contacts"
+msgstr "kontakti za podršku"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:1
+msgid " "
+msgstr " "
+
+#: ../ui/PrinterPropertiesDialog.glade.h:2
+msgid "<b>Banner</b>"
+msgstr "<b>Naslov</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:3
+msgid "<b>Common Options</b>"
+msgstr "<b>Opšte opcije</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:4
+msgid "<b>Image Options</b>"
+msgstr "<b>Opcije za slike</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:5
+msgid "<b>Ink/Toner Levels</b>"
+msgstr "<b>Nivo mastila/tonera</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:6
+msgid "<b>Other Options (Advanced)</b>"
+msgstr "<b>Ostale opcije (napredno)</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:7
+msgid "<b>Policies</b>"
+msgstr "<b>Polise</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:8
+msgid "<b>Settings</b>"
+msgstr "<b>Postavke</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:9
+msgid "<b>State</b>"
+msgstr "<b>Stanje</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:10
+msgid "<b>Status Messages</b>"
+msgstr "<b>Poruke stanja</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:11
+msgid "<b>Tests and Maintenance</b>"
+msgstr "<b>Testovi i održavanje</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:12
+msgid "<b>Text Options</b>"
+msgstr "<b>Opcije za tekst</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:13
+msgid ""
+"<i>Not published\n"
+"See server settings</i>"
+msgstr ""
+"<i>Nije objavljen\n"
+"Pogledajte postavke servera</i>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:15
+msgid "Accepting jobs"
+msgstr "Prihvata poslove"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:16
+msgid "Access Control"
+msgstr "Kontrola pristupa"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:17
+msgid "Add or Remove Members"
+msgstr "Dodaj ili izbriši članove"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:18
+msgid "Allow printing for everyone except these users:"
+msgstr "Dozvoli štampanje za sve osim ove korisnike:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:19
+msgid "Bottom margin:"
+msgstr "Donja margina:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:20
+msgid "Brightness:"
+msgstr "Osvetljenje:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:21
+msgid "Change..."
+msgstr "Promeni..."
+
+#: ../ui/PrinterPropertiesDialog.glade.h:22
+msgid "Characters per inch:"
+msgstr "Znakova po inču:"
+
+#. Not more than 25 characters
+#: ../ui/PrinterPropertiesDialog.glade.h:24
+msgid "Clean Print Heads"
+msgstr "Očisti glave štampača"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:25
+msgid "Co_nflicts"
+msgstr "Su_kobi"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:26
+msgid "Columns:"
+msgstr "Kolone: "
+
+#: ../ui/PrinterPropertiesDialog.glade.h:27
+msgid "Copies:"
+msgstr "Umnožaka:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:28
+msgid "Deny printing for everyone except these users:"
+msgstr "Zabrani štampanje svima osim ovim korisnicima:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:30
+msgid "Device URI:"
+msgstr "URI uređaja:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:31
+msgid "Enabled"
+msgstr "Uključen"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:32
+msgid "Ending Banner:"
+msgstr "Završna oznaka:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:33
+msgid "Error Policy: \t"
+msgstr "Polisa za grešku: \t"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:34
+msgid "Finishings:"
+msgstr "Završavanja:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:35
+msgid "Gamma:"
+msgstr "Gama:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:36
+msgid "Hold until:"
+msgstr "Zadrži do:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:37
+msgid "Hue adjustment:"
+msgstr "Podešavanje tona:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:38
+msgid "Ink/Toner Levels"
+msgstr "Nivo mastila/tonera"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:40
+msgid "Job Options"
+msgstr "Opcije posla"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:41
+msgid "Job priority:"
+msgstr "Prvenstvo posla:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:42
+msgid "Left margin:"
+msgstr "Leva margina:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:43
+msgid "Lines per inch:"
+msgstr "Linija po inču:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:44
+msgid "Location:"
+msgstr "Lokacija:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:45
+msgid "Make and Model:"
+msgstr "Marka i model:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:46
+msgid "Media:"
+msgstr "Medija:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:47
+msgid "Members"
+msgstr "Članovi"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:48
+msgid "Mirror"
+msgstr "Odraz"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:49
+msgid "More"
+msgstr "Više"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:50
+msgid "Operation Policy:"
+msgstr "Radna polisa:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:51
+msgid "Orientation:"
+msgstr "Usmerenost:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:52
+#, fuzzy
+msgid "Output bin:"
+msgstr "Redosled izlaza:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:53
+msgid "Output order:"
+msgstr "Redosled izlaza:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:54
+msgid "Pages per side layout:"
+msgstr "Raspored stranica na listu:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:55
+msgid "Pages per side:"
+msgstr "Stranica po listu:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:56
+msgid "Policies"
+msgstr "Polise"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:57
+msgid "Pretty print"
+msgstr "Ulepšano štampanje"
+
+#. Not more than 25 characters
+#: ../ui/PrinterPropertiesDialog.glade.h:59
+msgid "Print Self-Test Page"
+msgstr "Odštampaj samoprobnu stranicu"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:62
+#, fuzzy
+msgid "Print quality:"
+msgstr "Stanje štampača:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:64
+msgid "Printer Properties"
+msgstr "Svojstva štampača"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:65
+msgid "Printer State:"
+msgstr "Stanje štampača:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:66
+#, fuzzy
+msgid "Printer resolution:"
+msgstr "Lokacija štampača"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:67
+msgid "Reset"
+msgstr "Početna vrednost"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:68
+msgid "Right margin:"
+msgstr "Desna margina:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:69
+msgid "Saturation:"
+msgstr "Zasićenje:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:70
+msgid "Scale to fit"
+msgstr "Prilagodi veličini stranice"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:71
+msgid "Scaling:"
+msgstr "Razmera:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:72
+msgid "Settings"
+msgstr "Postavke"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:73
+msgid "Shared"
+msgstr "Deljen"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:74
+msgid "Sides:"
+msgstr "Strane:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:75
+msgid ""
+"Specify the default job options for this printer.  Jobs arriving at this "
+"print server will have these options added if they are not already set by "
+"the application."
+msgstr ""
+"Navedite podrazumevane opcije za poslove na ovom štampaču.  Kada program "
+"koji šalje posao na ovaj štamparski server ne postavi svoje opcije "
+"štampanja, podrazumevane opcije će se koristiti."
+
+#: ../ui/PrinterPropertiesDialog.glade.h:76
+msgid "Starting Banner:"
+msgstr "Početna oznaka:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:77
+msgid "There are no status messages for this printer."
+msgstr "Nema poruka o stanju ovog štampača."
+
+#: ../ui/PrinterPropertiesDialog.glade.h:78
+msgid "To add a new option, enter its name in the box below and click to add."
+msgstr ""
+"Da biste dodali novu opciju, unesite njeno ime u polje ispod i pritisnite "
+"dodaj."
+
+#: ../ui/PrinterPropertiesDialog.glade.h:79
+msgid "Top margin:"
+msgstr "Gornja margina:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:80
+msgid "Word wrap"
+msgstr "Prelom reda"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:83
+msgid "points"
+msgstr "tačaka"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:84
+msgid "user"
+msgstr "korisnik"
+
+#: ../ui/PrintersWindow.glade.h:1
+msgid ""
+"Printing service not available.  Start the service on this computer or "
+"connect to another server."
+msgstr ""
+
+#: ../ui/PrintersWindow.glade.h:2
+msgid "Start Service"
+msgstr ""
+
+#: ../ui/PrintersWindow.glade.h:3
+msgid "System-Config-Printer"
+msgstr "System-Config-Printer"
+
+#: ../ui/PrintersWindow.glade.h:4
+msgid "There are no printers configured yet."
+msgstr ""
+
+#: ../ui/PrintersWindow.glade.h:5
+msgid "_Discovered Printers"
+msgstr "_Otkriveni štampači"
+
+#: ../ui/PrintersWindow.glade.h:6
+msgid "_Group"
+msgstr "G_rupa"
+
+#: ../ui/PrintersWindow.glade.h:7
+msgid "_Groups"
+msgstr "_Grupe"
+
+#: ../ui/PrintersWindow.glade.h:8
+msgid "_Help"
+msgstr "_Pomoć"
+
+#: ../ui/PrintersWindow.glade.h:10
+msgid "_Server"
+msgstr "_Server"
+
+#: ../ui/PrintersWindow.glade.h:11
+msgid "_View"
+msgstr "Pre_gled"
+
+#: ../ui/ServerSettingsDialog.glade.h:1
+msgid "<b>Basic Server Settings</b>"
+msgstr "<b>Osnovne postavke servera</b>"
+
+#: ../ui/ServerSettingsDialog.glade.h:2
+msgid "<b>Browse servers</b>"
+msgstr "<b>Pretraži servere</b>"
+
+#: ../ui/ServerSettingsDialog.glade.h:3
+msgid "<b>Job history</b>"
+msgstr "<b>Istorija poslova</b>"
+
+#: ../ui/ServerSettingsDialog.glade.h:4
+msgid "Advanced Server Settings"
+msgstr "Napredna postavke servera"
+
+#: ../ui/ServerSettingsDialog.glade.h:5
+msgid "Allow _remote administration"
+msgstr "Dozvoli dalji_nsko rukovođenje"
+
+#: ../ui/ServerSettingsDialog.glade.h:6
+msgid "Allow _users to cancel any job (not just their own)"
+msgstr "Dozvoli _korisnicima da otkažu bilo koji posao (ne samo njihov)"
+
+#: ../ui/ServerSettingsDialog.glade.h:7
+msgid "Allow printing from the _Internet"
+msgstr "Dozvoli štampanje preko _Interneta"
+
+#: ../ui/ServerSettingsDialog.glade.h:8
+msgid "Do not preserve job history"
+msgstr "Ne čuvaj istoriju poslova"
+
+#: ../ui/ServerSettingsDialog.glade.h:9
+msgid "Preserve job files (allow reprinting)"
+msgstr "Sačuvaj štampane datoteke (dozvoljava ponovno štampanje)"
+
+#: ../ui/ServerSettingsDialog.glade.h:10
+msgid "Preserve job history but not files"
+msgstr "Sačuvaj istoriju poslova ali ne i datoteke"
+
+#: ../ui/ServerSettingsDialog.glade.h:11
+msgid "Save _debugging information for troubleshooting"
+msgstr "Sačuvaj podatke o _greškama za uklanjanje neispravnosti"
+
+#: ../ui/ServerSettingsDialog.glade.h:12
+msgid "Server Settings"
+msgstr "Postavke servera"
+
+#: ../ui/ServerSettingsDialog.glade.h:13
+msgid ""
+"Usually print servers broadcast their queues. Specify print servers below to "
+"periodically ask for queues instead."
+msgstr ""
+"Uglavnom štamparski serveri odašilju svoje redove za štampanje. Navedite "
+"štamparske servere ispod kako bi se umesto periodično slao upit za redove "
+"štampanja."
+
+#: ../ui/ServerSettingsDialog.glade.h:14
+msgid "_Publish shared printers connected to this system"
+msgstr "Objavi deljene štampače spo_jene na ovaj sistem"
+
+#: ../ui/ServerSettingsDialog.glade.h:15
+msgid "_Show printers shared by other systems"
+msgstr "Pokaži deljene štampače sa ostalih _sistema"
+
+#: ../ui/SMBBrowseDialog.glade.h:1
+msgid "SMB Browser"
+msgstr "SMB pregledač"
+
+#: ../ui/statusicon_popupmenu.glade.h:1
+msgid "_Hide"
+msgstr "Sa_krij"
+
+#: ../ui/WaitWindow.glade.h:1
+msgid "Please Wait"
+msgstr "Sačekajte"
 
 #: ../system-config-printer.desktop.in.h:1
 msgid "Configure printers"
@@ -2120,10 +3087,6 @@ msgid ""
 msgstr ""
 "Izaberite štampač koji želite koristiti sa donjeg spiska. Ako se ne javlja "
 "na spisku, izaberite „Nije na spisku“. "
-
-#: ../troubleshoot/DeviceListed.py:40
-msgid "Device URI"
-msgstr "URI uređaja"
 
 #: ../troubleshoot/ErrorLogCheckpoint.py:31
 msgid "Debugging"
@@ -2456,723 +3419,11 @@ msgstr "Programče za red štampanja"
 msgid "System tray icon for managing print jobs"
 msgstr "Ikona sistemske obaveštajne zone za upravljanje štamparskim poslovima"
 
-#~ msgid "A CUPS configuration tool."
-#~ msgstr "CUPS alat za podešavanje."
-
-#~ msgid "Copyright &#xA9; 2006-2008 Red Hat, Inc."
-#~ msgstr "Autorska prava &#xA9; 2006-2008 Red Hat, Inc."
-
-#~ msgid ""
-#~ "This program is free software; you can redistribute it and/or modify it "
-#~ "under the terms of the GNU General Public License as published by the "
-#~ "Free Software Foundation; either version 2 of the License, or (at your "
-#~ "option) any later version.\n"
-#~ "\n"
-#~ "This program is distributed in the hope that it will be useful, but "
-#~ "WITHOUT ANY WARRANTY; without even the implied warranty of "
-#~ "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General "
-#~ "Public License for more details.\n"
-#~ "\n"
-#~ "You should have received a copy of the GNU General Public License along "
-#~ "with this program; if not, write to the Free Software Foundation, Inc., "
-#~ "675 Mass Ave, Cambridge, MA 02139, USA."
-#~ msgstr ""
-#~ "Ovaj program je slobodan softver; možete ga razdeljivati i/ili "
-#~ "izmenjivati pod uslovima GNU Opšte javne licence kao što je objavila "
-#~ "Fondacija slobodnog softvera; ili licencom verzije 2, ili (po vašem "
-#~ "izboru) bilo kojom kasnijom verzijom.\n"
-#~ "\n"
-#~ "Ovaj program se razdeljuje u nadi da će biti od koristi, ali BEZ IKAKVE "
-#~ "GARANCIJE; čak i bez podrazumevane garancije PRIKLADNOSTI ZA PRODAJU ili "
-#~ "PODOBNOSTI ZA POSEBNU NAMENU.  Pogledajte GNU Opštu javnu licencu za više "
-#~ "detalja.\n"
-#~ "\n"
-#~ "Trebalo bi da ste primili uzorak GNU Opšte javne licence uz ovaj program; "
-#~ "ako niste, pišite Fondaciji slobodnog softvera: Free Software Foundation, "
-#~ "Inc., 675 Mass Ave, Cambridge, MA 02139, USA."
-
-#~ msgid "translator-credits"
-#~ msgstr ""
-#~ "Igor Miletić <grejigl-gnomeprevod@yahoo.ca>\n"
-#~ "Miloš Komarčević <kmilos@gmail.com>"
-
-#~ msgid "CUPS _server:"
-#~ msgstr "CUPS _server:"
-
-#~ msgid "Connect to CUPS server"
-#~ msgstr "Spoji na CUPS server"
-
-#~ msgid "Require _encryption"
-#~ msgstr "Zahtevaj šifriranj_e"
-
-#~ msgid ""
-#~ "<span weight=\"bold\" size=\"larger\">Connecting to CUPS server</span>"
-#~ msgstr ""
-#~ "<span weight=\"bold\" size=\"larger\">Povezujem se sa CUPS serverom</span>"
-
-#~ msgid "Connecting to CUPS server"
-#~ msgstr "Povezujem se sa CUPS serverom"
-
-#~ msgid "_Install"
-#~ msgstr "_Instaliraj"
-
-#~ msgid "Refresh job list"
-#~ msgstr "Osveži spisak poslova"
-
-#~ msgid "Show _completed jobs"
-#~ msgstr "Pokaži _završene poslove"
-
-#~ msgid "Show completed jobs"
-#~ msgstr "Pokaži završene poslove"
-
-#~ msgid "_Refresh"
-#~ msgstr "_Osveži"
-
-#~ msgid "Duplicate Printer"
-#~ msgstr "Udvostruči štampač"
-
-#~ msgid "New name for the printer"
-#~ msgstr "Novo ime za štampač"
-
-#~ msgid "<b>Authentication</b>"
-#~ msgstr "<b>Autentifikacija</b>"
-
-#~ msgid "<b>Description</b>"
-#~ msgstr "<b>Opis</b>"
-
-#~ msgid "<b>Description</b> (optional)"
-#~ msgstr "<b>Opis</b> (neobavezno)"
-
-#~ msgid "<b>Enter device URI</b>"
-#~ msgstr "<b>Unesite URI uređaja</b>"
-
-#~ msgid "<b>IPP Printer</b>"
-#~ msgstr "<b>IPP štampač</b>"
-
-#~ msgid "<b>License Terms</b>"
-#~ msgstr "<b>Licencni termini</b>"
-
-#~ msgid "<b>Location of the LPD network printer</b>"
-#~ msgstr "<b>Lokacija LPD mrežnog štampača</b>"
-
-#~ msgid "<b>Location of the network printer</b>"
-#~ msgstr "<b>Lokacije mrežnog štampača</b>"
-
-#~ msgid "<b>Location</b> (optional)"
-#~ msgstr "<b>Lokacija</b> (neobavezno)"
-
-#~ msgid "<b>Network Printer</b>"
-#~ msgstr "<b>Mrežni štampač</b>"
-
-#~ msgid "<b>Note</b>"
-#~ msgstr "<b>Napomena</b>"
-
-#~ msgid "<b>Output Quality</b>"
-#~ msgstr "<b>Kvalitet</b>"
-
-#~ msgid "<b>Printer Name</b>"
-#~ msgstr "<b>Ime štampača</b>"
-
-#~ msgid "<b>SMB Printer</b>"
-#~ msgstr "<b>SMB štampač</b>"
-
-#~ msgid "<b>Select Driver</b>"
-#~ msgstr "<b>Izaberite upravljački program</b>"
-
-#~ msgid "<b>Settings of the serial port</b>"
-#~ msgstr "<b>Postavke serijskog porta</b>"
-
-#~ msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
-#~ msgstr "<i>smb://[RadnaGrupa/]server[:port]/štampač</i>"
-
-#~ msgid "<span weight=\"bold\" size=\"larger\">Choose Class Members</span>"
-#~ msgstr ""
-#~ "<span weight=\"bold\" size=\"larger\">Izaberite članove klase</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"larger\">Choose Driver</span>"
-#~ msgstr ""
-#~ "<span weight=\"bold\" size=\"larger\">Izaberite upravljački program</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"larger\">Describe Printer</span>"
-#~ msgstr "<span weight=\"bold\" size=\"larger\">Opišite štampač</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"larger\">Existing Settings</span>"
-#~ msgstr "<span weight=\"bold\" size=\"larger\">Postojeće postavke</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"larger\">Installable Options</span>"
-#~ msgstr ""
-#~ "<span weight=\"bold\" size=\"larger\">Opcije koje se mogu instalirati</"
-#~ "span>"
-
-#~ msgid "<span weight=\"bold\" size=\"larger\">Select Device</span>"
-#~ msgstr "<span weight=\"bold\" size=\"larger\">Izaberite uređaj</span>"
-
-#~ msgid "Baud Rate"
-#~ msgstr "Brzina u bodima"
-
-#~ msgid "Browse..."
-#~ msgstr "Razgledaj..."
-
-#~ msgid "Change PPD"
-#~ msgstr "Promeni PPD"
-
-#~ msgid "Class Members"
-#~ msgstr "Članovi klase"
-
-#~ msgid "Comments..."
-#~ msgstr "Primedbe..."
-
-#~ msgid "Connection"
-#~ msgstr "Konekcija"
-
-#~ msgid "Data Bits"
-#~ msgstr "Bitovi podataka"
-
-#~ msgid "Description:"
-#~ msgstr "Opis:"
-
-#~ msgid "Device"
-#~ msgstr "Uređaj"
-
-#~ msgid "Device description."
-#~ msgstr "Opis uređaja."
-
-#~ msgid "Driver details"
-#~ msgstr "Detalji upravljačkog programa"
-
-#~ msgid "Empty"
-#~ msgstr "Prazno"
-
-#~ msgid "Flow Control"
-#~ msgstr "Kontrola toka"
-
-#~ msgid ""
-#~ "For the printer you have selected there are drivers available for "
-#~ "download."
-#~ msgstr ""
-#~ "Za štampač koji ste izabrali dostupni su upravljački programi koje možete "
-#~ "preuzeti."
-
-#~ msgid "Free software"
-#~ msgstr "Slobodni softver"
-
-#~ msgid "Graphics:"
-#~ msgstr "Grafika:"
-
-#~ msgid "Host:"
-#~ msgstr "Domaćin:"
-
-#~ msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
-#~ msgstr ""
-#~ "Opis koji je ljudima razumljiv kao „HP LaserJet sa obostranim štampanjem“"
-
-#~ msgid "Human-readable location such as \"Lab 1\""
-#~ msgstr "Lokacija koja je ljudima razumljiva kao „Kancelarija 1“"
-
-#~ msgid "Installed Options"
-#~ msgstr "Instalirane opcije"
-
-#, fuzzy
-#~ msgid "JetDirect"
-#~ msgstr "DirectJet"
-
-#~ msgid "LPD"
-#~ msgstr "LPD"
-
-#~ msgid "License:"
-#~ msgstr "Licenca:"
-
-#~ msgid "Line art:"
-#~ msgstr "Crtež:"
-
-#~ msgid "Local Driver"
-#~ msgstr "Lokalni upravljački program"
-
-#~ msgid "Make and model:"
-#~ msgstr "Marka i model:"
-
-#~ msgid "Manufacturer"
-#~ msgstr "Proizvođač"
-
-#~ msgid "Network"
-#~ msgstr "Mreža"
-
-#~ msgid "No, I do not accept this license"
-#~ msgstr "Ne, ne prihvatam ovu licencu"
-
-#~ msgid "Parity"
-#~ msgstr "Parnost"
-
-#~ msgid "Patented algorithms"
-#~ msgstr "Patentirani algoritmi"
-
-#~ msgid "Photo:"
-#~ msgstr "Foto:"
-
-#~ msgid "Port number:"
-#~ msgstr "Broj porta:"
-
-#~ msgid ""
-#~ "PostScript Printer Description (PPD) files can often be found on the "
-#~ "driver disk that comes with the printer. For PostScript printers they are "
-#~ "often part of the Windows<sup>&#xAE;</sup> driver."
-#~ msgstr ""
-#~ "Datoteke opisa PostScript štampača (PPD - PostScript Printer Description) "
-#~ "se često mogu naći na disku upravljačkog programa koji dođe uz štampač. "
-#~ "One su često deo Windows<sup>&#xAE;</sup> upravljačkog programa za "
-#~ "PostScript štampače."
-
-#~ msgid "Printer model:"
-#~ msgstr "Model štampača:"
-
-#~ msgid "Probe"
-#~ msgstr "Ispitaj"
-
-#~ msgid "Prompt user if authentication is required"
-#~ msgstr "Pošalji upit korisniku ako je autentifikacija potrebna"
-
-#~ msgid "Provide PPD file"
-#~ msgstr "Priložite PPD datoteku"
-
-#~ msgid "Queue:"
-#~ msgstr "Red:"
-
-#~ msgid "SCSI"
-#~ msgstr "SCSI"
-
-#~ msgid "SMB"
-#~ msgstr "SMB"
-
-#~ msgid "Search for a printer driver to download"
-#~ msgstr "Tražite upravljački program za preuzimanje"
-
-#~ msgid "Searching..."
-#~ msgstr "Pretražujem..."
-
-#~ msgid "Select printer from database"
-#~ msgstr "Izaberite štampač iz baze podataka"
-
-#~ msgid "Serial"
-#~ msgstr "Serijski"
-
-#~ msgid "Set authentication details now"
-#~ msgstr "Postavite detalje za autentifikaciju sada"
-
-#~ msgid "Short name for this printer such as \"laserjet\""
-#~ msgstr "Kratko ime za ovaj štampač kao „laserjet“"
-
-#~ msgid "Supplier:"
-#~ msgstr "Opskrbljivač:"
-
-#~ msgid "Support:"
-#~ msgstr "Podrška:"
-
-#~ msgid "Text:"
-#~ msgstr "Tekst:"
-
-#~ msgid ""
-#~ "The foomatic printer database contains various manufacturer provided "
-#~ "PostScript Printer Description (PPD) files and also can generate PPD "
-#~ "files for a large number of (non PostScript) printers. But in general "
-#~ "manufacturer provided PPD files provide better access to the specific "
-#~ "features of the printer."
-#~ msgstr ""
-#~ "Foomatic baza štampača sadrži razne datoteke Opisa PostScript štampača "
-#~ "(PPD) dostavljene od proizvođača. Takođe može napraviti PPD datoteke za "
-#~ "veliki broj (ne PostScript) štampača. Ali u opštem slučaju PPD datoteke "
-#~ "dostavljene od proizvođača daju bolji pristup posebnim alatima štampača."
-
-#~ msgid ""
-#~ "These drivers do not come from your operating system supplier and will "
-#~ "not be covered by their commercial support.  See the support and license "
-#~ "terms of the driver's supplier."
-#~ msgstr ""
-#~ "Ovi upravljački programi ne dolaze od kompanije koja pravi operativni "
-#~ "sistem, i zbog toga nisu pokriveni njihovom komercijalnom podrškom.  "
-#~ "Pogledajte termine podrške i licence opskrbljivača ovih upravljačkih "
-#~ "programa."
-
-#~ msgid ""
-#~ "This driver supports additional hardware that may be installed in the "
-#~ "printer."
-#~ msgstr ""
-#~ "Ovaj upravljački program podržava dodatni hardver koji može biti "
-#~ "instaliran u štampaču."
-
-#~ msgid ""
-#~ "This is done by assuming that options with the same name do have the same "
-#~ "meaning. Settings of options that are not present in the new PPD will be "
-#~ "lost and options only present in the new PPD will be set to default."
-#~ msgstr ""
-#~ "Ovo se radi pretpostavljajući da opcije sa istim imenom imaju i isto "
-#~ "značenje. Postavke opcija koje nisu u novom PPD-u će biti izgubljene i "
-#~ "samo opcije koje postoje u novom PPD-u će biti postavljene na "
-#~ "podrazumevano."
-
-#~ msgid ""
-#~ "This way all current option settings will be lost. The default settings "
-#~ "of the new PPD will be used. "
-#~ msgstr ""
-#~ "Ovako će sve trenutne opcije postavke biti izgubljene. Podrazumevane "
-#~ "postavke novog PPD-a će biti upotrebljena."
-
-#~ msgid "Try to copy the option settings over from the old PPD. "
-#~ msgstr "Pokušajte da umnožite opcije postavke iz starog PPD-a. "
-
-#~ msgid "Try to transfer the current settings"
-#~ msgstr "Pokušaj da preneseš tekuće postavke"
-
-#~ msgid "URI:"
-#~ msgstr "URI:"
-
-#~ msgid "Use the new PPD (Postscript Printer Description) as is."
-#~ msgstr "Koristi novi PPD (Opis PostScript štampača) bez promena."
-
-#~ msgid ""
-#~ "With this choice no driver download will be performed. In the next steps "
-#~ "a locally installed driver will be selected."
-#~ msgstr ""
-#~ "Sa ovim izborom neće biti preuzimanja upravljačkog programa. U sledećim "
-#~ "koracima lokalno instalirani upravljački program će biti izabran."
-
-#~ msgid "Yes, I accept this license"
-#~ msgstr "Da, prihvatam ovu licencu"
-
-#~ msgid "_Search"
-#~ msgstr "Pre_traga"
-
-#~ msgid "_Verify..."
-#~ msgstr "Pro_veri..."
-
-#~ msgid "license"
-#~ msgstr "licenca"
-
-#~ msgid "move left"
-#~ msgstr "pomeri levo"
-
-#~ msgid "move right"
-#~ msgstr "pomeri desno"
-
-#~ msgid "short description"
-#~ msgstr "kratak opis"
-
-#~ msgid "supplier"
-#~ msgstr "opskrbljivač"
-
-#~ msgid "support contacts"
-#~ msgstr "kontakti za podršku"
-
-#~ msgid " "
-#~ msgstr " "
-
-#~ msgid "<b>Banner</b>"
-#~ msgstr "<b>Naslov</b>"
-
-#~ msgid "<b>Common Options</b>"
-#~ msgstr "<b>Opšte opcije</b>"
-
-#~ msgid "<b>Image Options</b>"
-#~ msgstr "<b>Opcije za slike</b>"
-
-#~ msgid "<b>Ink/Toner Levels</b>"
-#~ msgstr "<b>Nivo mastila/tonera</b>"
-
-#~ msgid "<b>Other Options (Advanced)</b>"
-#~ msgstr "<b>Ostale opcije (napredno)</b>"
-
-#~ msgid "<b>Policies</b>"
-#~ msgstr "<b>Polise</b>"
-
-#~ msgid "<b>Settings</b>"
-#~ msgstr "<b>Postavke</b>"
-
-#~ msgid "<b>State</b>"
-#~ msgstr "<b>Stanje</b>"
-
-#~ msgid "<b>Status Messages</b>"
-#~ msgstr "<b>Poruke stanja</b>"
-
-#~ msgid "<b>Tests and Maintenance</b>"
-#~ msgstr "<b>Testovi i održavanje</b>"
-
-#~ msgid "<b>Text Options</b>"
-#~ msgstr "<b>Opcije za tekst</b>"
-
-#~ msgid ""
-#~ "<i>Not published\n"
-#~ "See server settings</i>"
-#~ msgstr ""
-#~ "<i>Nije objavljen\n"
-#~ "Pogledajte postavke servera</i>"
-
-#~ msgid "Accepting jobs"
-#~ msgstr "Prihvata poslove"
-
-#~ msgid "Access Control"
-#~ msgstr "Kontrola pristupa"
-
-#~ msgid "Add or Remove Members"
-#~ msgstr "Dodaj ili izbriši članove"
-
-#~ msgid "Allow printing for everyone except these users:"
-#~ msgstr "Dozvoli štampanje za sve osim ove korisnike:"
-
-#~ msgid "Bottom margin:"
-#~ msgstr "Donja margina:"
-
-#~ msgid "Brightness:"
-#~ msgstr "Osvetljenje:"
-
-#~ msgid "Change..."
-#~ msgstr "Promeni..."
-
-#~ msgid "Characters per inch:"
-#~ msgstr "Znakova po inču:"
-
-#~ msgid "Clean Print Heads"
-#~ msgstr "Očisti glave štampača"
-
-#~ msgid "Co_nflicts"
-#~ msgstr "Su_kobi"
-
-#~ msgid "Columns:"
-#~ msgstr "Kolone: "
-
-#~ msgid "Copies:"
-#~ msgstr "Umnožaka:"
-
-#~ msgid "Deny printing for everyone except these users:"
-#~ msgstr "Zabrani štampanje svima osim ovim korisnicima:"
-
-#~ msgid "Device URI:"
-#~ msgstr "URI uređaja:"
-
-#~ msgid "Enabled"
-#~ msgstr "Uključen"
-
-#~ msgid "Ending Banner:"
-#~ msgstr "Završna oznaka:"
-
-#~ msgid "Error Policy: \t"
-#~ msgstr "Polisa za grešku: \t"
-
-#~ msgid "Finishings:"
-#~ msgstr "Završavanja:"
-
-#~ msgid "Gamma:"
-#~ msgstr "Gama:"
-
-#~ msgid "Hold until:"
-#~ msgstr "Zadrži do:"
-
-#~ msgid "Hue adjustment:"
-#~ msgstr "Podešavanje tona:"
-
-#~ msgid "Ink/Toner Levels"
-#~ msgstr "Nivo mastila/tonera"
-
-#~ msgid "Job Options"
-#~ msgstr "Opcije posla"
-
-#~ msgid "Job priority:"
-#~ msgstr "Prvenstvo posla:"
-
-#~ msgid "Left margin:"
-#~ msgstr "Leva margina:"
-
-#~ msgid "Lines per inch:"
-#~ msgstr "Linija po inču:"
-
-#~ msgid "Location:"
-#~ msgstr "Lokacija:"
-
-#~ msgid "Make and Model:"
-#~ msgstr "Marka i model:"
-
-#~ msgid "Media:"
-#~ msgstr "Medija:"
-
-#~ msgid "Members"
-#~ msgstr "Članovi"
-
-#~ msgid "Mirror"
-#~ msgstr "Odraz"
-
-#~ msgid "More"
-#~ msgstr "Više"
-
-#~ msgid "Operation Policy:"
-#~ msgstr "Radna polisa:"
-
-#~ msgid "Orientation:"
-#~ msgstr "Usmerenost:"
-
-#~ msgid "Output order:"
-#~ msgstr "Redosled izlaza:"
-
-#~ msgid "Pages per side layout:"
-#~ msgstr "Raspored stranica na listu:"
-
-#~ msgid "Pages per side:"
-#~ msgstr "Stranica po listu:"
-
-#~ msgid "Policies"
-#~ msgstr "Polise"
-
-#~ msgid "Pretty print"
-#~ msgstr "Ulepšano štampanje"
-
-#~ msgid "Print Self-Test Page"
-#~ msgstr "Odštampaj samoprobnu stranicu"
-
-#~ msgid "Printer Properties"
-#~ msgstr "Svojstva štampača"
-
-#~ msgid "Printer State:"
-#~ msgstr "Stanje štampača:"
-
-#~ msgid "Reset"
-#~ msgstr "Početna vrednost"
-
-#~ msgid "Right margin:"
-#~ msgstr "Desna margina:"
-
-#~ msgid "Saturation:"
-#~ msgstr "Zasićenje:"
-
-#~ msgid "Scale to fit"
-#~ msgstr "Prilagodi veličini stranice"
-
-#~ msgid "Scaling:"
-#~ msgstr "Razmera:"
-
-#~ msgid "Settings"
-#~ msgstr "Postavke"
-
-#~ msgid "Shared"
-#~ msgstr "Deljen"
-
-#~ msgid "Sides:"
-#~ msgstr "Strane:"
-
-#~ msgid ""
-#~ "Specify the default job options for this printer.  Jobs arriving at this "
-#~ "print server will have these options added if they are not already set by "
-#~ "the application."
-#~ msgstr ""
-#~ "Navedite podrazumevane opcije za poslove na ovom štampaču.  Kada program "
-#~ "koji šalje posao na ovaj štamparski server ne postavi svoje opcije "
-#~ "štampanja, podrazumevane opcije će se koristiti."
-
-#~ msgid "Starting Banner:"
-#~ msgstr "Početna oznaka:"
-
-#~ msgid "There are no status messages for this printer."
-#~ msgstr "Nema poruka o stanju ovog štampača."
-
-#~ msgid ""
-#~ "To add a new option, enter its name in the box below and click to add."
-#~ msgstr ""
-#~ "Da biste dodali novu opciju, unesite njeno ime u polje ispod i pritisnite "
-#~ "dodaj."
-
-#~ msgid "Top margin:"
-#~ msgstr "Gornja margina:"
-
-#~ msgid "Word wrap"
-#~ msgstr "Prelom reda"
-
-#~ msgid "points"
-#~ msgstr "tačaka"
-
-#~ msgid "user"
-#~ msgstr "korisnik"
-
-#~ msgid "System-Config-Printer"
-#~ msgstr "System-Config-Printer"
-
-#~ msgid "_Discovered Printers"
-#~ msgstr "_Otkriveni štampači"
-
-#~ msgid "_Group"
-#~ msgstr "G_rupa"
-
-#~ msgid "_Groups"
-#~ msgstr "_Grupe"
-
-#~ msgid "_Help"
-#~ msgstr "_Pomoć"
-
-#~ msgid "_Server"
-#~ msgstr "_Server"
-
 #~ msgid "_Troubleshoot"
 #~ msgstr "_Rešavanje problema"
 
-#~ msgid "_View"
-#~ msgstr "Pre_gled"
-
-#~ msgid "<b>Basic Server Settings</b>"
-#~ msgstr "<b>Osnovne postavke servera</b>"
-
-#~ msgid "<b>Browse servers</b>"
-#~ msgstr "<b>Pretraži servere</b>"
-
-#~ msgid "<b>Job history</b>"
-#~ msgstr "<b>Istorija poslova</b>"
-
-#~ msgid "Advanced Server Settings"
-#~ msgstr "Napredna postavke servera"
-
-#~ msgid "Allow _remote administration"
-#~ msgstr "Dozvoli dalji_nsko rukovođenje"
-
-#~ msgid "Allow _users to cancel any job (not just their own)"
-#~ msgstr "Dozvoli _korisnicima da otkažu bilo koji posao (ne samo njihov)"
-
-#~ msgid "Allow printing from the _Internet"
-#~ msgstr "Dozvoli štampanje preko _Interneta"
-
-#~ msgid "Do not preserve job history"
-#~ msgstr "Ne čuvaj istoriju poslova"
-
-#~ msgid "Preserve job files (allow reprinting)"
-#~ msgstr "Sačuvaj štampane datoteke (dozvoljava ponovno štampanje)"
-
-#~ msgid "Preserve job history but not files"
-#~ msgstr "Sačuvaj istoriju poslova ali ne i datoteke"
-
-#~ msgid "Save _debugging information for troubleshooting"
-#~ msgstr "Sačuvaj podatke o _greškama za uklanjanje neispravnosti"
-
-#~ msgid "Server Settings"
-#~ msgstr "Postavke servera"
-
-#~ msgid ""
-#~ "Usually print servers broadcast their queues. Specify print servers below "
-#~ "to periodically ask for queues instead."
-#~ msgstr ""
-#~ "Uglavnom štamparski serveri odašilju svoje redove za štampanje. Navedite "
-#~ "štamparske servere ispod kako bi se umesto periodično slao upit za redove "
-#~ "štampanja."
-
-#~ msgid "_Publish shared printers connected to this system"
-#~ msgstr "Objavi deljene štampače spo_jene na ovaj sistem"
-
-#~ msgid "_Show printers shared by other systems"
-#~ msgstr "Pokaži deljene štampače sa ostalih _sistema"
-
-#~ msgid "SMB Browser"
-#~ msgstr "SMB pregledač"
-
 #~ msgid "_Configure Printers"
 #~ msgstr "_Podesi štampače"
-
-#~ msgid "_Hide"
-#~ msgstr "Sa_krij"
-
-#~ msgid "Please Wait"
-#~ msgstr "Sačekajte"
 
 #~ msgid "Cancel, pause, resume or reprint jobs"
 #~ msgstr "Otkaži, pauziraj, nastavi ili ponovo štampaj poslove"

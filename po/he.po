@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: system-config-printer.1.0.x\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2011-02-17 16:17+0000\n"
+"POT-Creation-Date: 2011-02-25 09:57+0000\n"
 "PO-Revision-Date: 2010-01-31 12:19+0200\n"
 "Last-Translator: Elad <el.il@doom.co.il>\n"
 "Language-Team: Hebrew\n"
@@ -73,14 +73,14 @@ msgstr "פעולה בוטלה"
 #
 # File: ../authconn.py, line: 30
 # File: ../system-config-printer.glade.h, line: 249
-#: ../authconn.py:32 ../pysmb.py:123
+#: ../authconn.py:32 ../pysmb.py:123 ../ui/NewPrinterWindow.glade.h:94
 msgid "Username:"
 msgstr "משתמש:"
 
 #
 # File: ../authconn.py, line: 31
 # File: ../system-config-printer.glade.h, line: 184
-#: ../authconn.py:33 ../pysmb.py:129
+#: ../authconn.py:33 ../pysmb.py:129 ../ui/NewPrinterWindow.glade.h:63
 msgid "Password:"
 msgstr "ססמה:‏"
 
@@ -453,7 +453,8 @@ msgstr ""
 # File: ../troubleshoot/DeviceListed.py, line: 84
 #: ../jobviewer.py:706 ../jobviewer.py:1002 ../jobviewer.py:1704
 #: ../jobviewer.py:1734 ../jobviewer.py:2104 ../jobviewer.py:2109
-#: ../jobviewer.py:2123 ../jobviewer.py:2202 ../printerproperties.py:1541
+#: ../jobviewer.py:2123 ../jobviewer.py:2202 ../printerproperties.py:1582
+#: ../ui/NewPrinterWindow.glade.h:92
 #: ../troubleshoot/ChooseNetworkPrinter.py:100
 #: ../troubleshoot/ChooseNetworkPrinter.py:101
 #: ../troubleshoot/ChooseNetworkPrinter.py:104
@@ -549,6 +550,7 @@ msgstr "שמור קובץ"
 # File: ../troubleshoot/ChoosePrinter.py, line: 35
 # File: ../troubleshoot/DeviceListed.py, line: 35
 #: ../jobviewer.py:1449 ../system-config-printer.py:258
+#: ../ui/NewPrinterWindow.glade.h:57
 #: ../troubleshoot/ChooseNetworkPrinter.py:35
 #: ../troubleshoot/ChoosePrinter.py:36 ../troubleshoot/DeviceListed.py:36
 msgid "Name"
@@ -787,7 +789,7 @@ msgstr "115200"
 #. See section 4.2.6 of this document for explanation of finishing types:
 #. ftp://ftp.pwg.org/pub/pwg/candidates/cs-ippfinishings10-20010205-5100.1.pdf
 #: ../newprinter.py:299 ../newprinter.py:310 ../newprinter.py:3267
-#: ../ppdippstr.py:63 ../printerproperties.py:264
+#: ../ppdippstr.py:63 ../printerproperties.py:268
 msgid "None"
 msgstr "ללא"
 
@@ -824,14 +826,14 @@ msgstr ""
 #
 # File: ../system-config-printer.py, line: 380
 # File: ../system-config-printer.py, line: 382
-#: ../newprinter.py:330 ../printerproperties.py:218
+#: ../newprinter.py:330 ../printerproperties.py:222
 msgid "Members of this class"
 msgstr "חברים במחלקה הזו"
 
 #
 # File: ../system-config-printer.py, line: 381
 # File: ../system-config-printer.py, line: 383
-#: ../newprinter.py:332 ../printerproperties.py:219
+#: ../newprinter.py:332 ../printerproperties.py:223
 msgid "Others"
 msgstr "אחרים"
 
@@ -868,7 +870,7 @@ msgstr "מנהלי התקנים"
 #
 # File: ../system-config-printer.py, line: 389
 # File: ../system-config-printer.glade.h, line: 103
-#: ../newprinter.py:338
+#: ../newprinter.py:338 ../ui/NewPrinterWindow.glade.h:35
 msgid "Downloadable Drivers"
 msgstr "מנהלי התקנים הניתנים להורדה"
 
@@ -918,7 +920,7 @@ msgstr "חיפוש"
 #
 # File: ../system-config-printer.py, line: 2806
 # File: ../system-config-printer.glade.h, line: 145
-#: ../newprinter.py:611 ../newprinter.py:632
+#: ../newprinter.py:611 ../newprinter.py:632 ../ui/NewPrinterWindow.glade.h:59
 msgid "New Printer"
 msgstr "מדפסת חדשה"
 
@@ -1142,7 +1144,7 @@ msgstr "מדפסת חלונות דרך SAMBA"
 
 #
 # File: ../system-config-printer.glade.h, line: 120
-#: ../newprinter.py:2376
+#: ../newprinter.py:2376 ../ui/NewPrinterWindow.glade.h:48
 msgid "IPP"
 msgstr "IPP"
 
@@ -1225,7 +1227,7 @@ msgstr ""
 msgid "Searching for printers"
 msgstr "מחפש מדפסות"
 
-#: ../newprinter.py:2769
+#: ../newprinter.py:2769 ../ui/NewPrinterWindow.glade.h:60
 msgid "No printer was found at that address."
 msgstr "לא נמצאה מדפסת בכתובת זו."
 
@@ -1361,7 +1363,7 @@ msgstr "מוסיף מדפסת %s"
 #
 # File: ../system-config-printer.py, line: 5059
 #: ../newprinter.py:3570 ../newprinter.py:3581 ../newprinter.py:3598
-#: ../printerproperties.py:921 ../system-config-printer.py:1682
+#: ../printerproperties.py:957 ../system-config-printer.py:1682
 #: ../system-config-printer.py:1707
 #, python-format
 msgid "modifying printer %s"
@@ -1718,63 +1720,63 @@ msgstr "תפוס"
 #
 # File: ../jobviewer.py, line: 265
 #. Printer state reasons list
-#: ../printerproperties.py:200
+#: ../printerproperties.py:204
 msgid "Message"
 msgstr "הודעה"
 
 #
 # File: ../system-config-printer.py, line: 390
-#: ../printerproperties.py:220
+#: ../printerproperties.py:224
 msgid "Users"
 msgstr "משתמשים"
 
 #
 # File: ../system-config-printer.py, line: 431
-#: ../printerproperties.py:243
+#: ../printerproperties.py:247
 msgid "Portrait (no rotation)"
 msgstr "דיוקן (ללא סיבוב)"
 
-#: ../printerproperties.py:244
+#: ../printerproperties.py:248
 msgid "Landscape (90 degrees)"
 msgstr "לרוחב (90 מעלות)"
 
-#: ../printerproperties.py:245
+#: ../printerproperties.py:249
 msgid "Reverse landscape (270 degrees)"
 msgstr "לרוחב הפוך (270 מעלות)"
 
-#: ../printerproperties.py:246
+#: ../printerproperties.py:250
 msgid "Reverse portrait (180 degrees)"
 msgstr "דיוקן הפוך (180 מעלות)"
 
-#: ../printerproperties.py:252
+#: ../printerproperties.py:256
 msgid "Left to right, top to bottom"
 msgstr ""
 
-#: ../printerproperties.py:253
+#: ../printerproperties.py:257
 msgid "Left to right, bottom to top"
 msgstr ""
 
-#: ../printerproperties.py:254
+#: ../printerproperties.py:258
 msgid "Right to left, top to bottom"
 msgstr ""
 
-#: ../printerproperties.py:255
+#: ../printerproperties.py:259
 msgid "Right to left, bottom to top"
 msgstr ""
 
-#: ../printerproperties.py:256
+#: ../printerproperties.py:260
 msgid "Top to bottom, left to right"
 msgstr ""
 
-#: ../printerproperties.py:257
+#: ../printerproperties.py:261
 msgid "Top to bottom, right to left"
 msgstr ""
 
-#: ../printerproperties.py:258
+#: ../printerproperties.py:262
 msgid "Bottom to top, left to right"
 msgstr ""
 
-#: ../printerproperties.py:259
+#: ../printerproperties.py:263
 msgid "Bottom to top, right to left"
 msgstr ""
 
@@ -1782,163 +1784,171 @@ msgstr ""
 # File: ../jobviewer.py, line: 502
 # File: ../system-config-printer.py, line: 168
 # File: ../troubleshoot/PrintTestPage.py, line: 42
-#: ../printerproperties.py:265
+#: ../printerproperties.py:269
 msgid "Staple"
 msgstr "סיכה"
 
-#: ../printerproperties.py:266
+#: ../printerproperties.py:270
 msgid "Punch"
 msgstr ""
 
 #
 # File: ../statereason.py, line: 89
-#: ../printerproperties.py:267
+#: ../printerproperties.py:271
 msgid "Cover"
 msgstr "מכסה פתוח"
 
-#: ../printerproperties.py:268
+#: ../printerproperties.py:272
 msgid "Bind"
 msgstr ""
 
 #
 # File: ../system-config-printer.glade.h, line: 216
-#: ../printerproperties.py:269
+#: ../printerproperties.py:273
 msgid "Saddle stitch"
 msgstr "קפל והדק באמצע"
 
-#: ../printerproperties.py:270
+#: ../printerproperties.py:274
 msgid "Edge stitch"
 msgstr ""
 
 #
 # File: ../applet.glade.h, line: 7
-#: ../printerproperties.py:271
+#: ../printerproperties.py:275
 msgid "Fold"
 msgstr "קפל"
 
-#: ../printerproperties.py:272
+#: ../printerproperties.py:276
 msgid "Trim"
 msgstr ""
 
-#: ../printerproperties.py:273
+#: ../printerproperties.py:277
 msgid "Bale"
 msgstr ""
 
-#: ../printerproperties.py:274
+#: ../printerproperties.py:278
 msgid "Booklet maker"
 msgstr ""
 
-#: ../printerproperties.py:275
+#: ../printerproperties.py:279
 msgid "Job offset"
 msgstr ""
 
 #
 # File: ../system-config-printer.glade.h, line: 216
-#: ../printerproperties.py:276
+#: ../printerproperties.py:280
 msgid "Staple (top left)"
 msgstr "סיכות (פינה שמאלית עליונה)"
 
 #
 # File: ../system-config-printer.glade.h, line: 216
-#: ../printerproperties.py:277
+#: ../printerproperties.py:281
 msgid "Staple (bottom left)"
 msgstr "סיכות (פינה שמאלית תחתונה)"
 
 #
 # File: ../system-config-printer.glade.h, line: 216
-#: ../printerproperties.py:278
+#: ../printerproperties.py:282
 msgid "Staple (top right)"
 msgstr "סיכות (פינה ימנית עליונה)"
 
 #
 # File: ../system-config-printer.glade.h, line: 216
-#: ../printerproperties.py:279
+#: ../printerproperties.py:283
 msgid "Staple (bottom right)"
 msgstr "סיכות (פינה ימנית תחתונה)"
 
-#: ../printerproperties.py:280
+#: ../printerproperties.py:284
 msgid "Edge stitch (left)"
 msgstr ""
 
-#: ../printerproperties.py:281
+#: ../printerproperties.py:285
 msgid "Edge stitch (top)"
 msgstr ""
 
-#: ../printerproperties.py:282
+#: ../printerproperties.py:286
 msgid "Edge stitch (right)"
 msgstr ""
 
-#: ../printerproperties.py:283
+#: ../printerproperties.py:287
 msgid "Edge stitch (bottom)"
 msgstr ""
 
-#: ../printerproperties.py:284
+#: ../printerproperties.py:288
 msgid "Staple dual (left)"
 msgstr ""
 
-#: ../printerproperties.py:285
+#: ../printerproperties.py:289
 msgid "Staple dual (top)"
 msgstr ""
 
-#: ../printerproperties.py:286
+#: ../printerproperties.py:290
 msgid "Staple dual (right)"
 msgstr ""
 
-#: ../printerproperties.py:287
+#: ../printerproperties.py:291
 msgid "Staple dual (bottom)"
 msgstr ""
 
-#: ../printerproperties.py:288
+#: ../printerproperties.py:292
 msgid "Bind (left)"
 msgstr ""
 
-#: ../printerproperties.py:289
+#: ../printerproperties.py:293
 msgid "Bind (top)"
 msgstr ""
 
-#: ../printerproperties.py:290
+#: ../printerproperties.py:294
 msgid "Bind (right)"
 msgstr ""
 
-#: ../printerproperties.py:291
+#: ../printerproperties.py:295
 msgid "Bind (bottom)"
 msgstr ""
 
-#: ../printerproperties.py:296
+#: ../printerproperties.py:300
 msgid "One-sided"
 msgstr "חד צדדי"
 
-#: ../printerproperties.py:297
+#: ../printerproperties.py:301
 msgid "Two-sided (long edge)"
 msgstr "דו צדדי (קצוות ארוכים)"
 
-#: ../printerproperties.py:298
+#: ../printerproperties.py:302
 msgid "Two-sided (short edge)"
 msgstr "דו צדדי (קצוות קצרים)"
 
-#: ../printerproperties.py:303
+#: ../printerproperties.py:307 ../printerproperties.py:312
 msgid "Normal"
 msgstr "רגיל"
 
 #
 # File: ../applet.glade.h, line: 9
-#: ../printerproperties.py:304
+#: ../printerproperties.py:308
 msgid "Reverse"
 msgstr "סדר הפוך"
 
+#: ../printerproperties.py:311
+msgid "Draft"
+msgstr ""
+
+#: ../printerproperties.py:313
+msgid "High"
+msgstr ""
+
 #
 # File: ../system-config-printer.py, line: 431
-#: ../printerproperties.py:325
+#: ../printerproperties.py:337
 msgid "Automatic rotation"
 msgstr "הטיה אוטומטית"
 
 # File: ../system-config-printer.glade.h, line: 197
 # File: ../troubleshoot/PrintTestPage.py, line: 67
-#: ../printerproperties.py:546
+#: ../printerproperties.py:576
 msgid "CUPS test page"
 msgstr "עמוד ניסיון של CUPS"
 
-#: ../printerproperties.py:547
+#: ../printerproperties.py:577
 msgid ""
 "Typically shows whether all jets on a print head are functioning and that "
 "the print feed mechanisms are working properly."
@@ -1946,7 +1956,7 @@ msgstr ""
 
 #
 # File: ../system-config-printer.py, line: 645
-#: ../printerproperties.py:554
+#: ../printerproperties.py:584
 #, python-format
 msgid "Printer Properties - '%s' on %s"
 msgstr "מאפייני מדפסת - '%s' על %s"
@@ -1954,7 +1964,7 @@ msgstr "מאפייני מדפסת - '%s' על %s"
 #
 # File: ../system-config-printer.py, line: 1411
 #. The Conflict button was pressed.
-#: ../printerproperties.py:561
+#: ../printerproperties.py:591
 msgid ""
 "There are conflicting options.\n"
 "Changes can only be applied after\n"
@@ -1966,31 +1976,31 @@ msgstr ""
 
 #
 # File: ../system-config-printer.py, line: 1387
-#: ../printerproperties.py:881
+#: ../printerproperties.py:917
 msgid "Installable Options"
 msgstr "אפשרויות הניתנות להתקנה"
 
 #
 # File: ../system-config-printer.py, line: 1388
 # File: ../system-config-printer.glade.h, line: 198
-#: ../printerproperties.py:882
+#: ../printerproperties.py:918 ../ui/PrinterPropertiesDialog.glade.h:63
 msgid "Printer Options"
 msgstr "אפשרויות מדפסת"
 
-#: ../printerproperties.py:919
+#: ../printerproperties.py:955
 #, python-format
 msgid "modifying class %s"
 msgstr "משנה מחלקה %s"
 
 #
 # File: ../system-config-printer.py, line: 1440
-#: ../printerproperties.py:936
+#: ../printerproperties.py:972
 msgid "This will delete this class!"
 msgstr "המחלקה תימחק!"
 
 #
 # File: ../system-config-printer.py, line: 1441
-#: ../printerproperties.py:937
+#: ../printerproperties.py:973
 msgid "Proceed anyway?"
 msgstr "להמשיך בכל זאת?"
 
@@ -2000,14 +2010,14 @@ msgstr "להמשיך בכל זאת?"
 #. but we have never fetched the server settings to see whether
 #. the server is publishing shared printers.  Fetch the settings
 #. now so that we can update the "not published" label if necessary.
-#: ../printerproperties.py:1027 ../serversettings.py:192
+#: ../printerproperties.py:1065 ../serversettings.py:192
 msgid "fetching server settings"
 msgstr "מקבל הגדרות שרת"
 
 #
 # File: ../system-config-printer.glade.h, line: 197
 # File: ../troubleshoot/PrintTestPage.py, line: 67
-#: ../printerproperties.py:1109
+#: ../printerproperties.py:1147
 msgid "printing test page"
 msgstr "מדפיס עמוד ניסיון"
 
@@ -2015,14 +2025,14 @@ msgstr "מדפיס עמוד ניסיון"
 # File: ../system-config-printer.py, line: 1648
 # File: ../system-config-printer.py, line: 1676
 # File: ../system-config-printer.py, line: 4260
-#: ../printerproperties.py:1122 ../printerproperties.py:1157
+#: ../printerproperties.py:1160 ../printerproperties.py:1195
 msgid "Not possible"
 msgstr "בלתי אפשרי"
 
 #
 # File: ../system-config-printer.py, line: 1649
 # File: ../system-config-printer.py, line: 1677
-#: ../printerproperties.py:1123 ../printerproperties.py:1158
+#: ../printerproperties.py:1161 ../printerproperties.py:1196
 msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
@@ -2033,24 +2043,24 @@ msgstr ""
 #
 # File: ../system-config-printer.py, line: 1641
 # File: ../system-config-printer.py, line: 1669
-#: ../printerproperties.py:1135 ../printerproperties.py:1150
+#: ../printerproperties.py:1173 ../printerproperties.py:1188
 msgid "Submitted"
 msgstr "נשלח"
 
 #
 # File: ../system-config-printer.py, line: 1642
-#: ../printerproperties.py:1136
+#: ../printerproperties.py:1174
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr "עמוד ניסיון נשלח כמשימה %d"
 
-#: ../printerproperties.py:1143
+#: ../printerproperties.py:1181
 msgid "sending maintenance command"
 msgstr "שולח פקודת שירות"
 
 #
 # File: ../system-config-printer.py, line: 1670
-#: ../printerproperties.py:1151
+#: ../printerproperties.py:1189
 #, python-format
 msgid "Maintenance command submitted as job %d"
 msgstr "פקודת תחזוקה נשלחה כמשימה %d"
@@ -2058,29 +2068,29 @@ msgstr "פקודת תחזוקה נשלחה כמשימה %d"
 #
 # File: ../system-config-printer.py, line: 1727
 # File: ../system-config-printer.py, line: 1834
-#: ../printerproperties.py:1238 ../printerproperties.py:1243
-#: ../printerproperties.py:1339
+#: ../printerproperties.py:1276 ../printerproperties.py:1281
+#: ../printerproperties.py:1377
 msgid "Error"
 msgstr "שגיאה"
 
-#: ../printerproperties.py:1239
+#: ../printerproperties.py:1277
 msgid "The PPD file for this queue is damaged."
 msgstr ""
 
 #
 # File: ../system-config-printer.py, line: 1728
-#: ../printerproperties.py:1244
+#: ../printerproperties.py:1282
 msgid "There was a problem connecting to the CUPS server."
 msgstr "הייתה בעיה בהתחברות לשרת המדפסות."
 
 #
 # File: ../system-config-printer.py, line: 1835
-#: ../printerproperties.py:1340
+#: ../printerproperties.py:1378
 #, python-format
 msgid "Option '%s' has value '%s' and cannot be edited."
 msgstr "לאפשרות '%s' ישנו הערך '%s' ולכן לא ניתן לערוך אותה."
 
-#: ../printerproperties.py:1450
+#: ../printerproperties.py:1491
 msgid "Marker levels are not reported for this printer."
 msgstr ""
 
@@ -2137,7 +2147,7 @@ msgstr "התאמת הגדרות שרת"
 
 #
 # File: ../system-config-printer.glade.h, line: 262
-#: ../system-config-printer.py:223
+#: ../system-config-printer.py:223 ../ui/PrintersWindow.glade.h:9
 msgid "_Printer"
 msgstr "_מדפסת"
 
@@ -2287,8 +2297,8 @@ msgstr "אין תורים זמינים."
 msgid "Cannot start service on remote server"
 msgstr ""
 
-#: ../system-config-printer.py:1143
-#, python-format
+#: ../system-config-printer.py:1143 ../ui/ConnectingDialog.glade.h:2
+#, no-c-format, python-format
 msgid "<i>Opening connection to %s</i>"
 msgstr "<i>פותח חיבור אל %s</i>"
 
@@ -2411,7 +2421,9 @@ msgstr "האם ברצונך להדפיס עמוד ניסיון?"
 #
 # File: ../system-config-printer.glade.h, line: 197
 # File: ../troubleshoot/PrintTestPage.py, line: 67
-#: ../system-config-printer.py:1948 ../troubleshoot/PrintTestPage.py:72
+#. Not more than 25 characters
+#: ../system-config-printer.py:1948 ../ui/PrinterPropertiesDialog.glade.h:61
+#: ../troubleshoot/PrintTestPage.py:72
 msgid "Print Test Page"
 msgstr "הדפסת עמוד ניסיון"
 
@@ -2444,6 +2456,1314 @@ msgid ""
 msgstr ""
 "המדפסת '%s' זקוקה לתכנית '%s' אבל היא אינה מותקנת כרגע. אנא התקינו אותה לפני "
 "השימוש במדפסת."
+
+#
+# File: ../system-config-printer.glade.h, line: 42
+#: ../ui/AboutDialog.glade.h:1
+msgid "A CUPS configuration tool."
+msgstr "כלי להגדרת תצורת CUPS."
+
+#
+# File: ../system-config-printer.glade.h, line: 73
+#: ../ui/AboutDialog.glade.h:2
+#, fuzzy
+msgid "Copyright © 2006-2008 Red Hat, Inc."
+msgstr "Copyright &#xA9; 2006-2008 Red Hat, Inc."
+
+#
+# File: ../system-config-printer.glade.h, line: 238
+#: ../ui/AboutDialog.glade.h:3
+msgid ""
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with "
+"this program; if not, write to the Free Software Foundation, Inc., 675 Mass "
+"Ave, Cambridge, MA 02139, USA."
+msgstr ""
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with "
+"this program; if not, write to the Free Software Foundation, Inc., 675 Mass "
+"Ave, Cambridge, MA 02139, USA."
+
+#
+# File: ../system-config-printer.glade.h, line: 276
+#. TRANSLATORS: Replace this string with your names, one name per line.  Thank you very much for your effort on translating system-config-printer and all our other tools!
+#: ../ui/AboutDialog.glade.h:9
+msgid "translator-credits"
+msgstr ""
+"Launchpad Contributions:\n"
+"  Mark Krapivner https://launchpad.net/~mark125\n"
+"  Yaron https://launchpad.net/~sh-yaron"
+
+#
+# File: ../system-config-printer.glade.h, line: 56
+#: ../ui/ConnectDialog.glade.h:1
+msgid "CUPS _server:"
+msgstr "_שרת CUPS:"
+
+#
+# File: ../system-config-printer.glade.h, line: 64
+#: ../ui/ConnectDialog.glade.h:2
+msgid "Connect to CUPS server"
+msgstr "התחברות לשרת CUPS"
+
+#
+# File: ../system-config-printer.glade.h, line: 207
+#: ../ui/ConnectDialog.glade.h:3
+msgid "Require _encryption"
+msgstr "דרוש הצפנה"
+
+#
+# File: ../system-config-printer.glade.h, line: 37
+#: ../ui/ConnectingDialog.glade.h:3
+msgid "<span weight=\"bold\" size=\"larger\">Connecting to CUPS server</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">מתחבר לשרת CUPS</span>"
+
+#
+# File: ../system-config-printer.glade.h, line: 64
+#: ../ui/ConnectingDialog.glade.h:4
+msgid "Connecting to CUPS server"
+msgstr "מתחבר לשרת CUPS"
+
+#
+# File: ../system-config-printer.glade.h, line: 260
+#: ../ui/InstallDialog.glade.h:1
+msgid "_Install"
+msgstr "_התקנה"
+
+#: ../ui/JobsWindow.glade.h:1
+msgid "Refresh job list"
+msgstr ""
+
+#
+# File: ../applet.glade.h, line: 3
+#: ../ui/JobsWindow.glade.h:2
+msgid "Show _completed jobs"
+msgstr "הצגת משימות שהושלמו"
+
+#
+# File: ../applet.glade.h, line: 3
+#: ../ui/JobsWindow.glade.h:3
+#, fuzzy
+msgid "Show completed jobs"
+msgstr "הצגת משימות שהושלמו"
+
+#
+# File: ../applet.glade.h, line: 8
+#: ../ui/JobsWindow.glade.h:4
+msgid "_Refresh"
+msgstr "_רענן"
+
+# File: ../my-default-printer.py, line: 141
+# File: ../my-default-printer.desktop.in.h, line: 1
+#: ../ui/NewPrinterName.glade.h:1
+msgid "Duplicate Printer"
+msgstr "מדפסת כפולה"
+
+#
+# File: ../system-config-printer.glade.h, line: 146
+#: ../ui/NewPrinterName.glade.h:2
+msgid "New name for the printer"
+msgstr "שם חדש עבור המדפסת"
+
+#
+# File: ../system-config-printer.glade.h, line: 9
+#: ../ui/NewPrinterWindow.glade.h:1
+msgid "<b>Authentication</b>"
+msgstr "<b>אימות</b>"
+
+#
+# File: ../system-config-printer.glade.h, line: 13
+#: ../ui/NewPrinterWindow.glade.h:2
+msgid "<b>Description</b>"
+msgstr "<b>תיאור</b>"
+
+#
+# File: ../system-config-printer.glade.h, line: 14
+#: ../ui/NewPrinterWindow.glade.h:3
+msgid "<b>Description</b> (optional)"
+msgstr "<b>תיאור</b> (אופציונלי)"
+
+#
+# File: ../system-config-printer.glade.h, line: 15
+#: ../ui/NewPrinterWindow.glade.h:4
+msgid "<b>Enter device URI</b>"
+msgstr "<b>הכנסת ה-URI של ההתקן</b>"
+
+#
+# File: ../system-config-printer.glade.h, line: 16
+#: ../ui/NewPrinterWindow.glade.h:5
+msgid "<b>IPP Printer</b>"
+msgstr "<b>מדפסת IPP</b>"
+
+#
+# File: ../system-config-printer.glade.h, line: 18
+#: ../ui/NewPrinterWindow.glade.h:6
+msgid "<b>License Terms</b>"
+msgstr "<b>תנאי הרישיון</b>"
+
+#
+# File: ../system-config-printer.glade.h, line: 19
+#: ../ui/NewPrinterWindow.glade.h:7
+msgid "<b>Location of the LPD network printer</b>"
+msgstr "<b>המיקום של מדפסת רשת LPD </b>"
+
+#
+# File: ../system-config-printer.glade.h, line: 20
+#: ../ui/NewPrinterWindow.glade.h:8
+msgid "<b>Location of the network printer</b>"
+msgstr "<b>מיקום מדפסת הרשת</b>"
+
+#
+# File: ../system-config-printer.glade.h, line: 21
+#: ../ui/NewPrinterWindow.glade.h:9
+msgid "<b>Location</b> (optional)"
+msgstr "<b>מיקום</b> (אופציונלי)"
+
+#
+# File: ../system-config-printer.py, line: 890
+# File: ../system-config-printer.py, line: 896
+# File: ../troubleshoot/LocalOrRemote.py, line: 30
+#: ../ui/NewPrinterWindow.glade.h:10
+msgid "<b>Network Printer</b>"
+msgstr "<b>מדפסת רשת</b>"
+
+#
+# File: ../system-config-printer.glade.h, line: 22
+#: ../ui/NewPrinterWindow.glade.h:11
+msgid "<b>Note</b>"
+msgstr "<b>הערה</b>"
+
+#
+# File: ../system-config-printer.glade.h, line: 30
+#: ../ui/NewPrinterWindow.glade.h:12
+msgid "<b>Output Quality</b>"
+msgstr "<b>איכות פלט</b>"
+
+#
+# File: ../system-config-printer.glade.h, line: 25
+#: ../ui/NewPrinterWindow.glade.h:13
+msgid "<b>Printer Name</b>"
+msgstr "<b>שם המדפסת</b>"
+
+#
+# File: ../system-config-printer.glade.h, line: 26
+#: ../ui/NewPrinterWindow.glade.h:14
+msgid "<b>SMB Printer</b>"
+msgstr "<b>מדפסת SMB</b>"
+
+#
+# File: ../system-config-printer.glade.h, line: 27
+#: ../ui/NewPrinterWindow.glade.h:15
+msgid "<b>Select Driver</b>"
+msgstr "<b>בחר מנהל התקן</b>"
+
+#
+# File: ../system-config-printer.glade.h, line: 28
+#: ../ui/NewPrinterWindow.glade.h:16
+msgid "<b>Settings of the serial port</b>"
+msgstr "<b>הגדרות עבור יציאה טורית</b>"
+
+#
+# File: ../system-config-printer.glade.h, line: 35
+#: ../ui/NewPrinterWindow.glade.h:17
+msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
+msgstr "<i>smb://[workgroup/]server[:port]/printer</i>"
+
+#
+# File: ../system-config-printer.glade.h, line: 36
+#: ../ui/NewPrinterWindow.glade.h:18
+msgid "<span weight=\"bold\" size=\"larger\">Choose Class Members</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">בחירת חברי מחלקה</span>"
+
+#
+# File: ../system-config-printer.glade.h, line: 37
+#: ../ui/NewPrinterWindow.glade.h:19
+msgid "<span weight=\"bold\" size=\"larger\">Choose Driver</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">בחירת מנהל התקן</span>"
+
+#
+# File: ../system-config-printer.glade.h, line: 38
+#: ../ui/NewPrinterWindow.glade.h:20
+msgid "<span weight=\"bold\" size=\"larger\">Describe Printer</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">תיאור מדפסת</span>"
+
+#
+# File: ../system-config-printer.glade.h, line: 39
+#: ../ui/NewPrinterWindow.glade.h:21
+msgid "<span weight=\"bold\" size=\"larger\">Existing Settings</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">הגדרות קיימות</span>"
+
+#
+# File: ../system-config-printer.glade.h, line: 40
+#: ../ui/NewPrinterWindow.glade.h:22
+msgid "<span weight=\"bold\" size=\"larger\">Installable Options</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">אפשרויות ניתנות להתקנה</span>"
+
+#
+# File: ../system-config-printer.glade.h, line: 41
+#: ../ui/NewPrinterWindow.glade.h:23
+msgid "<span weight=\"bold\" size=\"larger\">Select Device</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">בחירת התקן</span>"
+
+#
+# File: ../system-config-printer.glade.h, line: 52
+#: ../ui/NewPrinterWindow.glade.h:24
+msgid "Baud Rate"
+msgstr "קצב העברה"
+
+#
+# File: ../system-config-printer.glade.h, line: 55
+#: ../ui/NewPrinterWindow.glade.h:25
+msgid "Browse..."
+msgstr "עיון..."
+
+#
+# File: ../system-config-printer.py, line: 2826
+#: ../ui/NewPrinterWindow.glade.h:26
+#, fuzzy
+msgid "Change PPD"
+msgstr "החלפת מנהל ההתקן"
+
+#
+# File: ../system-config-printer.glade.h, line: 142
+#: ../ui/NewPrinterWindow.glade.h:27
+#, fuzzy
+msgid "Class Members"
+msgstr "חברים"
+
+#
+# File: ../system-config-printer.glade.h, line: 63
+#: ../ui/NewPrinterWindow.glade.h:28
+msgid "Comments..."
+msgstr "הערות..."
+
+#
+# File: ../system-config-printer.glade.h, line: 70
+#: ../ui/NewPrinterWindow.glade.h:29
+msgid "Connection"
+msgstr "חיבור"
+
+#: ../ui/NewPrinterWindow.glade.h:30
+msgid "Data Bits"
+msgstr ""
+
+#
+# File: ../system-config-printer.glade.h, line: 98
+#: ../ui/NewPrinterWindow.glade.h:31 ../ui/PrinterPropertiesDialog.glade.h:29
+msgid "Description:"
+msgstr "תיאור:‏"
+
+#
+# File: ../system-config-printer.py, line: 384
+#: ../ui/NewPrinterWindow.glade.h:32
+#, fuzzy
+msgid "Device"
+msgstr "התקנים"
+
+#
+# File: ../system-config-printer.glade.h, line: 99
+# File: ../troubleshoot/DeviceListed.py, line: 39
+#: ../ui/NewPrinterWindow.glade.h:33 ../troubleshoot/DeviceListed.py:40
+msgid "Device URI"
+msgstr "כתובת ה-URI של ההתקן"
+
+#
+# File: ../system-config-printer.glade.h, line: 101
+#: ../ui/NewPrinterWindow.glade.h:34
+msgid "Device description."
+msgstr "תיאור ההתקן."
+
+#
+# File: ../system-config-printer.glade.h, line: 104
+#: ../ui/NewPrinterWindow.glade.h:36
+msgid "Driver details"
+msgstr "פרטי מנהל ההתקן"
+
+#
+# File: ../system-config-printer.glade.h, line: 106
+#: ../ui/NewPrinterWindow.glade.h:37
+msgid "Empty"
+msgstr "ריק"
+
+#
+# File: ../system-config-printer.glade.h, line: 112
+#: ../ui/NewPrinterWindow.glade.h:38
+msgid "Flow Control"
+msgstr "בקרת זרימה"
+
+#: ../ui/NewPrinterWindow.glade.h:39
+msgid ""
+"For example:\n"
+"ipp://cups-server/printers/printer-queue\n"
+"ipp://printer.mydomain/ipp"
+msgstr ""
+
+#
+# File: ../system-config-printer.glade.h, line: 113
+#: ../ui/NewPrinterWindow.glade.h:42
+msgid ""
+"For the printer you have selected there are drivers available for download."
+msgstr "עבור המדפסת שבחרת נמצאו מנהלי התקנים להורדה."
+
+#: ../ui/NewPrinterWindow.glade.h:43
+msgid "Free software"
+msgstr "תוכנה חופשית"
+
+#: ../ui/NewPrinterWindow.glade.h:44
+msgid "Graphics:"
+msgstr ""
+
+#
+# File: ../system-config-printer.glade.h, line: 116
+#: ../ui/NewPrinterWindow.glade.h:45
+msgid "Host:"
+msgstr "מארח:"
+
+#
+# File: ../system-config-printer.glade.h, line: 118
+#: ../ui/NewPrinterWindow.glade.h:46
+msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
+msgstr "תיאור שניתן להבנה על ידי בני אדם כגון \"מדפסת לייזר עם מזין דו-צדדי\""
+
+#
+# File: ../system-config-printer.glade.h, line: 119
+#: ../ui/NewPrinterWindow.glade.h:47
+msgid "Human-readable location such as \"Lab 1\""
+msgstr "מיקום שניתן להבנה על ידי בני אדם כגון \"מעבדה 1\""
+
+#
+# File: ../system-config-printer.glade.h, line: 122
+#: ../ui/NewPrinterWindow.glade.h:49 ../ui/PrinterPropertiesDialog.glade.h:39
+msgid "Installed Options"
+msgstr "אפשרויות מותקנות"
+
+#
+# File: ../system-config-printer.glade.h, line: 102
+#: ../ui/NewPrinterWindow.glade.h:50
+#, fuzzy
+msgid "JetDirect"
+msgstr "DirectJet"
+
+#
+# File: ../system-config-printer.glade.h, line: 125
+#: ../ui/NewPrinterWindow.glade.h:51
+msgid "LPD"
+msgstr "LPD"
+
+#
+# File: ../system-config-printer.glade.h, line: 135
+#: ../ui/NewPrinterWindow.glade.h:52
+msgid "License:"
+msgstr "רישיון:"
+
+#
+# File: ../system-config-printer.glade.h, line: 200
+#: ../ui/NewPrinterWindow.glade.h:53
+msgid "Line art:"
+msgstr "Line art:"
+
+#
+# File: ../system-config-printer.glade.h, line: 137
+#: ../ui/NewPrinterWindow.glade.h:54
+msgid "Local Driver"
+msgstr "מנהל התקן מקומי"
+
+#
+# File: ../system-config-printer.glade.h, line: 140
+#: ../ui/NewPrinterWindow.glade.h:55
+msgid "Make and model:"
+msgstr "יצרן ודגם:"
+
+#: ../ui/NewPrinterWindow.glade.h:56
+msgid "Manufacturer"
+msgstr "יצרן"
+
+#
+# File: ../system-config-printer.py, line: 890
+# File: ../system-config-printer.py, line: 896
+# File: ../troubleshoot/LocalOrRemote.py, line: 30
+#: ../ui/NewPrinterWindow.glade.h:58
+msgid "Network"
+msgstr "רשת"
+
+#
+# File: ../system-config-printer.glade.h, line: 147
+#: ../ui/NewPrinterWindow.glade.h:61
+msgid "No, I do not accept this license"
+msgstr "לא, אני לא מקבל את הרישיון הזה"
+
+#
+# File: ../system-config-printer.glade.h, line: 183
+#: ../ui/NewPrinterWindow.glade.h:62
+msgid "Parity"
+msgstr "שוויון"
+
+#: ../ui/NewPrinterWindow.glade.h:64
+msgid "Patented algorithms"
+msgstr "אלגוריתמים מוגנים בפטנט"
+
+#: ../ui/NewPrinterWindow.glade.h:65
+msgid "Photo:"
+msgstr "תמונה:"
+
+#
+# File: ../system-config-printer.glade.h, line: 187
+#: ../ui/NewPrinterWindow.glade.h:66
+msgid "Port number:"
+msgstr "מספר יציאה (port):"
+
+#
+# File: ../system-config-printer.glade.h, line: 192
+#: ../ui/NewPrinterWindow.glade.h:67
+#, fuzzy
+msgid ""
+"PostScript Printer Description (PPD) files can often be found on the driver "
+"disk that comes with the printer. For PostScript printers they are often "
+"part of the Windows<sup>®</sup> driver."
+msgstr ""
+"בדרך כלל ניתן למצוא קבצי ‏PPD ‏(PostScript Printer Description) על הדיסק "
+"שמגיעה עם המדפסת.עבור מדפסות PostScript הם בדרך כלל חלק ממנהל ההתקן של "
+"Windows<sup>&#xAE;</sup>"
+
+#
+# File: ../system-config-printer.glade.h, line: 201
+#: ../ui/NewPrinterWindow.glade.h:68
+msgid "Printer model:"
+msgstr "דגם מדפסת:"
+
+#
+# File: ../system-config-printer.glade.h, line: 202
+#: ../ui/NewPrinterWindow.glade.h:69
+msgid "Probe"
+msgstr "בדיקה"
+
+#
+# File: ../jobviewer.py, line: 527
+#: ../ui/NewPrinterWindow.glade.h:70
+msgid "Prompt user if authentication is required"
+msgstr "שאל את המשתמש במקרה שדרוש אימות"
+
+#
+# File: ../system-config-printer.glade.h, line: 204
+#: ../ui/NewPrinterWindow.glade.h:71
+msgid "Provide PPD file"
+msgstr "לספק קובץ PPD"
+
+#
+# File: ../system-config-printer.glade.h, line: 206
+#: ../ui/NewPrinterWindow.glade.h:72
+msgid "Queue:"
+msgstr "תור:"
+
+#
+# File: ../system-config-printer.glade.h, line: 211
+#: ../ui/NewPrinterWindow.glade.h:73
+msgid "SCSI"
+msgstr "SCSI"
+
+#
+# File: ../system-config-printer.glade.h, line: 212
+#: ../ui/NewPrinterWindow.glade.h:74
+msgid "SMB"
+msgstr "SMB"
+
+#
+# File: ../system-config-printer.glade.h, line: 218
+#: ../ui/NewPrinterWindow.glade.h:75
+msgid "Search for a printer driver to download"
+msgstr "חפש מנהל התקן להורדה עבור המדפסת"
+
+#
+# File: ../system-config-printer.py, line: 2925
+# File: ../system-config-printer.py, line: 3223
+# File: ../system-config-printer.py, line: 3454
+# File: ../system-config-printer.py, line: 4600
+#: ../ui/NewPrinterWindow.glade.h:76
+msgid "Searching..."
+msgstr "מחפש..."
+
+#
+# File: ../system-config-printer.glade.h, line: 220
+#: ../ui/NewPrinterWindow.glade.h:77
+msgid "Select printer from database"
+msgstr "בחר מדפסת ממסד נתונים"
+
+#
+# File: ../system-config-printer.glade.h, line: 221
+#: ../ui/NewPrinterWindow.glade.h:78
+msgid "Serial"
+msgstr "טורי"
+
+#
+# File: ../system-config-printer.glade.h, line: 224
+#: ../ui/NewPrinterWindow.glade.h:79
+msgid "Set authentication details now"
+msgstr "קבע את פרטי אימות עכשיו"
+
+#
+# File: ../system-config-printer.glade.h, line: 227
+#: ../ui/NewPrinterWindow.glade.h:80
+msgid "Short name for this printer such as \"laserjet\""
+msgstr "שם קצר למדפסת כגון \"laserjet\""
+
+#: ../ui/NewPrinterWindow.glade.h:81
+msgid "Supplier:"
+msgstr "ספק:"
+
+#: ../ui/NewPrinterWindow.glade.h:82
+msgid "Support:"
+msgstr "תמיכה:"
+
+#
+# File: ../troubleshoot/PrintTestPage.py, line: 76
+#: ../ui/NewPrinterWindow.glade.h:83
+msgid "Text:"
+msgstr "טקסט:"
+
+#: ../ui/NewPrinterWindow.glade.h:84
+msgid ""
+"The foomatic printer database contains various manufacturer provided "
+"PostScript Printer Description (PPD) files and also can generate PPD files "
+"for a large number of (non PostScript) printers. But in general manufacturer "
+"provided PPD files provide better access to the specific features of the "
+"printer."
+msgstr ""
+"מסד הנתונים למדפסות של foomatic מכיל מספר קבצי תיאור מדפסת של PostScript ‏"
+"(PPD) שסופקו ע\"י היצרנים, וגם יכול לייצר קבצי PPD עבור מדפסות רבות (שלא "
+"מסוג PostScript). אבל בכלליות, קבצי PPD שסופקו ע\"י היצרן  מספקים גישה טובה "
+"יותר לאפשרויות מסוימות של המדפסת."
+
+#: ../ui/NewPrinterWindow.glade.h:85
+msgid ""
+"These drivers do not come from your operating system supplier and will not "
+"be covered by their commercial support.  See the support and license terms "
+"of the driver's supplier."
+msgstr ""
+
+#
+# File: ../system-config-printer.glade.h, line: 236
+#: ../ui/NewPrinterWindow.glade.h:86
+msgid ""
+"This driver supports additional hardware that may be installed in the "
+"printer."
+msgstr "מנהל התקן זה, תומך בחומרה נוספת שיכולה להיות מותקנת במדפסת."
+
+#: ../ui/NewPrinterWindow.glade.h:87
+msgid ""
+"This is done by assuming that options with the same name do have the same "
+"meaning. Settings of options that are not present in the new PPD will be "
+"lost and options only present in the new PPD will be set to default."
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:88
+msgid ""
+"This way all current option settings will be lost. The default settings of "
+"the new PPD will be used. "
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:89
+msgid "Try to copy the option settings over from the old PPD. "
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:90
+msgid "Try to transfer the current settings"
+msgstr ""
+
+#
+# File: ../system-config-printer.glade.h, line: 247
+#: ../ui/NewPrinterWindow.glade.h:91
+msgid "URI:"
+msgstr "כתובת (URI):"
+
+#
+# File: ../system-config-printer.glade.h, line: 248
+#: ../ui/NewPrinterWindow.glade.h:93
+msgid "Use the new PPD (Postscript Printer Description) as is."
+msgstr "שיבוש ב-PPD החדש (קובץ Postscript Printer Description) כמו שהוא."
+
+#
+# File: ../system-config-printer.glade.h, line: 251
+#: ../ui/NewPrinterWindow.glade.h:95
+msgid ""
+"With this choice no driver download will be performed. In the next steps a "
+"locally installed driver will be selected."
+msgstr ""
+"עם בחירה זו לא תתבצע הורדה של מנהל התקן. בצעדים הבאים מנהל התקן מקומי יבחר."
+
+#
+# File: ../system-config-printer.glade.h, line: 253
+#: ../ui/NewPrinterWindow.glade.h:96
+msgid "Yes, I accept this license"
+msgstr "כן, הרשיון מקובל עלי"
+
+#
+# File: ../system-config-printer.glade.h, line: 264
+#: ../ui/NewPrinterWindow.glade.h:97
+msgid "_Search"
+msgstr "_חיפוש"
+
+#
+# File: ../system-config-printer.glade.h, line: 269
+#: ../ui/NewPrinterWindow.glade.h:98
+msgid "_Verify..."
+msgstr "_אימות..."
+
+#
+# File: ../system-config-printer.glade.h, line: 135
+#: ../ui/NewPrinterWindow.glade.h:99
+#, fuzzy
+msgid "license"
+msgstr "רישיון:"
+
+#: ../ui/NewPrinterWindow.glade.h:100 ../ui/PrinterPropertiesDialog.glade.h:81
+msgid "move left"
+msgstr "הזז שמאלה"
+
+#: ../ui/NewPrinterWindow.glade.h:101 ../ui/PrinterPropertiesDialog.glade.h:82
+msgid "move right"
+msgstr "הזז ימינה"
+
+#
+# File: ../system-config-printer.glade.h, line: 98
+#: ../ui/NewPrinterWindow.glade.h:102
+#, fuzzy
+msgid "short description"
+msgstr "תיאור:"
+
+#: ../ui/NewPrinterWindow.glade.h:103
+#, fuzzy
+msgid "supplier"
+msgstr "ספק:"
+
+#: ../ui/NewPrinterWindow.glade.h:104
+msgid "support contacts"
+msgstr ""
+
+#
+# File: ../system-config-printer.glade.h, line: 1
+#: ../ui/PrinterPropertiesDialog.glade.h:1
+msgid " "
+msgstr " "
+
+#
+# File: ../system-config-printer.glade.h, line: 10
+#: ../ui/PrinterPropertiesDialog.glade.h:2
+msgid "<b>Banner</b>"
+msgstr "<b>דף שער</b>"
+
+#
+# File: ../system-config-printer.glade.h, line: 12
+#: ../ui/PrinterPropertiesDialog.glade.h:3
+msgid "<b>Common Options</b>"
+msgstr "<b>אפשרויות משותפות</b>"
+
+#
+# File: ../system-config-printer.glade.h, line: 17
+#: ../ui/PrinterPropertiesDialog.glade.h:4
+msgid "<b>Image Options</b>"
+msgstr "<b>אפשרויות תמונה</b>"
+
+#
+# File: ../system-config-printer.glade.h, line: 10
+#: ../ui/PrinterPropertiesDialog.glade.h:5
+msgid "<b>Ink/Toner Levels</b>"
+msgstr "<b>רמות דיו/טונר</b>"
+
+#
+# File: ../system-config-printer.glade.h, line: 23
+#: ../ui/PrinterPropertiesDialog.glade.h:6
+msgid "<b>Other Options (Advanced)</b>"
+msgstr "<b>אפשרויות אחרות (מתקדם)</b>"
+
+#
+# File: ../system-config-printer.glade.h, line: 24
+#: ../ui/PrinterPropertiesDialog.glade.h:7
+msgid "<b>Policies</b>"
+msgstr "<b>מדיניות</b>"
+
+#
+# File: ../system-config-printer.glade.h, line: 29
+#: ../ui/PrinterPropertiesDialog.glade.h:8
+msgid "<b>Settings</b>"
+msgstr "<b>הגדרות</b>"
+
+#
+# File: ../system-config-printer.glade.h, line: 30
+#: ../ui/PrinterPropertiesDialog.glade.h:9
+msgid "<b>State</b>"
+msgstr "<b>מצב</b>"
+
+#
+# File: ../troubleshoot/PrinterStateReasons.py, line: 28
+#: ../ui/PrinterPropertiesDialog.glade.h:10
+msgid "<b>Status Messages</b>"
+msgstr "<b>הודעות מצב</b>"
+
+#
+# File: ../system-config-printer.glade.h, line: 31
+#: ../ui/PrinterPropertiesDialog.glade.h:11
+msgid "<b>Tests and Maintenance</b>"
+msgstr "<b>בדיקות ותחזוקה</b>"
+
+#
+# File: ../system-config-printer.glade.h, line: 32
+#: ../ui/PrinterPropertiesDialog.glade.h:12
+msgid "<b>Text Options</b>"
+msgstr "<b>אפשרויות הטקסט</b>"
+
+#
+# File: ../system-config-printer.glade.h, line: 33
+#: ../ui/PrinterPropertiesDialog.glade.h:13
+msgid ""
+"<i>Not published\n"
+"See server settings</i>"
+msgstr ""
+"<i>לא יצא לאור\n"
+"ראו הגדרות שרת</i>"
+
+#
+# File: ../system-config-printer.glade.h, line: 43
+#: ../ui/PrinterPropertiesDialog.glade.h:15
+msgid "Accepting jobs"
+msgstr "מקבל משימות"
+
+#
+# File: ../system-config-printer.glade.h, line: 44
+#: ../ui/PrinterPropertiesDialog.glade.h:16
+msgid "Access Control"
+msgstr "בקרת גישה"
+
+#
+# File: ../system-config-printer.glade.h, line: 45
+#: ../ui/PrinterPropertiesDialog.glade.h:17
+msgid "Add or Remove Members"
+msgstr "הוספה או הסרה של חברים"
+
+#
+# File: ../system-config-printer.glade.h, line: 47
+#: ../ui/PrinterPropertiesDialog.glade.h:18
+msgid "Allow printing for everyone except these users:"
+msgstr "לאפשר הדפסה עבור כולם חוץ מהמשתמשים הבאים:"
+
+#
+# File: ../system-config-printer.glade.h, line: 53
+#: ../ui/PrinterPropertiesDialog.glade.h:19
+msgid "Bottom margin:"
+msgstr "שוליים תחתונים:"
+
+#
+# File: ../system-config-printer.glade.h, line: 54
+#: ../ui/PrinterPropertiesDialog.glade.h:20
+msgid "Brightness:"
+msgstr "בהירות:"
+
+#
+# File: ../system-config-printer.glade.h, line: 57
+#: ../ui/PrinterPropertiesDialog.glade.h:21
+msgid "Change..."
+msgstr "שינוי..."
+
+#
+# File: ../system-config-printer.glade.h, line: 58
+#: ../ui/PrinterPropertiesDialog.glade.h:22
+msgid "Characters per inch:"
+msgstr "תווים לכל אינץ':"
+
+#
+# File: ../system-config-printer.glade.h, line: 61
+#. Not more than 25 characters
+#: ../ui/PrinterPropertiesDialog.glade.h:24
+msgid "Clean Print Heads"
+msgstr "ניקוי ראשי ההדפסה"
+
+#
+# File: ../optionwidgets.py, line: 117
+#: ../ui/PrinterPropertiesDialog.glade.h:25
+#, fuzzy
+msgid "Co_nflicts"
+msgstr "מתנגש עם:"
+
+#
+# File: ../system-config-printer.glade.h, line: 62
+#: ../ui/PrinterPropertiesDialog.glade.h:26
+msgid "Columns:"
+msgstr "עמודות:"
+
+#
+# File: ../system-config-printer.glade.h, line: 71
+#: ../ui/PrinterPropertiesDialog.glade.h:27
+msgid "Copies:"
+msgstr "עותקים:"
+
+#
+# File: ../system-config-printer.glade.h, line: 97
+#: ../ui/PrinterPropertiesDialog.glade.h:28
+msgid "Deny printing for everyone except these users:"
+msgstr "ביטול הדפסה לכולם חוץ מהמשתמשים הבאים:"
+
+#
+# File: ../system-config-printer.glade.h, line: 100
+#: ../ui/PrinterPropertiesDialog.glade.h:30
+msgid "Device URI:"
+msgstr "כתובת ה-URI של ההתקן:"
+
+#
+# File: ../system-config-printer.glade.h, line: 107
+#: ../ui/PrinterPropertiesDialog.glade.h:31
+msgid "Enabled"
+msgstr "זמין"
+
+#
+# File: ../system-config-printer.glade.h, line: 108
+#: ../ui/PrinterPropertiesDialog.glade.h:32
+msgid "Ending Banner:"
+msgstr "שער אחורי:"
+
+#
+# File: ../system-config-printer.glade.h, line: 109
+#: ../ui/PrinterPropertiesDialog.glade.h:33
+msgid "Error Policy: \t"
+msgstr "מדיניות טיפול בשגיאות: \t"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:34
+msgid "Finishings:"
+msgstr ""
+
+#
+# File: ../system-config-printer.glade.h, line: 114
+#: ../ui/PrinterPropertiesDialog.glade.h:35
+msgid "Gamma:"
+msgstr "גאמה:"
+
+#
+# File: ../system-config-printer.glade.h, line: 115
+#: ../ui/PrinterPropertiesDialog.glade.h:36
+msgid "Hold until:"
+msgstr "החזקה עד:"
+
+#
+# File: ../system-config-printer.glade.h, line: 117
+#: ../ui/PrinterPropertiesDialog.glade.h:37
+msgid "Hue adjustment:"
+msgstr "התאמת גוון:"
+
+#
+# File: ../system-config-printer.glade.h, line: 10
+#: ../ui/PrinterPropertiesDialog.glade.h:38
+msgid "Ink/Toner Levels"
+msgstr "רמות דיו/טונר"
+
+#
+# File: ../system-config-printer.glade.h, line: 123
+#: ../ui/PrinterPropertiesDialog.glade.h:40
+msgid "Job Options"
+msgstr "אפשרויות משימה"
+
+#
+# File: ../system-config-printer.glade.h, line: 124
+#: ../ui/PrinterPropertiesDialog.glade.h:41
+msgid "Job priority:"
+msgstr "עדיפות משימה:"
+
+#
+# File: ../system-config-printer.glade.h, line: 126
+#: ../ui/PrinterPropertiesDialog.glade.h:42
+msgid "Left margin:"
+msgstr "שוליים שמאליים:"
+
+#
+# File: ../system-config-printer.glade.h, line: 136
+#: ../ui/PrinterPropertiesDialog.glade.h:43
+msgid "Lines per inch:"
+msgstr "שורות לכל אינץ':"
+
+#
+# File: ../system-config-printer.glade.h, line: 138
+#: ../ui/PrinterPropertiesDialog.glade.h:44
+msgid "Location:"
+msgstr "מיקום:‏‪"
+
+#
+# File: ../system-config-printer.glade.h, line: 139
+#: ../ui/PrinterPropertiesDialog.glade.h:45
+msgid "Make and Model:"
+msgstr "סוג ומודל"
+
+#
+# File: ../system-config-printer.glade.h, line: 141
+#: ../ui/PrinterPropertiesDialog.glade.h:46
+msgid "Media:"
+msgstr "מדיה:"
+
+#
+# File: ../system-config-printer.glade.h, line: 142
+#: ../ui/PrinterPropertiesDialog.glade.h:47
+msgid "Members"
+msgstr "חברים"
+
+#
+# File: ../system-config-printer.glade.h, line: 143
+#: ../ui/PrinterPropertiesDialog.glade.h:48
+msgid "Mirror"
+msgstr "מראה"
+
+#
+# File: ../system-config-printer.glade.h, line: 144
+#: ../ui/PrinterPropertiesDialog.glade.h:49
+msgid "More"
+msgstr "עוד"
+
+#
+# File: ../system-config-printer.glade.h, line: 109
+#: ../ui/PrinterPropertiesDialog.glade.h:50
+msgid "Operation Policy:"
+msgstr "מדיניות פעולה: "
+
+#
+# File: ../system-config-printer.glade.h, line: 180
+#: ../ui/PrinterPropertiesDialog.glade.h:51
+msgid "Orientation:"
+msgstr "כיוון:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:52
+#, fuzzy
+msgid "Output bin:"
+msgstr "סדר פלט:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:53
+msgid "Output order:"
+msgstr "סדר פלט:"
+
+#
+# File: ../system-config-printer.glade.h, line: 181
+#: ../ui/PrinterPropertiesDialog.glade.h:54
+msgid "Pages per side layout:"
+msgstr "תבנית עמודים לכל צד:"
+
+#
+# File: ../system-config-printer.glade.h, line: 182
+#: ../ui/PrinterPropertiesDialog.glade.h:55
+msgid "Pages per side:"
+msgstr "עמודים לכל צד:"
+
+#
+# File: ../system-config-printer.glade.h, line: 186
+#: ../ui/PrinterPropertiesDialog.glade.h:56
+msgid "Policies"
+msgstr "מדיניות"
+
+#
+# File: ../system-config-printer.glade.h, line: 193
+#: ../ui/PrinterPropertiesDialog.glade.h:57
+msgid "Pretty print"
+msgstr "הדפסה יפה"
+
+#
+# File: ../system-config-printer.glade.h, line: 195
+#. Not more than 25 characters
+#: ../ui/PrinterPropertiesDialog.glade.h:59
+msgid "Print Self-Test Page"
+msgstr "הדפסת עמוד בדיקה עצמית"
+
+#
+# File: ../system-config-printer.glade.h, line: 200
+#: ../ui/PrinterPropertiesDialog.glade.h:62
+#, fuzzy
+msgid "Print quality:"
+msgstr "מצב המדפסת:"
+
+#
+# File: ../system-config-printer.glade.h, line: 199
+#: ../ui/PrinterPropertiesDialog.glade.h:64
+msgid "Printer Properties"
+msgstr "מאפייני מדפסת"
+
+#
+# File: ../system-config-printer.glade.h, line: 200
+#: ../ui/PrinterPropertiesDialog.glade.h:65
+msgid "Printer State:"
+msgstr "מצב המדפסת:"
+
+#
+# File: ../troubleshoot/LocalOrRemote.py, line: 26
+#: ../ui/PrinterPropertiesDialog.glade.h:66
+#, fuzzy
+msgid "Printer resolution:"
+msgstr "מיקום המדפסת"
+
+#
+# File: ../system-config-printer.glade.h, line: 208
+#: ../ui/PrinterPropertiesDialog.glade.h:67
+msgid "Reset"
+msgstr "אתחול"
+
+#
+# File: ../system-config-printer.glade.h, line: 210
+#: ../ui/PrinterPropertiesDialog.glade.h:68
+msgid "Right margin:"
+msgstr "שוליים ימניים:"
+
+#
+# File: ../system-config-printer.glade.h, line: 214
+#: ../ui/PrinterPropertiesDialog.glade.h:69
+msgid "Saturation:"
+msgstr "רוויה:"
+
+#
+# File: ../system-config-printer.glade.h, line: 216
+#: ../ui/PrinterPropertiesDialog.glade.h:70
+msgid "Scale to fit"
+msgstr "התאמת קנה מידה לגודל הדף"
+
+#
+# File: ../system-config-printer.glade.h, line: 217
+#: ../ui/PrinterPropertiesDialog.glade.h:71
+msgid "Scaling:"
+msgstr "קנה מידה:"
+
+#
+# File: ../system-config-printer.glade.h, line: 225
+#: ../ui/PrinterPropertiesDialog.glade.h:72
+msgid "Settings"
+msgstr "הגדרות"
+
+#
+# File: ../system-config-printer.glade.h, line: 226
+#: ../ui/PrinterPropertiesDialog.glade.h:73
+msgid "Shared"
+msgstr "משותף"
+
+#
+# File: ../system-config-printer.glade.h, line: 229
+#: ../ui/PrinterPropertiesDialog.glade.h:74
+msgid "Sides:"
+msgstr "צדדים:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:75
+msgid ""
+"Specify the default job options for this printer.  Jobs arriving at this "
+"print server will have these options added if they are not already set by "
+"the application."
+msgstr ""
+
+#
+# File: ../system-config-printer.glade.h, line: 231
+#: ../ui/PrinterPropertiesDialog.glade.h:76
+msgid "Starting Banner:"
+msgstr "דף שער:"
+
+#
+# File: ../system-config-printer.glade.h, line: 146
+#: ../ui/PrinterPropertiesDialog.glade.h:77
+msgid "There are no status messages for this printer."
+msgstr "אין הודעות מצב עבור מדפסת זו"
+
+#
+# File: ../system-config-printer.glade.h, line: 244
+#: ../ui/PrinterPropertiesDialog.glade.h:78
+msgid "To add a new option, enter its name in the box below and click to add."
+msgstr "להוספת אפשרות חדשה, יש להקליד את שמה לתיבה וללחוץ על הוספה."
+
+#
+# File: ../system-config-printer.glade.h, line: 245
+#: ../ui/PrinterPropertiesDialog.glade.h:79
+msgid "Top margin:"
+msgstr "שוליים עליונים:"
+
+#
+# File: ../system-config-printer.glade.h, line: 252
+#: ../ui/PrinterPropertiesDialog.glade.h:80
+msgid "Word wrap"
+msgstr "גלישת שורות"
+
+#
+# File: ../system-config-printer.glade.h, line: 273
+#: ../ui/PrinterPropertiesDialog.glade.h:83
+msgid "points"
+msgstr "נקודות"
+
+#
+# File: ../jobviewer.py, line: 186
+#: ../ui/PrinterPropertiesDialog.glade.h:84
+msgid "user"
+msgstr "משתמש"
+
+#: ../ui/PrintersWindow.glade.h:1
+msgid ""
+"Printing service not available.  Start the service on this computer or "
+"connect to another server."
+msgstr ""
+
+#: ../ui/PrintersWindow.glade.h:2
+msgid "Start Service"
+msgstr ""
+
+#
+# File: ../system-config-printer.glade.h, line: 233
+#: ../ui/PrintersWindow.glade.h:3
+msgid "System-Config-Printer"
+msgstr "System-Config-Printer"
+
+#: ../ui/PrintersWindow.glade.h:4
+msgid "There are no printers configured yet."
+msgstr ""
+
+#
+# File: ../system-config-printer.glade.h, line: 257
+#: ../ui/PrintersWindow.glade.h:5
+msgid "_Discovered Printers"
+msgstr "מדפסות _שהתגלו"
+
+#: ../ui/PrintersWindow.glade.h:6
+msgid "_Group"
+msgstr "_קבוצה"
+
+#: ../ui/PrintersWindow.glade.h:7
+msgid "_Groups"
+msgstr "_קבוצות"
+
+#
+# File: ../system-config-printer.glade.h, line: 259
+#: ../ui/PrintersWindow.glade.h:8
+msgid "_Help"
+msgstr "_עזרה"
+
+#
+# File: ../system-config-printer.glade.h, line: 265
+#: ../ui/PrintersWindow.glade.h:10
+msgid "_Server"
+msgstr "_שרת"
+
+#
+# File: ../system-config-printer.glade.h, line: 270
+# File: ../applet.glade.h, line: 10
+#: ../ui/PrintersWindow.glade.h:11
+msgid "_View"
+msgstr "_תצוגה"
+
+#
+# File: ../system-config-printer.glade.h, line: 11
+#: ../ui/ServerSettingsDialog.glade.h:1
+msgid "<b>Basic Server Settings</b>"
+msgstr "<b>הגדרות שרת בסיסיות</b>"
+
+# File: ../AdvancedServerSettings.py, line: 81
+#: ../ui/ServerSettingsDialog.glade.h:2
+msgid "<b>Browse servers</b>"
+msgstr "<b>עיון בשרתים</b>"
+
+# File: ../AdvancedServerSettings.py, line: 57
+#: ../ui/ServerSettingsDialog.glade.h:3
+msgid "<b>Job history</b>"
+msgstr "<b>היסטוריית משימות</b>"
+
+#
+# File: ../AdvancedServerSettings.py, line: 40
+#: ../ui/ServerSettingsDialog.glade.h:4
+msgid "Advanced Server Settings"
+msgstr "הגדרות שרת מתקדמות"
+
+#
+# File: ../system-config-printer.glade.h, line: 49
+#: ../ui/ServerSettingsDialog.glade.h:5
+msgid "Allow _remote administration"
+msgstr "לאפשר ניהול מרחוק"
+
+#
+# File: ../system-config-printer.glade.h, line: 50
+#: ../ui/ServerSettingsDialog.glade.h:6
+msgid "Allow _users to cancel any job (not just their own)"
+msgstr "לאפשר למשתמשים לבטל כל משימה (לא רק משימות שלהם)"
+
+#
+# File: ../system-config-printer.glade.h, line: 48
+#: ../ui/ServerSettingsDialog.glade.h:7
+msgid "Allow printing from the _Internet"
+msgstr "אפשר הדפסה מהאינטרנט"
+
+#
+# File: ../AdvancedServerSettings.py, line: 68
+#: ../ui/ServerSettingsDialog.glade.h:8
+msgid "Do not preserve job history"
+msgstr "לא לשמר היסטוריית משימות"
+
+#
+# File: ../AdvancedServerSettings.py, line: 73
+#: ../ui/ServerSettingsDialog.glade.h:9
+msgid "Preserve job files (allow reprinting)"
+msgstr "שמר קבצי משימה (אפשר הדפסה חוזרת)"
+
+#
+# File: ../AdvancedServerSettings.py, line: 70
+#: ../ui/ServerSettingsDialog.glade.h:10
+msgid "Preserve job history but not files"
+msgstr "שמר היסטוריית משימות אבל לא קבצים"
+
+#
+# File: ../system-config-printer.glade.h, line: 215
+#: ../ui/ServerSettingsDialog.glade.h:11
+msgid "Save _debugging information for troubleshooting"
+msgstr "שמור מידע לצורך איתור תקלות"
+
+# File: ../system-config-printer.glade.h, line: 51
+#: ../ui/ServerSettingsDialog.glade.h:12
+msgid "Server Settings"
+msgstr "הגדרות שרת"
+
+# File: ../AdvancedServerSettings.py, line: 92
+#: ../ui/ServerSettingsDialog.glade.h:13
+msgid ""
+"Usually print servers broadcast their queues. Specify print servers below to "
+"periodically ask for queues instead."
+msgstr ""
+"שרתי הדפסה בדרך כלל משדרים את התורים שלהם. ציין את שרתי ההדפסה שאותם יש "
+"לתשאל באופן מתוזמן עבור תורים במקום זאת."
+
+#: ../ui/ServerSettingsDialog.glade.h:14
+msgid "_Publish shared printers connected to this system"
+msgstr "פרסם מדפסות משותפות המחוברות למחשב זה"
+
+#
+# File: ../system-config-printer.glade.h, line: 228
+#: ../ui/ServerSettingsDialog.glade.h:15
+msgid "_Show printers shared by other systems"
+msgstr "הצג מדפסות המשותפות על ידי מערכות אחרות"
+
+#
+# File: ../system-config-printer.glade.h, line: 213
+#: ../ui/SMBBrowseDialog.glade.h:1
+msgid "SMB Browser"
+msgstr "דפדפן SMB"
+
+#
+# File: ../applet.glade.h, line: 6
+#: ../ui/statusicon_popupmenu.glade.h:1
+msgid "_Hide"
+msgstr "_הסתרה"
+
+#
+# File: ../system-config-printer.glade.h, line: 185
+#: ../ui/WaitWindow.glade.h:1
+msgid "Please Wait"
+msgstr "נא להמתין"
 
 #
 # File: ../system-config-printer.desktop.in.h, line: 1
@@ -2791,13 +4111,6 @@ msgid ""
 "Please select the device you want to use from the list below. If it does not "
 "appear in the list, select 'Not listed'."
 msgstr ""
-
-#
-# File: ../system-config-printer.glade.h, line: 99
-# File: ../troubleshoot/DeviceListed.py, line: 39
-#: ../troubleshoot/DeviceListed.py:40
-msgid "Device URI"
-msgstr "כתובת ה-URI של ההתקן"
 
 #
 # File: ../troubleshoot/ErrorLogCheckpoint.py, line: 29
@@ -3234,1028 +4547,15 @@ msgid "System tray icon for managing print jobs"
 msgstr "צלמית במגש המערכת עבור ניהול משימות הדפסה"
 
 #
-# File: ../system-config-printer.glade.h, line: 42
-#~ msgid "A CUPS configuration tool."
-#~ msgstr "כלי להגדרת תצורת CUPS."
-
-#
-# File: ../system-config-printer.glade.h, line: 73
-#~ msgid "Copyright &#xA9; 2006-2008 Red Hat, Inc."
-#~ msgstr "Copyright &#xA9; 2006-2008 Red Hat, Inc."
-
-#
-# File: ../system-config-printer.glade.h, line: 238
-#~ msgid ""
-#~ "This program is free software; you can redistribute it and/or modify it "
-#~ "under the terms of the GNU General Public License as published by the "
-#~ "Free Software Foundation; either version 2 of the License, or (at your "
-#~ "option) any later version.\n"
-#~ "\n"
-#~ "This program is distributed in the hope that it will be useful, but "
-#~ "WITHOUT ANY WARRANTY; without even the implied warranty of "
-#~ "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General "
-#~ "Public License for more details.\n"
-#~ "\n"
-#~ "You should have received a copy of the GNU General Public License along "
-#~ "with this program; if not, write to the Free Software Foundation, Inc., "
-#~ "675 Mass Ave, Cambridge, MA 02139, USA."
-#~ msgstr ""
-#~ "This program is free software; you can redistribute it and/or modify it "
-#~ "under the terms of the GNU General Public License as published by the "
-#~ "Free Software Foundation; either version 2 of the License, or (at your "
-#~ "option) any later version.\n"
-#~ "\n"
-#~ "This program is distributed in the hope that it will be useful, but "
-#~ "WITHOUT ANY WARRANTY; without even the implied warranty of "
-#~ "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General "
-#~ "Public License for more details.\n"
-#~ "\n"
-#~ "You should have received a copy of the GNU General Public License along "
-#~ "with this program; if not, write to the Free Software Foundation, Inc., "
-#~ "675 Mass Ave, Cambridge, MA 02139, USA."
-
-#
-# File: ../system-config-printer.glade.h, line: 276
-#~ msgid "translator-credits"
-#~ msgstr ""
-#~ "Launchpad Contributions:\n"
-#~ "  Mark Krapivner https://launchpad.net/~mark125\n"
-#~ "  Yaron https://launchpad.net/~sh-yaron"
-
-#
-# File: ../system-config-printer.glade.h, line: 56
-#~ msgid "CUPS _server:"
-#~ msgstr "_שרת CUPS:"
-
-#
-# File: ../system-config-printer.glade.h, line: 64
-#~ msgid "Connect to CUPS server"
-#~ msgstr "התחברות לשרת CUPS"
-
-#
-# File: ../system-config-printer.glade.h, line: 207
-#~ msgid "Require _encryption"
-#~ msgstr "דרוש הצפנה"
-
-#
-# File: ../system-config-printer.glade.h, line: 37
-#~ msgid ""
-#~ "<span weight=\"bold\" size=\"larger\">Connecting to CUPS server</span>"
-#~ msgstr "<span weight=\"bold\" size=\"larger\">מתחבר לשרת CUPS</span>"
-
-#
-# File: ../system-config-printer.glade.h, line: 64
-#~ msgid "Connecting to CUPS server"
-#~ msgstr "מתחבר לשרת CUPS"
-
-#
-# File: ../system-config-printer.glade.h, line: 260
-#~ msgid "_Install"
-#~ msgstr "_התקנה"
-
-#
-# File: ../applet.glade.h, line: 3
-#~ msgid "Show _completed jobs"
-#~ msgstr "הצגת משימות שהושלמו"
-
-#
-# File: ../applet.glade.h, line: 3
-#, fuzzy
-#~ msgid "Show completed jobs"
-#~ msgstr "הצגת משימות שהושלמו"
-
-#
-# File: ../applet.glade.h, line: 8
-#~ msgid "_Refresh"
-#~ msgstr "_רענן"
-
-# File: ../my-default-printer.py, line: 141
-# File: ../my-default-printer.desktop.in.h, line: 1
-#~ msgid "Duplicate Printer"
-#~ msgstr "מדפסת כפולה"
-
-#
-# File: ../system-config-printer.glade.h, line: 146
-#~ msgid "New name for the printer"
-#~ msgstr "שם חדש עבור המדפסת"
-
-#
-# File: ../system-config-printer.glade.h, line: 9
-#~ msgid "<b>Authentication</b>"
-#~ msgstr "<b>אימות</b>"
-
-#
-# File: ../system-config-printer.glade.h, line: 13
-#~ msgid "<b>Description</b>"
-#~ msgstr "<b>תיאור</b>"
-
-#
-# File: ../system-config-printer.glade.h, line: 14
-#~ msgid "<b>Description</b> (optional)"
-#~ msgstr "<b>תיאור</b> (אופציונלי)"
-
-#
-# File: ../system-config-printer.glade.h, line: 15
-#~ msgid "<b>Enter device URI</b>"
-#~ msgstr "<b>הכנסת ה-URI של ההתקן</b>"
-
-#
-# File: ../system-config-printer.glade.h, line: 16
-#~ msgid "<b>IPP Printer</b>"
-#~ msgstr "<b>מדפסת IPP</b>"
-
-#
-# File: ../system-config-printer.glade.h, line: 18
-#~ msgid "<b>License Terms</b>"
-#~ msgstr "<b>תנאי הרישיון</b>"
-
-#
-# File: ../system-config-printer.glade.h, line: 19
-#~ msgid "<b>Location of the LPD network printer</b>"
-#~ msgstr "<b>המיקום של מדפסת רשת LPD </b>"
-
-#
-# File: ../system-config-printer.glade.h, line: 20
-#~ msgid "<b>Location of the network printer</b>"
-#~ msgstr "<b>מיקום מדפסת הרשת</b>"
-
-#
-# File: ../system-config-printer.glade.h, line: 21
-#~ msgid "<b>Location</b> (optional)"
-#~ msgstr "<b>מיקום</b> (אופציונלי)"
-
-#
-# File: ../system-config-printer.py, line: 890
-# File: ../system-config-printer.py, line: 896
-# File: ../troubleshoot/LocalOrRemote.py, line: 30
-#~ msgid "<b>Network Printer</b>"
-#~ msgstr "<b>מדפסת רשת</b>"
-
-#
-# File: ../system-config-printer.glade.h, line: 22
-#~ msgid "<b>Note</b>"
-#~ msgstr "<b>הערה</b>"
-
-#
-# File: ../system-config-printer.glade.h, line: 30
-#~ msgid "<b>Output Quality</b>"
-#~ msgstr "<b>איכות פלט</b>"
-
-#
-# File: ../system-config-printer.glade.h, line: 25
-#~ msgid "<b>Printer Name</b>"
-#~ msgstr "<b>שם המדפסת</b>"
-
-#
-# File: ../system-config-printer.glade.h, line: 26
-#~ msgid "<b>SMB Printer</b>"
-#~ msgstr "<b>מדפסת SMB</b>"
-
-#
-# File: ../system-config-printer.glade.h, line: 27
-#~ msgid "<b>Select Driver</b>"
-#~ msgstr "<b>בחר מנהל התקן</b>"
-
-#
-# File: ../system-config-printer.glade.h, line: 28
-#~ msgid "<b>Settings of the serial port</b>"
-#~ msgstr "<b>הגדרות עבור יציאה טורית</b>"
-
-#
-# File: ../system-config-printer.glade.h, line: 35
-#~ msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
-#~ msgstr "<i>smb://[workgroup/]server[:port]/printer</i>"
-
-#
-# File: ../system-config-printer.glade.h, line: 36
-#~ msgid "<span weight=\"bold\" size=\"larger\">Choose Class Members</span>"
-#~ msgstr "<span weight=\"bold\" size=\"larger\">בחירת חברי מחלקה</span>"
-
-#
-# File: ../system-config-printer.glade.h, line: 37
-#~ msgid "<span weight=\"bold\" size=\"larger\">Choose Driver</span>"
-#~ msgstr "<span weight=\"bold\" size=\"larger\">בחירת מנהל התקן</span>"
-
-#
-# File: ../system-config-printer.glade.h, line: 38
-#~ msgid "<span weight=\"bold\" size=\"larger\">Describe Printer</span>"
-#~ msgstr "<span weight=\"bold\" size=\"larger\">תיאור מדפסת</span>"
-
-#
-# File: ../system-config-printer.glade.h, line: 39
-#~ msgid "<span weight=\"bold\" size=\"larger\">Existing Settings</span>"
-#~ msgstr "<span weight=\"bold\" size=\"larger\">הגדרות קיימות</span>"
-
-#
-# File: ../system-config-printer.glade.h, line: 40
-#~ msgid "<span weight=\"bold\" size=\"larger\">Installable Options</span>"
-#~ msgstr "<span weight=\"bold\" size=\"larger\">אפשרויות ניתנות להתקנה</span>"
-
-#
-# File: ../system-config-printer.glade.h, line: 41
-#~ msgid "<span weight=\"bold\" size=\"larger\">Select Device</span>"
-#~ msgstr "<span weight=\"bold\" size=\"larger\">בחירת התקן</span>"
-
-#
-# File: ../system-config-printer.glade.h, line: 52
-#~ msgid "Baud Rate"
-#~ msgstr "קצב העברה"
-
-#
-# File: ../system-config-printer.glade.h, line: 55
-#~ msgid "Browse..."
-#~ msgstr "עיון..."
-
-#
-# File: ../system-config-printer.py, line: 2826
-#, fuzzy
-#~ msgid "Change PPD"
-#~ msgstr "החלפת מנהל ההתקן"
-
-#
-# File: ../system-config-printer.glade.h, line: 142
-#, fuzzy
-#~ msgid "Class Members"
-#~ msgstr "חברים"
-
-#
-# File: ../system-config-printer.glade.h, line: 63
-#~ msgid "Comments..."
-#~ msgstr "הערות..."
-
-#
-# File: ../system-config-printer.glade.h, line: 70
-#~ msgid "Connection"
-#~ msgstr "חיבור"
-
-#
-# File: ../system-config-printer.glade.h, line: 98
-#~ msgid "Description:"
-#~ msgstr "תיאור:‏"
-
-#
-# File: ../system-config-printer.py, line: 384
-#, fuzzy
-#~ msgid "Device"
-#~ msgstr "התקנים"
-
-#
-# File: ../system-config-printer.glade.h, line: 101
-#~ msgid "Device description."
-#~ msgstr "תיאור ההתקן."
-
-#
-# File: ../system-config-printer.glade.h, line: 104
-#~ msgid "Driver details"
-#~ msgstr "פרטי מנהל ההתקן"
-
-#
-# File: ../system-config-printer.glade.h, line: 106
-#~ msgid "Empty"
-#~ msgstr "ריק"
-
-#
-# File: ../system-config-printer.glade.h, line: 112
-#~ msgid "Flow Control"
-#~ msgstr "בקרת זרימה"
-
-#
-# File: ../system-config-printer.glade.h, line: 113
-#~ msgid ""
-#~ "For the printer you have selected there are drivers available for "
-#~ "download."
-#~ msgstr "עבור המדפסת שבחרת נמצאו מנהלי התקנים להורדה."
-
-#~ msgid "Free software"
-#~ msgstr "תוכנה חופשית"
-
-#
-# File: ../system-config-printer.glade.h, line: 116
-#~ msgid "Host:"
-#~ msgstr "מארח:"
-
-#
-# File: ../system-config-printer.glade.h, line: 118
-#~ msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
-#~ msgstr ""
-#~ "תיאור שניתן להבנה על ידי בני אדם כגון \"מדפסת לייזר עם מזין דו-צדדי\""
-
-#
-# File: ../system-config-printer.glade.h, line: 119
-#~ msgid "Human-readable location such as \"Lab 1\""
-#~ msgstr "מיקום שניתן להבנה על ידי בני אדם כגון \"מעבדה 1\""
-
-#
-# File: ../system-config-printer.glade.h, line: 122
-#~ msgid "Installed Options"
-#~ msgstr "אפשרויות מותקנות"
-
-#
-# File: ../system-config-printer.glade.h, line: 102
-#, fuzzy
-#~ msgid "JetDirect"
-#~ msgstr "DirectJet"
-
-#
-# File: ../system-config-printer.glade.h, line: 125
-#~ msgid "LPD"
-#~ msgstr "LPD"
-
-#
-# File: ../system-config-printer.glade.h, line: 135
-#~ msgid "License:"
-#~ msgstr "רישיון:"
-
-#
-# File: ../system-config-printer.glade.h, line: 200
-#~ msgid "Line art:"
-#~ msgstr "Line art:"
-
-#
-# File: ../system-config-printer.glade.h, line: 137
-#~ msgid "Local Driver"
-#~ msgstr "מנהל התקן מקומי"
-
-#
-# File: ../system-config-printer.glade.h, line: 140
-#~ msgid "Make and model:"
-#~ msgstr "יצרן ודגם:"
-
-#~ msgid "Manufacturer"
-#~ msgstr "יצרן"
-
-#
-# File: ../system-config-printer.py, line: 890
-# File: ../system-config-printer.py, line: 896
-# File: ../troubleshoot/LocalOrRemote.py, line: 30
-#~ msgid "Network"
-#~ msgstr "רשת"
-
-#
-# File: ../system-config-printer.glade.h, line: 147
-#~ msgid "No, I do not accept this license"
-#~ msgstr "לא, אני לא מקבל את הרישיון הזה"
-
-#
-# File: ../system-config-printer.glade.h, line: 183
-#~ msgid "Parity"
-#~ msgstr "שוויון"
-
-#~ msgid "Patented algorithms"
-#~ msgstr "אלגוריתמים מוגנים בפטנט"
-
-#~ msgid "Photo:"
-#~ msgstr "תמונה:"
-
-#
-# File: ../system-config-printer.glade.h, line: 187
-#~ msgid "Port number:"
-#~ msgstr "מספר יציאה (port):"
-
-#
-# File: ../system-config-printer.glade.h, line: 192
-#~ msgid ""
-#~ "PostScript Printer Description (PPD) files can often be found on the "
-#~ "driver disk that comes with the printer. For PostScript printers they are "
-#~ "often part of the Windows<sup>&#xAE;</sup> driver."
-#~ msgstr ""
-#~ "בדרך כלל ניתן למצוא קבצי ‏PPD ‏(PostScript Printer Description) על הדיסק "
-#~ "שמגיעה עם המדפסת.עבור מדפסות PostScript הם בדרך כלל חלק ממנהל ההתקן של "
-#~ "Windows<sup>&#xAE;</sup>"
-
-#
-# File: ../system-config-printer.glade.h, line: 201
-#~ msgid "Printer model:"
-#~ msgstr "דגם מדפסת:"
-
-#
-# File: ../system-config-printer.glade.h, line: 202
-#~ msgid "Probe"
-#~ msgstr "בדיקה"
-
-#
-# File: ../jobviewer.py, line: 527
-#~ msgid "Prompt user if authentication is required"
-#~ msgstr "שאל את המשתמש במקרה שדרוש אימות"
-
-#
-# File: ../system-config-printer.glade.h, line: 204
-#~ msgid "Provide PPD file"
-#~ msgstr "לספק קובץ PPD"
-
-#
-# File: ../system-config-printer.glade.h, line: 206
-#~ msgid "Queue:"
-#~ msgstr "תור:"
-
-#
-# File: ../system-config-printer.glade.h, line: 211
-#~ msgid "SCSI"
-#~ msgstr "SCSI"
-
-#
-# File: ../system-config-printer.glade.h, line: 212
-#~ msgid "SMB"
-#~ msgstr "SMB"
-
-#
-# File: ../system-config-printer.glade.h, line: 218
-#~ msgid "Search for a printer driver to download"
-#~ msgstr "חפש מנהל התקן להורדה עבור המדפסת"
-
-#
-# File: ../system-config-printer.py, line: 2925
-# File: ../system-config-printer.py, line: 3223
-# File: ../system-config-printer.py, line: 3454
-# File: ../system-config-printer.py, line: 4600
-#~ msgid "Searching..."
-#~ msgstr "מחפש..."
-
-#
-# File: ../system-config-printer.glade.h, line: 220
-#~ msgid "Select printer from database"
-#~ msgstr "בחר מדפסת ממסד נתונים"
-
-#
-# File: ../system-config-printer.glade.h, line: 221
-#~ msgid "Serial"
-#~ msgstr "טורי"
-
-#
-# File: ../system-config-printer.glade.h, line: 224
-#~ msgid "Set authentication details now"
-#~ msgstr "קבע את פרטי אימות עכשיו"
-
-#
-# File: ../system-config-printer.glade.h, line: 227
-#~ msgid "Short name for this printer such as \"laserjet\""
-#~ msgstr "שם קצר למדפסת כגון \"laserjet\""
-
-#~ msgid "Supplier:"
-#~ msgstr "ספק:"
-
-#~ msgid "Support:"
-#~ msgstr "תמיכה:"
-
-#
-# File: ../troubleshoot/PrintTestPage.py, line: 76
-#~ msgid "Text:"
-#~ msgstr "טקסט:"
-
-#~ msgid ""
-#~ "The foomatic printer database contains various manufacturer provided "
-#~ "PostScript Printer Description (PPD) files and also can generate PPD "
-#~ "files for a large number of (non PostScript) printers. But in general "
-#~ "manufacturer provided PPD files provide better access to the specific "
-#~ "features of the printer."
-#~ msgstr ""
-#~ "מסד הנתונים למדפסות של foomatic מכיל מספר קבצי תיאור מדפסת של PostScript ‏"
-#~ "(PPD) שסופקו ע\"י היצרנים, וגם יכול לייצר קבצי PPD עבור מדפסות רבות (שלא "
-#~ "מסוג PostScript). אבל בכלליות, קבצי PPD שסופקו ע\"י היצרן  מספקים גישה "
-#~ "טובה יותר לאפשרויות מסוימות של המדפסת."
-
-#
-# File: ../system-config-printer.glade.h, line: 236
-#~ msgid ""
-#~ "This driver supports additional hardware that may be installed in the "
-#~ "printer."
-#~ msgstr "מנהל התקן זה, תומך בחומרה נוספת שיכולה להיות מותקנת במדפסת."
-
-#
-# File: ../system-config-printer.glade.h, line: 247
-#~ msgid "URI:"
-#~ msgstr "כתובת (URI):"
-
-#
-# File: ../system-config-printer.glade.h, line: 248
-#~ msgid "Use the new PPD (Postscript Printer Description) as is."
-#~ msgstr "שיבוש ב-PPD החדש (קובץ Postscript Printer Description) כמו שהוא."
-
-#
-# File: ../system-config-printer.glade.h, line: 251
-#~ msgid ""
-#~ "With this choice no driver download will be performed. In the next steps "
-#~ "a locally installed driver will be selected."
-#~ msgstr ""
-#~ "עם בחירה זו לא תתבצע הורדה של מנהל התקן. בצעדים הבאים מנהל התקן מקומי "
-#~ "יבחר."
-
-#
-# File: ../system-config-printer.glade.h, line: 253
-#~ msgid "Yes, I accept this license"
-#~ msgstr "כן, הרשיון מקובל עלי"
-
-#
-# File: ../system-config-printer.glade.h, line: 264
-#~ msgid "_Search"
-#~ msgstr "_חיפוש"
-
-#
-# File: ../system-config-printer.glade.h, line: 269
-#~ msgid "_Verify..."
-#~ msgstr "_אימות..."
-
-#
-# File: ../system-config-printer.glade.h, line: 135
-#, fuzzy
-#~ msgid "license"
-#~ msgstr "רישיון:"
-
-#~ msgid "move left"
-#~ msgstr "הזז שמאלה"
-
-#~ msgid "move right"
-#~ msgstr "הזז ימינה"
-
-#
-# File: ../system-config-printer.glade.h, line: 98
-#, fuzzy
-#~ msgid "short description"
-#~ msgstr "תיאור:"
-
-#, fuzzy
-#~ msgid "supplier"
-#~ msgstr "ספק:"
-
-#
-# File: ../system-config-printer.glade.h, line: 1
-#~ msgid " "
-#~ msgstr " "
-
-#
-# File: ../system-config-printer.glade.h, line: 10
-#~ msgid "<b>Banner</b>"
-#~ msgstr "<b>דף שער</b>"
-
-#
-# File: ../system-config-printer.glade.h, line: 12
-#~ msgid "<b>Common Options</b>"
-#~ msgstr "<b>אפשרויות משותפות</b>"
-
-#
-# File: ../system-config-printer.glade.h, line: 17
-#~ msgid "<b>Image Options</b>"
-#~ msgstr "<b>אפשרויות תמונה</b>"
-
-#
-# File: ../system-config-printer.glade.h, line: 10
-#~ msgid "<b>Ink/Toner Levels</b>"
-#~ msgstr "<b>רמות דיו/טונר</b>"
-
-#
-# File: ../system-config-printer.glade.h, line: 23
-#~ msgid "<b>Other Options (Advanced)</b>"
-#~ msgstr "<b>אפשרויות אחרות (מתקדם)</b>"
-
-#
-# File: ../system-config-printer.glade.h, line: 24
-#~ msgid "<b>Policies</b>"
-#~ msgstr "<b>מדיניות</b>"
-
-#
-# File: ../system-config-printer.glade.h, line: 29
-#~ msgid "<b>Settings</b>"
-#~ msgstr "<b>הגדרות</b>"
-
-#
-# File: ../system-config-printer.glade.h, line: 30
-#~ msgid "<b>State</b>"
-#~ msgstr "<b>מצב</b>"
-
-#
-# File: ../troubleshoot/PrinterStateReasons.py, line: 28
-#~ msgid "<b>Status Messages</b>"
-#~ msgstr "<b>הודעות מצב</b>"
-
-#
-# File: ../system-config-printer.glade.h, line: 31
-#~ msgid "<b>Tests and Maintenance</b>"
-#~ msgstr "<b>בדיקות ותחזוקה</b>"
-
-#
-# File: ../system-config-printer.glade.h, line: 32
-#~ msgid "<b>Text Options</b>"
-#~ msgstr "<b>אפשרויות הטקסט</b>"
-
-#
-# File: ../system-config-printer.glade.h, line: 33
-#~ msgid ""
-#~ "<i>Not published\n"
-#~ "See server settings</i>"
-#~ msgstr ""
-#~ "<i>לא יצא לאור\n"
-#~ "ראו הגדרות שרת</i>"
-
-#
-# File: ../system-config-printer.glade.h, line: 43
-#~ msgid "Accepting jobs"
-#~ msgstr "מקבל משימות"
-
-#
-# File: ../system-config-printer.glade.h, line: 44
-#~ msgid "Access Control"
-#~ msgstr "בקרת גישה"
-
-#
-# File: ../system-config-printer.glade.h, line: 45
-#~ msgid "Add or Remove Members"
-#~ msgstr "הוספה או הסרה של חברים"
-
-#
-# File: ../system-config-printer.glade.h, line: 47
-#~ msgid "Allow printing for everyone except these users:"
-#~ msgstr "לאפשר הדפסה עבור כולם חוץ מהמשתמשים הבאים:"
-
-#
-# File: ../system-config-printer.glade.h, line: 53
-#~ msgid "Bottom margin:"
-#~ msgstr "שוליים תחתונים:"
-
-#
-# File: ../system-config-printer.glade.h, line: 54
-#~ msgid "Brightness:"
-#~ msgstr "בהירות:"
-
-#
-# File: ../system-config-printer.glade.h, line: 57
-#~ msgid "Change..."
-#~ msgstr "שינוי..."
-
-#
-# File: ../system-config-printer.glade.h, line: 58
-#~ msgid "Characters per inch:"
-#~ msgstr "תווים לכל אינץ':"
-
-#
-# File: ../system-config-printer.glade.h, line: 61
-#~ msgid "Clean Print Heads"
-#~ msgstr "ניקוי ראשי ההדפסה"
-
-#
-# File: ../optionwidgets.py, line: 117
-#, fuzzy
-#~ msgid "Co_nflicts"
-#~ msgstr "מתנגש עם:"
-
-#
-# File: ../system-config-printer.glade.h, line: 62
-#~ msgid "Columns:"
-#~ msgstr "עמודות:"
-
-#
-# File: ../system-config-printer.glade.h, line: 71
-#~ msgid "Copies:"
-#~ msgstr "עותקים:"
-
-#
-# File: ../system-config-printer.glade.h, line: 97
-#~ msgid "Deny printing for everyone except these users:"
-#~ msgstr "ביטול הדפסה לכולם חוץ מהמשתמשים הבאים:"
-
-#
-# File: ../system-config-printer.glade.h, line: 100
-#~ msgid "Device URI:"
-#~ msgstr "כתובת ה-URI של ההתקן:"
-
-#
-# File: ../system-config-printer.glade.h, line: 107
-#~ msgid "Enabled"
-#~ msgstr "זמין"
-
-#
-# File: ../system-config-printer.glade.h, line: 108
-#~ msgid "Ending Banner:"
-#~ msgstr "שער אחורי:"
-
-#
-# File: ../system-config-printer.glade.h, line: 109
-#~ msgid "Error Policy: \t"
-#~ msgstr "מדיניות טיפול בשגיאות: \t"
-
-#
-# File: ../system-config-printer.glade.h, line: 114
-#~ msgid "Gamma:"
-#~ msgstr "גאמה:"
-
-#
-# File: ../system-config-printer.glade.h, line: 115
-#~ msgid "Hold until:"
-#~ msgstr "החזקה עד:"
-
-#
-# File: ../system-config-printer.glade.h, line: 117
-#~ msgid "Hue adjustment:"
-#~ msgstr "התאמת גוון:"
-
-#
-# File: ../system-config-printer.glade.h, line: 10
-#~ msgid "Ink/Toner Levels"
-#~ msgstr "רמות דיו/טונר"
-
-#
-# File: ../system-config-printer.glade.h, line: 123
-#~ msgid "Job Options"
-#~ msgstr "אפשרויות משימה"
-
-#
-# File: ../system-config-printer.glade.h, line: 124
-#~ msgid "Job priority:"
-#~ msgstr "עדיפות משימה:"
-
-#
-# File: ../system-config-printer.glade.h, line: 126
-#~ msgid "Left margin:"
-#~ msgstr "שוליים שמאליים:"
-
-#
-# File: ../system-config-printer.glade.h, line: 136
-#~ msgid "Lines per inch:"
-#~ msgstr "שורות לכל אינץ':"
-
-#
-# File: ../system-config-printer.glade.h, line: 138
-#~ msgid "Location:"
-#~ msgstr "מיקום:‏‪"
-
-#
-# File: ../system-config-printer.glade.h, line: 139
-#~ msgid "Make and Model:"
-#~ msgstr "סוג ומודל"
-
-#
-# File: ../system-config-printer.glade.h, line: 141
-#~ msgid "Media:"
-#~ msgstr "מדיה:"
-
-#
-# File: ../system-config-printer.glade.h, line: 142
-#~ msgid "Members"
-#~ msgstr "חברים"
-
-#
-# File: ../system-config-printer.glade.h, line: 143
-#~ msgid "Mirror"
-#~ msgstr "מראה"
-
-#
-# File: ../system-config-printer.glade.h, line: 144
-#~ msgid "More"
-#~ msgstr "עוד"
-
-#
-# File: ../system-config-printer.glade.h, line: 109
-#~ msgid "Operation Policy:"
-#~ msgstr "מדיניות פעולה: "
-
-#
-# File: ../system-config-printer.glade.h, line: 180
-#~ msgid "Orientation:"
-#~ msgstr "כיוון:"
-
-#~ msgid "Output order:"
-#~ msgstr "סדר פלט:"
-
-#
-# File: ../system-config-printer.glade.h, line: 181
-#~ msgid "Pages per side layout:"
-#~ msgstr "תבנית עמודים לכל צד:"
-
-#
-# File: ../system-config-printer.glade.h, line: 182
-#~ msgid "Pages per side:"
-#~ msgstr "עמודים לכל צד:"
-
-#
-# File: ../system-config-printer.glade.h, line: 186
-#~ msgid "Policies"
-#~ msgstr "מדיניות"
-
-#
-# File: ../system-config-printer.glade.h, line: 193
-#~ msgid "Pretty print"
-#~ msgstr "הדפסה יפה"
-
-#
-# File: ../system-config-printer.glade.h, line: 195
-#~ msgid "Print Self-Test Page"
-#~ msgstr "הדפסת עמוד בדיקה עצמית"
-
-#
-# File: ../system-config-printer.glade.h, line: 199
-#~ msgid "Printer Properties"
-#~ msgstr "מאפייני מדפסת"
-
-#
-# File: ../system-config-printer.glade.h, line: 200
-#~ msgid "Printer State:"
-#~ msgstr "מצב המדפסת:"
-
-#
-# File: ../system-config-printer.glade.h, line: 208
-#~ msgid "Reset"
-#~ msgstr "אתחול"
-
-#
-# File: ../system-config-printer.glade.h, line: 210
-#~ msgid "Right margin:"
-#~ msgstr "שוליים ימניים:"
-
-#
-# File: ../system-config-printer.glade.h, line: 214
-#~ msgid "Saturation:"
-#~ msgstr "רוויה:"
-
-#
-# File: ../system-config-printer.glade.h, line: 216
-#~ msgid "Scale to fit"
-#~ msgstr "התאמת קנה מידה לגודל הדף"
-
-#
-# File: ../system-config-printer.glade.h, line: 217
-#~ msgid "Scaling:"
-#~ msgstr "קנה מידה:"
-
-#
-# File: ../system-config-printer.glade.h, line: 225
-#~ msgid "Settings"
-#~ msgstr "הגדרות"
-
-#
-# File: ../system-config-printer.glade.h, line: 226
-#~ msgid "Shared"
-#~ msgstr "משותף"
-
-#
-# File: ../system-config-printer.glade.h, line: 229
-#~ msgid "Sides:"
-#~ msgstr "צדדים:"
-
-#
-# File: ../system-config-printer.glade.h, line: 231
-#~ msgid "Starting Banner:"
-#~ msgstr "דף שער:"
-
-#
-# File: ../system-config-printer.glade.h, line: 146
-#~ msgid "There are no status messages for this printer."
-#~ msgstr "אין הודעות מצב עבור מדפסת זו"
-
-#
-# File: ../system-config-printer.glade.h, line: 244
-#~ msgid ""
-#~ "To add a new option, enter its name in the box below and click to add."
-#~ msgstr "להוספת אפשרות חדשה, יש להקליד את שמה לתיבה וללחוץ על הוספה."
-
-#
-# File: ../system-config-printer.glade.h, line: 245
-#~ msgid "Top margin:"
-#~ msgstr "שוליים עליונים:"
-
-#
-# File: ../system-config-printer.glade.h, line: 252
-#~ msgid "Word wrap"
-#~ msgstr "גלישת שורות"
-
-#
-# File: ../system-config-printer.glade.h, line: 273
-#~ msgid "points"
-#~ msgstr "נקודות"
-
-#
-# File: ../jobviewer.py, line: 186
-#~ msgid "user"
-#~ msgstr "משתמש"
-
-#
-# File: ../system-config-printer.glade.h, line: 233
-#~ msgid "System-Config-Printer"
-#~ msgstr "System-Config-Printer"
-
-#
-# File: ../system-config-printer.glade.h, line: 257
-#~ msgid "_Discovered Printers"
-#~ msgstr "מדפסות _שהתגלו"
-
-#~ msgid "_Group"
-#~ msgstr "_קבוצה"
-
-#~ msgid "_Groups"
-#~ msgstr "_קבוצות"
-
-#
-# File: ../system-config-printer.glade.h, line: 259
-#~ msgid "_Help"
-#~ msgstr "_עזרה"
-
-#
-# File: ../system-config-printer.glade.h, line: 265
-#~ msgid "_Server"
-#~ msgstr "_שרת"
-
-#
 # File: ../system-config-printer.glade.h, line: 268
 #~ msgid "_Troubleshoot"
 #~ msgstr "_איתור תקלות"
-
-#
-# File: ../system-config-printer.glade.h, line: 270
-# File: ../applet.glade.h, line: 10
-#~ msgid "_View"
-#~ msgstr "_תצוגה"
-
-#
-# File: ../system-config-printer.glade.h, line: 11
-#~ msgid "<b>Basic Server Settings</b>"
-#~ msgstr "<b>הגדרות שרת בסיסיות</b>"
-
-# File: ../AdvancedServerSettings.py, line: 81
-#~ msgid "<b>Browse servers</b>"
-#~ msgstr "<b>עיון בשרתים</b>"
-
-# File: ../AdvancedServerSettings.py, line: 57
-#~ msgid "<b>Job history</b>"
-#~ msgstr "<b>היסטוריית משימות</b>"
-
-#
-# File: ../AdvancedServerSettings.py, line: 40
-#~ msgid "Advanced Server Settings"
-#~ msgstr "הגדרות שרת מתקדמות"
-
-#
-# File: ../system-config-printer.glade.h, line: 49
-#~ msgid "Allow _remote administration"
-#~ msgstr "לאפשר ניהול מרחוק"
-
-#
-# File: ../system-config-printer.glade.h, line: 50
-#~ msgid "Allow _users to cancel any job (not just their own)"
-#~ msgstr "לאפשר למשתמשים לבטל כל משימה (לא רק משימות שלהם)"
-
-#
-# File: ../system-config-printer.glade.h, line: 48
-#~ msgid "Allow printing from the _Internet"
-#~ msgstr "אפשר הדפסה מהאינטרנט"
-
-#
-# File: ../AdvancedServerSettings.py, line: 68
-#~ msgid "Do not preserve job history"
-#~ msgstr "לא לשמר היסטוריית משימות"
-
-#
-# File: ../AdvancedServerSettings.py, line: 73
-#~ msgid "Preserve job files (allow reprinting)"
-#~ msgstr "שמר קבצי משימה (אפשר הדפסה חוזרת)"
-
-#
-# File: ../AdvancedServerSettings.py, line: 70
-#~ msgid "Preserve job history but not files"
-#~ msgstr "שמר היסטוריית משימות אבל לא קבצים"
-
-#
-# File: ../system-config-printer.glade.h, line: 215
-#~ msgid "Save _debugging information for troubleshooting"
-#~ msgstr "שמור מידע לצורך איתור תקלות"
-
-# File: ../system-config-printer.glade.h, line: 51
-#~ msgid "Server Settings"
-#~ msgstr "הגדרות שרת"
-
-# File: ../AdvancedServerSettings.py, line: 92
-#~ msgid ""
-#~ "Usually print servers broadcast their queues. Specify print servers below "
-#~ "to periodically ask for queues instead."
-#~ msgstr ""
-#~ "שרתי הדפסה בדרך כלל משדרים את התורים שלהם. ציין את שרתי ההדפסה שאותם יש "
-#~ "לתשאל באופן מתוזמן עבור תורים במקום זאת."
-
-#~ msgid "_Publish shared printers connected to this system"
-#~ msgstr "פרסם מדפסות משותפות המחוברות למחשב זה"
-
-#
-# File: ../system-config-printer.glade.h, line: 228
-#~ msgid "_Show printers shared by other systems"
-#~ msgstr "הצג מדפסות המשותפות על ידי מערכות אחרות"
-
-#
-# File: ../system-config-printer.glade.h, line: 213
-#~ msgid "SMB Browser"
-#~ msgstr "דפדפן SMB"
 
 #
 # File: ../system-config-printer.desktop.in.h, line: 1
 #, fuzzy
 #~ msgid "_Configure Printers"
 #~ msgstr "הגדרת מדפסות"
-
-#
-# File: ../applet.glade.h, line: 6
-#~ msgid "_Hide"
-#~ msgstr "_הסתרה"
-
-#
-# File: ../system-config-printer.glade.h, line: 185
-#~ msgid "Please Wait"
-#~ msgstr "נא להמתין"
 
 #
 # File: ../manage-print-jobs.desktop.in.h, line: 1

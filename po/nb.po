@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: system-config-printer 1.1.10\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2011-02-17 16:17+0000\n"
+"POT-Creation-Date: 2011-02-25 09:57+0000\n"
 "PO-Revision-Date: 2010-03-16 20:18+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@broadpark.no>\n"
 "Language-Team: Norsk bokmål <i18n-nb@lister.ping.uio.no>\n"
@@ -53,11 +53,11 @@ msgstr "Prøv igjen"
 msgid "Operation canceled"
 msgstr "Operasjon avbrutt"
 
-#: ../authconn.py:32 ../pysmb.py:123
+#: ../authconn.py:32 ../pysmb.py:123 ../ui/NewPrinterWindow.glade.h:94
 msgid "Username:"
 msgstr "Brukernavn:"
 
-#: ../authconn.py:33 ../pysmb.py:129
+#: ../authconn.py:33 ../pysmb.py:129 ../ui/NewPrinterWindow.glade.h:63
 msgid "Password:"
 msgstr "Passord:"
 
@@ -326,7 +326,8 @@ msgstr "Attributter for jobb"
 
 #: ../jobviewer.py:706 ../jobviewer.py:1002 ../jobviewer.py:1704
 #: ../jobviewer.py:1734 ../jobviewer.py:2104 ../jobviewer.py:2109
-#: ../jobviewer.py:2123 ../jobviewer.py:2202 ../printerproperties.py:1541
+#: ../jobviewer.py:2123 ../jobviewer.py:2202 ../printerproperties.py:1582
+#: ../ui/NewPrinterWindow.glade.h:92
 #: ../troubleshoot/ChooseNetworkPrinter.py:100
 #: ../troubleshoot/ChooseNetworkPrinter.py:101
 #: ../troubleshoot/ChooseNetworkPrinter.py:104
@@ -400,6 +401,7 @@ msgid "Save File"
 msgstr "Lagre fil"
 
 #: ../jobviewer.py:1449 ../system-config-printer.py:258
+#: ../ui/NewPrinterWindow.glade.h:57
 #: ../troubleshoot/ChooseNetworkPrinter.py:35
 #: ../troubleshoot/ChoosePrinter.py:36 ../troubleshoot/DeviceListed.py:36
 msgid "Name"
@@ -579,7 +581,7 @@ msgstr "115200"
 #. See section 4.2.6 of this document for explanation of finishing types:
 #. ftp://ftp.pwg.org/pub/pwg/candidates/cs-ippfinishings10-20010205-5100.1.pdf
 #: ../newprinter.py:299 ../newprinter.py:310 ../newprinter.py:3267
-#: ../ppdippstr.py:63 ../printerproperties.py:264
+#: ../ppdippstr.py:63 ../printerproperties.py:268
 msgid "None"
 msgstr "Ingen"
 
@@ -611,11 +613,11 @@ msgstr "RTS/CTS (maskinvare)"
 msgid "DTR/DSR (Hardware)"
 msgstr "DTR/DSR (maskinvare)"
 
-#: ../newprinter.py:330 ../printerproperties.py:218
+#: ../newprinter.py:330 ../printerproperties.py:222
 msgid "Members of this class"
 msgstr "Medlemmer av denne klassen"
 
-#: ../newprinter.py:332 ../printerproperties.py:219
+#: ../newprinter.py:332 ../printerproperties.py:223
 msgid "Others"
 msgstr "Andre"
 
@@ -639,7 +641,7 @@ msgstr "Modeller"
 msgid "Drivers"
 msgstr "Drivere"
 
-#: ../newprinter.py:338
+#: ../newprinter.py:338 ../ui/NewPrinterWindow.glade.h:35
 msgid "Downloadable Drivers"
 msgstr "Nedlastbare drivere"
 
@@ -672,7 +674,7 @@ msgstr "Alle filer (*)"
 msgid "Search"
 msgstr "Søk"
 
-#: ../newprinter.py:611 ../newprinter.py:632
+#: ../newprinter.py:611 ../newprinter.py:632 ../ui/NewPrinterWindow.glade.h:59
 msgid "New Printer"
 msgstr "Ny skriver"
 
@@ -826,7 +828,7 @@ msgstr "LPD-/LPR-kø"
 msgid "Windows Printer via SAMBA"
 msgstr "Windows-skriver via SAMBA"
 
-#: ../newprinter.py:2376
+#: ../newprinter.py:2376 ../ui/NewPrinterWindow.glade.h:48
 msgid "IPP"
 msgstr "IPP"
 
@@ -886,7 +888,7 @@ msgstr "Lokal skriver gjenkjent av Hardware Abstraction Layer (HAL)."
 msgid "Searching for printers"
 msgstr "Søker etter skrivere"
 
-#: ../newprinter.py:2769
+#: ../newprinter.py:2769 ../ui/NewPrinterWindow.glade.h:60
 msgid "No printer was found at that address."
 msgstr "Ingen skriver ble funnet på den adressen."
 
@@ -985,7 +987,7 @@ msgid "adding printer %s"
 msgstr "legger til skriver %s"
 
 #: ../newprinter.py:3570 ../newprinter.py:3581 ../newprinter.py:3598
-#: ../printerproperties.py:921 ../system-config-printer.py:1682
+#: ../printerproperties.py:957 ../system-config-printer.py:1682
 #: ../system-config-printer.py:1707
 #, python-format
 msgid "modifying printer %s"
@@ -1298,211 +1300,219 @@ msgid "Busy"
 msgstr "Opptatt"
 
 #. Printer state reasons list
-#: ../printerproperties.py:200
+#: ../printerproperties.py:204
 msgid "Message"
 msgstr "Beskjed"
 
-#: ../printerproperties.py:220
+#: ../printerproperties.py:224
 msgid "Users"
 msgstr "Brukere"
 
-#: ../printerproperties.py:243
+#: ../printerproperties.py:247
 msgid "Portrait (no rotation)"
 msgstr "Portrett (ingen rotering)"
 
-#: ../printerproperties.py:244
+#: ../printerproperties.py:248
 msgid "Landscape (90 degrees)"
 msgstr "Landskap (90 grader)"
 
-#: ../printerproperties.py:245
+#: ../printerproperties.py:249
 msgid "Reverse landscape (270 degrees)"
 msgstr "Omvendt landskap (270 grader)"
 
-#: ../printerproperties.py:246
+#: ../printerproperties.py:250
 msgid "Reverse portrait (180 degrees)"
 msgstr "Omvendt portrett (180 grader)"
 
-#: ../printerproperties.py:252
+#: ../printerproperties.py:256
 msgid "Left to right, top to bottom"
 msgstr "Venstre til høyre, topp til bunn"
 
-#: ../printerproperties.py:253
+#: ../printerproperties.py:257
 msgid "Left to right, bottom to top"
 msgstr "Venstre til høyre, bunn til topp"
 
-#: ../printerproperties.py:254
+#: ../printerproperties.py:258
 msgid "Right to left, top to bottom"
 msgstr "Høyre til venstre, topp til bunn"
 
-#: ../printerproperties.py:255
+#: ../printerproperties.py:259
 msgid "Right to left, bottom to top"
 msgstr "Høyre til venstre, bunn til topp"
 
-#: ../printerproperties.py:256
+#: ../printerproperties.py:260
 msgid "Top to bottom, left to right"
 msgstr "Topp til bunn, venstre til høyre"
 
-#: ../printerproperties.py:257
+#: ../printerproperties.py:261
 msgid "Top to bottom, right to left"
 msgstr "Topp til bunn, høyre til venstre"
 
-#: ../printerproperties.py:258
+#: ../printerproperties.py:262
 msgid "Bottom to top, left to right"
 msgstr "Bunn til topp, venstre til høyre"
 
-#: ../printerproperties.py:259
+#: ../printerproperties.py:263
 msgid "Bottom to top, right to left"
 msgstr "Bunn til topp, høyre til venstre"
 
-#: ../printerproperties.py:265
+#: ../printerproperties.py:269
 msgid "Staple"
 msgstr "Stift"
 
-#: ../printerproperties.py:266
+#: ../printerproperties.py:270
 msgid "Punch"
 msgstr ""
 
-#: ../printerproperties.py:267
+#: ../printerproperties.py:271
 msgid "Cover"
 msgstr "Lokk"
 
-#: ../printerproperties.py:268
+#: ../printerproperties.py:272
 msgid "Bind"
 msgstr "Innbinding"
 
-#: ../printerproperties.py:269
+#: ../printerproperties.py:273
 msgid "Saddle stitch"
 msgstr ""
 
-#: ../printerproperties.py:270
+#: ../printerproperties.py:274
 msgid "Edge stitch"
 msgstr "Stift ved kant"
 
-#: ../printerproperties.py:271
+#: ../printerproperties.py:275
 msgid "Fold"
 msgstr "Fold"
 
-#: ../printerproperties.py:272
+#: ../printerproperties.py:276
 msgid "Trim"
 msgstr "Trim"
 
-#: ../printerproperties.py:273
+#: ../printerproperties.py:277
 msgid "Bale"
 msgstr ""
 
-#: ../printerproperties.py:274
+#: ../printerproperties.py:278
 msgid "Booklet maker"
 msgstr ""
 
-#: ../printerproperties.py:275
+#: ../printerproperties.py:279
 msgid "Job offset"
 msgstr ""
 
-#: ../printerproperties.py:276
+#: ../printerproperties.py:280
 msgid "Staple (top left)"
 msgstr "Stift (oppe til venstre)"
 
-#: ../printerproperties.py:277
+#: ../printerproperties.py:281
 msgid "Staple (bottom left)"
 msgstr "Stift (nede til venstre)"
 
-#: ../printerproperties.py:278
+#: ../printerproperties.py:282
 msgid "Staple (top right)"
 msgstr "Stift (oppe til høyre)"
 
-#: ../printerproperties.py:279
+#: ../printerproperties.py:283
 msgid "Staple (bottom right)"
 msgstr "Stift (nede til høyre)"
 
-#: ../printerproperties.py:280
+#: ../printerproperties.py:284
 msgid "Edge stitch (left)"
 msgstr "Kantstift (venstre)"
 
-#: ../printerproperties.py:281
+#: ../printerproperties.py:285
 msgid "Edge stitch (top)"
 msgstr "Kantstift (topp)"
 
-#: ../printerproperties.py:282
+#: ../printerproperties.py:286
 msgid "Edge stitch (right)"
 msgstr "Kantstift (høyre)"
 
-#: ../printerproperties.py:283
+#: ../printerproperties.py:287
 msgid "Edge stitch (bottom)"
 msgstr "Kantstift (bunn)"
 
-#: ../printerproperties.py:284
+#: ../printerproperties.py:288
 msgid "Staple dual (left)"
 msgstr "Dobbel stift (venstre)"
 
-#: ../printerproperties.py:285
+#: ../printerproperties.py:289
 msgid "Staple dual (top)"
 msgstr "Dobbel stift (topp)"
 
-#: ../printerproperties.py:286
+#: ../printerproperties.py:290
 msgid "Staple dual (right)"
 msgstr "Dobbel stift (høyre)"
 
-#: ../printerproperties.py:287
+#: ../printerproperties.py:291
 msgid "Staple dual (bottom)"
 msgstr "Dobbel stift (bunn)"
 
-#: ../printerproperties.py:288
+#: ../printerproperties.py:292
 msgid "Bind (left)"
 msgstr "Bind (venstre)"
 
-#: ../printerproperties.py:289
+#: ../printerproperties.py:293
 msgid "Bind (top)"
 msgstr "Bind (topp)"
 
-#: ../printerproperties.py:290
+#: ../printerproperties.py:294
 msgid "Bind (right)"
 msgstr "Bind (høyre)"
 
-#: ../printerproperties.py:291
+#: ../printerproperties.py:295
 msgid "Bind (bottom)"
 msgstr "Bind (bunn)"
 
-#: ../printerproperties.py:296
+#: ../printerproperties.py:300
 msgid "One-sided"
 msgstr "Ensidig"
 
-#: ../printerproperties.py:297
+#: ../printerproperties.py:301
 msgid "Two-sided (long edge)"
 msgstr "Tosidig (lang kant)"
 
-#: ../printerproperties.py:298
+#: ../printerproperties.py:302
 msgid "Two-sided (short edge)"
 msgstr "Tosidig (kort kant)"
 
-#: ../printerproperties.py:303
+#: ../printerproperties.py:307 ../printerproperties.py:312
 msgid "Normal"
 msgstr "Normal"
 
-#: ../printerproperties.py:304
+#: ../printerproperties.py:308
 msgid "Reverse"
 msgstr "Omvendt"
 
-#: ../printerproperties.py:325
+#: ../printerproperties.py:311
+msgid "Draft"
+msgstr ""
+
+#: ../printerproperties.py:313
+msgid "High"
+msgstr ""
+
+#: ../printerproperties.py:337
 msgid "Automatic rotation"
 msgstr "Automatisk rotasjon"
 
-#: ../printerproperties.py:546
+#: ../printerproperties.py:576
 msgid "CUPS test page"
 msgstr "CUPS testside"
 
-#: ../printerproperties.py:547
+#: ../printerproperties.py:577
 msgid ""
 "Typically shows whether all jets on a print head are functioning and that "
 "the print feed mechanisms are working properly."
 msgstr ""
 
-#: ../printerproperties.py:554
+#: ../printerproperties.py:584
 #, python-format
 msgid "Printer Properties - '%s' on %s"
 msgstr "Egenskaper for skriver - «%s» på %s"
 
 #. The Conflict button was pressed.
-#: ../printerproperties.py:561
+#: ../printerproperties.py:591
 msgid ""
 "There are conflicting options.\n"
 "Changes can only be applied after\n"
@@ -1512,24 +1522,24 @@ msgstr ""
 "Endringer kan kun aktiveres etter\n"
 "at disse konfliktene er løst."
 
-#: ../printerproperties.py:881
+#: ../printerproperties.py:917
 msgid "Installable Options"
 msgstr "Installerbare alternativer"
 
-#: ../printerproperties.py:882
+#: ../printerproperties.py:918 ../ui/PrinterPropertiesDialog.glade.h:63
 msgid "Printer Options"
 msgstr "Alternativer for skriver"
 
-#: ../printerproperties.py:919
+#: ../printerproperties.py:955
 #, python-format
 msgid "modifying class %s"
 msgstr "endrer klasse %s"
 
-#: ../printerproperties.py:936
+#: ../printerproperties.py:972
 msgid "This will delete this class!"
 msgstr "Dette vil slette denne klassen!"
 
-#: ../printerproperties.py:937
+#: ../printerproperties.py:973
 msgid "Proceed anyway?"
 msgstr "Fortsett likevel?"
 
@@ -1537,19 +1547,19 @@ msgstr "Fortsett likevel?"
 #. but we have never fetched the server settings to see whether
 #. the server is publishing shared printers.  Fetch the settings
 #. now so that we can update the "not published" label if necessary.
-#: ../printerproperties.py:1027 ../serversettings.py:192
+#: ../printerproperties.py:1065 ../serversettings.py:192
 msgid "fetching server settings"
 msgstr "henter innstillinger for tjener"
 
-#: ../printerproperties.py:1109
+#: ../printerproperties.py:1147
 msgid "printing test page"
 msgstr "skriver ut testside"
 
-#: ../printerproperties.py:1122 ../printerproperties.py:1157
+#: ../printerproperties.py:1160 ../printerproperties.py:1195
 msgid "Not possible"
 msgstr "Ikke mulig"
 
-#: ../printerproperties.py:1123 ../printerproperties.py:1158
+#: ../printerproperties.py:1161 ../printerproperties.py:1196
 msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
@@ -1557,43 +1567,43 @@ msgstr ""
 "Ekstern tjener tok ikke imot jobben. Sannsynligvis fordi skriveren ikke er "
 "delt."
 
-#: ../printerproperties.py:1135 ../printerproperties.py:1150
+#: ../printerproperties.py:1173 ../printerproperties.py:1188
 msgid "Submitted"
 msgstr "Sendt"
 
-#: ../printerproperties.py:1136
+#: ../printerproperties.py:1174
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr "Testside sendt som jobb %d"
 
-#: ../printerproperties.py:1143
+#: ../printerproperties.py:1181
 msgid "sending maintenance command"
 msgstr "sender vedlikeholdskommando"
 
-#: ../printerproperties.py:1151
+#: ../printerproperties.py:1189
 #, python-format
 msgid "Maintenance command submitted as job %d"
 msgstr "Vedlikeholdskommando sendt som jobb %d"
 
-#: ../printerproperties.py:1238 ../printerproperties.py:1243
-#: ../printerproperties.py:1339
+#: ../printerproperties.py:1276 ../printerproperties.py:1281
+#: ../printerproperties.py:1377
 msgid "Error"
 msgstr "Feil"
 
-#: ../printerproperties.py:1239
+#: ../printerproperties.py:1277
 msgid "The PPD file for this queue is damaged."
 msgstr ""
 
-#: ../printerproperties.py:1244
+#: ../printerproperties.py:1282
 msgid "There was a problem connecting to the CUPS server."
 msgstr "Det oppstod et problem ved tilkobling til CUPS-tjeneren."
 
-#: ../printerproperties.py:1340
+#: ../printerproperties.py:1378
 #, python-format
 msgid "Option '%s' has value '%s' and cannot be edited."
 msgstr ""
 
-#: ../printerproperties.py:1450
+#: ../printerproperties.py:1491
 msgid "Marker levels are not reported for this printer."
 msgstr ""
 
@@ -1638,7 +1648,7 @@ msgstr "Innstillinger"
 msgid "Adjust server settings"
 msgstr "henter innstillinger for tjener"
 
-#: ../system-config-printer.py:223
+#: ../system-config-printer.py:223 ../ui/PrintersWindow.glade.h:9
 msgid "_Printer"
 msgstr "S_kriver"
 
@@ -1748,8 +1758,8 @@ msgstr ""
 msgid "Cannot start service on remote server"
 msgstr ""
 
-#: ../system-config-printer.py:1143
-#, python-format
+#: ../system-config-printer.py:1143 ../ui/ConnectingDialog.glade.h:2
+#, no-c-format, python-format
 msgid "<i>Opening connection to %s</i>"
 msgstr "<i>Åpner tilkobling til %s</i>"
 
@@ -1836,7 +1846,9 @@ msgstr ""
 msgid "Would you like to print a test page?"
 msgstr "Vil du skrive ut en testside?"
 
-#: ../system-config-printer.py:1948 ../troubleshoot/PrintTestPage.py:72
+#. Not more than 25 characters
+#: ../system-config-printer.py:1948 ../ui/PrinterPropertiesDialog.glade.h:61
+#: ../troubleshoot/PrintTestPage.py:72
 msgid "Print Test Page"
 msgstr "Skriv ut testside"
 
@@ -1861,6 +1873,933 @@ msgid ""
 msgstr ""
 "Skriver '%s' er avhengig av programmet '%s', som ikke er installert.  "
 "Vennligst installer dette programmet før skriveren tas i bruk."
+
+#: ../ui/AboutDialog.glade.h:1
+msgid "A CUPS configuration tool."
+msgstr "CUPS konfigurasjonsverktøy."
+
+#: ../ui/AboutDialog.glade.h:2
+#, fuzzy
+msgid "Copyright © 2006-2008 Red Hat, Inc."
+msgstr "Opphavsrett &#xA9; 2006-2008 Red Hat, Inc."
+
+#: ../ui/AboutDialog.glade.h:3
+msgid ""
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with "
+"this program; if not, write to the Free Software Foundation, Inc., 675 Mass "
+"Ave, Cambridge, MA 02139, USA."
+msgstr ""
+
+#. TRANSLATORS: Replace this string with your names, one name per line.  Thank you very much for your effort on translating system-config-printer and all our other tools!
+#: ../ui/AboutDialog.glade.h:9
+msgid "translator-credits"
+msgstr "Kjartan Maraas <kmaraas@broadpark.no>"
+
+#: ../ui/ConnectDialog.glade.h:1
+msgid "CUPS _server:"
+msgstr "CUPS-_tjener:"
+
+#: ../ui/ConnectDialog.glade.h:2
+msgid "Connect to CUPS server"
+msgstr "Koble til CUPS-tjener"
+
+#: ../ui/ConnectDialog.glade.h:3
+msgid "Require _encryption"
+msgstr "Krev krypt_ering"
+
+#: ../ui/ConnectingDialog.glade.h:3
+msgid "<span weight=\"bold\" size=\"larger\">Connecting to CUPS server</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">Kobler til CUPS-tjener</span>"
+
+#: ../ui/ConnectingDialog.glade.h:4
+msgid "Connecting to CUPS server"
+msgstr "Kobler til CUPS-tjener"
+
+#: ../ui/InstallDialog.glade.h:1
+msgid "_Install"
+msgstr "_Installer"
+
+#: ../ui/JobsWindow.glade.h:1
+msgid "Refresh job list"
+msgstr ""
+
+#: ../ui/JobsWindow.glade.h:2
+msgid "Show _completed jobs"
+msgstr "Vis _fullførte jobber"
+
+#: ../ui/JobsWindow.glade.h:3
+#, fuzzy
+msgid "Show completed jobs"
+msgstr "Vis _fullførte jobber"
+
+#: ../ui/JobsWindow.glade.h:4
+#, fuzzy
+msgid "_Refresh"
+msgstr "_Ta bort"
+
+#: ../ui/NewPrinterName.glade.h:1
+msgid "Duplicate Printer"
+msgstr "Dupliser skriver"
+
+#: ../ui/NewPrinterName.glade.h:2
+msgid "New name for the printer"
+msgstr "Nytt navn for skriveren"
+
+#: ../ui/NewPrinterWindow.glade.h:1
+msgid "<b>Authentication</b>"
+msgstr "<b>Autentisering</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:2
+msgid "<b>Description</b>"
+msgstr "<b>Beskrivelse</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:3
+msgid "<b>Description</b> (optional)"
+msgstr "<b>Beskrivelse</b> (valgfri)"
+
+#: ../ui/NewPrinterWindow.glade.h:4
+msgid "<b>Enter device URI</b>"
+msgstr "<b>Oppgi URI for enhet</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:5
+msgid "<b>IPP Printer</b>"
+msgstr "<b>IPP-skriver</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:6
+msgid "<b>License Terms</b>"
+msgstr "<b>Lisensbetingelser</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:7
+#, fuzzy
+msgid "<b>Location of the LPD network printer</b>"
+msgstr "<b>Innstillinger for seriellport</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:8
+#, fuzzy
+msgid "<b>Location of the network printer</b>"
+msgstr "<b>Nettverksskriver</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:9
+msgid "<b>Location</b> (optional)"
+msgstr "<b>Lokasjon</b> (valgfri)"
+
+#: ../ui/NewPrinterWindow.glade.h:10
+msgid "<b>Network Printer</b>"
+msgstr "<b>Nettverksskriver</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:11
+msgid "<b>Note</b>"
+msgstr "<b>Merknad</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:12
+msgid "<b>Output Quality</b>"
+msgstr "<b>Utskriftskvalitet</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:13
+msgid "<b>Printer Name</b>"
+msgstr "<b>Skrivernavn</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:14
+msgid "<b>SMB Printer</b>"
+msgstr "<b>SMB-skriver</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:15
+msgid "<b>Select Driver</b>"
+msgstr "<b>Velg driver</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:16
+msgid "<b>Settings of the serial port</b>"
+msgstr "<b>Innstillinger for seriellport</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:17
+msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
+msgstr "<i>smb://[arbeidsgruppe/]tjener[:port]/skriver</i>"
+
+#: ../ui/NewPrinterWindow.glade.h:18
+msgid "<span weight=\"bold\" size=\"larger\">Choose Class Members</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">Velg medlemmer i klasse</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:19
+msgid "<span weight=\"bold\" size=\"larger\">Choose Driver</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">Velg driver</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:20
+msgid "<span weight=\"bold\" size=\"larger\">Describe Printer</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">Beskriv skriver</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:21
+msgid "<span weight=\"bold\" size=\"larger\">Existing Settings</span>"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">Eksisterende innstillinger</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:22
+msgid "<span weight=\"bold\" size=\"larger\">Installable Options</span>"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">Installerbare alternativer</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:23
+msgid "<span weight=\"bold\" size=\"larger\">Select Device</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">Velg enhet</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:24
+msgid "Baud Rate"
+msgstr "Baudrate"
+
+#: ../ui/NewPrinterWindow.glade.h:25
+msgid "Browse..."
+msgstr "Bla gjennom..."
+
+#: ../ui/NewPrinterWindow.glade.h:26
+#, fuzzy
+msgid "Change PPD"
+msgstr "Endre driver"
+
+#: ../ui/NewPrinterWindow.glade.h:27
+#, fuzzy
+msgid "Class Members"
+msgstr "Medlemmer"
+
+#: ../ui/NewPrinterWindow.glade.h:28
+msgid "Comments..."
+msgstr "Kommentarer..."
+
+#: ../ui/NewPrinterWindow.glade.h:29
+msgid "Connection"
+msgstr "Tilkobling"
+
+#: ../ui/NewPrinterWindow.glade.h:30
+msgid "Data Bits"
+msgstr "Databiter"
+
+#: ../ui/NewPrinterWindow.glade.h:31 ../ui/PrinterPropertiesDialog.glade.h:29
+msgid "Description:"
+msgstr "Beskrivelse:"
+
+#: ../ui/NewPrinterWindow.glade.h:32
+#, fuzzy
+msgid "Device"
+msgstr "Enheter"
+
+#: ../ui/NewPrinterWindow.glade.h:33 ../troubleshoot/DeviceListed.py:40
+msgid "Device URI"
+msgstr "URI til enhet"
+
+#: ../ui/NewPrinterWindow.glade.h:34
+msgid "Device description."
+msgstr "Beskrivelse av enhet."
+
+#: ../ui/NewPrinterWindow.glade.h:36
+msgid "Driver details"
+msgstr "Detaljer for driver"
+
+#: ../ui/NewPrinterWindow.glade.h:37
+msgid "Empty"
+msgstr "Tom"
+
+#: ../ui/NewPrinterWindow.glade.h:38
+msgid "Flow Control"
+msgstr "Flytkontroll"
+
+#: ../ui/NewPrinterWindow.glade.h:39
+msgid ""
+"For example:\n"
+"ipp://cups-server/printers/printer-queue\n"
+"ipp://printer.mydomain/ipp"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:42
+msgid ""
+"For the printer you have selected there are drivers available for download."
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:43
+msgid "Free software"
+msgstr "Fri programvare"
+
+#: ../ui/NewPrinterWindow.glade.h:44
+msgid "Graphics:"
+msgstr "Grafikk:"
+
+#: ../ui/NewPrinterWindow.glade.h:45
+msgid "Host:"
+msgstr "Vert:"
+
+#: ../ui/NewPrinterWindow.glade.h:46
+msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:47
+msgid "Human-readable location such as \"Lab 1\""
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:49 ../ui/PrinterPropertiesDialog.glade.h:39
+msgid "Installed Options"
+msgstr "Installerte alternativer"
+
+#: ../ui/NewPrinterWindow.glade.h:50
+#, fuzzy
+msgid "JetDirect"
+msgstr "DirectJet"
+
+#: ../ui/NewPrinterWindow.glade.h:51
+msgid "LPD"
+msgstr "LPD"
+
+#: ../ui/NewPrinterWindow.glade.h:52
+msgid "License:"
+msgstr "Lisens:"
+
+#: ../ui/NewPrinterWindow.glade.h:53
+msgid "Line art:"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:54
+msgid "Local Driver"
+msgstr "Lokal driver"
+
+#: ../ui/NewPrinterWindow.glade.h:55
+msgid "Make and model:"
+msgstr "Type og modell:"
+
+#: ../ui/NewPrinterWindow.glade.h:56
+msgid "Manufacturer"
+msgstr "Produsent"
+
+#: ../ui/NewPrinterWindow.glade.h:58
+msgid "Network"
+msgstr "Nettverk"
+
+#: ../ui/NewPrinterWindow.glade.h:61
+msgid "No, I do not accept this license"
+msgstr "Nei, jeg godtar ikke denne lisensen"
+
+#: ../ui/NewPrinterWindow.glade.h:62
+msgid "Parity"
+msgstr "Paritet"
+
+#: ../ui/NewPrinterWindow.glade.h:64
+msgid "Patented algorithms"
+msgstr "Patenterte algoritmer"
+
+#: ../ui/NewPrinterWindow.glade.h:65
+msgid "Photo:"
+msgstr "Foto:"
+
+#: ../ui/NewPrinterWindow.glade.h:66
+msgid "Port number:"
+msgstr "Portnummer:"
+
+#: ../ui/NewPrinterWindow.glade.h:67
+msgid ""
+"PostScript Printer Description (PPD) files can often be found on the driver "
+"disk that comes with the printer. For PostScript printers they are often "
+"part of the Windows<sup>®</sup> driver."
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:68
+msgid "Printer model:"
+msgstr "Skrivermodell:"
+
+#: ../ui/NewPrinterWindow.glade.h:69
+msgid "Probe"
+msgstr "Søk"
+
+#: ../ui/NewPrinterWindow.glade.h:70
+msgid "Prompt user if authentication is required"
+msgstr "Spør bruker om autentisering kreves"
+
+#: ../ui/NewPrinterWindow.glade.h:71
+msgid "Provide PPD file"
+msgstr "Oppgi PPD-fil"
+
+#: ../ui/NewPrinterWindow.glade.h:72
+msgid "Queue:"
+msgstr "Kø:"
+
+#: ../ui/NewPrinterWindow.glade.h:73
+msgid "SCSI"
+msgstr "SCSI"
+
+#: ../ui/NewPrinterWindow.glade.h:74
+msgid "SMB"
+msgstr "SMB"
+
+#: ../ui/NewPrinterWindow.glade.h:75
+msgid "Search for a printer driver to download"
+msgstr "Søk etter en skriverdriver å laste ned"
+
+#: ../ui/NewPrinterWindow.glade.h:76
+msgid "Searching..."
+msgstr "Søker..."
+
+#: ../ui/NewPrinterWindow.glade.h:77
+msgid "Select printer from database"
+msgstr "Velg skriver fra database"
+
+#: ../ui/NewPrinterWindow.glade.h:78
+msgid "Serial"
+msgstr "Seriell"
+
+#: ../ui/NewPrinterWindow.glade.h:79
+msgid "Set authentication details now"
+msgstr "Sett autentiseringsdetaljer nå"
+
+#: ../ui/NewPrinterWindow.glade.h:80
+msgid "Short name for this printer such as \"laserjet\""
+msgstr "Kort navn for denne skriveren. F.eks «laserjet»"
+
+#: ../ui/NewPrinterWindow.glade.h:81
+msgid "Supplier:"
+msgstr "Leverandør:"
+
+#: ../ui/NewPrinterWindow.glade.h:82
+msgid "Support:"
+msgstr "Støtte:"
+
+#: ../ui/NewPrinterWindow.glade.h:83
+msgid "Text:"
+msgstr "Tekst:"
+
+#: ../ui/NewPrinterWindow.glade.h:84
+msgid ""
+"The foomatic printer database contains various manufacturer provided "
+"PostScript Printer Description (PPD) files and also can generate PPD files "
+"for a large number of (non PostScript) printers. But in general manufacturer "
+"provided PPD files provide better access to the specific features of the "
+"printer."
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:85
+msgid ""
+"These drivers do not come from your operating system supplier and will not "
+"be covered by their commercial support.  See the support and license terms "
+"of the driver's supplier."
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:86
+msgid ""
+"This driver supports additional hardware that may be installed in the "
+"printer."
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:87
+msgid ""
+"This is done by assuming that options with the same name do have the same "
+"meaning. Settings of options that are not present in the new PPD will be "
+"lost and options only present in the new PPD will be set to default."
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:88
+msgid ""
+"This way all current option settings will be lost. The default settings of "
+"the new PPD will be used. "
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:89
+msgid "Try to copy the option settings over from the old PPD. "
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:90
+msgid "Try to transfer the current settings"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:91
+msgid "URI:"
+msgstr "URI:"
+
+#: ../ui/NewPrinterWindow.glade.h:93
+msgid "Use the new PPD (Postscript Printer Description) as is."
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:95
+msgid ""
+"With this choice no driver download will be performed. In the next steps a "
+"locally installed driver will be selected."
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:96
+msgid "Yes, I accept this license"
+msgstr "Ja, jeg godtar denne lisensen"
+
+#: ../ui/NewPrinterWindow.glade.h:97
+msgid "_Search"
+msgstr "_Søk"
+
+#: ../ui/NewPrinterWindow.glade.h:98
+msgid "_Verify..."
+msgstr "_Verifiser..."
+
+#: ../ui/NewPrinterWindow.glade.h:99
+#, fuzzy
+msgid "license"
+msgstr "Lisens:"
+
+#: ../ui/NewPrinterWindow.glade.h:100 ../ui/PrinterPropertiesDialog.glade.h:81
+msgid "move left"
+msgstr "flytt til venstre"
+
+#: ../ui/NewPrinterWindow.glade.h:101 ../ui/PrinterPropertiesDialog.glade.h:82
+msgid "move right"
+msgstr "flytt til høyre"
+
+#: ../ui/NewPrinterWindow.glade.h:102
+#, fuzzy
+msgid "short description"
+msgstr "Beskrivelse"
+
+#: ../ui/NewPrinterWindow.glade.h:103
+#, fuzzy
+msgid "supplier"
+msgstr "Leverandør:"
+
+#: ../ui/NewPrinterWindow.glade.h:104
+#, fuzzy
+msgid "support contacts"
+msgstr "Ingen brukerstøttekontakter kjent"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:1
+msgid " "
+msgstr " "
+
+#: ../ui/PrinterPropertiesDialog.glade.h:2
+msgid "<b>Banner</b>"
+msgstr "<b>Forside</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:3
+msgid "<b>Common Options</b>"
+msgstr "<b>Vanlige alternativer</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:4
+msgid "<b>Image Options</b>"
+msgstr "<b>Bildealternativer</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:5
+msgid "<b>Ink/Toner Levels</b>"
+msgstr "<b>Nivå for blekk/toner</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:6
+msgid "<b>Other Options (Advanced)</b>"
+msgstr "<b>Andre alternativer (avansert)</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:7
+msgid "<b>Policies</b>"
+msgstr "<b>Retningslinjer</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:8
+msgid "<b>Settings</b>"
+msgstr "<b>Innstillinger</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:9
+msgid "<b>State</b>"
+msgstr "<b>Tilstand</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:10
+msgid "<b>Status Messages</b>"
+msgstr "<b>Statusmeldinger</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:11
+msgid "<b>Tests and Maintenance</b>"
+msgstr "<b>Tester og vedlikehold</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:12
+msgid "<b>Text Options</b>"
+msgstr "<b>Alternativer for tekst</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:13
+msgid ""
+"<i>Not published\n"
+"See server settings</i>"
+msgstr ""
+"<i>Ikke publisert\n"
+"Se tjenerinnstillinger</i>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:15
+msgid "Accepting jobs"
+msgstr "Godtar jobber"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:16
+msgid "Access Control"
+msgstr "Tilgangskontroll"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:17
+msgid "Add or Remove Members"
+msgstr "Legg til eller fjern medlemmer"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:18
+msgid "Allow printing for everyone except these users:"
+msgstr "Tillat utskrifter for alle unntatt disse brukerene:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:19
+msgid "Bottom margin:"
+msgstr "Bunnmarg:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:20
+msgid "Brightness:"
+msgstr "Lysstyrke:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:21
+msgid "Change..."
+msgstr "Bytt..."
+
+#: ../ui/PrinterPropertiesDialog.glade.h:22
+msgid "Characters per inch:"
+msgstr "Tegn per tomme:"
+
+#. Not more than 25 characters
+#: ../ui/PrinterPropertiesDialog.glade.h:24
+msgid "Clean Print Heads"
+msgstr "Rens skrivehoder"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:25
+#, fuzzy
+msgid "Co_nflicts"
+msgstr "I konflikt med:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:26
+msgid "Columns:"
+msgstr "Kolonner:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:27
+msgid "Copies:"
+msgstr "Kopier:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:28
+msgid "Deny printing for everyone except these users:"
+msgstr "Nekt utskrift for alle unntatt disse brukerene:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:30
+msgid "Device URI:"
+msgstr "URI til enhet:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:31
+msgid "Enabled"
+msgstr "Aktivert"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:32
+msgid "Ending Banner:"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:33
+#, fuzzy
+msgid "Error Policy: \t"
+msgstr "Operasjon avbrutt"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:34
+msgid "Finishings:"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:35
+msgid "Gamma:"
+msgstr "Gamma:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:36
+msgid "Hold until:"
+msgstr "Hold tilbake til:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:37
+msgid "Hue adjustment:"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:38
+msgid "Ink/Toner Levels"
+msgstr "Nivå for blekk/toner"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:40
+msgid "Job Options"
+msgstr "Alternativer for jobb"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:41
+msgid "Job priority:"
+msgstr "Jobb-prioritet:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:42
+msgid "Left margin:"
+msgstr "Venstre marg"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:43
+msgid "Lines per inch:"
+msgstr "Linjer per tomme:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:44
+msgid "Location:"
+msgstr "Lokasjon:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:45
+msgid "Make and Model:"
+msgstr "Type og modell:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:46
+msgid "Media:"
+msgstr "Medie:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:47
+msgid "Members"
+msgstr "Medlemmer"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:48
+msgid "Mirror"
+msgstr "Speil"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:49
+msgid "More"
+msgstr "Mer"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:50
+#, fuzzy
+msgid "Operation Policy:"
+msgstr "Operasjon avbrutt"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:51
+msgid "Orientation:"
+msgstr "Orientering:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:52
+#, fuzzy
+msgid "Output bin:"
+msgstr "Utskriftsrekkefølge:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:53
+msgid "Output order:"
+msgstr "Utskriftsrekkefølge:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:54
+#, fuzzy
+msgid "Pages per side layout:"
+msgstr "Sider per side utforming:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:55
+#, fuzzy
+msgid "Pages per side:"
+msgstr "Sider per side:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:56
+#, fuzzy
+msgid "Policies"
+msgstr "<b>Retningslinjer</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:57
+#, fuzzy
+msgid "Pretty print"
+msgstr "Skriv ut _igjen"
+
+#. Not more than 25 characters
+#: ../ui/PrinterPropertiesDialog.glade.h:59
+msgid "Print Self-Test Page"
+msgstr "Skriv ut testside"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:62
+#, fuzzy
+msgid "Print quality:"
+msgstr "Tilstand for skriver:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:64
+msgid "Printer Properties"
+msgstr "Egenskaper for skriver"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:65
+msgid "Printer State:"
+msgstr "Tilstand for skriver:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:66
+#, fuzzy
+msgid "Printer resolution:"
+msgstr "Lokasjon for skriver"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:67
+msgid "Reset"
+msgstr "Nullstill"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:68
+msgid "Right margin:"
+msgstr "Høyre marg:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:69
+msgid "Saturation:"
+msgstr "Metning:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:70
+msgid "Scale to fit"
+msgstr "Tilpasset skalering"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:71
+msgid "Scaling:"
+msgstr "Skalering:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:72
+msgid "Settings"
+msgstr "Innstillinger"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:73
+msgid "Shared"
+msgstr "Delt"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:74
+msgid "Sides:"
+msgstr "Sider:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:75
+msgid ""
+"Specify the default job options for this printer.  Jobs arriving at this "
+"print server will have these options added if they are not already set by "
+"the application."
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:76
+msgid "Starting Banner:"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:77
+#, fuzzy
+msgid "There are no status messages for this printer."
+msgstr "Det finnes meldinger i feilloggen."
+
+#: ../ui/PrinterPropertiesDialog.glade.h:78
+msgid "To add a new option, enter its name in the box below and click to add."
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:79
+msgid "Top margin:"
+msgstr "Toppmarg:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:80
+msgid "Word wrap"
+msgstr "Ordbryting"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:83
+msgid "points"
+msgstr "punkter"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:84
+msgid "user"
+msgstr "bruker"
+
+#: ../ui/PrintersWindow.glade.h:1
+msgid ""
+"Printing service not available.  Start the service on this computer or "
+"connect to another server."
+msgstr ""
+
+#: ../ui/PrintersWindow.glade.h:2
+msgid "Start Service"
+msgstr ""
+
+#: ../ui/PrintersWindow.glade.h:3
+msgid "System-Config-Printer"
+msgstr "system-config-printer"
+
+#: ../ui/PrintersWindow.glade.h:4
+msgid "There are no printers configured yet."
+msgstr ""
+
+#: ../ui/PrintersWindow.glade.h:5
+#, fuzzy
+msgid "_Discovered Printers"
+msgstr "Publiser delte skrivere"
+
+#: ../ui/PrintersWindow.glade.h:6
+msgid "_Group"
+msgstr "_Gruppe"
+
+#: ../ui/PrintersWindow.glade.h:7
+msgid "_Groups"
+msgstr "_Grupper"
+
+#: ../ui/PrintersWindow.glade.h:8
+msgid "_Help"
+msgstr "_Hjelp"
+
+#: ../ui/PrintersWindow.glade.h:10
+msgid "_Server"
+msgstr "_Tjener"
+
+#: ../ui/PrintersWindow.glade.h:11
+msgid "_View"
+msgstr "_Vis"
+
+#: ../ui/ServerSettingsDialog.glade.h:1
+msgid "<b>Basic Server Settings</b>"
+msgstr "<b>Grunnleggende innstillinger for tjener</b>"
+
+#: ../ui/ServerSettingsDialog.glade.h:2
+msgid "<b>Browse servers</b>"
+msgstr "<b>Bla gjennom tjenere</b>"
+
+#: ../ui/ServerSettingsDialog.glade.h:3
+msgid "<b>Job history</b>"
+msgstr "<b>Jobb-historikk</b>"
+
+#: ../ui/ServerSettingsDialog.glade.h:4
+msgid "Advanced Server Settings"
+msgstr "Avanserte innstillinger for tjener"
+
+#: ../ui/ServerSettingsDialog.glade.h:5
+msgid "Allow _remote administration"
+msgstr "Tillat ekste_rn administrasjon"
+
+#: ../ui/ServerSettingsDialog.glade.h:6
+msgid "Allow _users to cancel any job (not just their own)"
+msgstr "La br_ukere avbryte alle jobber (ikke bare sine egne)"
+
+#: ../ui/ServerSettingsDialog.glade.h:7
+msgid "Allow printing from the _Internet"
+msgstr "Tillat utskrifter fra _internett"
+
+#: ../ui/ServerSettingsDialog.glade.h:8
+msgid "Do not preserve job history"
+msgstr "Ikke behold historikk om jobber"
+
+#: ../ui/ServerSettingsDialog.glade.h:9
+msgid "Preserve job files (allow reprinting)"
+msgstr "Behold jobb-filer (gjør det mulig å skrive ut på nytt)"
+
+#: ../ui/ServerSettingsDialog.glade.h:10
+msgid "Preserve job history but not files"
+msgstr "Behold historikk om jobber, men ikke filer"
+
+#: ../ui/ServerSettingsDialog.glade.h:11
+msgid "Save _debugging information for troubleshooting"
+msgstr ""
+
+#: ../ui/ServerSettingsDialog.glade.h:12
+msgid "Server Settings"
+msgstr "Innstillinger for tjener"
+
+#: ../ui/ServerSettingsDialog.glade.h:13
+msgid ""
+"Usually print servers broadcast their queues. Specify print servers below to "
+"periodically ask for queues instead."
+msgstr ""
+
+#: ../ui/ServerSettingsDialog.glade.h:14
+msgid "_Publish shared printers connected to this system"
+msgstr "_Publiser delte skrivere som er koblet til dette systemet"
+
+#: ../ui/ServerSettingsDialog.glade.h:15
+msgid "_Show printers shared by other systems"
+msgstr "Vi_s skrivere delt ut av andre systemer"
+
+#: ../ui/SMBBrowseDialog.glade.h:1
+#, fuzzy
+msgid "SMB Browser"
+msgstr "Bla gjennom..."
+
+#: ../ui/statusicon_popupmenu.glade.h:1
+msgid "_Hide"
+msgstr "Sk_jul"
+
+#: ../ui/WaitWindow.glade.h:1
+msgid "Please Wait"
+msgstr "Vennligst vent"
 
 #: ../system-config-printer.desktop.in.h:1
 msgid "Configure printers"
@@ -2101,10 +3040,6 @@ msgid ""
 "Please select the device you want to use from the list below. If it does not "
 "appear in the list, select 'Not listed'."
 msgstr ""
-
-#: ../troubleshoot/DeviceListed.py:40
-msgid "Device URI"
-msgstr "URI til enhet"
 
 #: ../troubleshoot/ErrorLogCheckpoint.py:31
 msgid "Debugging"
@@ -2415,563 +3350,13 @@ msgstr "Panelprogram for utskriftskø"
 msgid "System tray icon for managing print jobs"
 msgstr "Varselikon for utskriftsjobber for systemområdet"
 
-#~ msgid "A CUPS configuration tool."
-#~ msgstr "CUPS konfigurasjonsverktøy."
-
-#~ msgid "Copyright &#xA9; 2006-2008 Red Hat, Inc."
-#~ msgstr "Opphavsrett &#xA9; 2006-2008 Red Hat, Inc."
-
-#~ msgid "translator-credits"
-#~ msgstr "Kjartan Maraas <kmaraas@broadpark.no>"
-
-#~ msgid "CUPS _server:"
-#~ msgstr "CUPS-_tjener:"
-
-#~ msgid "Connect to CUPS server"
-#~ msgstr "Koble til CUPS-tjener"
-
-#~ msgid "Require _encryption"
-#~ msgstr "Krev krypt_ering"
-
-#~ msgid ""
-#~ "<span weight=\"bold\" size=\"larger\">Connecting to CUPS server</span>"
-#~ msgstr "<span weight=\"bold\" size=\"larger\">Kobler til CUPS-tjener</span>"
-
-#~ msgid "Connecting to CUPS server"
-#~ msgstr "Kobler til CUPS-tjener"
-
-#~ msgid "_Install"
-#~ msgstr "_Installer"
-
-#~ msgid "Show _completed jobs"
-#~ msgstr "Vis _fullførte jobber"
-
-#, fuzzy
-#~ msgid "Show completed jobs"
-#~ msgstr "Vis _fullførte jobber"
-
-#, fuzzy
-#~ msgid "_Refresh"
-#~ msgstr "_Ta bort"
-
-#~ msgid "Duplicate Printer"
-#~ msgstr "Dupliser skriver"
-
-#~ msgid "New name for the printer"
-#~ msgstr "Nytt navn for skriveren"
-
-#~ msgid "<b>Authentication</b>"
-#~ msgstr "<b>Autentisering</b>"
-
-#~ msgid "<b>Description</b>"
-#~ msgstr "<b>Beskrivelse</b>"
-
-#~ msgid "<b>Description</b> (optional)"
-#~ msgstr "<b>Beskrivelse</b> (valgfri)"
-
-#~ msgid "<b>Enter device URI</b>"
-#~ msgstr "<b>Oppgi URI for enhet</b>"
-
-#~ msgid "<b>IPP Printer</b>"
-#~ msgstr "<b>IPP-skriver</b>"
-
-#~ msgid "<b>License Terms</b>"
-#~ msgstr "<b>Lisensbetingelser</b>"
-
-#~ msgid "<b>Location</b> (optional)"
-#~ msgstr "<b>Lokasjon</b> (valgfri)"
-
-#~ msgid "<b>Network Printer</b>"
-#~ msgstr "<b>Nettverksskriver</b>"
-
-#~ msgid "<b>Note</b>"
-#~ msgstr "<b>Merknad</b>"
-
-#~ msgid "<b>Output Quality</b>"
-#~ msgstr "<b>Utskriftskvalitet</b>"
-
-#~ msgid "<b>Printer Name</b>"
-#~ msgstr "<b>Skrivernavn</b>"
-
-#~ msgid "<b>SMB Printer</b>"
-#~ msgstr "<b>SMB-skriver</b>"
-
-#~ msgid "<b>Select Driver</b>"
-#~ msgstr "<b>Velg driver</b>"
-
-#~ msgid "<b>Settings of the serial port</b>"
-#~ msgstr "<b>Innstillinger for seriellport</b>"
-
-#~ msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
-#~ msgstr "<i>smb://[arbeidsgruppe/]tjener[:port]/skriver</i>"
-
-#~ msgid "<span weight=\"bold\" size=\"larger\">Choose Class Members</span>"
-#~ msgstr ""
-#~ "<span weight=\"bold\" size=\"larger\">Velg medlemmer i klasse</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"larger\">Choose Driver</span>"
-#~ msgstr "<span weight=\"bold\" size=\"larger\">Velg driver</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"larger\">Describe Printer</span>"
-#~ msgstr "<span weight=\"bold\" size=\"larger\">Beskriv skriver</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"larger\">Existing Settings</span>"
-#~ msgstr ""
-#~ "<span weight=\"bold\" size=\"larger\">Eksisterende innstillinger</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"larger\">Installable Options</span>"
-#~ msgstr ""
-#~ "<span weight=\"bold\" size=\"larger\">Installerbare alternativer</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"larger\">Select Device</span>"
-#~ msgstr "<span weight=\"bold\" size=\"larger\">Velg enhet</span>"
-
-#~ msgid "Baud Rate"
-#~ msgstr "Baudrate"
-
-#~ msgid "Browse..."
-#~ msgstr "Bla gjennom..."
-
-#, fuzzy
-#~ msgid "Change PPD"
-#~ msgstr "Endre driver"
-
-#, fuzzy
-#~ msgid "Class Members"
-#~ msgstr "Medlemmer"
-
-#~ msgid "Comments..."
-#~ msgstr "Kommentarer..."
-
-#~ msgid "Connection"
-#~ msgstr "Tilkobling"
-
-#~ msgid "Data Bits"
-#~ msgstr "Databiter"
-
-#~ msgid "Description:"
-#~ msgstr "Beskrivelse:"
-
-#, fuzzy
-#~ msgid "Device"
-#~ msgstr "Enheter"
-
-#~ msgid "Device description."
-#~ msgstr "Beskrivelse av enhet."
-
-#~ msgid "Driver details"
-#~ msgstr "Detaljer for driver"
-
-#~ msgid "Empty"
-#~ msgstr "Tom"
-
-#~ msgid "Flow Control"
-#~ msgstr "Flytkontroll"
-
-#~ msgid "Free software"
-#~ msgstr "Fri programvare"
-
-#~ msgid "Graphics:"
-#~ msgstr "Grafikk:"
-
-#~ msgid "Host:"
-#~ msgstr "Vert:"
-
-#~ msgid "Installed Options"
-#~ msgstr "Installerte alternativer"
-
-#, fuzzy
-#~ msgid "JetDirect"
-#~ msgstr "DirectJet"
-
-#~ msgid "LPD"
-#~ msgstr "LPD"
-
-#~ msgid "License:"
-#~ msgstr "Lisens:"
-
-#~ msgid "Local Driver"
-#~ msgstr "Lokal driver"
-
-#~ msgid "Make and model:"
-#~ msgstr "Type og modell:"
-
-#~ msgid "Manufacturer"
-#~ msgstr "Produsent"
-
-#~ msgid "Network"
-#~ msgstr "Nettverk"
-
-#~ msgid "No, I do not accept this license"
-#~ msgstr "Nei, jeg godtar ikke denne lisensen"
-
-#~ msgid "Parity"
-#~ msgstr "Paritet"
-
-#~ msgid "Patented algorithms"
-#~ msgstr "Patenterte algoritmer"
-
-#~ msgid "Photo:"
-#~ msgstr "Foto:"
-
-#~ msgid "Port number:"
-#~ msgstr "Portnummer:"
-
-#~ msgid "Printer model:"
-#~ msgstr "Skrivermodell:"
-
-#~ msgid "Probe"
-#~ msgstr "Søk"
-
-#~ msgid "Prompt user if authentication is required"
-#~ msgstr "Spør bruker om autentisering kreves"
-
-#~ msgid "Provide PPD file"
-#~ msgstr "Oppgi PPD-fil"
-
-#~ msgid "Queue:"
-#~ msgstr "Kø:"
-
-#~ msgid "SCSI"
-#~ msgstr "SCSI"
-
-#~ msgid "SMB"
-#~ msgstr "SMB"
-
-#~ msgid "Search for a printer driver to download"
-#~ msgstr "Søk etter en skriverdriver å laste ned"
-
-#~ msgid "Searching..."
-#~ msgstr "Søker..."
-
-#~ msgid "Select printer from database"
-#~ msgstr "Velg skriver fra database"
-
-#~ msgid "Serial"
-#~ msgstr "Seriell"
-
-#~ msgid "Set authentication details now"
-#~ msgstr "Sett autentiseringsdetaljer nå"
-
-#~ msgid "Short name for this printer such as \"laserjet\""
-#~ msgstr "Kort navn for denne skriveren. F.eks «laserjet»"
-
-#~ msgid "Supplier:"
-#~ msgstr "Leverandør:"
-
-#~ msgid "Support:"
-#~ msgstr "Støtte:"
-
-#~ msgid "Text:"
-#~ msgstr "Tekst:"
-
-#~ msgid "URI:"
-#~ msgstr "URI:"
-
-#~ msgid "Yes, I accept this license"
-#~ msgstr "Ja, jeg godtar denne lisensen"
-
-#~ msgid "_Search"
-#~ msgstr "_Søk"
-
-#~ msgid "_Verify..."
-#~ msgstr "_Verifiser..."
-
-#, fuzzy
-#~ msgid "license"
-#~ msgstr "Lisens:"
-
-#~ msgid "move left"
-#~ msgstr "flytt til venstre"
-
-#~ msgid "move right"
-#~ msgstr "flytt til høyre"
-
-#, fuzzy
-#~ msgid "short description"
-#~ msgstr "Beskrivelse"
-
-#, fuzzy
-#~ msgid "supplier"
-#~ msgstr "Leverandør:"
-
-#, fuzzy
-#~ msgid "support contacts"
-#~ msgstr "Ingen brukerstøttekontakter kjent"
-
-#~ msgid " "
-#~ msgstr " "
-
-#~ msgid "<b>Banner</b>"
-#~ msgstr "<b>Forside</b>"
-
-#~ msgid "<b>Common Options</b>"
-#~ msgstr "<b>Vanlige alternativer</b>"
-
-#~ msgid "<b>Image Options</b>"
-#~ msgstr "<b>Bildealternativer</b>"
-
-#~ msgid "<b>Ink/Toner Levels</b>"
-#~ msgstr "<b>Nivå for blekk/toner</b>"
-
-#~ msgid "<b>Other Options (Advanced)</b>"
-#~ msgstr "<b>Andre alternativer (avansert)</b>"
-
-#~ msgid "<b>Policies</b>"
-#~ msgstr "<b>Retningslinjer</b>"
-
-#~ msgid "<b>Settings</b>"
-#~ msgstr "<b>Innstillinger</b>"
-
-#~ msgid "<b>State</b>"
-#~ msgstr "<b>Tilstand</b>"
-
-#~ msgid "<b>Status Messages</b>"
-#~ msgstr "<b>Statusmeldinger</b>"
-
-#~ msgid "<b>Tests and Maintenance</b>"
-#~ msgstr "<b>Tester og vedlikehold</b>"
-
-#~ msgid "<b>Text Options</b>"
-#~ msgstr "<b>Alternativer for tekst</b>"
-
-#~ msgid ""
-#~ "<i>Not published\n"
-#~ "See server settings</i>"
-#~ msgstr ""
-#~ "<i>Ikke publisert\n"
-#~ "Se tjenerinnstillinger</i>"
-
-#~ msgid "Accepting jobs"
-#~ msgstr "Godtar jobber"
-
-#~ msgid "Access Control"
-#~ msgstr "Tilgangskontroll"
-
-#~ msgid "Add or Remove Members"
-#~ msgstr "Legg til eller fjern medlemmer"
-
-#~ msgid "Allow printing for everyone except these users:"
-#~ msgstr "Tillat utskrifter for alle unntatt disse brukerene:"
-
-#~ msgid "Bottom margin:"
-#~ msgstr "Bunnmarg:"
-
-#~ msgid "Brightness:"
-#~ msgstr "Lysstyrke:"
-
-#~ msgid "Change..."
-#~ msgstr "Bytt..."
-
-#~ msgid "Characters per inch:"
-#~ msgstr "Tegn per tomme:"
-
-#~ msgid "Clean Print Heads"
-#~ msgstr "Rens skrivehoder"
-
-#, fuzzy
-#~ msgid "Co_nflicts"
-#~ msgstr "I konflikt med:"
-
-#~ msgid "Columns:"
-#~ msgstr "Kolonner:"
-
-#~ msgid "Copies:"
-#~ msgstr "Kopier:"
-
-#~ msgid "Deny printing for everyone except these users:"
-#~ msgstr "Nekt utskrift for alle unntatt disse brukerene:"
-
-#~ msgid "Device URI:"
-#~ msgstr "URI til enhet:"
-
-#~ msgid "Enabled"
-#~ msgstr "Aktivert"
-
-#~ msgid "Gamma:"
-#~ msgstr "Gamma:"
-
-#~ msgid "Hold until:"
-#~ msgstr "Hold tilbake til:"
-
-#~ msgid "Ink/Toner Levels"
-#~ msgstr "Nivå for blekk/toner"
-
-#~ msgid "Job Options"
-#~ msgstr "Alternativer for jobb"
-
-#~ msgid "Job priority:"
-#~ msgstr "Jobb-prioritet:"
-
-#~ msgid "Left margin:"
-#~ msgstr "Venstre marg"
-
-#~ msgid "Lines per inch:"
-#~ msgstr "Linjer per tomme:"
-
-#~ msgid "Location:"
-#~ msgstr "Lokasjon:"
-
-#~ msgid "Make and Model:"
-#~ msgstr "Type og modell:"
-
-#~ msgid "Media:"
-#~ msgstr "Medie:"
-
-#~ msgid "Members"
-#~ msgstr "Medlemmer"
-
-#~ msgid "Mirror"
-#~ msgstr "Speil"
-
-#~ msgid "More"
-#~ msgstr "Mer"
-
-#, fuzzy
-#~ msgid "Operation Policy:"
-#~ msgstr "Operasjon avbrutt"
-
-#~ msgid "Orientation:"
-#~ msgstr "Orientering:"
-
-#~ msgid "Output order:"
-#~ msgstr "Utskriftsrekkefølge:"
-
-#, fuzzy
-#~ msgid "Pages per side layout:"
-#~ msgstr "Sider per side utforming:"
-
-#, fuzzy
-#~ msgid "Pages per side:"
-#~ msgstr "Sider per side:"
-
-#, fuzzy
-#~ msgid "Pretty print"
-#~ msgstr "Skriv ut _igjen"
-
-#~ msgid "Print Self-Test Page"
-#~ msgstr "Skriv ut testside"
-
-#~ msgid "Printer Properties"
-#~ msgstr "Egenskaper for skriver"
-
-#~ msgid "Printer State:"
-#~ msgstr "Tilstand for skriver:"
-
-#~ msgid "Reset"
-#~ msgstr "Nullstill"
-
-#~ msgid "Right margin:"
-#~ msgstr "Høyre marg:"
-
-#~ msgid "Saturation:"
-#~ msgstr "Metning:"
-
-#~ msgid "Scale to fit"
-#~ msgstr "Tilpasset skalering"
-
-#~ msgid "Scaling:"
-#~ msgstr "Skalering:"
-
-#~ msgid "Settings"
-#~ msgstr "Innstillinger"
-
-#~ msgid "Shared"
-#~ msgstr "Delt"
-
-#~ msgid "Sides:"
-#~ msgstr "Sider:"
-
-#, fuzzy
-#~ msgid "There are no status messages for this printer."
-#~ msgstr "Det finnes meldinger i feilloggen."
-
-#~ msgid "Top margin:"
-#~ msgstr "Toppmarg:"
-
-#~ msgid "Word wrap"
-#~ msgstr "Ordbryting"
-
-#~ msgid "points"
-#~ msgstr "punkter"
-
-#~ msgid "user"
-#~ msgstr "bruker"
-
-#~ msgid "System-Config-Printer"
-#~ msgstr "system-config-printer"
-
-#, fuzzy
-#~ msgid "_Discovered Printers"
-#~ msgstr "Publiser delte skrivere"
-
-#~ msgid "_Group"
-#~ msgstr "_Gruppe"
-
-#~ msgid "_Groups"
-#~ msgstr "_Grupper"
-
-#~ msgid "_Help"
-#~ msgstr "_Hjelp"
-
-#~ msgid "_Server"
-#~ msgstr "_Tjener"
-
 #, fuzzy
 #~ msgid "_Troubleshoot"
 #~ msgstr "Feilsøking for utskrift"
 
-#~ msgid "_View"
-#~ msgstr "_Vis"
-
-#~ msgid "<b>Basic Server Settings</b>"
-#~ msgstr "<b>Grunnleggende innstillinger for tjener</b>"
-
-#~ msgid "<b>Browse servers</b>"
-#~ msgstr "<b>Bla gjennom tjenere</b>"
-
-#~ msgid "<b>Job history</b>"
-#~ msgstr "<b>Jobb-historikk</b>"
-
-#~ msgid "Advanced Server Settings"
-#~ msgstr "Avanserte innstillinger for tjener"
-
-#~ msgid "Allow _remote administration"
-#~ msgstr "Tillat ekste_rn administrasjon"
-
-#~ msgid "Allow _users to cancel any job (not just their own)"
-#~ msgstr "La br_ukere avbryte alle jobber (ikke bare sine egne)"
-
-#~ msgid "Allow printing from the _Internet"
-#~ msgstr "Tillat utskrifter fra _internett"
-
-#~ msgid "Do not preserve job history"
-#~ msgstr "Ikke behold historikk om jobber"
-
-#~ msgid "Preserve job files (allow reprinting)"
-#~ msgstr "Behold jobb-filer (gjør det mulig å skrive ut på nytt)"
-
-#~ msgid "Preserve job history but not files"
-#~ msgstr "Behold historikk om jobber, men ikke filer"
-
-#~ msgid "Server Settings"
-#~ msgstr "Innstillinger for tjener"
-
-#~ msgid "_Publish shared printers connected to this system"
-#~ msgstr "_Publiser delte skrivere som er koblet til dette systemet"
-
-#~ msgid "_Show printers shared by other systems"
-#~ msgstr "Vi_s skrivere delt ut av andre systemer"
-
 #, fuzzy
 #~ msgid "_Configure Printers"
 #~ msgstr "Konfigurer skrivere"
-
-#~ msgid "_Hide"
-#~ msgstr "Sk_jul"
-
-#~ msgid "Please Wait"
-#~ msgstr "Vennligst vent"
 
 #~ msgid "Cancel, pause, resume or reprint jobs"
 #~ msgstr "Avbryt, pause, gjenoppta eller skriv ut jobber på nytt"

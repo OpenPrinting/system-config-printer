@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: el\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2011-02-17 16:17+0000\n"
+"POT-Creation-Date: 2011-02-25 09:57+0000\n"
 "PO-Revision-Date: 2010-06-04 18:08+0200\n"
 "Last-Translator: NikosCharonitakis <nikosx@gmail.com>\n"
 "Language-Team: Greek <fedora-trans-el@redhat.com>\n"
@@ -64,11 +64,11 @@ msgstr "Προσπάθεια ξανά"
 msgid "Operation canceled"
 msgstr "Διαδικασία ακυρώθηκε"
 
-#: ../authconn.py:32 ../pysmb.py:123
+#: ../authconn.py:32 ../pysmb.py:123 ../ui/NewPrinterWindow.glade.h:94
 msgid "Username:"
 msgstr "Όνομα χρήστη:"
 
-#: ../authconn.py:33 ../pysmb.py:129
+#: ../authconn.py:33 ../pysmb.py:129 ../ui/NewPrinterWindow.glade.h:63
 msgid "Password:"
 msgstr "Συνθηματικό:"
 
@@ -340,7 +340,8 @@ msgstr "Ιδιότητες εργασίας"
 
 #: ../jobviewer.py:706 ../jobviewer.py:1002 ../jobviewer.py:1704
 #: ../jobviewer.py:1734 ../jobviewer.py:2104 ../jobviewer.py:2109
-#: ../jobviewer.py:2123 ../jobviewer.py:2202 ../printerproperties.py:1541
+#: ../jobviewer.py:2123 ../jobviewer.py:2202 ../printerproperties.py:1582
+#: ../ui/NewPrinterWindow.glade.h:92
 #: ../troubleshoot/ChooseNetworkPrinter.py:100
 #: ../troubleshoot/ChooseNetworkPrinter.py:101
 #: ../troubleshoot/ChooseNetworkPrinter.py:104
@@ -414,6 +415,7 @@ msgid "Save File"
 msgstr "Αποθήκευση αρχείου"
 
 #: ../jobviewer.py:1449 ../system-config-printer.py:258
+#: ../ui/NewPrinterWindow.glade.h:57
 #: ../troubleshoot/ChooseNetworkPrinter.py:35
 #: ../troubleshoot/ChoosePrinter.py:36 ../troubleshoot/DeviceListed.py:36
 msgid "Name"
@@ -593,7 +595,7 @@ msgstr "115200"
 #. See section 4.2.6 of this document for explanation of finishing types:
 #. ftp://ftp.pwg.org/pub/pwg/candidates/cs-ippfinishings10-20010205-5100.1.pdf
 #: ../newprinter.py:299 ../newprinter.py:310 ../newprinter.py:3267
-#: ../ppdippstr.py:63 ../printerproperties.py:264
+#: ../ppdippstr.py:63 ../printerproperties.py:268
 msgid "None"
 msgstr "Κανένας"
 
@@ -626,11 +628,11 @@ msgstr "RTS/CTS (Hardware)"
 msgid "DTR/DSR (Hardware)"
 msgstr "DTR/DSR (Hardware)"
 
-#: ../newprinter.py:330 ../printerproperties.py:218
+#: ../newprinter.py:330 ../printerproperties.py:222
 msgid "Members of this class"
 msgstr "Μέλη αυτής της κλάσης"
 
-#: ../newprinter.py:332 ../printerproperties.py:219
+#: ../newprinter.py:332 ../printerproperties.py:223
 msgid "Others"
 msgstr "Άλλα"
 
@@ -654,7 +656,7 @@ msgstr "Μοντέλο"
 msgid "Drivers"
 msgstr "Οδηγοί"
 
-#: ../newprinter.py:338
+#: ../newprinter.py:338 ../ui/NewPrinterWindow.glade.h:35
 msgid "Downloadable Drivers"
 msgstr "Οδηγοί με δυνατότητα λήψης"
 
@@ -688,7 +690,7 @@ msgstr "Όλα τα αρχεία (*)"
 msgid "Search"
 msgstr "Αναζήτηση"
 
-#: ../newprinter.py:611 ../newprinter.py:632
+#: ../newprinter.py:611 ../newprinter.py:632 ../ui/NewPrinterWindow.glade.h:59
 msgid "New Printer"
 msgstr "Νέος εκτυπωτής"
 
@@ -844,7 +846,7 @@ msgstr "ουρά LPD/LPR"
 msgid "Windows Printer via SAMBA"
 msgstr "Εκτυπωτής Windows μέσω SAMBA"
 
-#: ../newprinter.py:2376
+#: ../newprinter.py:2376 ../ui/NewPrinterWindow.glade.h:48
 msgid "IPP"
 msgstr "IPP"
 
@@ -902,7 +904,7 @@ msgstr "Τοπικός εκτυπωτής ανιχνεύτηκε από το Har
 msgid "Searching for printers"
 msgstr "Εκτελείται αναζήτηση για εκτυπωτές"
 
-#: ../newprinter.py:2769
+#: ../newprinter.py:2769 ../ui/NewPrinterWindow.glade.h:60
 msgid "No printer was found at that address."
 msgstr "Δεν βρέθηκε εκτυπωτής σε αυτή τη διεύθυνση."
 
@@ -1003,7 +1005,7 @@ msgid "adding printer %s"
 msgstr "Προσθήκη εκτυπωτή %s"
 
 #: ../newprinter.py:3570 ../newprinter.py:3581 ../newprinter.py:3598
-#: ../printerproperties.py:921 ../system-config-printer.py:1682
+#: ../printerproperties.py:957 ../system-config-printer.py:1682
 #: ../system-config-printer.py:1707
 #, python-format
 msgid "modifying printer %s"
@@ -1316,220 +1318,228 @@ msgid "Busy"
 msgstr "Απασχολημένος"
 
 #. Printer state reasons list
-#: ../printerproperties.py:200
+#: ../printerproperties.py:204
 msgid "Message"
 msgstr "Μήνυμα"
 
-#: ../printerproperties.py:220
+#: ../printerproperties.py:224
 msgid "Users"
 msgstr "Χρήστες"
 
-#: ../printerproperties.py:243
+#: ../printerproperties.py:247
 msgid "Portrait (no rotation)"
 msgstr "Πορτραίτο (χωρίς περιστροφή)"
 
-#: ../printerproperties.py:244
+#: ../printerproperties.py:248
 msgid "Landscape (90 degrees)"
 msgstr "Τοπίο (90 μοίρες)"
 
-#: ../printerproperties.py:245
+#: ../printerproperties.py:249
 msgid "Reverse landscape (270 degrees)"
 msgstr "Αντίστροφο τοπίο (270 μοίρες)"
 
-#: ../printerproperties.py:246
+#: ../printerproperties.py:250
 msgid "Reverse portrait (180 degrees)"
 msgstr "Αντίστροφο πορτραίτο (270 μοίρες)"
 
-#: ../printerproperties.py:252
+#: ../printerproperties.py:256
 msgid "Left to right, top to bottom"
 msgstr ""
 
-#: ../printerproperties.py:253
+#: ../printerproperties.py:257
 msgid "Left to right, bottom to top"
 msgstr ""
 
-#: ../printerproperties.py:254
+#: ../printerproperties.py:258
 msgid "Right to left, top to bottom"
 msgstr ""
 
-#: ../printerproperties.py:255
+#: ../printerproperties.py:259
 msgid "Right to left, bottom to top"
 msgstr ""
 
-#: ../printerproperties.py:256
+#: ../printerproperties.py:260
 msgid "Top to bottom, left to right"
 msgstr ""
 
-#: ../printerproperties.py:257
+#: ../printerproperties.py:261
 msgid "Top to bottom, right to left"
 msgstr ""
 
-#: ../printerproperties.py:258
+#: ../printerproperties.py:262
 msgid "Bottom to top, left to right"
 msgstr ""
 
-#: ../printerproperties.py:259
+#: ../printerproperties.py:263
 msgid "Bottom to top, right to left"
-msgstr ""
-
-#: ../printerproperties.py:265
-#, fuzzy
-msgid "Staple"
-msgstr "Διακόπξλε"
-
-#: ../printerproperties.py:266
-msgid "Punch"
-msgstr ""
-
-#: ../printerproperties.py:267
-#, fuzzy
-msgid "Cover"
-msgstr "Ανοιχτό κάλυμμα"
-
-#: ../printerproperties.py:268
-msgid "Bind"
 msgstr ""
 
 #: ../printerproperties.py:269
 #, fuzzy
-msgid "Saddle stitch"
-msgstr "Μεγέθυνση/σμίκρυνση στη σελίδα"
+msgid "Staple"
+msgstr "Διακόπξλε"
 
 #: ../printerproperties.py:270
-msgid "Edge stitch"
+msgid "Punch"
 msgstr ""
 
 #: ../printerproperties.py:271
 #, fuzzy
-msgid "Fold"
-msgstr "_Αναμονή"
+msgid "Cover"
+msgstr "Ανοιχτό κάλυμμα"
 
 #: ../printerproperties.py:272
-msgid "Trim"
+msgid "Bind"
 msgstr ""
 
 #: ../printerproperties.py:273
-msgid "Bale"
-msgstr ""
+#, fuzzy
+msgid "Saddle stitch"
+msgstr "Μεγέθυνση/σμίκρυνση στη σελίδα"
 
 #: ../printerproperties.py:274
-msgid "Booklet maker"
+msgid "Edge stitch"
 msgstr ""
 
 #: ../printerproperties.py:275
+#, fuzzy
+msgid "Fold"
+msgstr "_Αναμονή"
+
+#: ../printerproperties.py:276
+msgid "Trim"
+msgstr ""
+
+#: ../printerproperties.py:277
+msgid "Bale"
+msgstr ""
+
+#: ../printerproperties.py:278
+msgid "Booklet maker"
+msgstr ""
+
+#: ../printerproperties.py:279
 msgid "Job offset"
 msgstr ""
 
-#: ../printerproperties.py:276
+#: ../printerproperties.py:280
 #, fuzzy
 msgid "Staple (top left)"
 msgstr "Μεγέθυνση/σμίκρυνση στη σελίδα"
 
-#: ../printerproperties.py:277
+#: ../printerproperties.py:281
 #, fuzzy
 msgid "Staple (bottom left)"
 msgstr "Μεγέθυνση/σμίκρυνση στη σελίδα"
 
-#: ../printerproperties.py:278
+#: ../printerproperties.py:282
 #, fuzzy
 msgid "Staple (top right)"
 msgstr "Μεγέθυνση/σμίκρυνση στη σελίδα"
 
-#: ../printerproperties.py:279
+#: ../printerproperties.py:283
 #, fuzzy
 msgid "Staple (bottom right)"
 msgstr "Μεγέθυνση/σμίκρυνση στη σελίδα"
 
-#: ../printerproperties.py:280
+#: ../printerproperties.py:284
 msgid "Edge stitch (left)"
 msgstr ""
 
-#: ../printerproperties.py:281
+#: ../printerproperties.py:285
 msgid "Edge stitch (top)"
 msgstr ""
 
-#: ../printerproperties.py:282
+#: ../printerproperties.py:286
 msgid "Edge stitch (right)"
 msgstr ""
 
-#: ../printerproperties.py:283
+#: ../printerproperties.py:287
 msgid "Edge stitch (bottom)"
 msgstr ""
 
-#: ../printerproperties.py:284
+#: ../printerproperties.py:288
 msgid "Staple dual (left)"
 msgstr ""
 
-#: ../printerproperties.py:285
+#: ../printerproperties.py:289
 msgid "Staple dual (top)"
 msgstr ""
 
-#: ../printerproperties.py:286
+#: ../printerproperties.py:290
 msgid "Staple dual (right)"
 msgstr ""
 
-#: ../printerproperties.py:287
+#: ../printerproperties.py:291
 msgid "Staple dual (bottom)"
 msgstr ""
 
-#: ../printerproperties.py:288
+#: ../printerproperties.py:292
 msgid "Bind (left)"
 msgstr ""
 
-#: ../printerproperties.py:289
+#: ../printerproperties.py:293
 msgid "Bind (top)"
 msgstr ""
 
-#: ../printerproperties.py:290
+#: ../printerproperties.py:294
 msgid "Bind (right)"
 msgstr ""
 
-#: ../printerproperties.py:291
+#: ../printerproperties.py:295
 msgid "Bind (bottom)"
 msgstr ""
 
-#: ../printerproperties.py:296
+#: ../printerproperties.py:300
 msgid "One-sided"
 msgstr "Μιας όψης"
 
-#: ../printerproperties.py:297
+#: ../printerproperties.py:301
 msgid "Two-sided (long edge)"
 msgstr "Διπλής όψης (long edge)"
 
-#: ../printerproperties.py:298
+#: ../printerproperties.py:302
 msgid "Two-sided (short edge)"
 msgstr "Διπλής όψης (short edge)"
 
-#: ../printerproperties.py:303
+#: ../printerproperties.py:307 ../printerproperties.py:312
 msgid "Normal"
 msgstr "Κανονική"
 
-#: ../printerproperties.py:304
+#: ../printerproperties.py:308
 #, fuzzy
 msgid "Reverse"
 msgstr "Απελευ_θέρωση"
 
-#: ../printerproperties.py:325
+#: ../printerproperties.py:311
+msgid "Draft"
+msgstr ""
+
+#: ../printerproperties.py:313
+msgid "High"
+msgstr ""
+
+#: ../printerproperties.py:337
 msgid "Automatic rotation"
 msgstr "Αυτόματη περιστροφή"
 
-#: ../printerproperties.py:546
+#: ../printerproperties.py:576
 msgid "CUPS test page"
 msgstr "Δοκιμαστική σελίδα CUPS"
 
-#: ../printerproperties.py:547
+#: ../printerproperties.py:577
 msgid ""
 "Typically shows whether all jets on a print head are functioning and that "
 "the print feed mechanisms are working properly."
 msgstr ""
 
-#: ../printerproperties.py:554
+#: ../printerproperties.py:584
 #, python-format
 msgid "Printer Properties - '%s' on %s"
 msgstr "Ιδιότητες εκτυπωτή- '%s' on %s"
 
 #. The Conflict button was pressed.
-#: ../printerproperties.py:561
+#: ../printerproperties.py:591
 msgid ""
 "There are conflicting options.\n"
 "Changes can only be applied after\n"
@@ -1539,24 +1549,24 @@ msgstr ""
 "Οι αλλαγές μπορούν να εφαρμοστούν\n"
 "μετά την επίλυση των συγκρούσεων."
 
-#: ../printerproperties.py:881
+#: ../printerproperties.py:917
 msgid "Installable Options"
 msgstr "Επιλογές για εγκατάσταση"
 
-#: ../printerproperties.py:882
+#: ../printerproperties.py:918 ../ui/PrinterPropertiesDialog.glade.h:63
 msgid "Printer Options"
 msgstr "Επιλογές εκτυπωτή"
 
-#: ../printerproperties.py:919
+#: ../printerproperties.py:955
 #, python-format
 msgid "modifying class %s"
 msgstr "τροποποίηση κλάσης %s"
 
-#: ../printerproperties.py:936
+#: ../printerproperties.py:972
 msgid "This will delete this class!"
 msgstr "Αυτό θα διαγράψει την κλάση!"
 
-#: ../printerproperties.py:937
+#: ../printerproperties.py:973
 msgid "Proceed anyway?"
 msgstr "Συνέχεια οπωσδήποτε;"
 
@@ -1564,19 +1574,19 @@ msgstr "Συνέχεια οπωσδήποτε;"
 #. but we have never fetched the server settings to see whether
 #. the server is publishing shared printers.  Fetch the settings
 #. now so that we can update the "not published" label if necessary.
-#: ../printerproperties.py:1027 ../serversettings.py:192
+#: ../printerproperties.py:1065 ../serversettings.py:192
 msgid "fetching server settings"
 msgstr "γίνεται λήψη ρυθμίσεων εκτυπωτή"
 
-#: ../printerproperties.py:1109
+#: ../printerproperties.py:1147
 msgid "printing test page"
 msgstr "εκτύπωση δοκιμαστικής σελίδας"
 
-#: ../printerproperties.py:1122 ../printerproperties.py:1157
+#: ../printerproperties.py:1160 ../printerproperties.py:1195
 msgid "Not possible"
 msgstr "Δεν είναι εφικτό"
 
-#: ../printerproperties.py:1123 ../printerproperties.py:1158
+#: ../printerproperties.py:1161 ../printerproperties.py:1196
 msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
@@ -1584,43 +1594,43 @@ msgstr ""
 "Ο απομακρυσμένος εξυπηρετητής δε δέχθηκε την εκτύπωση, κατά πάσα πιθανότητα "
 "ο εκτυπωτής δε διατίθεται για κοινή χρήση."
 
-#: ../printerproperties.py:1135 ../printerproperties.py:1150
+#: ../printerproperties.py:1173 ../printerproperties.py:1188
 msgid "Submitted"
 msgstr "Υποβλήθηκε"
 
-#: ../printerproperties.py:1136
+#: ../printerproperties.py:1174
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr "Η δοκιμαστική σελίδα υποβλήθηκε σαν εργασία %d"
 
-#: ../printerproperties.py:1143
+#: ../printerproperties.py:1181
 msgid "sending maintenance command"
 msgstr "αποστολή εντολής συντήρησης"
 
-#: ../printerproperties.py:1151
+#: ../printerproperties.py:1189
 #, python-format
 msgid "Maintenance command submitted as job %d"
 msgstr "Η δοκιμαστική σελίδα καταχωρήθηκε σαν εργασία %d"
 
-#: ../printerproperties.py:1238 ../printerproperties.py:1243
-#: ../printerproperties.py:1339
+#: ../printerproperties.py:1276 ../printerproperties.py:1281
+#: ../printerproperties.py:1377
 msgid "Error"
 msgstr "Σφάλμα"
 
-#: ../printerproperties.py:1239
+#: ../printerproperties.py:1277
 msgid "The PPD file for this queue is damaged."
 msgstr ""
 
-#: ../printerproperties.py:1244
+#: ../printerproperties.py:1282
 msgid "There was a problem connecting to the CUPS server."
 msgstr "Διαπιστώθηκε σφάλμα κατά τη λειτουργία του εξυπηρετητή CUPS."
 
-#: ../printerproperties.py:1340
+#: ../printerproperties.py:1378
 #, python-format
 msgid "Option '%s' has value '%s' and cannot be edited."
 msgstr "Η επιλογή '%s' έχει τιμή '%s' και δεν είναι δυνατή η επεξεργασία της"
 
-#: ../printerproperties.py:1450
+#: ../printerproperties.py:1491
 msgid "Marker levels are not reported for this printer."
 msgstr "Δεν υπάρχουν marker levels για αυτό τον εκτυπωτή."
 
@@ -1661,7 +1671,7 @@ msgstr "Επι_λογές..."
 msgid "Adjust server settings"
 msgstr "Βασικές επιλογές οδηγού"
 
-#: ../system-config-printer.py:223
+#: ../system-config-printer.py:223 ../ui/PrintersWindow.glade.h:9
 msgid "_Printer"
 msgstr "_Εκτυπωτής"
 
@@ -1769,8 +1779,8 @@ msgstr ""
 msgid "Cannot start service on remote server"
 msgstr ""
 
-#: ../system-config-printer.py:1143
-#, python-format
+#: ../system-config-printer.py:1143 ../ui/ConnectingDialog.glade.h:2
+#, no-c-format, python-format
 msgid "<i>Opening connection to %s</i>"
 msgstr "<i>Άνοιγμα σύνδεσης σε %s</i>"
 
@@ -1860,7 +1870,9 @@ msgstr ""
 msgid "Would you like to print a test page?"
 msgstr "Θα θέλατε να εκτυπώσετε μια δοκιμαστική σελίδα;"
 
-#: ../system-config-printer.py:1948 ../troubleshoot/PrintTestPage.py:72
+#. Not more than 25 characters
+#: ../system-config-printer.py:1948 ../ui/PrinterPropertiesDialog.glade.h:61
+#: ../troubleshoot/PrintTestPage.py:72
 msgid "Print Test Page"
 msgstr "Εκτύπωση δοκιμαστικής σελίδας"
 
@@ -1887,6 +1899,965 @@ msgstr ""
 "Ο εκτυπωτής '%s' απαιτεί το πρόγραμμα %s, το οποίο όμως δεν είναι "
 "εγκατεστημένο.  Παρακαλούμε εγκαταστήστε το πριν χρησιμοποιήσετε αυτόν τον "
 "εκτυπωτή."
+
+#: ../ui/AboutDialog.glade.h:1
+msgid "A CUPS configuration tool."
+msgstr "Ένα εργαλείο ρύθμισης CUPS."
+
+#: ../ui/AboutDialog.glade.h:2
+#, fuzzy
+msgid "Copyright © 2006-2008 Red Hat, Inc."
+msgstr "Πνευματικά δικαιώματα © 2006-2008 Red Hat, Inc."
+
+#: ../ui/AboutDialog.glade.h:3
+msgid ""
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with "
+"this program; if not, write to the Free Software Foundation, Inc., 675 Mass "
+"Ave, Cambridge, MA 02139, USA."
+msgstr ""
+"Αυτό το πρόγραμμα είναι ελεύθερο λογισμικό· επιτρέπεται η αναδιανομή ή/και η "
+"τροποποίησή του υπό τους όρους της Γενικής Άδειας Δημόσιας Χρήσης GNU (GPL), "
+"όπως αυτή έχει δημοσιευτεί από το Ίδρυμα Ελεύθερου Λογισμικού (FSF) — είτε  "
+"της έκδοσης 2 της Άδειας, είτε (κατ' επιλογήν σας) οποιασδήποτε "
+"μεταγενέστερης έκδοσης.\n"
+"\n"
+"Το πρόγραμμα διανέμεται με την ελπίδα ότι θα αποδειχθεί χρήσιμο, παρόλα αυτά "
+"ΧΩΡΙΣ ΚΑΜΙΑ ΕΓΓΥΗΣΗ — χωρίς ούτε και την σιωπηρή εγγύηση ΕΜΠΟΡΕΥΣΙΜΟΤΗΤΑΣ ή "
+"ΚΑΤΑΛΛΗΛΟΤΗΤΑΣ ΓΙΑ ΕΙΔΙΚΟ ΣΚΟΠΟ. Για περισσότερες λεπτομέρειες ανατρέξτε στη "
+"Γενική Άδεια Δημόσιας Χρήσης GNU (GPL).\n"
+"\n"
+" Θα πρέπει να έχετε λάβει αντίγραφο της Γενικής Άδειας Δημόσιας Χρήσης GNU  "
+"(GPL) μαζί με το πρόγραμμα. Αν όχι, γράψτε στο Free Software Foundation, "
+"Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA"
+
+#. TRANSLATORS: Replace this string with your names, one name per line.  Thank you very much for your effort on translating system-config-printer and all our other tools!
+#: ../ui/AboutDialog.glade.h:9
+msgid "translator-credits"
+msgstr "Ελληνική ομάδα Fedora <fedora-trans-el@redhat.com>"
+
+#: ../ui/ConnectDialog.glade.h:1
+msgid "CUPS _server:"
+msgstr "_Εξυπηρετητής CUPS:"
+
+#: ../ui/ConnectDialog.glade.h:2
+msgid "Connect to CUPS server"
+msgstr "Σύνδεση στον εξυπηρετητή CUPS"
+
+#: ../ui/ConnectDialog.glade.h:3
+msgid "Require _encryption"
+msgstr "Απαιτείται _κρυπτογράφηση"
+
+#: ../ui/ConnectingDialog.glade.h:3
+msgid "<span weight=\"bold\" size=\"larger\">Connecting to CUPS server</span>"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">Σύνδεση με τον εξυπηρετητή CUPS</span>"
+
+#: ../ui/ConnectingDialog.glade.h:4
+msgid "Connecting to CUPS server"
+msgstr "Σύνδεση με τον εξυπηρετητή CUPS"
+
+#: ../ui/InstallDialog.glade.h:1
+msgid "_Install"
+msgstr "_Εγκατάσταση"
+
+#: ../ui/JobsWindow.glade.h:1
+msgid "Refresh job list"
+msgstr ""
+
+#: ../ui/JobsWindow.glade.h:2
+msgid "Show _completed jobs"
+msgstr "Εμφάνιση ολοκ_ληρωμένων εργασιών"
+
+#: ../ui/JobsWindow.glade.h:3
+#, fuzzy
+msgid "Show completed jobs"
+msgstr "Εμφάνιση ολοκ_ληρωμένων εργασιών"
+
+#: ../ui/JobsWindow.glade.h:4
+msgid "_Refresh"
+msgstr "_Ανανέωση"
+
+#: ../ui/NewPrinterName.glade.h:1
+msgid "Duplicate Printer"
+msgstr "Διπλότυπος εκτυπωτής"
+
+#: ../ui/NewPrinterName.glade.h:2
+msgid "New name for the printer"
+msgstr "Νέο όνομα εκτυπωτή"
+
+#: ../ui/NewPrinterWindow.glade.h:1
+msgid "<b>Authentication</b>"
+msgstr "<b>Πιστοποίηση</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:2
+msgid "<b>Description</b>"
+msgstr "<b>Περιγραφή</b> "
+
+#: ../ui/NewPrinterWindow.glade.h:3
+msgid "<b>Description</b> (optional)"
+msgstr "<b>Περιγραφή</b> (προαιρετική)"
+
+#: ../ui/NewPrinterWindow.glade.h:4
+msgid "<b>Enter device URI</b>"
+msgstr "<b>Εισαγωγή URI συσκευής</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:5
+msgid "<b>IPP Printer</b>"
+msgstr "<b>Εκτυπωτής IPP</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:6
+msgid "<b>License Terms</b>"
+msgstr "<b>Όροι άδειας</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:7
+msgid "<b>Location of the LPD network printer</b>"
+msgstr "<b>Τοποθεσία του LPD δικτυακού εκτυπωτή</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:8
+msgid "<b>Location of the network printer</b>"
+msgstr "<b>Τοποθεσία δικτυακού εκτυπωτή</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:9
+msgid "<b>Location</b> (optional)"
+msgstr "<b>Τοποθεσία</b> (προαιρετική)"
+
+#: ../ui/NewPrinterWindow.glade.h:10
+msgid "<b>Network Printer</b>"
+msgstr "<b>Εκτυπωτής δικτύου</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:11
+msgid "<b>Note</b>"
+msgstr "<b>Σημείωση</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:12
+msgid "<b>Output Quality</b>"
+msgstr "<b>Ποιότητα εκτύπωσης</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:13
+msgid "<b>Printer Name</b>"
+msgstr "<b>Όνομα εκτυπωτή</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:14
+msgid "<b>SMB Printer</b>"
+msgstr "<b>Εκτυπωτής SMB</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:15
+msgid "<b>Select Driver</b>"
+msgstr "<b>Προεπιλεγμένος εκτυπωτής</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:16
+msgid "<b>Settings of the serial port</b>"
+msgstr "<b>Ρυθμίσεις σειριακής θύρας</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:17
+msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
+msgstr "<i>smb://[ομάδα_εργασίας/]εξυπηρετητής[:θύρα]/εκτυπωτής</i>"
+
+#: ../ui/NewPrinterWindow.glade.h:18
+msgid "<span weight=\"bold\" size=\"larger\">Choose Class Members</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">Επιλέξτε μέλη κλάσης</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:19
+msgid "<span weight=\"bold\" size=\"larger\">Choose Driver</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">Επιλέξτε οδηγό</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:20
+msgid "<span weight=\"bold\" size=\"larger\">Describe Printer</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">Περιγραφή εκτυπωτή</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:21
+msgid "<span weight=\"bold\" size=\"larger\">Existing Settings</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">Υπάρχουσες ρυθμίσεις</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:22
+msgid "<span weight=\"bold\" size=\"larger\">Installable Options</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">Επιλογές για εγκατάσταση</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:23
+msgid "<span weight=\"bold\" size=\"larger\">Select Device</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">Επιλέξτε συσκευή</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:24
+msgid "Baud Rate"
+msgstr "Baud Rate"
+
+#: ../ui/NewPrinterWindow.glade.h:25
+msgid "Browse..."
+msgstr "Περιήγηση..."
+
+#: ../ui/NewPrinterWindow.glade.h:26
+#, fuzzy
+msgid "Change PPD"
+msgstr "Αλλαγή οδηγού"
+
+#: ../ui/NewPrinterWindow.glade.h:27
+msgid "Class Members"
+msgstr "Μέλη κλάσης"
+
+#: ../ui/NewPrinterWindow.glade.h:28
+msgid "Comments..."
+msgstr "Σχόλια..."
+
+#: ../ui/NewPrinterWindow.glade.h:29
+msgid "Connection"
+msgstr "Σύνδεση"
+
+#: ../ui/NewPrinterWindow.glade.h:30
+msgid "Data Bits"
+msgstr "Data Bits"
+
+#: ../ui/NewPrinterWindow.glade.h:31 ../ui/PrinterPropertiesDialog.glade.h:29
+msgid "Description:"
+msgstr "Περιγραφή:"
+
+#: ../ui/NewPrinterWindow.glade.h:32
+msgid "Device"
+msgstr "Συσκευή"
+
+#: ../ui/NewPrinterWindow.glade.h:33 ../troubleshoot/DeviceListed.py:40
+msgid "Device URI"
+msgstr "URI Συσκευής"
+
+#: ../ui/NewPrinterWindow.glade.h:34
+msgid "Device description."
+msgstr "Περιγραφή συσκευής."
+
+#: ../ui/NewPrinterWindow.glade.h:36
+msgid "Driver details"
+msgstr "Λεπτομέρειες οδηγών"
+
+#: ../ui/NewPrinterWindow.glade.h:37
+msgid "Empty"
+msgstr "Κενό"
+
+#: ../ui/NewPrinterWindow.glade.h:38
+msgid "Flow Control"
+msgstr "Έλεγχος ροής"
+
+#: ../ui/NewPrinterWindow.glade.h:39
+msgid ""
+"For example:\n"
+"ipp://cups-server/printers/printer-queue\n"
+"ipp://printer.mydomain/ipp"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:42
+msgid ""
+"For the printer you have selected there are drivers available for download."
+msgstr "Δεν υπάρχουν διαθέσιμοι οδηγοί για λήψη για τον επιλεγμένο εκτυπωτή"
+
+#: ../ui/NewPrinterWindow.glade.h:43
+msgid "Free software"
+msgstr "Ελεύθερο λογισμικό"
+
+#: ../ui/NewPrinterWindow.glade.h:44
+msgid "Graphics:"
+msgstr "Γραφικά:"
+
+#: ../ui/NewPrinterWindow.glade.h:45
+msgid "Host:"
+msgstr "Όνομα συστήματος:"
+
+#: ../ui/NewPrinterWindow.glade.h:46
+msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
+msgstr "Εύκολα αναγνώσιμη περιγραφή όπως  \"HP LaserJet με Duplexer\""
+
+#: ../ui/NewPrinterWindow.glade.h:47
+msgid "Human-readable location such as \"Lab 1\""
+msgstr "Εύκολα αναγνώσιμη τοποθεσία όπως \"Εργαστήριο 1\""
+
+#: ../ui/NewPrinterWindow.glade.h:49 ../ui/PrinterPropertiesDialog.glade.h:39
+msgid "Installed Options"
+msgstr "Εγκατεστημένες επιλογές"
+
+#: ../ui/NewPrinterWindow.glade.h:50
+#, fuzzy
+msgid "JetDirect"
+msgstr "DirectJet"
+
+#: ../ui/NewPrinterWindow.glade.h:51
+msgid "LPD"
+msgstr "LPD"
+
+#: ../ui/NewPrinterWindow.glade.h:52
+msgid "License:"
+msgstr "Άδεια:"
+
+#: ../ui/NewPrinterWindow.glade.h:53
+msgid "Line art:"
+msgstr "Line art:"
+
+#: ../ui/NewPrinterWindow.glade.h:54
+msgid "Local Driver"
+msgstr "Τοπικός εκτυπωτής"
+
+#: ../ui/NewPrinterWindow.glade.h:55
+msgid "Make and model:"
+msgstr "Κατασκευή και μοντέλο:"
+
+#: ../ui/NewPrinterWindow.glade.h:56
+msgid "Manufacturer"
+msgstr "Κατασκευαστής"
+
+#: ../ui/NewPrinterWindow.glade.h:58
+msgid "Network"
+msgstr "Δίκτυο"
+
+#: ../ui/NewPrinterWindow.glade.h:61
+msgid "No, I do not accept this license"
+msgstr "Όχι, δεν αποδέχομαι την άδεια"
+
+#: ../ui/NewPrinterWindow.glade.h:62
+msgid "Parity"
+msgstr "Parity"
+
+#: ../ui/NewPrinterWindow.glade.h:64
+msgid "Patented algorithms"
+msgstr "Πατενταρισμένοι αλγόριθμοι"
+
+#: ../ui/NewPrinterWindow.glade.h:65
+msgid "Photo:"
+msgstr "Εικόνα:"
+
+#: ../ui/NewPrinterWindow.glade.h:66
+msgid "Port number:"
+msgstr "Αριθμός θύρας:"
+
+#: ../ui/NewPrinterWindow.glade.h:67
+#, fuzzy
+msgid ""
+"PostScript Printer Description (PPD) files can often be found on the driver "
+"disk that comes with the printer. For PostScript printers they are often "
+"part of the Windows<sup>®</sup> driver."
+msgstr ""
+"Τα αρχεία  περιγραφής εκτυπωτή PostScript (PPD) μπορούν να βρεθούν στο δίσκο "
+"που έρχεται μαζί με τον εκτυπωτή. Για εκτυπωτές PostScript αυτά είναι συχνά "
+"μέρος του οδηγού για Windows<sup>®</sup>."
+
+#: ../ui/NewPrinterWindow.glade.h:68
+msgid "Printer model:"
+msgstr "Μοντέλο εκτυπωτή:"
+
+#: ../ui/NewPrinterWindow.glade.h:69
+msgid "Probe"
+msgstr "Αναζήτηση"
+
+#: ../ui/NewPrinterWindow.glade.h:70
+msgid "Prompt user if authentication is required"
+msgstr "Ειδοποίηση χρήστη αν απαιτείται πιστοποίηση"
+
+#: ../ui/NewPrinterWindow.glade.h:71
+msgid "Provide PPD file"
+msgstr "Παροχή PPD αρχείου"
+
+#: ../ui/NewPrinterWindow.glade.h:72
+msgid "Queue:"
+msgstr "Ουρά:"
+
+#: ../ui/NewPrinterWindow.glade.h:73
+msgid "SCSI"
+msgstr "SCSI"
+
+#: ../ui/NewPrinterWindow.glade.h:74
+msgid "SMB"
+msgstr "SMB"
+
+#: ../ui/NewPrinterWindow.glade.h:75
+msgid "Search for a printer driver to download"
+msgstr "Αναζήτηση για λήψη ενός οδηγού εκτυπωτή"
+
+#: ../ui/NewPrinterWindow.glade.h:76
+msgid "Searching..."
+msgstr "Εκτελείται αναζήτηση..."
+
+#: ../ui/NewPrinterWindow.glade.h:77
+msgid "Select printer from database"
+msgstr "Επιλογή εκτυπωτή από βάση δεδομένων"
+
+#: ../ui/NewPrinterWindow.glade.h:78
+msgid "Serial"
+msgstr "Σειριακός"
+
+#: ../ui/NewPrinterWindow.glade.h:79
+msgid "Set authentication details now"
+msgstr "Ορισμός τώρα των λεπτομερειών πιστοποίησης"
+
+#: ../ui/NewPrinterWindow.glade.h:80
+msgid "Short name for this printer such as \"laserjet\""
+msgstr "Σύντομο όνομα για τον εκτυπωτής όπως \"laserjet\""
+
+#: ../ui/NewPrinterWindow.glade.h:81
+msgid "Supplier:"
+msgstr "Προμηθευτής:"
+
+#: ../ui/NewPrinterWindow.glade.h:82
+msgid "Support:"
+msgstr "Υποστήριξη:"
+
+#: ../ui/NewPrinterWindow.glade.h:83
+msgid "Text:"
+msgstr "Κείμενο:"
+
+#: ../ui/NewPrinterWindow.glade.h:84
+msgid ""
+"The foomatic printer database contains various manufacturer provided "
+"PostScript Printer Description (PPD) files and also can generate PPD files "
+"for a large number of (non PostScript) printers. But in general manufacturer "
+"provided PPD files provide better access to the specific features of the "
+"printer."
+msgstr ""
+"Η βάση δεδομένων εκτυπωτή foomatic περιέχει αρχεία Περιγραφής Εκτυπωτή "
+"PostScript (PPD) που παρέχονται από διάφορους κατασκευαστές και επίσης "
+"μπορούν να δημιουργήσουν αρχεία PPD για ένα μεγάλο αριθμό εκτυπωτών (όχι "
+"PostScript). Αλλά γενικά, αρχεία PPD που προσφέρονται από κατασκευαστές "
+"παρέχουν καλύτερη πρόσβαση στις συγκεκριμένες ιδιότητες του εκτυπωτή."
+
+#: ../ui/NewPrinterWindow.glade.h:85
+msgid ""
+"These drivers do not come from your operating system supplier and will not "
+"be covered by their commercial support.  See the support and license terms "
+"of the driver's supplier."
+msgstr ""
+"Αυτοί οι οδηγοί δεν διανέμονται μαζί με το λειτουργικό σας σύστημα και δεν "
+"καλύπτονται από εμπορική υποστήριξη. Δείτε την υποστήριξη και τους όρους της "
+"άδειας χρήσης από τον πάροχο του οδηγού."
+
+#: ../ui/NewPrinterWindow.glade.h:86
+msgid ""
+"This driver supports additional hardware that may be installed in the "
+"printer."
+msgstr ""
+"Αυτός ο οδηγός υποστηρίζει επιπλέον υλικό που μπορεί να είναι εγκατεστημένο "
+"στον εκτυπωτή."
+
+#: ../ui/NewPrinterWindow.glade.h:87
+msgid ""
+"This is done by assuming that options with the same name do have the same "
+"meaning. Settings of options that are not present in the new PPD will be "
+"lost and options only present in the new PPD will be set to default."
+msgstr ""
+"Αυτό πραγματοποιήθηκε δεχόμενοι ότι οι επιλογές με το ίδιο όνομα έχουν "
+"ουσιαστικά και την ίδια ερμηνεία. Ρυθμίσεις επιλογών που δεν υπάρχουν στο "
+"νέο PPD θα χαθούν και μόνο επιλογές που βρίσκονται στο νέο PPD θα τεθούν ως "
+"προεπιλογή."
+
+#: ../ui/NewPrinterWindow.glade.h:88
+msgid ""
+"This way all current option settings will be lost. The default settings of "
+"the new PPD will be used. "
+msgstr ""
+"Με αυτόν τον τρόπο οι τρέχουσες επιλογές ρυθμίσεων θα χαθούν. Οι "
+"προεπιλεγμένες ρυθμίσεις για το νέο PPD θα χρησιμοποιηθούν. "
+
+#: ../ui/NewPrinterWindow.glade.h:89
+msgid "Try to copy the option settings over from the old PPD. "
+msgstr "Προσπάθεια αντιγραφής των επιλογών ρυθμίσεων από το παλιό PPD. "
+
+#: ../ui/NewPrinterWindow.glade.h:90
+msgid "Try to transfer the current settings"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:91
+msgid "URI:"
+msgstr "URI:"
+
+#: ../ui/NewPrinterWindow.glade.h:93
+msgid "Use the new PPD (Postscript Printer Description) as is."
+msgstr "Χρήση των νέων PPD (Περιγραφές Εκτυπωτών Postscript) όπως είναι."
+
+#: ../ui/NewPrinterWindow.glade.h:95
+msgid ""
+"With this choice no driver download will be performed. In the next steps a "
+"locally installed driver will be selected."
+msgstr ""
+"Με αυτή τη επιλογή δεν θα γίνει λήψη οδηγού. Στα επόμενα βήματα θα επιλεχθεί "
+"ένας τοπικά εγκατεστημένος εκτυπωτής."
+
+#: ../ui/NewPrinterWindow.glade.h:96
+msgid "Yes, I accept this license"
+msgstr "Ναι, αποδέχομαι την άδεια"
+
+#: ../ui/NewPrinterWindow.glade.h:97
+msgid "_Search"
+msgstr "_Αναζήτηση"
+
+#: ../ui/NewPrinterWindow.glade.h:98
+msgid "_Verify..."
+msgstr "E_παλήθευση..."
+
+#: ../ui/NewPrinterWindow.glade.h:99
+#, fuzzy
+msgid "license"
+msgstr "Άδεια:"
+
+#: ../ui/NewPrinterWindow.glade.h:100 ../ui/PrinterPropertiesDialog.glade.h:81
+msgid "move left"
+msgstr "μετακίνηση  αριστερά"
+
+#: ../ui/NewPrinterWindow.glade.h:101 ../ui/PrinterPropertiesDialog.glade.h:82
+msgid "move right"
+msgstr "μετακίνηση  δεξιά"
+
+#: ../ui/NewPrinterWindow.glade.h:102
+#, fuzzy
+msgid "short description"
+msgstr "Περιγραφή"
+
+#: ../ui/NewPrinterWindow.glade.h:103
+#, fuzzy
+msgid "supplier"
+msgstr "Προμηθευτής:"
+
+#: ../ui/NewPrinterWindow.glade.h:104
+#, fuzzy
+msgid "support contacts"
+msgstr "Δεν βρέθηκαν επαφές υποστήριξης"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:1
+msgid " "
+msgstr " "
+
+#: ../ui/PrinterPropertiesDialog.glade.h:2
+msgid "<b>Banner</b>"
+msgstr "<b>Πανό</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:3
+msgid "<b>Common Options</b>"
+msgstr "<b>Κοινές επιλογές</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:4
+msgid "<b>Image Options</b>"
+msgstr "<b>Επιλογές εικόνας</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:5
+msgid "<b>Ink/Toner Levels</b>"
+msgstr "<b>Επίπεδα Μελανιού/Τόνερ</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:6
+msgid "<b>Other Options (Advanced)</b>"
+msgstr "<b>Άλλες επιλογές (Για προχωρημένους)</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:7
+msgid "<b>Policies</b>"
+msgstr "<b>Πολιτικές</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:8
+msgid "<b>Settings</b>"
+msgstr "<b>Ρυθμίσεις</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:9
+msgid "<b>State</b>"
+msgstr "<b>Κατάσταση</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:10
+msgid "<b>Status Messages</b>"
+msgstr "<b>Μηνύματα κατάστασης</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:11
+msgid "<b>Tests and Maintenance</b>"
+msgstr "<b>Δοκιμές και  Συντήρηση<b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:12
+msgid "<b>Text Options</b>"
+msgstr "<b>Επιλογές κειμένου</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:13
+msgid ""
+"<i>Not published\n"
+"See server settings</i>"
+msgstr ""
+"<i>Μη δημοσιοποιημένος\n"
+"Δείτε τις ρυθμίσεις του διακομιστή</i>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:15
+msgid "Accepting jobs"
+msgstr "Αποδοχή εργασιών"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:16
+msgid "Access Control"
+msgstr "Έλεγχος πρόσβασης"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:17
+msgid "Add or Remove Members"
+msgstr "Προσθήκη ή αφαίρεση μελών"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:18
+msgid "Allow printing for everyone except these users:"
+msgstr "Να επιτρέπονται εκτυπώσεις από οποιονδήποτε εκτός από τους χρήστες:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:19
+msgid "Bottom margin:"
+msgstr "Κάτω περιθώριο:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:20
+msgid "Brightness:"
+msgstr "Φωτεινότητα:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:21
+msgid "Change..."
+msgstr "Αλλαγή..."
+
+#: ../ui/PrinterPropertiesDialog.glade.h:22
+msgid "Characters per inch:"
+msgstr "Χαρακτήρες ανά ίντσα"
+
+#. Not more than 25 characters
+#: ../ui/PrinterPropertiesDialog.glade.h:24
+msgid "Clean Print Heads"
+msgstr "Καθαρισμός κεφαλών εκτύπωσης"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:25
+#, fuzzy
+msgid "Co_nflicts"
+msgstr "Συγκρούεται με:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:26
+msgid "Columns:"
+msgstr "Στήλες:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:27
+msgid "Copies:"
+msgstr "Αντίγραφα:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:28
+msgid "Deny printing for everyone except these users:"
+msgstr "Άρνηση εκτυπώσεων από οποιονδήποτε εκτός από τους χρήστες:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:30
+msgid "Device URI:"
+msgstr "URI Συσκευής:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:31
+msgid "Enabled"
+msgstr "Ενεργή"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:32
+msgid "Ending Banner:"
+msgstr "Τελικό πανό:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:33
+msgid "Error Policy: \t"
+msgstr "Σφάλμα πολιτικής: \t"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:34
+msgid "Finishings:"
+msgstr "Τελειώματα:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:35
+msgid "Gamma:"
+msgstr "Γάμμα:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:36
+msgid "Hold until:"
+msgstr "Σε αναμονή μέχρι:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:37
+msgid "Hue adjustment:"
+msgstr "Ρύθμιση Hue:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:38
+msgid "Ink/Toner Levels"
+msgstr "Επίπεδα μελανιού/τόνερ"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:40
+msgid "Job Options"
+msgstr "Επιλογές εργασιών"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:41
+msgid "Job priority:"
+msgstr "Προτεραιότητα εργασίας:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:42
+msgid "Left margin:"
+msgstr "Αριστερό περιθώριο:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:43
+msgid "Lines per inch:"
+msgstr "Γραμμές ανά ίντσα:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:44
+msgid "Location:"
+msgstr "Τοποθεσία:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:45
+msgid "Make and Model:"
+msgstr "Κατασκευή και μοντέλο:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:46
+msgid "Media:"
+msgstr "Μέσο:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:47
+msgid "Members"
+msgstr "Μέλη"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:48
+msgid "Mirror"
+msgstr "Καθρέφτης"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:49
+msgid "More"
+msgstr "Περισσότερα"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:50
+msgid "Operation Policy:"
+msgstr "Πολιτική λειτουργίας:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:51
+msgid "Orientation:"
+msgstr "Προσανατολισμός:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:52
+msgid "Output bin:"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:53
+msgid "Output order:"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:54
+msgid "Pages per side layout:"
+msgstr "Σελίδες ανά σχέδιο πλευράς:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:55
+msgid "Pages per side:"
+msgstr "Σελίδες ανά πλευρά:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:56
+msgid "Policies"
+msgstr "Πολιτικές"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:57
+msgid "Pretty print"
+msgstr "Pretty print"
+
+#. Not more than 25 characters
+#: ../ui/PrinterPropertiesDialog.glade.h:59
+msgid "Print Self-Test Page"
+msgstr "Εκτύπωση δοκιμαστικής σελίδας"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:62
+#, fuzzy
+msgid "Print quality:"
+msgstr "Κατάσταση εκτυπωτή:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:64
+msgid "Printer Properties"
+msgstr "Ιδιότητες εκτυπωτή"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:65
+msgid "Printer State:"
+msgstr "Κατάσταση εκτυπωτή:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:66
+#, fuzzy
+msgid "Printer resolution:"
+msgstr "Τοποθεσία εκτυπωτή"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:67
+msgid "Reset"
+msgstr "Επαναφορά"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:68
+msgid "Right margin:"
+msgstr "Δεξιό περιθώριο:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:69
+msgid "Saturation:"
+msgstr "Κορεσμός:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:70
+msgid "Scale to fit"
+msgstr "Μεγέθυνση/σμίκρυνση στη σελίδα"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:71
+msgid "Scaling:"
+msgstr "Μεγέθυνση:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:72
+msgid "Settings"
+msgstr "Επιλογές"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:73
+msgid "Shared"
+msgstr "Κοινή χρήση"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:74
+msgid "Sides:"
+msgstr "Πλευρές:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:75
+msgid ""
+"Specify the default job options for this printer.  Jobs arriving at this "
+"print server will have these options added if they are not already set by "
+"the application."
+msgstr ""
+"Ορίστε τις προεπιλεγμένες ρυθμίσεις εργασιών για αυτόν τον εκτυπωτή. Οι "
+"εργασίες που θα φτάνουν σε αυτόν τον εξυπηρετητή εκτύπωσης θα διαθέτουν "
+"αυτές τις επιλογές αν δεν έχουν ήδη οριστεί από την εφαρμογή."
+
+#: ../ui/PrinterPropertiesDialog.glade.h:76
+msgid "Starting Banner:"
+msgstr "Αρχικό πανό:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:77
+msgid "There are no status messages for this printer."
+msgstr "Δεν υπάρχουν άλλα μηνύματα κατάστασης για αυτόν τον εκτυπωτή"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:78
+msgid "To add a new option, enter its name in the box below and click to add."
+msgstr ""
+"Για να προσθέσετε μια νέα επιλογή, εισάγετε το όνομα της στο παρακάτω "
+"πλαίσιο και κάντε κλικ για προσθήκη."
+
+#: ../ui/PrinterPropertiesDialog.glade.h:79
+msgid "Top margin:"
+msgstr "Πάνω περιθώριο:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:80
+msgid "Word wrap"
+msgstr "Αναδίπλωση λέξεων"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:83
+msgid "points"
+msgstr "σημεία"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:84
+msgid "user"
+msgstr "χρήστης"
+
+#: ../ui/PrintersWindow.glade.h:1
+msgid ""
+"Printing service not available.  Start the service on this computer or "
+"connect to another server."
+msgstr ""
+
+#: ../ui/PrintersWindow.glade.h:2
+msgid "Start Service"
+msgstr ""
+
+#: ../ui/PrintersWindow.glade.h:3
+msgid "System-Config-Printer"
+msgstr "Ρύθμιση εκτυπωτών"
+
+#: ../ui/PrintersWindow.glade.h:4
+msgid "There are no printers configured yet."
+msgstr ""
+
+#: ../ui/PrintersWindow.glade.h:5
+msgid "_Discovered Printers"
+msgstr "Εντο_πισμένοι εκτυπωτές "
+
+#: ../ui/PrintersWindow.glade.h:6
+msgid "_Group"
+msgstr "_Ομάδα"
+
+#: ../ui/PrintersWindow.glade.h:7
+msgid "_Groups"
+msgstr "_Ομάδες"
+
+#: ../ui/PrintersWindow.glade.h:8
+msgid "_Help"
+msgstr "_Βοήθεια"
+
+#: ../ui/PrintersWindow.glade.h:10
+msgid "_Server"
+msgstr "_Εξυπηρετητής"
+
+#: ../ui/PrintersWindow.glade.h:11
+msgid "_View"
+msgstr "_Προβολή"
+
+#: ../ui/ServerSettingsDialog.glade.h:1
+msgid "<b>Basic Server Settings</b>"
+msgstr "<b>Βασικές επιλογές εξυπηρετητή</b>"
+
+#: ../ui/ServerSettingsDialog.glade.h:2
+msgid "<b>Browse servers</b>"
+msgstr "<b>Περιήγηση εξυπηρετητών</b>"
+
+#: ../ui/ServerSettingsDialog.glade.h:3
+msgid "<b>Job history</b>"
+msgstr "<b>Ιστορικό εργασιών</b>"
+
+#: ../ui/ServerSettingsDialog.glade.h:4
+msgid "Advanced Server Settings"
+msgstr "Προχωρημένες ρυθμίσεις εξυπηρετητή"
+
+#: ../ui/ServerSettingsDialog.glade.h:5
+msgid "Allow _remote administration"
+msgstr "Να επιτρέπεται η α_πομακρυσμένη διαχείρισης"
+
+#: ../ui/ServerSettingsDialog.glade.h:6
+msgid "Allow _users to cancel any job (not just their own)"
+msgstr ""
+"Να επιτρέπεται στους χρήστες να ακυρώνουν οποιαδήποτε εργασία (όχι μόνο τις "
+"δικές τους)"
+
+#: ../ui/ServerSettingsDialog.glade.h:7
+msgid "Allow printing from the _Internet"
+msgstr "Να επιτρέπονται εκτυπώσεις από το _διαδίκτυο"
+
+#: ../ui/ServerSettingsDialog.glade.h:8
+msgid "Do not preserve job history"
+msgstr "Ακύρωση διατήρησης ιστορικού εργασιών"
+
+#: ../ui/ServerSettingsDialog.glade.h:9
+msgid "Preserve job files (allow reprinting)"
+msgstr "Διατήρηση αρχείων εργασιών (με δυνατότητα επανεκτύπωσης)"
+
+#: ../ui/ServerSettingsDialog.glade.h:10
+msgid "Preserve job history but not files"
+msgstr "Διατήρηση ιστορικού εργασιών αλλά όχι των αρχείων"
+
+#: ../ui/ServerSettingsDialog.glade.h:11
+msgid "Save _debugging information for troubleshooting"
+msgstr "Αποθήκευση πληροφο_ριών αποσφαλμάτωσης για αντιμετώπιση προβλημάτων"
+
+#: ../ui/ServerSettingsDialog.glade.h:12
+msgid "Server Settings"
+msgstr "Ρυθμίσεις εξυπηρετητή"
+
+#: ../ui/ServerSettingsDialog.glade.h:13
+msgid ""
+"Usually print servers broadcast their queues. Specify print servers below to "
+"periodically ask for queues instead."
+msgstr ""
+"Συνήθως οι εξυπηρετητές εκτύπωσης εκπέμπουν τις ουρές αναμονής τους. "
+"Καθορίστε παρακάτω τους εξυπηρετητές εκτυπώσεων στους οποίους θα γίνεται "
+"ερώτηση για την ύπαρξη ουράς αναμονής."
+
+#: ../ui/ServerSettingsDialog.glade.h:14
+msgid "_Publish shared printers connected to this system"
+msgstr ""
+"_Δημοσιοποίηση κοινόχρηστων εκτυπωτών που είναι συνδεδεμένοι σε αυτό το "
+"σύστημα"
+
+#: ../ui/ServerSettingsDialog.glade.h:15
+msgid "_Show printers shared by other systems"
+msgstr "Ε_μφάνιση εκτυπωτών κοινόχρηστων από άλλα συστήματα"
+
+#: ../ui/SMBBrowseDialog.glade.h:1
+msgid "SMB Browser"
+msgstr "Περιήγηση SMB"
+
+#: ../ui/statusicon_popupmenu.glade.h:1
+msgid "_Hide"
+msgstr "_Απόκρυψη"
+
+#: ../ui/WaitWindow.glade.h:1
+msgid "Please Wait"
+msgstr "Παρακαλούμε περιμένετε"
 
 #: ../system-config-printer.desktop.in.h:1
 msgid "Configure printers"
@@ -2143,10 +3114,6 @@ msgid ""
 msgstr ""
 "Παρακαλώ επιλέξτε την συσκευή που επιθυμείτε από την παρακάτω λίστα. Αν δεν "
 "εμφανίζεται στη λίστα, επιλέξτε 'Δεν είναι στη λίστα'."
-
-#: ../troubleshoot/DeviceListed.py:40
-msgid "Device URI"
-msgstr "URI Συσκευής"
 
 #: ../troubleshoot/ErrorLogCheckpoint.py:31
 msgid "Debugging"
@@ -2484,719 +3451,11 @@ msgstr "Μικροεφαρμογή ουράς εκτύπωσης"
 msgid "System tray icon for managing print jobs"
 msgstr "Εικονίδιο μπάρας συστήματος για διαχείριση εργασιών εκτύπωσης"
 
-#~ msgid "A CUPS configuration tool."
-#~ msgstr "Ένα εργαλείο ρύθμισης CUPS."
-
-#~ msgid "Copyright &#xA9; 2006-2008 Red Hat, Inc."
-#~ msgstr "Πνευματικά δικαιώματα © 2006-2008 Red Hat, Inc."
-
-#~ msgid ""
-#~ "This program is free software; you can redistribute it and/or modify it "
-#~ "under the terms of the GNU General Public License as published by the "
-#~ "Free Software Foundation; either version 2 of the License, or (at your "
-#~ "option) any later version.\n"
-#~ "\n"
-#~ "This program is distributed in the hope that it will be useful, but "
-#~ "WITHOUT ANY WARRANTY; without even the implied warranty of "
-#~ "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General "
-#~ "Public License for more details.\n"
-#~ "\n"
-#~ "You should have received a copy of the GNU General Public License along "
-#~ "with this program; if not, write to the Free Software Foundation, Inc., "
-#~ "675 Mass Ave, Cambridge, MA 02139, USA."
-#~ msgstr ""
-#~ "Αυτό το πρόγραμμα είναι ελεύθερο λογισμικό· επιτρέπεται η αναδιανομή ή/"
-#~ "και η τροποποίησή του υπό τους όρους της Γενικής Άδειας Δημόσιας Χρήσης "
-#~ "GNU (GPL), όπως αυτή έχει δημοσιευτεί από το Ίδρυμα Ελεύθερου Λογισμικού "
-#~ "(FSF) — είτε  της έκδοσης 2 της Άδειας, είτε (κατ' επιλογήν σας) "
-#~ "οποιασδήποτε μεταγενέστερης έκδοσης.\n"
-#~ "\n"
-#~ "Το πρόγραμμα διανέμεται με την ελπίδα ότι θα αποδειχθεί χρήσιμο, παρόλα "
-#~ "αυτά ΧΩΡΙΣ ΚΑΜΙΑ ΕΓΓΥΗΣΗ — χωρίς ούτε και την σιωπηρή εγγύηση "
-#~ "ΕΜΠΟΡΕΥΣΙΜΟΤΗΤΑΣ ή ΚΑΤΑΛΛΗΛΟΤΗΤΑΣ ΓΙΑ ΕΙΔΙΚΟ ΣΚΟΠΟ. Για περισσότερες "
-#~ "λεπτομέρειες ανατρέξτε στη Γενική Άδεια Δημόσιας Χρήσης GNU (GPL).\n"
-#~ "\n"
-#~ " Θα πρέπει να έχετε λάβει αντίγραφο της Γενικής Άδειας Δημόσιας Χρήσης "
-#~ "GNU  (GPL) μαζί με το πρόγραμμα. Αν όχι, γράψτε στο Free Software "
-#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 "
-#~ "USA"
-
-#~ msgid "translator-credits"
-#~ msgstr "Ελληνική ομάδα Fedora <fedora-trans-el@redhat.com>"
-
-#~ msgid "CUPS _server:"
-#~ msgstr "_Εξυπηρετητής CUPS:"
-
-#~ msgid "Connect to CUPS server"
-#~ msgstr "Σύνδεση στον εξυπηρετητή CUPS"
-
-#~ msgid "Require _encryption"
-#~ msgstr "Απαιτείται _κρυπτογράφηση"
-
-#~ msgid ""
-#~ "<span weight=\"bold\" size=\"larger\">Connecting to CUPS server</span>"
-#~ msgstr ""
-#~ "<span weight=\"bold\" size=\"larger\">Σύνδεση με τον εξυπηρετητή CUPS</"
-#~ "span>"
-
-#~ msgid "Connecting to CUPS server"
-#~ msgstr "Σύνδεση με τον εξυπηρετητή CUPS"
-
-#~ msgid "_Install"
-#~ msgstr "_Εγκατάσταση"
-
-#~ msgid "Show _completed jobs"
-#~ msgstr "Εμφάνιση ολοκ_ληρωμένων εργασιών"
-
-#, fuzzy
-#~ msgid "Show completed jobs"
-#~ msgstr "Εμφάνιση ολοκ_ληρωμένων εργασιών"
-
-#~ msgid "_Refresh"
-#~ msgstr "_Ανανέωση"
-
-#~ msgid "Duplicate Printer"
-#~ msgstr "Διπλότυπος εκτυπωτής"
-
-#~ msgid "New name for the printer"
-#~ msgstr "Νέο όνομα εκτυπωτή"
-
-#~ msgid "<b>Authentication</b>"
-#~ msgstr "<b>Πιστοποίηση</b>"
-
-#~ msgid "<b>Description</b>"
-#~ msgstr "<b>Περιγραφή</b> "
-
-#~ msgid "<b>Description</b> (optional)"
-#~ msgstr "<b>Περιγραφή</b> (προαιρετική)"
-
-#~ msgid "<b>Enter device URI</b>"
-#~ msgstr "<b>Εισαγωγή URI συσκευής</b>"
-
-#~ msgid "<b>IPP Printer</b>"
-#~ msgstr "<b>Εκτυπωτής IPP</b>"
-
-#~ msgid "<b>License Terms</b>"
-#~ msgstr "<b>Όροι άδειας</b>"
-
-#~ msgid "<b>Location of the LPD network printer</b>"
-#~ msgstr "<b>Τοποθεσία του LPD δικτυακού εκτυπωτή</b>"
-
-#~ msgid "<b>Location of the network printer</b>"
-#~ msgstr "<b>Τοποθεσία δικτυακού εκτυπωτή</b>"
-
-#~ msgid "<b>Location</b> (optional)"
-#~ msgstr "<b>Τοποθεσία</b> (προαιρετική)"
-
-#~ msgid "<b>Network Printer</b>"
-#~ msgstr "<b>Εκτυπωτής δικτύου</b>"
-
-#~ msgid "<b>Note</b>"
-#~ msgstr "<b>Σημείωση</b>"
-
-#~ msgid "<b>Output Quality</b>"
-#~ msgstr "<b>Ποιότητα εκτύπωσης</b>"
-
-#~ msgid "<b>Printer Name</b>"
-#~ msgstr "<b>Όνομα εκτυπωτή</b>"
-
-#~ msgid "<b>SMB Printer</b>"
-#~ msgstr "<b>Εκτυπωτής SMB</b>"
-
-#~ msgid "<b>Select Driver</b>"
-#~ msgstr "<b>Προεπιλεγμένος εκτυπωτής</b>"
-
-#~ msgid "<b>Settings of the serial port</b>"
-#~ msgstr "<b>Ρυθμίσεις σειριακής θύρας</b>"
-
-#~ msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
-#~ msgstr "<i>smb://[ομάδα_εργασίας/]εξυπηρετητής[:θύρα]/εκτυπωτής</i>"
-
-#~ msgid "<span weight=\"bold\" size=\"larger\">Choose Class Members</span>"
-#~ msgstr "<span weight=\"bold\" size=\"larger\">Επιλέξτε μέλη κλάσης</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"larger\">Choose Driver</span>"
-#~ msgstr "<span weight=\"bold\" size=\"larger\">Επιλέξτε οδηγό</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"larger\">Describe Printer</span>"
-#~ msgstr "<span weight=\"bold\" size=\"larger\">Περιγραφή εκτυπωτή</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"larger\">Existing Settings</span>"
-#~ msgstr "<span weight=\"bold\" size=\"larger\">Υπάρχουσες ρυθμίσεις</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"larger\">Installable Options</span>"
-#~ msgstr ""
-#~ "<span weight=\"bold\" size=\"larger\">Επιλογές για εγκατάσταση</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"larger\">Select Device</span>"
-#~ msgstr "<span weight=\"bold\" size=\"larger\">Επιλέξτε συσκευή</span>"
-
-#~ msgid "Baud Rate"
-#~ msgstr "Baud Rate"
-
-#~ msgid "Browse..."
-#~ msgstr "Περιήγηση..."
-
-#, fuzzy
-#~ msgid "Change PPD"
-#~ msgstr "Αλλαγή οδηγού"
-
-#~ msgid "Class Members"
-#~ msgstr "Μέλη κλάσης"
-
-#~ msgid "Comments..."
-#~ msgstr "Σχόλια..."
-
-#~ msgid "Connection"
-#~ msgstr "Σύνδεση"
-
-#~ msgid "Data Bits"
-#~ msgstr "Data Bits"
-
-#~ msgid "Description:"
-#~ msgstr "Περιγραφή:"
-
-#~ msgid "Device"
-#~ msgstr "Συσκευή"
-
-#~ msgid "Device description."
-#~ msgstr "Περιγραφή συσκευής."
-
-#~ msgid "Driver details"
-#~ msgstr "Λεπτομέρειες οδηγών"
-
-#~ msgid "Empty"
-#~ msgstr "Κενό"
-
-#~ msgid "Flow Control"
-#~ msgstr "Έλεγχος ροής"
-
-#~ msgid ""
-#~ "For the printer you have selected there are drivers available for "
-#~ "download."
-#~ msgstr "Δεν υπάρχουν διαθέσιμοι οδηγοί για λήψη για τον επιλεγμένο εκτυπωτή"
-
-#~ msgid "Free software"
-#~ msgstr "Ελεύθερο λογισμικό"
-
-#~ msgid "Graphics:"
-#~ msgstr "Γραφικά:"
-
-#~ msgid "Host:"
-#~ msgstr "Όνομα συστήματος:"
-
-#~ msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
-#~ msgstr "Εύκολα αναγνώσιμη περιγραφή όπως  \"HP LaserJet με Duplexer\""
-
-#~ msgid "Human-readable location such as \"Lab 1\""
-#~ msgstr "Εύκολα αναγνώσιμη τοποθεσία όπως \"Εργαστήριο 1\""
-
-#~ msgid "Installed Options"
-#~ msgstr "Εγκατεστημένες επιλογές"
-
-#, fuzzy
-#~ msgid "JetDirect"
-#~ msgstr "DirectJet"
-
-#~ msgid "LPD"
-#~ msgstr "LPD"
-
-#~ msgid "License:"
-#~ msgstr "Άδεια:"
-
-#~ msgid "Line art:"
-#~ msgstr "Line art:"
-
-#~ msgid "Local Driver"
-#~ msgstr "Τοπικός εκτυπωτής"
-
-#~ msgid "Make and model:"
-#~ msgstr "Κατασκευή και μοντέλο:"
-
-#~ msgid "Manufacturer"
-#~ msgstr "Κατασκευαστής"
-
-#~ msgid "Network"
-#~ msgstr "Δίκτυο"
-
-#~ msgid "No, I do not accept this license"
-#~ msgstr "Όχι, δεν αποδέχομαι την άδεια"
-
-#~ msgid "Parity"
-#~ msgstr "Parity"
-
-#~ msgid "Patented algorithms"
-#~ msgstr "Πατενταρισμένοι αλγόριθμοι"
-
-#~ msgid "Photo:"
-#~ msgstr "Εικόνα:"
-
-#~ msgid "Port number:"
-#~ msgstr "Αριθμός θύρας:"
-
-#~ msgid ""
-#~ "PostScript Printer Description (PPD) files can often be found on the "
-#~ "driver disk that comes with the printer. For PostScript printers they are "
-#~ "often part of the Windows<sup>&#xAE;</sup> driver."
-#~ msgstr ""
-#~ "Τα αρχεία  περιγραφής εκτυπωτή PostScript (PPD) μπορούν να βρεθούν στο "
-#~ "δίσκο που έρχεται μαζί με τον εκτυπωτή. Για εκτυπωτές PostScript αυτά "
-#~ "είναι συχνά μέρος του οδηγού για Windows<sup>®</sup>."
-
-#~ msgid "Printer model:"
-#~ msgstr "Μοντέλο εκτυπωτή:"
-
-#~ msgid "Probe"
-#~ msgstr "Αναζήτηση"
-
-#~ msgid "Prompt user if authentication is required"
-#~ msgstr "Ειδοποίηση χρήστη αν απαιτείται πιστοποίηση"
-
-#~ msgid "Provide PPD file"
-#~ msgstr "Παροχή PPD αρχείου"
-
-#~ msgid "Queue:"
-#~ msgstr "Ουρά:"
-
-#~ msgid "SCSI"
-#~ msgstr "SCSI"
-
-#~ msgid "SMB"
-#~ msgstr "SMB"
-
-#~ msgid "Search for a printer driver to download"
-#~ msgstr "Αναζήτηση για λήψη ενός οδηγού εκτυπωτή"
-
-#~ msgid "Searching..."
-#~ msgstr "Εκτελείται αναζήτηση..."
-
-#~ msgid "Select printer from database"
-#~ msgstr "Επιλογή εκτυπωτή από βάση δεδομένων"
-
-#~ msgid "Serial"
-#~ msgstr "Σειριακός"
-
-#~ msgid "Set authentication details now"
-#~ msgstr "Ορισμός τώρα των λεπτομερειών πιστοποίησης"
-
-#~ msgid "Short name for this printer such as \"laserjet\""
-#~ msgstr "Σύντομο όνομα για τον εκτυπωτής όπως \"laserjet\""
-
-#~ msgid "Supplier:"
-#~ msgstr "Προμηθευτής:"
-
-#~ msgid "Support:"
-#~ msgstr "Υποστήριξη:"
-
-#~ msgid "Text:"
-#~ msgstr "Κείμενο:"
-
-#~ msgid ""
-#~ "The foomatic printer database contains various manufacturer provided "
-#~ "PostScript Printer Description (PPD) files and also can generate PPD "
-#~ "files for a large number of (non PostScript) printers. But in general "
-#~ "manufacturer provided PPD files provide better access to the specific "
-#~ "features of the printer."
-#~ msgstr ""
-#~ "Η βάση δεδομένων εκτυπωτή foomatic περιέχει αρχεία Περιγραφής Εκτυπωτή "
-#~ "PostScript (PPD) που παρέχονται από διάφορους κατασκευαστές και επίσης "
-#~ "μπορούν να δημιουργήσουν αρχεία PPD για ένα μεγάλο αριθμό εκτυπωτών (όχι "
-#~ "PostScript). Αλλά γενικά, αρχεία PPD που προσφέρονται από κατασκευαστές "
-#~ "παρέχουν καλύτερη πρόσβαση στις συγκεκριμένες ιδιότητες του εκτυπωτή."
-
-#~ msgid ""
-#~ "These drivers do not come from your operating system supplier and will "
-#~ "not be covered by their commercial support.  See the support and license "
-#~ "terms of the driver's supplier."
-#~ msgstr ""
-#~ "Αυτοί οι οδηγοί δεν διανέμονται μαζί με το λειτουργικό σας σύστημα και "
-#~ "δεν καλύπτονται από εμπορική υποστήριξη. Δείτε την υποστήριξη και τους "
-#~ "όρους της άδειας χρήσης από τον πάροχο του οδηγού."
-
-#~ msgid ""
-#~ "This driver supports additional hardware that may be installed in the "
-#~ "printer."
-#~ msgstr ""
-#~ "Αυτός ο οδηγός υποστηρίζει επιπλέον υλικό που μπορεί να είναι "
-#~ "εγκατεστημένο στον εκτυπωτή."
-
-#~ msgid ""
-#~ "This is done by assuming that options with the same name do have the same "
-#~ "meaning. Settings of options that are not present in the new PPD will be "
-#~ "lost and options only present in the new PPD will be set to default."
-#~ msgstr ""
-#~ "Αυτό πραγματοποιήθηκε δεχόμενοι ότι οι επιλογές με το ίδιο όνομα έχουν "
-#~ "ουσιαστικά και την ίδια ερμηνεία. Ρυθμίσεις επιλογών που δεν υπάρχουν στο "
-#~ "νέο PPD θα χαθούν και μόνο επιλογές που βρίσκονται στο νέο PPD θα τεθούν "
-#~ "ως προεπιλογή."
-
-#~ msgid ""
-#~ "This way all current option settings will be lost. The default settings "
-#~ "of the new PPD will be used. "
-#~ msgstr ""
-#~ "Με αυτόν τον τρόπο οι τρέχουσες επιλογές ρυθμίσεων θα χαθούν. Οι "
-#~ "προεπιλεγμένες ρυθμίσεις για το νέο PPD θα χρησιμοποιηθούν. "
-
-#~ msgid "Try to copy the option settings over from the old PPD. "
-#~ msgstr "Προσπάθεια αντιγραφής των επιλογών ρυθμίσεων από το παλιό PPD. "
-
-#~ msgid "URI:"
-#~ msgstr "URI:"
-
-#~ msgid "Use the new PPD (Postscript Printer Description) as is."
-#~ msgstr "Χρήση των νέων PPD (Περιγραφές Εκτυπωτών Postscript) όπως είναι."
-
-#~ msgid ""
-#~ "With this choice no driver download will be performed. In the next steps "
-#~ "a locally installed driver will be selected."
-#~ msgstr ""
-#~ "Με αυτή τη επιλογή δεν θα γίνει λήψη οδηγού. Στα επόμενα βήματα θα "
-#~ "επιλεχθεί ένας τοπικά εγκατεστημένος εκτυπωτής."
-
-#~ msgid "Yes, I accept this license"
-#~ msgstr "Ναι, αποδέχομαι την άδεια"
-
-#~ msgid "_Search"
-#~ msgstr "_Αναζήτηση"
-
-#~ msgid "_Verify..."
-#~ msgstr "E_παλήθευση..."
-
-#, fuzzy
-#~ msgid "license"
-#~ msgstr "Άδεια:"
-
-#~ msgid "move left"
-#~ msgstr "μετακίνηση  αριστερά"
-
-#~ msgid "move right"
-#~ msgstr "μετακίνηση  δεξιά"
-
-#, fuzzy
-#~ msgid "short description"
-#~ msgstr "Περιγραφή"
-
-#, fuzzy
-#~ msgid "supplier"
-#~ msgstr "Προμηθευτής:"
-
-#, fuzzy
-#~ msgid "support contacts"
-#~ msgstr "Δεν βρέθηκαν επαφές υποστήριξης"
-
-#~ msgid " "
-#~ msgstr " "
-
-#~ msgid "<b>Banner</b>"
-#~ msgstr "<b>Πανό</b>"
-
-#~ msgid "<b>Common Options</b>"
-#~ msgstr "<b>Κοινές επιλογές</b>"
-
-#~ msgid "<b>Image Options</b>"
-#~ msgstr "<b>Επιλογές εικόνας</b>"
-
-#~ msgid "<b>Ink/Toner Levels</b>"
-#~ msgstr "<b>Επίπεδα Μελανιού/Τόνερ</b>"
-
-#~ msgid "<b>Other Options (Advanced)</b>"
-#~ msgstr "<b>Άλλες επιλογές (Για προχωρημένους)</b>"
-
-#~ msgid "<b>Policies</b>"
-#~ msgstr "<b>Πολιτικές</b>"
-
-#~ msgid "<b>Settings</b>"
-#~ msgstr "<b>Ρυθμίσεις</b>"
-
-#~ msgid "<b>State</b>"
-#~ msgstr "<b>Κατάσταση</b>"
-
-#~ msgid "<b>Status Messages</b>"
-#~ msgstr "<b>Μηνύματα κατάστασης</b>"
-
-#~ msgid "<b>Tests and Maintenance</b>"
-#~ msgstr "<b>Δοκιμές και  Συντήρηση<b>"
-
-#~ msgid "<b>Text Options</b>"
-#~ msgstr "<b>Επιλογές κειμένου</b>"
-
-#~ msgid ""
-#~ "<i>Not published\n"
-#~ "See server settings</i>"
-#~ msgstr ""
-#~ "<i>Μη δημοσιοποιημένος\n"
-#~ "Δείτε τις ρυθμίσεις του διακομιστή</i>"
-
-#~ msgid "Accepting jobs"
-#~ msgstr "Αποδοχή εργασιών"
-
-#~ msgid "Access Control"
-#~ msgstr "Έλεγχος πρόσβασης"
-
-#~ msgid "Add or Remove Members"
-#~ msgstr "Προσθήκη ή αφαίρεση μελών"
-
-#~ msgid "Allow printing for everyone except these users:"
-#~ msgstr "Να επιτρέπονται εκτυπώσεις από οποιονδήποτε εκτός από τους χρήστες:"
-
-#~ msgid "Bottom margin:"
-#~ msgstr "Κάτω περιθώριο:"
-
-#~ msgid "Brightness:"
-#~ msgstr "Φωτεινότητα:"
-
-#~ msgid "Change..."
-#~ msgstr "Αλλαγή..."
-
-#~ msgid "Characters per inch:"
-#~ msgstr "Χαρακτήρες ανά ίντσα"
-
-#~ msgid "Clean Print Heads"
-#~ msgstr "Καθαρισμός κεφαλών εκτύπωσης"
-
-#, fuzzy
-#~ msgid "Co_nflicts"
-#~ msgstr "Συγκρούεται με:"
-
-#~ msgid "Columns:"
-#~ msgstr "Στήλες:"
-
-#~ msgid "Copies:"
-#~ msgstr "Αντίγραφα:"
-
-#~ msgid "Deny printing for everyone except these users:"
-#~ msgstr "Άρνηση εκτυπώσεων από οποιονδήποτε εκτός από τους χρήστες:"
-
-#~ msgid "Device URI:"
-#~ msgstr "URI Συσκευής:"
-
-#~ msgid "Enabled"
-#~ msgstr "Ενεργή"
-
-#~ msgid "Ending Banner:"
-#~ msgstr "Τελικό πανό:"
-
-#~ msgid "Error Policy: \t"
-#~ msgstr "Σφάλμα πολιτικής: \t"
-
-#~ msgid "Finishings:"
-#~ msgstr "Τελειώματα:"
-
-#~ msgid "Gamma:"
-#~ msgstr "Γάμμα:"
-
-#~ msgid "Hold until:"
-#~ msgstr "Σε αναμονή μέχρι:"
-
-#~ msgid "Hue adjustment:"
-#~ msgstr "Ρύθμιση Hue:"
-
-#~ msgid "Ink/Toner Levels"
-#~ msgstr "Επίπεδα μελανιού/τόνερ"
-
-#~ msgid "Job Options"
-#~ msgstr "Επιλογές εργασιών"
-
-#~ msgid "Job priority:"
-#~ msgstr "Προτεραιότητα εργασίας:"
-
-#~ msgid "Left margin:"
-#~ msgstr "Αριστερό περιθώριο:"
-
-#~ msgid "Lines per inch:"
-#~ msgstr "Γραμμές ανά ίντσα:"
-
-#~ msgid "Location:"
-#~ msgstr "Τοποθεσία:"
-
-#~ msgid "Make and Model:"
-#~ msgstr "Κατασκευή και μοντέλο:"
-
-#~ msgid "Media:"
-#~ msgstr "Μέσο:"
-
-#~ msgid "Members"
-#~ msgstr "Μέλη"
-
-#~ msgid "Mirror"
-#~ msgstr "Καθρέφτης"
-
-#~ msgid "More"
-#~ msgstr "Περισσότερα"
-
-#~ msgid "Operation Policy:"
-#~ msgstr "Πολιτική λειτουργίας:"
-
-#~ msgid "Orientation:"
-#~ msgstr "Προσανατολισμός:"
-
-#~ msgid "Pages per side layout:"
-#~ msgstr "Σελίδες ανά σχέδιο πλευράς:"
-
-#~ msgid "Pages per side:"
-#~ msgstr "Σελίδες ανά πλευρά:"
-
-#~ msgid "Policies"
-#~ msgstr "Πολιτικές"
-
-#~ msgid "Pretty print"
-#~ msgstr "Pretty print"
-
-#~ msgid "Print Self-Test Page"
-#~ msgstr "Εκτύπωση δοκιμαστικής σελίδας"
-
-#~ msgid "Printer Properties"
-#~ msgstr "Ιδιότητες εκτυπωτή"
-
-#~ msgid "Printer State:"
-#~ msgstr "Κατάσταση εκτυπωτή:"
-
-#~ msgid "Reset"
-#~ msgstr "Επαναφορά"
-
-#~ msgid "Right margin:"
-#~ msgstr "Δεξιό περιθώριο:"
-
-#~ msgid "Saturation:"
-#~ msgstr "Κορεσμός:"
-
-#~ msgid "Scale to fit"
-#~ msgstr "Μεγέθυνση/σμίκρυνση στη σελίδα"
-
-#~ msgid "Scaling:"
-#~ msgstr "Μεγέθυνση:"
-
-#~ msgid "Settings"
-#~ msgstr "Επιλογές"
-
-#~ msgid "Shared"
-#~ msgstr "Κοινή χρήση"
-
-#~ msgid "Sides:"
-#~ msgstr "Πλευρές:"
-
-#~ msgid ""
-#~ "Specify the default job options for this printer.  Jobs arriving at this "
-#~ "print server will have these options added if they are not already set by "
-#~ "the application."
-#~ msgstr ""
-#~ "Ορίστε τις προεπιλεγμένες ρυθμίσεις εργασιών για αυτόν τον εκτυπωτή. Οι "
-#~ "εργασίες που θα φτάνουν σε αυτόν τον εξυπηρετητή εκτύπωσης θα διαθέτουν "
-#~ "αυτές τις επιλογές αν δεν έχουν ήδη οριστεί από την εφαρμογή."
-
-#~ msgid "Starting Banner:"
-#~ msgstr "Αρχικό πανό:"
-
-#~ msgid "There are no status messages for this printer."
-#~ msgstr "Δεν υπάρχουν άλλα μηνύματα κατάστασης για αυτόν τον εκτυπωτή"
-
-#~ msgid ""
-#~ "To add a new option, enter its name in the box below and click to add."
-#~ msgstr ""
-#~ "Για να προσθέσετε μια νέα επιλογή, εισάγετε το όνομα της στο παρακάτω "
-#~ "πλαίσιο και κάντε κλικ για προσθήκη."
-
-#~ msgid "Top margin:"
-#~ msgstr "Πάνω περιθώριο:"
-
-#~ msgid "Word wrap"
-#~ msgstr "Αναδίπλωση λέξεων"
-
-#~ msgid "points"
-#~ msgstr "σημεία"
-
-#~ msgid "user"
-#~ msgstr "χρήστης"
-
-#~ msgid "System-Config-Printer"
-#~ msgstr "Ρύθμιση εκτυπωτών"
-
-#~ msgid "_Discovered Printers"
-#~ msgstr "Εντο_πισμένοι εκτυπωτές "
-
-#~ msgid "_Group"
-#~ msgstr "_Ομάδα"
-
-#~ msgid "_Groups"
-#~ msgstr "_Ομάδες"
-
-#~ msgid "_Help"
-#~ msgstr "_Βοήθεια"
-
-#~ msgid "_Server"
-#~ msgstr "_Εξυπηρετητής"
-
 #~ msgid "_Troubleshoot"
 #~ msgstr "Αντιμετώπιση προ_βλημάτων"
 
-#~ msgid "_View"
-#~ msgstr "_Προβολή"
-
-#~ msgid "<b>Basic Server Settings</b>"
-#~ msgstr "<b>Βασικές επιλογές εξυπηρετητή</b>"
-
-#~ msgid "<b>Browse servers</b>"
-#~ msgstr "<b>Περιήγηση εξυπηρετητών</b>"
-
-#~ msgid "<b>Job history</b>"
-#~ msgstr "<b>Ιστορικό εργασιών</b>"
-
-#~ msgid "Advanced Server Settings"
-#~ msgstr "Προχωρημένες ρυθμίσεις εξυπηρετητή"
-
-#~ msgid "Allow _remote administration"
-#~ msgstr "Να επιτρέπεται η α_πομακρυσμένη διαχείρισης"
-
-#~ msgid "Allow _users to cancel any job (not just their own)"
-#~ msgstr ""
-#~ "Να επιτρέπεται στους χρήστες να ακυρώνουν οποιαδήποτε εργασία (όχι μόνο "
-#~ "τις δικές τους)"
-
-#~ msgid "Allow printing from the _Internet"
-#~ msgstr "Να επιτρέπονται εκτυπώσεις από το _διαδίκτυο"
-
-#~ msgid "Do not preserve job history"
-#~ msgstr "Ακύρωση διατήρησης ιστορικού εργασιών"
-
-#~ msgid "Preserve job files (allow reprinting)"
-#~ msgstr "Διατήρηση αρχείων εργασιών (με δυνατότητα επανεκτύπωσης)"
-
-#~ msgid "Preserve job history but not files"
-#~ msgstr "Διατήρηση ιστορικού εργασιών αλλά όχι των αρχείων"
-
-#~ msgid "Save _debugging information for troubleshooting"
-#~ msgstr "Αποθήκευση πληροφο_ριών αποσφαλμάτωσης για αντιμετώπιση προβλημάτων"
-
-#~ msgid "Server Settings"
-#~ msgstr "Ρυθμίσεις εξυπηρετητή"
-
-#~ msgid ""
-#~ "Usually print servers broadcast their queues. Specify print servers below "
-#~ "to periodically ask for queues instead."
-#~ msgstr ""
-#~ "Συνήθως οι εξυπηρετητές εκτύπωσης εκπέμπουν τις ουρές αναμονής τους. "
-#~ "Καθορίστε παρακάτω τους εξυπηρετητές εκτυπώσεων στους οποίους θα γίνεται "
-#~ "ερώτηση για την ύπαρξη ουράς αναμονής."
-
-#~ msgid "_Publish shared printers connected to this system"
-#~ msgstr ""
-#~ "_Δημοσιοποίηση κοινόχρηστων εκτυπωτών που είναι συνδεδεμένοι σε αυτό το "
-#~ "σύστημα"
-
-#~ msgid "_Show printers shared by other systems"
-#~ msgstr "Ε_μφάνιση εκτυπωτών κοινόχρηστων από άλλα συστήματα"
-
-#~ msgid "SMB Browser"
-#~ msgstr "Περιήγηση SMB"
-
 #~ msgid "_Configure Printers"
 #~ msgstr "Ρύ_θμιση εκτυπωτών"
-
-#~ msgid "_Hide"
-#~ msgstr "_Απόκρυψη"
-
-#~ msgid "Please Wait"
-#~ msgstr "Παρακαλούμε περιμένετε"
 
 #~ msgid "Cancel, pause, resume or reprint jobs"
 #~ msgstr "Ακύρωση, παύση, συνέχεια ή εκ νέου εκτύπωση εργασιών"

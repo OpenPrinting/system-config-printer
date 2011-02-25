@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ar\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2011-02-17 16:17+0000\n"
+"POT-Creation-Date: 2011-02-25 09:57+0000\n"
 "PO-Revision-Date: 2010-07-14 11:19+0300\n"
 "Last-Translator: zeid <bath392@hotmail.com>\n"
 "Language-Team: Arabic <kde-i18n-doc@kde.org>\n"
@@ -65,11 +65,11 @@ msgstr "أعِد المحاولة"
 msgid "Operation canceled"
 msgstr "ألغيت العملية"
 
-#: ../authconn.py:32 ../pysmb.py:123
+#: ../authconn.py:32 ../pysmb.py:123 ../ui/NewPrinterWindow.glade.h:94
 msgid "Username:"
 msgstr "اسم المستخدم:"
 
-#: ../authconn.py:33 ../pysmb.py:129
+#: ../authconn.py:33 ../pysmb.py:129 ../ui/NewPrinterWindow.glade.h:63
 msgid "Password:"
 msgstr "كلمة السر:"
 
@@ -333,7 +333,8 @@ msgstr "خصائص الوظيفة"
 
 #: ../jobviewer.py:706 ../jobviewer.py:1002 ../jobviewer.py:1704
 #: ../jobviewer.py:1734 ../jobviewer.py:2104 ../jobviewer.py:2109
-#: ../jobviewer.py:2123 ../jobviewer.py:2202 ../printerproperties.py:1541
+#: ../jobviewer.py:2123 ../jobviewer.py:2202 ../printerproperties.py:1582
+#: ../ui/NewPrinterWindow.glade.h:92
 #: ../troubleshoot/ChooseNetworkPrinter.py:100
 #: ../troubleshoot/ChooseNetworkPrinter.py:101
 #: ../troubleshoot/ChooseNetworkPrinter.py:104
@@ -407,6 +408,7 @@ msgid "Save File"
 msgstr "حفظ الملف"
 
 #: ../jobviewer.py:1449 ../system-config-printer.py:258
+#: ../ui/NewPrinterWindow.glade.h:57
 #: ../troubleshoot/ChooseNetworkPrinter.py:35
 #: ../troubleshoot/ChoosePrinter.py:36 ../troubleshoot/DeviceListed.py:36
 msgid "Name"
@@ -587,7 +589,7 @@ msgstr "115200"
 #. See section 4.2.6 of this document for explanation of finishing types:
 #. ftp://ftp.pwg.org/pub/pwg/candidates/cs-ippfinishings10-20010205-5100.1.pdf
 #: ../newprinter.py:299 ../newprinter.py:310 ../newprinter.py:3267
-#: ../ppdippstr.py:63 ../printerproperties.py:264
+#: ../ppdippstr.py:63 ../printerproperties.py:268
 msgid "None"
 msgstr "بلا"
 
@@ -619,11 +621,11 @@ msgstr "RTS/CTS (الأجهزة)"
 msgid "DTR/DSR (Hardware)"
 msgstr "DTR/DSR (الأجهزة)"
 
-#: ../newprinter.py:330 ../printerproperties.py:218
+#: ../newprinter.py:330 ../printerproperties.py:222
 msgid "Members of this class"
 msgstr "أعضاء هذا الصنف"
 
-#: ../newprinter.py:332 ../printerproperties.py:219
+#: ../newprinter.py:332 ../printerproperties.py:223
 msgid "Others"
 msgstr "أخريات"
 
@@ -647,7 +649,7 @@ msgstr "الطُرُز"
 msgid "Drivers"
 msgstr "المشغلات"
 
-#: ../newprinter.py:338
+#: ../newprinter.py:338 ../ui/NewPrinterWindow.glade.h:35
 msgid "Downloadable Drivers"
 msgstr "المشغلات الممكن تنزيلها"
 
@@ -679,7 +681,7 @@ msgstr "كل الملفات (*)"
 msgid "Search"
 msgstr "ابحث"
 
-#: ../newprinter.py:611 ../newprinter.py:632
+#: ../newprinter.py:611 ../newprinter.py:632 ../ui/NewPrinterWindow.glade.h:59
 msgid "New Printer"
 msgstr "طابعة جديدة"
 
@@ -834,7 +836,7 @@ msgstr "طابور LPD/LPR"
 msgid "Windows Printer via SAMBA"
 msgstr "طابعة ويندوز عن طريق سامبا"
 
-#: ../newprinter.py:2376
+#: ../newprinter.py:2376 ../ui/NewPrinterWindow.glade.h:48
 msgid "IPP"
 msgstr "IPP"
 
@@ -892,7 +894,7 @@ msgstr "اكتشفت طابعة بواسطة طبقة تجريد العتاد (H
 msgid "Searching for printers"
 msgstr "يجري البحث عن الطابعات"
 
-#: ../newprinter.py:2769
+#: ../newprinter.py:2769 ../ui/NewPrinterWindow.glade.h:60
 msgid "No printer was found at that address."
 msgstr "لم يعثر على أية طابعة في ذلك العنوان."
 
@@ -991,7 +993,7 @@ msgid "adding printer %s"
 msgstr "يجري إضافة الطابعة %s"
 
 #: ../newprinter.py:3570 ../newprinter.py:3581 ../newprinter.py:3598
-#: ../printerproperties.py:921 ../system-config-printer.py:1682
+#: ../printerproperties.py:957 ../system-config-printer.py:1682
 #: ../system-config-printer.py:1707
 #, python-format
 msgid "modifying printer %s"
@@ -1303,199 +1305,207 @@ msgid "Busy"
 msgstr "مشغول"
 
 #. Printer state reasons list
-#: ../printerproperties.py:200
+#: ../printerproperties.py:204
 msgid "Message"
 msgstr "الرسالة"
 
-#: ../printerproperties.py:220
+#: ../printerproperties.py:224
 msgid "Users"
 msgstr "المستخدمون"
 
-#: ../printerproperties.py:243
+#: ../printerproperties.py:247
 msgid "Portrait (no rotation)"
 msgstr "عمودي (بدون تدوير"
 
-#: ../printerproperties.py:244
+#: ../printerproperties.py:248
 msgid "Landscape (90 degrees)"
 msgstr "أفقي (90 درجة)"
 
-#: ../printerproperties.py:245
+#: ../printerproperties.py:249
 msgid "Reverse landscape (270 degrees)"
 msgstr "أفقي معكوس (270 درجة)"
 
-#: ../printerproperties.py:246
+#: ../printerproperties.py:250
 msgid "Reverse portrait (180 degrees)"
 msgstr "عمودي معكوس (180 درجة)"
 
-#: ../printerproperties.py:252
+#: ../printerproperties.py:256
 msgid "Left to right, top to bottom"
 msgstr "من اليسار إلى اليمين، من أعلى إلى أسفل"
 
-#: ../printerproperties.py:253
+#: ../printerproperties.py:257
 msgid "Left to right, bottom to top"
 msgstr "من اليسار إلى اليمين، من أسفل إلى أعلى"
 
-#: ../printerproperties.py:254
+#: ../printerproperties.py:258
 msgid "Right to left, top to bottom"
 msgstr "من اليمين إلى اليسار، من أعلى إلى أسفل"
 
-#: ../printerproperties.py:255
+#: ../printerproperties.py:259
 msgid "Right to left, bottom to top"
 msgstr "من اليمين إلى اليسار، من أسفل إلى أعلى"
 
-#: ../printerproperties.py:256
+#: ../printerproperties.py:260
 msgid "Top to bottom, left to right"
 msgstr "من أعلى إلى أسفل، من اليسار إلى اليمين"
 
-#: ../printerproperties.py:257
+#: ../printerproperties.py:261
 msgid "Top to bottom, right to left"
 msgstr "من أعلى إلى أسفل، من اليمين إلى اليسار"
 
-#: ../printerproperties.py:258
+#: ../printerproperties.py:262
 msgid "Bottom to top, left to right"
 msgstr "من أسفل إلى أعلى، من اليسار إلى اليمين"
 
-#: ../printerproperties.py:259
+#: ../printerproperties.py:263
 msgid "Bottom to top, right to left"
 msgstr "من أسفل إلى أعلى، من اليمين إلى اليسار"
 
-#: ../printerproperties.py:265
+#: ../printerproperties.py:269
 msgid "Staple"
 msgstr "شبك"
 
-#: ../printerproperties.py:266
+#: ../printerproperties.py:270
 msgid "Punch"
 msgstr "ثَقب"
 
-#: ../printerproperties.py:267
+#: ../printerproperties.py:271
 msgid "Cover"
 msgstr "تغطية"
 
-#: ../printerproperties.py:268
+#: ../printerproperties.py:272
 msgid "Bind"
 msgstr "تجليد"
 
-#: ../printerproperties.py:269
+#: ../printerproperties.py:273
 msgid "Saddle stitch"
 msgstr "شبك وسط الكتاب"
 
-#: ../printerproperties.py:270
+#: ../printerproperties.py:274
 msgid "Edge stitch"
 msgstr "شبك الحافة"
 
-#: ../printerproperties.py:271
+#: ../printerproperties.py:275
 msgid "Fold"
 msgstr "طي"
 
-#: ../printerproperties.py:272
+#: ../printerproperties.py:276
 msgid "Trim"
 msgstr "تقليم"
 
-#: ../printerproperties.py:273
+#: ../printerproperties.py:277
 msgid "Bale"
 msgstr "رزمة"
 
-#: ../printerproperties.py:274
+#: ../printerproperties.py:278
 msgid "Booklet maker"
 msgstr "صانع الكتيّب"
 
-#: ../printerproperties.py:275
+#: ../printerproperties.py:279
 msgid "Job offset"
 msgstr "تعديل المهام"
 
-#: ../printerproperties.py:276
+#: ../printerproperties.py:280
 msgid "Staple (top left)"
 msgstr "شبك (أعلى اليسار)"
 
-#: ../printerproperties.py:277
+#: ../printerproperties.py:281
 msgid "Staple (bottom left)"
 msgstr "شبك (أسفل اليسار)"
 
-#: ../printerproperties.py:278
+#: ../printerproperties.py:282
 msgid "Staple (top right)"
 msgstr "شبك (أعلى اليمين)"
 
-#: ../printerproperties.py:279
+#: ../printerproperties.py:283
 msgid "Staple (bottom right)"
 msgstr "شبك (أسفل اليمين)"
 
-#: ../printerproperties.py:280
+#: ../printerproperties.py:284
 msgid "Edge stitch (left)"
 msgstr "شبك الحافة (يسار)"
 
-#: ../printerproperties.py:281
+#: ../printerproperties.py:285
 msgid "Edge stitch (top)"
 msgstr "شبك الحافة (أعلى)"
 
-#: ../printerproperties.py:282
+#: ../printerproperties.py:286
 msgid "Edge stitch (right)"
 msgstr "شبك الحافة (يمين)"
 
-#: ../printerproperties.py:283
+#: ../printerproperties.py:287
 msgid "Edge stitch (bottom)"
 msgstr "شبك الحافة (أسفل)"
 
-#: ../printerproperties.py:284
+#: ../printerproperties.py:288
 msgid "Staple dual (left)"
 msgstr "شبك مزدوج (يسار)"
 
-#: ../printerproperties.py:285
+#: ../printerproperties.py:289
 msgid "Staple dual (top)"
 msgstr "شبك مزدوج (أعلى)"
 
-#: ../printerproperties.py:286
+#: ../printerproperties.py:290
 msgid "Staple dual (right)"
 msgstr "شبك مزدوج (يمين)"
 
-#: ../printerproperties.py:287
+#: ../printerproperties.py:291
 msgid "Staple dual (bottom)"
 msgstr "شبك مزدوج (أسفل)"
 
-#: ../printerproperties.py:288
+#: ../printerproperties.py:292
 msgid "Bind (left)"
 msgstr "تجليد (يسار)"
 
-#: ../printerproperties.py:289
+#: ../printerproperties.py:293
 msgid "Bind (top)"
 msgstr "تجليد (أعلى)"
 
-#: ../printerproperties.py:290
+#: ../printerproperties.py:294
 msgid "Bind (right)"
 msgstr "تجليد (يمين)"
 
-#: ../printerproperties.py:291
+#: ../printerproperties.py:295
 msgid "Bind (bottom)"
 msgstr "تجليد (اسفل)"
 
-#: ../printerproperties.py:296
+#: ../printerproperties.py:300
 msgid "One-sided"
 msgstr "وجه واحد"
 
-#: ../printerproperties.py:297
+#: ../printerproperties.py:301
 msgid "Two-sided (long edge)"
 msgstr "وجهان (حافة طويلة)"
 
-#: ../printerproperties.py:298
+#: ../printerproperties.py:302
 msgid "Two-sided (short edge)"
 msgstr "وجهان (حافة قصيرة)"
 
-#: ../printerproperties.py:303
+#: ../printerproperties.py:307 ../printerproperties.py:312
 msgid "Normal"
 msgstr "عادي"
 
-#: ../printerproperties.py:304
+#: ../printerproperties.py:308
 msgid "Reverse"
 msgstr "عكس"
 
-#: ../printerproperties.py:325
+#: ../printerproperties.py:311
+msgid "Draft"
+msgstr ""
+
+#: ../printerproperties.py:313
+msgid "High"
+msgstr ""
+
+#: ../printerproperties.py:337
 msgid "Automatic rotation"
 msgstr "تدوير آلي"
 
-#: ../printerproperties.py:546
+#: ../printerproperties.py:576
 msgid "CUPS test page"
 msgstr "صفحة اختبار CUPS"
 
-#: ../printerproperties.py:547
+#: ../printerproperties.py:577
 msgid ""
 "Typically shows whether all jets on a print head are functioning and that "
 "the print feed mechanisms are working properly."
@@ -1503,13 +1513,13 @@ msgstr ""
 "يظهر ما إذا كانت كل الـ jets في رأس الطابعة تعمل بصورة جيدة وطريقة إدخال "
 "الورق في الطابعة تعمل كذلك."
 
-#: ../printerproperties.py:554
+#: ../printerproperties.py:584
 #, python-format
 msgid "Printer Properties - '%s' on %s"
 msgstr "خصائص الطابعة - '%s' على %s"
 
 #. The Conflict button was pressed.
-#: ../printerproperties.py:561
+#: ../printerproperties.py:591
 msgid ""
 "There are conflicting options.\n"
 "Changes can only be applied after\n"
@@ -1519,24 +1529,24 @@ msgstr ""
 "لا تطبق التغييرات إلا بعد\n"
 "إصلاح هذه التعارضات."
 
-#: ../printerproperties.py:881
+#: ../printerproperties.py:917
 msgid "Installable Options"
 msgstr "الخيارات القابلة للتثبيت"
 
-#: ../printerproperties.py:882
+#: ../printerproperties.py:918 ../ui/PrinterPropertiesDialog.glade.h:63
 msgid "Printer Options"
 msgstr "خيارات الطابعة"
 
-#: ../printerproperties.py:919
+#: ../printerproperties.py:955
 #, python-format
 msgid "modifying class %s"
 msgstr "يجري تعديل الصنف %s"
 
-#: ../printerproperties.py:936
+#: ../printerproperties.py:972
 msgid "This will delete this class!"
 msgstr "هذا سيحذف هذا الصنف!"
 
-#: ../printerproperties.py:937
+#: ../printerproperties.py:973
 msgid "Proceed anyway?"
 msgstr "المتابعة على أية حال؟"
 
@@ -1544,62 +1554,62 @@ msgstr "المتابعة على أية حال؟"
 #. but we have never fetched the server settings to see whether
 #. the server is publishing shared printers.  Fetch the settings
 #. now so that we can update the "not published" label if necessary.
-#: ../printerproperties.py:1027 ../serversettings.py:192
+#: ../printerproperties.py:1065 ../serversettings.py:192
 msgid "fetching server settings"
 msgstr "جلب إعدادات الخادم"
 
-#: ../printerproperties.py:1109
+#: ../printerproperties.py:1147
 msgid "printing test page"
 msgstr "يجري طباعة صفحة الاختبار"
 
-#: ../printerproperties.py:1122 ../printerproperties.py:1157
+#: ../printerproperties.py:1160 ../printerproperties.py:1195
 msgid "Not possible"
 msgstr "غير ممكن"
 
-#: ../printerproperties.py:1123 ../printerproperties.py:1158
+#: ../printerproperties.py:1161 ../printerproperties.py:1196
 msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
 msgstr ""
 "الخادم البعيد لا يقبل إرسال المهام للطابعة، لأن الطابعة قد تكون غير مشاركة."
 
-#: ../printerproperties.py:1135 ../printerproperties.py:1150
+#: ../printerproperties.py:1173 ../printerproperties.py:1188
 msgid "Submitted"
 msgstr "أُرسل"
 
-#: ../printerproperties.py:1136
+#: ../printerproperties.py:1174
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr "أرسلت صفحة الاختبار كمهمة رقم %d"
 
-#: ../printerproperties.py:1143
+#: ../printerproperties.py:1181
 msgid "sending maintenance command"
 msgstr "يجري إرسال أمر صيانة"
 
-#: ../printerproperties.py:1151
+#: ../printerproperties.py:1189
 #, python-format
 msgid "Maintenance command submitted as job %d"
 msgstr "تم إرسال أمر الصيانة كمهمة رقم %d"
 
-#: ../printerproperties.py:1238 ../printerproperties.py:1243
-#: ../printerproperties.py:1339
+#: ../printerproperties.py:1276 ../printerproperties.py:1281
+#: ../printerproperties.py:1377
 msgid "Error"
 msgstr "خطأ"
 
-#: ../printerproperties.py:1239
+#: ../printerproperties.py:1277
 msgid "The PPD file for this queue is damaged."
 msgstr ""
 
-#: ../printerproperties.py:1244
+#: ../printerproperties.py:1282
 msgid "There was a problem connecting to the CUPS server."
 msgstr "هناك مشكلة في الاتصال بخادم نظام الطباعة CUPS"
 
-#: ../printerproperties.py:1340
+#: ../printerproperties.py:1378
 #, python-format
 msgid "Option '%s' has value '%s' and cannot be edited."
 msgstr "الخيار '%s' له القيمة '%s' ولا يمكن تحريره."
 
-#: ../printerproperties.py:1450
+#: ../printerproperties.py:1491
 msgid "Marker levels are not reported for this printer."
 msgstr "مستويات الأحبار غير مخبر عنها لهذه الطابعة."
 
@@ -1640,7 +1650,7 @@ msgstr "الإ_عدادات..."
 msgid "Adjust server settings"
 msgstr "اضبط إعدادات الخادم"
 
-#: ../system-config-printer.py:223
+#: ../system-config-printer.py:223 ../ui/PrintersWindow.glade.h:9
 msgid "_Printer"
 msgstr "_طابعة"
 
@@ -1748,8 +1758,8 @@ msgstr "الخدمة غير متوفرة"
 msgid "Cannot start service on remote server"
 msgstr "لايمكن بدء الخدمة على الخادم البعيد"
 
-#: ../system-config-printer.py:1143
-#, python-format
+#: ../system-config-printer.py:1143 ../ui/ConnectingDialog.glade.h:2
+#, no-c-format, python-format
 msgid "<i>Opening connection to %s</i>"
 msgstr "<i>يجري فتح اتصال بـ%s</i>"
 
@@ -1838,7 +1848,9 @@ msgstr ""
 msgid "Would you like to print a test page?"
 msgstr "هل ترغب في طباعة صفحة اختبار؟"
 
-#: ../system-config-printer.py:1948 ../troubleshoot/PrintTestPage.py:72
+#. Not more than 25 characters
+#: ../system-config-printer.py:1948 ../ui/PrinterPropertiesDialog.glade.h:61
+#: ../troubleshoot/PrintTestPage.py:72
 msgid "Print Test Page"
 msgstr "اطبع صفحة الاختبار"
 
@@ -1863,6 +1875,948 @@ msgid ""
 msgstr ""
 "الطابعة '%s' تتطلب البرنامج '%s' لكنه غير مثبت حاليًا. رجاء ثبته قبل استخدام "
 "الطابعة."
+
+#: ../ui/AboutDialog.glade.h:1
+msgid "A CUPS configuration tool."
+msgstr "أداة إعداد خادم نظام الطباعة CUPS."
+
+#: ../ui/AboutDialog.glade.h:2
+#, fuzzy
+msgid "Copyright © 2006-2008 Red Hat, Inc."
+msgstr "حقوق النشر &#xA9; 2006-2008 لشركة ريدهات."
+
+#: ../ui/AboutDialog.glade.h:3
+msgid ""
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with "
+"this program; if not, write to the Free Software Foundation, Inc., 675 Mass "
+"Ave, Cambridge, MA 02139, USA."
+msgstr ""
+"هذا البرنامج برمجية حرة؛ بإمكانك إعادة توزيعه و/أو تعديله تحت شروط الرخصة "
+"العمومية العامة لجنو والتي نشرتها منظمة البرمجيات الحرة؛ سواء الإصدارة 2 من "
+"الرخصة أو أي إصدارة بعدها (حسب رغبتك).\n"
+"\n"
+"يوزّع هذا البرنامج على أمل أن يكون مفيدًا لمن يستخدمه دون أدنى ضمان؛ ولا حتى "
+"أي ضامن لصلاحية العرض في السوق أو توافقه مع أي استخدام محدد. يمكنك مراجعة "
+"الرخصة العمومية العامة لجنو لمزيد من التفاصيل.\n"
+"\n"
+"من المفترض أن تكون قد استلمت نسخة من رخصة جنو العامة مع توتم؛ في حال عدم "
+"استلامك إياها، يمكنك مكاتبة:\n"
+"Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA "
+"02111-1307  USA"
+
+#. TRANSLATORS: Replace this string with your names, one name per line.  Thank you very much for your effort on translating system-config-printer and all our other tools!
+#: ../ui/AboutDialog.glade.h:9
+msgid "translator-credits"
+msgstr ""
+"فريق عربآيز للترجمة http://www.arabeyes.org:\n"
+"محمد إبراهيم الحبيِّب\t<mih1406@gmail.com>\n"
+"خالد حسني\t\t\t<khaledhosny@eglug.org>"
+
+#: ../ui/ConnectDialog.glade.h:1
+msgid "CUPS _server:"
+msgstr "خادم نظام الطباعة CUPS:‏"
+
+#: ../ui/ConnectDialog.glade.h:2
+msgid "Connect to CUPS server"
+msgstr "اتصل بخادم نظام الطباعة CUPS"
+
+#: ../ui/ConnectDialog.glade.h:3
+msgid "Require _encryption"
+msgstr "ا_طلب التعمية"
+
+#: ../ui/ConnectingDialog.glade.h:3
+msgid "<span weight=\"bold\" size=\"larger\">Connecting to CUPS server</span>"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">يجري الاتصال بخادم نظام الطباعة CUPS</"
+"span>"
+
+#: ../ui/ConnectingDialog.glade.h:4
+msgid "Connecting to CUPS server"
+msgstr "يجري الاتصال بخادم نظام الطباعة CUPS"
+
+#: ../ui/InstallDialog.glade.h:1
+msgid "_Install"
+msgstr "_تثبيت"
+
+#: ../ui/JobsWindow.glade.h:1
+msgid "Refresh job list"
+msgstr "حدث المهمة على القائمة"
+
+#: ../ui/JobsWindow.glade.h:2
+msgid "Show _completed jobs"
+msgstr "اظهر المهام الم_كتملة"
+
+#: ../ui/JobsWindow.glade.h:3
+msgid "Show completed jobs"
+msgstr "اظهر المهام المكتملة"
+
+#: ../ui/JobsWindow.glade.h:4
+msgid "_Refresh"
+msgstr "ت_حديث"
+
+#: ../ui/NewPrinterName.glade.h:1
+msgid "Duplicate Printer"
+msgstr "طباعة متكررة"
+
+#: ../ui/NewPrinterName.glade.h:2
+msgid "New name for the printer"
+msgstr "اسم جديد للطابعة"
+
+#: ../ui/NewPrinterWindow.glade.h:1
+msgid "<b>Authentication</b>"
+msgstr "<b>مواثقة</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:2
+msgid "<b>Description</b>"
+msgstr "<b>الوصف</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:3
+msgid "<b>Description</b> (optional)"
+msgstr "<b>الوصف</b> (اختياري)"
+
+#: ../ui/NewPrinterWindow.glade.h:4
+msgid "<b>Enter device URI</b>"
+msgstr "<b>أدخل مسار الجهاز</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:5
+msgid "<b>IPP Printer</b>"
+msgstr "<b>طابعة IPP</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:6
+msgid "<b>License Terms</b>"
+msgstr "<b>شروط الرخصة</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:7
+msgid "<b>Location of the LPD network printer</b>"
+msgstr "<b>مكان طابعة الشبكة LPD</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:8
+msgid "<b>Location of the network printer</b>"
+msgstr "<b>مكان طابعة الشبكة</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:9
+msgid "<b>Location</b> (optional)"
+msgstr "<b>المكان</b> (اختياري)"
+
+#: ../ui/NewPrinterWindow.glade.h:10
+msgid "<b>Network Printer</b>"
+msgstr "<b>طابعة شبكة</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:11
+msgid "<b>Note</b>"
+msgstr "<b>ملاحظة</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:12
+msgid "<b>Output Quality</b>"
+msgstr "<b>جودة الطباعة</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:13
+msgid "<b>Printer Name</b>"
+msgstr "<b>اسم الطابعة</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:14
+msgid "<b>SMB Printer</b>"
+msgstr "<b>طابعة SMB</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:15
+msgid "<b>Select Driver</b>"
+msgstr "<b>حدد مشغل</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:16
+msgid "<b>Settings of the serial port</b>"
+msgstr "<b>إعدادات المنفذ التسلسلي</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:17
+msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
+msgstr "<i>smb://[مجموعة العمل/]الخادم[:المنفذ]/الطابعة</i>"
+
+#: ../ui/NewPrinterWindow.glade.h:18
+msgid "<span weight=\"bold\" size=\"larger\">Choose Class Members</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">اختر أعضاء الصنف</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:19
+msgid "<span weight=\"bold\" size=\"larger\">Choose Driver</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">اختر مشغل</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:20
+msgid "<span weight=\"bold\" size=\"larger\">Describe Printer</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">صِفْ الطابعة</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:21
+msgid "<span weight=\"bold\" size=\"larger\">Existing Settings</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">الإعدادات الموجودة</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:22
+msgid "<span weight=\"bold\" size=\"larger\">Installable Options</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">الخيارات القابلة للتثبيت</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:23
+msgid "<span weight=\"bold\" size=\"larger\">Select Device</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">حدد جهازا</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:24
+msgid "Baud Rate"
+msgstr "نسبة الباود"
+
+#: ../ui/NewPrinterWindow.glade.h:25
+msgid "Browse..."
+msgstr "تصفح..."
+
+#: ../ui/NewPrinterWindow.glade.h:26
+msgid "Change PPD"
+msgstr "تغير PPD"
+
+#: ../ui/NewPrinterWindow.glade.h:27
+msgid "Class Members"
+msgstr "الأعضاء"
+
+#: ../ui/NewPrinterWindow.glade.h:28
+msgid "Comments..."
+msgstr "تعليقات..."
+
+#: ../ui/NewPrinterWindow.glade.h:29
+msgid "Connection"
+msgstr "الاتصال"
+
+#: ../ui/NewPrinterWindow.glade.h:30
+msgid "Data Bits"
+msgstr "بتات البيانات"
+
+#: ../ui/NewPrinterWindow.glade.h:31 ../ui/PrinterPropertiesDialog.glade.h:29
+msgid "Description:"
+msgstr "الوصف:"
+
+#: ../ui/NewPrinterWindow.glade.h:32
+msgid "Device"
+msgstr "الأجهزة"
+
+#: ../ui/NewPrinterWindow.glade.h:33 ../troubleshoot/DeviceListed.py:40
+msgid "Device URI"
+msgstr "مسار الجهاز"
+
+#: ../ui/NewPrinterWindow.glade.h:34
+msgid "Device description."
+msgstr "وصف الجهاز."
+
+#: ../ui/NewPrinterWindow.glade.h:36
+msgid "Driver details"
+msgstr "تفاصيل المشغل"
+
+#: ../ui/NewPrinterWindow.glade.h:37
+msgid "Empty"
+msgstr "فارغ"
+
+#: ../ui/NewPrinterWindow.glade.h:38
+msgid "Flow Control"
+msgstr "تحكم التدفق"
+
+#: ../ui/NewPrinterWindow.glade.h:39
+msgid ""
+"For example:\n"
+"ipp://cups-server/printers/printer-queue\n"
+"ipp://printer.mydomain/ipp"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:42
+msgid ""
+"For the printer you have selected there are drivers available for download."
+msgstr "تتوفر مشغلات للتنزيل للطابعة التي اخترتها."
+
+#: ../ui/NewPrinterWindow.glade.h:43
+msgid "Free software"
+msgstr "برمجية حرة"
+
+#: ../ui/NewPrinterWindow.glade.h:44
+msgid "Graphics:"
+msgstr "رسوميات:"
+
+#: ../ui/NewPrinterWindow.glade.h:45
+msgid "Host:"
+msgstr "المستضيف:"
+
+#: ../ui/NewPrinterWindow.glade.h:46
+msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
+msgstr "وصف يفهمه المستخدم مثل \"طابعة ليزر HP P1005\""
+
+#: ../ui/NewPrinterWindow.glade.h:47
+msgid "Human-readable location such as \"Lab 1\""
+msgstr "مكان يفهمه المستخدم مثل \"المختبر رقم 1\""
+
+#: ../ui/NewPrinterWindow.glade.h:49 ../ui/PrinterPropertiesDialog.glade.h:39
+msgid "Installed Options"
+msgstr "الخيارات المثبتة"
+
+#: ../ui/NewPrinterWindow.glade.h:50
+#, fuzzy
+msgid "JetDirect"
+msgstr "جت دايريكت"
+
+#: ../ui/NewPrinterWindow.glade.h:51
+msgid "LPD"
+msgstr "LPD"
+
+#: ../ui/NewPrinterWindow.glade.h:52
+msgid "License:"
+msgstr "الرخصة:"
+
+#: ../ui/NewPrinterWindow.glade.h:53
+msgid "Line art:"
+msgstr "فن خطي:"
+
+#: ../ui/NewPrinterWindow.glade.h:54
+msgid "Local Driver"
+msgstr "مشغل محلي"
+
+#: ../ui/NewPrinterWindow.glade.h:55
+msgid "Make and model:"
+msgstr "الصنع والطراز:"
+
+#: ../ui/NewPrinterWindow.glade.h:56
+msgid "Manufacturer"
+msgstr "المُصنِّع:"
+
+#: ../ui/NewPrinterWindow.glade.h:58
+msgid "Network"
+msgstr "الشبكة"
+
+#: ../ui/NewPrinterWindow.glade.h:61
+msgid "No, I do not accept this license"
+msgstr "لا، لا أوافق على هذا الترخيص"
+
+#: ../ui/NewPrinterWindow.glade.h:62
+msgid "Parity"
+msgstr "زوجية"
+
+#: ../ui/NewPrinterWindow.glade.h:64
+msgid "Patented algorithms"
+msgstr "خوارزمية عليها برائة اختراع"
+
+#: ../ui/NewPrinterWindow.glade.h:65
+msgid "Photo:"
+msgstr "صورة:"
+
+#: ../ui/NewPrinterWindow.glade.h:66
+msgid "Port number:"
+msgstr "رقم المنفذ:"
+
+#: ../ui/NewPrinterWindow.glade.h:67
+#, fuzzy
+msgid ""
+"PostScript Printer Description (PPD) files can often be found on the driver "
+"disk that comes with the printer. For PostScript printers they are often "
+"part of the Windows<sup>®</sup> driver."
+msgstr ""
+"ملفات وصف طابعة بوستسكرِبت (PPD) يمكن أن تجدها في الاسطوانة الموجودة مع "
+"الطابعة. بالنسبة لطابعات بوستسكرِبت فإنها غالبًا ما تكون جزء من مشغل "
+"ويندوز<sup>&#xAE;</sup>."
+
+#: ../ui/NewPrinterWindow.glade.h:68
+msgid "Printer model:"
+msgstr "طراز الطابعة:"
+
+#: ../ui/NewPrinterWindow.glade.h:69
+msgid "Probe"
+msgstr "افحص"
+
+#: ../ui/NewPrinterWindow.glade.h:70
+msgid "Prompt user if authentication is required"
+msgstr "اسأل المستخدم عند الحاجة للمواثقة"
+
+#: ../ui/NewPrinterWindow.glade.h:71
+msgid "Provide PPD file"
+msgstr "وفر ملف PPD"
+
+#: ../ui/NewPrinterWindow.glade.h:72
+msgid "Queue:"
+msgstr "الطابور:"
+
+#: ../ui/NewPrinterWindow.glade.h:73
+msgid "SCSI"
+msgstr "SCSI"
+
+#: ../ui/NewPrinterWindow.glade.h:74
+msgid "SMB"
+msgstr "SMB"
+
+#: ../ui/NewPrinterWindow.glade.h:75
+msgid "Search for a printer driver to download"
+msgstr "ابحث عن مشغل الطابعة لتنزيله"
+
+#: ../ui/NewPrinterWindow.glade.h:76
+msgid "Searching..."
+msgstr "يجري البحث..."
+
+#: ../ui/NewPrinterWindow.glade.h:77
+msgid "Select printer from database"
+msgstr "حدد طابعة من قاعدة البيانات"
+
+#: ../ui/NewPrinterWindow.glade.h:78
+msgid "Serial"
+msgstr "تسلسلي"
+
+#: ../ui/NewPrinterWindow.glade.h:79
+msgid "Set authentication details now"
+msgstr "حدد تفاصيل المواثقة الآن"
+
+#: ../ui/NewPrinterWindow.glade.h:80
+msgid "Short name for this printer such as \"laserjet\""
+msgstr "اسم مختصر لهذه الطابعة مثل \"طابعة ليزر\""
+
+#: ../ui/NewPrinterWindow.glade.h:81
+msgid "Supplier:"
+msgstr "المزود:"
+
+#: ../ui/NewPrinterWindow.glade.h:82
+msgid "Support:"
+msgstr "الدعم:"
+
+#: ../ui/NewPrinterWindow.glade.h:83
+msgid "Text:"
+msgstr "النص:"
+
+#: ../ui/NewPrinterWindow.glade.h:84
+msgid ""
+"The foomatic printer database contains various manufacturer provided "
+"PostScript Printer Description (PPD) files and also can generate PPD files "
+"for a large number of (non PostScript) printers. But in general manufacturer "
+"provided PPD files provide better access to the specific features of the "
+"printer."
+msgstr ""
+"تحتوي قاعدة بيانات طابعات foomatic على العديد من ملفات وصف طابعات بوستسكربت "
+"المقدمة من المصنِّعين، كما تولّد وصف للكثير من الطابعات التي ليست طابعات "
+"بوستسكربت. لكن في الأغلب، ملفات الوصف المقدمة من المصنعين تتيح وصولا أفضل "
+"للميزات الخاصة بالطابعة."
+
+#: ../ui/NewPrinterWindow.glade.h:85
+msgid ""
+"These drivers do not come from your operating system supplier and will not "
+"be covered by their commercial support.  See the support and license terms "
+"of the driver's supplier."
+msgstr ""
+"هذه المشغلات لا تأتي من موفر نظام التشغيل ولن يغطيها الدعم التجاري. اقرأ "
+"شروط ترخيص موفر المشغل."
+
+#: ../ui/NewPrinterWindow.glade.h:86
+msgid ""
+"This driver supports additional hardware that may be installed in the "
+"printer."
+msgstr "يدعم هذا المشغل عتاد إضافي يمكن أن يثبت في الطابعة."
+
+#: ../ui/NewPrinterWindow.glade.h:87
+msgid ""
+"This is done by assuming that options with the same name do have the same "
+"meaning. Settings of options that are not present in the new PPD will be "
+"lost and options only present in the new PPD will be set to default."
+msgstr ""
+"يتم هذا على افتراض أن الخيارات التي لها نفس الاسم تحمل ذات المعنى. إعدادات "
+"الخيارات غير الموجودة في PPD الجديد سوف تفقد والإعدادات الموجودة في PPD "
+"الجديد سوف تعيين كافتراضية."
+
+#: ../ui/NewPrinterWindow.glade.h:88
+msgid ""
+"This way all current option settings will be lost. The default settings of "
+"the new PPD will be used. "
+msgstr ""
+"بهذه الطرية ستفقد كل إعدادات الخيارات الحالية. وسف تستخدم الإعدادات "
+"الافتراضية الخاصة ب‍ PPD الجديد. "
+
+#: ../ui/NewPrinterWindow.glade.h:89
+msgid "Try to copy the option settings over from the old PPD. "
+msgstr "حاول نسخ إعدادات الخيارات من PPD القديم. "
+
+#: ../ui/NewPrinterWindow.glade.h:90
+msgid "Try to transfer the current settings"
+msgstr "حاول نقل الإعدادات الحالية"
+
+#: ../ui/NewPrinterWindow.glade.h:91
+msgid "URI:"
+msgstr "المسار:"
+
+#: ../ui/NewPrinterWindow.glade.h:93
+msgid "Use the new PPD (Postscript Printer Description) as is."
+msgstr "استخدم PPD الجديد (وصف طابعة بوستسكرٍبت) كما هي."
+
+#: ../ui/NewPrinterWindow.glade.h:95
+msgid ""
+"With this choice no driver download will be performed. In the next steps a "
+"locally installed driver will be selected."
+msgstr ""
+"لن ينزل أي مشغل مع هذا الخيار. سيختار مشغل مثبت محليًا في الخطوة التالية."
+
+#: ../ui/NewPrinterWindow.glade.h:96
+msgid "Yes, I accept this license"
+msgstr "نعم، أوافق على هذا الترخيص"
+
+#: ../ui/NewPrinterWindow.glade.h:97
+msgid "_Search"
+msgstr "_بحث"
+
+#: ../ui/NewPrinterWindow.glade.h:98
+msgid "_Verify..."
+msgstr "تح_قق..."
+
+#: ../ui/NewPrinterWindow.glade.h:99
+msgid "license"
+msgstr "الرخصة"
+
+#: ../ui/NewPrinterWindow.glade.h:100 ../ui/PrinterPropertiesDialog.glade.h:81
+msgid "move left"
+msgstr "انقل يسارا"
+
+#: ../ui/NewPrinterWindow.glade.h:101 ../ui/PrinterPropertiesDialog.glade.h:82
+msgid "move right"
+msgstr "انقل يمينا"
+
+#: ../ui/NewPrinterWindow.glade.h:102
+msgid "short description"
+msgstr "وصف قصير"
+
+#: ../ui/NewPrinterWindow.glade.h:103
+msgid "supplier"
+msgstr "الموفر"
+
+#: ../ui/NewPrinterWindow.glade.h:104
+msgid "support contacts"
+msgstr "جهات الاتصال لدعم الفني"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:1
+msgid " "
+msgstr " "
+
+#: ../ui/PrinterPropertiesDialog.glade.h:2
+msgid "<b>Banner</b>"
+msgstr "<b>لافتة</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:3
+msgid "<b>Common Options</b>"
+msgstr "<b>الخيارات الشائعة</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:4
+msgid "<b>Image Options</b>"
+msgstr "<b>خيارات الصورة</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:5
+msgid "<b>Ink/Toner Levels</b>"
+msgstr "<b>مستويات الحبر</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:6
+msgid "<b>Other Options (Advanced)</b>"
+msgstr "<b>خيارات أخرى (متقدمة)</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:7
+msgid "<b>Policies</b>"
+msgstr "<b>السياسات</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:8
+msgid "<b>Settings</b>"
+msgstr "<b>الإعدادات</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:9
+msgid "<b>State</b>"
+msgstr "<b>الحالة</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:10
+msgid "<b>Status Messages</b>"
+msgstr "<b>رسائل الحالة</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:11
+msgid "<b>Tests and Maintenance</b>"
+msgstr "<b>الاختبارات والصيانة</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:12
+msgid "<b>Text Options</b>"
+msgstr "<b>خيارات النص</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:13
+msgid ""
+"<i>Not published\n"
+"See server settings</i>"
+msgstr ""
+"<i>غير منشور\n"
+"طالع إعدادات الخادم</i>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:15
+msgid "Accepting jobs"
+msgstr "قبول المهام"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:16
+msgid "Access Control"
+msgstr "تحكم بالوصول"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:17
+msgid "Add or Remove Members"
+msgstr "أضف أو أزل الأعضاء"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:18
+msgid "Allow printing for everyone except these users:"
+msgstr "اسمح بالطباعة لكل شخص ما عدا هؤلاء المستخدمين:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:19
+msgid "Bottom margin:"
+msgstr "الهامش السفلي:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:20
+msgid "Brightness:"
+msgstr "السطوع:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:21
+msgid "Change..."
+msgstr "غيّر..."
+
+#: ../ui/PrinterPropertiesDialog.glade.h:22
+msgid "Characters per inch:"
+msgstr "حروف لكل بوصة:"
+
+#. Not more than 25 characters
+#: ../ui/PrinterPropertiesDialog.glade.h:24
+msgid "Clean Print Heads"
+msgstr "نظف رؤوس الطابعة"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:25
+msgid "Co_nflicts"
+msgstr "تت_عارض مع"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:26
+msgid "Columns:"
+msgstr "الأعمدة:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:27
+msgid "Copies:"
+msgstr "النسخ:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:28
+msgid "Deny printing for everyone except these users:"
+msgstr "لا تسمح لأي شخص بالطباعة إلا هؤلاء المستخدمين:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:30
+msgid "Device URI:"
+msgstr "مسار الجهاز:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:31
+msgid "Enabled"
+msgstr "مفعّل"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:32
+msgid "Ending Banner:"
+msgstr "لافتة النهاية:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:33
+msgid "Error Policy: \t"
+msgstr "خطأ في السياسة: \t"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:34
+msgid "Finishings:"
+msgstr "الإنهاء:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:35
+msgid "Gamma:"
+msgstr "الجاما:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:36
+msgid "Hold until:"
+msgstr "علق حتى:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:37
+msgid "Hue adjustment:"
+msgstr "ضبط تدرج الألوان:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:38
+msgid "Ink/Toner Levels"
+msgstr "مستويات الحبر"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:40
+msgid "Job Options"
+msgstr "خيارات المهام"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:41
+msgid "Job priority:"
+msgstr "أولوية المهمة:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:42
+msgid "Left margin:"
+msgstr "الهامش الأيسر:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:43
+msgid "Lines per inch:"
+msgstr "سطور لكل بوصة:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:44
+msgid "Location:"
+msgstr "المكان:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:45
+msgid "Make and Model:"
+msgstr "الصنع والطراز:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:46
+msgid "Media:"
+msgstr "الوسائط:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:47
+msgid "Members"
+msgstr "الأعضاء"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:48
+msgid "Mirror"
+msgstr "مرآة"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:49
+msgid "More"
+msgstr "المزيد"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:50
+msgid "Operation Policy:"
+msgstr "سياسة العملية:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:51
+msgid "Orientation:"
+msgstr "التوجه:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:52
+#, fuzzy
+msgid "Output bin:"
+msgstr "ترتيب الناتج:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:53
+msgid "Output order:"
+msgstr "ترتيب الناتج:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:54
+msgid "Pages per side layout:"
+msgstr "تخطيط الصفحات لكل وجه:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:55
+msgid "Pages per side:"
+msgstr "صفحات لكل وجه:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:56
+msgid "Policies"
+msgstr "السياسات"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:57
+msgid "Pretty print"
+msgstr "طباعة جميلة"
+
+#. Not more than 25 characters
+#: ../ui/PrinterPropertiesDialog.glade.h:59
+msgid "Print Self-Test Page"
+msgstr "اطبع صفحة اختبار ذاتي"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:62
+#, fuzzy
+msgid "Print quality:"
+msgstr "حالة الطابعة:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:64
+msgid "Printer Properties"
+msgstr "خصائص الطابعة"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:65
+msgid "Printer State:"
+msgstr "حالة الطابعة:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:66
+#, fuzzy
+msgid "Printer resolution:"
+msgstr "مكان الطابعة"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:67
+msgid "Reset"
+msgstr "تصفير"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:68
+msgid "Right margin:"
+msgstr "الهامش الأيمن:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:69
+msgid "Saturation:"
+msgstr "التشبع:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:70
+msgid "Scale to fit"
+msgstr "تغيير الحجم لكي تتلائم"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:71
+msgid "Scaling:"
+msgstr "التعديل:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:72
+msgid "Settings"
+msgstr "الإعدادات"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:73
+msgid "Shared"
+msgstr "مشتركة"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:74
+msgid "Sides:"
+msgstr "الأوجه:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:75
+msgid ""
+"Specify the default job options for this printer.  Jobs arriving at this "
+"print server will have these options added if they are not already set by "
+"the application."
+msgstr ""
+"حدد خيارات المهمّة المبدئية لهذه الطابعة. ستضاف هذه الخياران إلى المهام "
+"الواردة إلى خادم الطباعة هذا إذا لم يحددها البرنامج بالفعل."
+
+#: ../ui/PrinterPropertiesDialog.glade.h:76
+msgid "Starting Banner:"
+msgstr "لافتة البداية:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:77
+msgid "There are no status messages for this printer."
+msgstr "لايوجد رسائل الحالة لهذه الطابعة."
+
+#: ../ui/PrinterPropertiesDialog.glade.h:78
+msgid "To add a new option, enter its name in the box below and click to add."
+msgstr "لكي تضيف خيار جديد، أدخل اسمه في الصندوق في الأسفل وتنقر أضف."
+
+#: ../ui/PrinterPropertiesDialog.glade.h:79
+msgid "Top margin:"
+msgstr "الهامش العلوي:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:80
+msgid "Word wrap"
+msgstr "إلتفاف الكلمات"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:83
+msgid "points"
+msgstr "النقاط"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:84
+msgid "user"
+msgstr "المستخدم"
+
+#: ../ui/PrintersWindow.glade.h:1
+msgid ""
+"Printing service not available.  Start the service on this computer or "
+"connect to another server."
+msgstr ""
+"خدمة الطباعة غير متوفرة. ابدأ تشغيل الخدمة على هذا الجهاز أو اتصل بخادم آخر"
+
+#: ../ui/PrintersWindow.glade.h:2
+msgid "Start Service"
+msgstr "بدء الخدمة"
+
+#: ../ui/PrintersWindow.glade.h:3
+msgid "System-Config-Printer"
+msgstr "نظام إعداد الطابعة"
+
+#: ../ui/PrintersWindow.glade.h:4
+msgid "There are no printers configured yet."
+msgstr "لا يوجد أي طابعات تم إعدادها بعد بعد"
+
+#: ../ui/PrintersWindow.glade.h:5
+msgid "_Discovered Printers"
+msgstr "طابعات المكت_شفة"
+
+#: ../ui/PrintersWindow.glade.h:6
+msgid "_Group"
+msgstr "م_جموعة"
+
+#: ../ui/PrintersWindow.glade.h:7
+msgid "_Groups"
+msgstr "مجمو_عات"
+
+#: ../ui/PrintersWindow.glade.h:8
+msgid "_Help"
+msgstr "_مساعدة"
+
+#: ../ui/PrintersWindow.glade.h:10
+msgid "_Server"
+msgstr "ال_خادم"
+
+#: ../ui/PrintersWindow.glade.h:11
+msgid "_View"
+msgstr "_عرض"
+
+#: ../ui/ServerSettingsDialog.glade.h:1
+msgid "<b>Basic Server Settings</b>"
+msgstr "<b>إعدادات الخادم الأساسية</b>"
+
+#: ../ui/ServerSettingsDialog.glade.h:2
+msgid "<b>Browse servers</b>"
+msgstr "<b>استعرض الخوادم</b>"
+
+#: ../ui/ServerSettingsDialog.glade.h:3
+msgid "<b>Job history</b>"
+msgstr "<b>تأريخ المهام</b>"
+
+#: ../ui/ServerSettingsDialog.glade.h:4
+msgid "Advanced Server Settings"
+msgstr "إعدادات الخادم المتقدمة."
+
+#: ../ui/ServerSettingsDialog.glade.h:5
+msgid "Allow _remote administration"
+msgstr "اسمح بالإدارة ال_بعيدة"
+
+#: ../ui/ServerSettingsDialog.glade.h:6
+msgid "Allow _users to cancel any job (not just their own)"
+msgstr "اسمح للم_ستخدمين بإلغاء أي مهمة (ليس فقط المهام الخاصة بهم)"
+
+#: ../ui/ServerSettingsDialog.glade.h:7
+msgid "Allow printing from the _Internet"
+msgstr "اسمح بالطباعة من الإنت_رنت"
+
+#: ../ui/ServerSettingsDialog.glade.h:8
+msgid "Do not preserve job history"
+msgstr "لا تحتفظ بتأريخ المهام"
+
+#: ../ui/ServerSettingsDialog.glade.h:9
+msgid "Preserve job files (allow reprinting)"
+msgstr "احتفظ بملفات المهام (لتتمكن من إعادة الطباعة)"
+
+#: ../ui/ServerSettingsDialog.glade.h:10
+msgid "Preserve job history but not files"
+msgstr "احتفظ بتأريخ المهام ولكن لا تحتفظ بالملفات"
+
+#: ../ui/ServerSettingsDialog.glade.h:11
+msgid "Save _debugging information for troubleshooting"
+msgstr "احفظ معلومات الأخطاء لتصحيح الأخطاء"
+
+#: ../ui/ServerSettingsDialog.glade.h:12
+msgid "Server Settings"
+msgstr "إعدادات الخادم"
+
+#: ../ui/ServerSettingsDialog.glade.h:13
+msgid ""
+"Usually print servers broadcast their queues. Specify print servers below to "
+"periodically ask for queues instead."
+msgstr ""
+"عادة تبث الخوادم الطابعات طوابيرها. حدد الخوادم الطابعات في الأسفل لطلب "
+"طوابيرها بشكل دوري بدلا من ذلك."
+
+#: ../ui/ServerSettingsDialog.glade.h:14
+msgid "_Publish shared printers connected to this system"
+msgstr "ان_شر الطابعات المشاركة المتصلة بهذا النظام"
+
+#: ../ui/ServerSettingsDialog.glade.h:15
+msgid "_Show printers shared by other systems"
+msgstr "أ_ظهر الطابعات المشاركة بواسطة أنظمة أخرى"
+
+#: ../ui/SMBBrowseDialog.glade.h:1
+msgid "SMB Browser"
+msgstr "متصفح SMB"
+
+#: ../ui/statusicon_popupmenu.glade.h:1
+msgid "_Hide"
+msgstr "ا_خفاء"
+
+#: ../ui/WaitWindow.glade.h:1
+msgid "Please Wait"
+msgstr "فضلا انتظر"
 
 #: ../system-config-printer.desktop.in.h:1
 msgid "Configure printers"
@@ -2111,10 +3065,6 @@ msgid ""
 msgstr ""
 "رجاء اختر الجهاز الذي ترغب باستخدامه من القائمة في الأسفل. إن لم يكن معروض "
 "في القائمة فحدد 'ليست معروضة'."
-
-#: ../troubleshoot/DeviceListed.py:40
-msgid "Device URI"
-msgstr "مسار الجهاز"
 
 #: ../troubleshoot/ErrorLogCheckpoint.py:31
 msgid "Debugging"
@@ -2441,720 +3391,11 @@ msgstr "بريمج طابور الطباعة"
 msgid "System tray icon for managing print jobs"
 msgstr "أيقونة لوحة النظام لإدارة مهام الطباعة"
 
-#~ msgid "A CUPS configuration tool."
-#~ msgstr "أداة إعداد خادم نظام الطباعة CUPS."
-
-#~ msgid "Copyright &#xA9; 2006-2008 Red Hat, Inc."
-#~ msgstr "حقوق النشر &#xA9; 2006-2008 لشركة ريدهات."
-
-#~ msgid ""
-#~ "This program is free software; you can redistribute it and/or modify it "
-#~ "under the terms of the GNU General Public License as published by the "
-#~ "Free Software Foundation; either version 2 of the License, or (at your "
-#~ "option) any later version.\n"
-#~ "\n"
-#~ "This program is distributed in the hope that it will be useful, but "
-#~ "WITHOUT ANY WARRANTY; without even the implied warranty of "
-#~ "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General "
-#~ "Public License for more details.\n"
-#~ "\n"
-#~ "You should have received a copy of the GNU General Public License along "
-#~ "with this program; if not, write to the Free Software Foundation, Inc., "
-#~ "675 Mass Ave, Cambridge, MA 02139, USA."
-#~ msgstr ""
-#~ "هذا البرنامج برمجية حرة؛ بإمكانك إعادة توزيعه و/أو تعديله تحت شروط الرخصة "
-#~ "العمومية العامة لجنو والتي نشرتها منظمة البرمجيات الحرة؛ سواء الإصدارة 2 "
-#~ "من الرخصة أو أي إصدارة بعدها (حسب رغبتك).\n"
-#~ "\n"
-#~ "يوزّع هذا البرنامج على أمل أن يكون مفيدًا لمن يستخدمه دون أدنى ضمان؛ ولا "
-#~ "حتى أي ضامن لصلاحية العرض في السوق أو توافقه مع أي استخدام محدد. يمكنك "
-#~ "مراجعة الرخصة العمومية العامة لجنو لمزيد من التفاصيل.\n"
-#~ "\n"
-#~ "من المفترض أن تكون قد استلمت نسخة من رخصة جنو العامة مع توتم؛ في حال عدم "
-#~ "استلامك إياها، يمكنك مكاتبة:\n"
-#~ "Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA "
-#~ "02111-1307  USA"
-
-#~ msgid "translator-credits"
-#~ msgstr ""
-#~ "فريق عربآيز للترجمة http://www.arabeyes.org:\n"
-#~ "محمد إبراهيم الحبيِّب\t<mih1406@gmail.com>\n"
-#~ "خالد حسني\t\t\t<khaledhosny@eglug.org>"
-
-#~ msgid "CUPS _server:"
-#~ msgstr "خادم نظام الطباعة CUPS:‏"
-
-#~ msgid "Connect to CUPS server"
-#~ msgstr "اتصل بخادم نظام الطباعة CUPS"
-
-#~ msgid "Require _encryption"
-#~ msgstr "ا_طلب التعمية"
-
-#~ msgid ""
-#~ "<span weight=\"bold\" size=\"larger\">Connecting to CUPS server</span>"
-#~ msgstr ""
-#~ "<span weight=\"bold\" size=\"larger\">يجري الاتصال بخادم نظام الطباعة "
-#~ "CUPS</span>"
-
-#~ msgid "Connecting to CUPS server"
-#~ msgstr "يجري الاتصال بخادم نظام الطباعة CUPS"
-
-#~ msgid "_Install"
-#~ msgstr "_تثبيت"
-
-#~ msgid "Refresh job list"
-#~ msgstr "حدث المهمة على القائمة"
-
-#~ msgid "Show _completed jobs"
-#~ msgstr "اظهر المهام الم_كتملة"
-
-#~ msgid "Show completed jobs"
-#~ msgstr "اظهر المهام المكتملة"
-
-#~ msgid "_Refresh"
-#~ msgstr "ت_حديث"
-
-#~ msgid "Duplicate Printer"
-#~ msgstr "طباعة متكررة"
-
-#~ msgid "New name for the printer"
-#~ msgstr "اسم جديد للطابعة"
-
-#~ msgid "<b>Authentication</b>"
-#~ msgstr "<b>مواثقة</b>"
-
-#~ msgid "<b>Description</b>"
-#~ msgstr "<b>الوصف</b>"
-
-#~ msgid "<b>Description</b> (optional)"
-#~ msgstr "<b>الوصف</b> (اختياري)"
-
-#~ msgid "<b>Enter device URI</b>"
-#~ msgstr "<b>أدخل مسار الجهاز</b>"
-
-#~ msgid "<b>IPP Printer</b>"
-#~ msgstr "<b>طابعة IPP</b>"
-
-#~ msgid "<b>License Terms</b>"
-#~ msgstr "<b>شروط الرخصة</b>"
-
-#~ msgid "<b>Location of the LPD network printer</b>"
-#~ msgstr "<b>مكان طابعة الشبكة LPD</b>"
-
-#~ msgid "<b>Location of the network printer</b>"
-#~ msgstr "<b>مكان طابعة الشبكة</b>"
-
-#~ msgid "<b>Location</b> (optional)"
-#~ msgstr "<b>المكان</b> (اختياري)"
-
-#~ msgid "<b>Network Printer</b>"
-#~ msgstr "<b>طابعة شبكة</b>"
-
-#~ msgid "<b>Note</b>"
-#~ msgstr "<b>ملاحظة</b>"
-
-#~ msgid "<b>Output Quality</b>"
-#~ msgstr "<b>جودة الطباعة</b>"
-
-#~ msgid "<b>Printer Name</b>"
-#~ msgstr "<b>اسم الطابعة</b>"
-
-#~ msgid "<b>SMB Printer</b>"
-#~ msgstr "<b>طابعة SMB</b>"
-
-#~ msgid "<b>Select Driver</b>"
-#~ msgstr "<b>حدد مشغل</b>"
-
-#~ msgid "<b>Settings of the serial port</b>"
-#~ msgstr "<b>إعدادات المنفذ التسلسلي</b>"
-
-#~ msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
-#~ msgstr "<i>smb://[مجموعة العمل/]الخادم[:المنفذ]/الطابعة</i>"
-
-#~ msgid "<span weight=\"bold\" size=\"larger\">Choose Class Members</span>"
-#~ msgstr "<span weight=\"bold\" size=\"larger\">اختر أعضاء الصنف</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"larger\">Choose Driver</span>"
-#~ msgstr "<span weight=\"bold\" size=\"larger\">اختر مشغل</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"larger\">Describe Printer</span>"
-#~ msgstr "<span weight=\"bold\" size=\"larger\">صِفْ الطابعة</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"larger\">Existing Settings</span>"
-#~ msgstr "<span weight=\"bold\" size=\"larger\">الإعدادات الموجودة</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"larger\">Installable Options</span>"
-#~ msgstr ""
-#~ "<span weight=\"bold\" size=\"larger\">الخيارات القابلة للتثبيت</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"larger\">Select Device</span>"
-#~ msgstr "<span weight=\"bold\" size=\"larger\">حدد جهازا</span>"
-
-#~ msgid "Baud Rate"
-#~ msgstr "نسبة الباود"
-
-#~ msgid "Browse..."
-#~ msgstr "تصفح..."
-
-#~ msgid "Change PPD"
-#~ msgstr "تغير PPD"
-
-#~ msgid "Class Members"
-#~ msgstr "الأعضاء"
-
-#~ msgid "Comments..."
-#~ msgstr "تعليقات..."
-
-#~ msgid "Connection"
-#~ msgstr "الاتصال"
-
-#~ msgid "Data Bits"
-#~ msgstr "بتات البيانات"
-
-#~ msgid "Description:"
-#~ msgstr "الوصف:"
-
-#~ msgid "Device"
-#~ msgstr "الأجهزة"
-
-#~ msgid "Device description."
-#~ msgstr "وصف الجهاز."
-
-#~ msgid "Driver details"
-#~ msgstr "تفاصيل المشغل"
-
-#~ msgid "Empty"
-#~ msgstr "فارغ"
-
-#~ msgid "Flow Control"
-#~ msgstr "تحكم التدفق"
-
-#~ msgid ""
-#~ "For the printer you have selected there are drivers available for "
-#~ "download."
-#~ msgstr "تتوفر مشغلات للتنزيل للطابعة التي اخترتها."
-
-#~ msgid "Free software"
-#~ msgstr "برمجية حرة"
-
-#~ msgid "Graphics:"
-#~ msgstr "رسوميات:"
-
-#~ msgid "Host:"
-#~ msgstr "المستضيف:"
-
-#~ msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
-#~ msgstr "وصف يفهمه المستخدم مثل \"طابعة ليزر HP P1005\""
-
-#~ msgid "Human-readable location such as \"Lab 1\""
-#~ msgstr "مكان يفهمه المستخدم مثل \"المختبر رقم 1\""
-
-#~ msgid "Installed Options"
-#~ msgstr "الخيارات المثبتة"
-
-#, fuzzy
-#~ msgid "JetDirect"
-#~ msgstr "جت دايريكت"
-
-#~ msgid "LPD"
-#~ msgstr "LPD"
-
-#~ msgid "License:"
-#~ msgstr "الرخصة:"
-
-#~ msgid "Line art:"
-#~ msgstr "فن خطي:"
-
-#~ msgid "Local Driver"
-#~ msgstr "مشغل محلي"
-
-#~ msgid "Make and model:"
-#~ msgstr "الصنع والطراز:"
-
-#~ msgid "Manufacturer"
-#~ msgstr "المُصنِّع:"
-
-#~ msgid "Network"
-#~ msgstr "الشبكة"
-
-#~ msgid "No, I do not accept this license"
-#~ msgstr "لا، لا أوافق على هذا الترخيص"
-
-#~ msgid "Parity"
-#~ msgstr "زوجية"
-
-#~ msgid "Patented algorithms"
-#~ msgstr "خوارزمية عليها برائة اختراع"
-
-#~ msgid "Photo:"
-#~ msgstr "صورة:"
-
-#~ msgid "Port number:"
-#~ msgstr "رقم المنفذ:"
-
-#~ msgid ""
-#~ "PostScript Printer Description (PPD) files can often be found on the "
-#~ "driver disk that comes with the printer. For PostScript printers they are "
-#~ "often part of the Windows<sup>&#xAE;</sup> driver."
-#~ msgstr ""
-#~ "ملفات وصف طابعة بوستسكرِبت (PPD) يمكن أن تجدها في الاسطوانة الموجودة مع "
-#~ "الطابعة. بالنسبة لطابعات بوستسكرِبت فإنها غالبًا ما تكون جزء من مشغل "
-#~ "ويندوز<sup>&#xAE;</sup>."
-
-#~ msgid "Printer model:"
-#~ msgstr "طراز الطابعة:"
-
-#~ msgid "Probe"
-#~ msgstr "افحص"
-
-#~ msgid "Prompt user if authentication is required"
-#~ msgstr "اسأل المستخدم عند الحاجة للمواثقة"
-
-#~ msgid "Provide PPD file"
-#~ msgstr "وفر ملف PPD"
-
-#~ msgid "Queue:"
-#~ msgstr "الطابور:"
-
-#~ msgid "SCSI"
-#~ msgstr "SCSI"
-
-#~ msgid "SMB"
-#~ msgstr "SMB"
-
-#~ msgid "Search for a printer driver to download"
-#~ msgstr "ابحث عن مشغل الطابعة لتنزيله"
-
-#~ msgid "Searching..."
-#~ msgstr "يجري البحث..."
-
-#~ msgid "Select printer from database"
-#~ msgstr "حدد طابعة من قاعدة البيانات"
-
-#~ msgid "Serial"
-#~ msgstr "تسلسلي"
-
-#~ msgid "Set authentication details now"
-#~ msgstr "حدد تفاصيل المواثقة الآن"
-
-#~ msgid "Short name for this printer such as \"laserjet\""
-#~ msgstr "اسم مختصر لهذه الطابعة مثل \"طابعة ليزر\""
-
-#~ msgid "Supplier:"
-#~ msgstr "المزود:"
-
-#~ msgid "Support:"
-#~ msgstr "الدعم:"
-
-#~ msgid "Text:"
-#~ msgstr "النص:"
-
-#~ msgid ""
-#~ "The foomatic printer database contains various manufacturer provided "
-#~ "PostScript Printer Description (PPD) files and also can generate PPD "
-#~ "files for a large number of (non PostScript) printers. But in general "
-#~ "manufacturer provided PPD files provide better access to the specific "
-#~ "features of the printer."
-#~ msgstr ""
-#~ "تحتوي قاعدة بيانات طابعات foomatic على العديد من ملفات وصف طابعات "
-#~ "بوستسكربت المقدمة من المصنِّعين، كما تولّد وصف للكثير من الطابعات التي ليست "
-#~ "طابعات بوستسكربت. لكن في الأغلب، ملفات الوصف المقدمة من المصنعين تتيح "
-#~ "وصولا أفضل للميزات الخاصة بالطابعة."
-
-#~ msgid ""
-#~ "These drivers do not come from your operating system supplier and will "
-#~ "not be covered by their commercial support.  See the support and license "
-#~ "terms of the driver's supplier."
-#~ msgstr ""
-#~ "هذه المشغلات لا تأتي من موفر نظام التشغيل ولن يغطيها الدعم التجاري. اقرأ "
-#~ "شروط ترخيص موفر المشغل."
-
-#~ msgid ""
-#~ "This driver supports additional hardware that may be installed in the "
-#~ "printer."
-#~ msgstr "يدعم هذا المشغل عتاد إضافي يمكن أن يثبت في الطابعة."
-
-#~ msgid ""
-#~ "This is done by assuming that options with the same name do have the same "
-#~ "meaning. Settings of options that are not present in the new PPD will be "
-#~ "lost and options only present in the new PPD will be set to default."
-#~ msgstr ""
-#~ "يتم هذا على افتراض أن الخيارات التي لها نفس الاسم تحمل ذات المعنى. "
-#~ "إعدادات الخيارات غير الموجودة في PPD الجديد سوف تفقد والإعدادات الموجودة "
-#~ "في PPD الجديد سوف تعيين كافتراضية."
-
-#~ msgid ""
-#~ "This way all current option settings will be lost. The default settings "
-#~ "of the new PPD will be used. "
-#~ msgstr ""
-#~ "بهذه الطرية ستفقد كل إعدادات الخيارات الحالية. وسف تستخدم الإعدادات "
-#~ "الافتراضية الخاصة ب‍ PPD الجديد. "
-
-#~ msgid "Try to copy the option settings over from the old PPD. "
-#~ msgstr "حاول نسخ إعدادات الخيارات من PPD القديم. "
-
-#~ msgid "Try to transfer the current settings"
-#~ msgstr "حاول نقل الإعدادات الحالية"
-
-#~ msgid "URI:"
-#~ msgstr "المسار:"
-
-#~ msgid "Use the new PPD (Postscript Printer Description) as is."
-#~ msgstr "استخدم PPD الجديد (وصف طابعة بوستسكرٍبت) كما هي."
-
-#~ msgid ""
-#~ "With this choice no driver download will be performed. In the next steps "
-#~ "a locally installed driver will be selected."
-#~ msgstr ""
-#~ "لن ينزل أي مشغل مع هذا الخيار. سيختار مشغل مثبت محليًا في الخطوة التالية."
-
-#~ msgid "Yes, I accept this license"
-#~ msgstr "نعم، أوافق على هذا الترخيص"
-
-#~ msgid "_Search"
-#~ msgstr "_بحث"
-
-#~ msgid "_Verify..."
-#~ msgstr "تح_قق..."
-
-#~ msgid "license"
-#~ msgstr "الرخصة"
-
-#~ msgid "move left"
-#~ msgstr "انقل يسارا"
-
-#~ msgid "move right"
-#~ msgstr "انقل يمينا"
-
-#~ msgid "short description"
-#~ msgstr "وصف قصير"
-
-#~ msgid "supplier"
-#~ msgstr "الموفر"
-
-#~ msgid "support contacts"
-#~ msgstr "جهات الاتصال لدعم الفني"
-
-#~ msgid " "
-#~ msgstr " "
-
-#~ msgid "<b>Banner</b>"
-#~ msgstr "<b>لافتة</b>"
-
-#~ msgid "<b>Common Options</b>"
-#~ msgstr "<b>الخيارات الشائعة</b>"
-
-#~ msgid "<b>Image Options</b>"
-#~ msgstr "<b>خيارات الصورة</b>"
-
-#~ msgid "<b>Ink/Toner Levels</b>"
-#~ msgstr "<b>مستويات الحبر</b>"
-
-#~ msgid "<b>Other Options (Advanced)</b>"
-#~ msgstr "<b>خيارات أخرى (متقدمة)</b>"
-
-#~ msgid "<b>Policies</b>"
-#~ msgstr "<b>السياسات</b>"
-
-#~ msgid "<b>Settings</b>"
-#~ msgstr "<b>الإعدادات</b>"
-
-#~ msgid "<b>State</b>"
-#~ msgstr "<b>الحالة</b>"
-
-#~ msgid "<b>Status Messages</b>"
-#~ msgstr "<b>رسائل الحالة</b>"
-
-#~ msgid "<b>Tests and Maintenance</b>"
-#~ msgstr "<b>الاختبارات والصيانة</b>"
-
-#~ msgid "<b>Text Options</b>"
-#~ msgstr "<b>خيارات النص</b>"
-
-#~ msgid ""
-#~ "<i>Not published\n"
-#~ "See server settings</i>"
-#~ msgstr ""
-#~ "<i>غير منشور\n"
-#~ "طالع إعدادات الخادم</i>"
-
-#~ msgid "Accepting jobs"
-#~ msgstr "قبول المهام"
-
-#~ msgid "Access Control"
-#~ msgstr "تحكم بالوصول"
-
-#~ msgid "Add or Remove Members"
-#~ msgstr "أضف أو أزل الأعضاء"
-
-#~ msgid "Allow printing for everyone except these users:"
-#~ msgstr "اسمح بالطباعة لكل شخص ما عدا هؤلاء المستخدمين:"
-
-#~ msgid "Bottom margin:"
-#~ msgstr "الهامش السفلي:"
-
-#~ msgid "Brightness:"
-#~ msgstr "السطوع:"
-
-#~ msgid "Change..."
-#~ msgstr "غيّر..."
-
-#~ msgid "Characters per inch:"
-#~ msgstr "حروف لكل بوصة:"
-
-#~ msgid "Clean Print Heads"
-#~ msgstr "نظف رؤوس الطابعة"
-
-#~ msgid "Co_nflicts"
-#~ msgstr "تت_عارض مع"
-
-#~ msgid "Columns:"
-#~ msgstr "الأعمدة:"
-
-#~ msgid "Copies:"
-#~ msgstr "النسخ:"
-
-#~ msgid "Deny printing for everyone except these users:"
-#~ msgstr "لا تسمح لأي شخص بالطباعة إلا هؤلاء المستخدمين:"
-
-#~ msgid "Device URI:"
-#~ msgstr "مسار الجهاز:"
-
-#~ msgid "Enabled"
-#~ msgstr "مفعّل"
-
-#~ msgid "Ending Banner:"
-#~ msgstr "لافتة النهاية:"
-
-#~ msgid "Error Policy: \t"
-#~ msgstr "خطأ في السياسة: \t"
-
-#~ msgid "Finishings:"
-#~ msgstr "الإنهاء:"
-
-#~ msgid "Gamma:"
-#~ msgstr "الجاما:"
-
-#~ msgid "Hold until:"
-#~ msgstr "علق حتى:"
-
-#~ msgid "Hue adjustment:"
-#~ msgstr "ضبط تدرج الألوان:"
-
-#~ msgid "Ink/Toner Levels"
-#~ msgstr "مستويات الحبر"
-
-#~ msgid "Job Options"
-#~ msgstr "خيارات المهام"
-
-#~ msgid "Job priority:"
-#~ msgstr "أولوية المهمة:"
-
-#~ msgid "Left margin:"
-#~ msgstr "الهامش الأيسر:"
-
-#~ msgid "Lines per inch:"
-#~ msgstr "سطور لكل بوصة:"
-
-#~ msgid "Location:"
-#~ msgstr "المكان:"
-
-#~ msgid "Make and Model:"
-#~ msgstr "الصنع والطراز:"
-
-#~ msgid "Media:"
-#~ msgstr "الوسائط:"
-
-#~ msgid "Members"
-#~ msgstr "الأعضاء"
-
-#~ msgid "Mirror"
-#~ msgstr "مرآة"
-
-#~ msgid "More"
-#~ msgstr "المزيد"
-
-#~ msgid "Operation Policy:"
-#~ msgstr "سياسة العملية:"
-
-#~ msgid "Orientation:"
-#~ msgstr "التوجه:"
-
-#~ msgid "Output order:"
-#~ msgstr "ترتيب الناتج:"
-
-#~ msgid "Pages per side layout:"
-#~ msgstr "تخطيط الصفحات لكل وجه:"
-
-#~ msgid "Pages per side:"
-#~ msgstr "صفحات لكل وجه:"
-
-#~ msgid "Policies"
-#~ msgstr "السياسات"
-
-#~ msgid "Pretty print"
-#~ msgstr "طباعة جميلة"
-
-#~ msgid "Print Self-Test Page"
-#~ msgstr "اطبع صفحة اختبار ذاتي"
-
-#~ msgid "Printer Properties"
-#~ msgstr "خصائص الطابعة"
-
-#~ msgid "Printer State:"
-#~ msgstr "حالة الطابعة:"
-
-#~ msgid "Reset"
-#~ msgstr "تصفير"
-
-#~ msgid "Right margin:"
-#~ msgstr "الهامش الأيمن:"
-
-#~ msgid "Saturation:"
-#~ msgstr "التشبع:"
-
-#~ msgid "Scale to fit"
-#~ msgstr "تغيير الحجم لكي تتلائم"
-
-#~ msgid "Scaling:"
-#~ msgstr "التعديل:"
-
-#~ msgid "Settings"
-#~ msgstr "الإعدادات"
-
-#~ msgid "Shared"
-#~ msgstr "مشتركة"
-
-#~ msgid "Sides:"
-#~ msgstr "الأوجه:"
-
-#~ msgid ""
-#~ "Specify the default job options for this printer.  Jobs arriving at this "
-#~ "print server will have these options added if they are not already set by "
-#~ "the application."
-#~ msgstr ""
-#~ "حدد خيارات المهمّة المبدئية لهذه الطابعة. ستضاف هذه الخياران إلى المهام "
-#~ "الواردة إلى خادم الطباعة هذا إذا لم يحددها البرنامج بالفعل."
-
-#~ msgid "Starting Banner:"
-#~ msgstr "لافتة البداية:"
-
-#~ msgid "There are no status messages for this printer."
-#~ msgstr "لايوجد رسائل الحالة لهذه الطابعة."
-
-#~ msgid ""
-#~ "To add a new option, enter its name in the box below and click to add."
-#~ msgstr "لكي تضيف خيار جديد، أدخل اسمه في الصندوق في الأسفل وتنقر أضف."
-
-#~ msgid "Top margin:"
-#~ msgstr "الهامش العلوي:"
-
-#~ msgid "Word wrap"
-#~ msgstr "إلتفاف الكلمات"
-
-#~ msgid "points"
-#~ msgstr "النقاط"
-
-#~ msgid "user"
-#~ msgstr "المستخدم"
-
-#~ msgid ""
-#~ "Printing service not available.  Start the service on this computer or "
-#~ "connect to another server."
-#~ msgstr ""
-#~ "خدمة الطباعة غير متوفرة. ابدأ تشغيل الخدمة على هذا الجهاز أو اتصل بخادم "
-#~ "آخر"
-
-#~ msgid "Start Service"
-#~ msgstr "بدء الخدمة"
-
-#~ msgid "System-Config-Printer"
-#~ msgstr "نظام إعداد الطابعة"
-
-#~ msgid "There are no printers configured yet."
-#~ msgstr "لا يوجد أي طابعات تم إعدادها بعد بعد"
-
-#~ msgid "_Discovered Printers"
-#~ msgstr "طابعات المكت_شفة"
-
-#~ msgid "_Group"
-#~ msgstr "م_جموعة"
-
-#~ msgid "_Groups"
-#~ msgstr "مجمو_عات"
-
-#~ msgid "_Help"
-#~ msgstr "_مساعدة"
-
-#~ msgid "_Server"
-#~ msgstr "ال_خادم"
-
 #~ msgid "_Troubleshoot"
 #~ msgstr "حل المشا_كل"
 
-#~ msgid "_View"
-#~ msgstr "_عرض"
-
-#~ msgid "<b>Basic Server Settings</b>"
-#~ msgstr "<b>إعدادات الخادم الأساسية</b>"
-
-#~ msgid "<b>Browse servers</b>"
-#~ msgstr "<b>استعرض الخوادم</b>"
-
-#~ msgid "<b>Job history</b>"
-#~ msgstr "<b>تأريخ المهام</b>"
-
-#~ msgid "Advanced Server Settings"
-#~ msgstr "إعدادات الخادم المتقدمة."
-
-#~ msgid "Allow _remote administration"
-#~ msgstr "اسمح بالإدارة ال_بعيدة"
-
-#~ msgid "Allow _users to cancel any job (not just their own)"
-#~ msgstr "اسمح للم_ستخدمين بإلغاء أي مهمة (ليس فقط المهام الخاصة بهم)"
-
-#~ msgid "Allow printing from the _Internet"
-#~ msgstr "اسمح بالطباعة من الإنت_رنت"
-
-#~ msgid "Do not preserve job history"
-#~ msgstr "لا تحتفظ بتأريخ المهام"
-
-#~ msgid "Preserve job files (allow reprinting)"
-#~ msgstr "احتفظ بملفات المهام (لتتمكن من إعادة الطباعة)"
-
-#~ msgid "Preserve job history but not files"
-#~ msgstr "احتفظ بتأريخ المهام ولكن لا تحتفظ بالملفات"
-
-#~ msgid "Save _debugging information for troubleshooting"
-#~ msgstr "احفظ معلومات الأخطاء لتصحيح الأخطاء"
-
-#~ msgid "Server Settings"
-#~ msgstr "إعدادات الخادم"
-
-#~ msgid ""
-#~ "Usually print servers broadcast their queues. Specify print servers below "
-#~ "to periodically ask for queues instead."
-#~ msgstr ""
-#~ "عادة تبث الخوادم الطابعات طوابيرها. حدد الخوادم الطابعات في الأسفل لطلب "
-#~ "طوابيرها بشكل دوري بدلا من ذلك."
-
-#~ msgid "_Publish shared printers connected to this system"
-#~ msgstr "ان_شر الطابعات المشاركة المتصلة بهذا النظام"
-
-#~ msgid "_Show printers shared by other systems"
-#~ msgstr "أ_ظهر الطابعات المشاركة بواسطة أنظمة أخرى"
-
-#~ msgid "SMB Browser"
-#~ msgstr "متصفح SMB"
-
 #~ msgid "_Configure Printers"
 #~ msgstr "إ_عداد الطابعات"
-
-#~ msgid "_Hide"
-#~ msgstr "ا_خفاء"
-
-#~ msgid "Please Wait"
-#~ msgstr "فضلا انتظر"
 
 #~ msgid "Cancel, pause, resume or reprint jobs"
 #~ msgstr "ألغ أو أوقف أو استأنف أو أعد طباعة المهام"

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mr\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2011-02-17 16:17+0000\n"
+"POT-Creation-Date: 2011-02-25 09:57+0000\n"
 "PO-Revision-Date: 2010-07-26 12:41+0530\n"
 "Last-Translator: Sandeep Shedmake <sshedmak@redhat.com>\n"
 "Language-Team: Marathi <fedora-trans-mr@redhat.com>\n"
@@ -58,11 +58,11 @@ msgstr "पुन्हा प्रयत्न करा"
 msgid "Operation canceled"
 msgstr "कार्य रद्द केले"
 
-#: ../authconn.py:32 ../pysmb.py:123
+#: ../authconn.py:32 ../pysmb.py:123 ../ui/NewPrinterWindow.glade.h:94
 msgid "Username:"
 msgstr "वापरकर्ता नाव:"
 
-#: ../authconn.py:33 ../pysmb.py:129
+#: ../authconn.py:33 ../pysmb.py:129 ../ui/NewPrinterWindow.glade.h:63
 msgid "Password:"
 msgstr "पासवर्ड:"
 
@@ -340,7 +340,8 @@ msgstr ""
 
 #: ../jobviewer.py:706 ../jobviewer.py:1002 ../jobviewer.py:1704
 #: ../jobviewer.py:1734 ../jobviewer.py:2104 ../jobviewer.py:2109
-#: ../jobviewer.py:2123 ../jobviewer.py:2202 ../printerproperties.py:1541
+#: ../jobviewer.py:2123 ../jobviewer.py:2202 ../printerproperties.py:1582
+#: ../ui/NewPrinterWindow.glade.h:92
 #: ../troubleshoot/ChooseNetworkPrinter.py:100
 #: ../troubleshoot/ChooseNetworkPrinter.py:101
 #: ../troubleshoot/ChooseNetworkPrinter.py:104
@@ -415,6 +416,7 @@ msgid "Save File"
 msgstr "फाइल निवडा"
 
 #: ../jobviewer.py:1449 ../system-config-printer.py:258
+#: ../ui/NewPrinterWindow.glade.h:57
 #: ../troubleshoot/ChooseNetworkPrinter.py:35
 #: ../troubleshoot/ChoosePrinter.py:36 ../troubleshoot/DeviceListed.py:36
 msgid "Name"
@@ -596,7 +598,7 @@ msgstr ""
 #. See section 4.2.6 of this document for explanation of finishing types:
 #. ftp://ftp.pwg.org/pub/pwg/candidates/cs-ippfinishings10-20010205-5100.1.pdf
 #: ../newprinter.py:299 ../newprinter.py:310 ../newprinter.py:3267
-#: ../ppdippstr.py:63 ../printerproperties.py:264
+#: ../ppdippstr.py:63 ../printerproperties.py:268
 msgid "None"
 msgstr "काहिच नाही"
 
@@ -629,11 +631,11 @@ msgstr ""
 msgid "DTR/DSR (Hardware)"
 msgstr ""
 
-#: ../newprinter.py:330 ../printerproperties.py:218
+#: ../newprinter.py:330 ../printerproperties.py:222
 msgid "Members of this class"
 msgstr "या वर्गाचे सदस्य"
 
-#: ../newprinter.py:332 ../printerproperties.py:219
+#: ../newprinter.py:332 ../printerproperties.py:223
 msgid "Others"
 msgstr "इतर"
 
@@ -657,7 +659,7 @@ msgstr "नमुने"
 msgid "Drivers"
 msgstr "ड्राइवर"
 
-#: ../newprinter.py:338
+#: ../newprinter.py:338 ../ui/NewPrinterWindow.glade.h:35
 msgid "Downloadable Drivers"
 msgstr "डाऊनलोडजोगी ड्राइवर"
 
@@ -691,7 +693,7 @@ msgstr "सर्व फाइल (*)"
 msgid "Search"
 msgstr "शोध"
 
-#: ../newprinter.py:611 ../newprinter.py:632
+#: ../newprinter.py:611 ../newprinter.py:632 ../ui/NewPrinterWindow.glade.h:59
 msgid "New Printer"
 msgstr "नविन मुद्रक"
 
@@ -847,7 +849,7 @@ msgstr "LPD/LPR रांग"
 msgid "Windows Printer via SAMBA"
 msgstr "SAMBA द्वारे Windows छपाईयंत्र"
 
-#: ../newprinter.py:2376
+#: ../newprinter.py:2376 ../ui/NewPrinterWindow.glade.h:48
 msgid "IPP"
 msgstr "IPP"
 
@@ -903,7 +905,7 @@ msgstr "Hardware Abstraction Layer (HAL) द्वारे स्थानी�
 msgid "Searching for printers"
 msgstr "छपाईयंत्र करीता शोधत आहे"
 
-#: ../newprinter.py:2769
+#: ../newprinter.py:2769 ../ui/NewPrinterWindow.glade.h:60
 msgid "No printer was found at that address."
 msgstr "त्या पत्यावर छपाईयंत्र आढळले नाही."
 
@@ -1002,7 +1004,7 @@ msgid "adding printer %s"
 msgstr "छपाईयंत्र %s समावेष करत आहे"
 
 #: ../newprinter.py:3570 ../newprinter.py:3581 ../newprinter.py:3598
-#: ../printerproperties.py:921 ../system-config-printer.py:1682
+#: ../printerproperties.py:957 ../system-config-printer.py:1682
 #: ../system-config-printer.py:1707
 #, python-format
 msgid "modifying printer %s"
@@ -1315,222 +1317,230 @@ msgid "Busy"
 msgstr "व्यस्त"
 
 #. Printer state reasons list
-#: ../printerproperties.py:200
+#: ../printerproperties.py:204
 msgid "Message"
 msgstr "संदेश"
 
-#: ../printerproperties.py:220
+#: ../printerproperties.py:224
 msgid "Users"
 msgstr "वापरकर्ता"
 
-#: ../printerproperties.py:243
+#: ../printerproperties.py:247
 #, fuzzy
 msgid "Portrait (no rotation)"
 msgstr "स्वयं फिरवा"
 
-#: ../printerproperties.py:244
+#: ../printerproperties.py:248
 msgid "Landscape (90 degrees)"
 msgstr ""
 
-#: ../printerproperties.py:245
+#: ../printerproperties.py:249
 msgid "Reverse landscape (270 degrees)"
 msgstr ""
 
-#: ../printerproperties.py:246
+#: ../printerproperties.py:250
 msgid "Reverse portrait (180 degrees)"
 msgstr ""
 
-#: ../printerproperties.py:252
+#: ../printerproperties.py:256
 msgid "Left to right, top to bottom"
 msgstr ""
 
-#: ../printerproperties.py:253
+#: ../printerproperties.py:257
 msgid "Left to right, bottom to top"
 msgstr ""
 
-#: ../printerproperties.py:254
+#: ../printerproperties.py:258
 msgid "Right to left, top to bottom"
 msgstr ""
 
-#: ../printerproperties.py:255
+#: ../printerproperties.py:259
 msgid "Right to left, bottom to top"
 msgstr ""
 
-#: ../printerproperties.py:256
+#: ../printerproperties.py:260
 msgid "Top to bottom, left to right"
 msgstr ""
 
-#: ../printerproperties.py:257
+#: ../printerproperties.py:261
 msgid "Top to bottom, right to left"
 msgstr ""
 
-#: ../printerproperties.py:258
+#: ../printerproperties.py:262
 msgid "Bottom to top, left to right"
 msgstr ""
 
-#: ../printerproperties.py:259
+#: ../printerproperties.py:263
 msgid "Bottom to top, right to left"
-msgstr ""
-
-#: ../printerproperties.py:265
-#, fuzzy
-msgid "Staple"
-msgstr "थांबलेले"
-
-#: ../printerproperties.py:266
-msgid "Punch"
-msgstr ""
-
-#: ../printerproperties.py:267
-#, fuzzy
-msgid "Cover"
-msgstr "कवर उगडे आहे"
-
-#: ../printerproperties.py:268
-msgid "Bind"
 msgstr ""
 
 #: ../printerproperties.py:269
 #, fuzzy
-msgid "Saddle stitch"
-msgstr "प्रमाणीत करून घट्ट बसवा"
+msgid "Staple"
+msgstr "थांबलेले"
 
 #: ../printerproperties.py:270
-msgid "Edge stitch"
+msgid "Punch"
 msgstr ""
 
 #: ../printerproperties.py:271
 #, fuzzy
-msgid "Fold"
-msgstr "रोखा (_H)"
+msgid "Cover"
+msgstr "कवर उगडे आहे"
 
 #: ../printerproperties.py:272
-msgid "Trim"
+msgid "Bind"
 msgstr ""
 
 #: ../printerproperties.py:273
-msgid "Bale"
-msgstr ""
+#, fuzzy
+msgid "Saddle stitch"
+msgstr "प्रमाणीत करून घट्ट बसवा"
 
 #: ../printerproperties.py:274
-msgid "Booklet maker"
+msgid "Edge stitch"
 msgstr ""
 
 #: ../printerproperties.py:275
+#, fuzzy
+msgid "Fold"
+msgstr "रोखा (_H)"
+
+#: ../printerproperties.py:276
+msgid "Trim"
+msgstr ""
+
+#: ../printerproperties.py:277
+msgid "Bale"
+msgstr ""
+
+#: ../printerproperties.py:278
+msgid "Booklet maker"
+msgstr ""
+
+#: ../printerproperties.py:279
 msgid "Job offset"
 msgstr ""
 
-#: ../printerproperties.py:276
+#: ../printerproperties.py:280
 #, fuzzy
 msgid "Staple (top left)"
 msgstr "प्रमाणीत करून घट्ट बसवा"
 
-#: ../printerproperties.py:277
+#: ../printerproperties.py:281
 #, fuzzy
 msgid "Staple (bottom left)"
 msgstr "प्रमाणीत करून घट्ट बसवा"
 
-#: ../printerproperties.py:278
+#: ../printerproperties.py:282
 #, fuzzy
 msgid "Staple (top right)"
 msgstr "प्रमाणीत करून घट्ट बसवा"
 
-#: ../printerproperties.py:279
+#: ../printerproperties.py:283
 #, fuzzy
 msgid "Staple (bottom right)"
 msgstr "प्रमाणीत करून घट्ट बसवा"
 
-#: ../printerproperties.py:280
+#: ../printerproperties.py:284
 msgid "Edge stitch (left)"
 msgstr ""
 
-#: ../printerproperties.py:281
+#: ../printerproperties.py:285
 msgid "Edge stitch (top)"
 msgstr ""
 
-#: ../printerproperties.py:282
+#: ../printerproperties.py:286
 msgid "Edge stitch (right)"
 msgstr ""
 
-#: ../printerproperties.py:283
+#: ../printerproperties.py:287
 msgid "Edge stitch (bottom)"
 msgstr ""
 
-#: ../printerproperties.py:284
+#: ../printerproperties.py:288
 msgid "Staple dual (left)"
 msgstr ""
 
-#: ../printerproperties.py:285
+#: ../printerproperties.py:289
 msgid "Staple dual (top)"
 msgstr ""
 
-#: ../printerproperties.py:286
+#: ../printerproperties.py:290
 msgid "Staple dual (right)"
 msgstr ""
 
-#: ../printerproperties.py:287
+#: ../printerproperties.py:291
 msgid "Staple dual (bottom)"
 msgstr ""
 
-#: ../printerproperties.py:288
+#: ../printerproperties.py:292
 msgid "Bind (left)"
 msgstr ""
 
-#: ../printerproperties.py:289
+#: ../printerproperties.py:293
 msgid "Bind (top)"
 msgstr ""
 
-#: ../printerproperties.py:290
+#: ../printerproperties.py:294
 msgid "Bind (right)"
 msgstr ""
 
-#: ../printerproperties.py:291
+#: ../printerproperties.py:295
 msgid "Bind (bottom)"
 msgstr ""
 
-#: ../printerproperties.py:296
+#: ../printerproperties.py:300
 msgid "One-sided"
 msgstr ""
 
-#: ../printerproperties.py:297
+#: ../printerproperties.py:301
 msgid "Two-sided (long edge)"
 msgstr ""
 
-#: ../printerproperties.py:298
+#: ../printerproperties.py:302
 msgid "Two-sided (short edge)"
 msgstr ""
 
-#: ../printerproperties.py:303
+#: ../printerproperties.py:307 ../printerproperties.py:312
 msgid "Normal"
 msgstr ""
 
-#: ../printerproperties.py:304
+#: ../printerproperties.py:308
 #, fuzzy
 msgid "Reverse"
 msgstr "वितरण (_R)"
 
-#: ../printerproperties.py:325
+#: ../printerproperties.py:311
+msgid "Draft"
+msgstr ""
+
+#: ../printerproperties.py:313
+msgid "High"
+msgstr ""
+
+#: ../printerproperties.py:337
 msgid "Automatic rotation"
 msgstr "स्वयं फिरवा"
 
-#: ../printerproperties.py:546
+#: ../printerproperties.py:576
 #, fuzzy
 msgid "CUPS test page"
 msgstr "चाचणी पान छपाईकृत करा"
 
-#: ../printerproperties.py:547
+#: ../printerproperties.py:577
 msgid ""
 "Typically shows whether all jets on a print head are functioning and that "
 "the print feed mechanisms are working properly."
 msgstr ""
 
-#: ../printerproperties.py:554
+#: ../printerproperties.py:584
 #, python-format
 msgid "Printer Properties - '%s' on %s"
 msgstr "छपाईयंत्र गुणधर्म - '%s', %s वरील"
 
 #. The Conflict button was pressed.
-#: ../printerproperties.py:561
+#: ../printerproperties.py:591
 msgid ""
 "There are conflicting options.\n"
 "Changes can only be applied after\n"
@@ -1540,24 +1550,24 @@ msgstr ""
 "हे मदभेद निर्धारीत झाल्यावरच\n"
 "बदल लागू होतील."
 
-#: ../printerproperties.py:881
+#: ../printerproperties.py:917
 msgid "Installable Options"
 msgstr "प्रतिष्ठापनयोग्य पर्याय"
 
-#: ../printerproperties.py:882
+#: ../printerproperties.py:918 ../ui/PrinterPropertiesDialog.glade.h:63
 msgid "Printer Options"
 msgstr "मुद्रक पर्याय"
 
-#: ../printerproperties.py:919
+#: ../printerproperties.py:955
 #, python-format
 msgid "modifying class %s"
 msgstr "वर्ग %s संपादीत करत आहे"
 
-#: ../printerproperties.py:936
+#: ../printerproperties.py:972
 msgid "This will delete this class!"
 msgstr "हे या वर्गास नष्ट करेल!"
 
-#: ../printerproperties.py:937
+#: ../printerproperties.py:973
 msgid "Proceed anyway?"
 msgstr "तरिही पुढे जावे?"
 
@@ -1565,61 +1575,61 @@ msgstr "तरिही पुढे जावे?"
 #. but we have never fetched the server settings to see whether
 #. the server is publishing shared printers.  Fetch the settings
 #. now so that we can update the "not published" label if necessary.
-#: ../printerproperties.py:1027 ../serversettings.py:192
+#: ../printerproperties.py:1065 ../serversettings.py:192
 msgid "fetching server settings"
 msgstr "सर्व्हर संयोजना प्राप्त करत आहे"
 
-#: ../printerproperties.py:1109
+#: ../printerproperties.py:1147
 msgid "printing test page"
 msgstr "चाचणी पानची छपाई करत आहे"
 
-#: ../printerproperties.py:1122 ../printerproperties.py:1157
+#: ../printerproperties.py:1160 ../printerproperties.py:1195
 msgid "Not possible"
 msgstr "शक्य नाही"
 
-#: ../printerproperties.py:1123 ../printerproperties.py:1158
+#: ../printerproperties.py:1161 ../printerproperties.py:1196
 msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
 msgstr "छपाईयंत्र सहभागीय नसल्यामुळे, दूरस्थ सर्व्हरने छपाई कार्य स्वीकारले नाही."
 
-#: ../printerproperties.py:1135 ../printerproperties.py:1150
+#: ../printerproperties.py:1173 ../printerproperties.py:1188
 msgid "Submitted"
 msgstr "दाखल"
 
-#: ../printerproperties.py:1136
+#: ../printerproperties.py:1174
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr "चाचणी पान, कार्य %d नुरूप सादर केले"
 
-#: ../printerproperties.py:1143
+#: ../printerproperties.py:1181
 msgid "sending maintenance command"
 msgstr "दुरुस्ती आदेश पाठवत आहे"
 
-#: ../printerproperties.py:1151
+#: ../printerproperties.py:1189
 #, python-format
 msgid "Maintenance command submitted as job %d"
 msgstr "दुरुस्ती आदेश, कार्य %d नुरूप सादर केले"
 
-#: ../printerproperties.py:1238 ../printerproperties.py:1243
-#: ../printerproperties.py:1339
+#: ../printerproperties.py:1276 ../printerproperties.py:1281
+#: ../printerproperties.py:1377
 msgid "Error"
 msgstr "त्रुटी"
 
-#: ../printerproperties.py:1239
+#: ../printerproperties.py:1277
 msgid "The PPD file for this queue is damaged."
 msgstr ""
 
-#: ../printerproperties.py:1244
+#: ../printerproperties.py:1282
 msgid "There was a problem connecting to the CUPS server."
 msgstr "CUPS सर्व्हरशी जुळवणी स्थापीत करतेवेळी अडचण आढळली."
 
-#: ../printerproperties.py:1340
+#: ../printerproperties.py:1378
 #, python-format
 msgid "Option '%s' has value '%s' and cannot be edited."
 msgstr "पर्याय '%s' चे '%s' मूल्य आहे व त्यास संपादीत करणे अशक्य आहे."
 
-#: ../printerproperties.py:1450
+#: ../printerproperties.py:1491
 msgid "Marker levels are not reported for this printer."
 msgstr "मार्कर स्तर या छपाई करीता कळविले गेले नाही."
 
@@ -1660,7 +1670,7 @@ msgstr "संयोजना (_S)..."
 msgid "Adjust server settings"
 msgstr "सर्व्हर संयोजना सुस्थित करा"
 
-#: ../system-config-printer.py:223
+#: ../system-config-printer.py:223 ../ui/PrintersWindow.glade.h:9
 msgid "_Printer"
 msgstr "छपाईयंत्र (_P)"
 
@@ -1769,8 +1779,8 @@ msgstr ""
 msgid "Cannot start service on remote server"
 msgstr ""
 
-#: ../system-config-printer.py:1143
-#, python-format
+#: ../system-config-printer.py:1143 ../ui/ConnectingDialog.glade.h:2
+#, no-c-format, python-format
 msgid "<i>Opening connection to %s</i>"
 msgstr "<i>%s करीता जुळवणी उघडत आहे</i>"
 
@@ -1860,7 +1870,9 @@ msgstr ""
 msgid "Would you like to print a test page?"
 msgstr "तुम्हाला चाचणी पान छपाईकृत करायचे?"
 
-#: ../system-config-printer.py:1948 ../troubleshoot/PrintTestPage.py:72
+#. Not more than 25 characters
+#: ../system-config-printer.py:1948 ../ui/PrinterPropertiesDialog.glade.h:61
+#: ../troubleshoot/PrintTestPage.py:72
 msgid "Print Test Page"
 msgstr "चाचणी पृष्ठ छापा"
 
@@ -1885,6 +1897,964 @@ msgid ""
 msgstr ""
 "छपाईयंत्र '%s' ला %s संकुलची आवश्यकता आहे परंतु ते वर्तमानक्षणी प्रतिष्ठापीत नाही.  कृपया "
 "या छपाईयंत्राचा वापर करण्यापूर्वी प्रतिष्ठापीत करा."
+
+#: ../ui/AboutDialog.glade.h:1
+msgid "A CUPS configuration tool."
+msgstr "CUPS संयोजना साधन."
+
+#: ../ui/AboutDialog.glade.h:2
+#, fuzzy
+msgid "Copyright © 2006-2008 Red Hat, Inc."
+msgstr "Copyright © 2006-2008 Red Hat, Inc."
+
+#: ../ui/AboutDialog.glade.h:3
+msgid ""
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with "
+"this program; if not, write to the Free Software Foundation, Inc., 675 Mass "
+"Ave, Cambridge, MA 02139, USA."
+msgstr ""
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with "
+"this program; if not, write to the Free Software Foundation, Inc., 675 Mass "
+"Ave, Cambridge, MA 02139, USA."
+
+#. TRANSLATORS: Replace this string with your names, one name per line.  Thank you very much for your effort on translating system-config-printer and all our other tools!
+#: ../ui/AboutDialog.glade.h:9
+msgid "translator-credits"
+msgstr ""
+"राहुल भालेराव <b.rahul.pm@gmail.com>, 2006; संदिप शेडमाके <sandeep.shedmake@gmail."
+"com>, 2009; संदिप शेडमाके <sshedmak@redhat.com>, 2009, 2010."
+
+#: ../ui/ConnectDialog.glade.h:1
+msgid "CUPS _server:"
+msgstr "CUPS सर्व्हर (_s):"
+
+#: ../ui/ConnectDialog.glade.h:2
+msgid "Connect to CUPS server"
+msgstr "CUPS सर्व्हरशी जुळवणी करा"
+
+#: ../ui/ConnectDialog.glade.h:3
+msgid "Require _encryption"
+msgstr "एनक्रिप्शन आवश्यक (_e)"
+
+#: ../ui/ConnectingDialog.glade.h:3
+msgid "<span weight=\"bold\" size=\"larger\">Connecting to CUPS server</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">CUPS सर्व्हरशी जुळवणी करत आहे</span>"
+
+#: ../ui/ConnectingDialog.glade.h:4
+msgid "Connecting to CUPS server"
+msgstr "CUPS सर्व्हरशी जुळवणी करत आहे"
+
+#: ../ui/InstallDialog.glade.h:1
+msgid "_Install"
+msgstr "प्रतिष्ठापीत करा (_I)"
+
+#: ../ui/JobsWindow.glade.h:1
+msgid "Refresh job list"
+msgstr ""
+
+#: ../ui/JobsWindow.glade.h:2
+msgid "Show _completed jobs"
+msgstr "संपन्न कार्य दाखवा (_c)"
+
+#: ../ui/JobsWindow.glade.h:3
+#, fuzzy
+msgid "Show completed jobs"
+msgstr "संपन्न कार्य दाखवा (_c)"
+
+#: ../ui/JobsWindow.glade.h:4
+msgid "_Refresh"
+msgstr "पुन्ह दाखलन (_R)"
+
+#: ../ui/NewPrinterName.glade.h:1
+#, fuzzy
+msgid "Duplicate Printer"
+msgstr "पूर्वनिर्धारीत छपाईयंत्र"
+
+#: ../ui/NewPrinterName.glade.h:2
+msgid "New name for the printer"
+msgstr "मुद्रकासाठी नविन नाव"
+
+#: ../ui/NewPrinterWindow.glade.h:1
+msgid "<b>Authentication</b>"
+msgstr "<b>ओळख पटवा</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:2
+msgid "<b>Description</b>"
+msgstr "<b>वर्णन</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:3
+msgid "<b>Description</b> (optional)"
+msgstr "<b>वर्णन</b>(वैकल्पिक)"
+
+#: ../ui/NewPrinterWindow.glade.h:4
+msgid "<b>Enter device URI</b>"
+msgstr "<b>साधन URI प्रविष्ट करा</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:5
+msgid "<b>IPP Printer</b>"
+msgstr "<b>IPP छपाईयंत्र</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:6
+msgid "<b>License Terms</b>"
+msgstr "<b>परवाना अटी</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:7
+msgid "<b>Location of the LPD network printer</b>"
+msgstr "<b>LPD जाळं छपाईयंत्राचे ठिकाण</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:8
+msgid "<b>Location of the network printer</b>"
+msgstr "<b>संजाळ मुद्रकाचे ठिकाण</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:9
+msgid "<b>Location</b> (optional)"
+msgstr "<b> ठिकाण</b> (वैकल्पिक)"
+
+#: ../ui/NewPrinterWindow.glade.h:10
+msgid "<b>Network Printer</b>"
+msgstr "<b>जाळं छपाईयंत्र</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:11
+msgid "<b>Note</b>"
+msgstr "<b>टिप</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:12
+msgid "<b>Output Quality</b>"
+msgstr "<b>आऊटपुट दर्जा</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:13
+msgid "<b>Printer Name</b>"
+msgstr "<b>मुद्रक नाव</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:14
+msgid "<b>SMB Printer</b>"
+msgstr "<b>SMB छपाईयंत्र</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:15
+msgid "<b>Select Driver</b>"
+msgstr "<b>ड्राइवर निवडा</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:16
+msgid "<b>Settings of the serial port</b>"
+msgstr "<b>सिरीयल पोर्टची रचना</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:17
+msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
+msgstr "<i>smb://[workgroup/]server[:port]/printer</i>"
+
+#: ../ui/NewPrinterWindow.glade.h:18
+msgid "<span weight=\"bold\" size=\"larger\">Choose Class Members</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">वर्ग सदस्य निवडा</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:19
+msgid "<span weight=\"bold\" size=\"larger\">Choose Driver</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">ड्राइवर निवडा</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:20
+msgid "<span weight=\"bold\" size=\"larger\">Describe Printer</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">छपाईयंत्राचे वर्णन करा</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:21
+msgid "<span weight=\"bold\" size=\"larger\">Existing Settings</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">अस्तित्वातील संयोजना</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:22
+msgid "<span weight=\"bold\" size=\"larger\">Installable Options</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">प्रतिष्ठापनजोगी पर्याय</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:23
+msgid "<span weight=\"bold\" size=\"larger\">Select Device</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">साधन निवडा</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:24
+msgid "Baud Rate"
+msgstr "बाउड दर"
+
+#: ../ui/NewPrinterWindow.glade.h:25
+msgid "Browse..."
+msgstr "तपासा..."
+
+#: ../ui/NewPrinterWindow.glade.h:26
+#, fuzzy
+msgid "Change PPD"
+msgstr "ड्राइवर बदला"
+
+#: ../ui/NewPrinterWindow.glade.h:27
+#, fuzzy
+msgid "Class Members"
+msgstr "सदस्य"
+
+#: ../ui/NewPrinterWindow.glade.h:28
+msgid "Comments..."
+msgstr "टिप्पणी..."
+
+#: ../ui/NewPrinterWindow.glade.h:29
+msgid "Connection"
+msgstr "जोडणी"
+
+#: ../ui/NewPrinterWindow.glade.h:30
+msgid "Data Bits"
+msgstr "डेटा बिट्स"
+
+#: ../ui/NewPrinterWindow.glade.h:31 ../ui/PrinterPropertiesDialog.glade.h:29
+msgid "Description:"
+msgstr "वर्णन:"
+
+#: ../ui/NewPrinterWindow.glade.h:32
+#, fuzzy
+msgid "Device"
+msgstr "यंत्रे"
+
+#: ../ui/NewPrinterWindow.glade.h:33 ../troubleshoot/DeviceListed.py:40
+msgid "Device URI"
+msgstr "यंत्र URI"
+
+#: ../ui/NewPrinterWindow.glade.h:34
+msgid "Device description."
+msgstr "यंत्र वर्णन."
+
+#: ../ui/NewPrinterWindow.glade.h:36
+msgid "Driver details"
+msgstr "ड्राइवर तपशील"
+
+#: ../ui/NewPrinterWindow.glade.h:37
+msgid "Empty"
+msgstr "रिकामे"
+
+#: ../ui/NewPrinterWindow.glade.h:38
+msgid "Flow Control"
+msgstr "प्रवाह नियंत्रण"
+
+#: ../ui/NewPrinterWindow.glade.h:39
+msgid ""
+"For example:\n"
+"ipp://cups-server/printers/printer-queue\n"
+"ipp://printer.mydomain/ipp"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:42
+msgid ""
+"For the printer you have selected there are drivers available for download."
+msgstr "तुम्ही निवडलेल्या छपाईयंत्र करीता डाऊनलोड करण्याकरीता ड्राइवर उपलब्ध आहे."
+
+#: ../ui/NewPrinterWindow.glade.h:43
+msgid "Free software"
+msgstr "Free सॉफ्टवेअर"
+
+#: ../ui/NewPrinterWindow.glade.h:44
+msgid "Graphics:"
+msgstr "चित्रलेख:"
+
+#: ../ui/NewPrinterWindow.glade.h:45
+msgid "Host:"
+msgstr "आयोजकनाव:"
+
+#: ../ui/NewPrinterWindow.glade.h:46
+msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
+msgstr "मानव-वाचनजोगी वर्णन जसे की \"HP LaserJet with Duplexer\""
+
+#: ../ui/NewPrinterWindow.glade.h:47
+msgid "Human-readable location such as \"Lab 1\""
+msgstr "मानव-वाचनजोगी ठिकाण जसे की \"Lab 1\""
+
+#: ../ui/NewPrinterWindow.glade.h:49 ../ui/PrinterPropertiesDialog.glade.h:39
+msgid "Installed Options"
+msgstr "प्रतिष्ठापीत पर्याय"
+
+#: ../ui/NewPrinterWindow.glade.h:50
+#, fuzzy
+msgid "JetDirect"
+msgstr "DirectJet"
+
+#: ../ui/NewPrinterWindow.glade.h:51
+msgid "LPD"
+msgstr "LPD"
+
+#: ../ui/NewPrinterWindow.glade.h:52
+msgid "License:"
+msgstr "परवाना:"
+
+#: ../ui/NewPrinterWindow.glade.h:53
+msgid "Line art:"
+msgstr "रेघ कला:"
+
+#: ../ui/NewPrinterWindow.glade.h:54
+msgid "Local Driver"
+msgstr "स्थानीय ड्राइवर"
+
+#: ../ui/NewPrinterWindow.glade.h:55
+msgid "Make and model:"
+msgstr "बनावट व प्रारूप:"
+
+#: ../ui/NewPrinterWindow.glade.h:56
+msgid "Manufacturer"
+msgstr "उत्पादक"
+
+#: ../ui/NewPrinterWindow.glade.h:58
+msgid "Network"
+msgstr "जाळ"
+
+#: ../ui/NewPrinterWindow.glade.h:61
+msgid "No, I do not accept this license"
+msgstr "नाही, मला हा परवाना स्वीकार्य नाही"
+
+#: ../ui/NewPrinterWindow.glade.h:62
+msgid "Parity"
+msgstr "पॅरिटी"
+
+#: ../ui/NewPrinterWindow.glade.h:64
+msgid "Patented algorithms"
+msgstr "पेटन्ट केलेले अल्गोरिदम"
+
+#: ../ui/NewPrinterWindow.glade.h:65
+msgid "Photo:"
+msgstr "फोटो:"
+
+#: ../ui/NewPrinterWindow.glade.h:66
+msgid "Port number:"
+msgstr "पोर्ट क्रमांक:"
+
+#: ../ui/NewPrinterWindow.glade.h:67
+#, fuzzy
+msgid ""
+"PostScript Printer Description (PPD) files can often be found on the driver "
+"disk that comes with the printer. For PostScript printers they are often "
+"part of the Windows<sup>®</sup> driver."
+msgstr ""
+"PostScript Printer Description (PPD) फाइल सहसा छपाईयंत्र सह पुरविले जाणाऱ्य "
+"ड्राइवर डिस्कवर आढळले जाते. PostScript छपाईयंत्र करीता ते सहसा Windows<sup>®</sup> "
+"ड्राइवर सह पुरविले जातात."
+
+#: ../ui/NewPrinterWindow.glade.h:68
+msgid "Printer model:"
+msgstr "छपाईयंत्र प्रारूप:"
+
+#: ../ui/NewPrinterWindow.glade.h:69
+msgid "Probe"
+msgstr "प्रोब"
+
+#: ../ui/NewPrinterWindow.glade.h:70
+msgid "Prompt user if authentication is required"
+msgstr "ओळख पटवायची आवश्यकता असल्यास वापरकर्त्याला विचारा"
+
+#: ../ui/NewPrinterWindow.glade.h:71
+msgid "Provide PPD file"
+msgstr "PPD फाइल पुरवा"
+
+#: ../ui/NewPrinterWindow.glade.h:72
+msgid "Queue:"
+msgstr "रांग:"
+
+#: ../ui/NewPrinterWindow.glade.h:73
+msgid "SCSI"
+msgstr "SCSI"
+
+#: ../ui/NewPrinterWindow.glade.h:74
+msgid "SMB"
+msgstr "SMB"
+
+#: ../ui/NewPrinterWindow.glade.h:75
+msgid "Search for a printer driver to download"
+msgstr "डाऊनलोड करण्याजोगी प्रिन्टर ड्राइवर शोधा"
+
+#: ../ui/NewPrinterWindow.glade.h:76
+msgid "Searching..."
+msgstr "शोधत आहे..."
+
+#: ../ui/NewPrinterWindow.glade.h:77
+msgid "Select printer from database"
+msgstr "कोष पासून छपाईयंत्र निवडा"
+
+#: ../ui/NewPrinterWindow.glade.h:78
+msgid "Serial"
+msgstr "सिरियल"
+
+#: ../ui/NewPrinterWindow.glade.h:79
+msgid "Set authentication details now"
+msgstr "आता ओळख पटवण्याचा अतपशील निश्चित करा"
+
+#: ../ui/NewPrinterWindow.glade.h:80
+msgid "Short name for this printer such as \"laserjet\""
+msgstr "या छपाईयंत्र करीता लहानसे नाव जसे की \"laserjet\""
+
+#: ../ui/NewPrinterWindow.glade.h:81
+msgid "Supplier:"
+msgstr "पुरवठाकर्ता:"
+
+#: ../ui/NewPrinterWindow.glade.h:82
+msgid "Support:"
+msgstr "समर्थन:"
+
+#: ../ui/NewPrinterWindow.glade.h:83
+msgid "Text:"
+msgstr "पाठ्य:"
+
+#: ../ui/NewPrinterWindow.glade.h:84
+msgid ""
+"The foomatic printer database contains various manufacturer provided "
+"PostScript Printer Description (PPD) files and also can generate PPD files "
+"for a large number of (non PostScript) printers. But in general manufacturer "
+"provided PPD files provide better access to the specific features of the "
+"printer."
+msgstr ""
+"foomatic छपाईयंत्र कोष अंतर्गत विविध उत्पादक द्वारे पुरविलेले PostScript Printer "
+"Description (PPD) फाइल समाविष्टीत आहे व मोठ्या प्रमाणातील (विना PostScript) "
+"छपाईयंत्र करीता PPD फाइल देखिल बनवतो. परंतु सहसा उत्पादक द्वारे पुरविलेले PPD फाइल "
+"छपाईयंत्राचे ठराविक गुणविशेष करीता उत्तम प्रवेश पुरवितो."
+
+#: ../ui/NewPrinterWindow.glade.h:85
+msgid ""
+"These drivers do not come from your operating system supplier and will not "
+"be covered by their commercial support.  See the support and license terms "
+"of the driver's supplier."
+msgstr ""
+"हे ड्राइवर तुमच्या कार्य प्रणाली उत्पादक द्वारे पुरविले गेले नाही व त्यामुळे यांस समर्थन पुरविले "
+"जाणार नाही.  ड्राइवर पुरवठाकर्ताचे समर्थन व परवाना अटी पहा."
+
+#: ../ui/NewPrinterWindow.glade.h:86
+msgid ""
+"This driver supports additional hardware that may be installed in the "
+"printer."
+msgstr ""
+"हे ड्राइवर अगाऊ हार्डवेअर करीता समर्थन पुरवितो ज्यांस छपाईयंत्र अंतर्गत प्रतिष्ठापीत केले "
+"जाऊ शकते."
+
+#: ../ui/NewPrinterWindow.glade.h:87
+msgid ""
+"This is done by assuming that options with the same name do have the same "
+"meaning. Settings of options that are not present in the new PPD will be "
+"lost and options only present in the new PPD will be set to default."
+msgstr ""
+"हे सहसा समान नाव असलेल्या पर्यायांचा अर्थ देखिल समान होतो असे गृहीत धरून पूर्ण केले जाते. "
+"नवीन PPD अंतर्गत न आढळणाऱ्या पर्यायांची संयोजना गमवली जाईल व फक्त नवीन PPD अंतर्गत "
+"पर्याय पूर्वनिर्धारीत नुरूप निश्चित केले जातिल."
+
+#: ../ui/NewPrinterWindow.glade.h:88
+msgid ""
+"This way all current option settings will be lost. The default settings of "
+"the new PPD will be used. "
+msgstr ""
+"या तऱ्हेने सर्व वर्तमान पर्याय संयोजना नाहीसे होतील. नवीन PPD ची पूर्वनिर्धारीत संयोजना "
+"वापरले जाईल. "
+
+#: ../ui/NewPrinterWindow.glade.h:89
+msgid "Try to copy the option settings over from the old PPD. "
+msgstr "जुणे PPD पासून पर्याय संयोजना प्रतिकृत करण्याचा प्रयत्न करा. "
+
+#: ../ui/NewPrinterWindow.glade.h:90
+msgid "Try to transfer the current settings"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:91
+msgid "URI:"
+msgstr "URI:"
+
+#: ../ui/NewPrinterWindow.glade.h:93
+msgid "Use the new PPD (Postscript Printer Description) as is."
+msgstr "नवीन PPD (Postscript Printer Description) जैसे थे वापरा."
+
+#: ../ui/NewPrinterWindow.glade.h:95
+msgid ""
+"With this choice no driver download will be performed. In the next steps a "
+"locally installed driver will be selected."
+msgstr ""
+"या पर्याय निवडल्यास ड्राइवर डाऊनलोड होणार नाही. पुढिल पद्धतीत स्थानीयरित्या "
+"प्रतिष्ठापीत ड्राइवर निवडले जाईल."
+
+#: ../ui/NewPrinterWindow.glade.h:96
+msgid "Yes, I accept this license"
+msgstr "होय, मी या परवाना स्वीकारतो"
+
+#: ../ui/NewPrinterWindow.glade.h:97
+msgid "_Search"
+msgstr "शोधा (_S)"
+
+#: ../ui/NewPrinterWindow.glade.h:98
+msgid "_Verify..."
+msgstr "पडताळा(_V)..."
+
+#: ../ui/NewPrinterWindow.glade.h:99
+#, fuzzy
+msgid "license"
+msgstr "परवाना:"
+
+#: ../ui/NewPrinterWindow.glade.h:100 ../ui/PrinterPropertiesDialog.glade.h:81
+msgid "move left"
+msgstr "डावीकडे चला"
+
+#: ../ui/NewPrinterWindow.glade.h:101 ../ui/PrinterPropertiesDialog.glade.h:82
+msgid "move right"
+msgstr "उजवीकडे चला"
+
+#: ../ui/NewPrinterWindow.glade.h:102
+#, fuzzy
+msgid "short description"
+msgstr "वर्णन"
+
+#: ../ui/NewPrinterWindow.glade.h:103
+#, fuzzy
+msgid "supplier"
+msgstr "पुरवठाकर्ता:"
+
+#: ../ui/NewPrinterWindow.glade.h:104
+#, fuzzy
+msgid "support contacts"
+msgstr "समर्थन संपर्क परिचीत नाही"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:1
+msgid " "
+msgstr " "
+
+#: ../ui/PrinterPropertiesDialog.glade.h:2
+msgid "<b>Banner</b>"
+msgstr "<b>बॅनर</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:3
+msgid "<b>Common Options</b>"
+msgstr "<b>सर्वसाधारण पर्याय</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:4
+msgid "<b>Image Options</b>"
+msgstr "<b>प्रतिमा पर्याय</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:5
+msgid "<b>Ink/Toner Levels</b>"
+msgstr "<b>Ink/Toner स्तर</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:6
+msgid "<b>Other Options (Advanced)</b>"
+msgstr "<b>इतर पर्याय (प्रगत)</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:7
+msgid "<b>Policies</b>"
+msgstr "<b>धोरणे</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:8
+msgid "<b>Settings</b>"
+msgstr "<b>रचना</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:9
+msgid "<b>State</b>"
+msgstr "<b>स्थिती</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:10
+msgid "<b>Status Messages</b>"
+msgstr "<b>स्थिती संदेश</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:11
+msgid "<b>Tests and Maintenance</b>"
+msgstr "<b>चाचणी व दुरुस्ती</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:12
+msgid "<b>Text Options</b>"
+msgstr "<b>पाठ्य पर्याय</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:13
+msgid ""
+"<i>Not published\n"
+"See server settings</i>"
+msgstr ""
+"<i>प्रकाशीत केले नाही\n"
+"सर्व्हर संयोजना पहा</i>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:15
+msgid "Accepting jobs"
+msgstr "कामे स्विकारत आहे"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:16
+msgid "Access Control"
+msgstr "प्रवेश नियंत्रण"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:17
+msgid "Add or Remove Members"
+msgstr "सदस्य जोडा किंवा हटवा"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:18
+msgid "Allow printing for everyone except these users:"
+msgstr "या वापरकर्त्यांना वगळता इतर सर्वांना छपाई करीता परवानगी द्या:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:19
+msgid "Bottom margin:"
+msgstr "तळ समास:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:20
+msgid "Brightness:"
+msgstr "तेजपणा:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:21
+msgid "Change..."
+msgstr "बदल..."
+
+#: ../ui/PrinterPropertiesDialog.glade.h:22
+msgid "Characters per inch:"
+msgstr "प्रत्येक इंच करीता अक्षर:"
+
+#. Not more than 25 characters
+#: ../ui/PrinterPropertiesDialog.glade.h:24
+msgid "Clean Print Heads"
+msgstr "प्रिन्ट हेड साफ करा"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:25
+#, fuzzy
+msgid "Co_nflicts"
+msgstr "यासह संघर्ष:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:26
+msgid "Columns:"
+msgstr "रकाना:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:27
+msgid "Copies:"
+msgstr "प्रत:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:28
+msgid "Deny printing for everyone except these users:"
+msgstr "या वापरकर्त्यांना वगळता इतर सर्वांना छपाई करीता परवानगी देऊ नका:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:30
+msgid "Device URI:"
+msgstr "यंत्र URI:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:31
+msgid "Enabled"
+msgstr "कार्यान्वित"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:32
+msgid "Ending Banner:"
+msgstr "बॅनर समाप्ती:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:33
+msgid "Error Policy: \t"
+msgstr "त्रुटी धोरण: \t"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:34
+msgid "Finishings:"
+msgstr "शेवटचे काम:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:35
+msgid "Gamma:"
+msgstr "गामा:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:36
+msgid "Hold until:"
+msgstr "पर्यंत रोखून ठेवा:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:37
+msgid "Hue adjustment:"
+msgstr "ह्यु सुस्थिती:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:38
+msgid "Ink/Toner Levels"
+msgstr "शाई/टोनर स्तर"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:40
+msgid "Job Options"
+msgstr "काम पर्याय"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:41
+msgid "Job priority:"
+msgstr "कार्य प्राधाक्रम:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:42
+msgid "Left margin:"
+msgstr "डावे समास:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:43
+msgid "Lines per inch:"
+msgstr "दर इंच करीता ओळ:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:44
+msgid "Location:"
+msgstr "ठिकाण:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:45
+msgid "Make and Model:"
+msgstr "बनावट व प्रारूप:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:46
+msgid "Media:"
+msgstr "मिडीया:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:47
+msgid "Members"
+msgstr "सदस्य"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:48
+msgid "Mirror"
+msgstr "मिरर"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:49
+msgid "More"
+msgstr "अधिक"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:50
+msgid "Operation Policy:"
+msgstr "कार्य धोरण:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:51
+msgid "Orientation:"
+msgstr "निर्देशन:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:52
+msgid "Output bin:"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:53
+msgid "Output order:"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:54
+msgid "Pages per side layout:"
+msgstr "दर बाजूच्या मांडणी करीता पाने:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:55
+msgid "Pages per side:"
+msgstr "दर बाजू करीता पाने:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:56
+msgid "Policies"
+msgstr "धोरण"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:57
+msgid "Pretty print"
+msgstr "सुरेख छपाई"
+
+#. Not more than 25 characters
+#: ../ui/PrinterPropertiesDialog.glade.h:59
+msgid "Print Self-Test Page"
+msgstr "स्वयं-चाचणी पानची छपाई करा"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:62
+#, fuzzy
+msgid "Print quality:"
+msgstr "मुद्रक स्थिती:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:64
+msgid "Printer Properties"
+msgstr "छपाईयंत्र गुणधर्म"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:65
+msgid "Printer State:"
+msgstr "मुद्रक स्थिती:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:66
+#, fuzzy
+msgid "Printer resolution:"
+msgstr "छपाईयंत्र ठिकाण"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:67
+msgid "Reset"
+msgstr "स्वच्छ करा"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:68
+msgid "Right margin:"
+msgstr "उजवी समास:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:69
+msgid "Saturation:"
+msgstr "संपृक्तता:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:70
+msgid "Scale to fit"
+msgstr "प्रमाणीत करून घट्ट बसवा"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:71
+msgid "Scaling:"
+msgstr "प्रमाणीत करा:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:72
+msgid "Settings"
+msgstr "संयोजना"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:73
+msgid "Shared"
+msgstr "सहभागीय"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:74
+msgid "Sides:"
+msgstr "बाजू:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:75
+msgid ""
+"Specify the default job options for this printer.  Jobs arriving at this "
+"print server will have these options added if they are not already set by "
+"the application."
+msgstr ""
+"या छपाईयंत्र करीता पूर्वनिर्धारीत कार्य पर्याय निश्चित करा.  या छपाई सर्व्हर करीता "
+"येणारे कार्य अगोदर पासूनच ऍप्लिकेशन द्वारे निश्चित नसल्यावरच हे पर्याय समावेष केले जातिल."
+
+#: ../ui/PrinterPropertiesDialog.glade.h:76
+msgid "Starting Banner:"
+msgstr "प्रारंभिक बॅनर:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:77
+msgid "There are no status messages for this printer."
+msgstr "या छपाईयंत्र करीता स्थिती संदेश आढळले नाही."
+
+#: ../ui/PrinterPropertiesDialog.glade.h:78
+msgid "To add a new option, enter its name in the box below and click to add."
+msgstr ""
+"नवीन पर्याय समावेष करण्याकरीता, खालिल पेटीत नाव प्रविष्ट करा व समावेष करा वर क्लिक "
+"करा."
+
+#: ../ui/PrinterPropertiesDialog.glade.h:79
+msgid "Top margin:"
+msgstr "वरील समास:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:80
+msgid "Word wrap"
+msgstr "शब्द घट्ट बसवा"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:83
+msgid "points"
+msgstr "पॉईन्ट"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:84
+msgid "user"
+msgstr "वापरकर्ता"
+
+#: ../ui/PrintersWindow.glade.h:1
+msgid ""
+"Printing service not available.  Start the service on this computer or "
+"connect to another server."
+msgstr ""
+
+#: ../ui/PrintersWindow.glade.h:2
+msgid "Start Service"
+msgstr ""
+
+#: ../ui/PrintersWindow.glade.h:3
+msgid "System-Config-Printer"
+msgstr "System-Config-Printer"
+
+#: ../ui/PrintersWindow.glade.h:4
+msgid "There are no printers configured yet."
+msgstr ""
+
+#: ../ui/PrintersWindow.glade.h:5
+msgid "_Discovered Printers"
+msgstr "आढळलेले छपाईयंत्र (_D)"
+
+#: ../ui/PrintersWindow.glade.h:6
+msgid "_Group"
+msgstr "गट (_G)"
+
+#: ../ui/PrintersWindow.glade.h:7
+msgid "_Groups"
+msgstr "गट (_G)"
+
+#: ../ui/PrintersWindow.glade.h:8
+msgid "_Help"
+msgstr "मदत(_H)"
+
+#: ../ui/PrintersWindow.glade.h:10
+msgid "_Server"
+msgstr "सर्व्हर (_S)"
+
+#: ../ui/PrintersWindow.glade.h:11
+msgid "_View"
+msgstr "अवलोकन (_V)"
+
+#: ../ui/ServerSettingsDialog.glade.h:1
+msgid "<b>Basic Server Settings</b>"
+msgstr "<b>पायाभूत सेवक रचना</b>"
+
+#: ../ui/ServerSettingsDialog.glade.h:2
+#, fuzzy
+msgid "<b>Browse servers</b>"
+msgstr "सर्व्हर तपासा"
+
+#: ../ui/ServerSettingsDialog.glade.h:3
+#, fuzzy
+msgid "<b>Job history</b>"
+msgstr "कार्य इतिहास"
+
+#: ../ui/ServerSettingsDialog.glade.h:4
+msgid "Advanced Server Settings"
+msgstr "प्रगत सर्व्हर संयोजना"
+
+#: ../ui/ServerSettingsDialog.glade.h:5
+msgid "Allow _remote administration"
+msgstr "दूरस्थ प्रशासन करीता परवानगी द्या (_r)"
+
+#: ../ui/ServerSettingsDialog.glade.h:6
+msgid "Allow _users to cancel any job (not just their own)"
+msgstr ""
+"वापरकर्त्यांना कुठलेही कार्य (फक्त स्वत:चेच नाही) रद्द करण्याकरीता परवानगी द्या (_u)"
+
+#: ../ui/ServerSettingsDialog.glade.h:7
+msgid "Allow printing from the _Internet"
+msgstr "आंतरजाल पासून छपाई करीता परवानगी द्या (_I)"
+
+#: ../ui/ServerSettingsDialog.glade.h:8
+msgid "Do not preserve job history"
+msgstr "कार्य इतिहास सुरक्षित करू नका"
+
+#: ../ui/ServerSettingsDialog.glade.h:9
+msgid "Preserve job files (allow reprinting)"
+msgstr "कार्य फाइल सुरक्षित करा (पुन्ह छपाईकरीता परवानगी द्या)"
+
+#: ../ui/ServerSettingsDialog.glade.h:10
+msgid "Preserve job history but not files"
+msgstr "फाइलला वगळता कार्याचे इतिहास सुरक्षित करा"
+
+#: ../ui/ServerSettingsDialog.glade.h:11
+msgid "Save _debugging information for troubleshooting"
+msgstr "त्रुटी निर्धारण करीता डिबगींग माहिती साठवा (_d)"
+
+#: ../ui/ServerSettingsDialog.glade.h:12
+#, fuzzy
+msgid "Server Settings"
+msgstr "मूळ सर्व्हर संयोजना"
+
+#: ../ui/ServerSettingsDialog.glade.h:13
+#, fuzzy
+msgid ""
+"Usually print servers broadcast their queues. Specify print servers below to "
+"periodically ask for queues instead."
+msgstr ""
+"सहसा छपाई सर्व्हर स्वत:चे रांग प्रसारीत करतात.  वारंवार रांग करीता विचारण्या ऐवजी "
+"छपाई सर्व्हर निश्चित करा."
+
+#: ../ui/ServerSettingsDialog.glade.h:14
+msgid "_Publish shared printers connected to this system"
+msgstr "या प्रणालीसह सहभागीय छपाईयंत्र प्रकाशीत करा (_P)"
+
+#: ../ui/ServerSettingsDialog.glade.h:15
+msgid "_Show printers shared by other systems"
+msgstr "इतर प्रणाली द्वारे सहभागीय छपाईयंत्र दाखवा (_S)"
+
+#: ../ui/SMBBrowseDialog.glade.h:1
+msgid "SMB Browser"
+msgstr "SMB ब्राऊजर"
+
+#: ../ui/statusicon_popupmenu.glade.h:1
+msgid "_Hide"
+msgstr "लपवा (_H)"
+
+#: ../ui/WaitWindow.glade.h:1
+msgid "Please Wait"
+msgstr "कृपया थांबा"
 
 #: ../system-config-printer.desktop.in.h:1
 msgid "Configure printers"
@@ -2136,10 +3106,6 @@ msgid ""
 msgstr ""
 "कृपया खालिल यादीतून वापरण्याजोगी साधन निवडा. यादीत दृष्यास्पद नसल्यास, 'यादीत नाही' "
 "निवडा."
-
-#: ../troubleshoot/DeviceListed.py:40
-msgid "Device URI"
-msgstr "यंत्र URI"
 
 #: ../troubleshoot/ErrorLogCheckpoint.py:31
 msgid "Debugging"
@@ -2467,718 +3433,11 @@ msgstr "छपाई रांग ऍप्लेट"
 msgid "System tray icon for managing print jobs"
 msgstr "छपाई कार्य व्यवस्थापीत करण्याकरीता प्रणाली ट्रे चिन्ह"
 
-#~ msgid "A CUPS configuration tool."
-#~ msgstr "CUPS संयोजना साधन."
-
-#, fuzzy
-#~ msgid "Copyright &#xA9; 2006-2008 Red Hat, Inc."
-#~ msgstr "Copyright © 2006-2008 Red Hat, Inc."
-
-#~ msgid ""
-#~ "This program is free software; you can redistribute it and/or modify it "
-#~ "under the terms of the GNU General Public License as published by the "
-#~ "Free Software Foundation; either version 2 of the License, or (at your "
-#~ "option) any later version.\n"
-#~ "\n"
-#~ "This program is distributed in the hope that it will be useful, but "
-#~ "WITHOUT ANY WARRANTY; without even the implied warranty of "
-#~ "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General "
-#~ "Public License for more details.\n"
-#~ "\n"
-#~ "You should have received a copy of the GNU General Public License along "
-#~ "with this program; if not, write to the Free Software Foundation, Inc., "
-#~ "675 Mass Ave, Cambridge, MA 02139, USA."
-#~ msgstr ""
-#~ "This program is free software; you can redistribute it and/or modify it "
-#~ "under the terms of the GNU General Public License as published by the "
-#~ "Free Software Foundation; either version 2 of the License, or (at your "
-#~ "option) any later version.\n"
-#~ "\n"
-#~ "This program is distributed in the hope that it will be useful, but "
-#~ "WITHOUT ANY WARRANTY; without even the implied warranty of "
-#~ "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General "
-#~ "Public License for more details.\n"
-#~ "\n"
-#~ "You should have received a copy of the GNU General Public License along "
-#~ "with this program; if not, write to the Free Software Foundation, Inc., "
-#~ "675 Mass Ave, Cambridge, MA 02139, USA."
-
-#~ msgid "translator-credits"
-#~ msgstr ""
-#~ "राहुल भालेराव <b.rahul.pm@gmail.com>, 2006; संदिप शेडमाके <sandeep."
-#~ "shedmake@gmail.com>, 2009; संदिप शेडमाके <sshedmak@redhat.com>, 2009, 2010."
-
-#~ msgid "CUPS _server:"
-#~ msgstr "CUPS सर्व्हर (_s):"
-
-#~ msgid "Connect to CUPS server"
-#~ msgstr "CUPS सर्व्हरशी जुळवणी करा"
-
-#~ msgid "Require _encryption"
-#~ msgstr "एनक्रिप्शन आवश्यक (_e)"
-
-#~ msgid ""
-#~ "<span weight=\"bold\" size=\"larger\">Connecting to CUPS server</span>"
-#~ msgstr ""
-#~ "<span weight=\"bold\" size=\"larger\">CUPS सर्व्हरशी जुळवणी करत आहे</span>"
-
-#~ msgid "Connecting to CUPS server"
-#~ msgstr "CUPS सर्व्हरशी जुळवणी करत आहे"
-
-#~ msgid "_Install"
-#~ msgstr "प्रतिष्ठापीत करा (_I)"
-
-#~ msgid "Show _completed jobs"
-#~ msgstr "संपन्न कार्य दाखवा (_c)"
-
-#, fuzzy
-#~ msgid "Show completed jobs"
-#~ msgstr "संपन्न कार्य दाखवा (_c)"
-
-#~ msgid "_Refresh"
-#~ msgstr "पुन्ह दाखलन (_R)"
-
-#, fuzzy
-#~ msgid "Duplicate Printer"
-#~ msgstr "पूर्वनिर्धारीत छपाईयंत्र"
-
-#~ msgid "New name for the printer"
-#~ msgstr "मुद्रकासाठी नविन नाव"
-
-#~ msgid "<b>Authentication</b>"
-#~ msgstr "<b>ओळख पटवा</b>"
-
-#~ msgid "<b>Description</b>"
-#~ msgstr "<b>वर्णन</b>"
-
-#~ msgid "<b>Description</b> (optional)"
-#~ msgstr "<b>वर्णन</b>(वैकल्पिक)"
-
-#~ msgid "<b>Enter device URI</b>"
-#~ msgstr "<b>साधन URI प्रविष्ट करा</b>"
-
-#~ msgid "<b>IPP Printer</b>"
-#~ msgstr "<b>IPP छपाईयंत्र</b>"
-
-#~ msgid "<b>License Terms</b>"
-#~ msgstr "<b>परवाना अटी</b>"
-
-#~ msgid "<b>Location of the LPD network printer</b>"
-#~ msgstr "<b>LPD जाळं छपाईयंत्राचे ठिकाण</b>"
-
-#~ msgid "<b>Location of the network printer</b>"
-#~ msgstr "<b>संजाळ मुद्रकाचे ठिकाण</b>"
-
-#~ msgid "<b>Location</b> (optional)"
-#~ msgstr "<b> ठिकाण</b> (वैकल्पिक)"
-
-#~ msgid "<b>Network Printer</b>"
-#~ msgstr "<b>जाळं छपाईयंत्र</b>"
-
-#~ msgid "<b>Note</b>"
-#~ msgstr "<b>टिप</b>"
-
-#~ msgid "<b>Output Quality</b>"
-#~ msgstr "<b>आऊटपुट दर्जा</b>"
-
-#~ msgid "<b>Printer Name</b>"
-#~ msgstr "<b>मुद्रक नाव</b>"
-
-#~ msgid "<b>SMB Printer</b>"
-#~ msgstr "<b>SMB छपाईयंत्र</b>"
-
-#~ msgid "<b>Select Driver</b>"
-#~ msgstr "<b>ड्राइवर निवडा</b>"
-
-#~ msgid "<b>Settings of the serial port</b>"
-#~ msgstr "<b>सिरीयल पोर्टची रचना</b>"
-
-#~ msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
-#~ msgstr "<i>smb://[workgroup/]server[:port]/printer</i>"
-
-#~ msgid "<span weight=\"bold\" size=\"larger\">Choose Class Members</span>"
-#~ msgstr "<span weight=\"bold\" size=\"larger\">वर्ग सदस्य निवडा</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"larger\">Choose Driver</span>"
-#~ msgstr "<span weight=\"bold\" size=\"larger\">ड्राइवर निवडा</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"larger\">Describe Printer</span>"
-#~ msgstr "<span weight=\"bold\" size=\"larger\">छपाईयंत्राचे वर्णन करा</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"larger\">Existing Settings</span>"
-#~ msgstr "<span weight=\"bold\" size=\"larger\">अस्तित्वातील संयोजना</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"larger\">Installable Options</span>"
-#~ msgstr "<span weight=\"bold\" size=\"larger\">प्रतिष्ठापनजोगी पर्याय</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"larger\">Select Device</span>"
-#~ msgstr "<span weight=\"bold\" size=\"larger\">साधन निवडा</span>"
-
-#~ msgid "Baud Rate"
-#~ msgstr "बाउड दर"
-
-#~ msgid "Browse..."
-#~ msgstr "तपासा..."
-
-#, fuzzy
-#~ msgid "Change PPD"
-#~ msgstr "ड्राइवर बदला"
-
-#, fuzzy
-#~ msgid "Class Members"
-#~ msgstr "सदस्य"
-
-#~ msgid "Comments..."
-#~ msgstr "टिप्पणी..."
-
-#~ msgid "Connection"
-#~ msgstr "जोडणी"
-
-#~ msgid "Data Bits"
-#~ msgstr "डेटा बिट्स"
-
-#~ msgid "Description:"
-#~ msgstr "वर्णन:"
-
-#, fuzzy
-#~ msgid "Device"
-#~ msgstr "यंत्रे"
-
-#~ msgid "Device description."
-#~ msgstr "यंत्र वर्णन."
-
-#~ msgid "Driver details"
-#~ msgstr "ड्राइवर तपशील"
-
-#~ msgid "Empty"
-#~ msgstr "रिकामे"
-
-#~ msgid "Flow Control"
-#~ msgstr "प्रवाह नियंत्रण"
-
-#~ msgid ""
-#~ "For the printer you have selected there are drivers available for "
-#~ "download."
-#~ msgstr "तुम्ही निवडलेल्या छपाईयंत्र करीता डाऊनलोड करण्याकरीता ड्राइवर उपलब्ध आहे."
-
-#~ msgid "Free software"
-#~ msgstr "Free सॉफ्टवेअर"
-
-#~ msgid "Graphics:"
-#~ msgstr "चित्रलेख:"
-
-#~ msgid "Host:"
-#~ msgstr "आयोजकनाव:"
-
-#~ msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
-#~ msgstr "मानव-वाचनजोगी वर्णन जसे की \"HP LaserJet with Duplexer\""
-
-#~ msgid "Human-readable location such as \"Lab 1\""
-#~ msgstr "मानव-वाचनजोगी ठिकाण जसे की \"Lab 1\""
-
-#~ msgid "Installed Options"
-#~ msgstr "प्रतिष्ठापीत पर्याय"
-
-#, fuzzy
-#~ msgid "JetDirect"
-#~ msgstr "DirectJet"
-
-#~ msgid "LPD"
-#~ msgstr "LPD"
-
-#~ msgid "License:"
-#~ msgstr "परवाना:"
-
-#~ msgid "Line art:"
-#~ msgstr "रेघ कला:"
-
-#~ msgid "Local Driver"
-#~ msgstr "स्थानीय ड्राइवर"
-
-#~ msgid "Make and model:"
-#~ msgstr "बनावट व प्रारूप:"
-
-#~ msgid "Manufacturer"
-#~ msgstr "उत्पादक"
-
-#~ msgid "Network"
-#~ msgstr "जाळ"
-
-#~ msgid "No, I do not accept this license"
-#~ msgstr "नाही, मला हा परवाना स्वीकार्य नाही"
-
-#~ msgid "Parity"
-#~ msgstr "पॅरिटी"
-
-#~ msgid "Patented algorithms"
-#~ msgstr "पेटन्ट केलेले अल्गोरिदम"
-
-#~ msgid "Photo:"
-#~ msgstr "फोटो:"
-
-#~ msgid "Port number:"
-#~ msgstr "पोर्ट क्रमांक:"
-
-#, fuzzy
-#~ msgid ""
-#~ "PostScript Printer Description (PPD) files can often be found on the "
-#~ "driver disk that comes with the printer. For PostScript printers they are "
-#~ "often part of the Windows<sup>&#xAE;</sup> driver."
-#~ msgstr ""
-#~ "PostScript Printer Description (PPD) फाइल सहसा छपाईयंत्र सह पुरविले जाणाऱ्य "
-#~ "ड्राइवर डिस्कवर आढळले जाते. PostScript छपाईयंत्र करीता ते सहसा Windows<sup>®</"
-#~ "sup> ड्राइवर सह पुरविले जातात."
-
-#~ msgid "Printer model:"
-#~ msgstr "छपाईयंत्र प्रारूप:"
-
-#~ msgid "Probe"
-#~ msgstr "प्रोब"
-
-#~ msgid "Prompt user if authentication is required"
-#~ msgstr "ओळख पटवायची आवश्यकता असल्यास वापरकर्त्याला विचारा"
-
-#~ msgid "Provide PPD file"
-#~ msgstr "PPD फाइल पुरवा"
-
-#~ msgid "Queue:"
-#~ msgstr "रांग:"
-
-#~ msgid "SCSI"
-#~ msgstr "SCSI"
-
-#~ msgid "SMB"
-#~ msgstr "SMB"
-
-#~ msgid "Search for a printer driver to download"
-#~ msgstr "डाऊनलोड करण्याजोगी प्रिन्टर ड्राइवर शोधा"
-
-#~ msgid "Searching..."
-#~ msgstr "शोधत आहे..."
-
-#~ msgid "Select printer from database"
-#~ msgstr "कोष पासून छपाईयंत्र निवडा"
-
-#~ msgid "Serial"
-#~ msgstr "सिरियल"
-
-#~ msgid "Set authentication details now"
-#~ msgstr "आता ओळख पटवण्याचा अतपशील निश्चित करा"
-
-#~ msgid "Short name for this printer such as \"laserjet\""
-#~ msgstr "या छपाईयंत्र करीता लहानसे नाव जसे की \"laserjet\""
-
-#~ msgid "Supplier:"
-#~ msgstr "पुरवठाकर्ता:"
-
-#~ msgid "Support:"
-#~ msgstr "समर्थन:"
-
-#~ msgid "Text:"
-#~ msgstr "पाठ्य:"
-
-#~ msgid ""
-#~ "The foomatic printer database contains various manufacturer provided "
-#~ "PostScript Printer Description (PPD) files and also can generate PPD "
-#~ "files for a large number of (non PostScript) printers. But in general "
-#~ "manufacturer provided PPD files provide better access to the specific "
-#~ "features of the printer."
-#~ msgstr ""
-#~ "foomatic छपाईयंत्र कोष अंतर्गत विविध उत्पादक द्वारे पुरविलेले PostScript Printer "
-#~ "Description (PPD) फाइल समाविष्टीत आहे व मोठ्या प्रमाणातील (विना PostScript) "
-#~ "छपाईयंत्र करीता PPD फाइल देखिल बनवतो. परंतु सहसा उत्पादक द्वारे पुरविलेले PPD फाइल "
-#~ "छपाईयंत्राचे ठराविक गुणविशेष करीता उत्तम प्रवेश पुरवितो."
-
-#~ msgid ""
-#~ "These drivers do not come from your operating system supplier and will "
-#~ "not be covered by their commercial support.  See the support and license "
-#~ "terms of the driver's supplier."
-#~ msgstr ""
-#~ "हे ड्राइवर तुमच्या कार्य प्रणाली उत्पादक द्वारे पुरविले गेले नाही व त्यामुळे यांस समर्थन "
-#~ "पुरविले जाणार नाही.  ड्राइवर पुरवठाकर्ताचे समर्थन व परवाना अटी पहा."
-
-#~ msgid ""
-#~ "This driver supports additional hardware that may be installed in the "
-#~ "printer."
-#~ msgstr ""
-#~ "हे ड्राइवर अगाऊ हार्डवेअर करीता समर्थन पुरवितो ज्यांस छपाईयंत्र अंतर्गत प्रतिष्ठापीत केले "
-#~ "जाऊ शकते."
-
-#~ msgid ""
-#~ "This is done by assuming that options with the same name do have the same "
-#~ "meaning. Settings of options that are not present in the new PPD will be "
-#~ "lost and options only present in the new PPD will be set to default."
-#~ msgstr ""
-#~ "हे सहसा समान नाव असलेल्या पर्यायांचा अर्थ देखिल समान होतो असे गृहीत धरून पूर्ण केले "
-#~ "जाते. नवीन PPD अंतर्गत न आढळणाऱ्या पर्यायांची संयोजना गमवली जाईल व फक्त नवीन PPD "
-#~ "अंतर्गत पर्याय पूर्वनिर्धारीत नुरूप निश्चित केले जातिल."
-
-#~ msgid ""
-#~ "This way all current option settings will be lost. The default settings "
-#~ "of the new PPD will be used. "
-#~ msgstr ""
-#~ "या तऱ्हेने सर्व वर्तमान पर्याय संयोजना नाहीसे होतील. नवीन PPD ची पूर्वनिर्धारीत "
-#~ "संयोजना वापरले जाईल. "
-
-#~ msgid "Try to copy the option settings over from the old PPD. "
-#~ msgstr "जुणे PPD पासून पर्याय संयोजना प्रतिकृत करण्याचा प्रयत्न करा. "
-
-#~ msgid "URI:"
-#~ msgstr "URI:"
-
-#~ msgid "Use the new PPD (Postscript Printer Description) as is."
-#~ msgstr "नवीन PPD (Postscript Printer Description) जैसे थे वापरा."
-
-#~ msgid ""
-#~ "With this choice no driver download will be performed. In the next steps "
-#~ "a locally installed driver will be selected."
-#~ msgstr ""
-#~ "या पर्याय निवडल्यास ड्राइवर डाऊनलोड होणार नाही. पुढिल पद्धतीत स्थानीयरित्या "
-#~ "प्रतिष्ठापीत ड्राइवर निवडले जाईल."
-
-#~ msgid "Yes, I accept this license"
-#~ msgstr "होय, मी या परवाना स्वीकारतो"
-
-#~ msgid "_Search"
-#~ msgstr "शोधा (_S)"
-
-#~ msgid "_Verify..."
-#~ msgstr "पडताळा(_V)..."
-
-#, fuzzy
-#~ msgid "license"
-#~ msgstr "परवाना:"
-
-#~ msgid "move left"
-#~ msgstr "डावीकडे चला"
-
-#~ msgid "move right"
-#~ msgstr "उजवीकडे चला"
-
-#, fuzzy
-#~ msgid "short description"
-#~ msgstr "वर्णन"
-
-#, fuzzy
-#~ msgid "supplier"
-#~ msgstr "पुरवठाकर्ता:"
-
-#, fuzzy
-#~ msgid "support contacts"
-#~ msgstr "समर्थन संपर्क परिचीत नाही"
-
-#~ msgid " "
-#~ msgstr " "
-
-#~ msgid "<b>Banner</b>"
-#~ msgstr "<b>बॅनर</b>"
-
-#~ msgid "<b>Common Options</b>"
-#~ msgstr "<b>सर्वसाधारण पर्याय</b>"
-
-#~ msgid "<b>Image Options</b>"
-#~ msgstr "<b>प्रतिमा पर्याय</b>"
-
-#~ msgid "<b>Ink/Toner Levels</b>"
-#~ msgstr "<b>Ink/Toner स्तर</b>"
-
-#~ msgid "<b>Other Options (Advanced)</b>"
-#~ msgstr "<b>इतर पर्याय (प्रगत)</b>"
-
-#~ msgid "<b>Policies</b>"
-#~ msgstr "<b>धोरणे</b>"
-
-#~ msgid "<b>Settings</b>"
-#~ msgstr "<b>रचना</b>"
-
-#~ msgid "<b>State</b>"
-#~ msgstr "<b>स्थिती</b>"
-
-#~ msgid "<b>Status Messages</b>"
-#~ msgstr "<b>स्थिती संदेश</b>"
-
-#~ msgid "<b>Tests and Maintenance</b>"
-#~ msgstr "<b>चाचणी व दुरुस्ती</b>"
-
-#~ msgid "<b>Text Options</b>"
-#~ msgstr "<b>पाठ्य पर्याय</b>"
-
-#~ msgid ""
-#~ "<i>Not published\n"
-#~ "See server settings</i>"
-#~ msgstr ""
-#~ "<i>प्रकाशीत केले नाही\n"
-#~ "सर्व्हर संयोजना पहा</i>"
-
-#~ msgid "Accepting jobs"
-#~ msgstr "कामे स्विकारत आहे"
-
-#~ msgid "Access Control"
-#~ msgstr "प्रवेश नियंत्रण"
-
-#~ msgid "Add or Remove Members"
-#~ msgstr "सदस्य जोडा किंवा हटवा"
-
-#~ msgid "Allow printing for everyone except these users:"
-#~ msgstr "या वापरकर्त्यांना वगळता इतर सर्वांना छपाई करीता परवानगी द्या:"
-
-#~ msgid "Bottom margin:"
-#~ msgstr "तळ समास:"
-
-#~ msgid "Brightness:"
-#~ msgstr "तेजपणा:"
-
-#~ msgid "Change..."
-#~ msgstr "बदल..."
-
-#~ msgid "Characters per inch:"
-#~ msgstr "प्रत्येक इंच करीता अक्षर:"
-
-#~ msgid "Clean Print Heads"
-#~ msgstr "प्रिन्ट हेड साफ करा"
-
-#, fuzzy
-#~ msgid "Co_nflicts"
-#~ msgstr "यासह संघर्ष:"
-
-#~ msgid "Columns:"
-#~ msgstr "रकाना:"
-
-#~ msgid "Copies:"
-#~ msgstr "प्रत:"
-
-#~ msgid "Deny printing for everyone except these users:"
-#~ msgstr "या वापरकर्त्यांना वगळता इतर सर्वांना छपाई करीता परवानगी देऊ नका:"
-
-#~ msgid "Device URI:"
-#~ msgstr "यंत्र URI:"
-
-#~ msgid "Enabled"
-#~ msgstr "कार्यान्वित"
-
-#~ msgid "Ending Banner:"
-#~ msgstr "बॅनर समाप्ती:"
-
-#~ msgid "Error Policy: \t"
-#~ msgstr "त्रुटी धोरण: \t"
-
-#~ msgid "Finishings:"
-#~ msgstr "शेवटचे काम:"
-
-#~ msgid "Gamma:"
-#~ msgstr "गामा:"
-
-#~ msgid "Hold until:"
-#~ msgstr "पर्यंत रोखून ठेवा:"
-
-#~ msgid "Hue adjustment:"
-#~ msgstr "ह्यु सुस्थिती:"
-
-#~ msgid "Ink/Toner Levels"
-#~ msgstr "शाई/टोनर स्तर"
-
-#~ msgid "Job Options"
-#~ msgstr "काम पर्याय"
-
-#~ msgid "Job priority:"
-#~ msgstr "कार्य प्राधाक्रम:"
-
-#~ msgid "Left margin:"
-#~ msgstr "डावे समास:"
-
-#~ msgid "Lines per inch:"
-#~ msgstr "दर इंच करीता ओळ:"
-
-#~ msgid "Location:"
-#~ msgstr "ठिकाण:"
-
-#~ msgid "Make and Model:"
-#~ msgstr "बनावट व प्रारूप:"
-
-#~ msgid "Media:"
-#~ msgstr "मिडीया:"
-
-#~ msgid "Members"
-#~ msgstr "सदस्य"
-
-#~ msgid "Mirror"
-#~ msgstr "मिरर"
-
-#~ msgid "More"
-#~ msgstr "अधिक"
-
-#~ msgid "Operation Policy:"
-#~ msgstr "कार्य धोरण:"
-
-#~ msgid "Orientation:"
-#~ msgstr "निर्देशन:"
-
-#~ msgid "Pages per side layout:"
-#~ msgstr "दर बाजूच्या मांडणी करीता पाने:"
-
-#~ msgid "Pages per side:"
-#~ msgstr "दर बाजू करीता पाने:"
-
-#~ msgid "Policies"
-#~ msgstr "धोरण"
-
-#~ msgid "Pretty print"
-#~ msgstr "सुरेख छपाई"
-
-#~ msgid "Print Self-Test Page"
-#~ msgstr "स्वयं-चाचणी पानची छपाई करा"
-
-#~ msgid "Printer Properties"
-#~ msgstr "छपाईयंत्र गुणधर्म"
-
-#~ msgid "Printer State:"
-#~ msgstr "मुद्रक स्थिती:"
-
-#~ msgid "Reset"
-#~ msgstr "स्वच्छ करा"
-
-#~ msgid "Right margin:"
-#~ msgstr "उजवी समास:"
-
-#~ msgid "Saturation:"
-#~ msgstr "संपृक्तता:"
-
-#~ msgid "Scale to fit"
-#~ msgstr "प्रमाणीत करून घट्ट बसवा"
-
-#~ msgid "Scaling:"
-#~ msgstr "प्रमाणीत करा:"
-
-#~ msgid "Settings"
-#~ msgstr "संयोजना"
-
-#~ msgid "Shared"
-#~ msgstr "सहभागीय"
-
-#~ msgid "Sides:"
-#~ msgstr "बाजू:"
-
-#~ msgid ""
-#~ "Specify the default job options for this printer.  Jobs arriving at this "
-#~ "print server will have these options added if they are not already set by "
-#~ "the application."
-#~ msgstr ""
-#~ "या छपाईयंत्र करीता पूर्वनिर्धारीत कार्य पर्याय निश्चित करा.  या छपाई सर्व्हर करीता "
-#~ "येणारे कार्य अगोदर पासूनच ऍप्लिकेशन द्वारे निश्चित नसल्यावरच हे पर्याय समावेष केले जातिल."
-
-#~ msgid "Starting Banner:"
-#~ msgstr "प्रारंभिक बॅनर:"
-
-#~ msgid "There are no status messages for this printer."
-#~ msgstr "या छपाईयंत्र करीता स्थिती संदेश आढळले नाही."
-
-#~ msgid ""
-#~ "To add a new option, enter its name in the box below and click to add."
-#~ msgstr ""
-#~ "नवीन पर्याय समावेष करण्याकरीता, खालिल पेटीत नाव प्रविष्ट करा व समावेष करा वर "
-#~ "क्लिक करा."
-
-#~ msgid "Top margin:"
-#~ msgstr "वरील समास:"
-
-#~ msgid "Word wrap"
-#~ msgstr "शब्द घट्ट बसवा"
-
-#~ msgid "points"
-#~ msgstr "पॉईन्ट"
-
-#~ msgid "user"
-#~ msgstr "वापरकर्ता"
-
-#~ msgid "System-Config-Printer"
-#~ msgstr "System-Config-Printer"
-
-#~ msgid "_Discovered Printers"
-#~ msgstr "आढळलेले छपाईयंत्र (_D)"
-
-#~ msgid "_Group"
-#~ msgstr "गट (_G)"
-
-#~ msgid "_Groups"
-#~ msgstr "गट (_G)"
-
-#~ msgid "_Help"
-#~ msgstr "मदत(_H)"
-
-#~ msgid "_Server"
-#~ msgstr "सर्व्हर (_S)"
-
 #~ msgid "_Troubleshoot"
 #~ msgstr "त्रुटी निर्धारण (_T)"
 
-#~ msgid "_View"
-#~ msgstr "अवलोकन (_V)"
-
-#~ msgid "<b>Basic Server Settings</b>"
-#~ msgstr "<b>पायाभूत सेवक रचना</b>"
-
-#, fuzzy
-#~ msgid "<b>Browse servers</b>"
-#~ msgstr "सर्व्हर तपासा"
-
-#, fuzzy
-#~ msgid "<b>Job history</b>"
-#~ msgstr "कार्य इतिहास"
-
-#~ msgid "Advanced Server Settings"
-#~ msgstr "प्रगत सर्व्हर संयोजना"
-
-#~ msgid "Allow _remote administration"
-#~ msgstr "दूरस्थ प्रशासन करीता परवानगी द्या (_r)"
-
-#~ msgid "Allow _users to cancel any job (not just their own)"
-#~ msgstr ""
-#~ "वापरकर्त्यांना कुठलेही कार्य (फक्त स्वत:चेच नाही) रद्द करण्याकरीता परवानगी द्या (_u)"
-
-#~ msgid "Allow printing from the _Internet"
-#~ msgstr "आंतरजाल पासून छपाई करीता परवानगी द्या (_I)"
-
-#~ msgid "Do not preserve job history"
-#~ msgstr "कार्य इतिहास सुरक्षित करू नका"
-
-#~ msgid "Preserve job files (allow reprinting)"
-#~ msgstr "कार्य फाइल सुरक्षित करा (पुन्ह छपाईकरीता परवानगी द्या)"
-
-#~ msgid "Preserve job history but not files"
-#~ msgstr "फाइलला वगळता कार्याचे इतिहास सुरक्षित करा"
-
-#~ msgid "Save _debugging information for troubleshooting"
-#~ msgstr "त्रुटी निर्धारण करीता डिबगींग माहिती साठवा (_d)"
-
-#, fuzzy
-#~ msgid "Server Settings"
-#~ msgstr "मूळ सर्व्हर संयोजना"
-
-#, fuzzy
-#~ msgid ""
-#~ "Usually print servers broadcast their queues. Specify print servers below "
-#~ "to periodically ask for queues instead."
-#~ msgstr ""
-#~ "सहसा छपाई सर्व्हर स्वत:चे रांग प्रसारीत करतात.  वारंवार रांग करीता विचारण्या ऐवजी "
-#~ "छपाई सर्व्हर निश्चित करा."
-
-#~ msgid "_Publish shared printers connected to this system"
-#~ msgstr "या प्रणालीसह सहभागीय छपाईयंत्र प्रकाशीत करा (_P)"
-
-#~ msgid "_Show printers shared by other systems"
-#~ msgstr "इतर प्रणाली द्वारे सहभागीय छपाईयंत्र दाखवा (_S)"
-
-#~ msgid "SMB Browser"
-#~ msgstr "SMB ब्राऊजर"
-
 #~ msgid "_Configure Printers"
 #~ msgstr "छपाईयंत्र संयोजीत करा (_C)"
-
-#~ msgid "_Hide"
-#~ msgstr "लपवा (_H)"
-
-#~ msgid "Please Wait"
-#~ msgstr "कृपया थांबा"
 
 #~ msgid "Cancel, pause, resume or reprint jobs"
 #~ msgstr "रद्द करा, स्तब्ध, कार्य पुन्हा करा किंवा पुन्ह छपाई करा"

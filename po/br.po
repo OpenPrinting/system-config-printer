@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: system-config-printer\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2011-02-17 16:17+0000\n"
+"POT-Creation-Date: 2011-02-25 09:57+0000\n"
 "PO-Revision-Date: 2010-06-01 22:24+0000\n"
 "Last-Translator: Alan Monfort <alan.monfort@free.fr>\n"
 "Language-Team: Breton <brenux@free.fr>\n"
@@ -55,11 +55,11 @@ msgstr "Klaskit en-dro"
 msgid "Operation canceled"
 msgstr "Gwezhiadur dilezet"
 
-#: ../authconn.py:32 ../pysmb.py:123
+#: ../authconn.py:32 ../pysmb.py:123 ../ui/NewPrinterWindow.glade.h:94
 msgid "Username:"
 msgstr "Anv an arveriad :"
 
-#: ../authconn.py:33 ../pysmb.py:129
+#: ../authconn.py:33 ../pysmb.py:129 ../ui/NewPrinterWindow.glade.h:63
 msgid "Password:"
 msgstr "Ger-tremen :"
 
@@ -331,7 +331,8 @@ msgstr "Doareennoù al labour"
 
 #: ../jobviewer.py:706 ../jobviewer.py:1002 ../jobviewer.py:1704
 #: ../jobviewer.py:1734 ../jobviewer.py:2104 ../jobviewer.py:2109
-#: ../jobviewer.py:2123 ../jobviewer.py:2202 ../printerproperties.py:1541
+#: ../jobviewer.py:2123 ../jobviewer.py:2202 ../printerproperties.py:1582
+#: ../ui/NewPrinterWindow.glade.h:92
 #: ../troubleshoot/ChooseNetworkPrinter.py:100
 #: ../troubleshoot/ChooseNetworkPrinter.py:101
 #: ../troubleshoot/ChooseNetworkPrinter.py:104
@@ -405,6 +406,7 @@ msgid "Save File"
 msgstr "Enrollañ ar restr"
 
 #: ../jobviewer.py:1449 ../system-config-printer.py:258
+#: ../ui/NewPrinterWindow.glade.h:57
 #: ../troubleshoot/ChooseNetworkPrinter.py:35
 #: ../troubleshoot/ChoosePrinter.py:36 ../troubleshoot/DeviceListed.py:36
 msgid "Name"
@@ -584,7 +586,7 @@ msgstr "115200"
 #. See section 4.2.6 of this document for explanation of finishing types:
 #. ftp://ftp.pwg.org/pub/pwg/candidates/cs-ippfinishings10-20010205-5100.1.pdf
 #: ../newprinter.py:299 ../newprinter.py:310 ../newprinter.py:3267
-#: ../ppdippstr.py:63 ../printerproperties.py:264
+#: ../ppdippstr.py:63 ../printerproperties.py:268
 msgid "None"
 msgstr "Tra ebet"
 
@@ -616,11 +618,11 @@ msgstr "RTS/CTS (Periant)"
 msgid "DTR/DSR (Hardware)"
 msgstr "DTR/DSR (Periant)"
 
-#: ../newprinter.py:330 ../printerproperties.py:218
+#: ../newprinter.py:330 ../printerproperties.py:222
 msgid "Members of this class"
 msgstr "Izili eus ar rummad-mañ"
 
-#: ../newprinter.py:332 ../printerproperties.py:219
+#: ../newprinter.py:332 ../printerproperties.py:223
 msgid "Others"
 msgstr "All"
 
@@ -644,7 +646,7 @@ msgstr "Patromoù"
 msgid "Drivers"
 msgstr "Sturioù"
 
-#: ../newprinter.py:338
+#: ../newprinter.py:338 ../ui/NewPrinterWindow.glade.h:35
 msgid "Downloadable Drivers"
 msgstr "Sturioù pellgargadus"
 
@@ -678,7 +680,7 @@ msgstr "An holl restroù (*)"
 msgid "Search"
 msgstr "Klask"
 
-#: ../newprinter.py:611 ../newprinter.py:632
+#: ../newprinter.py:611 ../newprinter.py:632 ../ui/NewPrinterWindow.glade.h:59
 msgid "New Printer"
 msgstr "Moullerez nevez"
 
@@ -836,7 +838,7 @@ msgstr "Lostennad mod LPD/LPR"
 msgid "Windows Printer via SAMBA"
 msgstr "Moullerez Windows dre SAMBA"
 
-#: ../newprinter.py:2376
+#: ../newprinter.py:2376 ../ui/NewPrinterWindow.glade.h:48
 msgid "IPP"
 msgstr "IPP"
 
@@ -896,7 +898,7 @@ msgstr "Moullerez lec'hel dinoet gant gwiskad goubarelezh ar periantoù (HAL)"
 msgid "Searching for printers"
 msgstr "O klask moullerezed"
 
-#: ../newprinter.py:2769
+#: ../newprinter.py:2769 ../ui/NewPrinterWindow.glade.h:60
 msgid "No printer was found at that address."
 msgstr "Kavez ez eus bet moullerez ebet gant ar chomlec'h-mañ."
 
@@ -995,7 +997,7 @@ msgid "adding printer %s"
 msgstr "oc'h ouzhpennañ ar voullerez %s"
 
 #: ../newprinter.py:3570 ../newprinter.py:3581 ../newprinter.py:3598
-#: ../printerproperties.py:921 ../system-config-printer.py:1682
+#: ../printerproperties.py:957 ../system-config-printer.py:1682
 #: ../system-config-printer.py:1707
 #, python-format
 msgid "modifying printer %s"
@@ -1312,199 +1314,207 @@ msgid "Busy"
 msgstr "Ac'hubet"
 
 #. Printer state reasons list
-#: ../printerproperties.py:200
+#: ../printerproperties.py:204
 msgid "Message"
 msgstr "Kemennadenn"
 
-#: ../printerproperties.py:220
+#: ../printerproperties.py:224
 msgid "Users"
 msgstr "Arveriaded"
 
-#: ../printerproperties.py:243
+#: ../printerproperties.py:247
 msgid "Portrait (no rotation)"
 msgstr "Poltred (c'hweladur ebet)"
 
-#: ../printerproperties.py:244
+#: ../printerproperties.py:248
 msgid "Landscape (90 degrees)"
 msgstr "Gweledva (90 derez)"
 
-#: ../printerproperties.py:245
+#: ../printerproperties.py:249
 msgid "Reverse landscape (270 degrees)"
 msgstr "Gweledva war an tu gin (270 derez)"
 
-#: ../printerproperties.py:246
+#: ../printerproperties.py:250
 msgid "Reverse portrait (180 degrees)"
 msgstr "Poltred war an tu gin (180 derez)"
 
-#: ../printerproperties.py:252
+#: ../printerproperties.py:256
 msgid "Left to right, top to bottom"
 msgstr "Eus an tu kleiz d'an tu dehou, eus an nec'h d'an traoñ"
 
-#: ../printerproperties.py:253
+#: ../printerproperties.py:257
 msgid "Left to right, bottom to top"
 msgstr "Eus an tu kleiz d'an tu dehou, eus an traoñ d'an nec'h"
 
-#: ../printerproperties.py:254
+#: ../printerproperties.py:258
 msgid "Right to left, top to bottom"
 msgstr "Eus an tu dehou d'an tu kleiz, eus an nec'h d'an traoñ"
 
-#: ../printerproperties.py:255
+#: ../printerproperties.py:259
 msgid "Right to left, bottom to top"
 msgstr "Eus an tu dehou d'an tu kleiz, eus an nec'h d'an traoñ"
 
-#: ../printerproperties.py:256
+#: ../printerproperties.py:260
 msgid "Top to bottom, left to right"
 msgstr "Eus an nec'h betek an traoñ, eus an tu kleiz d'an tu dehou"
 
-#: ../printerproperties.py:257
+#: ../printerproperties.py:261
 msgid "Top to bottom, right to left"
 msgstr "Eus an nec'h d'an traoñ, eus an tu dehou d'an tu kleiz"
 
-#: ../printerproperties.py:258
+#: ../printerproperties.py:262
 msgid "Bottom to top, left to right"
 msgstr "Eus an traoñ betek an nec'h, eus an tu kleiz d'an tu dehou"
 
-#: ../printerproperties.py:259
+#: ../printerproperties.py:263
 msgid "Bottom to top, right to left"
 msgstr "Eus an traoñ d'an nec'h, eus an tu dehou d'an tu kleiz"
 
-#: ../printerproperties.py:265
+#: ../printerproperties.py:269
 msgid "Staple"
 msgstr "Krafañ"
 
-#: ../printerproperties.py:266
+#: ../printerproperties.py:270
 msgid "Punch"
 msgstr "Treorc'hañ"
 
-#: ../printerproperties.py:267
+#: ../printerproperties.py:271
 msgid "Cover"
 msgstr "Golo"
 
-#: ../printerproperties.py:268
+#: ../printerproperties.py:272
 msgid "Bind"
 msgstr "Keinañ"
 
-#: ../printerproperties.py:269
+#: ../printerproperties.py:273
 msgid "Saddle stitch"
 msgstr "Kraf mod dibr"
 
-#: ../printerproperties.py:270
+#: ../printerproperties.py:274
 msgid "Edge stitch"
 msgstr "Riblenn ar c'hrafañ"
 
-#: ../printerproperties.py:271
+#: ../printerproperties.py:275
 msgid "Fold"
 msgstr "Pleg"
 
-#: ../printerproperties.py:272
+#: ../printerproperties.py:276
 msgid "Trim"
 msgstr "Divarviñ"
 
-#: ../printerproperties.py:273
+#: ../printerproperties.py:277
 msgid "Bale"
 msgstr "Pak"
 
-#: ../printerproperties.py:274
+#: ../printerproperties.py:278
 msgid "Booklet maker"
 msgstr "Saver kraflevr"
 
-#: ../printerproperties.py:275
+#: ../printerproperties.py:279
 msgid "Job offset"
 msgstr "Labour dre offset"
 
-#: ../printerproperties.py:276
+#: ../printerproperties.py:280
 msgid "Staple (top left)"
 msgstr "Krafañ (nec'h a-gleiz)"
 
-#: ../printerproperties.py:277
+#: ../printerproperties.py:281
 msgid "Staple (bottom left)"
 msgstr "Krafañ (traoñ a-gleiz)"
 
-#: ../printerproperties.py:278
+#: ../printerproperties.py:282
 msgid "Staple (top right)"
 msgstr "Krafañ (nec'h a-zehou)"
 
-#: ../printerproperties.py:279
+#: ../printerproperties.py:283
 msgid "Staple (bottom right)"
 msgstr "Krafañ (traoñ a-zehou)"
 
-#: ../printerproperties.py:280
+#: ../printerproperties.py:284
 msgid "Edge stitch (left)"
 msgstr "Riblenn ar c'hrafañ (a-gleiz)"
 
-#: ../printerproperties.py:281
+#: ../printerproperties.py:285
 msgid "Edge stitch (top)"
 msgstr "Riblenn ar c'hrafañ (nec'h)"
 
-#: ../printerproperties.py:282
+#: ../printerproperties.py:286
 msgid "Edge stitch (right)"
 msgstr "Riblenn ar c'hrafañ (a-zehou)"
 
-#: ../printerproperties.py:283
+#: ../printerproperties.py:287
 msgid "Edge stitch (bottom)"
 msgstr "Riblenn ar c'hrafañ (traoñ)"
 
-#: ../printerproperties.py:284
+#: ../printerproperties.py:288
 msgid "Staple dual (left)"
 msgstr "Daougrafañ (kleiz)"
 
-#: ../printerproperties.py:285
+#: ../printerproperties.py:289
 msgid "Staple dual (top)"
 msgstr "Daougrafañ (nec'h)"
 
-#: ../printerproperties.py:286
+#: ../printerproperties.py:290
 msgid "Staple dual (right)"
 msgstr "Daougrafañ (dehou)"
 
-#: ../printerproperties.py:287
+#: ../printerproperties.py:291
 msgid "Staple dual (bottom)"
 msgstr "Daougrafañ (traoñ)"
 
-#: ../printerproperties.py:288
+#: ../printerproperties.py:292
 msgid "Bind (left)"
 msgstr "Keinañ (a-gleiz)"
 
-#: ../printerproperties.py:289
+#: ../printerproperties.py:293
 msgid "Bind (top)"
 msgstr "Keinañ (nec'h)"
 
-#: ../printerproperties.py:290
+#: ../printerproperties.py:294
 msgid "Bind (right)"
 msgstr "Keinañ (a-zehou)"
 
-#: ../printerproperties.py:291
+#: ../printerproperties.py:295
 msgid "Bind (bottom)"
 msgstr "Keinañ (traoñ)"
 
-#: ../printerproperties.py:296
+#: ../printerproperties.py:300
 msgid "One-sided"
 msgstr "Tu reizh"
 
-#: ../printerproperties.py:297
+#: ../printerproperties.py:301
 msgid "Two-sided (long edge)"
 msgstr "Tu reizh ha tu gin (riblenn hir)"
 
-#: ../printerproperties.py:298
+#: ../printerproperties.py:302
 msgid "Two-sided (short edge)"
 msgstr "Tu reizh ha tu gin (riblenn verr)"
 
-#: ../printerproperties.py:303
+#: ../printerproperties.py:307 ../printerproperties.py:312
 msgid "Normal"
 msgstr "Reol"
 
-#: ../printerproperties.py:304
+#: ../printerproperties.py:308
 msgid "Reverse"
 msgstr "Tuginañ"
 
-#: ../printerproperties.py:325
+#: ../printerproperties.py:311
+msgid "Draft"
+msgstr ""
+
+#: ../printerproperties.py:313
+msgid "High"
+msgstr ""
+
+#: ../printerproperties.py:337
 msgid "Automatic rotation"
 msgstr "C'hweladur emgefreek"
 
-#: ../printerproperties.py:546
+#: ../printerproperties.py:576
 msgid "CUPS test page"
 msgstr "Pajennad prouadiñ CUPS"
 
-#: ../printerproperties.py:547
+#: ../printerproperties.py:577
 msgid ""
 "Typically shows whether all jets on a print head are functioning and that "
 "the print feed mechanisms are working properly."
@@ -1512,13 +1522,13 @@ msgstr ""
 "Menegiñ a ra hag-eñ an holl vannelloù war ur penn moullañ hag an trevnadoù "
 "da vouta paper a ya en-dro gant un doare dereat."
 
-#: ../printerproperties.py:554
+#: ../printerproperties.py:584
 #, python-format
 msgid "Printer Properties - '%s' on %s"
 msgstr "Perzhioù ar voullerez - '%s' war %s"
 
 #. The Conflict button was pressed.
-#: ../printerproperties.py:561
+#: ../printerproperties.py:591
 msgid ""
 "There are conflicting options.\n"
 "Changes can only be applied after\n"
@@ -1528,24 +1538,24 @@ msgstr ""
 "Sevenet e vez ar c'hemmoù ur wech ma vo\n"
 "diskoulmet ar c'henniñvoù-mañ."
 
-#: ../printerproperties.py:881
+#: ../printerproperties.py:917
 msgid "Installable Options"
 msgstr "Dibarzhioù staliadus"
 
-#: ../printerproperties.py:882
+#: ../printerproperties.py:918 ../ui/PrinterPropertiesDialog.glade.h:63
 msgid "Printer Options"
 msgstr "Dibarzhioù ar voullerez"
 
-#: ../printerproperties.py:919
+#: ../printerproperties.py:955
 #, python-format
 msgid "modifying class %s"
 msgstr "o taskemmañ ar rummad %s"
 
-#: ../printerproperties.py:936
+#: ../printerproperties.py:972
 msgid "This will delete this class!"
 msgstr "Dilamet e vo ar rummad-mañ gant an dra-mañ !"
 
-#: ../printerproperties.py:937
+#: ../printerproperties.py:973
 msgid "Proceed anyway?"
 msgstr "Keweriañ memes tra ?"
 
@@ -1553,19 +1563,19 @@ msgstr "Keweriañ memes tra ?"
 #. but we have never fetched the server settings to see whether
 #. the server is publishing shared printers.  Fetch the settings
 #. now so that we can update the "not published" label if necessary.
-#: ../printerproperties.py:1027 ../serversettings.py:192
+#: ../printerproperties.py:1065 ../serversettings.py:192
 msgid "fetching server settings"
 msgstr "o kerc'hat arventennoù an dafariad"
 
-#: ../printerproperties.py:1109
+#: ../printerproperties.py:1147
 msgid "printing test page"
 msgstr "o voullañ ur bajennad prouadiñ"
 
-#: ../printerproperties.py:1122 ../printerproperties.py:1157
+#: ../printerproperties.py:1160 ../printerproperties.py:1195
 msgid "Not possible"
 msgstr "N'eus ket tro"
 
-#: ../printerproperties.py:1123 ../printerproperties.py:1158
+#: ../printerproperties.py:1161 ../printerproperties.py:1196
 msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
@@ -1573,46 +1583,46 @@ msgstr ""
 "An dafariad a-bell a nac'h al labour moullañ, moarvat rak n'eo ket rannet ar "
 "voullerez."
 
-#: ../printerproperties.py:1135 ../printerproperties.py:1150
+#: ../printerproperties.py:1173 ../printerproperties.py:1188
 msgid "Submitted"
 msgstr "Kinniget"
 
-#: ../printerproperties.py:1136
+#: ../printerproperties.py:1174
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr "Kinniget eo ar bajennad prouadiñ evel ul labour %d"
 
-#: ../printerproperties.py:1143
+#: ../printerproperties.py:1181
 msgid "sending maintenance command"
 msgstr "o kas un arc'had evit an trezalc'h"
 
-#: ../printerproperties.py:1151
+#: ../printerproperties.py:1189
 #, python-format
 msgid "Maintenance command submitted as job %d"
 msgstr "Kinniget eo an arc'had evit an trezalc'h evel ul labour %d"
 
-#: ../printerproperties.py:1238 ../printerproperties.py:1243
-#: ../printerproperties.py:1339
+#: ../printerproperties.py:1276 ../printerproperties.py:1281
+#: ../printerproperties.py:1377
 msgid "Error"
 msgstr "Fazi"
 
-#: ../printerproperties.py:1239
+#: ../printerproperties.py:1277
 msgid "The PPD file for this queue is damaged."
 msgstr ""
 
-#: ../printerproperties.py:1244
+#: ../printerproperties.py:1282
 msgid "There was a problem connecting to the CUPS server."
 msgstr ""
 "Degouezhet ez eus bet ur gudenn e-pad ma oa o kennaskañ ouzh an dafariad "
 "CUPS."
 
-#: ../printerproperties.py:1340
+#: ../printerproperties.py:1378
 #, python-format
 msgid "Option '%s' has value '%s' and cannot be edited."
 msgstr ""
 "An dibarzh '%s' zo gant ar gwerzh '%s' ennañ ha n'hall ket bezañ embannet."
 
-#: ../printerproperties.py:1450
+#: ../printerproperties.py:1491
 msgid "Marker levels are not reported for this printer."
 msgstr "Liveoù ar merkerioù n'int ket roet evit ar voullerez-mañ."
 
@@ -1656,7 +1666,7 @@ msgstr "_Arventennoù"
 msgid "Adjust server settings"
 msgstr "o kerc'hat arventennoù an dafariad"
 
-#: ../system-config-printer.py:223
+#: ../system-config-printer.py:223 ../ui/PrintersWindow.glade.h:9
 msgid "_Printer"
 msgstr "_Moullerez"
 
@@ -1764,8 +1774,8 @@ msgstr ""
 msgid "Cannot start service on remote server"
 msgstr ""
 
-#: ../system-config-printer.py:1143
-#, python-format
+#: ../system-config-printer.py:1143 ../ui/ConnectingDialog.glade.h:2
+#, no-c-format, python-format
 msgid "<i>Opening connection to %s</i>"
 msgstr "<i>O tigeriñ ar c'hennask ouzh %s</i>"
 
@@ -1856,7 +1866,9 @@ msgstr ""
 msgid "Would you like to print a test page?"
 msgstr "Ha fellout a ra deoc'h moullañ ur bajennad arnodiñ ?"
 
-#: ../system-config-printer.py:1948 ../troubleshoot/PrintTestPage.py:72
+#. Not more than 25 characters
+#: ../system-config-printer.py:1948 ../ui/PrinterPropertiesDialog.glade.h:61
+#: ../troubleshoot/PrintTestPage.py:72
 msgid "Print Test Page"
 msgstr "Moullañ ur baj. prouadiñ"
 
@@ -1883,6 +1895,958 @@ msgid ""
 msgstr ""
 "Ar voullerez '%s\" a c'houlenn ar meziant '%s', n'eo ket staliet evit poent "
 "avat. Mar plij, staliit eñ kent ober gant ar voullerez-mañ."
+
+#: ../ui/AboutDialog.glade.h:1
+msgid "A CUPS configuration tool."
+msgstr "Ur benveg kefluniañ CUPS."
+
+#: ../ui/AboutDialog.glade.h:2
+#, fuzzy
+msgid "Copyright © 2006-2008 Red Hat, Inc."
+msgstr "Copyright &#xA9; 2006-2008 Red Hat, Inc."
+
+#: ../ui/AboutDialog.glade.h:3
+msgid ""
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with "
+"this program; if not, write to the Free Software Foundation, Inc., 675 Mass "
+"Ave, Cambridge, MA 02139, USA."
+msgstr ""
+"Ur goulev dieub eo hennezh ; aotreet oc'h ouzh e zasparzhañ, ha/pe zaskemmañ "
+"hervez termenoù al Lañvaz Foran Hollek GNU evel ma 'z eo embannet gant Free "
+"Software Foundation ; pe handelv 3 al lañvaz-mañ, pe (diouzh ho c'hoant) un "
+"handelv nevesoc'h.\\n\n"
+"Dasparzhet eo ar meziant-mañ gant ar fiziañs e vo talvoudus, gant GWARANT "
+"EBET koulskoude. Lennit al Lañvaz Foran Hollek GNU evit gouzout hiroc'h.\n"
+"\n"
+"Degemeret hoc'h eus un eilad eus  al Lañvaz Foran Hollek GNU gant ar meziant-"
+"mañ ; ma n'hoc'h eus ket, skrivit da : Free Software Foundation, Inc., 675 "
+"Mass Ave, Cambridge, MA 02139, USA."
+
+#. TRANSLATORS: Replace this string with your names, one name per line.  Thank you very much for your effort on translating system-config-printer and all our other tools!
+#: ../ui/AboutDialog.glade.h:9
+msgid "translator-credits"
+msgstr ""
+"Launchpad Contributions:\n"
+"  Alan https://launchpad.net/~alan-monfort\n"
+"  Denis https://launchpad.net/~bibar"
+
+#: ../ui/ConnectDialog.glade.h:1
+msgid "CUPS _server:"
+msgstr "_Dafariad CUPS :"
+
+#: ../ui/ConnectDialog.glade.h:2
+msgid "Connect to CUPS server"
+msgstr "Kennaskañ ouzh un dafariad CUPS"
+
+#: ../ui/ConnectDialog.glade.h:3
+msgid "Require _encryption"
+msgstr "Azgoullen an _enrinegañ"
+
+#: ../ui/ConnectingDialog.glade.h:3
+msgid "<span weight=\"bold\" size=\"larger\">Connecting to CUPS server</span>"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">O kennaskañ ouzh un dafariad CUPS</"
+"span>"
+
+#: ../ui/ConnectingDialog.glade.h:4
+msgid "Connecting to CUPS server"
+msgstr "O kennaskañ ouzh dafariad CUPS"
+
+#: ../ui/InstallDialog.glade.h:1
+msgid "_Install"
+msgstr "_Staliañ"
+
+#: ../ui/JobsWindow.glade.h:1
+msgid "Refresh job list"
+msgstr ""
+
+#: ../ui/JobsWindow.glade.h:2
+msgid "Show _completed jobs"
+msgstr "Diskouez al labourioù e_chu"
+
+#: ../ui/JobsWindow.glade.h:3
+#, fuzzy
+msgid "Show completed jobs"
+msgstr "Diskouez al labourioù e_chu"
+
+#: ../ui/JobsWindow.glade.h:4
+#, fuzzy
+msgid "_Refresh"
+msgstr "_Moullañ"
+
+#: ../ui/NewPrinterName.glade.h:1
+msgid "Duplicate Printer"
+msgstr "Arredaoliñ (eilañ) ar voullerez"
+
+#: ../ui/NewPrinterName.glade.h:2
+msgid "New name for the printer"
+msgstr "Anv nevez evit ar voullerez"
+
+#: ../ui/NewPrinterWindow.glade.h:1
+msgid "<b>Authentication</b>"
+msgstr "<b>Dilesa</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:2
+msgid "<b>Description</b>"
+msgstr "<b>Deskrivadur</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:3
+msgid "<b>Description</b> (optional)"
+msgstr "<b>Deskrivadur</b> (diret)"
+
+#: ../ui/NewPrinterWindow.glade.h:4
+msgid "<b>Enter device URI</b>"
+msgstr "<b>Enankañ URI an drobarzhell</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:5
+msgid "<b>IPP Printer</b>"
+msgstr "<b>Moullerez mod IPP</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:6
+msgid "<b>License Terms</b>"
+msgstr "<b>Termenoù al lañvaz</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:7
+msgid "<b>Location of the LPD network printer</b>"
+msgstr "<b>Lec'hiadur moullerez ar rouedad mod LPD</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:8
+msgid "<b>Location of the network printer</b>"
+msgstr "<b>Lec'hiadur moullerez ar rouedad</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:9
+msgid "<b>Location</b> (optional)"
+msgstr "<b>Lec'hiadur</b> (diret)"
+
+#: ../ui/NewPrinterWindow.glade.h:10
+msgid "<b>Network Printer</b>"
+msgstr "<b>Moullerez ar rouedad</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:11
+msgid "<b>Note</b>"
+msgstr "<b>Notenn</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:12
+msgid "<b>Output Quality</b>"
+msgstr "<b>Perzhded ar voulladenn</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:13
+msgid "<b>Printer Name</b>"
+msgstr "<b>Anv ar voullerez</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:14
+msgid "<b>SMB Printer</b>"
+msgstr "<b>Moullerez SMB</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:15
+msgid "<b>Select Driver</b>"
+msgstr "<b>Diuzañ ar stur</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:16
+msgid "<b>Settings of the serial port</b>"
+msgstr "<b>Arventennoù ar porzh a-steud</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:17
+msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
+msgstr "<i>smb://[workgroup/]dafariad[:port]/printer</i>"
+
+#: ../ui/NewPrinterWindow.glade.h:18
+msgid "<span weight=\"bold\" size=\"larger\">Choose Class Members</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">Dibab izili ar rummad</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:19
+msgid "<span weight=\"bold\" size=\"larger\">Choose Driver</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">Dibab ur stur</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:20
+msgid "<span weight=\"bold\" size=\"larger\">Describe Printer</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">Deskrivañ ar voullerez</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:21
+msgid "<span weight=\"bold\" size=\"larger\">Existing Settings</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">Arventennoù ez eus anezho</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:22
+msgid "<span weight=\"bold\" size=\"larger\">Installable Options</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">Dibarzhioù staliadus</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:23
+msgid "<span weight=\"bold\" size=\"larger\">Select Device</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">Diuzañ an drobarzhell</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:24
+msgid "Baud Rate"
+msgstr "Tizh e baudoù"
+
+#: ../ui/NewPrinterWindow.glade.h:25
+msgid "Browse..."
+msgstr "Furchal..."
+
+#: ../ui/NewPrinterWindow.glade.h:26
+msgid "Change PPD"
+msgstr "Kemmañ ar restr mod PPD"
+
+#: ../ui/NewPrinterWindow.glade.h:27
+msgid "Class Members"
+msgstr "Izili ar rummad"
+
+#: ../ui/NewPrinterWindow.glade.h:28
+msgid "Comments..."
+msgstr "Askelennoù..."
+
+#: ../ui/NewPrinterWindow.glade.h:29
+msgid "Connection"
+msgstr "Kennaskañ"
+
+#: ../ui/NewPrinterWindow.glade.h:30
+msgid "Data Bits"
+msgstr "Bitoù roadennoù"
+
+#: ../ui/NewPrinterWindow.glade.h:31 ../ui/PrinterPropertiesDialog.glade.h:29
+msgid "Description:"
+msgstr "Deskrivadur :"
+
+#: ../ui/NewPrinterWindow.glade.h:32
+msgid "Device"
+msgstr "Trobarzhell"
+
+#: ../ui/NewPrinterWindow.glade.h:33 ../troubleshoot/DeviceListed.py:40
+msgid "Device URI"
+msgstr "URI trobarzhell"
+
+#: ../ui/NewPrinterWindow.glade.h:34
+msgid "Device description."
+msgstr "Deskrivadur an drobarzhell."
+
+#: ../ui/NewPrinterWindow.glade.h:36
+msgid "Driver details"
+msgstr "Munudoù ar stur"
+
+#: ../ui/NewPrinterWindow.glade.h:37
+msgid "Empty"
+msgstr "Goullo"
+
+#: ../ui/NewPrinterWindow.glade.h:38
+msgid "Flow Control"
+msgstr "Mestroniañ al lanv"
+
+#: ../ui/NewPrinterWindow.glade.h:39
+msgid ""
+"For example:\n"
+"ipp://cups-server/printers/printer-queue\n"
+"ipp://printer.mydomain/ipp"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:42
+msgid ""
+"For the printer you have selected there are drivers available for download."
+msgstr ""
+"Sturioù hegerz da bellgargañ ez eus evit ar voullerez hoc'h eus diuzet."
+
+#: ../ui/NewPrinterWindow.glade.h:43
+msgid "Free software"
+msgstr "Meziant frank"
+
+#: ../ui/NewPrinterWindow.glade.h:44
+msgid "Graphics:"
+msgstr "Kevregadoù :"
+
+#: ../ui/NewPrinterWindow.glade.h:45
+msgid "Host:"
+msgstr "Ostiz :"
+
+#: ../ui/NewPrinterWindow.glade.h:46
+msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
+msgstr "Deskrivadenn helenn gant un den evel \"Brother HL-2035\""
+
+#: ../ui/NewPrinterWindow.glade.h:47
+msgid "Human-readable location such as \"Lab 1\""
+msgstr "Deskrivadenn helenn gant un den evel \"Lab 1\""
+
+#: ../ui/NewPrinterWindow.glade.h:49 ../ui/PrinterPropertiesDialog.glade.h:39
+msgid "Installed Options"
+msgstr "Dibarzhioù staliet"
+
+#: ../ui/NewPrinterWindow.glade.h:50
+#, fuzzy
+msgid "JetDirect"
+msgstr "DirectJet"
+
+#: ../ui/NewPrinterWindow.glade.h:51
+msgid "LPD"
+msgstr "LPD"
+
+#: ../ui/NewPrinterWindow.glade.h:52
+msgid "License:"
+msgstr "Lañvaz :"
+
+#: ../ui/NewPrinterWindow.glade.h:53
+msgid "Line art:"
+msgstr "Treserezh :"
+
+#: ../ui/NewPrinterWindow.glade.h:54
+msgid "Local Driver"
+msgstr "Stur lec'hel"
+
+#: ../ui/NewPrinterWindow.glade.h:55
+msgid "Make and model:"
+msgstr "Merk ha patrom :"
+
+#: ../ui/NewPrinterWindow.glade.h:56
+msgid "Manufacturer"
+msgstr "Oberier"
+
+#: ../ui/NewPrinterWindow.glade.h:58
+msgid "Network"
+msgstr "Rouedad"
+
+#: ../ui/NewPrinterWindow.glade.h:61
+msgid "No, I do not accept this license"
+msgstr "Ket, n'asantan ket al lañvaz-mañ"
+
+#: ../ui/NewPrinterWindow.glade.h:62
+msgid "Parity"
+msgstr "Parded"
+
+#: ../ui/NewPrinterWindow.glade.h:64
+msgid "Patented algorithms"
+msgstr "Algoritmoù breouet"
+
+#: ../ui/NewPrinterWindow.glade.h:65
+msgid "Photo:"
+msgstr "Luc'hskeudenn :"
+
+#: ../ui/NewPrinterWindow.glade.h:66
+msgid "Port number:"
+msgstr "Niverenn ar porzh :"
+
+#: ../ui/NewPrinterWindow.glade.h:67
+#, fuzzy
+msgid ""
+"PostScript Printer Description (PPD) files can often be found on the driver "
+"disk that comes with the printer. For PostScript printers they are often "
+"part of the Windows<sup>®</sup> driver."
+msgstr ""
+"Ar restroù mod Deskrivadur ar voullerez PostScript (PostScript Printer "
+"Description - PPD) a vez kavet alies war ar gantennad sturioù a zeu gant ar "
+"voullerez. Evit ar moullerezed mod PostScript e vezont alies e-touez ar "
+"sturioù Windows<sup>&#xAE;</sup>."
+
+#: ../ui/NewPrinterWindow.glade.h:68
+msgid "Printer model:"
+msgstr "Patrom ar voullerez :"
+
+#: ../ui/NewPrinterWindow.glade.h:69
+msgid "Probe"
+msgstr "Enklask"
+
+#: ../ui/NewPrinterWindow.glade.h:70
+msgid "Prompt user if authentication is required"
+msgstr "Atersiñ an arveriad mar bez ezhomm un dilesa"
+
+#: ../ui/NewPrinterWindow.glade.h:71
+msgid "Provide PPD file"
+msgstr "Pourchas ur restr mod PPD"
+
+#: ../ui/NewPrinterWindow.glade.h:72
+msgid "Queue:"
+msgstr "Lostennad :"
+
+#: ../ui/NewPrinterWindow.glade.h:73
+msgid "SCSI"
+msgstr "SCSI"
+
+#: ../ui/NewPrinterWindow.glade.h:74
+msgid "SMB"
+msgstr "SMB"
+
+#: ../ui/NewPrinterWindow.glade.h:75
+msgid "Search for a printer driver to download"
+msgstr "Klask ur stur da bellgargañ evit ur voullerez"
+
+#: ../ui/NewPrinterWindow.glade.h:76
+msgid "Searching..."
+msgstr "O,klask..."
+
+#: ../ui/NewPrinterWindow.glade.h:77
+msgid "Select printer from database"
+msgstr "Diuzañ ur voullerez e-touez ar stlennvon"
+
+#: ../ui/NewPrinterWindow.glade.h:78
+msgid "Serial"
+msgstr "A-steud"
+
+#: ../ui/NewPrinterWindow.glade.h:79
+msgid "Set authentication details now"
+msgstr "Arventennañ munudoù an dilesa bremañ"
+
+#: ../ui/NewPrinterWindow.glade.h:80
+msgid "Short name for this printer such as \"laserjet\""
+msgstr "Anv evit ar voullerez-mañ evel \"laserjet\""
+
+#: ../ui/NewPrinterWindow.glade.h:81
+msgid "Supplier:"
+msgstr "Pourchaser :"
+
+#: ../ui/NewPrinterWindow.glade.h:82
+msgid "Support:"
+msgstr "Skor :"
+
+#: ../ui/NewPrinterWindow.glade.h:83
+msgid "Text:"
+msgstr "Testenn :"
+
+#: ../ui/NewPrinterWindow.glade.h:84
+msgid ""
+"The foomatic printer database contains various manufacturer provided "
+"PostScript Printer Description (PPD) files and also can generate PPD files "
+"for a large number of (non PostScript) printers. But in general manufacturer "
+"provided PPD files provide better access to the specific features of the "
+"printer."
+msgstr ""
+"Stlennvon ar voullerez foomatic zo ennañ restroù deskrivañ ar moullerezed "
+"Postscript  (PPD) ha barrek eo da genel restroù mod PPD evit un niver bras a "
+"voullerezed (ket Postscrit). Dre vras, avat, e pourchas ar restroù PPD "
+"(pourchaset gant ar genderc'hourion) un haeziñ gwelloc'h da volladoù "
+"arbennik ar voullerez."
+
+#: ../ui/NewPrinterWindow.glade.h:85
+msgid ""
+"These drivers do not come from your operating system supplier and will not "
+"be covered by their commercial support.  See the support and license terms "
+"of the driver's supplier."
+msgstr ""
+"Ne zeu ket ar stur-mañ a-berzh pourchaser ho reizhiad korvoiñ ha ne vo ket "
+"goloet gant e skor kenwerzhel.  Lennit termenoù ar skor hag al lañvaz eus "
+"pourchaser ar stur."
+
+#: ../ui/NewPrinterWindow.glade.h:86
+msgid ""
+"This driver supports additional hardware that may be installed in the "
+"printer."
+msgstr ""
+"Ar stur a skor periant ouzhpenn hag a c'hallfe bezañ staliet er voullerez."
+
+#: ../ui/NewPrinterWindow.glade.h:87
+msgid ""
+"This is done by assuming that options with the same name do have the same "
+"meaning. Settings of options that are not present in the new PPD will be "
+"lost and options only present in the new PPD will be set to default."
+msgstr ""
+"Graet eo an dra-se en ur soñjal ez eus un dalvoudegezh heñvel d'an "
+"dibarzhioù gant un anv heñvel. An arventennoù eus an dibarzhioù n'emaint ket "
+"er restr mod PPD nevez a vo kollet hag an dibarzhioù hag a zo er restr mod "
+"PPD nevez a vo lakaet da arventennoù dre ziouer."
+
+#: ../ui/NewPrinterWindow.glade.h:88
+msgid ""
+"This way all current option settings will be lost. The default settings of "
+"the new PPD will be used. "
+msgstr ""
+"Evel-se e vo kollet holl arventennoù an dibarzhioù bremanel. Arveret e vo an "
+"arventennoù dre ziouer eus ar restr mod PPD nevez. "
+
+#: ../ui/NewPrinterWindow.glade.h:89
+msgid "Try to copy the option settings over from the old PPD. "
+msgstr "Klask eilañ dibarzhioù an arventennoù diouzh ar restr kozh mod PPD. "
+
+#: ../ui/NewPrinterWindow.glade.h:90
+msgid "Try to transfer the current settings"
+msgstr "Klask treuzkas an arventennoù bremanel"
+
+#: ../ui/NewPrinterWindow.glade.h:91
+msgid "URI:"
+msgstr "URI :"
+
+#: ../ui/NewPrinterWindow.glade.h:93
+msgid "Use the new PPD (Postscript Printer Description) as is."
+msgstr "Arverañ ar restr mod PPD (Postscript Printer Description) evel m'emañ."
+
+#: ../ui/NewPrinterWindow.glade.h:95
+msgid ""
+"With this choice no driver download will be performed. In the next steps a "
+"locally installed driver will be selected."
+msgstr ""
+"Gant an dibab-mañ ne vo ket pellgarget tra ebet. Gant ar bazenn a zeu e vo "
+"diuzet ur stur bet staliet gant un doare lec'hel."
+
+#: ../ui/NewPrinterWindow.glade.h:96
+msgid "Yes, I accept this license"
+msgstr "Ya, asantiñ a ran al lañvaz"
+
+#: ../ui/NewPrinterWindow.glade.h:97
+msgid "_Search"
+msgstr "_Klask"
+
+#: ../ui/NewPrinterWindow.glade.h:98
+msgid "_Verify..."
+msgstr "_Gwiriañ..."
+
+#: ../ui/NewPrinterWindow.glade.h:99
+msgid "license"
+msgstr "lañvaz"
+
+#: ../ui/NewPrinterWindow.glade.h:100 ../ui/PrinterPropertiesDialog.glade.h:81
+msgid "move left"
+msgstr "dilec'hiañ davit an tu kleiz"
+
+#: ../ui/NewPrinterWindow.glade.h:101 ../ui/PrinterPropertiesDialog.glade.h:82
+msgid "move right"
+msgstr "dilec'hiañ davit an tu dehou"
+
+#: ../ui/NewPrinterWindow.glade.h:102
+msgid "short description"
+msgstr "deskrivadur berr"
+
+#: ../ui/NewPrinterWindow.glade.h:103
+msgid "supplier"
+msgstr "pourchaser"
+
+#: ../ui/NewPrinterWindow.glade.h:104
+msgid "support contacts"
+msgstr "darempredoù a-fet skor"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:1
+msgid " "
+msgstr " "
+
+#: ../ui/PrinterPropertiesDialog.glade.h:2
+msgid "<b>Banner</b>"
+msgstr "<b>Banniel</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:3
+msgid "<b>Common Options</b>"
+msgstr "<b>Dibarzhioù boutin</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:4
+msgid "<b>Image Options</b>"
+msgstr "<b>Dibarzhioù ar skeudenn</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:5
+msgid "<b>Ink/Toner Levels</b>"
+msgstr "<b>Liveoù huz</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:6
+msgid "<b>Other Options (Advanced)</b>"
+msgstr "<b>Dibarzhioù all (Kempleshoc'h)</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:7
+msgid "<b>Policies</b>"
+msgstr "<b>Reolennoù</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:8
+msgid "<b>Settings</b>"
+msgstr "<b>Arventennoù</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:9
+msgid "<b>State</b>"
+msgstr "<b>Stad</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:10
+msgid "<b>Status Messages</b>"
+msgstr "<b>Kemennadennoù ar stad</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:11
+msgid "<b>Tests and Maintenance</b>"
+msgstr "<b>Taolioù arnod ha trezalc'h</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:12
+msgid "<b>Text Options</b>"
+msgstr "<b>Dibarzhioù an testenn</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:13
+msgid ""
+"<i>Not published\n"
+"See server settings</i>"
+msgstr ""
+"<i>N'eo ket embannet\n"
+"Gwelout arventennoù an dafariad</i>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:15
+msgid "Accepting jobs"
+msgstr "Asantadur al labourioù"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:16
+msgid "Access Control"
+msgstr "Gwiriadur an haeziñ"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:17
+msgid "Add or Remove Members"
+msgstr "Ouzhpennan pe dilemel izilli"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:18
+msgid "Allow printing for everyone except these users:"
+msgstr "Aotren ar moullañ evit an holl nemet an arveriaded-mañ :"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:19
+msgid "Bottom margin:"
+msgstr "Marz izel :"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:20
+msgid "Brightness:"
+msgstr "Lintr :"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:21
+msgid "Change..."
+msgstr "Kemmañ..."
+
+#: ../ui/PrinterPropertiesDialog.glade.h:22
+msgid "Characters per inch:"
+msgstr "Arouezennoù dre veutad :"
+
+#. Not more than 25 characters
+#: ../ui/PrinterPropertiesDialog.glade.h:24
+msgid "Clean Print Heads"
+msgstr "Naetaat ar pennoù"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:25
+msgid "Co_nflicts"
+msgstr "Ke_nniñvoù"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:26
+msgid "Columns:"
+msgstr "Bannoù :"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:27
+msgid "Copies:"
+msgstr "Eiladoù :"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:28
+msgid "Deny printing for everyone except these users:"
+msgstr "Nac'hañ ar moullañ evit an holl nemet an arveriaded-mañ :"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:30
+msgid "Device URI:"
+msgstr "URI an drobarzhell :"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:31
+msgid "Enabled"
+msgstr "Gweredekaet"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:32
+msgid "Ending Banner:"
+msgstr "Banniel an dibenn :"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:33
+msgid "Error Policy: \t"
+msgstr "Reolenn mar bez ur fazi : \t"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:34
+msgid "Finishings:"
+msgstr "O peurechuiñ :"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:35
+msgid "Gamma:"
+msgstr "Gamma :"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:36
+msgid "Hold until:"
+msgstr "Ehanañ betek :"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:37
+msgid "Hue adjustment:"
+msgstr "Kengeidadur an arlivioù :"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:38
+msgid "Ink/Toner Levels"
+msgstr "Liveoù huz"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:40
+msgid "Job Options"
+msgstr "Dibarzhioù al labour"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:41
+msgid "Job priority:"
+msgstr "Tevetegezh al labourioù :"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:42
+msgid "Left margin:"
+msgstr "Marz kleiz :"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:43
+msgid "Lines per inch:"
+msgstr "Arroudennoù dre veutad :"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:44
+msgid "Location:"
+msgstr "Lec'hiadur :"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:45
+msgid "Make and Model:"
+msgstr "Merk ha patrom :"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:46
+msgid "Media:"
+msgstr "Media :"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:47
+msgid "Members"
+msgstr "Izilli"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:48
+msgid "Mirror"
+msgstr "Melezour"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:49
+msgid "More"
+msgstr "Muioc'h"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:50
+msgid "Operation Policy:"
+msgstr "Reolenn ar gwezhiadur :"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:51
+msgid "Orientation:"
+msgstr "Reteradur :"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:52
+#, fuzzy
+msgid "Output bin:"
+msgstr "Urzh an ec'hankad :"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:53
+msgid "Output order:"
+msgstr "Urzh an ec'hankad :"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:54
+msgid "Pages per side layout:"
+msgstr "Kenaozadur ar bajennadoù dre du :"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:55
+msgid "Pages per side:"
+msgstr "Pajennadoù dre du :"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:56
+msgid "Policies"
+msgstr "Reolennoù"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:57
+msgid "Pretty print"
+msgstr "Moulladur koantig"
+
+#. Not more than 25 characters
+#: ../ui/PrinterPropertiesDialog.glade.h:59
+msgid "Print Self-Test Page"
+msgstr "Moullañ 1 baj. embrouadiñ"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:62
+#, fuzzy
+msgid "Print quality:"
+msgstr "Stad ar voullerez"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:64
+msgid "Printer Properties"
+msgstr "Perzhioù ar voullerez"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:65
+msgid "Printer State:"
+msgstr "Stad ar voullerez"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:66
+#, fuzzy
+msgid "Printer resolution:"
+msgstr "Lec'hiadur ar voullerez"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:67
+msgid "Reset"
+msgstr "Adderaouekaat"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:68
+msgid "Right margin:"
+msgstr "Marz a-zehou"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:69
+msgid "Saturation:"
+msgstr "Peurvec'hiañ"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:70
+msgid "Scale to fit"
+msgstr "Skeulaat e-keñver ar bajennad"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:71
+msgid "Scaling:"
+msgstr "Skeulaat :"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:72
+msgid "Settings"
+msgstr "Arventennoù"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:73
+msgid "Shared"
+msgstr "Rannet"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:74
+msgid "Sides:"
+msgstr "Tuioù :"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:75
+msgid ""
+"Specify the default job options for this printer.  Jobs arriving at this "
+"print server will have these options added if they are not already set by "
+"the application."
+msgstr ""
+"Erspizañ dibarzhioù dre ziouer al labour evit ar voullerez-mañ.  Ouzhpennet "
+"e vo an dibarzhioù-mañ d'al labourioù oc'h erruout betek an dafariad moullañ "
+"ma n'int ket bet arventennet endeo gant an arload."
+
+#: ../ui/PrinterPropertiesDialog.glade.h:76
+msgid "Starting Banner:"
+msgstr "Banniel an derou :"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:77
+msgid "There are no status messages for this printer."
+msgstr "N'eus kemenadenn stad ebet evit ar voullerez-mañ."
+
+#: ../ui/PrinterPropertiesDialog.glade.h:78
+msgid "To add a new option, enter its name in the box below and click to add."
+msgstr ""
+"A-benn goulenn dibarzhioù nevez, roit e anv er voestad amañ dindan ha klikit "
+"war Ouzhpennañ"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:79
+msgid "Top margin:"
+msgstr "Marz an nec'h :"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:80
+msgid "Word wrap"
+msgstr "Dilinennañ emgefreek"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:83
+msgid "points"
+msgstr "a boentoù"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:84
+msgid "user"
+msgstr "arveriad"
+
+#: ../ui/PrintersWindow.glade.h:1
+msgid ""
+"Printing service not available.  Start the service on this computer or "
+"connect to another server."
+msgstr ""
+
+#: ../ui/PrintersWindow.glade.h:2
+msgid "Start Service"
+msgstr ""
+
+#: ../ui/PrintersWindow.glade.h:3
+msgid "System-Config-Printer"
+msgstr "System-Config-Printer"
+
+#: ../ui/PrintersWindow.glade.h:4
+msgid "There are no printers configured yet."
+msgstr ""
+
+#: ../ui/PrintersWindow.glade.h:5
+msgid "_Discovered Printers"
+msgstr "Moullerezed _dizoloet"
+
+#: ../ui/PrintersWindow.glade.h:6
+msgid "_Group"
+msgstr "S_trollad"
+
+#: ../ui/PrintersWindow.glade.h:7
+msgid "_Groups"
+msgstr "_Strolladoù"
+
+#: ../ui/PrintersWindow.glade.h:8
+msgid "_Help"
+msgstr "_Skoazell"
+
+#: ../ui/PrintersWindow.glade.h:10
+msgid "_Server"
+msgstr "_Dafariad"
+
+#: ../ui/PrintersWindow.glade.h:11
+msgid "_View"
+msgstr "_Gwelout"
+
+#: ../ui/ServerSettingsDialog.glade.h:1
+msgid "<b>Basic Server Settings</b>"
+msgstr "<b>Arventennoù an dafariad diazez</b>"
+
+#: ../ui/ServerSettingsDialog.glade.h:2
+msgid "<b>Browse servers</b>"
+msgstr "<b>Furchal e-touez an dafariad</b>"
+
+#: ../ui/ServerSettingsDialog.glade.h:3
+msgid "<b>Job history</b>"
+msgstr "<b>Roll istor al labourioù</b>"
+
+#: ../ui/ServerSettingsDialog.glade.h:4
+msgid "Advanced Server Settings"
+msgstr "Arventennoù kempleshoc'h an dafariad"
+
+#: ../ui/ServerSettingsDialog.glade.h:5
+msgid "Allow _remote administration"
+msgstr "Aotren an _ardeiñ a-bell"
+
+#: ../ui/ServerSettingsDialog.glade.h:6
+msgid "Allow _users to cancel any job (not just their own)"
+msgstr "Aotren an arveriaded da nullañ an holl labourioù (ket o re nemetken)"
+
+#: ../ui/ServerSettingsDialog.glade.h:7
+msgid "Allow printing from the _Internet"
+msgstr "Aotren ar moullañ diouzh _Internet"
+
+#: ../ui/ServerSettingsDialog.glade.h:8
+msgid "Do not preserve job history"
+msgstr "Arabat mirout roll istor al labourioù"
+
+#: ../ui/ServerSettingsDialog.glade.h:9
+msgid "Preserve job files (allow reprinting)"
+msgstr "Mirout restroù al labourioù (aotren an admoullañ)"
+
+#: ../ui/ServerSettingsDialog.glade.h:10
+msgid "Preserve job history but not files"
+msgstr "Mirout roll istor al labourioù, ket ar restroù avat"
+
+#: ../ui/ServerSettingsDialog.glade.h:11
+msgid "Save _debugging information for troubleshooting"
+msgstr "Enrollañ ar stlennoù diveugañ evit an dichanadur"
+
+#: ../ui/ServerSettingsDialog.glade.h:12
+msgid "Server Settings"
+msgstr "Arventennoù an dafariad"
+
+#: ../ui/ServerSettingsDialog.glade.h:13
+msgid ""
+"Usually print servers broadcast their queues. Specify print servers below to "
+"periodically ask for queues instead."
+msgstr ""
+"Dre voaz e vez skignet o lostennadoù gant an dafariad moullañ. Erspizañ a "
+"c'hallit, avat, dafariadoù moullañ amañ dindan da c'houlenn diganto o "
+"lostennadoù."
+
+#: ../ui/ServerSettingsDialog.glade.h:14
+msgid "_Publish shared printers connected to this system"
+msgstr "_Embann ar moullerezed rannet kennasket ouzh ar reizhiad-mañ"
+
+#: ../ui/ServerSettingsDialog.glade.h:15
+msgid "_Show printers shared by other systems"
+msgstr "_Diskouez ar moullerezed rannet gant ar reizhiadoù all"
+
+#: ../ui/SMBBrowseDialog.glade.h:1
+msgid "SMB Browser"
+msgstr "Merdeer SMB"
+
+#: ../ui/statusicon_popupmenu.glade.h:1
+msgid "_Hide"
+msgstr "Kuz_hañ"
+
+#: ../ui/WaitWindow.glade.h:1
+msgid "Please Wait"
+msgstr "Gortozit mar plij"
 
 #: ../system-config-printer.desktop.in.h:1
 msgid "Configure printers"
@@ -2139,10 +3103,6 @@ msgid ""
 msgstr ""
 "Dibabit an drobarzhell emaoc'h o klask arverañ diwar ar roll amañ dindan. Ma "
 "n'emañ ket war ar roll, diuzit 'Ket war ar roll'."
-
-#: ../troubleshoot/DeviceListed.py:40
-msgid "Device URI"
-msgstr "URI trobarzhell"
 
 #: ../troubleshoot/ErrorLogCheckpoint.py:31
 msgid "Debugging"
@@ -2479,718 +3439,11 @@ msgstr "Arloadig al lostennad moullañ"
 msgid "System tray icon for managing print jobs"
 msgstr "Arlun ar maez rebuziñ evit ardeiñ al labourioù moullañ"
 
-#~ msgid "A CUPS configuration tool."
-#~ msgstr "Ur benveg kefluniañ CUPS."
-
-#~ msgid "Copyright &#xA9; 2006-2008 Red Hat, Inc."
-#~ msgstr "Copyright &#xA9; 2006-2008 Red Hat, Inc."
-
-#~ msgid ""
-#~ "This program is free software; you can redistribute it and/or modify it "
-#~ "under the terms of the GNU General Public License as published by the "
-#~ "Free Software Foundation; either version 2 of the License, or (at your "
-#~ "option) any later version.\n"
-#~ "\n"
-#~ "This program is distributed in the hope that it will be useful, but "
-#~ "WITHOUT ANY WARRANTY; without even the implied warranty of "
-#~ "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General "
-#~ "Public License for more details.\n"
-#~ "\n"
-#~ "You should have received a copy of the GNU General Public License along "
-#~ "with this program; if not, write to the Free Software Foundation, Inc., "
-#~ "675 Mass Ave, Cambridge, MA 02139, USA."
-#~ msgstr ""
-#~ "Ur goulev dieub eo hennezh ; aotreet oc'h ouzh e zasparzhañ, ha/pe "
-#~ "zaskemmañ hervez termenoù al Lañvaz Foran Hollek GNU evel ma 'z eo "
-#~ "embannet gant Free Software Foundation ; pe handelv 3 al lañvaz-mañ, pe "
-#~ "(diouzh ho c'hoant) un handelv nevesoc'h.\\n\n"
-#~ "Dasparzhet eo ar meziant-mañ gant ar fiziañs e vo talvoudus, gant GWARANT "
-#~ "EBET koulskoude. Lennit al Lañvaz Foran Hollek GNU evit gouzout hiroc'h.\n"
-#~ "\n"
-#~ "Degemeret hoc'h eus un eilad eus  al Lañvaz Foran Hollek GNU gant ar "
-#~ "meziant-mañ ; ma n'hoc'h eus ket, skrivit da : Free Software Foundation, "
-#~ "Inc., 675 Mass Ave, Cambridge, MA 02139, USA."
-
-#~ msgid "translator-credits"
-#~ msgstr ""
-#~ "Launchpad Contributions:\n"
-#~ "  Alan https://launchpad.net/~alan-monfort\n"
-#~ "  Denis https://launchpad.net/~bibar"
-
-#~ msgid "CUPS _server:"
-#~ msgstr "_Dafariad CUPS :"
-
-#~ msgid "Connect to CUPS server"
-#~ msgstr "Kennaskañ ouzh un dafariad CUPS"
-
-#~ msgid "Require _encryption"
-#~ msgstr "Azgoullen an _enrinegañ"
-
-#~ msgid ""
-#~ "<span weight=\"bold\" size=\"larger\">Connecting to CUPS server</span>"
-#~ msgstr ""
-#~ "<span weight=\"bold\" size=\"larger\">O kennaskañ ouzh un dafariad CUPS</"
-#~ "span>"
-
-#~ msgid "Connecting to CUPS server"
-#~ msgstr "O kennaskañ ouzh dafariad CUPS"
-
-#~ msgid "_Install"
-#~ msgstr "_Staliañ"
-
-#~ msgid "Show _completed jobs"
-#~ msgstr "Diskouez al labourioù e_chu"
-
-#, fuzzy
-#~ msgid "Show completed jobs"
-#~ msgstr "Diskouez al labourioù e_chu"
-
-#, fuzzy
-#~ msgid "_Refresh"
-#~ msgstr "_Moullañ"
-
-#~ msgid "Duplicate Printer"
-#~ msgstr "Arredaoliñ (eilañ) ar voullerez"
-
-#~ msgid "New name for the printer"
-#~ msgstr "Anv nevez evit ar voullerez"
-
-#~ msgid "<b>Authentication</b>"
-#~ msgstr "<b>Dilesa</b>"
-
-#~ msgid "<b>Description</b>"
-#~ msgstr "<b>Deskrivadur</b>"
-
-#~ msgid "<b>Description</b> (optional)"
-#~ msgstr "<b>Deskrivadur</b> (diret)"
-
-#~ msgid "<b>Enter device URI</b>"
-#~ msgstr "<b>Enankañ URI an drobarzhell</b>"
-
-#~ msgid "<b>IPP Printer</b>"
-#~ msgstr "<b>Moullerez mod IPP</b>"
-
-#~ msgid "<b>License Terms</b>"
-#~ msgstr "<b>Termenoù al lañvaz</b>"
-
-#~ msgid "<b>Location of the LPD network printer</b>"
-#~ msgstr "<b>Lec'hiadur moullerez ar rouedad mod LPD</b>"
-
-#~ msgid "<b>Location of the network printer</b>"
-#~ msgstr "<b>Lec'hiadur moullerez ar rouedad</b>"
-
-#~ msgid "<b>Location</b> (optional)"
-#~ msgstr "<b>Lec'hiadur</b> (diret)"
-
-#~ msgid "<b>Network Printer</b>"
-#~ msgstr "<b>Moullerez ar rouedad</b>"
-
-#~ msgid "<b>Note</b>"
-#~ msgstr "<b>Notenn</b>"
-
-#~ msgid "<b>Output Quality</b>"
-#~ msgstr "<b>Perzhded ar voulladenn</b>"
-
-#~ msgid "<b>Printer Name</b>"
-#~ msgstr "<b>Anv ar voullerez</b>"
-
-#~ msgid "<b>SMB Printer</b>"
-#~ msgstr "<b>Moullerez SMB</b>"
-
-#~ msgid "<b>Select Driver</b>"
-#~ msgstr "<b>Diuzañ ar stur</b>"
-
-#~ msgid "<b>Settings of the serial port</b>"
-#~ msgstr "<b>Arventennoù ar porzh a-steud</b>"
-
-#~ msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
-#~ msgstr "<i>smb://[workgroup/]dafariad[:port]/printer</i>"
-
-#~ msgid "<span weight=\"bold\" size=\"larger\">Choose Class Members</span>"
-#~ msgstr "<span weight=\"bold\" size=\"larger\">Dibab izili ar rummad</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"larger\">Choose Driver</span>"
-#~ msgstr "<span weight=\"bold\" size=\"larger\">Dibab ur stur</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"larger\">Describe Printer</span>"
-#~ msgstr "<span weight=\"bold\" size=\"larger\">Deskrivañ ar voullerez</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"larger\">Existing Settings</span>"
-#~ msgstr ""
-#~ "<span weight=\"bold\" size=\"larger\">Arventennoù ez eus anezho</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"larger\">Installable Options</span>"
-#~ msgstr "<span weight=\"bold\" size=\"larger\">Dibarzhioù staliadus</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"larger\">Select Device</span>"
-#~ msgstr "<span weight=\"bold\" size=\"larger\">Diuzañ an drobarzhell</span>"
-
-#~ msgid "Baud Rate"
-#~ msgstr "Tizh e baudoù"
-
-#~ msgid "Browse..."
-#~ msgstr "Furchal..."
-
-#~ msgid "Change PPD"
-#~ msgstr "Kemmañ ar restr mod PPD"
-
-#~ msgid "Class Members"
-#~ msgstr "Izili ar rummad"
-
-#~ msgid "Comments..."
-#~ msgstr "Askelennoù..."
-
-#~ msgid "Connection"
-#~ msgstr "Kennaskañ"
-
-#~ msgid "Data Bits"
-#~ msgstr "Bitoù roadennoù"
-
-#~ msgid "Description:"
-#~ msgstr "Deskrivadur :"
-
-#~ msgid "Device"
-#~ msgstr "Trobarzhell"
-
-#~ msgid "Device description."
-#~ msgstr "Deskrivadur an drobarzhell."
-
-#~ msgid "Driver details"
-#~ msgstr "Munudoù ar stur"
-
-#~ msgid "Empty"
-#~ msgstr "Goullo"
-
-#~ msgid "Flow Control"
-#~ msgstr "Mestroniañ al lanv"
-
-#~ msgid ""
-#~ "For the printer you have selected there are drivers available for "
-#~ "download."
-#~ msgstr ""
-#~ "Sturioù hegerz da bellgargañ ez eus evit ar voullerez hoc'h eus diuzet."
-
-#~ msgid "Free software"
-#~ msgstr "Meziant frank"
-
-#~ msgid "Graphics:"
-#~ msgstr "Kevregadoù :"
-
-#~ msgid "Host:"
-#~ msgstr "Ostiz :"
-
-#~ msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
-#~ msgstr "Deskrivadenn helenn gant un den evel \"Brother HL-2035\""
-
-#~ msgid "Human-readable location such as \"Lab 1\""
-#~ msgstr "Deskrivadenn helenn gant un den evel \"Lab 1\""
-
-#~ msgid "Installed Options"
-#~ msgstr "Dibarzhioù staliet"
-
-#, fuzzy
-#~ msgid "JetDirect"
-#~ msgstr "DirectJet"
-
-#~ msgid "LPD"
-#~ msgstr "LPD"
-
-#~ msgid "License:"
-#~ msgstr "Lañvaz :"
-
-#~ msgid "Line art:"
-#~ msgstr "Treserezh :"
-
-#~ msgid "Local Driver"
-#~ msgstr "Stur lec'hel"
-
-#~ msgid "Make and model:"
-#~ msgstr "Merk ha patrom :"
-
-#~ msgid "Manufacturer"
-#~ msgstr "Oberier"
-
-#~ msgid "Network"
-#~ msgstr "Rouedad"
-
-#~ msgid "No, I do not accept this license"
-#~ msgstr "Ket, n'asantan ket al lañvaz-mañ"
-
-#~ msgid "Parity"
-#~ msgstr "Parded"
-
-#~ msgid "Patented algorithms"
-#~ msgstr "Algoritmoù breouet"
-
-#~ msgid "Photo:"
-#~ msgstr "Luc'hskeudenn :"
-
-#~ msgid "Port number:"
-#~ msgstr "Niverenn ar porzh :"
-
-#~ msgid ""
-#~ "PostScript Printer Description (PPD) files can often be found on the "
-#~ "driver disk that comes with the printer. For PostScript printers they are "
-#~ "often part of the Windows<sup>&#xAE;</sup> driver."
-#~ msgstr ""
-#~ "Ar restroù mod Deskrivadur ar voullerez PostScript (PostScript Printer "
-#~ "Description - PPD) a vez kavet alies war ar gantennad sturioù a zeu gant "
-#~ "ar voullerez. Evit ar moullerezed mod PostScript e vezont alies e-touez "
-#~ "ar sturioù Windows<sup>&#xAE;</sup>."
-
-#~ msgid "Printer model:"
-#~ msgstr "Patrom ar voullerez :"
-
-#~ msgid "Probe"
-#~ msgstr "Enklask"
-
-#~ msgid "Prompt user if authentication is required"
-#~ msgstr "Atersiñ an arveriad mar bez ezhomm un dilesa"
-
-#~ msgid "Provide PPD file"
-#~ msgstr "Pourchas ur restr mod PPD"
-
-#~ msgid "Queue:"
-#~ msgstr "Lostennad :"
-
-#~ msgid "SCSI"
-#~ msgstr "SCSI"
-
-#~ msgid "SMB"
-#~ msgstr "SMB"
-
-#~ msgid "Search for a printer driver to download"
-#~ msgstr "Klask ur stur da bellgargañ evit ur voullerez"
-
-#~ msgid "Searching..."
-#~ msgstr "O,klask..."
-
-#~ msgid "Select printer from database"
-#~ msgstr "Diuzañ ur voullerez e-touez ar stlennvon"
-
-#~ msgid "Serial"
-#~ msgstr "A-steud"
-
-#~ msgid "Set authentication details now"
-#~ msgstr "Arventennañ munudoù an dilesa bremañ"
-
-#~ msgid "Short name for this printer such as \"laserjet\""
-#~ msgstr "Anv evit ar voullerez-mañ evel \"laserjet\""
-
-#~ msgid "Supplier:"
-#~ msgstr "Pourchaser :"
-
-#~ msgid "Support:"
-#~ msgstr "Skor :"
-
-#~ msgid "Text:"
-#~ msgstr "Testenn :"
-
-#~ msgid ""
-#~ "The foomatic printer database contains various manufacturer provided "
-#~ "PostScript Printer Description (PPD) files and also can generate PPD "
-#~ "files for a large number of (non PostScript) printers. But in general "
-#~ "manufacturer provided PPD files provide better access to the specific "
-#~ "features of the printer."
-#~ msgstr ""
-#~ "Stlennvon ar voullerez foomatic zo ennañ restroù deskrivañ ar moullerezed "
-#~ "Postscript  (PPD) ha barrek eo da genel restroù mod PPD evit un niver "
-#~ "bras a voullerezed (ket Postscrit). Dre vras, avat, e pourchas ar restroù "
-#~ "PPD (pourchaset gant ar genderc'hourion) un haeziñ gwelloc'h da volladoù "
-#~ "arbennik ar voullerez."
-
-#~ msgid ""
-#~ "These drivers do not come from your operating system supplier and will "
-#~ "not be covered by their commercial support.  See the support and license "
-#~ "terms of the driver's supplier."
-#~ msgstr ""
-#~ "Ne zeu ket ar stur-mañ a-berzh pourchaser ho reizhiad korvoiñ ha ne vo "
-#~ "ket goloet gant e skor kenwerzhel.  Lennit termenoù ar skor hag al lañvaz "
-#~ "eus pourchaser ar stur."
-
-#~ msgid ""
-#~ "This driver supports additional hardware that may be installed in the "
-#~ "printer."
-#~ msgstr ""
-#~ "Ar stur a skor periant ouzhpenn hag a c'hallfe bezañ staliet er voullerez."
-
-#~ msgid ""
-#~ "This is done by assuming that options with the same name do have the same "
-#~ "meaning. Settings of options that are not present in the new PPD will be "
-#~ "lost and options only present in the new PPD will be set to default."
-#~ msgstr ""
-#~ "Graet eo an dra-se en ur soñjal ez eus un dalvoudegezh heñvel d'an "
-#~ "dibarzhioù gant un anv heñvel. An arventennoù eus an dibarzhioù n'emaint "
-#~ "ket er restr mod PPD nevez a vo kollet hag an dibarzhioù hag a zo er "
-#~ "restr mod PPD nevez a vo lakaet da arventennoù dre ziouer."
-
-#~ msgid ""
-#~ "This way all current option settings will be lost. The default settings "
-#~ "of the new PPD will be used. "
-#~ msgstr ""
-#~ "Evel-se e vo kollet holl arventennoù an dibarzhioù bremanel. Arveret e vo "
-#~ "an arventennoù dre ziouer eus ar restr mod PPD nevez. "
-
-#~ msgid "Try to copy the option settings over from the old PPD. "
-#~ msgstr ""
-#~ "Klask eilañ dibarzhioù an arventennoù diouzh ar restr kozh mod PPD. "
-
-#~ msgid "Try to transfer the current settings"
-#~ msgstr "Klask treuzkas an arventennoù bremanel"
-
-#~ msgid "URI:"
-#~ msgstr "URI :"
-
-#~ msgid "Use the new PPD (Postscript Printer Description) as is."
-#~ msgstr ""
-#~ "Arverañ ar restr mod PPD (Postscript Printer Description) evel m'emañ."
-
-#~ msgid ""
-#~ "With this choice no driver download will be performed. In the next steps "
-#~ "a locally installed driver will be selected."
-#~ msgstr ""
-#~ "Gant an dibab-mañ ne vo ket pellgarget tra ebet. Gant ar bazenn a zeu e "
-#~ "vo diuzet ur stur bet staliet gant un doare lec'hel."
-
-#~ msgid "Yes, I accept this license"
-#~ msgstr "Ya, asantiñ a ran al lañvaz"
-
-#~ msgid "_Search"
-#~ msgstr "_Klask"
-
-#~ msgid "_Verify..."
-#~ msgstr "_Gwiriañ..."
-
-#~ msgid "license"
-#~ msgstr "lañvaz"
-
-#~ msgid "move left"
-#~ msgstr "dilec'hiañ davit an tu kleiz"
-
-#~ msgid "move right"
-#~ msgstr "dilec'hiañ davit an tu dehou"
-
-#~ msgid "short description"
-#~ msgstr "deskrivadur berr"
-
-#~ msgid "supplier"
-#~ msgstr "pourchaser"
-
-#~ msgid "support contacts"
-#~ msgstr "darempredoù a-fet skor"
-
-#~ msgid " "
-#~ msgstr " "
-
-#~ msgid "<b>Banner</b>"
-#~ msgstr "<b>Banniel</b>"
-
-#~ msgid "<b>Common Options</b>"
-#~ msgstr "<b>Dibarzhioù boutin</b>"
-
-#~ msgid "<b>Image Options</b>"
-#~ msgstr "<b>Dibarzhioù ar skeudenn</b>"
-
-#~ msgid "<b>Ink/Toner Levels</b>"
-#~ msgstr "<b>Liveoù huz</b>"
-
-#~ msgid "<b>Other Options (Advanced)</b>"
-#~ msgstr "<b>Dibarzhioù all (Kempleshoc'h)</b>"
-
-#~ msgid "<b>Policies</b>"
-#~ msgstr "<b>Reolennoù</b>"
-
-#~ msgid "<b>Settings</b>"
-#~ msgstr "<b>Arventennoù</b>"
-
-#~ msgid "<b>State</b>"
-#~ msgstr "<b>Stad</b>"
-
-#~ msgid "<b>Status Messages</b>"
-#~ msgstr "<b>Kemennadennoù ar stad</b>"
-
-#~ msgid "<b>Tests and Maintenance</b>"
-#~ msgstr "<b>Taolioù arnod ha trezalc'h</b>"
-
-#~ msgid "<b>Text Options</b>"
-#~ msgstr "<b>Dibarzhioù an testenn</b>"
-
-#~ msgid ""
-#~ "<i>Not published\n"
-#~ "See server settings</i>"
-#~ msgstr ""
-#~ "<i>N'eo ket embannet\n"
-#~ "Gwelout arventennoù an dafariad</i>"
-
-#~ msgid "Accepting jobs"
-#~ msgstr "Asantadur al labourioù"
-
-#~ msgid "Access Control"
-#~ msgstr "Gwiriadur an haeziñ"
-
-#~ msgid "Add or Remove Members"
-#~ msgstr "Ouzhpennan pe dilemel izilli"
-
-#~ msgid "Allow printing for everyone except these users:"
-#~ msgstr "Aotren ar moullañ evit an holl nemet an arveriaded-mañ :"
-
-#~ msgid "Bottom margin:"
-#~ msgstr "Marz izel :"
-
-#~ msgid "Brightness:"
-#~ msgstr "Lintr :"
-
-#~ msgid "Change..."
-#~ msgstr "Kemmañ..."
-
-#~ msgid "Characters per inch:"
-#~ msgstr "Arouezennoù dre veutad :"
-
-#~ msgid "Clean Print Heads"
-#~ msgstr "Naetaat ar pennoù"
-
-#~ msgid "Co_nflicts"
-#~ msgstr "Ke_nniñvoù"
-
-#~ msgid "Columns:"
-#~ msgstr "Bannoù :"
-
-#~ msgid "Copies:"
-#~ msgstr "Eiladoù :"
-
-#~ msgid "Deny printing for everyone except these users:"
-#~ msgstr "Nac'hañ ar moullañ evit an holl nemet an arveriaded-mañ :"
-
-#~ msgid "Device URI:"
-#~ msgstr "URI an drobarzhell :"
-
-#~ msgid "Enabled"
-#~ msgstr "Gweredekaet"
-
-#~ msgid "Ending Banner:"
-#~ msgstr "Banniel an dibenn :"
-
-#~ msgid "Error Policy: \t"
-#~ msgstr "Reolenn mar bez ur fazi : \t"
-
-#~ msgid "Finishings:"
-#~ msgstr "O peurechuiñ :"
-
-#~ msgid "Gamma:"
-#~ msgstr "Gamma :"
-
-#~ msgid "Hold until:"
-#~ msgstr "Ehanañ betek :"
-
-#~ msgid "Hue adjustment:"
-#~ msgstr "Kengeidadur an arlivioù :"
-
-#~ msgid "Ink/Toner Levels"
-#~ msgstr "Liveoù huz"
-
-#~ msgid "Job Options"
-#~ msgstr "Dibarzhioù al labour"
-
-#~ msgid "Job priority:"
-#~ msgstr "Tevetegezh al labourioù :"
-
-#~ msgid "Left margin:"
-#~ msgstr "Marz kleiz :"
-
-#~ msgid "Lines per inch:"
-#~ msgstr "Arroudennoù dre veutad :"
-
-#~ msgid "Location:"
-#~ msgstr "Lec'hiadur :"
-
-#~ msgid "Make and Model:"
-#~ msgstr "Merk ha patrom :"
-
-#~ msgid "Media:"
-#~ msgstr "Media :"
-
-#~ msgid "Members"
-#~ msgstr "Izilli"
-
-#~ msgid "Mirror"
-#~ msgstr "Melezour"
-
-#~ msgid "More"
-#~ msgstr "Muioc'h"
-
-#~ msgid "Operation Policy:"
-#~ msgstr "Reolenn ar gwezhiadur :"
-
-#~ msgid "Orientation:"
-#~ msgstr "Reteradur :"
-
-#~ msgid "Output order:"
-#~ msgstr "Urzh an ec'hankad :"
-
-#~ msgid "Pages per side layout:"
-#~ msgstr "Kenaozadur ar bajennadoù dre du :"
-
-#~ msgid "Pages per side:"
-#~ msgstr "Pajennadoù dre du :"
-
-#~ msgid "Policies"
-#~ msgstr "Reolennoù"
-
-#~ msgid "Pretty print"
-#~ msgstr "Moulladur koantig"
-
-#~ msgid "Print Self-Test Page"
-#~ msgstr "Moullañ 1 baj. embrouadiñ"
-
-#~ msgid "Printer Properties"
-#~ msgstr "Perzhioù ar voullerez"
-
-#~ msgid "Printer State:"
-#~ msgstr "Stad ar voullerez"
-
-#~ msgid "Reset"
-#~ msgstr "Adderaouekaat"
-
-#~ msgid "Right margin:"
-#~ msgstr "Marz a-zehou"
-
-#~ msgid "Saturation:"
-#~ msgstr "Peurvec'hiañ"
-
-#~ msgid "Scale to fit"
-#~ msgstr "Skeulaat e-keñver ar bajennad"
-
-#~ msgid "Scaling:"
-#~ msgstr "Skeulaat :"
-
-#~ msgid "Settings"
-#~ msgstr "Arventennoù"
-
-#~ msgid "Shared"
-#~ msgstr "Rannet"
-
-#~ msgid "Sides:"
-#~ msgstr "Tuioù :"
-
-#~ msgid ""
-#~ "Specify the default job options for this printer.  Jobs arriving at this "
-#~ "print server will have these options added if they are not already set by "
-#~ "the application."
-#~ msgstr ""
-#~ "Erspizañ dibarzhioù dre ziouer al labour evit ar voullerez-mañ.  "
-#~ "Ouzhpennet e vo an dibarzhioù-mañ d'al labourioù oc'h erruout betek an "
-#~ "dafariad moullañ ma n'int ket bet arventennet endeo gant an arload."
-
-#~ msgid "Starting Banner:"
-#~ msgstr "Banniel an derou :"
-
-#~ msgid "There are no status messages for this printer."
-#~ msgstr "N'eus kemenadenn stad ebet evit ar voullerez-mañ."
-
-#~ msgid ""
-#~ "To add a new option, enter its name in the box below and click to add."
-#~ msgstr ""
-#~ "A-benn goulenn dibarzhioù nevez, roit e anv er voestad amañ dindan ha "
-#~ "klikit war Ouzhpennañ"
-
-#~ msgid "Top margin:"
-#~ msgstr "Marz an nec'h :"
-
-#~ msgid "Word wrap"
-#~ msgstr "Dilinennañ emgefreek"
-
-#~ msgid "points"
-#~ msgstr "a boentoù"
-
-#~ msgid "user"
-#~ msgstr "arveriad"
-
-#~ msgid "System-Config-Printer"
-#~ msgstr "System-Config-Printer"
-
-#~ msgid "_Discovered Printers"
-#~ msgstr "Moullerezed _dizoloet"
-
-#~ msgid "_Group"
-#~ msgstr "S_trollad"
-
-#~ msgid "_Groups"
-#~ msgstr "_Strolladoù"
-
-#~ msgid "_Help"
-#~ msgstr "_Skoazell"
-
-#~ msgid "_Server"
-#~ msgstr "_Dafariad"
-
 #~ msgid "_Troubleshoot"
 #~ msgstr "_Dichanadur"
 
-#~ msgid "_View"
-#~ msgstr "_Gwelout"
-
-#~ msgid "<b>Basic Server Settings</b>"
-#~ msgstr "<b>Arventennoù an dafariad diazez</b>"
-
-#~ msgid "<b>Browse servers</b>"
-#~ msgstr "<b>Furchal e-touez an dafariad</b>"
-
-#~ msgid "<b>Job history</b>"
-#~ msgstr "<b>Roll istor al labourioù</b>"
-
-#~ msgid "Advanced Server Settings"
-#~ msgstr "Arventennoù kempleshoc'h an dafariad"
-
-#~ msgid "Allow _remote administration"
-#~ msgstr "Aotren an _ardeiñ a-bell"
-
-#~ msgid "Allow _users to cancel any job (not just their own)"
-#~ msgstr ""
-#~ "Aotren an arveriaded da nullañ an holl labourioù (ket o re nemetken)"
-
-#~ msgid "Allow printing from the _Internet"
-#~ msgstr "Aotren ar moullañ diouzh _Internet"
-
-#~ msgid "Do not preserve job history"
-#~ msgstr "Arabat mirout roll istor al labourioù"
-
-#~ msgid "Preserve job files (allow reprinting)"
-#~ msgstr "Mirout restroù al labourioù (aotren an admoullañ)"
-
-#~ msgid "Preserve job history but not files"
-#~ msgstr "Mirout roll istor al labourioù, ket ar restroù avat"
-
-#~ msgid "Save _debugging information for troubleshooting"
-#~ msgstr "Enrollañ ar stlennoù diveugañ evit an dichanadur"
-
-#~ msgid "Server Settings"
-#~ msgstr "Arventennoù an dafariad"
-
-#~ msgid ""
-#~ "Usually print servers broadcast their queues. Specify print servers below "
-#~ "to periodically ask for queues instead."
-#~ msgstr ""
-#~ "Dre voaz e vez skignet o lostennadoù gant an dafariad moullañ. Erspizañ a "
-#~ "c'hallit, avat, dafariadoù moullañ amañ dindan da c'houlenn diganto o "
-#~ "lostennadoù."
-
-#~ msgid "_Publish shared printers connected to this system"
-#~ msgstr "_Embann ar moullerezed rannet kennasket ouzh ar reizhiad-mañ"
-
-#~ msgid "_Show printers shared by other systems"
-#~ msgstr "_Diskouez ar moullerezed rannet gant ar reizhiadoù all"
-
-#~ msgid "SMB Browser"
-#~ msgstr "Merdeer SMB"
-
 #~ msgid "_Configure Printers"
 #~ msgstr "_Kefluniañ ar voullerezed"
-
-#~ msgid "_Hide"
-#~ msgstr "Kuz_hañ"
-
-#~ msgid "Please Wait"
-#~ msgstr "Gortozit mar plij"
 
 #~ msgid "Cancel, pause, resume or reprint jobs"
 #~ msgstr "Dilezel, ehanañ, adloc'hañ pe admoullañ al labourioù"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: system-config-printer.master.is\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2011-02-17 16:17+0000\n"
+"POT-Creation-Date: 2011-02-25 09:57+0000\n"
 "PO-Revision-Date: 2010-03-03 09:01+0000\n"
 "Last-Translator: Sveinn í Felli <sveinki@nett.is>\n"
 "Language-Team: Icelandic <rglug@rglug.org>\n"
@@ -58,11 +58,11 @@ msgstr "Reyna aftur"
 msgid "Operation canceled"
 msgstr "Hætt var við aðgerð"
 
-#: ../authconn.py:32 ../pysmb.py:123
+#: ../authconn.py:32 ../pysmb.py:123 ../ui/NewPrinterWindow.glade.h:94
 msgid "Username:"
 msgstr "Notandi:"
 
-#: ../authconn.py:33 ../pysmb.py:129
+#: ../authconn.py:33 ../pysmb.py:129 ../ui/NewPrinterWindow.glade.h:63
 msgid "Password:"
 msgstr "Lykilorð:"
 
@@ -347,7 +347,8 @@ msgstr ""
 
 #: ../jobviewer.py:706 ../jobviewer.py:1002 ../jobviewer.py:1704
 #: ../jobviewer.py:1734 ../jobviewer.py:2104 ../jobviewer.py:2109
-#: ../jobviewer.py:2123 ../jobviewer.py:2202 ../printerproperties.py:1541
+#: ../jobviewer.py:2123 ../jobviewer.py:2202 ../printerproperties.py:1582
+#: ../ui/NewPrinterWindow.glade.h:92
 #: ../troubleshoot/ChooseNetworkPrinter.py:100
 #: ../troubleshoot/ChooseNetworkPrinter.py:101
 #: ../troubleshoot/ChooseNetworkPrinter.py:104
@@ -425,6 +426,7 @@ msgid "Save File"
 msgstr "Vista skrá"
 
 #: ../jobviewer.py:1449 ../system-config-printer.py:258
+#: ../ui/NewPrinterWindow.glade.h:57
 #: ../troubleshoot/ChooseNetworkPrinter.py:35
 #: ../troubleshoot/ChoosePrinter.py:36 ../troubleshoot/DeviceListed.py:36
 msgid "Name"
@@ -614,7 +616,7 @@ msgstr "115200"
 #. See section 4.2.6 of this document for explanation of finishing types:
 #. ftp://ftp.pwg.org/pub/pwg/candidates/cs-ippfinishings10-20010205-5100.1.pdf
 #: ../newprinter.py:299 ../newprinter.py:310 ../newprinter.py:3267
-#: ../ppdippstr.py:63 ../printerproperties.py:264
+#: ../ppdippstr.py:63 ../printerproperties.py:268
 #, fuzzy
 msgid "None"
 msgstr "Ekkert"
@@ -651,11 +653,11 @@ msgstr ""
 msgid "DTR/DSR (Hardware)"
 msgstr ""
 
-#: ../newprinter.py:330 ../printerproperties.py:218
+#: ../newprinter.py:330 ../printerproperties.py:222
 msgid "Members of this class"
 msgstr "Meðlimir þessa flokks"
 
-#: ../newprinter.py:332 ../printerproperties.py:219
+#: ../newprinter.py:332 ../printerproperties.py:223
 msgid "Others"
 msgstr "Aðrir"
 
@@ -680,7 +682,7 @@ msgstr "Tegundir"
 msgid "Drivers"
 msgstr "Reklar"
 
-#: ../newprinter.py:338
+#: ../newprinter.py:338 ../ui/NewPrinterWindow.glade.h:35
 msgid "Downloadable Drivers"
 msgstr ""
 
@@ -714,7 +716,7 @@ msgstr ""
 msgid "Search"
 msgstr "Leita"
 
-#: ../newprinter.py:611 ../newprinter.py:632
+#: ../newprinter.py:611 ../newprinter.py:632 ../ui/NewPrinterWindow.glade.h:59
 msgid "New Printer"
 msgstr "Nýr prentari"
 
@@ -882,7 +884,7 @@ msgstr "LPD"
 msgid "Windows Printer via SAMBA"
 msgstr ""
 
-#: ../newprinter.py:2376
+#: ../newprinter.py:2376 ../ui/NewPrinterWindow.glade.h:48
 msgid "IPP"
 msgstr "IPP"
 
@@ -944,7 +946,7 @@ msgstr "Staðvær prentari sem Hardware Abstraction Layer (HAL) hefur fundið."
 msgid "Searching for printers"
 msgstr "Leita að prenturum"
 
-#: ../newprinter.py:2769
+#: ../newprinter.py:2769 ../ui/NewPrinterWindow.glade.h:60
 msgid "No printer was found at that address."
 msgstr ""
 
@@ -1051,7 +1053,7 @@ msgid "adding printer %s"
 msgstr "Stilla prentara"
 
 #: ../newprinter.py:3570 ../newprinter.py:3581 ../newprinter.py:3598
-#: ../printerproperties.py:921 ../system-config-printer.py:1682
+#: ../printerproperties.py:957 ../system-config-printer.py:1682
 #: ../system-config-printer.py:1707
 #, fuzzy, python-format
 msgid "modifying printer %s"
@@ -1391,278 +1393,286 @@ msgid "Busy"
 msgstr "Upptekinn"
 
 #. Printer state reasons list
-#: ../printerproperties.py:200
+#: ../printerproperties.py:204
 msgid "Message"
 msgstr "Skilaboð"
 
-#: ../printerproperties.py:220
+#: ../printerproperties.py:224
 msgid "Users"
 msgstr "Notendur"
 
-#: ../printerproperties.py:243
+#: ../printerproperties.py:247
 #, fuzzy
 msgid "Portrait (no rotation)"
 msgstr "Lóðrétt (enginn snúningur)"
 
-#: ../printerproperties.py:244
+#: ../printerproperties.py:248
 msgid "Landscape (90 degrees)"
 msgstr ""
 
-#: ../printerproperties.py:245
+#: ../printerproperties.py:249
 msgid "Reverse landscape (270 degrees)"
 msgstr ""
 
-#: ../printerproperties.py:246
+#: ../printerproperties.py:250
 msgid "Reverse portrait (180 degrees)"
 msgstr ""
 
-#: ../printerproperties.py:252
+#: ../printerproperties.py:256
 #, fuzzy
 msgid "Left to right, top to bottom"
 msgstr "Vinstri til hægri, ofan og niður"
 
-#: ../printerproperties.py:253
+#: ../printerproperties.py:257
 #, fuzzy
 msgid "Left to right, bottom to top"
 msgstr "Vinstri til hægri, neðan og upp"
 
-#: ../printerproperties.py:254
+#: ../printerproperties.py:258
 #, fuzzy
 msgid "Right to left, top to bottom"
 msgstr "Hægri til vinstri, ofan og niður"
 
-#: ../printerproperties.py:255
+#: ../printerproperties.py:259
 #, fuzzy
 msgid "Right to left, bottom to top"
 msgstr "Frá hægri til vinstri, frá botni til topps"
 
-#: ../printerproperties.py:256
+#: ../printerproperties.py:260
 #, fuzzy
 msgid "Top to bottom, left to right"
 msgstr "Frá toppi til botns, vinstri til hægri"
 
-#: ../printerproperties.py:257
+#: ../printerproperties.py:261
 #, fuzzy
 msgid "Top to bottom, right to left"
 msgstr "Frá toppi til botns, hægri til vinstri"
 
-#: ../printerproperties.py:258
+#: ../printerproperties.py:262
 #, fuzzy
 msgid "Bottom to top, left to right"
 msgstr "Frá botni til topps, vinstri til hægri"
 
-#: ../printerproperties.py:259
+#: ../printerproperties.py:263
 #, fuzzy
 msgid "Bottom to top, right to left"
 msgstr "Frá botni til topps, hægri til vinstri"
 
-#: ../printerproperties.py:265
+#: ../printerproperties.py:269
 #, fuzzy
 msgid "Staple"
 msgstr "Heftað"
 
-#: ../printerproperties.py:266
+#: ../printerproperties.py:270
 #, fuzzy
 msgid "Punch"
 msgstr "Gatað"
 
-#: ../printerproperties.py:267
+#: ../printerproperties.py:271
 #, fuzzy
 msgid "Cover"
 msgstr "Cover"
 
-#: ../printerproperties.py:268
+#: ../printerproperties.py:272
 #, fuzzy
 msgid "Bind"
 msgstr "Bind"
 
-#: ../printerproperties.py:269
+#: ../printerproperties.py:273
 #, fuzzy
 msgid "Saddle stitch"
 msgstr "Söðulsaumur"
 
-#: ../printerproperties.py:270
+#: ../printerproperties.py:274
 #, fuzzy
 msgid "Edge stitch"
 msgstr "Jaðarsaumur"
 
-#: ../printerproperties.py:271
+#: ../printerproperties.py:275
 #, fuzzy
 msgid "Fold"
 msgstr "Brjóta saman"
 
-#: ../printerproperties.py:272
+#: ../printerproperties.py:276
 #, fuzzy
 msgid "Trim"
 msgstr "Afskurður"
 
-#: ../printerproperties.py:273
+#: ../printerproperties.py:277
 #, fuzzy
 msgid "Bale"
 msgstr "Baggi (bale)"
 
-#: ../printerproperties.py:274
+#: ../printerproperties.py:278
 #, fuzzy
 msgid "Booklet maker"
 msgstr "Bæklingagerð"
 
-#: ../printerproperties.py:275
+#: ../printerproperties.py:279
 #, fuzzy
 msgid "Job offset"
 msgstr "Verkhliðrun"
 
-#: ../printerproperties.py:276
+#: ../printerproperties.py:280
 #, fuzzy
 msgid "Staple (top left)"
 msgstr "Heftað (efst til vinstri)"
 
-#: ../printerproperties.py:277
+#: ../printerproperties.py:281
 #, fuzzy
 msgid "Staple (bottom left)"
 msgstr "Heftað (neðst til vinstri)"
 
-#: ../printerproperties.py:278
+#: ../printerproperties.py:282
 #, fuzzy
 msgid "Staple (top right)"
 msgstr "Heftað (efst til hægri)"
 
-#: ../printerproperties.py:279
+#: ../printerproperties.py:283
 #, fuzzy
 msgid "Staple (bottom right)"
 msgstr "Heftað (neðst til hægri)"
 
-#: ../printerproperties.py:280
+#: ../printerproperties.py:284
 #, fuzzy
 msgid "Edge stitch (left)"
 msgstr "Kjalsaumað (vinstri)"
 
-#: ../printerproperties.py:281
+#: ../printerproperties.py:285
 #, fuzzy
 msgid "Edge stitch (top)"
 msgstr "Kjalsaumað (ofan)"
 
-#: ../printerproperties.py:282
+#: ../printerproperties.py:286
 #, fuzzy
 msgid "Edge stitch (right)"
 msgstr "Kjalsaumað (hægri)"
 
-#: ../printerproperties.py:283
+#: ../printerproperties.py:287
 #, fuzzy
 msgid "Edge stitch (bottom)"
 msgstr "Kjalsaumað (neðan)"
 
-#: ../printerproperties.py:284
+#: ../printerproperties.py:288
 #, fuzzy
 msgid "Staple dual (left)"
 msgstr "Tvíheftað (vinstri)"
 
-#: ../printerproperties.py:285
+#: ../printerproperties.py:289
 #, fuzzy
 msgid "Staple dual (top)"
 msgstr "Tvíheftað (ofan)"
 
-#: ../printerproperties.py:286
+#: ../printerproperties.py:290
 #, fuzzy
 msgid "Staple dual (right)"
 msgstr "Tvíheftað (hægri)"
 
-#: ../printerproperties.py:287
+#: ../printerproperties.py:291
 #, fuzzy
 msgid "Staple dual (bottom)"
 msgstr "Tvíheftað (neðan)"
 
-#: ../printerproperties.py:288
+#: ../printerproperties.py:292
 #, fuzzy
 msgid "Bind (left)"
 msgstr "Bundið (vinstri)"
 
-#: ../printerproperties.py:289
+#: ../printerproperties.py:293
 #, fuzzy
 msgid "Bind (top)"
 msgstr "Bundið (ofan)"
 
-#: ../printerproperties.py:290
+#: ../printerproperties.py:294
 #, fuzzy
 msgid "Bind (right)"
 msgstr "Bundið (hægri)"
 
-#: ../printerproperties.py:291
+#: ../printerproperties.py:295
 #, fuzzy
 msgid "Bind (bottom)"
 msgstr "Bundið (neðan)"
 
-#: ../printerproperties.py:296
+#: ../printerproperties.py:300
 #, fuzzy
 msgid "One-sided"
 msgstr "Einhliðar prentun"
 
-#: ../printerproperties.py:297
+#: ../printerproperties.py:301
 #, fuzzy
 msgid "Two-sided (long edge)"
 msgstr "Báðum megin (langhliða)"
 
-#: ../printerproperties.py:298
+#: ../printerproperties.py:302
 #, fuzzy
 msgid "Two-sided (short edge)"
 msgstr "Báðum megin (skammhliða)"
 
-#: ../printerproperties.py:303
+#: ../printerproperties.py:307 ../printerproperties.py:312
 #, fuzzy
 msgid "Normal"
 msgstr "Venjulegt"
 
-#: ../printerproperties.py:304
+#: ../printerproperties.py:308
 #, fuzzy
 msgid "Reverse"
 msgstr "Snúa við"
 
-#: ../printerproperties.py:325
+#: ../printerproperties.py:311
+msgid "Draft"
+msgstr ""
+
+#: ../printerproperties.py:313
+msgid "High"
+msgstr ""
+
+#: ../printerproperties.py:337
 #, fuzzy
 msgid "Automatic rotation"
 msgstr "Sjálfvirkur snúningur"
 
-#: ../printerproperties.py:546
+#: ../printerproperties.py:576
 #, fuzzy
 msgid "CUPS test page"
 msgstr "Prenta prófunarsíðu"
 
-#: ../printerproperties.py:547
+#: ../printerproperties.py:577
 msgid ""
 "Typically shows whether all jets on a print head are functioning and that "
 "the print feed mechanisms are working properly."
 msgstr ""
 
-#: ../printerproperties.py:554
+#: ../printerproperties.py:584
 #, fuzzy, python-format
 msgid "Printer Properties - '%s' on %s"
 msgstr "Prentaraskýrsla"
 
 #. The Conflict button was pressed.
-#: ../printerproperties.py:561
+#: ../printerproperties.py:591
 msgid ""
 "There are conflicting options.\n"
 "Changes can only be applied after\n"
 "these conflicts are resolved."
 msgstr ""
 
-#: ../printerproperties.py:881
+#: ../printerproperties.py:917
 msgid "Installable Options"
 msgstr "Uppsetjanlegir hlutir"
 
-#: ../printerproperties.py:882
+#: ../printerproperties.py:918 ../ui/PrinterPropertiesDialog.glade.h:63
 msgid "Printer Options"
 msgstr "Rofar prentara"
 
-#: ../printerproperties.py:919
+#: ../printerproperties.py:955
 #, python-format
 msgid "modifying class %s"
 msgstr ""
 
-#: ../printerproperties.py:936
+#: ../printerproperties.py:972
 msgid "This will delete this class!"
 msgstr "Þetta mun eyða þessum flokk!"
 
-#: ../printerproperties.py:937
+#: ../printerproperties.py:973
 msgid "Proceed anyway?"
 msgstr "Halda samt áfram?"
 
@@ -1670,21 +1680,21 @@ msgstr "Halda samt áfram?"
 #. but we have never fetched the server settings to see whether
 #. the server is publishing shared printers.  Fetch the settings
 #. now so that we can update the "not published" label if necessary.
-#: ../printerproperties.py:1027 ../serversettings.py:192
+#: ../printerproperties.py:1065 ../serversettings.py:192
 #, fuzzy
 msgid "fetching server settings"
 msgstr "Rofar rekils"
 
-#: ../printerproperties.py:1109
+#: ../printerproperties.py:1147
 #, fuzzy
 msgid "printing test page"
 msgstr "Prenta prófunarsíðu"
 
-#: ../printerproperties.py:1122 ../printerproperties.py:1157
+#: ../printerproperties.py:1160 ../printerproperties.py:1195
 msgid "Not possible"
 msgstr "Ekki mögulegt"
 
-#: ../printerproperties.py:1123 ../printerproperties.py:1158
+#: ../printerproperties.py:1161 ../printerproperties.py:1196
 msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
@@ -1692,43 +1702,43 @@ msgstr ""
 "Þjónninn tók ekki við prentverkinu líkast til vegna þess að prentaranum "
 "hefur ekki verið deilt á netinu."
 
-#: ../printerproperties.py:1135 ../printerproperties.py:1150
+#: ../printerproperties.py:1173 ../printerproperties.py:1188
 msgid "Submitted"
 msgstr "Sent"
 
-#: ../printerproperties.py:1136
+#: ../printerproperties.py:1174
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr "Tilraunasíða send sem verk %d"
 
-#: ../printerproperties.py:1143
+#: ../printerproperties.py:1181
 msgid "sending maintenance command"
 msgstr ""
 
-#: ../printerproperties.py:1151
+#: ../printerproperties.py:1189
 #, fuzzy, python-format
 msgid "Maintenance command submitted as job %d"
 msgstr "Viðhaldsskipun var send sem verkið %d"
 
-#: ../printerproperties.py:1238 ../printerproperties.py:1243
-#: ../printerproperties.py:1339
+#: ../printerproperties.py:1276 ../printerproperties.py:1281
+#: ../printerproperties.py:1377
 msgid "Error"
 msgstr "Villa"
 
-#: ../printerproperties.py:1239
+#: ../printerproperties.py:1277
 msgid "The PPD file for this queue is damaged."
 msgstr ""
 
-#: ../printerproperties.py:1244
+#: ../printerproperties.py:1282
 msgid "There was a problem connecting to the CUPS server."
 msgstr "Það kom upp villa þegar tengst var við CUPS þjóninn."
 
-#: ../printerproperties.py:1340
+#: ../printerproperties.py:1378
 #, python-format
 msgid "Option '%s' has value '%s' and cannot be edited."
 msgstr ""
 
-#: ../printerproperties.py:1450
+#: ../printerproperties.py:1491
 msgid "Marker levels are not reported for this printer."
 msgstr ""
 
@@ -1775,7 +1785,7 @@ msgstr "Stillingar"
 msgid "Adjust server settings"
 msgstr "Rofar rekils"
 
-#: ../system-config-printer.py:223
+#: ../system-config-printer.py:223 ../ui/PrintersWindow.glade.h:9
 #, fuzzy
 msgid "_Printer"
 msgstr "Prentari"
@@ -1899,8 +1909,8 @@ msgstr ""
 msgid "Cannot start service on remote server"
 msgstr ""
 
-#: ../system-config-printer.py:1143
-#, python-format
+#: ../system-config-printer.py:1143 ../ui/ConnectingDialog.glade.h:2
+#, no-c-format, python-format
 msgid "<i>Opening connection to %s</i>"
 msgstr ""
 
@@ -1996,7 +2006,9 @@ msgstr ""
 msgid "Would you like to print a test page?"
 msgstr ""
 
-#: ../system-config-printer.py:1948 ../troubleshoot/PrintTestPage.py:72
+#. Not more than 25 characters
+#: ../system-config-printer.py:1948 ../ui/PrinterPropertiesDialog.glade.h:61
+#: ../troubleshoot/PrintTestPage.py:72
 msgid "Print Test Page"
 msgstr "Prenta prófunarsíðu"
 
@@ -2021,6 +2033,1059 @@ msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "
 "Please install it before using this printer."
 msgstr ""
+
+#: ../ui/AboutDialog.glade.h:1
+#, fuzzy
+msgid "A CUPS configuration tool."
+msgstr "Stillingar prentara - %s"
+
+#: ../ui/AboutDialog.glade.h:2
+#, fuzzy
+msgid "Copyright © 2006-2008 Red Hat, Inc."
+msgstr "Höfundarréttur 2006, 2007 Red Hat, Inc."
+
+#: ../ui/AboutDialog.glade.h:3
+#, fuzzy
+msgid ""
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with "
+"this program; if not, write to the Free Software Foundation, Inc., 675 Mass "
+"Ave, Cambridge, MA 02139, USA."
+msgstr ""
+"Þetta er frjáls hugbúnaður; þú mátt dreifa honum og/eða breyta samkvæmt "
+"skilmálum í almenna GNU GPL notkunarleyfinu eins og það er gefið út af "
+"Frjálsu hugbúnaðarstofnuninni; annaðhvort útgáfu 2 af GPL-leyfinu, eða (ef "
+"þér sýnist svo) einhverja nýrri útgáfu leyfisins.\n"
+"\n"
+"Hugbúnaðnum er dreift í þeirri von að hann geti verið gagnlegur, en ÁN "
+"ALLRAR ÁBYRGÐAR; einnig án þeirrar ábyrgðar sem gefin er í skyn með "
+"SELJANLEIKA eða EIGINLEIKUM TIL TILTEKINNA NOTA. Sjá almenna GNU GPL "
+"notkunarleyfið fyrir nánari upplýsingar.\n"
+"\n"
+"Það ætti að hafa fylgt afrit af almenna GNU GPL notkunarleyfinu með "
+"forritinu; ef ekki skrifið þá Fjálsu hugbúnarstofnuninni: Free Software "
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, "
+"USA."
+
+#. TRANSLATORS: Replace this string with your names, one name per line.  Thank you very much for your effort on translating system-config-printer and all our other tools!
+#: ../ui/AboutDialog.glade.h:9
+#, fuzzy
+msgid "translator-credits"
+msgstr ""
+"Launchpad Contributions:\n"
+"  Baldur https://launchpad.net/~baldurpet"
+
+#: ../ui/ConnectDialog.glade.h:1
+#, fuzzy
+msgid "CUPS _server:"
+msgstr "CUPS þjónn:"
+
+#: ../ui/ConnectDialog.glade.h:2
+msgid "Connect to CUPS server"
+msgstr "tengjast CUPS þjóni"
+
+#: ../ui/ConnectDialog.glade.h:3
+#, fuzzy
+msgid "Require _encryption"
+msgstr "Nota dulritun"
+
+#: ../ui/ConnectingDialog.glade.h:3
+msgid "<span weight=\"bold\" size=\"larger\">Connecting to CUPS server</span>"
+msgstr ""
+
+#: ../ui/ConnectingDialog.glade.h:4
+#, fuzzy
+msgid "Connecting to CUPS server"
+msgstr "tengjast CUPS þjóni"
+
+#: ../ui/InstallDialog.glade.h:1
+#, fuzzy
+msgid "_Install"
+msgstr "_Setja upp"
+
+#: ../ui/JobsWindow.glade.h:1
+msgid "Refresh job list"
+msgstr ""
+
+#: ../ui/JobsWindow.glade.h:2
+msgid "Show _completed jobs"
+msgstr "Sýna _kláruð prentverk"
+
+#: ../ui/JobsWindow.glade.h:3
+#, fuzzy
+msgid "Show completed jobs"
+msgstr "Sýna _kláruð prentverk"
+
+#: ../ui/JobsWindow.glade.h:4
+#, fuzzy
+msgid "_Refresh"
+msgstr "_Sleppa"
+
+#: ../ui/NewPrinterName.glade.h:1
+#, fuzzy
+msgid "Duplicate Printer"
+msgstr "Gera að sjálfgefnum prentara"
+
+#: ../ui/NewPrinterName.glade.h:2
+msgid "New name for the printer"
+msgstr "Nýtt heiti prentara"
+
+#: ../ui/NewPrinterWindow.glade.h:1
+#, fuzzy
+msgid "<b>Authentication</b>"
+msgstr "<b>Auðkenning</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:2
+#, fuzzy
+msgid "<b>Description</b>"
+msgstr "<b> Lýsing</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:3
+#, fuzzy
+msgid "<b>Description</b> (optional)"
+msgstr "<b>Staðsetning</b> (óþarft)"
+
+#: ../ui/NewPrinterWindow.glade.h:4
+#, fuzzy
+msgid "<b>Enter device URI</b>"
+msgstr "Sláðu inn URI tækisins"
+
+#: ../ui/NewPrinterWindow.glade.h:5
+#, fuzzy
+msgid "<b>IPP Printer</b>"
+msgstr "<b>Heiti prentara</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:6
+#, fuzzy
+msgid "<b>License Terms</b>"
+msgstr "<b>Heiti prentara</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:7
+msgid "<b>Location of the LPD network printer</b>"
+msgstr "<b>Staðsetning LPD netprentara</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:8
+msgid "<b>Location of the network printer</b>"
+msgstr "<b>Staðsetning netprentara</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:9
+msgid "<b>Location</b> (optional)"
+msgstr "<b>Staðsetning</b> (óþarft)"
+
+#: ../ui/NewPrinterWindow.glade.h:10
+#, fuzzy
+msgid "<b>Network Printer</b>"
+msgstr "Nýr prentari"
+
+#: ../ui/NewPrinterWindow.glade.h:11
+#, fuzzy
+msgid "<b>Note</b>"
+msgstr "<b>Heiti prentara</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:12
+#, fuzzy
+msgid "<b>Output Quality</b>"
+msgstr "<b>Heiti prentara</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:13
+msgid "<b>Printer Name</b>"
+msgstr "<b>Heiti prentara</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:14
+#, fuzzy
+msgid "<b>SMB Printer</b>"
+msgstr "<b>Heiti prentara</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:15
+#, fuzzy
+msgid "<b>Select Driver</b>"
+msgstr "<b>Heiti prentara</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:16
+msgid "<b>Settings of the serial port</b>"
+msgstr "<b>Stillingar raðtengingar</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:17
+#, fuzzy
+msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
+msgstr "<i>smb://[vinnuhópur/]miðlari[:gátt]/prentari</i>"
+
+#: ../ui/NewPrinterWindow.glade.h:18
+msgid "<span weight=\"bold\" size=\"larger\">Choose Class Members</span>"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:19
+msgid "<span weight=\"bold\" size=\"larger\">Choose Driver</span>"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:20
+msgid "<span weight=\"bold\" size=\"larger\">Describe Printer</span>"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:21
+msgid "<span weight=\"bold\" size=\"larger\">Existing Settings</span>"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:22
+msgid "<span weight=\"bold\" size=\"larger\">Installable Options</span>"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:23
+msgid "<span weight=\"bold\" size=\"larger\">Select Device</span>"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:24
+msgid "Baud Rate"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:25
+#, fuzzy
+msgid "Browse..."
+msgstr "Velja..."
+
+#: ../ui/NewPrinterWindow.glade.h:26
+#, fuzzy
+msgid "Change PPD"
+msgstr "Breyta rekli"
+
+#: ../ui/NewPrinterWindow.glade.h:27
+#, fuzzy
+msgid "Class Members"
+msgstr "Meðlimir"
+
+#: ../ui/NewPrinterWindow.glade.h:28
+#, fuzzy
+msgid "Comments..."
+msgstr "Athugasemd"
+
+#: ../ui/NewPrinterWindow.glade.h:29
+#, fuzzy
+msgid "Connection"
+msgstr "Tenging"
+
+#: ../ui/NewPrinterWindow.glade.h:30
+#, fuzzy
+msgid "Data Bits"
+msgstr "Smáatriði"
+
+#: ../ui/NewPrinterWindow.glade.h:31 ../ui/PrinterPropertiesDialog.glade.h:29
+#, fuzzy
+msgid "Description:"
+msgstr "Lýsing:"
+
+#: ../ui/NewPrinterWindow.glade.h:32
+#, fuzzy
+msgid "Device"
+msgstr "Tæki"
+
+#: ../ui/NewPrinterWindow.glade.h:33 ../troubleshoot/DeviceListed.py:40
+msgid "Device URI"
+msgstr "URI tækis"
+
+#: ../ui/NewPrinterWindow.glade.h:34
+#, fuzzy
+msgid "Device description."
+msgstr "Lýsing"
+
+#: ../ui/NewPrinterWindow.glade.h:36
+#, fuzzy
+msgid "Driver details"
+msgstr "Reklar"
+
+#: ../ui/NewPrinterWindow.glade.h:37
+msgid "Empty"
+msgstr "Tómt"
+
+#: ../ui/NewPrinterWindow.glade.h:38
+#, fuzzy
+msgid "Flow Control"
+msgstr "Aðgangsstýringar"
+
+#: ../ui/NewPrinterWindow.glade.h:39
+msgid ""
+"For example:\n"
+"ipp://cups-server/printers/printer-queue\n"
+"ipp://printer.mydomain/ipp"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:42
+msgid ""
+"For the printer you have selected there are drivers available for download."
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:43
+msgid "Free software"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:44
+#, fuzzy
+msgid "Graphics:"
+msgstr "Myndir:"
+
+#: ../ui/NewPrinterWindow.glade.h:45
+#, fuzzy
+msgid "Host:"
+msgstr "Vél:"
+
+#: ../ui/NewPrinterWindow.glade.h:46
+msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:47
+msgid "Human-readable location such as \"Lab 1\""
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:49 ../ui/PrinterPropertiesDialog.glade.h:39
+#, fuzzy
+msgid "Installed Options"
+msgstr "Uppsetjanlegir hlutir"
+
+#: ../ui/NewPrinterWindow.glade.h:50
+#, fuzzy
+msgid "JetDirect"
+msgstr "DirectJet"
+
+#: ../ui/NewPrinterWindow.glade.h:51
+msgid "LPD"
+msgstr "LPD"
+
+#: ../ui/NewPrinterWindow.glade.h:52
+#, fuzzy
+msgid "License:"
+msgstr "Leyfi:"
+
+#: ../ui/NewPrinterWindow.glade.h:53
+#, fuzzy
+msgid "Line art:"
+msgstr "Ástand prentara:"
+
+#: ../ui/NewPrinterWindow.glade.h:54
+#, fuzzy
+msgid "Local Driver"
+msgstr "Staðbundnir prentarar"
+
+#: ../ui/NewPrinterWindow.glade.h:55
+#, fuzzy
+msgid "Make and model:"
+msgstr "Framleiðandi og gerð:"
+
+#: ../ui/NewPrinterWindow.glade.h:56
+#, fuzzy
+msgid "Manufacturer"
+msgstr "Framleiðandi"
+
+#: ../ui/NewPrinterWindow.glade.h:58
+#, fuzzy
+msgid "Network"
+msgstr "Netkerfi"
+
+#: ../ui/NewPrinterWindow.glade.h:61
+msgid "No, I do not accept this license"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:62
+msgid "Parity"
+msgstr "Parity"
+
+#: ../ui/NewPrinterWindow.glade.h:64
+msgid "Patented algorithms"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:65
+msgid "Photo:"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:66
+#, fuzzy
+msgid "Port number:"
+msgstr "Númer gáttar:"
+
+#: ../ui/NewPrinterWindow.glade.h:67
+msgid ""
+"PostScript Printer Description (PPD) files can often be found on the driver "
+"disk that comes with the printer. For PostScript printers they are often "
+"part of the Windows<sup>®</sup> driver."
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:68
+#, fuzzy
+msgid "Printer model:"
+msgstr "Tegund prentara:"
+
+#: ../ui/NewPrinterWindow.glade.h:69
+msgid "Probe"
+msgstr "Leita"
+
+#: ../ui/NewPrinterWindow.glade.h:70
+#, fuzzy
+msgid "Prompt user if authentication is required"
+msgstr "Spyrja notanda ef auðkenningar er krafist"
+
+#: ../ui/NewPrinterWindow.glade.h:71
+#, fuzzy
+msgid "Provide PPD file"
+msgstr "Gefa upp PPD-skrá"
+
+#: ../ui/NewPrinterWindow.glade.h:72
+#, fuzzy
+msgid "Queue:"
+msgstr "Röð:"
+
+#: ../ui/NewPrinterWindow.glade.h:73
+msgid "SCSI"
+msgstr "SCSI"
+
+#: ../ui/NewPrinterWindow.glade.h:74
+msgid "SMB"
+msgstr "SMB"
+
+#: ../ui/NewPrinterWindow.glade.h:75
+#, fuzzy
+msgid "Search for a printer driver to download"
+msgstr "Leita að prentararekli til að hala niður"
+
+#: ../ui/NewPrinterWindow.glade.h:76
+#, fuzzy
+msgid "Searching..."
+msgstr "Leita..."
+
+#: ../ui/NewPrinterWindow.glade.h:77
+#, fuzzy
+msgid "Select printer from database"
+msgstr "Veldu prentara úr gagnagrunni"
+
+#: ../ui/NewPrinterWindow.glade.h:78
+msgid "Serial"
+msgstr "Raðtengdur"
+
+#: ../ui/NewPrinterWindow.glade.h:79
+#, fuzzy
+msgid "Set authentication details now"
+msgstr "Stilla auðkenningaratriði núna"
+
+#: ../ui/NewPrinterWindow.glade.h:80
+msgid "Short name for this printer such as \"laserjet\""
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:81
+msgid "Supplier:"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:82
+msgid "Support:"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:83
+#, fuzzy
+msgid "Text:"
+msgstr "Texti:"
+
+#: ../ui/NewPrinterWindow.glade.h:84
+#, fuzzy
+msgid ""
+"The foomatic printer database contains various manufacturer provided "
+"PostScript Printer Description (PPD) files and also can generate PPD files "
+"for a large number of (non PostScript) printers. But in general manufacturer "
+"provided PPD files provide better access to the specific features of the "
+"printer."
+msgstr ""
+"Prentaragagnagrunnuruinn Foomatic inniheldur ýmsar PostScript Printer "
+"Description (PPD) skrár frá framleiðendum prentara og getur einnig búið til "
+"PPD-skrár fyrir marga prentara sem ekki eru non PostScript. En almenna "
+"reglan er samt sú að PPD-skrár sem koma beint frá framleiðanda viðkomandi "
+"prentara gefa betri aðgang að hinum sértækari aðgerðum tækisins."
+
+#: ../ui/NewPrinterWindow.glade.h:85
+msgid ""
+"These drivers do not come from your operating system supplier and will not "
+"be covered by their commercial support.  See the support and license terms "
+"of the driver's supplier."
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:86
+msgid ""
+"This driver supports additional hardware that may be installed in the "
+"printer."
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:87
+#, fuzzy
+msgid ""
+"This is done by assuming that options with the same name do have the same "
+"meaning. Settings of options that are not present in the new PPD will be "
+"lost and options only present in the new PPD will be set to default."
+msgstr ""
+"Þetta er gert með því að gera rá fyrir að stillingar með sama nafni hafi "
+"sömu eiginleika. Stillingar sem ekki eru til staðar í nýju PPD-skránni munu "
+"tapast og stillingar sem eingöngu eru til staðar í nýju PPD-skránni verða "
+"settar á sjálfgefin gildi."
+
+#: ../ui/NewPrinterWindow.glade.h:88
+msgid ""
+"This way all current option settings will be lost. The default settings of "
+"the new PPD will be used. "
+msgstr ""
+"Með þessari aðferð týnast allar stillingar. Sjálfgefnar stillingar úr PPD "
+"skránni verða virkar."
+
+#: ../ui/NewPrinterWindow.glade.h:89
+msgid "Try to copy the option settings over from the old PPD. "
+msgstr "Reyna að afrita rofastillingar úr gömlu PPD skránni."
+
+#: ../ui/NewPrinterWindow.glade.h:90
+msgid "Try to transfer the current settings"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:91
+#, fuzzy
+msgid "URI:"
+msgstr "Slóð:"
+
+#: ../ui/NewPrinterWindow.glade.h:93
+msgid "Use the new PPD (Postscript Printer Description) as is."
+msgstr "Nota nýju PPD (Postscript Printer Description) eins og hún er."
+
+#: ../ui/NewPrinterWindow.glade.h:95
+msgid ""
+"With this choice no driver download will be performed. In the next steps a "
+"locally installed driver will be selected."
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:96
+msgid "Yes, I accept this license"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:97
+#, fuzzy
+msgid "_Search"
+msgstr "_Leita"
+
+#: ../ui/NewPrinterWindow.glade.h:98
+msgid "_Verify..."
+msgstr "_Staðfesta..."
+
+#: ../ui/NewPrinterWindow.glade.h:99
+#, fuzzy
+msgid "license"
+msgstr "Leyfi:"
+
+#: ../ui/NewPrinterWindow.glade.h:100 ../ui/PrinterPropertiesDialog.glade.h:81
+#, fuzzy
+msgid "move left"
+msgstr "Höfundarréttur"
+
+#: ../ui/NewPrinterWindow.glade.h:101 ../ui/PrinterPropertiesDialog.glade.h:82
+#, fuzzy
+msgid "move right"
+msgstr "Höfundarréttur"
+
+#: ../ui/NewPrinterWindow.glade.h:102
+#, fuzzy
+msgid "short description"
+msgstr "Lýsing"
+
+#: ../ui/NewPrinterWindow.glade.h:103
+msgid "supplier"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:104
+msgid "support contacts"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:1
+msgid " "
+msgstr " "
+
+#: ../ui/PrinterPropertiesDialog.glade.h:2
+#, fuzzy
+msgid "<b>Banner</b>"
+msgstr "<b>Heiti prentara</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:3
+#, fuzzy
+msgid "<b>Common Options</b>"
+msgstr "<b>Almennir valkostir</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:4
+#, fuzzy
+msgid "<b>Image Options</b>"
+msgstr "<b>Valkostir myndar</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:5
+#, fuzzy
+msgid "<b>Ink/Toner Levels</b>"
+msgstr "Sláðu inn URI tækisins"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:6
+#, fuzzy
+msgid "<b>Other Options (Advanced)</b>"
+msgstr "Lýsing"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:7
+#, fuzzy
+msgid "<b>Policies</b>"
+msgstr "Stefnur"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:8
+#, fuzzy
+msgid "<b>Settings</b>"
+msgstr "<b>Stillingar</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:9
+#, fuzzy
+msgid "<b>State</b>"
+msgstr "<b>Heiti prentara</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:10
+#, fuzzy
+msgid "<b>Status Messages</b>"
+msgstr "Skilaboð"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:11
+msgid "<b>Tests and Maintenance</b>"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:12
+#, fuzzy
+msgid "<b>Text Options</b>"
+msgstr "<b>Valkostir texta</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:13
+msgid ""
+"<i>Not published\n"
+"See server settings</i>"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:15
+#, fuzzy
+msgid "Accepting jobs"
+msgstr "<b>Auðkenning</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:16
+#, fuzzy
+msgid "Access Control"
+msgstr "Aðgangsstýringar"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:17
+#, fuzzy
+msgid "Add or Remove Members"
+msgstr "Bæta við eða fjarlægja meðlimi"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:18
+msgid "Allow printing for everyone except these users:"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:19
+#, fuzzy
+msgid "Bottom margin:"
+msgstr "Efri spássía:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:20
+#, fuzzy
+msgid "Brightness:"
+msgstr "Birtustilling:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:21
+#, fuzzy
+msgid "Change..."
+msgstr "Breyta..."
+
+#: ../ui/PrinterPropertiesDialog.glade.h:22
+#, fuzzy
+msgid "Characters per inch:"
+msgstr "púnktar (72 á tommu)"
+
+#. Not more than 25 characters
+#: ../ui/PrinterPropertiesDialog.glade.h:24
+#, fuzzy
+msgid "Clean Print Heads"
+msgstr "Hreinsa prenthausa"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:25
+#, fuzzy
+msgid "Co_nflicts"
+msgstr "Rekst á:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:26
+#, fuzzy
+msgid "Columns:"
+msgstr "Dálkar:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:27
+#, fuzzy
+msgid "Copies:"
+msgstr "Eintök:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:28
+msgid "Deny printing for everyone except these users:"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:30
+#, fuzzy
+msgid "Device URI:"
+msgstr "Slóð að tæki:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:31
+#, fuzzy
+msgid "Enabled"
+msgstr "Virkt"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:32
+#, fuzzy
+msgid "Ending Banner:"
+msgstr "Endaborði:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:33
+msgid "Error Policy: \t"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:34
+#, fuzzy
+msgid "Finishings:"
+msgstr "Frágangur:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:35
+#, fuzzy
+msgid "Gamma:"
+msgstr "Litróf:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:36
+#, fuzzy
+msgid "Hold until:"
+msgstr "Halda til:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:37
+msgid "Hue adjustment:"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:38
+#, fuzzy
+msgid "Ink/Toner Levels"
+msgstr "Sláðu inn URI tækisins"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:40
+msgid "Job Options"
+msgstr "Rofar prentverks"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:41
+#, fuzzy
+msgid "Job priority:"
+msgstr "Forgangur verks:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:42
+#, fuzzy
+msgid "Left margin:"
+msgstr "Efri spássía:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:43
+#, fuzzy
+msgid "Lines per inch:"
+msgstr "púnktar (72 á tommu)"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:44
+msgid "Location:"
+msgstr "Staðsetning:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:45
+msgid "Make and Model:"
+msgstr "Framleiðandi og gerð:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:46
+#, fuzzy
+msgid "Media:"
+msgstr "Miðill:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:47
+msgid "Members"
+msgstr "Meðlimir"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:48
+#, fuzzy
+msgid "Mirror"
+msgstr "Spegla"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:49
+#, fuzzy
+msgid "More"
+msgstr "Meira"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:50
+#, fuzzy
+msgid "Operation Policy:"
+msgstr "Hætt var við aðgerð"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:51
+#, fuzzy
+msgid "Orientation:"
+msgstr "Stefna:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:52
+msgid "Output bin:"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:53
+msgid "Output order:"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:54
+#, fuzzy
+msgid "Pages per side layout:"
+msgstr "Síður á hverri hlið:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:55
+#, fuzzy
+msgid "Pages per side:"
+msgstr "Ástand prentara:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:56
+msgid "Policies"
+msgstr "Stefnur"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:57
+#, fuzzy
+msgid "Pretty print"
+msgstr "Falleg prentun"
+
+#. Not more than 25 characters
+#: ../ui/PrinterPropertiesDialog.glade.h:59
+#, fuzzy
+msgid "Print Self-Test Page"
+msgstr "Prenta prufusíðu"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:62
+#, fuzzy
+msgid "Print quality:"
+msgstr "Ástand prentara:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:64
+#, fuzzy
+msgid "Printer Properties"
+msgstr "Prentaraskýrsla"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:65
+msgid "Printer State:"
+msgstr "Ástand prentara:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:66
+#, fuzzy
+msgid "Printer resolution:"
+msgstr "Staðsetning prentara"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:67
+#, fuzzy
+msgid "Reset"
+msgstr "Frumstilla"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:68
+#, fuzzy
+msgid "Right margin:"
+msgstr "Efri spássía:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:69
+#, fuzzy
+msgid "Saturation:"
+msgstr "Mettun:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:70
+#, fuzzy
+msgid "Scale to fit"
+msgstr "Skala svo passi"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:71
+#, fuzzy
+msgid "Scaling:"
+msgstr "Skölun:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:72
+msgid "Settings"
+msgstr "Stillingar"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:73
+msgid "Shared"
+msgstr "Netprentari"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:74
+#, fuzzy
+msgid "Sides:"
+msgstr "Hliðar:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:75
+msgid ""
+"Specify the default job options for this printer.  Jobs arriving at this "
+"print server will have these options added if they are not already set by "
+"the application."
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:76
+#, fuzzy
+msgid "Starting Banner:"
+msgstr "Upphafsborði:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:77
+#, fuzzy
+msgid "There are no status messages for this printer."
+msgstr "Nýtt heiti prentara"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:78
+#, fuzzy
+msgid "To add a new option, enter its name in the box below and click to add."
+msgstr ""
+"Til að bæta við nýjum rofa, settu inn heiti í reitinn hér að neðan og "
+"smelltu til að bæta honum við."
+
+#: ../ui/PrinterPropertiesDialog.glade.h:79
+msgid "Top margin:"
+msgstr "Efri spássía:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:80
+msgid "Word wrap"
+msgstr "Línufletting"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:83
+msgid "points"
+msgstr "púnktar"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:84
+#, fuzzy
+msgid "user"
+msgstr "eigandi"
+
+#: ../ui/PrintersWindow.glade.h:1
+msgid ""
+"Printing service not available.  Start the service on this computer or "
+"connect to another server."
+msgstr ""
+
+#: ../ui/PrintersWindow.glade.h:2
+msgid "Start Service"
+msgstr ""
+
+#: ../ui/PrintersWindow.glade.h:3
+msgid "System-Config-Printer"
+msgstr "System-Config-Printer"
+
+#: ../ui/PrintersWindow.glade.h:4
+msgid "There are no printers configured yet."
+msgstr ""
+
+#: ../ui/PrintersWindow.glade.h:5
+#, fuzzy
+msgid "_Discovered Printers"
+msgstr "Stilla prentara"
+
+#: ../ui/PrintersWindow.glade.h:6
+#, fuzzy
+msgid "_Group"
+msgstr "_Hópa"
+
+#: ../ui/PrintersWindow.glade.h:7
+#, fuzzy
+msgid "_Groups"
+msgstr "_Hópar"
+
+#: ../ui/PrintersWindow.glade.h:8
+msgid "_Help"
+msgstr "_Hjálp"
+
+#: ../ui/PrintersWindow.glade.h:10
+#, fuzzy
+msgid "_Server"
+msgstr "Þ_jónn:"
+
+#: ../ui/PrintersWindow.glade.h:11
+msgid "_View"
+msgstr "_Birta"
+
+#: ../ui/ServerSettingsDialog.glade.h:1
+#, fuzzy
+msgid "<b>Basic Server Settings</b>"
+msgstr "Rofar rekils"
+
+#: ../ui/ServerSettingsDialog.glade.h:2
+#, fuzzy
+msgid "<b>Browse servers</b>"
+msgstr "þjónn"
+
+#: ../ui/ServerSettingsDialog.glade.h:3
+#, fuzzy
+msgid "<b>Job history</b>"
+msgstr "<b>Heiti prentara</b>"
+
+#: ../ui/ServerSettingsDialog.glade.h:4
+#, fuzzy
+msgid "Advanced Server Settings"
+msgstr "Frekari stillingar prentþjóns"
+
+#: ../ui/ServerSettingsDialog.glade.h:5
+msgid "Allow _remote administration"
+msgstr ""
+
+#: ../ui/ServerSettingsDialog.glade.h:6
+msgid "Allow _users to cancel any job (not just their own)"
+msgstr ""
+
+#: ../ui/ServerSettingsDialog.glade.h:7
+msgid "Allow printing from the _Internet"
+msgstr ""
+
+#: ../ui/ServerSettingsDialog.glade.h:8
+msgid "Do not preserve job history"
+msgstr ""
+
+#: ../ui/ServerSettingsDialog.glade.h:9
+msgid "Preserve job files (allow reprinting)"
+msgstr ""
+
+#: ../ui/ServerSettingsDialog.glade.h:10
+msgid "Preserve job history but not files"
+msgstr ""
+
+#: ../ui/ServerSettingsDialog.glade.h:11
+#, fuzzy
+msgid "Save _debugging information for troubleshooting"
+msgstr "Vista aflúsunarupplýsingar"
+
+#: ../ui/ServerSettingsDialog.glade.h:12
+#, fuzzy
+msgid "Server Settings"
+msgstr "Stillingar þjóns"
+
+#: ../ui/ServerSettingsDialog.glade.h:13
+msgid ""
+"Usually print servers broadcast their queues. Specify print servers below to "
+"periodically ask for queues instead."
+msgstr ""
+
+#: ../ui/ServerSettingsDialog.glade.h:14
+msgid "_Publish shared printers connected to this system"
+msgstr ""
+
+#: ../ui/ServerSettingsDialog.glade.h:15
+msgid "_Show printers shared by other systems"
+msgstr ""
+
+#: ../ui/SMBBrowseDialog.glade.h:1
+#, fuzzy
+msgid "SMB Browser"
+msgstr "SMB vafri"
+
+#: ../ui/statusicon_popupmenu.glade.h:1
+msgid "_Hide"
+msgstr "_Fela"
+
+#: ../ui/WaitWindow.glade.h:1
+#, fuzzy
+msgid "Please Wait"
+msgstr "Augnablik"
 
 #: ../system-config-printer.desktop.in.h:1
 msgid "Configure printers"
@@ -2272,10 +3337,6 @@ msgid ""
 "Please select the device you want to use from the list below. If it does not "
 "appear in the list, select 'Not listed'."
 msgstr ""
-
-#: ../troubleshoot/DeviceListed.py:40
-msgid "Device URI"
-msgstr "URI tækis"
 
 #: ../troubleshoot/ErrorLogCheckpoint.py:31
 #, fuzzy
@@ -2601,647 +3662,8 @@ msgid "System tray icon for managing print jobs"
 msgstr "Táknmynd á spjaldið til að stýra prentverkum"
 
 #, fuzzy
-#~ msgid "A CUPS configuration tool."
-#~ msgstr "Stillingar prentara - %s"
-
-#, fuzzy
-#~ msgid "Copyright &#xA9; 2006-2008 Red Hat, Inc."
-#~ msgstr "Höfundarréttur 2006, 2007 Red Hat, Inc."
-
-#, fuzzy
-#~ msgid ""
-#~ "This program is free software; you can redistribute it and/or modify it "
-#~ "under the terms of the GNU General Public License as published by the "
-#~ "Free Software Foundation; either version 2 of the License, or (at your "
-#~ "option) any later version.\n"
-#~ "\n"
-#~ "This program is distributed in the hope that it will be useful, but "
-#~ "WITHOUT ANY WARRANTY; without even the implied warranty of "
-#~ "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General "
-#~ "Public License for more details.\n"
-#~ "\n"
-#~ "You should have received a copy of the GNU General Public License along "
-#~ "with this program; if not, write to the Free Software Foundation, Inc., "
-#~ "675 Mass Ave, Cambridge, MA 02139, USA."
-#~ msgstr ""
-#~ "Þetta er frjáls hugbúnaður; þú mátt dreifa honum og/eða breyta samkvæmt "
-#~ "skilmálum í almenna GNU GPL notkunarleyfinu eins og það er gefið út af "
-#~ "Frjálsu hugbúnaðarstofnuninni; annaðhvort útgáfu 2 af GPL-leyfinu, eða "
-#~ "(ef þér sýnist svo) einhverja nýrri útgáfu leyfisins.\n"
-#~ "\n"
-#~ "Hugbúnaðnum er dreift í þeirri von að hann geti verið gagnlegur, en ÁN "
-#~ "ALLRAR ÁBYRGÐAR; einnig án þeirrar ábyrgðar sem gefin er í skyn með "
-#~ "SELJANLEIKA eða EIGINLEIKUM TIL TILTEKINNA NOTA. Sjá almenna GNU GPL "
-#~ "notkunarleyfið fyrir nánari upplýsingar.\n"
-#~ "\n"
-#~ "Það ætti að hafa fylgt afrit af almenna GNU GPL notkunarleyfinu með "
-#~ "forritinu; ef ekki skrifið þá Fjálsu hugbúnarstofnuninni: Free Software "
-#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, "
-#~ "USA."
-
-#, fuzzy
-#~ msgid "translator-credits"
-#~ msgstr ""
-#~ "Launchpad Contributions:\n"
-#~ "  Baldur https://launchpad.net/~baldurpet"
-
-#, fuzzy
-#~ msgid "CUPS _server:"
-#~ msgstr "CUPS þjónn:"
-
-#~ msgid "Connect to CUPS server"
-#~ msgstr "tengjast CUPS þjóni"
-
-#, fuzzy
-#~ msgid "Require _encryption"
-#~ msgstr "Nota dulritun"
-
-#, fuzzy
-#~ msgid "Connecting to CUPS server"
-#~ msgstr "tengjast CUPS þjóni"
-
-#, fuzzy
-#~ msgid "_Install"
-#~ msgstr "_Setja upp"
-
-#~ msgid "Show _completed jobs"
-#~ msgstr "Sýna _kláruð prentverk"
-
-#, fuzzy
-#~ msgid "Show completed jobs"
-#~ msgstr "Sýna _kláruð prentverk"
-
-#, fuzzy
-#~ msgid "_Refresh"
-#~ msgstr "_Sleppa"
-
-#, fuzzy
-#~ msgid "Duplicate Printer"
-#~ msgstr "Gera að sjálfgefnum prentara"
-
-#~ msgid "New name for the printer"
-#~ msgstr "Nýtt heiti prentara"
-
-#, fuzzy
-#~ msgid "<b>Authentication</b>"
-#~ msgstr "<b>Auðkenning</b>"
-
-#, fuzzy
-#~ msgid "<b>Description</b>"
-#~ msgstr "<b> Lýsing</b>"
-
-#, fuzzy
-#~ msgid "<b>Description</b> (optional)"
-#~ msgstr "<b>Staðsetning</b> (óþarft)"
-
-#, fuzzy
-#~ msgid "<b>Enter device URI</b>"
-#~ msgstr "Sláðu inn URI tækisins"
-
-#, fuzzy
-#~ msgid "<b>IPP Printer</b>"
-#~ msgstr "<b>Heiti prentara</b>"
-
-#, fuzzy
-#~ msgid "<b>License Terms</b>"
-#~ msgstr "<b>Heiti prentara</b>"
-
-#~ msgid "<b>Location of the LPD network printer</b>"
-#~ msgstr "<b>Staðsetning LPD netprentara</b>"
-
-#~ msgid "<b>Location of the network printer</b>"
-#~ msgstr "<b>Staðsetning netprentara</b>"
-
-#~ msgid "<b>Location</b> (optional)"
-#~ msgstr "<b>Staðsetning</b> (óþarft)"
-
-#, fuzzy
-#~ msgid "<b>Network Printer</b>"
-#~ msgstr "Nýr prentari"
-
-#, fuzzy
-#~ msgid "<b>Note</b>"
-#~ msgstr "<b>Heiti prentara</b>"
-
-#~ msgid "<b>Printer Name</b>"
-#~ msgstr "<b>Heiti prentara</b>"
-
-#, fuzzy
-#~ msgid "<b>SMB Printer</b>"
-#~ msgstr "<b>Heiti prentara</b>"
-
-#, fuzzy
-#~ msgid "<b>Select Driver</b>"
-#~ msgstr "<b>Heiti prentara</b>"
-
-#~ msgid "<b>Settings of the serial port</b>"
-#~ msgstr "<b>Stillingar raðtengingar</b>"
-
-#, fuzzy
-#~ msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
-#~ msgstr "<i>smb://[vinnuhópur/]miðlari[:gátt]/prentari</i>"
-
-#, fuzzy
-#~ msgid "Browse..."
-#~ msgstr "Velja..."
-
-#, fuzzy
-#~ msgid "Change PPD"
-#~ msgstr "Breyta rekli"
-
-#, fuzzy
-#~ msgid "Class Members"
-#~ msgstr "Meðlimir"
-
-#, fuzzy
-#~ msgid "Comments..."
-#~ msgstr "Athugasemd"
-
-#, fuzzy
-#~ msgid "Connection"
-#~ msgstr "Tenging"
-
-#, fuzzy
-#~ msgid "Data Bits"
-#~ msgstr "Smáatriði"
-
-#, fuzzy
-#~ msgid "Description:"
-#~ msgstr "Lýsing:"
-
-#, fuzzy
-#~ msgid "Device"
-#~ msgstr "Tæki"
-
-#, fuzzy
-#~ msgid "Device description."
-#~ msgstr "Lýsing"
-
-#, fuzzy
-#~ msgid "Driver details"
-#~ msgstr "Reklar"
-
-#~ msgid "Empty"
-#~ msgstr "Tómt"
-
-#, fuzzy
-#~ msgid "Graphics:"
-#~ msgstr "Myndir:"
-
-#, fuzzy
-#~ msgid "Host:"
-#~ msgstr "Vél:"
-
-#, fuzzy
-#~ msgid "Installed Options"
-#~ msgstr "Uppsetjanlegir hlutir"
-
-#, fuzzy
-#~ msgid "JetDirect"
-#~ msgstr "DirectJet"
-
-#~ msgid "LPD"
-#~ msgstr "LPD"
-
-#, fuzzy
-#~ msgid "License:"
-#~ msgstr "Leyfi:"
-
-#, fuzzy
-#~ msgid "Line art:"
-#~ msgstr "Ástand prentara:"
-
-#, fuzzy
-#~ msgid "Local Driver"
-#~ msgstr "Staðbundnir prentarar"
-
-#, fuzzy
-#~ msgid "Make and model:"
-#~ msgstr "Framleiðandi og gerð:"
-
-#, fuzzy
-#~ msgid "Manufacturer"
-#~ msgstr "Framleiðandi"
-
-#, fuzzy
-#~ msgid "Network"
-#~ msgstr "Netkerfi"
-
-#~ msgid "Parity"
-#~ msgstr "Parity"
-
-#, fuzzy
-#~ msgid "Port number:"
-#~ msgstr "Númer gáttar:"
-
-#, fuzzy
-#~ msgid "Printer model:"
-#~ msgstr "Tegund prentara:"
-
-#~ msgid "Probe"
-#~ msgstr "Leita"
-
-#, fuzzy
-#~ msgid "Prompt user if authentication is required"
-#~ msgstr "Spyrja notanda ef auðkenningar er krafist"
-
-#, fuzzy
-#~ msgid "Provide PPD file"
-#~ msgstr "Gefa upp PPD-skrá"
-
-#, fuzzy
-#~ msgid "Queue:"
-#~ msgstr "Röð:"
-
-#~ msgid "SCSI"
-#~ msgstr "SCSI"
-
-#~ msgid "SMB"
-#~ msgstr "SMB"
-
-#, fuzzy
-#~ msgid "Search for a printer driver to download"
-#~ msgstr "Leita að prentararekli til að hala niður"
-
-#, fuzzy
-#~ msgid "Searching..."
-#~ msgstr "Leita..."
-
-#, fuzzy
-#~ msgid "Select printer from database"
-#~ msgstr "Veldu prentara úr gagnagrunni"
-
-#~ msgid "Serial"
-#~ msgstr "Raðtengdur"
-
-#, fuzzy
-#~ msgid "Set authentication details now"
-#~ msgstr "Stilla auðkenningaratriði núna"
-
-#, fuzzy
-#~ msgid "Text:"
-#~ msgstr "Texti:"
-
-#, fuzzy
-#~ msgid ""
-#~ "The foomatic printer database contains various manufacturer provided "
-#~ "PostScript Printer Description (PPD) files and also can generate PPD "
-#~ "files for a large number of (non PostScript) printers. But in general "
-#~ "manufacturer provided PPD files provide better access to the specific "
-#~ "features of the printer."
-#~ msgstr ""
-#~ "Prentaragagnagrunnuruinn Foomatic inniheldur ýmsar PostScript Printer "
-#~ "Description (PPD) skrár frá framleiðendum prentara og getur einnig búið "
-#~ "til PPD-skrár fyrir marga prentara sem ekki eru non PostScript. En "
-#~ "almenna reglan er samt sú að PPD-skrár sem koma beint frá framleiðanda "
-#~ "viðkomandi prentara gefa betri aðgang að hinum sértækari aðgerðum "
-#~ "tækisins."
-
-#, fuzzy
-#~ msgid ""
-#~ "This is done by assuming that options with the same name do have the same "
-#~ "meaning. Settings of options that are not present in the new PPD will be "
-#~ "lost and options only present in the new PPD will be set to default."
-#~ msgstr ""
-#~ "Þetta er gert með því að gera rá fyrir að stillingar með sama nafni hafi "
-#~ "sömu eiginleika. Stillingar sem ekki eru til staðar í nýju PPD-skránni "
-#~ "munu tapast og stillingar sem eingöngu eru til staðar í nýju PPD-skránni "
-#~ "verða settar á sjálfgefin gildi."
-
-#~ msgid ""
-#~ "This way all current option settings will be lost. The default settings "
-#~ "of the new PPD will be used. "
-#~ msgstr ""
-#~ "Með þessari aðferð týnast allar stillingar. Sjálfgefnar stillingar úr PPD "
-#~ "skránni verða virkar."
-
-#~ msgid "Try to copy the option settings over from the old PPD. "
-#~ msgstr "Reyna að afrita rofastillingar úr gömlu PPD skránni."
-
-#, fuzzy
-#~ msgid "URI:"
-#~ msgstr "Slóð:"
-
-#~ msgid "Use the new PPD (Postscript Printer Description) as is."
-#~ msgstr "Nota nýju PPD (Postscript Printer Description) eins og hún er."
-
-#, fuzzy
-#~ msgid "_Search"
-#~ msgstr "_Leita"
-
-#~ msgid "_Verify..."
-#~ msgstr "_Staðfesta..."
-
-#, fuzzy
-#~ msgid "license"
-#~ msgstr "Leyfi:"
-
-#, fuzzy
-#~ msgid "move left"
-#~ msgstr "Höfundarréttur"
-
-#, fuzzy
-#~ msgid "move right"
-#~ msgstr "Höfundarréttur"
-
-#, fuzzy
-#~ msgid "short description"
-#~ msgstr "Lýsing"
-
-#~ msgid " "
-#~ msgstr " "
-
-#, fuzzy
-#~ msgid "<b>Banner</b>"
-#~ msgstr "<b>Heiti prentara</b>"
-
-#, fuzzy
-#~ msgid "<b>Common Options</b>"
-#~ msgstr "<b>Almennir valkostir</b>"
-
-#, fuzzy
-#~ msgid "<b>Image Options</b>"
-#~ msgstr "<b>Valkostir myndar</b>"
-
-#, fuzzy
-#~ msgid "<b>Ink/Toner Levels</b>"
-#~ msgstr "Sláðu inn URI tækisins"
-
-#, fuzzy
-#~ msgid "<b>Other Options (Advanced)</b>"
-#~ msgstr "Lýsing"
-
-#, fuzzy
-#~ msgid "<b>Policies</b>"
-#~ msgstr "Stefnur"
-
-#, fuzzy
-#~ msgid "<b>Settings</b>"
-#~ msgstr "<b>Stillingar</b>"
-
-#, fuzzy
-#~ msgid "<b>State</b>"
-#~ msgstr "<b>Heiti prentara</b>"
-
-#, fuzzy
-#~ msgid "<b>Status Messages</b>"
-#~ msgstr "Skilaboð"
-
-#, fuzzy
-#~ msgid "<b>Text Options</b>"
-#~ msgstr "<b>Valkostir texta</b>"
-
-#, fuzzy
-#~ msgid "Access Control"
-#~ msgstr "Aðgangsstýringar"
-
-#, fuzzy
-#~ msgid "Add or Remove Members"
-#~ msgstr "Bæta við eða fjarlægja meðlimi"
-
-#, fuzzy
-#~ msgid "Bottom margin:"
-#~ msgstr "Efri spássía:"
-
-#, fuzzy
-#~ msgid "Brightness:"
-#~ msgstr "Birtustilling:"
-
-#, fuzzy
-#~ msgid "Change..."
-#~ msgstr "Breyta..."
-
-#, fuzzy
-#~ msgid "Clean Print Heads"
-#~ msgstr "Hreinsa prenthausa"
-
-#, fuzzy
-#~ msgid "Co_nflicts"
-#~ msgstr "Rekst á:"
-
-#, fuzzy
-#~ msgid "Columns:"
-#~ msgstr "Dálkar:"
-
-#, fuzzy
-#~ msgid "Copies:"
-#~ msgstr "Eintök:"
-
-#, fuzzy
-#~ msgid "Device URI:"
-#~ msgstr "Slóð að tæki:"
-
-#, fuzzy
-#~ msgid "Enabled"
-#~ msgstr "Virkt"
-
-#, fuzzy
-#~ msgid "Ending Banner:"
-#~ msgstr "Endaborði:"
-
-#, fuzzy
-#~ msgid "Finishings:"
-#~ msgstr "Frágangur:"
-
-#, fuzzy
-#~ msgid "Gamma:"
-#~ msgstr "Litróf:"
-
-#, fuzzy
-#~ msgid "Hold until:"
-#~ msgstr "Halda til:"
-
-#, fuzzy
-#~ msgid "Ink/Toner Levels"
-#~ msgstr "Sláðu inn URI tækisins"
-
-#~ msgid "Job Options"
-#~ msgstr "Rofar prentverks"
-
-#, fuzzy
-#~ msgid "Job priority:"
-#~ msgstr "Forgangur verks:"
-
-#, fuzzy
-#~ msgid "Left margin:"
-#~ msgstr "Efri spássía:"
-
-#, fuzzy
-#~ msgid "Lines per inch:"
-#~ msgstr "púnktar (72 á tommu)"
-
-#~ msgid "Location:"
-#~ msgstr "Staðsetning:"
-
-#~ msgid "Make and Model:"
-#~ msgstr "Framleiðandi og gerð:"
-
-#, fuzzy
-#~ msgid "Media:"
-#~ msgstr "Miðill:"
-
-#~ msgid "Members"
-#~ msgstr "Meðlimir"
-
-#, fuzzy
-#~ msgid "Mirror"
-#~ msgstr "Spegla"
-
-#, fuzzy
-#~ msgid "More"
-#~ msgstr "Meira"
-
-#, fuzzy
-#~ msgid "Orientation:"
-#~ msgstr "Stefna:"
-
-#, fuzzy
-#~ msgid "Pages per side layout:"
-#~ msgstr "Síður á hverri hlið:"
-
-#, fuzzy
-#~ msgid "Pages per side:"
-#~ msgstr "Ástand prentara:"
-
-#~ msgid "Policies"
-#~ msgstr "Stefnur"
-
-#, fuzzy
-#~ msgid "Pretty print"
-#~ msgstr "Falleg prentun"
-
-#, fuzzy
-#~ msgid "Print Self-Test Page"
-#~ msgstr "Prenta prufusíðu"
-
-#, fuzzy
-#~ msgid "Printer Properties"
-#~ msgstr "Prentaraskýrsla"
-
-#~ msgid "Printer State:"
-#~ msgstr "Ástand prentara:"
-
-#, fuzzy
-#~ msgid "Reset"
-#~ msgstr "Frumstilla"
-
-#, fuzzy
-#~ msgid "Right margin:"
-#~ msgstr "Efri spássía:"
-
-#, fuzzy
-#~ msgid "Saturation:"
-#~ msgstr "Mettun:"
-
-#, fuzzy
-#~ msgid "Scale to fit"
-#~ msgstr "Skala svo passi"
-
-#, fuzzy
-#~ msgid "Scaling:"
-#~ msgstr "Skölun:"
-
-#~ msgid "Settings"
-#~ msgstr "Stillingar"
-
-#~ msgid "Shared"
-#~ msgstr "Netprentari"
-
-#, fuzzy
-#~ msgid "Sides:"
-#~ msgstr "Hliðar:"
-
-#, fuzzy
-#~ msgid "Starting Banner:"
-#~ msgstr "Upphafsborði:"
-
-#, fuzzy
-#~ msgid "There are no status messages for this printer."
-#~ msgstr "Nýtt heiti prentara"
-
-#, fuzzy
-#~ msgid ""
-#~ "To add a new option, enter its name in the box below and click to add."
-#~ msgstr ""
-#~ "Til að bæta við nýjum rofa, settu inn heiti í reitinn hér að neðan og "
-#~ "smelltu til að bæta honum við."
-
-#~ msgid "Top margin:"
-#~ msgstr "Efri spássía:"
-
-#~ msgid "Word wrap"
-#~ msgstr "Línufletting"
-
-#~ msgid "points"
-#~ msgstr "púnktar"
-
-#, fuzzy
-#~ msgid "user"
-#~ msgstr "eigandi"
-
-#~ msgid "System-Config-Printer"
-#~ msgstr "System-Config-Printer"
-
-#, fuzzy
-#~ msgid "_Discovered Printers"
-#~ msgstr "Stilla prentara"
-
-#, fuzzy
-#~ msgid "_Group"
-#~ msgstr "_Hópa"
-
-#, fuzzy
-#~ msgid "_Groups"
-#~ msgstr "_Hópar"
-
-#~ msgid "_Help"
-#~ msgstr "_Hjálp"
-
-#, fuzzy
-#~ msgid "_Server"
-#~ msgstr "Þ_jónn:"
-
-#~ msgid "_View"
-#~ msgstr "_Birta"
-
-#, fuzzy
-#~ msgid "<b>Basic Server Settings</b>"
-#~ msgstr "Rofar rekils"
-
-#, fuzzy
-#~ msgid "<b>Browse servers</b>"
-#~ msgstr "þjónn"
-
-#, fuzzy
-#~ msgid "<b>Job history</b>"
-#~ msgstr "<b>Heiti prentara</b>"
-
-#, fuzzy
-#~ msgid "Advanced Server Settings"
-#~ msgstr "Frekari stillingar prentþjóns"
-
-#, fuzzy
-#~ msgid "Save _debugging information for troubleshooting"
-#~ msgstr "Vista aflúsunarupplýsingar"
-
-#, fuzzy
-#~ msgid "Server Settings"
-#~ msgstr "Stillingar þjóns"
-
-#, fuzzy
-#~ msgid "SMB Browser"
-#~ msgstr "SMB vafri"
-
-#, fuzzy
 #~ msgid "_Configure Printers"
 #~ msgstr "Stilla prentara"
-
-#~ msgid "_Hide"
-#~ msgstr "_Fela"
-
-#, fuzzy
-#~ msgid "Please Wait"
-#~ msgstr "Augnablik"
 
 #~ msgid "Cancel, pause, resume or reprint jobs"
 #~ msgstr "Hætta við, halda, sleppa eða endurprenta verk"

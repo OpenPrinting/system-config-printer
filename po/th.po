@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: system-config-printer\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2011-02-17 16:17+0000\n"
+"POT-Creation-Date: 2011-02-25 09:57+0000\n"
 "PO-Revision-Date: 2009-05-11 20:16+0000\n"
 "Last-Translator: \n"
 "Language-Team: Thai <thai-l10n@googlegroups.com>\n"
@@ -54,11 +54,11 @@ msgstr "ลองซ้ำ"
 msgid "Operation canceled"
 msgstr "กระบวนการถูกยกเลิก"
 
-#: ../authconn.py:32 ../pysmb.py:123
+#: ../authconn.py:32 ../pysmb.py:123 ../ui/NewPrinterWindow.glade.h:94
 msgid "Username:"
 msgstr "ชื่อผู้ใช้:"
 
-#: ../authconn.py:33 ../pysmb.py:129
+#: ../authconn.py:33 ../pysmb.py:129 ../ui/NewPrinterWindow.glade.h:63
 msgid "Password:"
 msgstr "รหัสผ่าน:"
 
@@ -336,7 +336,8 @@ msgstr ""
 
 #: ../jobviewer.py:706 ../jobviewer.py:1002 ../jobviewer.py:1704
 #: ../jobviewer.py:1734 ../jobviewer.py:2104 ../jobviewer.py:2109
-#: ../jobviewer.py:2123 ../jobviewer.py:2202 ../printerproperties.py:1541
+#: ../jobviewer.py:2123 ../jobviewer.py:2202 ../printerproperties.py:1582
+#: ../ui/NewPrinterWindow.glade.h:92
 #: ../troubleshoot/ChooseNetworkPrinter.py:100
 #: ../troubleshoot/ChooseNetworkPrinter.py:101
 #: ../troubleshoot/ChooseNetworkPrinter.py:104
@@ -411,6 +412,7 @@ msgid "Save File"
 msgstr "เลือกไฟล์"
 
 #: ../jobviewer.py:1449 ../system-config-printer.py:258
+#: ../ui/NewPrinterWindow.glade.h:57
 #: ../troubleshoot/ChooseNetworkPrinter.py:35
 #: ../troubleshoot/ChoosePrinter.py:36 ../troubleshoot/DeviceListed.py:36
 msgid "Name"
@@ -592,7 +594,7 @@ msgstr ""
 #. See section 4.2.6 of this document for explanation of finishing types:
 #. ftp://ftp.pwg.org/pub/pwg/candidates/cs-ippfinishings10-20010205-5100.1.pdf
 #: ../newprinter.py:299 ../newprinter.py:310 ../newprinter.py:3267
-#: ../ppdippstr.py:63 ../printerproperties.py:264
+#: ../ppdippstr.py:63 ../printerproperties.py:268
 msgid "None"
 msgstr "ไม่มี"
 
@@ -625,11 +627,11 @@ msgstr ""
 msgid "DTR/DSR (Hardware)"
 msgstr ""
 
-#: ../newprinter.py:330 ../printerproperties.py:218
+#: ../newprinter.py:330 ../printerproperties.py:222
 msgid "Members of this class"
 msgstr "สมาชิกของคลาสนี้"
 
-#: ../newprinter.py:332 ../printerproperties.py:219
+#: ../newprinter.py:332 ../printerproperties.py:223
 msgid "Others"
 msgstr "อื่นๆ"
 
@@ -654,7 +656,7 @@ msgstr "รุ่น"
 msgid "Drivers"
 msgstr "ไดรเวอร์"
 
-#: ../newprinter.py:338
+#: ../newprinter.py:338 ../ui/NewPrinterWindow.glade.h:35
 msgid "Downloadable Drivers"
 msgstr "ไดรฟเวอร์ที่ดาวน์โหลดได้"
 
@@ -688,7 +690,7 @@ msgstr "ทุกแฟ้ม (*)"
 msgid "Search"
 msgstr "ค้นหา"
 
-#: ../newprinter.py:611 ../newprinter.py:632
+#: ../newprinter.py:611 ../newprinter.py:632 ../ui/NewPrinterWindow.glade.h:59
 msgid "New Printer"
 msgstr "เพิ่มเครื่องพิมพ์"
 
@@ -846,7 +848,7 @@ msgstr "คิว LPD/LPR"
 msgid "Windows Printer via SAMBA"
 msgstr "เครื่องพิมพ์ Windows ผ่าน SAMBA"
 
-#: ../newprinter.py:2376
+#: ../newprinter.py:2376 ../ui/NewPrinterWindow.glade.h:48
 msgid "IPP"
 msgstr "IPP"
 
@@ -904,7 +906,7 @@ msgstr "เครื่องพิมพ์บนเครื่องที่
 msgid "Searching for printers"
 msgstr "กำลังค้นหาเครื่องพิมพ์"
 
-#: ../newprinter.py:2769
+#: ../newprinter.py:2769 ../ui/NewPrinterWindow.glade.h:60
 msgid "No printer was found at that address."
 msgstr "ไม่พบเครื่องพิมพ์ที่ตำแหน่งนั้น"
 
@@ -1003,7 +1005,7 @@ msgid "adding printer %s"
 msgstr "กำลังเพิ่มเครื่องพิมพ์ %s"
 
 #: ../newprinter.py:3570 ../newprinter.py:3581 ../newprinter.py:3598
-#: ../printerproperties.py:921 ../system-config-printer.py:1682
+#: ../printerproperties.py:957 ../system-config-printer.py:1682
 #: ../system-config-printer.py:1707
 #, python-format
 msgid "modifying printer %s"
@@ -1322,223 +1324,231 @@ msgid "Busy"
 msgstr "ไม่ว่าง"
 
 #. Printer state reasons list
-#: ../printerproperties.py:200
+#: ../printerproperties.py:204
 msgid "Message"
 msgstr "ข้อความ"
 
-#: ../printerproperties.py:220
+#: ../printerproperties.py:224
 msgid "Users"
 msgstr "ผู้ใช้"
 
-#: ../printerproperties.py:243
+#: ../printerproperties.py:247
 #, fuzzy
 msgid "Portrait (no rotation)"
 msgstr "ผลัดล็อคอัตโนมัติ"
 
-#: ../printerproperties.py:244
+#: ../printerproperties.py:248
 msgid "Landscape (90 degrees)"
 msgstr ""
 
-#: ../printerproperties.py:245
+#: ../printerproperties.py:249
 msgid "Reverse landscape (270 degrees)"
 msgstr ""
 
-#: ../printerproperties.py:246
+#: ../printerproperties.py:250
 msgid "Reverse portrait (180 degrees)"
 msgstr ""
 
-#: ../printerproperties.py:252
+#: ../printerproperties.py:256
 msgid "Left to right, top to bottom"
 msgstr ""
 
-#: ../printerproperties.py:253
+#: ../printerproperties.py:257
 msgid "Left to right, bottom to top"
 msgstr ""
 
-#: ../printerproperties.py:254
+#: ../printerproperties.py:258
 msgid "Right to left, top to bottom"
 msgstr ""
 
-#: ../printerproperties.py:255
+#: ../printerproperties.py:259
 msgid "Right to left, bottom to top"
 msgstr ""
 
-#: ../printerproperties.py:256
+#: ../printerproperties.py:260
 msgid "Top to bottom, left to right"
 msgstr ""
 
-#: ../printerproperties.py:257
+#: ../printerproperties.py:261
 msgid "Top to bottom, right to left"
 msgstr ""
 
-#: ../printerproperties.py:258
+#: ../printerproperties.py:262
 msgid "Bottom to top, left to right"
 msgstr ""
 
-#: ../printerproperties.py:259
+#: ../printerproperties.py:263
 msgid "Bottom to top, right to left"
-msgstr ""
-
-#: ../printerproperties.py:265
-#, fuzzy
-msgid "Staple"
-msgstr "หยุดทำงาน"
-
-#: ../printerproperties.py:266
-msgid "Punch"
-msgstr ""
-
-#: ../printerproperties.py:267
-#, fuzzy
-msgid "Cover"
-msgstr "ฝาเปิด"
-
-#: ../printerproperties.py:268
-msgid "Bind"
 msgstr ""
 
 #: ../printerproperties.py:269
 #, fuzzy
-msgid "Saddle stitch"
-msgstr "ย่อพอดี"
+msgid "Staple"
+msgstr "หยุดทำงาน"
 
 #: ../printerproperties.py:270
-msgid "Edge stitch"
+msgid "Punch"
 msgstr ""
 
 #: ../printerproperties.py:271
 #, fuzzy
-msgid "Fold"
-msgstr "_หยุดชั่วคราว"
+msgid "Cover"
+msgstr "ฝาเปิด"
 
 #: ../printerproperties.py:272
-msgid "Trim"
+msgid "Bind"
 msgstr ""
 
 #: ../printerproperties.py:273
-msgid "Bale"
-msgstr ""
+#, fuzzy
+msgid "Saddle stitch"
+msgstr "ย่อพอดี"
 
 #: ../printerproperties.py:274
-msgid "Booklet maker"
+msgid "Edge stitch"
 msgstr ""
 
 #: ../printerproperties.py:275
+#, fuzzy
+msgid "Fold"
+msgstr "_หยุดชั่วคราว"
+
+#: ../printerproperties.py:276
+msgid "Trim"
+msgstr ""
+
+#: ../printerproperties.py:277
+msgid "Bale"
+msgstr ""
+
+#: ../printerproperties.py:278
+msgid "Booklet maker"
+msgstr ""
+
+#: ../printerproperties.py:279
 msgid "Job offset"
 msgstr ""
 
-#: ../printerproperties.py:276
+#: ../printerproperties.py:280
 #, fuzzy
 msgid "Staple (top left)"
 msgstr "ย่อพอดี"
 
-#: ../printerproperties.py:277
+#: ../printerproperties.py:281
 #, fuzzy
 msgid "Staple (bottom left)"
 msgstr "ย่อพอดี"
 
-#: ../printerproperties.py:278
+#: ../printerproperties.py:282
 #, fuzzy
 msgid "Staple (top right)"
 msgstr "ย่อพอดี"
 
-#: ../printerproperties.py:279
+#: ../printerproperties.py:283
 #, fuzzy
 msgid "Staple (bottom right)"
 msgstr "ย่อพอดี"
 
-#: ../printerproperties.py:280
+#: ../printerproperties.py:284
 msgid "Edge stitch (left)"
 msgstr ""
 
-#: ../printerproperties.py:281
+#: ../printerproperties.py:285
 msgid "Edge stitch (top)"
 msgstr ""
 
-#: ../printerproperties.py:282
+#: ../printerproperties.py:286
 msgid "Edge stitch (right)"
 msgstr ""
 
-#: ../printerproperties.py:283
+#: ../printerproperties.py:287
 msgid "Edge stitch (bottom)"
 msgstr ""
 
-#: ../printerproperties.py:284
+#: ../printerproperties.py:288
 msgid "Staple dual (left)"
 msgstr ""
 
-#: ../printerproperties.py:285
+#: ../printerproperties.py:289
 msgid "Staple dual (top)"
 msgstr ""
 
-#: ../printerproperties.py:286
+#: ../printerproperties.py:290
 msgid "Staple dual (right)"
 msgstr ""
 
-#: ../printerproperties.py:287
+#: ../printerproperties.py:291
 msgid "Staple dual (bottom)"
 msgstr ""
 
-#: ../printerproperties.py:288
+#: ../printerproperties.py:292
 msgid "Bind (left)"
 msgstr ""
 
-#: ../printerproperties.py:289
+#: ../printerproperties.py:293
 msgid "Bind (top)"
 msgstr ""
 
-#: ../printerproperties.py:290
+#: ../printerproperties.py:294
 msgid "Bind (right)"
 msgstr ""
 
-#: ../printerproperties.py:291
+#: ../printerproperties.py:295
 msgid "Bind (bottom)"
 msgstr ""
 
-#: ../printerproperties.py:296
+#: ../printerproperties.py:300
 msgid "One-sided"
 msgstr ""
 
-#: ../printerproperties.py:297
+#: ../printerproperties.py:301
 msgid "Two-sided (long edge)"
 msgstr ""
 
-#: ../printerproperties.py:298
+#: ../printerproperties.py:302
 msgid "Two-sided (short edge)"
 msgstr ""
 
-#: ../printerproperties.py:303
+#: ../printerproperties.py:307 ../printerproperties.py:312
 msgid "Normal"
 msgstr ""
 
-#: ../printerproperties.py:304
+#: ../printerproperties.py:308
 #, fuzzy
 msgid "Reverse"
 msgstr "_ทำงานต่อ"
 
-#: ../printerproperties.py:325
+#: ../printerproperties.py:311
+msgid "Draft"
+msgstr ""
+
+#: ../printerproperties.py:313
+msgid "High"
+msgstr ""
+
+#: ../printerproperties.py:337
 #, fuzzy
 msgid "Automatic rotation"
 msgstr "ผลัดล็อคอัตโนมัติ"
 
-#: ../printerproperties.py:546
+#: ../printerproperties.py:576
 #, fuzzy
 msgid "CUPS test page"
 msgstr "พิมพ์หน้าทดสอบ"
 
-#: ../printerproperties.py:547
+#: ../printerproperties.py:577
 msgid ""
 "Typically shows whether all jets on a print head are functioning and that "
 "the print feed mechanisms are working properly."
 msgstr ""
 
-#: ../printerproperties.py:554
+#: ../printerproperties.py:584
 #, python-format
 msgid "Printer Properties - '%s' on %s"
 msgstr "รายละเอียดเครื่องพิมพ์ - '%s' บน %s"
 
 #. The Conflict button was pressed.
-#: ../printerproperties.py:561
+#: ../printerproperties.py:591
 msgid ""
 "There are conflicting options.\n"
 "Changes can only be applied after\n"
@@ -1548,24 +1558,24 @@ msgstr ""
 "สามารถเปลี่ยนแปลงค่าได้ก็ต่อเมื่อ\n"
 "ได้แก้ไขตัวเลือกเหล่านั้นแล้ว"
 
-#: ../printerproperties.py:881
+#: ../printerproperties.py:917
 msgid "Installable Options"
 msgstr "ตัวเลือกที่ติดตั้งได้"
 
-#: ../printerproperties.py:882
+#: ../printerproperties.py:918 ../ui/PrinterPropertiesDialog.glade.h:63
 msgid "Printer Options"
 msgstr "ตัวเลือกเครื่องพิมพ์"
 
-#: ../printerproperties.py:919
+#: ../printerproperties.py:955
 #, python-format
 msgid "modifying class %s"
 msgstr "กำลังแก้ไขคลาส %s"
 
-#: ../printerproperties.py:936
+#: ../printerproperties.py:972
 msgid "This will delete this class!"
 msgstr "กระบวนการนี้จะลบคลาสนี้!"
 
-#: ../printerproperties.py:937
+#: ../printerproperties.py:973
 msgid "Proceed anyway?"
 msgstr "ทำงานต่อไป?"
 
@@ -1573,61 +1583,61 @@ msgstr "ทำงานต่อไป?"
 #. but we have never fetched the server settings to see whether
 #. the server is publishing shared printers.  Fetch the settings
 #. now so that we can update the "not published" label if necessary.
-#: ../printerproperties.py:1027 ../serversettings.py:192
+#: ../printerproperties.py:1065 ../serversettings.py:192
 msgid "fetching server settings"
 msgstr "กำลังดึงการตั้งค่าของเซิร์ฟเวอร์"
 
-#: ../printerproperties.py:1109
+#: ../printerproperties.py:1147
 msgid "printing test page"
 msgstr "กำลังพิมพ์หน้าทดสอบ"
 
-#: ../printerproperties.py:1122 ../printerproperties.py:1157
+#: ../printerproperties.py:1160 ../printerproperties.py:1195
 msgid "Not possible"
 msgstr "ไม่สามารถทำได้"
 
-#: ../printerproperties.py:1123 ../printerproperties.py:1158
+#: ../printerproperties.py:1161 ../printerproperties.py:1196
 msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
 msgstr "เซิร์ฟเวอร์ระยะไกลไม่รับงานพิมพ์ โดยมากมักจะเกิดจากเครื่องพิมพ์ไม่ได้ถูกแบ่งปันไว้"
 
-#: ../printerproperties.py:1135 ../printerproperties.py:1150
+#: ../printerproperties.py:1173 ../printerproperties.py:1188
 msgid "Submitted"
 msgstr "ส่งข้อมูลแล้ว"
 
-#: ../printerproperties.py:1136
+#: ../printerproperties.py:1174
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr "หน้าทดสอบถูกส่งเป็นงาน %d แล้ว"
 
-#: ../printerproperties.py:1143
+#: ../printerproperties.py:1181
 msgid "sending maintenance command"
 msgstr "กำลังส่งคำสั่งการดูแล"
 
-#: ../printerproperties.py:1151
+#: ../printerproperties.py:1189
 #, python-format
 msgid "Maintenance command submitted as job %d"
 msgstr "คำสั่งการดูแลส่งไปแล้วเป็นงาน %d"
 
-#: ../printerproperties.py:1238 ../printerproperties.py:1243
-#: ../printerproperties.py:1339
+#: ../printerproperties.py:1276 ../printerproperties.py:1281
+#: ../printerproperties.py:1377
 msgid "Error"
 msgstr "ผิดพลาด"
 
-#: ../printerproperties.py:1239
+#: ../printerproperties.py:1277
 msgid "The PPD file for this queue is damaged."
 msgstr ""
 
-#: ../printerproperties.py:1244
+#: ../printerproperties.py:1282
 msgid "There was a problem connecting to the CUPS server."
 msgstr "มีปัญหาในการเชื่อมต่อเซิร์ฟเวอร์ CUPS"
 
-#: ../printerproperties.py:1340
+#: ../printerproperties.py:1378
 #, python-format
 msgid "Option '%s' has value '%s' and cannot be edited."
 msgstr "ตัวเลือก '%s' มีค่า '%s' และไม่สามารถแก้ไขได้"
 
-#: ../printerproperties.py:1450
+#: ../printerproperties.py:1491
 msgid "Marker levels are not reported for this printer."
 msgstr "เครื่องพิมพ์ไม่ได้รายงานระดับเครื่องหมาย"
 
@@ -1668,7 +1678,7 @@ msgstr "_ตั้งค่า..."
 msgid "Adjust server settings"
 msgstr "ตั้งค่าเซิร์ฟเวอร์"
 
-#: ../system-config-printer.py:223
+#: ../system-config-printer.py:223 ../ui/PrintersWindow.glade.h:9
 msgid "_Printer"
 msgstr "_เครื่องพิมพ์"
 
@@ -1777,8 +1787,8 @@ msgstr ""
 msgid "Cannot start service on remote server"
 msgstr ""
 
-#: ../system-config-printer.py:1143
-#, python-format
+#: ../system-config-printer.py:1143 ../ui/ConnectingDialog.glade.h:2
+#, no-c-format, python-format
 msgid "<i>Opening connection to %s</i>"
 msgstr "<i>กำลังเชื่อมต่อไปยัง %s</i>"
 
@@ -1868,7 +1878,9 @@ msgstr ""
 msgid "Would you like to print a test page?"
 msgstr "คุณต้องการพิมพ์หน้าทดสอบหรือไม่?"
 
-#: ../system-config-printer.py:1948 ../troubleshoot/PrintTestPage.py:72
+#. Not more than 25 characters
+#: ../system-config-printer.py:1948 ../ui/PrinterPropertiesDialog.glade.h:61
+#: ../troubleshoot/PrintTestPage.py:72
 msgid "Print Test Page"
 msgstr "พิมพ์หน้าทดสอบ"
 
@@ -1891,6 +1903,956 @@ msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "
 "Please install it before using this printer."
 msgstr "เครื่องพิมพ์ '%s' ต้องการโปรแกรม '%s' ซึ่งยังไม่ได้ติดตั้ง  กรุณาติดตั้งก่อนใช้เครื่องพิมพ์นี้"
+
+#: ../ui/AboutDialog.glade.h:1
+msgid "A CUPS configuration tool."
+msgstr "เครื่องมือตั้งค่า CUPS"
+
+#: ../ui/AboutDialog.glade.h:2
+#, fuzzy
+msgid "Copyright © 2006-2008 Red Hat, Inc."
+msgstr "สงวนลิขสิทธิ์ 2549-2551 Red Hat, Inc"
+
+#: ../ui/AboutDialog.glade.h:3
+msgid ""
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with "
+"this program; if not, write to the Free Software Foundation, Inc., 675 Mass "
+"Ave, Cambridge, MA 02139, USA."
+msgstr ""
+"โปรแกรมนี้เป็นซอฟต์แวร์เสรี คุณสามารถแจกจ่ายต่อ และ/หรือ แก้ไขโปรแกรมได้ ภายใต้เงื่อนไขของ "
+"GNU General Public License ที่เผยแพร่โดยมูลนิธิซอฟต์แวร์เสรี ไม่ว่าจะเป็นสัญญาอนุญาตรุ่นที่ 2 "
+"หรือรุ่นถัดมา (ตามแต่คุณจะเลือก)\n"
+"\n"
+"โปรแกรมนี้เผยแพร่ด้วยความหวังว่าโปรแกรมจะมีประโยชน์ แต่ _ไม่มีการรับประกันใดๆ_ "
+"ไม่มีแม้การรับประกัน _อรรถประโยชน์เชิงพาณิชย์_ หรือ "
+"_ความเหมาะสมสำหรับวัตถุประสงค์เฉพาะกิจใดๆ_ กรุณาอ่าน GNU General Public License "
+"เพื่อดูรายละเอียดเพิ่มเติม\n"
+"\n"
+"คุณควรจะได้รับสำเนาของ GNU General Public License มาพร้อมกับโปรแกรมนี้ ถ้าคุณไม่ได้รับ "
+"กรุณาติดต่อไปที่ Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, "
+"Boston, MA 02110-1301 USA"
+
+#. TRANSLATORS: Replace this string with your names, one name per line.  Thank you very much for your effort on translating system-config-printer and all our other tools!
+#: ../ui/AboutDialog.glade.h:9
+msgid "translator-credits"
+msgstr "Manatsawin Hanmongkolchai <manatsawin@gmail.com>"
+
+#: ../ui/ConnectDialog.glade.h:1
+msgid "CUPS _server:"
+msgstr "_เซิร์ฟเวอร์ CUPS:"
+
+#: ../ui/ConnectDialog.glade.h:2
+msgid "Connect to CUPS server"
+msgstr "ติดต่อไปยังเซิร์ฟเวอร์ CUPS"
+
+#: ../ui/ConnectDialog.glade.h:3
+msgid "Require _encryption"
+msgstr "_ต้องการการเข้ารหัส"
+
+#: ../ui/ConnectingDialog.glade.h:3
+msgid "<span weight=\"bold\" size=\"larger\">Connecting to CUPS server</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">กำลังเชื่อมต่อไปยังเซิร์ฟเวอร์</span>"
+
+#: ../ui/ConnectingDialog.glade.h:4
+msgid "Connecting to CUPS server"
+msgstr "กำลังติดต่อไปยังเซิร์ฟเวอร์ CUPS"
+
+#: ../ui/InstallDialog.glade.h:1
+msgid "_Install"
+msgstr "_ติดตั้ง"
+
+#: ../ui/JobsWindow.glade.h:1
+msgid "Refresh job list"
+msgstr ""
+
+#: ../ui/JobsWindow.glade.h:2
+msgid "Show _completed jobs"
+msgstr "_แสดงงานที่สมบูรณ์แล้ว"
+
+#: ../ui/JobsWindow.glade.h:3
+#, fuzzy
+msgid "Show completed jobs"
+msgstr "_แสดงงานที่สมบูรณ์แล้ว"
+
+#: ../ui/JobsWindow.glade.h:4
+msgid "_Refresh"
+msgstr "_เรียกใหม่"
+
+#: ../ui/NewPrinterName.glade.h:1
+#, fuzzy
+msgid "Duplicate Printer"
+msgstr "เครื่องพิมพ์ปริยาย"
+
+#: ../ui/NewPrinterName.glade.h:2
+msgid "New name for the printer"
+msgstr "ชื่อใหม่ของเครื่องพิมพ์"
+
+#: ../ui/NewPrinterWindow.glade.h:1
+msgid "<b>Authentication</b>"
+msgstr "<b>การยึนยันตน</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:2
+msgid "<b>Description</b>"
+msgstr "<b>รายละเอียด</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:3
+msgid "<b>Description</b> (optional)"
+msgstr "<b>รายละเอียด</b> (ไม่จำเป็นต้องกรอก)"
+
+#: ../ui/NewPrinterWindow.glade.h:4
+msgid "<b>Enter device URI</b>"
+msgstr "<b>ใส่ URI อุปกรณ์</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:5
+msgid "<b>IPP Printer</b>"
+msgstr "<b>เครื่องพิมพ์ IPP</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:6
+msgid "<b>License Terms</b>"
+msgstr "<b>ข้อตกลงการใช้งาน</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:7
+msgid "<b>Location of the LPD network printer</b>"
+msgstr "<b>ตำแหน่งของเครื่องบนพิมพ์บนเครือข่าย LPD</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:8
+msgid "<b>Location of the network printer</b>"
+msgstr "<b>ตำแหน่งของเครื่องพิมพ์บนเครือข่าย</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:9
+msgid "<b>Location</b> (optional)"
+msgstr "<b>ตำแหน่ง</b> (ไม่จำเป็นต้องกรอก)"
+
+#: ../ui/NewPrinterWindow.glade.h:10
+msgid "<b>Network Printer</b>"
+msgstr "<b>เครื่องพิมพ์บนเครือข่าย</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:11
+msgid "<b>Note</b>"
+msgstr "<b>หมายเหตุ</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:12
+msgid "<b>Output Quality</b>"
+msgstr "<b>คุณภาพงาน</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:13
+msgid "<b>Printer Name</b>"
+msgstr "<b>ชื่อเครื่องพิมพ์</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:14
+msgid "<b>SMB Printer</b>"
+msgstr "<b>เครื่องพิมพ์ SMB</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:15
+msgid "<b>Select Driver</b>"
+msgstr "<b>เลือกไดรเวอร์</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:16
+msgid "<b>Settings of the serial port</b>"
+msgstr "<b>ตั้งค่าพอร์ทอนุกรม</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:17
+msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
+msgstr "<i>smb://[workgroup/]server[:port]/printer</i>"
+
+#: ../ui/NewPrinterWindow.glade.h:18
+msgid "<span weight=\"bold\" size=\"larger\">Choose Class Members</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">เลือกสมาชิกคลาส</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:19
+msgid "<span weight=\"bold\" size=\"larger\">Choose Driver</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">เลือกอุปกรณ์</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:20
+msgid "<span weight=\"bold\" size=\"larger\">Describe Printer</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">อธิบายเครื่องพิมพ์</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:21
+msgid "<span weight=\"bold\" size=\"larger\">Existing Settings</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">ค่าที่มีอยู่แล้ว</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:22
+msgid "<span weight=\"bold\" size=\"larger\">Installable Options</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">ตัวเลือกที่ติดตั้งได้</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:23
+msgid "<span weight=\"bold\" size=\"larger\">Select Device</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">เลือกอุปกรณ์</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:24
+msgid "Baud Rate"
+msgstr "อัตราบอด"
+
+#: ../ui/NewPrinterWindow.glade.h:25
+msgid "Browse..."
+msgstr "เรียกดู..."
+
+#: ../ui/NewPrinterWindow.glade.h:26
+#, fuzzy
+msgid "Change PPD"
+msgstr "เปลี่ยนไดรเวอร์"
+
+#: ../ui/NewPrinterWindow.glade.h:27
+msgid "Class Members"
+msgstr "สมาชิกกลุ่ม"
+
+#: ../ui/NewPrinterWindow.glade.h:28
+msgid "Comments..."
+msgstr "ความคิดเห็น..."
+
+#: ../ui/NewPrinterWindow.glade.h:29
+msgid "Connection"
+msgstr "การเชื่อมต่อ"
+
+#: ../ui/NewPrinterWindow.glade.h:30
+msgid "Data Bits"
+msgstr "บิตข้อมูล"
+
+#: ../ui/NewPrinterWindow.glade.h:31 ../ui/PrinterPropertiesDialog.glade.h:29
+msgid "Description:"
+msgstr "รายละเอียด:"
+
+#: ../ui/NewPrinterWindow.glade.h:32
+msgid "Device"
+msgstr "อุปกรณ์"
+
+#: ../ui/NewPrinterWindow.glade.h:33 ../troubleshoot/DeviceListed.py:40
+msgid "Device URI"
+msgstr "URI อุปกรณ์"
+
+#: ../ui/NewPrinterWindow.glade.h:34
+msgid "Device description."
+msgstr "รายละเอียดอุปกรณ์:"
+
+#: ../ui/NewPrinterWindow.glade.h:36
+msgid "Driver details"
+msgstr "รายละเอียดไดรเวอร์"
+
+#: ../ui/NewPrinterWindow.glade.h:37
+msgid "Empty"
+msgstr "ว่างเปล่า"
+
+#: ../ui/NewPrinterWindow.glade.h:38
+#, fuzzy
+msgid "Flow Control"
+msgstr "ควบคุมการเข้าถึง"
+
+#: ../ui/NewPrinterWindow.glade.h:39
+msgid ""
+"For example:\n"
+"ipp://cups-server/printers/printer-queue\n"
+"ipp://printer.mydomain/ipp"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:42
+msgid ""
+"For the printer you have selected there are drivers available for download."
+msgstr "สำหรับเครื่องพิมพ์ที่คุณเลือกไว้ มีไดรเวอร์ต่อไปนี้ให้ดาวน์โหลด"
+
+#: ../ui/NewPrinterWindow.glade.h:43
+msgid "Free software"
+msgstr "ซอฟต์แวร์เสรี"
+
+#: ../ui/NewPrinterWindow.glade.h:44
+msgid "Graphics:"
+msgstr "กราฟฟิค:"
+
+#: ../ui/NewPrinterWindow.glade.h:45
+msgid "Host:"
+msgstr "โฮสต์:"
+
+#: ../ui/NewPrinterWindow.glade.h:46
+msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
+msgstr "รายละเอียดที่อ่านรู้เรื่อง เช่น \"HP LaserJet ที่มีระบบพิมพ์สองด้าน\""
+
+#: ../ui/NewPrinterWindow.glade.h:47
+msgid "Human-readable location such as \"Lab 1\""
+msgstr "ตำแหน่งที่อ่านรู้เรื่อง เช่น \"ห้องแล็บ 1\""
+
+#: ../ui/NewPrinterWindow.glade.h:49 ../ui/PrinterPropertiesDialog.glade.h:39
+msgid "Installed Options"
+msgstr "ตัวเลือกที่ติดตั้งได้"
+
+#: ../ui/NewPrinterWindow.glade.h:50
+#, fuzzy
+msgid "JetDirect"
+msgstr "DirectJet"
+
+#: ../ui/NewPrinterWindow.glade.h:51
+msgid "LPD"
+msgstr "LPD"
+
+#: ../ui/NewPrinterWindow.glade.h:52
+msgid "License:"
+msgstr "ข้อตกลง:"
+
+#: ../ui/NewPrinterWindow.glade.h:53
+#, fuzzy
+msgid "Line art:"
+msgstr "สถานะเครื่องพิมพ์:"
+
+#: ../ui/NewPrinterWindow.glade.h:54
+msgid "Local Driver"
+msgstr "ไดร์ฟเวอร์บนเครื่อง"
+
+#: ../ui/NewPrinterWindow.glade.h:55
+#, fuzzy
+msgid "Make and model:"
+msgstr "Make และรุ่น:"
+
+#: ../ui/NewPrinterWindow.glade.h:56
+msgid "Manufacturer"
+msgstr "ผู้ผลิต"
+
+#: ../ui/NewPrinterWindow.glade.h:58
+msgid "Network"
+msgstr "เครือข่าย"
+
+#: ../ui/NewPrinterWindow.glade.h:61
+msgid "No, I do not accept this license"
+msgstr "ฉันไม่ตกลงตามข้อตกลงนี้"
+
+#: ../ui/NewPrinterWindow.glade.h:62
+msgid "Parity"
+msgstr "ภาวะบิต"
+
+#: ../ui/NewPrinterWindow.glade.h:64
+msgid "Patented algorithms"
+msgstr "อัลกอริธึมที่จดสิทธิบัตรไว้"
+
+#: ../ui/NewPrinterWindow.glade.h:65
+msgid "Photo:"
+msgstr "ภาพถ่าย:"
+
+#: ../ui/NewPrinterWindow.glade.h:66
+msgid "Port number:"
+msgstr "หมายเลขพอร์ต:"
+
+#: ../ui/NewPrinterWindow.glade.h:67
+#, fuzzy
+msgid ""
+"PostScript Printer Description (PPD) files can often be found on the driver "
+"disk that comes with the printer. For PostScript printers they are often "
+"part of the Windows<sup>®</sup> driver."
+msgstr ""
+"ไฟล์รายละเอียดเครื่องพิมพ์แบบ PostScript (PPD) "
+"ส่วนมากสามารถหาได้จากแผ่นไดรเวอร์ที่มากับเครื่องพิมพ์ สำหรับเครื่องพิมพ์ PostScript "
+"ส่วนมากจะมากับไดรเวอร์ Windows<sup>®</sup>"
+
+#: ../ui/NewPrinterWindow.glade.h:68
+msgid "Printer model:"
+msgstr "รุ่นเครื่องพิมพ์:"
+
+#: ../ui/NewPrinterWindow.glade.h:69
+msgid "Probe"
+msgstr "ตรวจสอบ"
+
+#: ../ui/NewPrinterWindow.glade.h:70
+msgid "Prompt user if authentication is required"
+msgstr "ถามผู้ใช้หากต้องการการยึนยันตน"
+
+#: ../ui/NewPrinterWindow.glade.h:71
+msgid "Provide PPD file"
+msgstr "ระบุไฟล์ PPD"
+
+#: ../ui/NewPrinterWindow.glade.h:72
+msgid "Queue:"
+msgstr "คิว:"
+
+#: ../ui/NewPrinterWindow.glade.h:73
+msgid "SCSI"
+msgstr "SCSI"
+
+#: ../ui/NewPrinterWindow.glade.h:74
+msgid "SMB"
+msgstr "SMB"
+
+#: ../ui/NewPrinterWindow.glade.h:75
+msgid "Search for a printer driver to download"
+msgstr "ค้นหาไดร์ฟเวอร์อุปกรณ์เพื่อดาวน์โหลด"
+
+#: ../ui/NewPrinterWindow.glade.h:76
+msgid "Searching..."
+msgstr "กำลังค้นหา..."
+
+#: ../ui/NewPrinterWindow.glade.h:77
+msgid "Select printer from database"
+msgstr "เลือกเครื่องพิมพ์จากฐานข้อมูล"
+
+#: ../ui/NewPrinterWindow.glade.h:78
+msgid "Serial"
+msgstr "อนุกรม"
+
+#: ../ui/NewPrinterWindow.glade.h:79
+msgid "Set authentication details now"
+msgstr "กำหนดข้อมูลการยึนยันตนเลย"
+
+#: ../ui/NewPrinterWindow.glade.h:80
+msgid "Short name for this printer such as \"laserjet\""
+msgstr "ชื่อสั้นๆ สำหรับเครื่องพิมพ์นี้ เช่น \"lasterjet\""
+
+#: ../ui/NewPrinterWindow.glade.h:81
+#, fuzzy
+msgid "Supplier:"
+msgstr "สนับสนุน:"
+
+#: ../ui/NewPrinterWindow.glade.h:82
+msgid "Support:"
+msgstr "สนับสนุน:"
+
+#: ../ui/NewPrinterWindow.glade.h:83
+msgid "Text:"
+msgstr "ข้อมูล:"
+
+#: ../ui/NewPrinterWindow.glade.h:84
+msgid ""
+"The foomatic printer database contains various manufacturer provided "
+"PostScript Printer Description (PPD) files and also can generate PPD files "
+"for a large number of (non PostScript) printers. But in general manufacturer "
+"provided PPD files provide better access to the specific features of the "
+"printer."
+msgstr ""
+"ฐานข้อมูลเครื่องพิมพ์ foomatic มีไฟล์รายละเอียดเครื่องพิมพ์แบบ PostScript "
+"จากผู้ผลิตหลายเจ้าและยังสามารถสร้างไฟล์ PPD สำหรับเครื่องพิมพ์ (ที่ไม่ใช้ PostScript) "
+"จำนวนมาก แต่โดยทั่วไปแล้วไฟล์จากผู้ผลิตสามารถใช้คุณสมบัติบางอย่างของเครื่องพิมพ์ได้ดีกว่า"
+
+#: ../ui/NewPrinterWindow.glade.h:85
+msgid ""
+"These drivers do not come from your operating system supplier and will not "
+"be covered by their commercial support.  See the support and license terms "
+"of the driver's supplier."
+msgstr ""
+"ไดรเวอร์เหล่านี้ไม่ได้มาจากผู้ผลิตระบบปฎิบัติการของคุณ "
+"และจะไม่อยู่ภายใต้การสนับสนุนเชิงภาณิชย์ของเขา "
+"กรุณาดูเงื่อนไขการสนับสนุนและข้อตกลงการใช้งานของผู้ผลิตอุปกรณ์"
+
+#: ../ui/NewPrinterWindow.glade.h:86
+msgid ""
+"This driver supports additional hardware that may be installed in the "
+"printer."
+msgstr "ไดรเวอร์นี้สนับสนุนฮาร์ดแวร์เพิ่มเติมที่อาจจะถูกติดตั้งไว้ในเครื่องพิมพ์"
+
+#: ../ui/NewPrinterWindow.glade.h:87
+msgid ""
+"This is done by assuming that options with the same name do have the same "
+"meaning. Settings of options that are not present in the new PPD will be "
+"lost and options only present in the new PPD will be set to default."
+msgstr ""
+"กระบวนการนี้จะถือว่าตัวเลือกชื่อเดียวกันทำงานเหมือนกัน การตั้งค่าตัวเลือกที่ไม่ได้อยู่ในไฟล์ PPD "
+"ใหม่จะสูญหายและตัวเลือกที่อยู่เฉพาะในไฟล์ PPD ใหม่จะเป็นค่าปริยาย"
+
+#: ../ui/NewPrinterWindow.glade.h:88
+msgid ""
+"This way all current option settings will be lost. The default settings of "
+"the new PPD will be used. "
+msgstr "ในวิธีนี้ตั้งเลือกปัจจุบันทั้งหมดจะสูญหาย ตัวเลือกปริยายของ PPD อันใหม่จะถูกใช้"
+
+#: ../ui/NewPrinterWindow.glade.h:89
+msgid "Try to copy the option settings over from the old PPD. "
+msgstr "พยายามคัดลอกตัวเลือกจาก PPD ตัวเก่า"
+
+#: ../ui/NewPrinterWindow.glade.h:90
+msgid "Try to transfer the current settings"
+msgstr ""
+
+#: ../ui/NewPrinterWindow.glade.h:91
+msgid "URI:"
+msgstr "URI:"
+
+#: ../ui/NewPrinterWindow.glade.h:93
+msgid "Use the new PPD (Postscript Printer Description) as is."
+msgstr "ใช้ไฟล์ PPD ใหม่ตามอย่างที่มี"
+
+#: ../ui/NewPrinterWindow.glade.h:95
+msgid ""
+"With this choice no driver download will be performed. In the next steps a "
+"locally installed driver will be selected."
+msgstr ""
+"ในตัวเลือกนี้จะไม่มีการดาวน์โหลดไดร์ฟเวอร์ และในขั้นตอนถัดไปจะเลือกไดร์ฟเวอร์ที่ติดตั้งไว้บนเครื่อง"
+
+#: ../ui/NewPrinterWindow.glade.h:96
+msgid "Yes, I accept this license"
+msgstr "ฉันตกลงตามเงื่อนไขนี้"
+
+#: ../ui/NewPrinterWindow.glade.h:97
+msgid "_Search"
+msgstr "_ค้นหา"
+
+#: ../ui/NewPrinterWindow.glade.h:98
+msgid "_Verify..."
+msgstr "_ตรวจสอบ..."
+
+#: ../ui/NewPrinterWindow.glade.h:99
+#, fuzzy
+msgid "license"
+msgstr "ข้อตกลง:"
+
+#: ../ui/NewPrinterWindow.glade.h:100 ../ui/PrinterPropertiesDialog.glade.h:81
+msgid "move left"
+msgstr "ย้ายไปทางซ้าย"
+
+#: ../ui/NewPrinterWindow.glade.h:101 ../ui/PrinterPropertiesDialog.glade.h:82
+msgid "move right"
+msgstr "ย้ายไปทางขวา"
+
+#: ../ui/NewPrinterWindow.glade.h:102
+#, fuzzy
+msgid "short description"
+msgstr "รายละเอียด"
+
+#: ../ui/NewPrinterWindow.glade.h:103
+#, fuzzy
+msgid "supplier"
+msgstr "สนับสนุน:"
+
+#: ../ui/NewPrinterWindow.glade.h:104
+#, fuzzy
+msgid "support contacts"
+msgstr "ไม่รู้จักที่อยู่ผู้สนับสนุน"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:1
+msgid " "
+msgstr " "
+
+#: ../ui/PrinterPropertiesDialog.glade.h:2
+msgid "<b>Banner</b>"
+msgstr "<b>ป้าย</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:3
+msgid "<b>Common Options</b>"
+msgstr "<b>ตัวเลือกทั่วไป</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:4
+msgid "<b>Image Options</b>"
+msgstr "<b>ตัวเลือกภาพ</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:5
+msgid "<b>Ink/Toner Levels</b>"
+msgstr "<b>ระดับหมึก/โทเนอร์</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:6
+msgid "<b>Other Options (Advanced)</b>"
+msgstr "<b>ตัวเลือกอื่นๆ (ขั้นสูง)</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:7
+msgid "<b>Policies</b>"
+msgstr "<b>นโยบาย</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:8
+msgid "<b>Settings</b>"
+msgstr "<b>ตั้งค่า</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:9
+msgid "<b>State</b>"
+msgstr "<b>สถานะ</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:10
+msgid "<b>Status Messages</b>"
+msgstr "<b>ข้อความสถานะ</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:11
+msgid "<b>Tests and Maintenance</b>"
+msgstr "<b>ทดสอบและการบำรุงรักษา</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:12
+msgid "<b>Text Options</b>"
+msgstr "<b>ตั้งค่าข้อความ</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:13
+msgid ""
+"<i>Not published\n"
+"See server settings</i>"
+msgstr ""
+"<i>ไม่ถูกประกาศ\n"
+"ดูการตั้งค่าเซิร์ฟเวอร์</i>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:15
+msgid "Accepting jobs"
+msgstr "กำลังรับงาน"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:16
+msgid "Access Control"
+msgstr "ควบคุมการเข้าถึง"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:17
+msgid "Add or Remove Members"
+msgstr "เพิ่มหรือลบสมาชิก"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:18
+msgid "Allow printing for everyone except these users:"
+msgstr "อนุญาตให้ทุกคนพิมพ์ได้ยกเว้นผู้ใช้ต่อไปนี้:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:19
+msgid "Bottom margin:"
+msgstr "ขอบล่าง:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:20
+msgid "Brightness:"
+msgstr "ความสว่าง:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:21
+msgid "Change..."
+msgstr "เปลี่ยน..."
+
+#: ../ui/PrinterPropertiesDialog.glade.h:22
+msgid "Characters per inch:"
+msgstr "ตัวอักษรต่อนิ้ว:"
+
+#. Not more than 25 characters
+#: ../ui/PrinterPropertiesDialog.glade.h:24
+msgid "Clean Print Heads"
+msgstr "ล้างหัวพิมพ์"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:25
+#, fuzzy
+msgid "Co_nflicts"
+msgstr "ขัดแย้งกับ:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:26
+msgid "Columns:"
+msgstr "คอลัมน์:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:27
+msgid "Copies:"
+msgstr "สำเนา:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:28
+msgid "Deny printing for everyone except these users:"
+msgstr "ไม่อนุญาตให้ทุกคนพิมพ์ยกเว้นผู้ใช้ต่อไปนี้:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:30
+msgid "Device URI:"
+msgstr "URI อุปกรณ์:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:31
+msgid "Enabled"
+msgstr "เปิดใช้งาน"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:32
+msgid "Ending Banner:"
+msgstr "ป้ายปิดท้าย:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:33
+msgid "Error Policy: \t"
+msgstr "นโยบายข้อผิดพลาด: \t"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:34
+#, fuzzy
+msgid "Finishings:"
+msgstr "กำลังเสร็จ:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:35
+msgid "Gamma:"
+msgstr "แกมมา"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:36
+msgid "Hold until:"
+msgstr "หยุดจน:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:37
+msgid "Hue adjustment:"
+msgstr "ปรับความเข้มสี:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:38
+msgid "Ink/Toner Levels"
+msgstr "ระดับหมึก/โทเนอร์"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:40
+msgid "Job Options"
+msgstr "ตัวเลือกงาน"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:41
+msgid "Job priority:"
+msgstr "ความสำคัญงาน:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:42
+msgid "Left margin:"
+msgstr "ขอบซ้าย:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:43
+msgid "Lines per inch:"
+msgstr "บรรทัดต่อนิ้ว:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:44
+msgid "Location:"
+msgstr "ตำแหน่ง:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:45
+msgid "Make and Model:"
+msgstr "รุ่น:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:46
+msgid "Media:"
+msgstr "สื่อ:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:47
+msgid "Members"
+msgstr "สมาชิก"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:48
+msgid "Mirror"
+msgstr "กระจก"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:49
+msgid "More"
+msgstr "เพิ่มเติม"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:50
+msgid "Operation Policy:"
+msgstr "นโยบายการใช้งาน:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:51
+msgid "Orientation:"
+msgstr "การวางแนว:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:52
+msgid "Output bin:"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:53
+msgid "Output order:"
+msgstr ""
+
+#: ../ui/PrinterPropertiesDialog.glade.h:54
+msgid "Pages per side layout:"
+msgstr "การจัดวางหน้าต่อด้าน:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:55
+msgid "Pages per side:"
+msgstr "หน้าต่อด้าน:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:56
+msgid "Policies"
+msgstr "นโยบาย"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:57
+msgid "Pretty print"
+msgstr "พิมพ์สวย"
+
+#. Not more than 25 characters
+#: ../ui/PrinterPropertiesDialog.glade.h:59
+msgid "Print Self-Test Page"
+msgstr "พิมพ์หน้าทดสอบตัวเอง"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:62
+#, fuzzy
+msgid "Print quality:"
+msgstr "สถานะเครื่องพิมพ์:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:64
+msgid "Printer Properties"
+msgstr "คุณสมบัติเครื่องพิมพ์"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:65
+msgid "Printer State:"
+msgstr "สถานะเครื่องพิมพ์:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:66
+#, fuzzy
+msgid "Printer resolution:"
+msgstr "ตำแหน่งเครื่องพิมพ์"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:67
+msgid "Reset"
+msgstr "รีเซต"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:68
+msgid "Right margin:"
+msgstr "ขอบขวา:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:69
+msgid "Saturation:"
+msgstr "ความเข้ม:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:70
+#, fuzzy
+msgid "Scale to fit"
+msgstr "ย่อพอดี"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:71
+msgid "Scaling:"
+msgstr "การย่อ:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:72
+msgid "Settings"
+msgstr "ตั้งค่า"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:73
+msgid "Shared"
+msgstr "ถูกแบ่งปัน"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:74
+msgid "Sides:"
+msgstr "ด้าน:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:75
+msgid ""
+"Specify the default job options for this printer.  Jobs arriving at this "
+"print server will have these options added if they are not already set by "
+"the application."
+msgstr ""
+"เลือกตัวเลือกงานปริยายสำหรับเครื่องพิมพ์นี้ งานต่างๆ "
+"ที่ส่งเข้ามาจะกำหนดค่านี้โดยอัตโนมัติหากโปรแกรมไม่ได้กำหนดไว้"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:76
+msgid "Starting Banner:"
+msgstr "ป้ายเริ่มต้น:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:77
+msgid "There are no status messages for this printer."
+msgstr "ไม่มีข้อความสถานะเครื่องพิมพ์"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:78
+msgid "To add a new option, enter its name in the box below and click to add."
+msgstr "การเพิ่มตัวเลือกใหม่ให้กรอกชื่อในกล่องด้านล่างนี้และกดเพื่อเพิ่ม"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:79
+msgid "Top margin:"
+msgstr "ขอบบน:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:80
+msgid "Word wrap"
+msgstr "ตัดคำ"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:83
+msgid "points"
+msgstr "จุด"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:84
+msgid "user"
+msgstr "ผู้ใช้"
+
+#: ../ui/PrintersWindow.glade.h:1
+msgid ""
+"Printing service not available.  Start the service on this computer or "
+"connect to another server."
+msgstr ""
+
+#: ../ui/PrintersWindow.glade.h:2
+msgid "Start Service"
+msgstr ""
+
+#: ../ui/PrintersWindow.glade.h:3
+msgid "System-Config-Printer"
+msgstr "System-Config-Printer"
+
+#: ../ui/PrintersWindow.glade.h:4
+msgid "There are no printers configured yet."
+msgstr ""
+
+#: ../ui/PrintersWindow.glade.h:5
+msgid "_Discovered Printers"
+msgstr "เ_ครื่องพิมพ์ที่ค้นพบ"
+
+#: ../ui/PrintersWindow.glade.h:6
+msgid "_Group"
+msgstr "_กลุ่ม"
+
+#: ../ui/PrintersWindow.glade.h:7
+msgid "_Groups"
+msgstr "_กลุ่ม"
+
+#: ../ui/PrintersWindow.glade.h:8
+msgid "_Help"
+msgstr "_ช่วยเหลือ"
+
+#: ../ui/PrintersWindow.glade.h:10
+msgid "_Server"
+msgstr "_เซิร์ฟเวอร์"
+
+#: ../ui/PrintersWindow.glade.h:11
+msgid "_View"
+msgstr "_ไฟล์"
+
+#: ../ui/ServerSettingsDialog.glade.h:1
+msgid "<b>Basic Server Settings</b>"
+msgstr "<b>การตั้งค่าเซิร์ฟเวอร์พื้นฐาน</b>"
+
+#: ../ui/ServerSettingsDialog.glade.h:2
+#, fuzzy
+msgid "<b>Browse servers</b>"
+msgstr "เรียกดูเซิร์ฟเวอร์"
+
+#: ../ui/ServerSettingsDialog.glade.h:3
+#, fuzzy
+msgid "<b>Job history</b>"
+msgstr "ประวัติงาน"
+
+#: ../ui/ServerSettingsDialog.glade.h:4
+msgid "Advanced Server Settings"
+msgstr "ตั้งค่าเซิร์ฟเวอร์ขั้นสูง"
+
+#: ../ui/ServerSettingsDialog.glade.h:5
+msgid "Allow _remote administration"
+msgstr "_อนุญาตให้จัดการบริหารระยะไกล"
+
+#: ../ui/ServerSettingsDialog.glade.h:6
+msgid "Allow _users to cancel any job (not just their own)"
+msgstr "อ_นุญาตให้ผู้ใช้ยกเลิกงานใดๆ (ไม่เฉพาะของตัวเอง)"
+
+#: ../ui/ServerSettingsDialog.glade.h:7
+msgid "Allow printing from the _Internet"
+msgstr "อนุญาตให้พิมพ์งานจาก _Internet"
+
+#: ../ui/ServerSettingsDialog.glade.h:8
+msgid "Do not preserve job history"
+msgstr "ไม่เก็บข้อมูลประวัติงาน"
+
+#: ../ui/ServerSettingsDialog.glade.h:9
+msgid "Preserve job files (allow reprinting)"
+msgstr "เก็บไฟล์งาน (สั่งพิมพ์ซ้ำได้)"
+
+#: ../ui/ServerSettingsDialog.glade.h:10
+msgid "Preserve job history but not files"
+msgstr "เก็บข้อมูลประวัติงาน แต่ไม่เก็บแฟ้ม"
+
+#: ../ui/ServerSettingsDialog.glade.h:11
+msgid "Save _debugging information for troubleshooting"
+msgstr "_บันทึกข้อมูลการดีบั๊กเพื่อแก้ไขปัญหา"
+
+#: ../ui/ServerSettingsDialog.glade.h:12
+#, fuzzy
+msgid "Server Settings"
+msgstr "การตั้งค่าเซิร์ฟเวอร์พื้นฐาน"
+
+#: ../ui/ServerSettingsDialog.glade.h:13
+#, fuzzy
+msgid ""
+"Usually print servers broadcast their queues. Specify print servers below to "
+"periodically ask for queues instead."
+msgstr ""
+"โดยปกติแล้วเซิร์ฟเวอร์เครื่องพิมพ์จะส่งคิวงานออกมา "
+"แต่เซิร์ฟเวอร์ด้านล่างนี้จะถูกเรียกถามคิวงานเป็นระยะ"
+
+#: ../ui/ServerSettingsDialog.glade.h:14
+msgid "_Publish shared printers connected to this system"
+msgstr "_ประกาศเครื่องพิมพ์ที่แบ่งปันบนเครื่องนี้"
+
+#: ../ui/ServerSettingsDialog.glade.h:15
+msgid "_Show printers shared by other systems"
+msgstr "_แสดงเครื่องพิมพ์ที่ถูกแบ่งปันโดยเครื่องอื่นๆ"
+
+#: ../ui/SMBBrowseDialog.glade.h:1
+msgid "SMB Browser"
+msgstr "เรียกดู SMB"
+
+#: ../ui/statusicon_popupmenu.glade.h:1
+msgid "_Hide"
+msgstr "_ซ่อน"
+
+#: ../ui/WaitWindow.glade.h:1
+msgid "Please Wait"
+msgstr "โปรดรอ"
 
 #: ../system-config-printer.desktop.in.h:1
 msgid "Configure printers"
@@ -2136,10 +3098,6 @@ msgid ""
 "appear in the list, select 'Not listed'."
 msgstr ""
 "โปรดเลือกอุปกรณ์ที่จะใช้ในรายการด้านล่างนี้ หากไม่อยุ่ในรายการ โปรดเลือก 'ไม่อยู่ในรายการ'"
-
-#: ../troubleshoot/DeviceListed.py:40
-msgid "Device URI"
-msgstr "URI อุปกรณ์"
 
 #: ../troubleshoot/ErrorLogCheckpoint.py:31
 msgid "Debugging"
@@ -2463,710 +3421,11 @@ msgstr "แอพเพลตคิวพิมพ์"
 msgid "System tray icon for managing print jobs"
 msgstr "ไอคอนแถบสถานะสำหรับจัดการงานพิมพ์"
 
-#~ msgid "A CUPS configuration tool."
-#~ msgstr "เครื่องมือตั้งค่า CUPS"
-
-#, fuzzy
-#~ msgid "Copyright &#xA9; 2006-2008 Red Hat, Inc."
-#~ msgstr "สงวนลิขสิทธิ์ 2549-2551 Red Hat, Inc"
-
-#~ msgid ""
-#~ "This program is free software; you can redistribute it and/or modify it "
-#~ "under the terms of the GNU General Public License as published by the "
-#~ "Free Software Foundation; either version 2 of the License, or (at your "
-#~ "option) any later version.\n"
-#~ "\n"
-#~ "This program is distributed in the hope that it will be useful, but "
-#~ "WITHOUT ANY WARRANTY; without even the implied warranty of "
-#~ "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General "
-#~ "Public License for more details.\n"
-#~ "\n"
-#~ "You should have received a copy of the GNU General Public License along "
-#~ "with this program; if not, write to the Free Software Foundation, Inc., "
-#~ "675 Mass Ave, Cambridge, MA 02139, USA."
-#~ msgstr ""
-#~ "โปรแกรมนี้เป็นซอฟต์แวร์เสรี คุณสามารถแจกจ่ายต่อ และ/หรือ แก้ไขโปรแกรมได้ "
-#~ "ภายใต้เงื่อนไขของ GNU General Public License ที่เผยแพร่โดยมูลนิธิซอฟต์แวร์เสรี "
-#~ "ไม่ว่าจะเป็นสัญญาอนุญาตรุ่นที่ 2 หรือรุ่นถัดมา (ตามแต่คุณจะเลือก)\n"
-#~ "\n"
-#~ "โปรแกรมนี้เผยแพร่ด้วยความหวังว่าโปรแกรมจะมีประโยชน์ แต่ _ไม่มีการรับประกันใดๆ_ "
-#~ "ไม่มีแม้การรับประกัน _อรรถประโยชน์เชิงพาณิชย์_ หรือ "
-#~ "_ความเหมาะสมสำหรับวัตถุประสงค์เฉพาะกิจใดๆ_ กรุณาอ่าน GNU General Public License "
-#~ "เพื่อดูรายละเอียดเพิ่มเติม\n"
-#~ "\n"
-#~ "คุณควรจะได้รับสำเนาของ GNU General Public License มาพร้อมกับโปรแกรมนี้ "
-#~ "ถ้าคุณไม่ได้รับ กรุณาติดต่อไปที่ Free Software Foundation, Inc., 51 Franklin "
-#~ "Street, Fifth Floor, Boston, MA 02110-1301 USA"
-
-#~ msgid "translator-credits"
-#~ msgstr "Manatsawin Hanmongkolchai <manatsawin@gmail.com>"
-
-#~ msgid "CUPS _server:"
-#~ msgstr "_เซิร์ฟเวอร์ CUPS:"
-
-#~ msgid "Connect to CUPS server"
-#~ msgstr "ติดต่อไปยังเซิร์ฟเวอร์ CUPS"
-
-#~ msgid "Require _encryption"
-#~ msgstr "_ต้องการการเข้ารหัส"
-
-#~ msgid ""
-#~ "<span weight=\"bold\" size=\"larger\">Connecting to CUPS server</span>"
-#~ msgstr "<span weight=\"bold\" size=\"larger\">กำลังเชื่อมต่อไปยังเซิร์ฟเวอร์</span>"
-
-#~ msgid "Connecting to CUPS server"
-#~ msgstr "กำลังติดต่อไปยังเซิร์ฟเวอร์ CUPS"
-
-#~ msgid "_Install"
-#~ msgstr "_ติดตั้ง"
-
-#~ msgid "Show _completed jobs"
-#~ msgstr "_แสดงงานที่สมบูรณ์แล้ว"
-
-#, fuzzy
-#~ msgid "Show completed jobs"
-#~ msgstr "_แสดงงานที่สมบูรณ์แล้ว"
-
-#~ msgid "_Refresh"
-#~ msgstr "_เรียกใหม่"
-
-#, fuzzy
-#~ msgid "Duplicate Printer"
-#~ msgstr "เครื่องพิมพ์ปริยาย"
-
-#~ msgid "New name for the printer"
-#~ msgstr "ชื่อใหม่ของเครื่องพิมพ์"
-
-#~ msgid "<b>Authentication</b>"
-#~ msgstr "<b>การยึนยันตน</b>"
-
-#~ msgid "<b>Description</b>"
-#~ msgstr "<b>รายละเอียด</b>"
-
-#~ msgid "<b>Description</b> (optional)"
-#~ msgstr "<b>รายละเอียด</b> (ไม่จำเป็นต้องกรอก)"
-
-#~ msgid "<b>Enter device URI</b>"
-#~ msgstr "<b>ใส่ URI อุปกรณ์</b>"
-
-#~ msgid "<b>IPP Printer</b>"
-#~ msgstr "<b>เครื่องพิมพ์ IPP</b>"
-
-#~ msgid "<b>License Terms</b>"
-#~ msgstr "<b>ข้อตกลงการใช้งาน</b>"
-
-#~ msgid "<b>Location of the LPD network printer</b>"
-#~ msgstr "<b>ตำแหน่งของเครื่องบนพิมพ์บนเครือข่าย LPD</b>"
-
-#~ msgid "<b>Location of the network printer</b>"
-#~ msgstr "<b>ตำแหน่งของเครื่องพิมพ์บนเครือข่าย</b>"
-
-#~ msgid "<b>Location</b> (optional)"
-#~ msgstr "<b>ตำแหน่ง</b> (ไม่จำเป็นต้องกรอก)"
-
-#~ msgid "<b>Network Printer</b>"
-#~ msgstr "<b>เครื่องพิมพ์บนเครือข่าย</b>"
-
-#~ msgid "<b>Note</b>"
-#~ msgstr "<b>หมายเหตุ</b>"
-
-#~ msgid "<b>Output Quality</b>"
-#~ msgstr "<b>คุณภาพงาน</b>"
-
-#~ msgid "<b>Printer Name</b>"
-#~ msgstr "<b>ชื่อเครื่องพิมพ์</b>"
-
-#~ msgid "<b>SMB Printer</b>"
-#~ msgstr "<b>เครื่องพิมพ์ SMB</b>"
-
-#~ msgid "<b>Select Driver</b>"
-#~ msgstr "<b>เลือกไดรเวอร์</b>"
-
-#~ msgid "<b>Settings of the serial port</b>"
-#~ msgstr "<b>ตั้งค่าพอร์ทอนุกรม</b>"
-
-#~ msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
-#~ msgstr "<i>smb://[workgroup/]server[:port]/printer</i>"
-
-#~ msgid "<span weight=\"bold\" size=\"larger\">Choose Class Members</span>"
-#~ msgstr "<span weight=\"bold\" size=\"larger\">เลือกสมาชิกคลาส</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"larger\">Choose Driver</span>"
-#~ msgstr "<span weight=\"bold\" size=\"larger\">เลือกอุปกรณ์</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"larger\">Describe Printer</span>"
-#~ msgstr "<span weight=\"bold\" size=\"larger\">อธิบายเครื่องพิมพ์</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"larger\">Existing Settings</span>"
-#~ msgstr "<span weight=\"bold\" size=\"larger\">ค่าที่มีอยู่แล้ว</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"larger\">Installable Options</span>"
-#~ msgstr "<span weight=\"bold\" size=\"larger\">ตัวเลือกที่ติดตั้งได้</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"larger\">Select Device</span>"
-#~ msgstr "<span weight=\"bold\" size=\"larger\">เลือกอุปกรณ์</span>"
-
-#~ msgid "Baud Rate"
-#~ msgstr "อัตราบอด"
-
-#~ msgid "Browse..."
-#~ msgstr "เรียกดู..."
-
-#, fuzzy
-#~ msgid "Change PPD"
-#~ msgstr "เปลี่ยนไดรเวอร์"
-
-#~ msgid "Class Members"
-#~ msgstr "สมาชิกกลุ่ม"
-
-#~ msgid "Comments..."
-#~ msgstr "ความคิดเห็น..."
-
-#~ msgid "Connection"
-#~ msgstr "การเชื่อมต่อ"
-
-#~ msgid "Data Bits"
-#~ msgstr "บิตข้อมูล"
-
-#~ msgid "Description:"
-#~ msgstr "รายละเอียด:"
-
-#~ msgid "Device"
-#~ msgstr "อุปกรณ์"
-
-#~ msgid "Device description."
-#~ msgstr "รายละเอียดอุปกรณ์:"
-
-#~ msgid "Driver details"
-#~ msgstr "รายละเอียดไดรเวอร์"
-
-#~ msgid "Empty"
-#~ msgstr "ว่างเปล่า"
-
-#, fuzzy
-#~ msgid "Flow Control"
-#~ msgstr "ควบคุมการเข้าถึง"
-
-#~ msgid ""
-#~ "For the printer you have selected there are drivers available for "
-#~ "download."
-#~ msgstr "สำหรับเครื่องพิมพ์ที่คุณเลือกไว้ มีไดรเวอร์ต่อไปนี้ให้ดาวน์โหลด"
-
-#~ msgid "Free software"
-#~ msgstr "ซอฟต์แวร์เสรี"
-
-#~ msgid "Graphics:"
-#~ msgstr "กราฟฟิค:"
-
-#~ msgid "Host:"
-#~ msgstr "โฮสต์:"
-
-#~ msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
-#~ msgstr "รายละเอียดที่อ่านรู้เรื่อง เช่น \"HP LaserJet ที่มีระบบพิมพ์สองด้าน\""
-
-#~ msgid "Human-readable location such as \"Lab 1\""
-#~ msgstr "ตำแหน่งที่อ่านรู้เรื่อง เช่น \"ห้องแล็บ 1\""
-
-#~ msgid "Installed Options"
-#~ msgstr "ตัวเลือกที่ติดตั้งได้"
-
-#, fuzzy
-#~ msgid "JetDirect"
-#~ msgstr "DirectJet"
-
-#~ msgid "LPD"
-#~ msgstr "LPD"
-
-#~ msgid "License:"
-#~ msgstr "ข้อตกลง:"
-
-#, fuzzy
-#~ msgid "Line art:"
-#~ msgstr "สถานะเครื่องพิมพ์:"
-
-#~ msgid "Local Driver"
-#~ msgstr "ไดร์ฟเวอร์บนเครื่อง"
-
-#, fuzzy
-#~ msgid "Make and model:"
-#~ msgstr "Make และรุ่น:"
-
-#~ msgid "Manufacturer"
-#~ msgstr "ผู้ผลิต"
-
-#~ msgid "Network"
-#~ msgstr "เครือข่าย"
-
-#~ msgid "No, I do not accept this license"
-#~ msgstr "ฉันไม่ตกลงตามข้อตกลงนี้"
-
-#~ msgid "Parity"
-#~ msgstr "ภาวะบิต"
-
-#~ msgid "Patented algorithms"
-#~ msgstr "อัลกอริธึมที่จดสิทธิบัตรไว้"
-
-#~ msgid "Photo:"
-#~ msgstr "ภาพถ่าย:"
-
-#~ msgid "Port number:"
-#~ msgstr "หมายเลขพอร์ต:"
-
-#, fuzzy
-#~ msgid ""
-#~ "PostScript Printer Description (PPD) files can often be found on the "
-#~ "driver disk that comes with the printer. For PostScript printers they are "
-#~ "often part of the Windows<sup>&#xAE;</sup> driver."
-#~ msgstr ""
-#~ "ไฟล์รายละเอียดเครื่องพิมพ์แบบ PostScript (PPD) "
-#~ "ส่วนมากสามารถหาได้จากแผ่นไดรเวอร์ที่มากับเครื่องพิมพ์ สำหรับเครื่องพิมพ์ PostScript "
-#~ "ส่วนมากจะมากับไดรเวอร์ Windows<sup>®</sup>"
-
-#~ msgid "Printer model:"
-#~ msgstr "รุ่นเครื่องพิมพ์:"
-
-#~ msgid "Probe"
-#~ msgstr "ตรวจสอบ"
-
-#~ msgid "Prompt user if authentication is required"
-#~ msgstr "ถามผู้ใช้หากต้องการการยึนยันตน"
-
-#~ msgid "Provide PPD file"
-#~ msgstr "ระบุไฟล์ PPD"
-
-#~ msgid "Queue:"
-#~ msgstr "คิว:"
-
-#~ msgid "SCSI"
-#~ msgstr "SCSI"
-
-#~ msgid "SMB"
-#~ msgstr "SMB"
-
-#~ msgid "Search for a printer driver to download"
-#~ msgstr "ค้นหาไดร์ฟเวอร์อุปกรณ์เพื่อดาวน์โหลด"
-
-#~ msgid "Searching..."
-#~ msgstr "กำลังค้นหา..."
-
-#~ msgid "Select printer from database"
-#~ msgstr "เลือกเครื่องพิมพ์จากฐานข้อมูล"
-
-#~ msgid "Serial"
-#~ msgstr "อนุกรม"
-
-#~ msgid "Set authentication details now"
-#~ msgstr "กำหนดข้อมูลการยึนยันตนเลย"
-
-#~ msgid "Short name for this printer such as \"laserjet\""
-#~ msgstr "ชื่อสั้นๆ สำหรับเครื่องพิมพ์นี้ เช่น \"lasterjet\""
-
-#, fuzzy
-#~ msgid "Supplier:"
-#~ msgstr "สนับสนุน:"
-
-#~ msgid "Support:"
-#~ msgstr "สนับสนุน:"
-
-#~ msgid "Text:"
-#~ msgstr "ข้อมูล:"
-
-#~ msgid ""
-#~ "The foomatic printer database contains various manufacturer provided "
-#~ "PostScript Printer Description (PPD) files and also can generate PPD "
-#~ "files for a large number of (non PostScript) printers. But in general "
-#~ "manufacturer provided PPD files provide better access to the specific "
-#~ "features of the printer."
-#~ msgstr ""
-#~ "ฐานข้อมูลเครื่องพิมพ์ foomatic มีไฟล์รายละเอียดเครื่องพิมพ์แบบ PostScript "
-#~ "จากผู้ผลิตหลายเจ้าและยังสามารถสร้างไฟล์ PPD สำหรับเครื่องพิมพ์ (ที่ไม่ใช้ PostScript) "
-#~ "จำนวนมาก แต่โดยทั่วไปแล้วไฟล์จากผู้ผลิตสามารถใช้คุณสมบัติบางอย่างของเครื่องพิมพ์ได้ดีกว่า"
-
-#~ msgid ""
-#~ "These drivers do not come from your operating system supplier and will "
-#~ "not be covered by their commercial support.  See the support and license "
-#~ "terms of the driver's supplier."
-#~ msgstr ""
-#~ "ไดรเวอร์เหล่านี้ไม่ได้มาจากผู้ผลิตระบบปฎิบัติการของคุณ "
-#~ "และจะไม่อยู่ภายใต้การสนับสนุนเชิงภาณิชย์ของเขา "
-#~ "กรุณาดูเงื่อนไขการสนับสนุนและข้อตกลงการใช้งานของผู้ผลิตอุปกรณ์"
-
-#~ msgid ""
-#~ "This driver supports additional hardware that may be installed in the "
-#~ "printer."
-#~ msgstr "ไดรเวอร์นี้สนับสนุนฮาร์ดแวร์เพิ่มเติมที่อาจจะถูกติดตั้งไว้ในเครื่องพิมพ์"
-
-#~ msgid ""
-#~ "This is done by assuming that options with the same name do have the same "
-#~ "meaning. Settings of options that are not present in the new PPD will be "
-#~ "lost and options only present in the new PPD will be set to default."
-#~ msgstr ""
-#~ "กระบวนการนี้จะถือว่าตัวเลือกชื่อเดียวกันทำงานเหมือนกัน การตั้งค่าตัวเลือกที่ไม่ได้อยู่ในไฟล์ PPD "
-#~ "ใหม่จะสูญหายและตัวเลือกที่อยู่เฉพาะในไฟล์ PPD ใหม่จะเป็นค่าปริยาย"
-
-#~ msgid ""
-#~ "This way all current option settings will be lost. The default settings "
-#~ "of the new PPD will be used. "
-#~ msgstr "ในวิธีนี้ตั้งเลือกปัจจุบันทั้งหมดจะสูญหาย ตัวเลือกปริยายของ PPD อันใหม่จะถูกใช้"
-
-#~ msgid "Try to copy the option settings over from the old PPD. "
-#~ msgstr "พยายามคัดลอกตัวเลือกจาก PPD ตัวเก่า"
-
-#~ msgid "URI:"
-#~ msgstr "URI:"
-
-#~ msgid "Use the new PPD (Postscript Printer Description) as is."
-#~ msgstr "ใช้ไฟล์ PPD ใหม่ตามอย่างที่มี"
-
-#~ msgid ""
-#~ "With this choice no driver download will be performed. In the next steps "
-#~ "a locally installed driver will be selected."
-#~ msgstr ""
-#~ "ในตัวเลือกนี้จะไม่มีการดาวน์โหลดไดร์ฟเวอร์ "
-#~ "และในขั้นตอนถัดไปจะเลือกไดร์ฟเวอร์ที่ติดตั้งไว้บนเครื่อง"
-
-#~ msgid "Yes, I accept this license"
-#~ msgstr "ฉันตกลงตามเงื่อนไขนี้"
-
-#~ msgid "_Search"
-#~ msgstr "_ค้นหา"
-
-#~ msgid "_Verify..."
-#~ msgstr "_ตรวจสอบ..."
-
-#, fuzzy
-#~ msgid "license"
-#~ msgstr "ข้อตกลง:"
-
-#~ msgid "move left"
-#~ msgstr "ย้ายไปทางซ้าย"
-
-#~ msgid "move right"
-#~ msgstr "ย้ายไปทางขวา"
-
-#, fuzzy
-#~ msgid "short description"
-#~ msgstr "รายละเอียด"
-
-#, fuzzy
-#~ msgid "supplier"
-#~ msgstr "สนับสนุน:"
-
-#, fuzzy
-#~ msgid "support contacts"
-#~ msgstr "ไม่รู้จักที่อยู่ผู้สนับสนุน"
-
-#~ msgid " "
-#~ msgstr " "
-
-#~ msgid "<b>Banner</b>"
-#~ msgstr "<b>ป้าย</b>"
-
-#~ msgid "<b>Common Options</b>"
-#~ msgstr "<b>ตัวเลือกทั่วไป</b>"
-
-#~ msgid "<b>Image Options</b>"
-#~ msgstr "<b>ตัวเลือกภาพ</b>"
-
-#~ msgid "<b>Ink/Toner Levels</b>"
-#~ msgstr "<b>ระดับหมึก/โทเนอร์</b>"
-
-#~ msgid "<b>Other Options (Advanced)</b>"
-#~ msgstr "<b>ตัวเลือกอื่นๆ (ขั้นสูง)</b>"
-
-#~ msgid "<b>Policies</b>"
-#~ msgstr "<b>นโยบาย</b>"
-
-#~ msgid "<b>Settings</b>"
-#~ msgstr "<b>ตั้งค่า</b>"
-
-#~ msgid "<b>State</b>"
-#~ msgstr "<b>สถานะ</b>"
-
-#~ msgid "<b>Status Messages</b>"
-#~ msgstr "<b>ข้อความสถานะ</b>"
-
-#~ msgid "<b>Tests and Maintenance</b>"
-#~ msgstr "<b>ทดสอบและการบำรุงรักษา</b>"
-
-#~ msgid "<b>Text Options</b>"
-#~ msgstr "<b>ตั้งค่าข้อความ</b>"
-
-#~ msgid ""
-#~ "<i>Not published\n"
-#~ "See server settings</i>"
-#~ msgstr ""
-#~ "<i>ไม่ถูกประกาศ\n"
-#~ "ดูการตั้งค่าเซิร์ฟเวอร์</i>"
-
-#~ msgid "Accepting jobs"
-#~ msgstr "กำลังรับงาน"
-
-#~ msgid "Access Control"
-#~ msgstr "ควบคุมการเข้าถึง"
-
-#~ msgid "Add or Remove Members"
-#~ msgstr "เพิ่มหรือลบสมาชิก"
-
-#~ msgid "Allow printing for everyone except these users:"
-#~ msgstr "อนุญาตให้ทุกคนพิมพ์ได้ยกเว้นผู้ใช้ต่อไปนี้:"
-
-#~ msgid "Bottom margin:"
-#~ msgstr "ขอบล่าง:"
-
-#~ msgid "Brightness:"
-#~ msgstr "ความสว่าง:"
-
-#~ msgid "Change..."
-#~ msgstr "เปลี่ยน..."
-
-#~ msgid "Characters per inch:"
-#~ msgstr "ตัวอักษรต่อนิ้ว:"
-
-#~ msgid "Clean Print Heads"
-#~ msgstr "ล้างหัวพิมพ์"
-
-#, fuzzy
-#~ msgid "Co_nflicts"
-#~ msgstr "ขัดแย้งกับ:"
-
-#~ msgid "Columns:"
-#~ msgstr "คอลัมน์:"
-
-#~ msgid "Copies:"
-#~ msgstr "สำเนา:"
-
-#~ msgid "Deny printing for everyone except these users:"
-#~ msgstr "ไม่อนุญาตให้ทุกคนพิมพ์ยกเว้นผู้ใช้ต่อไปนี้:"
-
-#~ msgid "Device URI:"
-#~ msgstr "URI อุปกรณ์:"
-
-#~ msgid "Enabled"
-#~ msgstr "เปิดใช้งาน"
-
-#~ msgid "Ending Banner:"
-#~ msgstr "ป้ายปิดท้าย:"
-
-#~ msgid "Error Policy: \t"
-#~ msgstr "นโยบายข้อผิดพลาด: \t"
-
-#, fuzzy
-#~ msgid "Finishings:"
-#~ msgstr "กำลังเสร็จ:"
-
-#~ msgid "Gamma:"
-#~ msgstr "แกมมา"
-
-#~ msgid "Hold until:"
-#~ msgstr "หยุดจน:"
-
-#~ msgid "Hue adjustment:"
-#~ msgstr "ปรับความเข้มสี:"
-
-#~ msgid "Ink/Toner Levels"
-#~ msgstr "ระดับหมึก/โทเนอร์"
-
-#~ msgid "Job Options"
-#~ msgstr "ตัวเลือกงาน"
-
-#~ msgid "Job priority:"
-#~ msgstr "ความสำคัญงาน:"
-
-#~ msgid "Left margin:"
-#~ msgstr "ขอบซ้าย:"
-
-#~ msgid "Lines per inch:"
-#~ msgstr "บรรทัดต่อนิ้ว:"
-
-#~ msgid "Location:"
-#~ msgstr "ตำแหน่ง:"
-
-#~ msgid "Make and Model:"
-#~ msgstr "รุ่น:"
-
-#~ msgid "Media:"
-#~ msgstr "สื่อ:"
-
-#~ msgid "Members"
-#~ msgstr "สมาชิก"
-
-#~ msgid "Mirror"
-#~ msgstr "กระจก"
-
-#~ msgid "More"
-#~ msgstr "เพิ่มเติม"
-
-#~ msgid "Operation Policy:"
-#~ msgstr "นโยบายการใช้งาน:"
-
-#~ msgid "Orientation:"
-#~ msgstr "การวางแนว:"
-
-#~ msgid "Pages per side layout:"
-#~ msgstr "การจัดวางหน้าต่อด้าน:"
-
-#~ msgid "Pages per side:"
-#~ msgstr "หน้าต่อด้าน:"
-
-#~ msgid "Policies"
-#~ msgstr "นโยบาย"
-
-#~ msgid "Pretty print"
-#~ msgstr "พิมพ์สวย"
-
-#~ msgid "Print Self-Test Page"
-#~ msgstr "พิมพ์หน้าทดสอบตัวเอง"
-
-#~ msgid "Printer Properties"
-#~ msgstr "คุณสมบัติเครื่องพิมพ์"
-
-#~ msgid "Printer State:"
-#~ msgstr "สถานะเครื่องพิมพ์:"
-
-#~ msgid "Reset"
-#~ msgstr "รีเซต"
-
-#~ msgid "Right margin:"
-#~ msgstr "ขอบขวา:"
-
-#~ msgid "Saturation:"
-#~ msgstr "ความเข้ม:"
-
-#, fuzzy
-#~ msgid "Scale to fit"
-#~ msgstr "ย่อพอดี"
-
-#~ msgid "Scaling:"
-#~ msgstr "การย่อ:"
-
-#~ msgid "Settings"
-#~ msgstr "ตั้งค่า"
-
-#~ msgid "Shared"
-#~ msgstr "ถูกแบ่งปัน"
-
-#~ msgid "Sides:"
-#~ msgstr "ด้าน:"
-
-#~ msgid ""
-#~ "Specify the default job options for this printer.  Jobs arriving at this "
-#~ "print server will have these options added if they are not already set by "
-#~ "the application."
-#~ msgstr ""
-#~ "เลือกตัวเลือกงานปริยายสำหรับเครื่องพิมพ์นี้ งานต่างๆ "
-#~ "ที่ส่งเข้ามาจะกำหนดค่านี้โดยอัตโนมัติหากโปรแกรมไม่ได้กำหนดไว้"
-
-#~ msgid "Starting Banner:"
-#~ msgstr "ป้ายเริ่มต้น:"
-
-#~ msgid "There are no status messages for this printer."
-#~ msgstr "ไม่มีข้อความสถานะเครื่องพิมพ์"
-
-#~ msgid ""
-#~ "To add a new option, enter its name in the box below and click to add."
-#~ msgstr "การเพิ่มตัวเลือกใหม่ให้กรอกชื่อในกล่องด้านล่างนี้และกดเพื่อเพิ่ม"
-
-#~ msgid "Top margin:"
-#~ msgstr "ขอบบน:"
-
-#~ msgid "Word wrap"
-#~ msgstr "ตัดคำ"
-
-#~ msgid "points"
-#~ msgstr "จุด"
-
-#~ msgid "user"
-#~ msgstr "ผู้ใช้"
-
-#~ msgid "System-Config-Printer"
-#~ msgstr "System-Config-Printer"
-
-#~ msgid "_Discovered Printers"
-#~ msgstr "เ_ครื่องพิมพ์ที่ค้นพบ"
-
-#~ msgid "_Group"
-#~ msgstr "_กลุ่ม"
-
-#~ msgid "_Groups"
-#~ msgstr "_กลุ่ม"
-
-#~ msgid "_Help"
-#~ msgstr "_ช่วยเหลือ"
-
-#~ msgid "_Server"
-#~ msgstr "_เซิร์ฟเวอร์"
-
 #~ msgid "_Troubleshoot"
 #~ msgstr "_แก้ไขปัญหา"
 
-#~ msgid "_View"
-#~ msgstr "_ไฟล์"
-
-#~ msgid "<b>Basic Server Settings</b>"
-#~ msgstr "<b>การตั้งค่าเซิร์ฟเวอร์พื้นฐาน</b>"
-
-#, fuzzy
-#~ msgid "<b>Browse servers</b>"
-#~ msgstr "เรียกดูเซิร์ฟเวอร์"
-
-#, fuzzy
-#~ msgid "<b>Job history</b>"
-#~ msgstr "ประวัติงาน"
-
-#~ msgid "Advanced Server Settings"
-#~ msgstr "ตั้งค่าเซิร์ฟเวอร์ขั้นสูง"
-
-#~ msgid "Allow _remote administration"
-#~ msgstr "_อนุญาตให้จัดการบริหารระยะไกล"
-
-#~ msgid "Allow _users to cancel any job (not just their own)"
-#~ msgstr "อ_นุญาตให้ผู้ใช้ยกเลิกงานใดๆ (ไม่เฉพาะของตัวเอง)"
-
-#~ msgid "Allow printing from the _Internet"
-#~ msgstr "อนุญาตให้พิมพ์งานจาก _Internet"
-
-#~ msgid "Do not preserve job history"
-#~ msgstr "ไม่เก็บข้อมูลประวัติงาน"
-
-#~ msgid "Preserve job files (allow reprinting)"
-#~ msgstr "เก็บไฟล์งาน (สั่งพิมพ์ซ้ำได้)"
-
-#~ msgid "Preserve job history but not files"
-#~ msgstr "เก็บข้อมูลประวัติงาน แต่ไม่เก็บแฟ้ม"
-
-#~ msgid "Save _debugging information for troubleshooting"
-#~ msgstr "_บันทึกข้อมูลการดีบั๊กเพื่อแก้ไขปัญหา"
-
-#, fuzzy
-#~ msgid "Server Settings"
-#~ msgstr "การตั้งค่าเซิร์ฟเวอร์พื้นฐาน"
-
-#, fuzzy
-#~ msgid ""
-#~ "Usually print servers broadcast their queues. Specify print servers below "
-#~ "to periodically ask for queues instead."
-#~ msgstr ""
-#~ "โดยปกติแล้วเซิร์ฟเวอร์เครื่องพิมพ์จะส่งคิวงานออกมา "
-#~ "แต่เซิร์ฟเวอร์ด้านล่างนี้จะถูกเรียกถามคิวงานเป็นระยะ"
-
-#~ msgid "_Publish shared printers connected to this system"
-#~ msgstr "_ประกาศเครื่องพิมพ์ที่แบ่งปันบนเครื่องนี้"
-
-#~ msgid "_Show printers shared by other systems"
-#~ msgstr "_แสดงเครื่องพิมพ์ที่ถูกแบ่งปันโดยเครื่องอื่นๆ"
-
-#~ msgid "SMB Browser"
-#~ msgstr "เรียกดู SMB"
-
 #~ msgid "_Configure Printers"
 #~ msgstr "_ตั้งค่าเครื่องพิมพ์"
-
-#~ msgid "_Hide"
-#~ msgstr "_ซ่อน"
-
-#~ msgid "Please Wait"
-#~ msgstr "โปรดรอ"
 
 #~ msgid "Cancel, pause, resume or reprint jobs"
 #~ msgstr "ยกเลิก, หยุดชั่วคราว, ทำต่อหรือพิมพ์งานซ้ำ"
