@@ -661,6 +661,16 @@ class NewPrinterGUI(GtkGUI):
             self.on_rbtnNPFoomatic_toggled(self.rbtnNPFoomatic)
             self.rbtnChangePPDKeepSettings.set_active(True)
 
+            if self.dialog_mode == "printer_with_uri":
+                p = ppdsloader.PPDsLoader (device_id=devid,
+                                           device_uri=device_uri,
+                                           parent=self.NewPrinterWindow,
+                                           host=self._host,
+                                           encryption=self._encryption)
+                self.ppdsloader = p
+                p.connect ('finished',self.change_ppd_have_devs_and_ppds)
+                p.run ()
+
             self.auto_make = ""
             self.auto_model = ""
             self.auto_driver = None
@@ -3665,9 +3675,39 @@ class NewPrinterGUI(GtkGUI):
         self.device = None
         del self.printers
 
+def show_help():
+    print ("\nThis is the test/debug mode of the new-printer dialog of " \
+           "system-config-printer.\n\n"
+           "Options:\n\n"
+           "  --setup-printer URI\n"
+           "            Select the (detected) CUPS device URI on start up\n"
+           "            and run the new-printer wizard for it.\n\n"
+           "  --devid   Supply a device ID which should be used for the\n"
+           "            setup of the new peinter with \"--setup-printer\".\n"
+           "            This can be any printer's ID, so that driver \n"
+           "            selection can be tested for p[rinters which are not\n"
+           "            physically available.\n")
+
 gobject.type_register (NewPrinterGUI)
 
 if __name__ == '__main__':
+    import getopt
+    try:
+        opts, args = getopt.gnu_getopt (sys.argv[1:], '',
+                                        ['setup-printer=',
+                                         'devid='])
+    except getopt.GetoptError:
+        show_help ()
+        sys.exit (1)
+
+    setup_printer = None
+    devid = ""
+    for opt, optarg in opts:
+        if opt == '--setup-printer':
+            setup_printer = optarg
+        elif opt == '--devid':
+            devid = optarg
+
     os.environ["SYSTEM_CONFIG_PRINTER_UI"] = "ui"
     import ppdippstr
     import locale
@@ -3683,5 +3723,8 @@ if __name__ == '__main__':
     n.connect ("printer-added", on_signal)
     n.connect ("printer-modified", on_signal)
     n.connect ("dialog-canceled", on_signal)
-    n.init ("printer")
+    if setup_printer != None:
+        n.init ("printer_with_uri", device_uri=setup_printer, devid=devid)
+    else:
+        n.init ("printer")
     gtk.main ()
