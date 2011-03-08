@@ -53,6 +53,10 @@ def CUPS_server_hostname ():
         return 'localhost'
     return host
 
+def on_delete_just_hide (widget, event):
+    widget.hide ()
+    return True # stop other handlers
+
 class PrinterPropertiesDialog(GtkGUI):
 
     __gsignals__ = {
@@ -214,6 +218,8 @@ class PrinterPropertiesDialog(GtkGUI):
         selection.set_mode (gtk.SELECTION_NONE)
         store = gtk.ListStore (int, str)
         self.tvPrinterStateReasons.set_model (store)
+        self.PrinterPropertiesDialog.connect ("delete-event",
+                                              on_delete_just_hide)
 
         self.static_tabs = 3
 
