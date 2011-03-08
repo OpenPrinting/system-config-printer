@@ -13,7 +13,9 @@ if [ -d .git ] && git --version 2>/dev/null >/dev/null && \
   git config merge.merge-changelog.driver 'git-merge-changelog %O %A %B'
 fi
 
-tx init
-tx set --execute --auto-local -r system-config-printer.default \
+if [ -x /usr/bin/tx ]; then
+  tx init
+  tx set --execute --auto-local -r system-config-printer.default \
     'po/<lang>.po' --source-lang en \
     --source-file po/system-config-printer.pot
+fi
