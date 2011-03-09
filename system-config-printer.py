@@ -3864,7 +3864,12 @@ class GUI(GtkGUI, monitor.Watcher):
     def cups_connection_error (self, mon):
         monitor.Watcher.cups_connection_error (self, mon)
         try:
+            if self.cups:
+                prompt_allowed = self.cups._get_prompt_allowed ()
+
+            self.cups._set_prompt_allowed (False)
             self.cups.getClasses ()
+            self.cups._set_prompt_allowed (prompt_allowed)
         except:
             self.cups = None
             gtk.gdk.threads_enter ()
