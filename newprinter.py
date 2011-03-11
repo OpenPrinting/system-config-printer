@@ -560,19 +560,19 @@ class NewPrinterGUI(GtkGUI):
                                              encryption=self._encryption)
         except cups.HTTPError, (s,):
             show_HTTP_Error (s, self.parent)
-            return
+            return False
         except RuntimeError:
             show_HTTP_Error (-1, self.parent)
-            return
+            return False
         except Exception, e:
             nonfatalException (e)
-            return
+            return False
 
         try:
             self.printers = cupshelpers.getPrinters (self.cups)
         except cups.IPPError, (e, m):
             show_IPP_Error (e, m, parent=self.parent)
-            return
+            return False
 
         if device_uri == None and dialog_mode in ['printer_with_uri',
                                                   'device',
@@ -674,6 +674,7 @@ class NewPrinterGUI(GtkGUI):
 
         self.NewPrinterWindow.show()
         self.setNPButtons()
+        return True
 
     def on_ppdsloader_finished_initial (self, ppdsloader):
         """

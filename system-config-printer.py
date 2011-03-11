@@ -616,6 +616,9 @@ class GUI(GtkGUI):
             return
         except RuntimeError:
             # Perhaps cupsGetPPD2 failed for a browsed printer.
+
+            # Check that we're still connected.
+            self.monitor.update ()
             return
 
     def dests_iconview_selection_changed (self, iconview):
@@ -754,6 +757,8 @@ class GUI(GtkGUI):
         except (cups.IPPError, cups.HTTPError):
             # Not authorized.
             return
+        except RuntimeError:
+            self.monitor.update ()
 
     def setConnected(self):
         connected = bool(self.cups)
@@ -1772,10 +1777,13 @@ class GUI(GtkGUI):
             iter = model.get_iter (path)
             name = unicode (model.get_value (iter, 2), 'utf-8')
             class_members.append (name)
-        self.newPrinterGUI.init ("class",
-                                host=self.connect_server,
-                                encryption=self.connect_encrypt,
-                                parent=self.PrintersWindow)
+        if not self.newPrinterGUI.init ("class",
+                                        host=self.connect_server,
+                                        encryption=self.connect_encrypt,
+                                        parent=self.PrintersWindow):
+            self.monitor.update ()
+            return
+
         out_model = self.newPrinterGUI.tvNCNotMembers.get_model ()
         in_model = self.newPrinterGUI.tvNCMembers.get_model ()
         iter = out_model.get_iter_first ()
@@ -1891,18 +1899,20 @@ class GUI(GtkGUI):
     # new printer
     def on_new_printer_activate(self, widget):
         busy (self.PrintersWindow)
-        self.newPrinterGUI.init("printer",
-                                host=self.connect_server,
-                                encryption=self.connect_encrypt,
-                                parent=self.PrintersWindow)
+        if not self.newPrinterGUI.init("printer",
+                                       host=self.connect_server,
+                                       encryption=self.connect_encrypt,
+                                       parent=self.PrintersWindow):
+            self.monitor.update ()
         ready (self.PrintersWindow)
 
     # new class
     def on_new_class_activate(self, widget):
-        self.newPrinterGUI.init("class",
-                                host=self.connect_server,
-                                encryption=self.connect_encrypt,
-                                parent=self.PrintersWindow)
+        if not self.newPrinterGUI.init("class",
+                                       host=self.connect_server,
+                                       encryption=self.connect_encrypt,
+                                       parent=self.PrintersWindow):
+            self.monitor.update ()
 
     def on_new_printer_added (self, obj, name):
         debugprint ("New printer added: %s" % name)
@@ -2114,18 +2124,9 @@ class GUI(GtkGUI):
         self.printer_added_or_removed ()
 
     def cups_connection_error (self, mon):
-        try:
-            if self.cups:
-                prompt_allowed = self.cups._get_prompt_allowed ()
-
-            self.cups._set_prompt_allowed (False)
-            self.cups.getClasses ()
-            self.cups._set_prompt_allowed (prompt_allowed)
-        except:
-            self.cups = None
-            self.setConnected ()
-            self.populateList (prompt_allowed=False)
-
+        self.cups = None
+        self.setConnected ()
+        self.populateList (prompt_allowed=False)
 
 def main():
     cups.setUser (os.environ.get ("CUPS_USER", cups.getUser()))
