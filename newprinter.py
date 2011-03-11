@@ -970,7 +970,9 @@ class NewPrinterGUI(GtkGUI):
 
                 if not self.remotecupsqueue:
                     if self.ppds == None:
-                        devid = self.devid
+                        devid = self.device.id # ID of selected device
+                        if not devid:
+                            devid = self.devid # ID supplied at init()
                         if not devid:
                             devid = None
 
