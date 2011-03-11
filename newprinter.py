@@ -635,12 +635,6 @@ class NewPrinterGUI(GtkGUI):
             else:
                 self.NewPrinterWindow.set_title(_("New Printer"))
 
-            if self.dialog_mode == "ppd":
-                devid = self.device.id
-
-            if not devid:
-                devid = None
-
             # We'll need to know the Device ID for this device.
             if self.dialog_mode == "ppd" and not self.devid:
                 scheme = device_uri.split (":", 1)[0]
