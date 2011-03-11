@@ -3683,9 +3683,9 @@ def show_help():
            "            Select the (detected) CUPS device URI on start up\n"
            "            and run the new-printer wizard for it.\n\n"
            "  --devid   Supply a device ID which should be used for the\n"
-           "            setup of the new peinter with \"--setup-printer\".\n"
+           "            setup of the new printer with \"--setup-printer\".\n"
            "            This can be any printer's ID, so that driver \n"
-           "            selection can be tested for p[rinters which are not\n"
+           "            selection can be tested for printers which are not\n"
            "            physically available.\n")
 
 gobject.type_register (NewPrinterGUI)
