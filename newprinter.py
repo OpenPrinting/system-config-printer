@@ -637,7 +637,7 @@ class NewPrinterGUI(GtkGUI):
 
             # We'll need to know the Device ID for this device.
             if self.dialog_mode == "ppd" and not self.devid:
-                scheme = device_uri.split (":", 1)[0]
+                scheme = str(device_uri.split (":", 1)[0])
                 schemes = [scheme]
                 if scheme in ["socket", "lpd", "ipp"]:
                     schemes.extend (["snmp", "dnssd"])
