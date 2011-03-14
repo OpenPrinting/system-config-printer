@@ -1662,7 +1662,7 @@ class NewPrinterGUI(GtkGUI):
                                             gtk.BUTTONS_NONE,
                                             _("Adjust Firewall"))
                 dialog.format_secondary_markup (secondary_text)
-                dialog.add_buttons (gtk.STOCK_CANCEL, gtk.RESPONSE_NO,
+                dialog.add_buttons (_("Do It Later"), gtk.RESPONSE_NO,
                                     _("Adjust Firewall"), gtk.RESPONSE_YES)
                 dialog.connect ('response', self.adjust_firewall_response)
                 dialog.show ()
@@ -2081,7 +2081,7 @@ class NewPrinterGUI(GtkGUI):
                                    _("Allow all incoming SMB/CIFS "
                                      "browse packets"))
                 dialog.format_secondary_markup (secondary_text)
-                dialog.add_buttons (gtk.STOCK_CANCEL, gtk.RESPONSE_NO,
+                dialog.add_buttons (_("Do It Later"), gtk.RESPONSE_NO,
                                     _("Adjust Firewall"), gtk.RESPONSE_YES)
                 response = dialog.run ()
                 dialog.destroy ()
