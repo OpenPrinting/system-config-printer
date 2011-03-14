@@ -2246,7 +2246,7 @@ class NewPrinterGUI(GtkGUI):
         self.setNPButtons()
 
     def on_entNPTIPPHostname_changed(self, ent):
-        allowed_chars = string.letters+string.digits+'_-.'
+        allowed_chars = string.letters+string.digits+'_-.:'
         self.entry_changed(ent, allowed_chars)
         self.update_IPP_URI_label ()
 
