@@ -95,6 +95,8 @@ class Monitor(gobject.GObject):
                                   [gobject.TYPE_STRING]),
         'cups-connection-error': (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
                                   []),
+        'cups-connection-recovered': (gobject.SIGNAL_RUN_LAST,
+                                      gobject.TYPE_NONE, []),
         'cups-ipp-error':        (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
                                   [gobject.TYPE_INT, gobject.TYPE_STRING])
         }
@@ -115,6 +117,7 @@ class Monitor(gobject.GObject):
         self.printers = set()
         self.process_pending_events = True
         self.fetch_jobs_timer = None
+        self.cups_connection_in_error = False
 
         if host:
             cups.setServer (host)
@@ -363,8 +366,14 @@ class Monitor(gobject.GObject):
         except RuntimeError:
             cups.setUser (user)
             debugprint ("cups-connection-error, will retry")
+            self.cups_connection_in_error = True
             self.emit ('cups-connection-error')
             return True
+
+        if self.cups_connection_in_error:
+            self.cups_connection_in_error = False
+            debugprint ("cups-connection-recovered")
+            self.emit ('cups-connection-recovered')
 
         cups.setUser (user)
         jobs = self.jobs.copy ()

@@ -794,6 +794,8 @@ class GUI(GtkGUI):
             self.monitor.connect ('printer-removed', self.printer_removed)
             self.monitor.connect ('cups-connection-error',
                                   self.cups_connection_error)
+            self.monitor.connect ('cups-connection-recovered',
+                                  self.cups_connection_recovered)
             self.monitor.refresh ()
             self.propertiesDlg.set_monitor (self.monitor)
 
@@ -2127,6 +2129,10 @@ class GUI(GtkGUI):
         self.cups = None
         self.setConnected ()
         self.populateList (prompt_allowed=False)
+
+    def cups_connection_recovered (self, mon):
+        debugprint ("Trying to recover connection")
+        gobject.idle_add (self.service_started_try)
 
 def main():
     cups.setUser (os.environ.get ("CUPS_USER", cups.getUser()))
