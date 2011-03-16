@@ -825,7 +825,7 @@ class NewPrinterGUI(GtkGUI):
         try:
             self.printers = cupshelpers.getPrinters (self.cups)
         except cups.IPPError:
-            pass
+            self.printers = {}
 
         for printer in self.printers.keys():
             model.append((printer,))
