@@ -1588,10 +1588,11 @@ class NewPrinterGUI(GtkGUI):
         model = gtk.TreeStore (gobject.TYPE_STRING,   # device-info
                                gobject.TYPE_PYOBJECT, # PhysicalDevice obj
                                gobject.TYPE_BOOLEAN)  # Separator?
-        other = cupshelpers.Device('', **{'device-info' :_("Other")})
+        other = cupshelpers.Device('', **{'device-info' :_("Enter URI")})
         physother = PhysicalDevice (other)
         self.devices = [physother]
-        model.append (None, row=[physother.get_info (), physother, False])
+        uri_iter = model.append (None, row=[physother.get_info (),
+                                            physother, False])
         network_iter = model.append (None, row=[_("Network Printer"),
                                                 None,
                                                 False])
@@ -1602,6 +1603,7 @@ class NewPrinterGUI(GtkGUI):
                                      row=[network_dict['device-info'],
                                           PhysicalDevice (network), False])
         model.insert_after (network_iter, find_nw_iter, row=['', None, True])
+        self.devices_uri_iter = uri_iter
         self.devices_find_nw_iter = find_nw_iter
         self.devices_network_iter = network_iter
         self.devices_network_fetched = False
@@ -2665,7 +2667,8 @@ class NewPrinterGUI(GtkGUI):
             self.entSMBURI.set_text(device.uri[6:])
             self.btnSMBVerify.set_sensitive(True)
         else:
-            self.entNPTDevice.set_text(device.uri)
+            if device.uri:
+                self.entNPTDevice.set_text(device.uri)
 
         try:
             if len (location) == 0 and self.device.device_class == "direct":
@@ -2715,7 +2718,20 @@ class NewPrinterGUI(GtkGUI):
 
     ### Find Network Printer
     def on_entNPTNetworkHostname_changed(self, ent):
-        allowed_chars = string.letters+string.digits+'_-.:'
+        text = ent.get_text ()
+        if text.find (":") != -1:
+            # The user is typing in a URI.  In that case, switch to URI entry.
+            ent.set_text ('')
+            debugprint ("URI detected (%s) -> Enter URI" % text)
+            self.entNPTDevice.set_text (text)
+            model = self.tvNPDevices.get_model ()
+            path = model.get_path (self.devices_uri_iter)
+            self.tvNPDevices.set_cursor (path)
+            self.entNPTDevice.select_region (0, 0)
+            self.entNPTDevice.set_position (-1)
+            return
+
+        allowed_chars = string.letters+string.digits+'_-.'
         self.entry_changed(ent, allowed_chars)
         s = ent.get_text ()
         self.btnNetworkFind.set_sensitive (len (s) > 0)
