@@ -1217,6 +1217,9 @@ class GUI(GtkGUI):
             if self.connect_thread != thread.get_ident(): return
             gtk.gdk.threads_enter()
             self.ConnectingDialog.hide()
+            self.cups = None
+            self.setConnected()
+            self.populateList()
             show_IPP_Error(None, s, parent)
             gtk.gdk.threads_leave()
             return
@@ -1224,6 +1227,9 @@ class GUI(GtkGUI):
             if self.connect_thread != thread.get_ident(): return
             gtk.gdk.threads_enter()
             self.ConnectingDialog.hide()
+            self.cups = None
+            self.setConnected()
+            self.populateList()
             show_IPP_Error(e, s, parent)
             gtk.gdk.threads_leave()
             return
