@@ -1409,7 +1409,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
             if jobid not in self.jobs_attrs:
                 # add new notebook page with scrollable treeview
                 scrolledwindow = gtk.ScrolledWindow()
-                label = gtk.Label(jobid) # notebook page has label with jobid
+                label = gtk.Label(str(jobid)) # notebook page has label with jobid
                 page_index = self.notebook.append_page(scrolledwindow, label)
                 attr_treeview = gtk.TreeView()
                 scrolledwindow.add(attr_treeview)
@@ -1459,7 +1459,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
             for name, value in attrs.iteritems():
                 if name in ['job-id', 'job-printer-up-time']:
                     continue
-                attr_store.append([name, value])
+                attr_store.append([name, str(value)])
 
     def job_is_active (self, jobdata):
         state = jobdata.get ('job-state', cups.IPP_JOB_CANCELED)
