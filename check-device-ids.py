@@ -2,7 +2,7 @@
 
 ## check-device-ids
 
-## Copyright (C) 2010 Red Hat, Inc.
+## Copyright (C) 2010, 2011 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 
@@ -32,8 +32,12 @@ c = cups.Connection ()
 devices = None
 if len (sys.argv) > 1 and sys.argv[1] == '--help':
     print "Syntax: check-device-ids <device-make-and-model> <device-id>"
+    print "    or: check-device-ids <device-uri>"
+    print "    or: check-device-ids <queue-name>"
+    print "    or: check-device-ids"
     sys.exit (1)
 
+SPECIFIC_URI = None
 if len (sys.argv) == 3:
     id_dict = cupshelpers.parseDeviceID (sys.argv[2])
     if id_dict.has_key ("MFG") and id_dict.has_key ("MDL"):
@@ -41,15 +45,34 @@ if len (sys.argv) == 3:
                         { 'device-make-and-model': sys.argv[1],
                           'device-id': sys.argv[2] }
                     }
+elif len (sys.argv) == 2:
+    if sys.argv[1].find (":/") != -1:
+        SPECIFIC_URI = sys.argv[1]
+    else:
+        # This is a queue name.  Work out the URI from that.
+        try:
+            attrs = c.getPrinterAttributes (sys.argv[1])
+        except cups.IPPError, (e, m):
+            print "Error getting printer attibutes: %s" % m
+            sys.exit (1)
+
+        SPECIFIC_URI = attrs['device-uri']
+        print "URI for queue %s is %s" % (sys.argv[1], SPECIFIC_URI)
 else:
     print ("\nIf you have not already done so, you may get more results\n"
            "by temporarily disabling your firewall (or by allowing\n"
            "incoming UDP packets on port 161).\n")
 
 if devices == None:
-    print "Examining connected devices"
+    if not SPECIFIC_URI:
+        print "Examining connected devices"
+
     try:
-        devices = c.getDevices (exclude_schemes=["dnssd", "hal", "hpfax"])
+        if SPECIFIC_URI:
+            scheme = str (SPECIFIC_URI.split (":", 1)[0])
+            devices = c.getDevices (include_schemes=[scheme])
+        else:
+            devices = c.getDevices (exclude_schemes=["dnssd", "hal", "hpfax"])
     except cups.IPPError, (e, m):
         if e == cups.IPP_FORBIDDEN:
             print "Run this as root to examine IDs from attached devices."
@@ -59,6 +82,11 @@ if devices == None:
             print "Not authorized."
             sys.exit (1)
 
+if SPECIFIC_URI:
+    if devices.get (SPECIFIC_URI) == None:
+        devices = { SPECIFIC_URI:
+                        { 'device-make-and-model': '',
+                          'device-id': ''} }
 if len (devices) == 0:
     print "No attached devices."
     sys.exit (0)
@@ -69,14 +97,20 @@ for device, attrs in devices.iteritems ():
     if device.find (":") == -1:
         continue
 
+    if SPECIFIC_URI and device != SPECIFIC_URI:
+        continue
+
     make_and_model = attrs.get ('device-make-and-model')
     device_id = attrs.get ('device-id')
-    if make_and_model and not device_id:
+    if (SPECIFIC_URI or make_and_model) and not device_id:
         try:
             hostname = None
             if (device.startswith ("socket://") or
-                device.startswith ("lpd://")):
-                hostname = device[9:]
+                device.startswith ("lpd://") or
+                device.startswith ("ipp://") or
+                device.startswith ("http://") or
+                device.startswith ("https://")):
+                hostname = device[device.find ("://") + 3:]
                 colon = hostname.find (":")
                 if colon != -1:
                     hostname = hostname[:colon]
@@ -100,7 +134,11 @@ for device, attrs in devices.iteritems ():
                     if dev.id:
                         device_id = dev.id
                         attrs.update ({'device-id': dev.id})
-                        break
+
+                    if not make_and_model and dev.make_and_model:
+                        make_and_model = dev.make_and_model
+                        attrs.update ({'device-make-and-model':
+                                           dev.make_and_model})
 
         except Exception, e:
             print "Exception: %s" % repr (e)
