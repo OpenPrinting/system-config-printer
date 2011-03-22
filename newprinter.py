@@ -186,6 +186,7 @@ class NewPrinterGUI(GtkGUI):
         self.installable_options = False
         self.ppdsloader = None
         self.jockey_installed_files = []
+        self.printers = {} # set in init()
 
         # Synchronisation objects.
         self.drivers_lock = thread.allocate_lock()
@@ -544,16 +545,9 @@ class NewPrinterGUI(GtkGUI):
         self.ppds = None
         self.ppdsmatch_result = None
         self.printer_finder = None
-        self.lblNetworkFindSearching.hide ()
-        self.entNPTNetworkHostname.set_sensitive (True)
-        self.entNPTNetworkHostname.set_text ('')
-        self.btnNetworkFind.set_sensitive (True)
-        self.lblNetworkFindNotFound.hide ()
 
-        # Clear out any previous list of makes.
-        model = self.tvNPMakes.get_model()
-        model.clear()
-
+        # Get a current list of printers so that we can know whether
+        # the chosen name is unique.
         try:
             self.cups = authconn.Connection (parent=self.NewPrinterWindow,
                                              host=self._host,
@@ -573,6 +567,17 @@ class NewPrinterGUI(GtkGUI):
         except cups.IPPError, (e, m):
             show_IPP_Error (e, m, parent=self.parent)
             return False
+
+        # Initialise widgets.
+        self.lblNetworkFindSearching.hide ()
+        self.entNPTNetworkHostname.set_sensitive (True)
+        self.entNPTNetworkHostname.set_text ('')
+        self.btnNetworkFind.set_sensitive (True)
+        self.lblNetworkFindNotFound.hide ()
+
+        # Clear out any previous list of makes.
+        model = self.tvNPMakes.get_model()
+        model.clear()
 
         if device_uri == None and dialog_mode in ['printer_with_uri',
                                                   'device',
