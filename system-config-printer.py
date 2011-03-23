@@ -1501,7 +1501,7 @@ class GUI(GtkGUI):
             self.monitor.update ()
 
             # Restore original accepting/rejecting state.
-            if not rejecting and self.printer:
+            if not rejecting and self.propertiesDlg.printer:
                 try:
                     self.propertiesDlg.printer.name = old_name
                     self.propertiesDlg.printer.setAccepting (True)
@@ -1514,7 +1514,7 @@ class GUI(GtkGUI):
             self.populateList ()
             return
 
-        if not self.printer:
+        if not self.propertiesDlg.printer:
             self.cups._end_operation ()
             self.populateList ()
             return

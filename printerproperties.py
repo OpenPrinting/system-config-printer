@@ -1827,6 +1827,9 @@ class PrinterPropertiesDialog(GtkGUI):
             self.printer.name == printer):
             self.dialog.response (gtk.RESPONSE_CANCEL)
 
+        if self.printer.name == printer:
+            del self.printer
+
     def on_state_reason_added (self, mon, reason):
         if (self.dialog.get_property ('visible') and
             self.printer.name == reason.get_printer ()):
