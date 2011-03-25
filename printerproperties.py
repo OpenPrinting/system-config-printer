@@ -567,6 +567,9 @@ class PrinterPropertiesDialog(GtkGUI):
             self.dialog.set_transient_for (parent)
 
         self.load (name, host=host, encryption=encryption, parent=parent)
+        if not self.printer:
+            return
+
         for button in [self.btnPrinterPropertiesCancel,
                        self.btnPrinterPropertiesOK,
                        self.btnPrinterPropertiesApply]:
@@ -592,6 +595,9 @@ class PrinterPropertiesDialog(GtkGUI):
         self.dialog.show ()
 
     def printer_properties_response (self, dialog, response):
+        if not self.printer:
+            response = gtk.RESPONSE_CANCEL
+
         if response == gtk.RESPONSE_REJECT:
             # The Conflict button was pressed.
             message = _("There are conflicting options.\n"
@@ -718,6 +724,9 @@ class PrinterPropertiesDialog(GtkGUI):
     def checkPUsersChanged(self):
         """check if users in GUI and printer are different
         and set self.changed"""
+        if not self.printer:
+            return
+
         if self.getPUsers() != self.printer.except_users:
             self.changed.add(self.tvPUsers)
         else:
@@ -1014,11 +1023,11 @@ class PrinterPropertiesDialog(GtkGUI):
                 self.cups.setPrinterDevice(name, device_uri)
 
             if enabled != printer.enabled or saveall:
-                self.printer.setEnabled(enabled)
+                printer.setEnabled(enabled)
             if accepting == printer.rejecting or saveall:
-                self.printer.setAccepting(accepting)
+                printer.setAccepting(accepting)
             if shared != printer.is_shared or saveall:
-                self.printer.setShared(shared)
+                printer.setShared(shared)
 
             def get_combo_value (cmb):
                 model = cmb.get_model ()
@@ -1079,7 +1088,7 @@ class PrinterPropertiesDialog(GtkGUI):
         if not class_deleted:
             # Update our copy of the printer's settings.
             try:
-                self.printer.getAttributes ()
+                printer.getAttributes ()
                 self.updatePrinterProperties ()
             except cups.IPPError:
                 pass
@@ -1127,6 +1136,11 @@ class PrinterPropertiesDialog(GtkGUI):
             # Can't print a test page for a raw queue.
             return
 
+        printer = self.printer
+        if not printer:
+            # Printer has been deleted meanwhile
+            return
+
         # if we have a page size specific custom test page, use it;
         # otherwise use cups' default one
         custom_testpage = None
@@ -1154,11 +1168,11 @@ class PrinterPropertiesDialog(GtkGUI):
         try:
             if custom_testpage and os.path.exists(custom_testpage):
                 debugprint ('Printing custom test page ' + custom_testpage)
-                job_id = c.printTestPage(self.printer.name,
+                job_id = c.printTestPage(printer.name,
                                          file=custom_testpage)
             else:
                 debugprint ('Printing default test page')
-                job_id = c.printTestPage(self.printer.name)
+                job_id = c.printTestPage(printer.name)
         except cups.IPPError, (e, msg):
             if (e == cups.IPP_NOT_AUTHORIZED and
                 self._host != 'localhost' and
@@ -1181,13 +1195,18 @@ class PrinterPropertiesDialog(GtkGUI):
                               parent=self.parent)
 
     def maintenance_command (self, command):
+        printer = self.printer
+        if not printer:
+            # Printer has been deleted meanwhile
+            return
+
         (tmpfd, tmpfname) = tempfile.mkstemp ()
         os.write (tmpfd, "#CUPS-COMMAND\n%s\n" % command)
         os.close (tmpfd)
         self.cups._begin_operation (_("sending maintenance command"))
         try:
             format = "application/vnd.cups-command"
-            job_id = self.cups.printTestPage (self.printer.name,
+            job_id = self.cups.printTestPage (printer.name,
                                               format=format,
                                               file=tmpfname,
                                               user=cups.getUser ())
@@ -1447,6 +1466,9 @@ class PrinterPropertiesDialog(GtkGUI):
 
     def updateMarkerLevels (self):
         printer = self.printer
+        if not printer:
+            # Printer has been deleted meanwhile
+            return
 
         # Marker levels
         for widget in self.vboxMarkerLevels.get_children ():
@@ -1487,7 +1509,7 @@ class PrinterPropertiesDialog(GtkGUI):
                        marker_info['marker-levels'])
         debugprint (markers)
 
-        can_refresh = (self.printer.type & cups.CUPS_PRINTER_COMMANDS) != 0
+        can_refresh = (printer.type & cups.CUPS_PRINTER_COMMANDS) != 0
         if can_refresh:
             self.btnRefreshMarkerLevels.show ()
         else:
@@ -1811,7 +1833,7 @@ class PrinterPropertiesDialog(GtkGUI):
     # NewPrinterGUI signal handlers
     def on_printer_modified (self, obj, name):
         debugprint ("on_printer_modified called")
-        if self.dialog.get_property ('visible'):
+        if self.dialog.get_property ('visible') and self.printer:
             try:
                 self.printer.getAttributes ()
                 self.updatePrinterProperties ()
@@ -1824,15 +1846,15 @@ class PrinterPropertiesDialog(GtkGUI):
 
     def on_printer_removed (self, mon, printer):
         if (self.dialog.get_property ('visible') and
-            self.printer.name == printer):
+            self.printer and self.printer.name == printer):
             self.dialog.response (gtk.RESPONSE_CANCEL)
 
-        if self.printer.name == printer:
-            del self.printer
+        if self.printer and self.printer.name == printer:
+            self.printer = None
 
     def on_state_reason_added (self, mon, reason):
         if (self.dialog.get_property ('visible') and
-            self.printer.name == reason.get_printer ()):
+            self.printer and self.printer.name == reason.get_printer ()):
             try:
                 self.printer.getAttributes ()
                 self.updatePrinterProperties ()
@@ -1841,7 +1863,7 @@ class PrinterPropertiesDialog(GtkGUI):
 
     def on_state_reason_removed (self, mon, reason):
         if (self.dialog.get_property ('visible') and
-            self.printer.name == reason.get_printer ()):
+            self.printer and self.printer.name == reason.get_printer ()):
             try:
                 self.printer.getAttributes ()
                 self.updatePrinterProperties ()
