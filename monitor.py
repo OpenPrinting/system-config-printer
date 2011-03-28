@@ -659,6 +659,10 @@ class Monitor:
         jobids.sort ()
         if got > 0:
             last_jobid = jobids[got - 1]
+            if last_jobid < self.fetch_first_job_id:
+                last_jobid = self.fetch_first_job_id + limit
+                debugprint ("Unexpected job IDs returned: %s" % repr (jobids))
+                debugprint ("That's not what we asked for!")
         else:
             last_jobid = self.fetch_first_job_id + limit
         for jobid in xrange (self.fetch_first_job_id, last_jobid + 1):
