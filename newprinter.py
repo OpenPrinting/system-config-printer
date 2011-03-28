@@ -880,7 +880,7 @@ class NewPrinterGUI(GtkGUI):
             self.openprinting_query_handle = None
 
         self.device = None
-        del self.printers
+        self.printers = {}
         self.emit ('dialog-canceled')
         return True
 
