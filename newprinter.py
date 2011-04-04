@@ -3160,7 +3160,7 @@ class NewPrinterGUI(GtkGUI):
             # and the ID-matched list of PPDs.
             self.NPDrivers = self.id_matched_ppdnames
             debugprint ("ID matched PPDs: %s" % repr (self.NPDrivers))
-        else:
+        elif self.ppds:
             # Use a generic make and model string for generating the
             # driver preference list.
             make_and_model = pmake + " " + pmodel
@@ -3187,6 +3187,10 @@ class NewPrinterGUI(GtkGUI):
                         drivers.append (driver)
 
                 self.NPDrivers = drivers
+        else:
+            # No available PPDs for some reason(!)
+            debugprint ("No PPDs available?")
+            self.NPDrivers = []
 
         driverlist = []
         NPDrivers = []
