@@ -2,7 +2,7 @@
 
 ## system-config-printer
 
-## Copyright (C) 2010 Red Hat, Inc.
+## Copyright (C) 2010, 2011 Red Hat, Inc.
 ## Author: Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
@@ -91,8 +91,11 @@ class PPDsLoader(gobject.GObject):
 
     def run (self):
         self._dialog.show_all ()
-        if self._local_cups and self._device_id and self._bus:
+
+        if self._device_id:
             self._devid_dict = cupshelpers.parseDeviceID (self._device_id)
+
+        if self._local_cups and self._device_id and self._bus:
             self._gpk_device_id = "MFG:%s;MDL:%s;" % (self._devid_dict["MFG"],
                                                       self._devid_dict["MDL"])
             self._query_packagekit ()
