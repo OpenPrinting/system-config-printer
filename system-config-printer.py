@@ -1573,11 +1573,9 @@ class GUI(GtkGUI):
         self.propertiesDlg.printer.class_members = [] # for classes make sure all members
                                         # will get added
 
-        self.cups._begin_operation (_("duplicating printer"))
         ret = self.propertiesDlg.save_printer(self.propertiesDlg.printer,
                                               saveall=True,
                                               parent=self.PrintersWindow)
-        self.cups._end_operation ()
         return ret
 
     def on_duplicate_activate(self, UNUSED):
