@@ -2,7 +2,7 @@
 
 ## system-config-printer
 
-## Copyright (C) 2010 Red Hat, Inc.
+## Copyright (C) 2010, 2011 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 
@@ -82,7 +82,9 @@ class ConfigPrintingNewPrinterDialog(dbus.service.Object):
         self.handles = [self.dialog.connect ('dialog-canceled',
                                              self.on_dialog_canceled),
                         self.dialog.connect ('printer-added',
-                                             self.on_printer_added)]
+                                             self.on_printer_added),
+                        self.dialog.connect ('printer-modified',
+                                             self.on_printer_modified)]
         self._ppdcache = ppdcache.PPDCache ()
         self._cupsconn = cupsconn
         self._killtimer = killtimer
@@ -129,6 +131,11 @@ class ConfigPrintingNewPrinterDialog(dbus.service.Object):
     @dbus.service.signal(dbus_interface=CONFIG_NEWPRINTERDIALOG_IFACE,
                          signature='s')
     def PrinterAdded(self, name):
+        pass
+
+    @dbus.service.signal(dbus_interface=CONFIG_NEWPRINTERDIALOG_IFACE,
+                         signature='s')
+    def PrinterModified(self, name):
         pass
 
     def on_dialog_canceled(self, obj):
