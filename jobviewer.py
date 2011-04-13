@@ -765,6 +765,11 @@ class JobViewer (GtkGUI, monitor.Watcher):
     def add_job (self, job, data, connection=None):
         self.update_job (job, data, connection=connection)
 
+        # There may have been an error fetching additional attributes,
+        # in which case we need to give up.
+        if not self.jobs.has_key (job):
+            return
+
         store = self.store
         iter = self.store.append (None)
         store.set_value (iter, 0, job)
@@ -1764,6 +1769,10 @@ class JobViewer (GtkGUI, monitor.Watcher):
         # completed jobs and one was reprinted.
         if not self.jobiters.has_key (jobid):
             self.add_job (jobid, jobdata)
+
+        # If we failed to get required attributes for the job, bail.
+        if not self.jobiters.has_key (jobid):
+            return
 
         if self.job_is_active (jobdata):
             self.active_jobs.add (jobid)
