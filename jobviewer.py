@@ -2071,6 +2071,7 @@ class JobViewer (GtkGUI):
             tuple = reason.get_tuple ()
         else:
             debugprint ("Couldn't find state reason in list!")
+            tuple = None
             for (level,
                  p,
                  r) in self.state_reason_notifications.keys ():
@@ -2078,6 +2079,11 @@ class JobViewer (GtkGUI):
                     debugprint ("Found from notifications list")
                     tuple = (level, p, r)
                     break
+
+            if tuple == None:
+                debugprint ("Unexpected now_connected signal "
+                            "(reason not in notifications list)")
+                return
 
         try:
             notification = self.state_reason_notifications[tuple]
