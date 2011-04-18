@@ -308,7 +308,11 @@ def _client_demo ():
 if __name__ == '__main__':
     import ppdippstr
     import locale
-    locale.setlocale (locale.LC_ALL, "")
+    try:
+        locale.setlocale (locale.LC_ALL, "")
+    except:
+        pass
+
     ppdippstr.init ()
     gobject.threads_init ()
     from dbus.glib import DBusGMainLoop
