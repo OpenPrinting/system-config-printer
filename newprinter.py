@@ -2040,7 +2040,7 @@ class NewPrinterGUI(GtkGUI):
             ready (self.SMBBrowseDialog)
 
     def on_entSMBURI_changed (self, ent):
-        allowed_chars = string.letters+string.digits+'_-./:@'
+        allowed_chars = string.letters+string.digits+'_-./:@%'
         self.entry_changed(ent, allowed_chars)
         uri = ent.get_text ()
         (group, host, share, user, password) = SMBURI (uri=uri).separate ()
