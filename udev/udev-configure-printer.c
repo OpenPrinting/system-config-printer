@@ -1254,7 +1254,7 @@ for_each_matching_queue (struct device_uris *device_uris,
 	     the attribute it must naturally match. We check which attributes 
              are there and this way determine up to which length the two URIs 
              must match. Here we can assume that if a URI has an "interface"
-	  `  attribute it has also a "serial" attribute, as this URI is
+	     attribute it has also a "serial" attribute, as this URI is
 	     an URI obtained via libusb and these always have a "serial"
 	     attribute. usblp-based URIs never have an "interface"
 	     attribute.*/
