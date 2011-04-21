@@ -1,6 +1,6 @@
 /* -*- Mode: C; c-file-style: "gnu" -*-
  * udev-configure-printer - a udev callout to configure print queues
- * Copyright (C) 2009, 2010 Red Hat, Inc.
+ * Copyright (C) 2009, 2010, 2011 Red Hat, Inc.
  * Author: Tim Waugh <twaugh@redhat.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -1238,6 +1238,11 @@ for_each_matching_queue (struct device_uris *device_uris,
 	    state = attr->values[0].integer;
 	}
 
+      if (!this_device_uri)
+	/* CUPS didn't include a device-uri attribute in the response
+	   for this printer (shouldn't happen). */
+	goto skip;
+
       this_device_uri_n = normalize_device_uri(this_device_uri);
       syslog (LOG_DEBUG, "URI of print queue: %s, normalized: %s",
 	      this_device_uri, this_device_uri_n);
@@ -1296,6 +1301,7 @@ for_each_matching_queue (struct device_uris *device_uris,
 	    }
 	}
 
+    skip:
       if (!attr)
 	break;
     }
