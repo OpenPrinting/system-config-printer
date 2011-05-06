@@ -20,6 +20,7 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+import config
 from gettext import gettext as _
 import cups
 import gobject
@@ -83,7 +84,9 @@ class ServerSettings(GtkGUI):
                               "tvBrowseServers",
                               "frameBrowseServers",
                               "btAdvServerAdd",
-                              "btAdvServerRemove"]})
+                              "btAdvServerRemove"]},
+
+                        domain=config.PACKAGE)
 
         problems = _UnobtrusiveButton (label=_("Problems?"))
         self.hboxServerBrowse.pack_end (problems, False, False, 0)
