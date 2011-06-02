@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: system-config-printer.master.de\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2011-03-16 17:46+0000\n"
+"POT-Creation-Date: 2011-06-02 14:44+0100\n"
 "PO-Revision-Date: 2010-10-25 14:58+0200\n"
 "Last-Translator: Cornelius Neckenig <tbull@fedoraproject.org>\n"
 "Language-Team:  <en@li.org>\n"
@@ -70,11 +70,11 @@ msgstr "Wiederholen"
 msgid "Operation canceled"
 msgstr "Operation abgebrochen"
 
-#: ../authconn.py:32 ../pysmb.py:123 ../ui/NewPrinterWindow.glade.h:94
+#: ../authconn.py:32 ../pysmb.py:123 ../ui/NewPrinterWindow.ui.h:94
 msgid "Username:"
 msgstr "Benutzername:"
 
-#: ../authconn.py:33 ../pysmb.py:129 ../ui/NewPrinterWindow.glade.h:63
+#: ../authconn.py:33 ../pysmb.py:129 ../ui/NewPrinterWindow.ui.h:63
 msgid "Password:"
 msgstr "Passwort:"
 
@@ -339,11 +339,10 @@ msgstr "Druckstatus des Dokuments (%s)"
 msgid "Job attributes"
 msgstr "Auftrags-Attribute"
 
-#: ../jobviewer.py:706 ../jobviewer.py:1002 ../jobviewer.py:1704
-#: ../jobviewer.py:1734 ../jobviewer.py:2104 ../jobviewer.py:2109
-#: ../jobviewer.py:2123 ../jobviewer.py:2202 ../printerproperties.py:1588
-#: ../ui/NewPrinterWindow.glade.h:92
-#: ../troubleshoot/ChooseNetworkPrinter.py:100
+#: ../jobviewer.py:706 ../jobviewer.py:1007 ../jobviewer.py:1709
+#: ../jobviewer.py:1739 ../jobviewer.py:2119 ../jobviewer.py:2124
+#: ../jobviewer.py:2138 ../jobviewer.py:2217 ../printerproperties.py:1610
+#: ../ui/NewPrinterWindow.ui.h:92 ../troubleshoot/ChooseNetworkPrinter.py:100
 #: ../troubleshoot/ChooseNetworkPrinter.py:101
 #: ../troubleshoot/ChooseNetworkPrinter.py:104
 #: ../troubleshoot/ChooseNetworkPrinter.py:105
@@ -389,164 +388,163 @@ msgstr "letzte Woche"
 msgid "%d weeks ago"
 msgstr "Vor %d Wochen"
 
-#: ../jobviewer.py:952 ../jobviewer.py:1033
+#: ../jobviewer.py:957 ../jobviewer.py:1038
 msgid "authenticating job"
 msgstr "Auftrag authentifizieren"
 
-#: ../jobviewer.py:1000
+#: ../jobviewer.py:1005
 #, python-format
 msgid "Authentication required for printing document `%s' (job %d)"
 msgstr "Authentifikation wird benötigt zum Drucken des Dokuments `%s' (job %d)"
 
-#: ../jobviewer.py:1279
+#: ../jobviewer.py:1284
 msgid "holding job"
 msgstr "Auftrag zurückgehalten"
 
-#: ../jobviewer.py:1304
+#: ../jobviewer.py:1309
 msgid "releasing job"
 msgstr "Auftrag freigeben"
 
 #. give the default filename some meaningful name
-#: ../jobviewer.py:1360
+#: ../jobviewer.py:1365
 msgid "retrieved"
 msgstr "empfangen"
 
-#: ../jobviewer.py:1370
+#: ../jobviewer.py:1375
 msgid "Save File"
 msgstr "Datei speichern"
 
-#: ../jobviewer.py:1449 ../system-config-printer.py:258
-#: ../ui/NewPrinterWindow.glade.h:57
-#: ../troubleshoot/ChooseNetworkPrinter.py:35
+#: ../jobviewer.py:1454 ../system-config-printer.py:258
+#: ../ui/NewPrinterWindow.ui.h:57 ../troubleshoot/ChooseNetworkPrinter.py:35
 #: ../troubleshoot/ChoosePrinter.py:36 ../troubleshoot/DeviceListed.py:36
 msgid "Name"
 msgstr "Name"
 
-#: ../jobviewer.py:1452
+#: ../jobviewer.py:1457
 msgid "Value"
 msgstr "Wert"
 
-#: ../jobviewer.py:1577
+#: ../jobviewer.py:1582
 msgid "No documents queued"
 msgstr "Keine Dokumente in der Warteschlange"
 
-#: ../jobviewer.py:1579
+#: ../jobviewer.py:1584
 msgid "1 document queued"
 msgstr "Ein Dokument in der Warteschlange"
 
-#: ../jobviewer.py:1581
+#: ../jobviewer.py:1586
 #, python-format
 msgid "%d documents queued"
 msgstr "%d Dokumente in der Warteschlange"
 
-#: ../jobviewer.py:1636
+#: ../jobviewer.py:1641
 #, python-format
 msgid "processing / pending:   %d / %d"
 msgstr "Bearbeiten / abwarten: %d / %d"
 
-#: ../jobviewer.py:1735
+#: ../jobviewer.py:1740
 msgid "Document printed"
 msgstr "Dokument gedruckt"
 
-#: ../jobviewer.py:1736
+#: ../jobviewer.py:1741
 #, python-format
 msgid "Document `%s' has been sent to `%s' for printing."
 msgstr "Dokument \"%s\" wurde zum Drucken an \"%s\" gesendet."
 
-#: ../jobviewer.py:1887
+#: ../jobviewer.py:1896
 #, python-format
 msgid "There was a problem sending document `%s' (job %d) to the printer."
 msgstr ""
 "Es gibt ein Problem beim Senden des Dokuments `%s' (job %d) zum Drucker."
 
-#: ../jobviewer.py:1890
+#: ../jobviewer.py:1899
 #, python-format
 msgid "There was a problem processing document `%s' (job %d)."
 msgstr "Es gibt ein Problem mit der Verarbeitung des Dokuments `%s' (job %d). "
 
 #. Give up and use the provided message untranslated.
-#: ../jobviewer.py:1897
+#: ../jobviewer.py:1906
 #, python-format
 msgid "There was a problem printing document `%s' (job %d): `%s'."
 msgstr "Es gibt ein Problem mit dem Drucken des Dokuments `%s' (job %d): `%s'."
 
-#: ../jobviewer.py:1904 ../jobviewer.py:1920
+#: ../jobviewer.py:1913 ../jobviewer.py:1929
 msgid "Print Error"
 msgstr "Druck-Fehler"
 
-#: ../jobviewer.py:1905
+#: ../jobviewer.py:1914
 msgid "_Diagnose"
 msgstr "_Diagnose"
 
-#: ../jobviewer.py:1926
+#: ../jobviewer.py:1935
 #, python-format
 msgid "The printer called `%s' has been disabled."
 msgstr "Der Drucker mit dem Namen `%s' wurde deaktiviert."
 
-#: ../jobviewer.py:2115
+#: ../jobviewer.py:2130
 msgid "disabled"
 msgstr "Deaktiviert"
 
-#: ../jobviewer.py:2137
+#: ../jobviewer.py:2152
 msgid "Held for authentication"
 msgstr "Für Authentifizierung zurückgehalten"
 
-#: ../jobviewer.py:2139 ../troubleshoot/PrintTestPage.py:42
+#: ../jobviewer.py:2154 ../troubleshoot/PrintTestPage.py:42
 msgid "Held"
 msgstr "Angehalten"
 
-#: ../jobviewer.py:2175
+#: ../jobviewer.py:2190
 #, python-format
 msgid "Held until %s"
 msgstr "Zurückgehalten bis %s"
 
-#: ../jobviewer.py:2179
+#: ../jobviewer.py:2194
 msgid "Held until day-time"
 msgstr "Bis Tagsüber zurückgehalten"
 
-#: ../jobviewer.py:2181
+#: ../jobviewer.py:2196
 msgid "Held until evening"
 msgstr "Bis Abends zurückgehalten"
 
-#: ../jobviewer.py:2183
+#: ../jobviewer.py:2198
 msgid "Held until night-time"
 msgstr "Bis nachts zurückgehalten"
 
-#: ../jobviewer.py:2185
+#: ../jobviewer.py:2200
 msgid "Held until second shift"
 msgstr "Bis zur zweiten Schicht zurückgehalten"
 
-#: ../jobviewer.py:2187
+#: ../jobviewer.py:2202
 msgid "Held until third shift"
 msgstr "Bis zur dritten Schicht zurückgehalten"
 
-#: ../jobviewer.py:2189
+#: ../jobviewer.py:2204
 msgid "Held until weekend"
 msgstr "Bis zum Wochenende zurückgehalten"
 
-#: ../jobviewer.py:2192 ../troubleshoot/PrintTestPage.py:41
+#: ../jobviewer.py:2207 ../troubleshoot/PrintTestPage.py:41
 msgid "Pending"
 msgstr "Ausstehend"
 
-#: ../jobviewer.py:2193 ../printerproperties.py:68
+#: ../jobviewer.py:2208 ../printerproperties.py:68
 #: ../system-config-printer.py:134 ../troubleshoot/PrintTestPage.py:43
 msgid "Processing"
 msgstr "Ausführend"
 
-#: ../jobviewer.py:2194 ../printerproperties.py:70
+#: ../jobviewer.py:2209 ../printerproperties.py:70
 #: ../system-config-printer.py:136 ../troubleshoot/PrintTestPage.py:44
 msgid "Stopped"
 msgstr "Angehalten"
 
-#: ../jobviewer.py:2195 ../troubleshoot/PrintTestPage.py:45
+#: ../jobviewer.py:2210 ../troubleshoot/PrintTestPage.py:45
 msgid "Canceled"
 msgstr "Abgebrochen"
 
-#: ../jobviewer.py:2196 ../troubleshoot/PrintTestPage.py:46
+#: ../jobviewer.py:2211 ../troubleshoot/PrintTestPage.py:46
 msgid "Aborted"
 msgstr "Abgebrochen"
 
-#: ../jobviewer.py:2197 ../troubleshoot/PrintTestPage.py:47
+#: ../jobviewer.py:2212 ../troubleshoot/PrintTestPage.py:47
 msgid "Completed"
 msgstr "Abgeschlossen"
 
@@ -558,124 +556,124 @@ msgstr ""
 "Die Firewall muss möglicherweise angepasst werden um Netzwerkdrucker finden "
 "zu können. Möchten Sie die Firewall jetzt anpassen ?"
 
-#: ../newprinter.py:287 ../newprinter.py:298 ../newprinter.py:304
-#: ../newprinter.py:309
+#: ../newprinter.py:288 ../newprinter.py:299 ../newprinter.py:305
+#: ../newprinter.py:310
 msgid "Default"
 msgstr "Standard"
 
-#: ../newprinter.py:288
+#: ../newprinter.py:289
 msgid "1200"
 msgstr "1200"
 
-#: ../newprinter.py:289
+#: ../newprinter.py:290
 msgid "2400"
 msgstr "2400"
 
-#: ../newprinter.py:290
+#: ../newprinter.py:291
 msgid "4800"
 msgstr "4800"
 
-#: ../newprinter.py:291
+#: ../newprinter.py:292
 msgid "9600"
 msgstr "9600"
 
-#: ../newprinter.py:292
+#: ../newprinter.py:293
 msgid "19200"
 msgstr "19200"
 
-#: ../newprinter.py:293
+#: ../newprinter.py:294
 msgid "38400"
 msgstr "38400"
 
-#: ../newprinter.py:294
+#: ../newprinter.py:295
 msgid "57600"
 msgstr "57600"
 
-#: ../newprinter.py:295
+#: ../newprinter.py:296
 msgid "115200"
 msgstr "115200"
 
 #. See section 4.2.6 of this document for explanation of finishing types:
 #. ftp://ftp.pwg.org/pub/pwg/candidates/cs-ippfinishings10-20010205-5100.1.pdf
-#: ../newprinter.py:299 ../newprinter.py:310 ../newprinter.py:3296
+#: ../newprinter.py:300 ../newprinter.py:311 ../newprinter.py:3305
 #: ../ppdippstr.py:63 ../printerproperties.py:274
 msgid "None"
 msgstr "Keine"
 
-#: ../newprinter.py:300
+#: ../newprinter.py:301
 msgid "Odd"
 msgstr "Ungerade"
 
-#: ../newprinter.py:301
+#: ../newprinter.py:302
 msgid "Even"
 msgstr "Gerade"
 
-#: ../newprinter.py:305
+#: ../newprinter.py:306
 msgid "8"
 msgstr "8"
 
-#: ../newprinter.py:306
+#: ../newprinter.py:307
 msgid "7"
 msgstr "7"
 
-#: ../newprinter.py:311
+#: ../newprinter.py:312
 msgid "XON/XOFF (Software)"
 msgstr "XON/XOFF (Software)"
 
-#: ../newprinter.py:312
+#: ../newprinter.py:313
 msgid "RTS/CTS (Hardware)"
 msgstr "RTS/CTS (Hardware)"
 
-#: ../newprinter.py:313
+#: ../newprinter.py:314
 msgid "DTR/DSR (Hardware)"
 msgstr "DTR/DSR (Hardware)"
 
-#: ../newprinter.py:330 ../printerproperties.py:228
+#: ../newprinter.py:331 ../printerproperties.py:228
 msgid "Members of this class"
 msgstr "Mitglieder dieser Klasse"
 
-#: ../newprinter.py:332 ../printerproperties.py:229
+#: ../newprinter.py:333 ../printerproperties.py:229
 msgid "Others"
 msgstr "Andere"
 
-#: ../newprinter.py:333
+#: ../newprinter.py:334
 msgid "Devices"
 msgstr "Geräte"
 
-#: ../newprinter.py:334
+#: ../newprinter.py:335
 msgid "Connections"
 msgstr "Verbindungen"
 
-#: ../newprinter.py:335
+#: ../newprinter.py:336
 msgid "Makes"
 msgstr "Erstellt"
 
-#: ../newprinter.py:336
+#: ../newprinter.py:337
 msgid "Models"
 msgstr "Modelle"
 
-#: ../newprinter.py:337
+#: ../newprinter.py:338
 msgid "Drivers"
 msgstr "Treiber"
 
-#: ../newprinter.py:338 ../ui/NewPrinterWindow.glade.h:35
+#: ../newprinter.py:339 ../ui/NewPrinterWindow.ui.h:35
 msgid "Downloadable Drivers"
 msgstr "Herunterladbare Treiber"
 
-#: ../newprinter.py:409
+#: ../newprinter.py:410
 msgid "Browsing not available (pysmbc not installed)"
 msgstr "Durchsuchen nicht möglich (pysmbc nicht installiert)"
 
 #. SMB list columns
-#: ../newprinter.py:415
+#: ../newprinter.py:416
 msgid "Share"
 msgstr "Freigabe"
 
-#: ../newprinter.py:421
+#: ../newprinter.py:422
 msgid "Comment"
 msgstr "Kommentar"
 
-#: ../newprinter.py:436
+#: ../newprinter.py:437
 msgid ""
 "PostScript Printer Description files (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *."
 "PPD.GZ)"
@@ -683,89 +681,89 @@ msgstr ""
 "PostScript Drucker-Beschreibungsdatei (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *."
 "PPD.GZ)"
 
-#: ../newprinter.py:445
+#: ../newprinter.py:446
 msgid "All files (*)"
 msgstr "Alle Dateien (*)"
 
-#: ../newprinter.py:588 ../newprinter.py:2887 ../newprinter.py:2926
+#: ../newprinter.py:593 ../newprinter.py:2892 ../newprinter.py:2931
 #: ../applet.py:131
 msgid "Search"
 msgstr "Suche"
 
-#: ../newprinter.py:615 ../newprinter.py:636 ../ui/NewPrinterWindow.glade.h:59
+#: ../newprinter.py:620 ../newprinter.py:641 ../ui/NewPrinterWindow.ui.h:59
 msgid "New Printer"
 msgstr "Neuer Drucker"
 
-#: ../newprinter.py:623
+#: ../newprinter.py:628
 msgid "New Class"
 msgstr "Neue Klasse"
 
-#: ../newprinter.py:628
+#: ../newprinter.py:633
 msgid "Change Device URI"
 msgstr "Geräte-URI ändern"
 
-#: ../newprinter.py:634
+#: ../newprinter.py:639
 msgid "Change Driver"
 msgstr "Treiber ändern"
 
-#: ../newprinter.py:645 ../newprinter.py:1689
+#: ../newprinter.py:650 ../newprinter.py:1694
 msgid "fetching device list"
 msgstr "hole Geräteliste"
 
-#: ../newprinter.py:1152 ../newprinter.py:2704 ../newprinter.py:2912
+#: ../newprinter.py:1157 ../newprinter.py:2709 ../newprinter.py:2917
 #: ../ppdsloader.py:80
 msgid "Searching"
 msgstr "Suchen"
 
-#: ../newprinter.py:1153 ../ppdsloader.py:88
+#: ../newprinter.py:1158 ../ppdsloader.py:88
 msgid "Searching for drivers"
 msgstr "Suche nach Treibern"
 
 #. device-info
 #. PhysicalDevice obj
 #. Separator?
-#: ../newprinter.py:1591
+#: ../newprinter.py:1596
 msgid "Enter URI"
 msgstr ""
 
-#: ../newprinter.py:1596
+#: ../newprinter.py:1601
 msgid "Network Printer"
 msgstr "Netzwerkdrucker"
 
-#: ../newprinter.py:1600
+#: ../newprinter.py:1605
 msgid "Find Network Printer"
 msgstr "Netzwerkdrucker finden"
 
-#: ../newprinter.py:1649
+#: ../newprinter.py:1654
 msgid "Allow all incoming IPP Browse packets"
 msgstr "Zulassen aller eingehender IPP Browse Pakete"
 
-#: ../newprinter.py:1654
+#: ../newprinter.py:1659
 msgid "Allow all incoming mDNS traffic"
 msgstr "Zulassen von jeglichem eingehenden mDNS Verkehr"
 
-#: ../newprinter.py:1665 ../newprinter.py:1668 ../newprinter.py:2081
-#: ../newprinter.py:2087 ../serversettings.py:538 ../serversettings.py:543
+#: ../newprinter.py:1670 ../newprinter.py:1673 ../newprinter.py:2086
+#: ../newprinter.py:2092 ../serversettings.py:541 ../serversettings.py:546
 msgid "Adjust Firewall"
 msgstr "Firewall anpassen"
 
-#: ../newprinter.py:1667 ../newprinter.py:2086
+#: ../newprinter.py:1672 ../newprinter.py:2091
 msgid "Do It Later"
 msgstr ""
 
-#: ../newprinter.py:1776 ../newprinter.py:3207
+#: ../newprinter.py:1781 ../newprinter.py:3216
 msgid " (Current)"
 msgstr " (aktuell)"
 
-#: ../newprinter.py:1845
+#: ../newprinter.py:1850
 msgid "Scanning..."
 msgstr "Absuchen…"
 
-#: ../newprinter.py:1900
+#: ../newprinter.py:1905
 msgid "No Print Shares"
 msgstr "Keine freigegebenen Drucker"
 
-#: ../newprinter.py:1901
+#: ../newprinter.py:1906
 msgid ""
 "There were no print shares found.  Please check that the Samba service is "
 "marked as trusted in your firewall configuration."
@@ -773,121 +771,121 @@ msgstr ""
 "Es wurden keine Drucker-Freigaben gefunden. Bitte prüfen Sie, ob der Samba-"
 "Dienst als 'trusted' gewählt ist in Ihrer Firewall-Konfiguration."
 
-#: ../newprinter.py:2083
+#: ../newprinter.py:2088
 msgid "Allow all incoming SMB/CIFS browse packets"
 msgstr "Alle eingehende SMB/CIFS-Browse-Pakete erlauben"
 
-#: ../newprinter.py:2192 ../newprinter.py:2301
+#: ../newprinter.py:2197 ../newprinter.py:2306
 msgid "Print Share Verified"
 msgstr "Drucker-Freigabe verifiziert"
 
-#: ../newprinter.py:2193 ../newprinter.py:2302
+#: ../newprinter.py:2198 ../newprinter.py:2307
 msgid "This print share is accessible."
 msgstr "Auf diese Drucker-Freigabe kann zugegriffen werden."
 
-#: ../newprinter.py:2198 ../newprinter.py:2306
+#: ../newprinter.py:2203 ../newprinter.py:2311
 msgid "This print share is not accessible."
 msgstr "Auf diese Drucker-Freigabe kann nicht zugegriffen werden."
 
-#: ../newprinter.py:2201
+#: ../newprinter.py:2206
 msgid "Print Share Inaccessible"
 msgstr "Auf Drucker-Freigabe kann zugegriffen werden"
 
-#: ../newprinter.py:2279
+#: ../newprinter.py:2284
 msgid "Verifying"
 msgstr "wird verifiziert"
 
-#: ../newprinter.py:2280
+#: ../newprinter.py:2285
 msgid "Verifying printer"
 msgstr "Drucker wird verifiziert"
 
-#: ../newprinter.py:2305
+#: ../newprinter.py:2310
 msgid "Inaccessible"
 msgstr "Zugriff verweigert"
 
-#: ../newprinter.py:2360
+#: ../newprinter.py:2365
 msgid "Parallel Port"
 msgstr "Parallelport"
 
-#: ../newprinter.py:2362
+#: ../newprinter.py:2367
 msgid "Serial Port"
 msgstr "Serieller Anschluss"
 
-#: ../newprinter.py:2364
+#: ../newprinter.py:2369
 msgid "USB"
 msgstr "USB"
 
-#: ../newprinter.py:2366
+#: ../newprinter.py:2371
 msgid "Bluetooth"
 msgstr ""
 
-#: ../newprinter.py:2368 ../newprinter.py:2371
+#: ../newprinter.py:2373 ../newprinter.py:2376
 msgid "HP Linux Imaging and Printing (HPLIP)"
 msgstr "HP Linux Imaging and Printing (HPLIP)"
 
-#: ../newprinter.py:2370 ../newprinter.py:2486 ../newprinter.py:2488
+#: ../newprinter.py:2375 ../newprinter.py:2491 ../newprinter.py:2493
 #: ../system-config-printer.py:938
 msgid "Fax"
 msgstr "Fax"
 
-#: ../newprinter.py:2373
+#: ../newprinter.py:2378
 msgid "Hardware Abstraction Layer (HAL)"
 msgstr "Hardwareabstraktionsschicht (HAL)"
 
-#: ../newprinter.py:2375 ../ppdippstr.py:176
+#: ../newprinter.py:2380 ../ppdippstr.py:176
 msgid "AppSocket/HP JetDirect"
 msgstr "AppSocket/HP JetDirect"
 
-#: ../newprinter.py:2384
+#: ../newprinter.py:2389
 #, python-format
 msgid "LPD/LPR queue '%s'"
 msgstr "LPD/LPR-Warteschlange '%s'"
 
-#: ../newprinter.py:2386
+#: ../newprinter.py:2391
 msgid "LPD/LPR queue"
 msgstr "LPD/LPR-Warteschlage"
 
-#: ../newprinter.py:2389 ../ppdippstr.py:182
+#: ../newprinter.py:2394 ../ppdippstr.py:182
 msgid "Windows Printer via SAMBA"
 msgstr "Windows-Drucker via SAMBA"
 
-#: ../newprinter.py:2391 ../ui/NewPrinterWindow.glade.h:48
+#: ../newprinter.py:2396 ../ui/NewPrinterWindow.ui.h:48
 msgid "IPP"
 msgstr "IPP"
 
-#: ../newprinter.py:2393
+#: ../newprinter.py:2398
 msgid "HTTP"
 msgstr "HTTP"
 
-#: ../newprinter.py:2401 ../newprinter.py:2550
+#: ../newprinter.py:2406 ../newprinter.py:2555
 #, fuzzy
 msgid "Remote CUPS printer via DNS-SD"
 msgstr "Netzwerk-Drucker"
 
-#: ../newprinter.py:2412 ../newprinter.py:2560
+#: ../newprinter.py:2417 ../newprinter.py:2565
 #, fuzzy, python-format
 msgid "%s network printer via DNS-SD"
 msgstr "Netzwerk-Drucker"
 
-#: ../newprinter.py:2415 ../newprinter.py:2562
+#: ../newprinter.py:2420 ../newprinter.py:2567
 #, fuzzy
 msgid "Network printer via DNS-SD"
 msgstr "Netzwerk-Drucker"
 
-#: ../newprinter.py:2529
+#: ../newprinter.py:2534
 msgid "A printer connected to the parallel port."
 msgstr "Ein am Parallelport angeschlossener Drucker."
 
-#: ../newprinter.py:2531
+#: ../newprinter.py:2536
 msgid "A printer connected to a USB port."
 msgstr "Ein am USB-Port angeschlossener Drucker."
 
-#: ../newprinter.py:2533
+#: ../newprinter.py:2538
 #, fuzzy
 msgid "A printer connected via Bluetooth."
 msgstr "Ein am USB-Port angeschlossener Drucker."
 
-#: ../newprinter.py:2535
+#: ../newprinter.py:2540
 msgid ""
 "HPLIP software driving a printer, or the printer function of a multi-"
 "function device."
@@ -895,7 +893,7 @@ msgstr ""
 "HPLIP-Software, die einen Drucker betreibt oder die Druckerfunktion eines "
 "multifunktionalen Geräts."
 
-#: ../newprinter.py:2538
+#: ../newprinter.py:2543
 msgid ""
 "HPLIP software driving a fax machine, or the fax function of a multi-"
 "function device."
@@ -903,48 +901,48 @@ msgstr ""
 "HPLIP-Software, die eine Fax-Maschine betreibt oder die Fax-Funktion eines "
 "multifunktionalen Geräts."
 
-#: ../newprinter.py:2541
+#: ../newprinter.py:2546
 msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
 msgstr ""
 "Lokaler Drucker, der vom Hardware Abstraction Layer (HAL) erkannt wurde."
 
-#: ../newprinter.py:2705
+#: ../newprinter.py:2710
 msgid "Searching for printers"
 msgstr "Suche nach Druckern"
 
-#: ../newprinter.py:2798 ../ui/NewPrinterWindow.glade.h:60
+#: ../newprinter.py:2803 ../ui/NewPrinterWindow.ui.h:60
 msgid "No printer was found at that address."
 msgstr "An der angegebenen Adresse wurde kein Drucker gefunden."
 
-#: ../newprinter.py:2938
+#: ../newprinter.py:2943
 msgid "-- Select from search results --"
 msgstr "-- Wähle aus Such-Resultate --"
 
-#: ../newprinter.py:2940
+#: ../newprinter.py:2945
 msgid "-- No matches found --"
 msgstr "-- Kein Übereinstimmung gefunden --"
 
-#: ../newprinter.py:3063 ../newprinter.py:3123 ../newprinter.py:3215
+#: ../newprinter.py:3068 ../newprinter.py:3128 ../newprinter.py:3224
 msgid " (recommended)"
 msgstr " (empfohlen)"
 
-#: ../newprinter.py:3247
+#: ../newprinter.py:3256
 msgid "This PPD is generated by foomatic."
 msgstr "PPD wird von foomatic erstellt."
 
-#: ../newprinter.py:3278
+#: ../newprinter.py:3287
 msgid "OpenPrinting"
 msgstr "OpenPrinting"
 
-#: ../newprinter.py:3289
+#: ../newprinter.py:3298
 msgid "Distributable"
 msgstr "Verteilbar"
 
-#: ../newprinter.py:3330
+#: ../newprinter.py:3339
 msgid ", "
 msgstr " , "
 
-#: ../newprinter.py:3335
+#: ../newprinter.py:3344
 #, python-format
 msgid ""
 "\n"
@@ -953,20 +951,20 @@ msgstr ""
 "\n"
 "(%s)"
 
-#: ../newprinter.py:3340
+#: ../newprinter.py:3349
 msgid "No support contacts known"
 msgstr "Keine Supportkontakte bekannt"
 
-#: ../newprinter.py:3344 ../newprinter.py:3357
+#: ../newprinter.py:3353 ../newprinter.py:3366
 msgid "Not specified."
 msgstr "Nicht angegeben"
 
 #. Foomatic database problem of some sort.
-#: ../newprinter.py:3397
+#: ../newprinter.py:3406
 msgid "Database error"
 msgstr "Datenbankfehler"
 
-#: ../newprinter.py:3398
+#: ../newprinter.py:3407
 #, python-format
 msgid "The '%s' driver cannot be used with printer '%s %s'."
 msgstr "Der Treiber »%s« kann nicht mit Drucker »%s %s« verwendet werden."
@@ -974,45 +972,45 @@ msgstr "Der Treiber »%s« kann nicht mit Drucker »%s %s« verwendet werden."
 #. This printer references some XML that is not
 #. installed by default.  Point the user at the
 #. package they need to install.
-#: ../newprinter.py:3408
+#: ../newprinter.py:3417
 #, python-format
 msgid "You will need to install the '%s' package in order to use this driver."
 msgstr "Sie müssen das Paket »%s« installieren, um diesen Treiber zu benutzen."
 
 #. This error came from trying to open the PPD file.
-#: ../newprinter.py:3415
+#: ../newprinter.py:3424
 msgid "PPD error"
 msgstr "PPD-Fehler"
 
-#: ../newprinter.py:3417
+#: ../newprinter.py:3426
 msgid "Failed to read PPD file.  Possible reason follows:"
 msgstr "Konnte PPD-Dateien nicht lesen. Mögliche Ursache:"
 
 #. Failed to get PPD downloaded from OpenPrinting XXX
-#: ../newprinter.py:3435
+#: ../newprinter.py:3444
 msgid "Downloadable drivers"
 msgstr "Herunterladbare Treiber"
 
-#: ../newprinter.py:3436
+#: ../newprinter.py:3445
 msgid "Failed to download PPD."
 msgstr "Herunterladen von PPD fehlgeschlagen."
 
-#: ../newprinter.py:3443
+#: ../newprinter.py:3452
 msgid "fetching PPD"
 msgstr "hole PPD"
 
-#: ../newprinter.py:3472 ../newprinter.py:3510
+#: ../newprinter.py:3481 ../newprinter.py:3519
 msgid "No Installable Options"
 msgstr "Keine installierbaren Optionen"
 
-#: ../newprinter.py:3572
+#: ../newprinter.py:3581
 #, python-format
 msgid "adding printer %s"
 msgstr "füge Drucker %s hinzu"
 
-#: ../newprinter.py:3599 ../newprinter.py:3610 ../newprinter.py:3627
-#: ../printerproperties.py:963 ../system-config-printer.py:1695
-#: ../system-config-printer.py:1720
+#: ../newprinter.py:3608 ../newprinter.py:3619 ../newprinter.py:3636
+#: ../printerproperties.py:972 ../system-config-printer.py:1693
+#: ../system-config-printer.py:1718
 #, python-format
 msgid "modifying printer %s"
 msgstr "bearbeite Drucker %s"
@@ -1310,7 +1308,7 @@ msgstr "Serieller Port #1"
 msgid "LPT #1"
 msgstr "LPT #1"
 
-#: ../ppdsloader.py:144
+#: ../ppdsloader.py:147
 msgid "fetching PPDs"
 msgstr "PPDs werden geholt"
 
@@ -1519,11 +1517,11 @@ msgstr ""
 msgid "Automatic rotation"
 msgstr "Automatische Drehung"
 
-#: ../printerproperties.py:582
+#: ../printerproperties.py:585
 msgid "CUPS test page"
 msgstr "CUPS Testseite"
 
-#: ../printerproperties.py:583
+#: ../printerproperties.py:586
 msgid ""
 "Typically shows whether all jets on a print head are functioning and that "
 "the print feed mechanisms are working properly."
@@ -1531,13 +1529,13 @@ msgstr ""
 "Zeigt überlicherweise, ob alle Düsen auf dem Druckkopf und die Papierzufuhr-"
 "Mechanismen funtkionieren."
 
-#: ../printerproperties.py:590
+#: ../printerproperties.py:593
 #, python-format
 msgid "Printer Properties - '%s' on %s"
 msgstr "Drucker-Eigenschaften - \"%s\" auf %s"
 
 #. The Conflict button was pressed.
-#: ../printerproperties.py:597
+#: ../printerproperties.py:603
 msgid ""
 "There are conflicting options.\n"
 "Changes can only be applied after\n"
@@ -1547,24 +1545,24 @@ msgstr ""
 "Änderungen können nur übernommen werden,\n"
 "nachdem diese Konflikte gelöst wurden."
 
-#: ../printerproperties.py:923
+#: ../printerproperties.py:932
 msgid "Installable Options"
 msgstr "Installierbare Optionen"
 
-#: ../printerproperties.py:924 ../ui/PrinterPropertiesDialog.glade.h:63
+#: ../printerproperties.py:933 ../ui/PrinterPropertiesDialog.ui.h:63
 msgid "Printer Options"
 msgstr "Druckeroptionen"
 
-#: ../printerproperties.py:961
+#: ../printerproperties.py:970
 #, python-format
 msgid "modifying class %s"
 msgstr "bearbeite Klasse %s"
 
-#: ../printerproperties.py:978
+#: ../printerproperties.py:987
 msgid "This will delete this class!"
 msgstr "Damit wird diese Klasse gelöscht!"
 
-#: ../printerproperties.py:979
+#: ../printerproperties.py:988
 msgid "Proceed anyway?"
 msgstr "Trotzdem durchführen?"
 
@@ -1572,19 +1570,19 @@ msgstr "Trotzdem durchführen?"
 #. but we have never fetched the server settings to see whether
 #. the server is publishing shared printers.  Fetch the settings
 #. now so that we can update the "not published" label if necessary.
-#: ../printerproperties.py:1071 ../serversettings.py:192
+#: ../printerproperties.py:1080 ../serversettings.py:195
 msgid "fetching server settings"
 msgstr "rufe Server-Einstellungen ab"
 
-#: ../printerproperties.py:1153
+#: ../printerproperties.py:1167
 msgid "printing test page"
 msgstr "drucke Testseite"
 
-#: ../printerproperties.py:1166 ../printerproperties.py:1201
+#: ../printerproperties.py:1180 ../printerproperties.py:1220
 msgid "Not possible"
 msgstr "Nicht möglich"
 
-#: ../printerproperties.py:1167 ../printerproperties.py:1202
+#: ../printerproperties.py:1181 ../printerproperties.py:1221
 msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
@@ -1592,43 +1590,43 @@ msgstr ""
 "Der entfernte Server akzeptiert keine Aufträge. Wahrscheinlich liegt es "
 "daran, dass der Drucker nicht freigegeben ist."
 
-#: ../printerproperties.py:1179 ../printerproperties.py:1194
+#: ../printerproperties.py:1193 ../printerproperties.py:1213
 msgid "Submitted"
 msgstr "Übertragen"
 
-#: ../printerproperties.py:1180
+#: ../printerproperties.py:1194
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr "Testseite als Auftrag %d übertragen"
 
-#: ../printerproperties.py:1187
+#: ../printerproperties.py:1206
 msgid "sending maintenance command"
 msgstr "sende Wartungsbefehl"
 
-#: ../printerproperties.py:1195
+#: ../printerproperties.py:1214
 #, python-format
 msgid "Maintenance command submitted as job %d"
 msgstr "Wartungsbefehl als Auftrag %d übertragen"
 
-#: ../printerproperties.py:1282 ../printerproperties.py:1287
-#: ../printerproperties.py:1383
+#: ../printerproperties.py:1301 ../printerproperties.py:1306
+#: ../printerproperties.py:1402
 msgid "Error"
 msgstr "Fehler"
 
-#: ../printerproperties.py:1283
+#: ../printerproperties.py:1302
 msgid "The PPD file for this queue is damaged."
 msgstr ""
 
-#: ../printerproperties.py:1288
+#: ../printerproperties.py:1307
 msgid "There was a problem connecting to the CUPS server."
 msgstr "Bei der Verbindung mit dem CUPS-Server trat ein Fehler auf."
 
-#: ../printerproperties.py:1384
+#: ../printerproperties.py:1403
 #, python-format
 msgid "Option '%s' has value '%s' and cannot be edited."
 msgstr "Option »%s« hat den Wert »%s« und kann nicht bearbeitet werden."
 
-#: ../printerproperties.py:1497
+#: ../printerproperties.py:1519
 msgid "Marker levels are not reported for this printer."
 msgstr "Markerstand wird vom Drucker nicht übermittelt."
 
@@ -1637,19 +1635,19 @@ msgstr "Markerstand wird vom Drucker nicht übermittelt."
 msgid "You must log in to access %s."
 msgstr "Sie müssen sich einloggen, um zugriff auf %s zu erhalten."
 
-#: ../serversettings.py:88
+#: ../serversettings.py:91
 msgid "Problems?"
 msgstr "Probleme?"
 
-#: ../serversettings.py:257
+#: ../serversettings.py:260
 msgid "Enter IP address"
 msgstr "Geben Sie IP-Adresse ein"
 
-#: ../serversettings.py:502
+#: ../serversettings.py:505
 msgid "modifying server settings"
 msgstr "passe Server-Einstellungen an"
 
-#: ../serversettings.py:539
+#: ../serversettings.py:542
 msgid "Adjust the firewall now to allow all incoming IPP connections?"
 msgstr ""
 "Passen Sie die Firewall nun so an, dass alle eingehenden IPP Verbindungen "
@@ -1671,7 +1669,7 @@ msgstr "_Einstellungen"
 msgid "Adjust server settings"
 msgstr "Server-Einstellungen anpassen"
 
-#: ../system-config-printer.py:223 ../ui/PrintersWindow.glade.h:9
+#: ../system-config-printer.py:223 ../ui/PrintersWindow.ui.h:9
 msgid "_Printer"
 msgstr "_Drucker"
 
@@ -1779,7 +1777,7 @@ msgstr "Dienst-Grundstruktur nicht verfügbar"
 msgid "Cannot start service on remote server"
 msgstr "Dienst auf entferntem Server kann nicht gestartet werden"
 
-#: ../system-config-printer.py:1150 ../ui/ConnectingDialog.glade.h:2
+#: ../system-config-printer.py:1150 ../ui/ConnectingDialog.ui.h:2
 #, no-c-format, python-format
 msgid "<i>Opening connection to %s</i>"
 msgstr "<i>Verbinde zu %s</i>"
@@ -1828,36 +1826,30 @@ msgstr "Fertige Aufträge sind für einen Neudruck nicht mehr verfügbar."
 msgid "renaming printer"
 msgstr "benenne Drucker um"
 
-#. for classes make sure all members
-#. will get added
-#: ../system-config-printer.py:1576
-msgid "duplicating printer"
-msgstr "Drucker wird dupliziert"
-
-#: ../system-config-printer.py:1648
+#: ../system-config-printer.py:1646
 #, python-format
 msgid "Really delete class '%s'?"
 msgstr "Möchten Sie die Klasse \"%s\" wirklich löschen?"
 
-#: ../system-config-printer.py:1650
+#: ../system-config-printer.py:1648
 #, python-format
 msgid "Really delete printer '%s'?"
 msgstr "Möchten Sie den Drucker \"%s\" wirklich löschen?"
 
-#: ../system-config-printer.py:1652
+#: ../system-config-printer.py:1650
 msgid "Really delete selected destinations?"
 msgstr "Möchten Sie die gewählten Ziele wirklich löschen?"
 
-#: ../system-config-printer.py:1673
+#: ../system-config-printer.py:1671
 #, python-format
 msgid "deleting printer %s"
 msgstr "lösche Drucker %s"
 
-#: ../system-config-printer.py:1760
+#: ../system-config-printer.py:1758
 msgid "Publish Shared Printers"
 msgstr "öffentliche freigegebene Drucker"
 
-#: ../system-config-printer.py:1761
+#: ../system-config-printer.py:1759
 msgid ""
 "Shared printers are not available to other people unless the 'Publish shared "
 "printers' option is enabled in the server settings."
@@ -1866,32 +1858,32 @@ msgstr ""
 "\"Gemeinsame Drucker freigeben\" Option in den Servereinstellungen gesetzt "
 "haben."
 
-#: ../system-config-printer.py:1964
+#: ../system-config-printer.py:1962
 msgid "Would you like to print a test page?"
 msgstr "Möchten Sie eine Testseite drucken?"
 
 #. Not more than 25 characters
-#: ../system-config-printer.py:1966 ../ui/PrinterPropertiesDialog.glade.h:61
+#: ../system-config-printer.py:1964 ../ui/PrinterPropertiesDialog.ui.h:61
 #: ../troubleshoot/PrintTestPage.py:72
 msgid "Print Test Page"
 msgstr "Testseite drucken"
 
-#: ../system-config-printer.py:2052
+#: ../system-config-printer.py:2050
 msgid "Install driver"
 msgstr "Treiber installieren"
 
-#: ../system-config-printer.py:2053 ../troubleshoot/CheckPPDSanity.py:133
+#: ../system-config-printer.py:2051 ../troubleshoot/CheckPPDSanity.py:133
 #, python-format
 msgid "Printer '%s' requires the %s package but it is not currently installed."
 msgstr ""
 "Der Drucker »%s« benötigt das Paket %s, welches derzeit nicht installiert "
 "ist."
 
-#: ../system-config-printer.py:2069
+#: ../system-config-printer.py:2067
 msgid "Missing driver"
 msgstr "Fehlender Treiber"
 
-#: ../system-config-printer.py:2070
+#: ../system-config-printer.py:2068
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "
@@ -1900,16 +1892,16 @@ msgstr ""
 "Der Drucker »%s« benötigt das Programm »%s«, welches derzeit nicht "
 "installiert ist. Bitte installieren Sie es, bevor Sie den Drucker verwenden."
 
-#: ../ui/AboutDialog.glade.h:1
+#: ../ui/AboutDialog.ui.h:1
 msgid "A CUPS configuration tool."
 msgstr "Ein CUPS-Konfigurationswerkzeug."
 
-#: ../ui/AboutDialog.glade.h:2
+#: ../ui/AboutDialog.ui.h:2
 #, fuzzy
 msgid "Copyright © 2006-2008 Red Hat, Inc."
 msgstr "Copyright &#xA9; 2006-2008 Red Hat, Inc."
 
-#: ../ui/AboutDialog.glade.h:3
+#: ../ui/AboutDialog.ui.h:3
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -1940,7 +1932,7 @@ msgstr ""
 "Ave, Cambridge, MA 02139, USA."
 
 #. TRANSLATORS: Replace this string with your names, one name per line.  Thank you very much for your effort on translating system-config-printer and all our other tools!
-#: ../ui/AboutDialog.glade.h:9
+#: ../ui/AboutDialog.ui.h:9
 msgid "translator-credits"
 msgstr ""
 "Robert Scheck <redhat@linuxnetz.de, 2005.\n"
@@ -1956,295 +1948,295 @@ msgstr ""
 "Fabian Affolter <fab@fedoraproject.org>, 2007.\n"
 "Helge Kreutzmann <debian@helgefjell.de>, 2008."
 
-#: ../ui/ConnectDialog.glade.h:1
+#: ../ui/ConnectDialog.ui.h:1
 msgid "CUPS _server:"
 msgstr "CUPS-_Server:"
 
-#: ../ui/ConnectDialog.glade.h:2
+#: ../ui/ConnectDialog.ui.h:2
 msgid "Connect to CUPS server"
 msgstr "Verbindung zum CUPS-Server wird hergestellt"
 
-#: ../ui/ConnectDialog.glade.h:3
+#: ../ui/ConnectDialog.ui.h:3
 msgid "Require _encryption"
 msgstr "Verschlüsselung _erfordern"
 
-#: ../ui/ConnectingDialog.glade.h:3
+#: ../ui/ConnectingDialog.ui.h:3
 msgid "<span weight=\"bold\" size=\"larger\">Connecting to CUPS server</span>"
 msgstr ""
 "<span weight=\"bold\" size=\"larger\">Verbindung zum CUPS-Server wird "
 "hergestellt</span>"
 
-#: ../ui/ConnectingDialog.glade.h:4
+#: ../ui/ConnectingDialog.ui.h:4
 msgid "Connecting to CUPS server"
 msgstr "Verbindung zum CUPS-Server wird hergestellt"
 
-#: ../ui/InstallDialog.glade.h:1
+#: ../ui/InstallDialog.ui.h:1
 msgid "_Install"
 msgstr "_Installieren"
 
-#: ../ui/JobsWindow.glade.h:1
+#: ../ui/JobsWindow.ui.h:1
 msgid "Refresh job list"
 msgstr "Auftragsliste erneuern"
 
-#: ../ui/JobsWindow.glade.h:2
+#: ../ui/JobsWindow.ui.h:2
 msgid "Show _completed jobs"
 msgstr "Abgeschlossene Aufträge _anzeigen"
 
-#: ../ui/JobsWindow.glade.h:3
+#: ../ui/JobsWindow.ui.h:3
 msgid "Show completed jobs"
 msgstr "Abgeschlossene Aufträge anzeigen"
 
-#: ../ui/JobsWindow.glade.h:4
+#: ../ui/JobsWindow.ui.h:4
 msgid "_Refresh"
 msgstr "E_rneuern"
 
-#: ../ui/NewPrinterName.glade.h:1
+#: ../ui/NewPrinterName.ui.h:1
 msgid "Duplicate Printer"
 msgstr "Drucker duplizieren"
 
-#: ../ui/NewPrinterName.glade.h:2
+#: ../ui/NewPrinterName.ui.h:2
 msgid "New name for the printer"
 msgstr "Neuer Name für den Drucker"
 
-#: ../ui/NewPrinterWindow.glade.h:1
+#: ../ui/NewPrinterWindow.ui.h:1
 msgid "<b>Authentication</b>"
 msgstr "<b>Authentifizierung</b>"
 
-#: ../ui/NewPrinterWindow.glade.h:2
+#: ../ui/NewPrinterWindow.ui.h:2
 msgid "<b>Description</b>"
 msgstr "<b>Beschreibung</b>"
 
-#: ../ui/NewPrinterWindow.glade.h:3
+#: ../ui/NewPrinterWindow.ui.h:3
 msgid "<b>Description</b> (optional)"
 msgstr "<b>Beschreibung</b> (optional)"
 
-#: ../ui/NewPrinterWindow.glade.h:4
+#: ../ui/NewPrinterWindow.ui.h:4
 msgid "<b>Enter device URI</b>"
 msgstr "<b>Geräte-URI eingeben</b>"
 
-#: ../ui/NewPrinterWindow.glade.h:5
+#: ../ui/NewPrinterWindow.ui.h:5
 msgid "<b>IPP Printer</b>"
 msgstr "<b>IPP-Drucker</b>"
 
-#: ../ui/NewPrinterWindow.glade.h:6
+#: ../ui/NewPrinterWindow.ui.h:6
 msgid "<b>License Terms</b>"
 msgstr "<b>Lizenzbedingungen</b>"
 
-#: ../ui/NewPrinterWindow.glade.h:7
+#: ../ui/NewPrinterWindow.ui.h:7
 msgid "<b>Location of the LPD network printer</b>"
 msgstr "<b>Ort des LPD-Netzwerkdruckers</b>"
 
-#: ../ui/NewPrinterWindow.glade.h:8
+#: ../ui/NewPrinterWindow.ui.h:8
 msgid "<b>Location of the network printer</b>"
 msgstr "<b>Ort des Netzwerkdruckers</b>"
 
-#: ../ui/NewPrinterWindow.glade.h:9
+#: ../ui/NewPrinterWindow.ui.h:9
 msgid "<b>Location</b> (optional)"
 msgstr "<b>Ort</b> (optional)"
 
-#: ../ui/NewPrinterWindow.glade.h:10
+#: ../ui/NewPrinterWindow.ui.h:10
 msgid "<b>Network Printer</b>"
 msgstr "<b>Netzwerkdrucker</b>"
 
-#: ../ui/NewPrinterWindow.glade.h:11
+#: ../ui/NewPrinterWindow.ui.h:11
 msgid "<b>Note</b>"
 msgstr "<b>Hinweis</b>"
 
-#: ../ui/NewPrinterWindow.glade.h:12
+#: ../ui/NewPrinterWindow.ui.h:12
 msgid "<b>Output Quality</b>"
 msgstr "<b>Ausgabequalität</b>"
 
-#: ../ui/NewPrinterWindow.glade.h:13
+#: ../ui/NewPrinterWindow.ui.h:13
 msgid "<b>Printer Name</b>"
 msgstr "<b>Druckername</b>"
 
-#: ../ui/NewPrinterWindow.glade.h:14
+#: ../ui/NewPrinterWindow.ui.h:14
 msgid "<b>SMB Printer</b>"
 msgstr "<b>SMB-Drucker</b>"
 
-#: ../ui/NewPrinterWindow.glade.h:15
+#: ../ui/NewPrinterWindow.ui.h:15
 msgid "<b>Select Driver</b>"
 msgstr "<b>Treiber auswählen</b>"
 
-#: ../ui/NewPrinterWindow.glade.h:16
+#: ../ui/NewPrinterWindow.ui.h:16
 msgid "<b>Settings of the serial port</b>"
 msgstr "<b>Einstellungen der seriellen Schnittstelle</b>"
 
-#: ../ui/NewPrinterWindow.glade.h:17
+#: ../ui/NewPrinterWindow.ui.h:17
 msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
 msgstr "<i>smb://[workgroup/]server[:port]/printer</i>"
 
-#: ../ui/NewPrinterWindow.glade.h:18
+#: ../ui/NewPrinterWindow.ui.h:18
 msgid "<span weight=\"bold\" size=\"larger\">Choose Class Members</span>"
 msgstr "<span weight=\"bold\" size=\"larger\">Wähle Klassen-Mitglied</span>"
 
-#: ../ui/NewPrinterWindow.glade.h:19
+#: ../ui/NewPrinterWindow.ui.h:19
 msgid "<span weight=\"bold\" size=\"larger\">Choose Driver</span>"
 msgstr "<span weight=\"bold\" size=\"larger\">Wähle Treiber</span>"
 
-#: ../ui/NewPrinterWindow.glade.h:20
+#: ../ui/NewPrinterWindow.ui.h:20
 msgid "<span weight=\"bold\" size=\"larger\">Describe Printer</span>"
 msgstr "<span weight=\"bold\" size=\"larger\">Beschreibe Drucker</span>"
 
-#: ../ui/NewPrinterWindow.glade.h:21
+#: ../ui/NewPrinterWindow.ui.h:21
 msgid "<span weight=\"bold\" size=\"larger\">Existing Settings</span>"
 msgstr "<span weight=\"bold\" size=\"larger\">Vorhandene Einstellungen</span>"
 
-#: ../ui/NewPrinterWindow.glade.h:22
+#: ../ui/NewPrinterWindow.ui.h:22
 msgid "<span weight=\"bold\" size=\"larger\">Installable Options</span>"
 msgstr "<span weight=\"bold\" size=\"larger\">Installierbare Optionen</span>"
 
-#: ../ui/NewPrinterWindow.glade.h:23
+#: ../ui/NewPrinterWindow.ui.h:23
 msgid "<span weight=\"bold\" size=\"larger\">Select Device</span>"
 msgstr "<span weight=\"bold\" size=\"larger\">Wähle Gerät</span>"
 
-#: ../ui/NewPrinterWindow.glade.h:24
+#: ../ui/NewPrinterWindow.ui.h:24
 msgid "Baud Rate"
 msgstr "Baud-Rate"
 
-#: ../ui/NewPrinterWindow.glade.h:25
+#: ../ui/NewPrinterWindow.ui.h:25
 msgid "Browse..."
 msgstr "Durchsuche..."
 
-#: ../ui/NewPrinterWindow.glade.h:26
+#: ../ui/NewPrinterWindow.ui.h:26
 msgid "Change PPD"
 msgstr "PPD ändern"
 
-#: ../ui/NewPrinterWindow.glade.h:27
+#: ../ui/NewPrinterWindow.ui.h:27
 msgid "Class Members"
 msgstr "Mitglieder der Klasse"
 
-#: ../ui/NewPrinterWindow.glade.h:28
+#: ../ui/NewPrinterWindow.ui.h:28
 msgid "Comments..."
 msgstr "Kommentare..."
 
-#: ../ui/NewPrinterWindow.glade.h:29
+#: ../ui/NewPrinterWindow.ui.h:29
 msgid "Connection"
 msgstr "Verbindung"
 
-#: ../ui/NewPrinterWindow.glade.h:30
+#: ../ui/NewPrinterWindow.ui.h:30
 msgid "Data Bits"
 msgstr "Datenbits"
 
-#: ../ui/NewPrinterWindow.glade.h:31 ../ui/PrinterPropertiesDialog.glade.h:29
+#: ../ui/NewPrinterWindow.ui.h:31 ../ui/PrinterPropertiesDialog.ui.h:29
 msgid "Description:"
 msgstr "Beschreibung:"
 
-#: ../ui/NewPrinterWindow.glade.h:32
+#: ../ui/NewPrinterWindow.ui.h:32
 msgid "Device"
 msgstr "Gerät"
 
-#: ../ui/NewPrinterWindow.glade.h:33 ../troubleshoot/DeviceListed.py:40
+#: ../ui/NewPrinterWindow.ui.h:33 ../troubleshoot/DeviceListed.py:40
 msgid "Device URI"
 msgstr "Geräte-URI"
 
-#: ../ui/NewPrinterWindow.glade.h:34
+#: ../ui/NewPrinterWindow.ui.h:34
 msgid "Device description."
 msgstr "Beschreibung des Gerätes."
 
-#: ../ui/NewPrinterWindow.glade.h:36
+#: ../ui/NewPrinterWindow.ui.h:36
 msgid "Driver details"
 msgstr "Treiber-Details"
 
-#: ../ui/NewPrinterWindow.glade.h:37
+#: ../ui/NewPrinterWindow.ui.h:37
 msgid "Empty"
 msgstr "Leer"
 
-#: ../ui/NewPrinterWindow.glade.h:38
+#: ../ui/NewPrinterWindow.ui.h:38
 msgid "Flow Control"
 msgstr "Ablaufsteuerung"
 
-#: ../ui/NewPrinterWindow.glade.h:39
+#: ../ui/NewPrinterWindow.ui.h:39
 msgid ""
 "For example:\n"
 "ipp://cups-server/printers/printer-queue\n"
 "ipp://printer.mydomain/ipp"
 msgstr ""
 
-#: ../ui/NewPrinterWindow.glade.h:42
+#: ../ui/NewPrinterWindow.ui.h:42
 msgid ""
 "For the printer you have selected there are drivers available for download."
 msgstr ""
 "Für den von Ihnen gewählten Drucker sind herunterladbare Treiber verfügbar."
 
-#: ../ui/NewPrinterWindow.glade.h:43
+#: ../ui/NewPrinterWindow.ui.h:43
 msgid "Free software"
 msgstr "Freie Software"
 
-#: ../ui/NewPrinterWindow.glade.h:44
+#: ../ui/NewPrinterWindow.ui.h:44
 msgid "Graphics:"
 msgstr "Grafik:"
 
-#: ../ui/NewPrinterWindow.glade.h:45
+#: ../ui/NewPrinterWindow.ui.h:45
 msgid "Host:"
 msgstr "Host:"
 
-#: ../ui/NewPrinterWindow.glade.h:46
+#: ../ui/NewPrinterWindow.ui.h:46
 msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
 msgstr "Normal lesbare Beschreibung, wie zum Beispiel »HP LaserJet mit Duplex«"
 
-#: ../ui/NewPrinterWindow.glade.h:47
+#: ../ui/NewPrinterWindow.ui.h:47
 msgid "Human-readable location such as \"Lab 1\""
 msgstr "Normal lesbarer Ort, wie zum Beispiel »Lab 1«"
 
-#: ../ui/NewPrinterWindow.glade.h:49 ../ui/PrinterPropertiesDialog.glade.h:39
+#: ../ui/NewPrinterWindow.ui.h:49 ../ui/PrinterPropertiesDialog.ui.h:39
 msgid "Installed Options"
 msgstr "Installierte Optionen "
 
-#: ../ui/NewPrinterWindow.glade.h:50
+#: ../ui/NewPrinterWindow.ui.h:50
 #, fuzzy
 msgid "JetDirect"
 msgstr "DirectJet"
 
-#: ../ui/NewPrinterWindow.glade.h:51
+#: ../ui/NewPrinterWindow.ui.h:51
 msgid "LPD"
 msgstr "LPD"
 
-#: ../ui/NewPrinterWindow.glade.h:52
+#: ../ui/NewPrinterWindow.ui.h:52
 msgid "License:"
 msgstr "Lizenz:"
 
-#: ../ui/NewPrinterWindow.glade.h:53
+#: ../ui/NewPrinterWindow.ui.h:53
 msgid "Line art:"
 msgstr "Strichart:"
 
-#: ../ui/NewPrinterWindow.glade.h:54
+#: ../ui/NewPrinterWindow.ui.h:54
 msgid "Local Driver"
 msgstr "Lokaler Treiber"
 
-#: ../ui/NewPrinterWindow.glade.h:55
+#: ../ui/NewPrinterWindow.ui.h:55
 msgid "Make and model:"
 msgstr "Marke und Modell:"
 
-#: ../ui/NewPrinterWindow.glade.h:56
+#: ../ui/NewPrinterWindow.ui.h:56
 msgid "Manufacturer"
 msgstr "Hersteller"
 
-#: ../ui/NewPrinterWindow.glade.h:58
+#: ../ui/NewPrinterWindow.ui.h:58
 msgid "Network"
 msgstr "Netzwerk"
 
-#: ../ui/NewPrinterWindow.glade.h:61
+#: ../ui/NewPrinterWindow.ui.h:61
 msgid "No, I do not accept this license"
 msgstr "Nein, ich akzeptiere diese Lizenz nicht"
 
-#: ../ui/NewPrinterWindow.glade.h:62
+#: ../ui/NewPrinterWindow.ui.h:62
 msgid "Parity"
 msgstr "Parität"
 
-#: ../ui/NewPrinterWindow.glade.h:64
+#: ../ui/NewPrinterWindow.ui.h:64
 msgid "Patented algorithms"
 msgstr "Patentierte Algorithmen"
 
-#: ../ui/NewPrinterWindow.glade.h:65
+#: ../ui/NewPrinterWindow.ui.h:65
 msgid "Photo:"
 msgstr "Foto:"
 
-#: ../ui/NewPrinterWindow.glade.h:66
+#: ../ui/NewPrinterWindow.ui.h:66
 msgid "Port number:"
 msgstr "Port-Nummer"
 
-#: ../ui/NewPrinterWindow.glade.h:67
+#: ../ui/NewPrinterWindow.ui.h:67
 #, fuzzy
 msgid ""
 "PostScript Printer Description (PPD) files can often be found on the driver "
@@ -2255,71 +2247,71 @@ msgstr ""
 "zu finden, die dem Drucker beiliegt. Für PostScript-Drucker sind sie häufig "
 "Teil der Windows<sup>&#xAE;</sup>-Treiber."
 
-#: ../ui/NewPrinterWindow.glade.h:68
+#: ../ui/NewPrinterWindow.ui.h:68
 msgid "Printer model:"
 msgstr "Druckermodel:"
 
-#: ../ui/NewPrinterWindow.glade.h:69
+#: ../ui/NewPrinterWindow.ui.h:69
 msgid "Probe"
 msgstr "Erkennung"
 
-#: ../ui/NewPrinterWindow.glade.h:70
+#: ../ui/NewPrinterWindow.ui.h:70
 msgid "Prompt user if authentication is required"
 msgstr "Eingabeaufforderung anzeigen, wenn Authentifizierung erforderlich ist"
 
-#: ../ui/NewPrinterWindow.glade.h:71
+#: ../ui/NewPrinterWindow.ui.h:71
 msgid "Provide PPD file"
 msgstr "PPD-Datei bereitstellen"
 
-#: ../ui/NewPrinterWindow.glade.h:72
+#: ../ui/NewPrinterWindow.ui.h:72
 msgid "Queue:"
 msgstr "Warteschlange:"
 
-#: ../ui/NewPrinterWindow.glade.h:73
+#: ../ui/NewPrinterWindow.ui.h:73
 msgid "SCSI"
 msgstr "SCSI"
 
-#: ../ui/NewPrinterWindow.glade.h:74
+#: ../ui/NewPrinterWindow.ui.h:74
 msgid "SMB"
 msgstr "SMB"
 
-#: ../ui/NewPrinterWindow.glade.h:75
+#: ../ui/NewPrinterWindow.ui.h:75
 msgid "Search for a printer driver to download"
 msgstr "Suche nach herunterladbaren Drucker-Treibern"
 
-#: ../ui/NewPrinterWindow.glade.h:76
+#: ../ui/NewPrinterWindow.ui.h:76
 msgid "Searching..."
 msgstr "Suchen ..."
 
-#: ../ui/NewPrinterWindow.glade.h:77
+#: ../ui/NewPrinterWindow.ui.h:77
 msgid "Select printer from database"
 msgstr "Drucker aus Datenbank auswählen"
 
-#: ../ui/NewPrinterWindow.glade.h:78
+#: ../ui/NewPrinterWindow.ui.h:78
 msgid "Serial"
 msgstr "Seriell"
 
-#: ../ui/NewPrinterWindow.glade.h:79
+#: ../ui/NewPrinterWindow.ui.h:79
 msgid "Set authentication details now"
 msgstr "Setze Authentifizierung-Detail jetzt"
 
-#: ../ui/NewPrinterWindow.glade.h:80
+#: ../ui/NewPrinterWindow.ui.h:80
 msgid "Short name for this printer such as \"laserjet\""
 msgstr "Kurzname für diesen Drucker, wie \"laserjet\""
 
-#: ../ui/NewPrinterWindow.glade.h:81
+#: ../ui/NewPrinterWindow.ui.h:81
 msgid "Supplier:"
 msgstr "Anbieter:"
 
-#: ../ui/NewPrinterWindow.glade.h:82
+#: ../ui/NewPrinterWindow.ui.h:82
 msgid "Support:"
 msgstr "Support:"
 
-#: ../ui/NewPrinterWindow.glade.h:83
+#: ../ui/NewPrinterWindow.ui.h:83
 msgid "Text:"
 msgstr "Text:"
 
-#: ../ui/NewPrinterWindow.glade.h:84
+#: ../ui/NewPrinterWindow.ui.h:84
 msgid ""
 "The foomatic printer database contains various manufacturer provided "
 "PostScript Printer Description (PPD) files and also can generate PPD files "
@@ -2334,7 +2326,7 @@ msgstr ""
 "zur Verfügung gestellten Dateien im Allgemeinen einen besseren Zugriff zu "
 "bestimmten Funktionen des Druckers."
 
-#: ../ui/NewPrinterWindow.glade.h:85
+#: ../ui/NewPrinterWindow.ui.h:85
 msgid ""
 "These drivers do not come from your operating system supplier and will not "
 "be covered by their commercial support.  See the support and license terms "
@@ -2344,7 +2336,7 @@ msgstr ""
 "durch dessen kommerzielle Unterstützung abgedeckt. Lesen Sie die "
 "Unterstützungs- und Lizenzbedingungen der Treiberherstellers."
 
-#: ../ui/NewPrinterWindow.glade.h:86
+#: ../ui/NewPrinterWindow.ui.h:86
 msgid ""
 "This driver supports additional hardware that may be installed in the "
 "printer."
@@ -2352,7 +2344,7 @@ msgstr ""
 "Dieser Treiber unterstützt zusätzliche Hardware, welche im Drucker "
 "installiert sein könnte."
 
-#: ../ui/NewPrinterWindow.glade.h:87
+#: ../ui/NewPrinterWindow.ui.h:87
 msgid ""
 "This is done by assuming that options with the same name do have the same "
 "meaning. Settings of options that are not present in the new PPD will be "
@@ -2363,7 +2355,7 @@ msgstr ""
 "vorhanden sind, gehen verloren und nur Optionen, die im neuen PPD vorhanden "
 "sind, werden als Standard gesetzt."
 
-#: ../ui/NewPrinterWindow.glade.h:88
+#: ../ui/NewPrinterWindow.ui.h:88
 msgid ""
 "This way all current option settings will be lost. The default settings of "
 "the new PPD will be used. "
@@ -2371,23 +2363,23 @@ msgstr ""
 "Auf diesem Weg gehen alle derzeitigen Einstellungsoptionen verloren. Die "
 "Voreinstellungen der neuen PPD werden verwendet."
 
-#: ../ui/NewPrinterWindow.glade.h:89
+#: ../ui/NewPrinterWindow.ui.h:89
 msgid "Try to copy the option settings over from the old PPD. "
 msgstr "Versuche, die Einstellungsoptionen der alten PPD zu kopieren. "
 
-#: ../ui/NewPrinterWindow.glade.h:90
+#: ../ui/NewPrinterWindow.ui.h:90
 msgid "Try to transfer the current settings"
 msgstr "Versuche, die aktuellen Einstellungen zu transferieren"
 
-#: ../ui/NewPrinterWindow.glade.h:91
+#: ../ui/NewPrinterWindow.ui.h:91
 msgid "URI:"
 msgstr "URI:"
 
-#: ../ui/NewPrinterWindow.glade.h:93
+#: ../ui/NewPrinterWindow.ui.h:93
 msgid "Use the new PPD (Postscript Printer Description) as is."
 msgstr "Die neue PPD (Postscript Printer Description) verwenden, wie sie ist."
 
-#: ../ui/NewPrinterWindow.glade.h:95
+#: ../ui/NewPrinterWindow.ui.h:95
 msgid ""
 "With this choice no driver download will be performed. In the next steps a "
 "locally installed driver will be selected."
@@ -2395,91 +2387,91 @@ msgstr ""
 "Mit dieser Wahl werden keine Treiber heruntergeladen. Im nächsten Schritt "
 "wird ein lokal-installierter Treiber ausgewählt."
 
-#: ../ui/NewPrinterWindow.glade.h:96
+#: ../ui/NewPrinterWindow.ui.h:96
 msgid "Yes, I accept this license"
 msgstr "Ja, ich akzeptiere diese Lizenz"
 
-#: ../ui/NewPrinterWindow.glade.h:97
+#: ../ui/NewPrinterWindow.ui.h:97
 msgid "_Search"
 msgstr "_Suche"
 
-#: ../ui/NewPrinterWindow.glade.h:98
+#: ../ui/NewPrinterWindow.ui.h:98
 msgid "_Verify..."
 msgstr "_Verifizieren..."
 
-#: ../ui/NewPrinterWindow.glade.h:99
+#: ../ui/NewPrinterWindow.ui.h:99
 msgid "license"
 msgstr "Lizenz"
 
-#: ../ui/NewPrinterWindow.glade.h:100 ../ui/PrinterPropertiesDialog.glade.h:81
+#: ../ui/NewPrinterWindow.ui.h:100 ../ui/PrinterPropertiesDialog.ui.h:81
 msgid "move left"
 msgstr "nach links"
 
-#: ../ui/NewPrinterWindow.glade.h:101 ../ui/PrinterPropertiesDialog.glade.h:82
+#: ../ui/NewPrinterWindow.ui.h:101 ../ui/PrinterPropertiesDialog.ui.h:82
 msgid "move right"
 msgstr "nach rechts bewegen"
 
-#: ../ui/NewPrinterWindow.glade.h:102
+#: ../ui/NewPrinterWindow.ui.h:102
 msgid "short description"
 msgstr "Kurze Beschreibung"
 
-#: ../ui/NewPrinterWindow.glade.h:103
+#: ../ui/NewPrinterWindow.ui.h:103
 msgid "supplier"
 msgstr "Anbieter"
 
-#: ../ui/NewPrinterWindow.glade.h:104
+#: ../ui/NewPrinterWindow.ui.h:104
 msgid "support contacts"
 msgstr "Supportkontakte"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:1
+#: ../ui/PrinterPropertiesDialog.ui.h:1
 msgid " "
 msgstr " "
 
-#: ../ui/PrinterPropertiesDialog.glade.h:2
+#: ../ui/PrinterPropertiesDialog.ui.h:2
 msgid "<b>Banner</b>"
 msgstr "<b>Drucktext</b>"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:3
+#: ../ui/PrinterPropertiesDialog.ui.h:3
 msgid "<b>Common Options</b>"
 msgstr "<b>Allgemeine Optionen</b>"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:4
+#: ../ui/PrinterPropertiesDialog.ui.h:4
 msgid "<b>Image Options</b>"
 msgstr "<b>Bildoptionen</b>"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:5
+#: ../ui/PrinterPropertiesDialog.ui.h:5
 msgid "<b>Ink/Toner Levels</b>"
 msgstr "<b>Tinten-./Tonerfüllstand</b>"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:6
+#: ../ui/PrinterPropertiesDialog.ui.h:6
 msgid "<b>Other Options (Advanced)</b>"
 msgstr "<b>Weitere Optionen (fortgeschritten)</b>"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:7
+#: ../ui/PrinterPropertiesDialog.ui.h:7
 msgid "<b>Policies</b>"
 msgstr "<b>Richtlinien</b>"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:8
+#: ../ui/PrinterPropertiesDialog.ui.h:8
 msgid "<b>Settings</b>"
 msgstr "<b>Einstellungen</b>"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:9
+#: ../ui/PrinterPropertiesDialog.ui.h:9
 msgid "<b>State</b>"
 msgstr "<b>Zustand</b>"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:10
+#: ../ui/PrinterPropertiesDialog.ui.h:10
 msgid "<b>Status Messages</b>"
 msgstr "<b>Status-Nachricht</b>"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:11
+#: ../ui/PrinterPropertiesDialog.ui.h:11
 msgid "<b>Tests and Maintenance</b>"
 msgstr "<b>Tests und Wartung</b>"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:12
+#: ../ui/PrinterPropertiesDialog.ui.h:12
 msgid "<b>Text Options</b>"
 msgstr "<b>Textoptionen</b>"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:13
+#: ../ui/PrinterPropertiesDialog.ui.h:13
 msgid ""
 "<i>Not published\n"
 "See server settings</i>"
@@ -2487,224 +2479,224 @@ msgstr ""
 "<i>Nicht veröffentlicht\n"
 "Siehe Servereinstellungen</i>"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:15
+#: ../ui/PrinterPropertiesDialog.ui.h:15
 msgid "Accepting jobs"
 msgstr "Akzeptiere Druckaufträge"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:16
+#: ../ui/PrinterPropertiesDialog.ui.h:16
 msgid "Access Control"
 msgstr "Zugriffskontrolle"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:17
+#: ../ui/PrinterPropertiesDialog.ui.h:17
 msgid "Add or Remove Members"
 msgstr "Berechtigte hinzufügen oder entfernen"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:18
+#: ../ui/PrinterPropertiesDialog.ui.h:18
 msgid "Allow printing for everyone except these users:"
 msgstr "Allen Benutzern das Drucken erlauben, außer:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:19
+#: ../ui/PrinterPropertiesDialog.ui.h:19
 msgid "Bottom margin:"
 msgstr "Unterer Seitenrand:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:20
+#: ../ui/PrinterPropertiesDialog.ui.h:20
 msgid "Brightness:"
 msgstr "Helligkeit:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:21
+#: ../ui/PrinterPropertiesDialog.ui.h:21
 msgid "Change..."
 msgstr "Änderung..."
 
-#: ../ui/PrinterPropertiesDialog.glade.h:22
+#: ../ui/PrinterPropertiesDialog.ui.h:22
 msgid "Characters per inch:"
 msgstr "Buchstaben pro Zoll:"
 
 #. Not more than 25 characters
-#: ../ui/PrinterPropertiesDialog.glade.h:24
+#: ../ui/PrinterPropertiesDialog.ui.h:24
 msgid "Clean Print Heads"
 msgstr "Reinige Druckerköpfe"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:25
+#: ../ui/PrinterPropertiesDialog.ui.h:25
 msgid "Co_nflicts"
 msgstr "Ko_nflikte"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:26
+#: ../ui/PrinterPropertiesDialog.ui.h:26
 msgid "Columns:"
 msgstr "Spalten:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:27
+#: ../ui/PrinterPropertiesDialog.ui.h:27
 msgid "Copies:"
 msgstr "Kopien:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:28
+#: ../ui/PrinterPropertiesDialog.ui.h:28
 msgid "Deny printing for everyone except these users:"
 msgstr "Allen Benutzern das Drucken verbieten, außer:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:30
+#: ../ui/PrinterPropertiesDialog.ui.h:30
 msgid "Device URI:"
 msgstr "Geräte-URI:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:31
+#: ../ui/PrinterPropertiesDialog.ui.h:31
 msgid "Enabled"
 msgstr "Aktiviert"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:32
+#: ../ui/PrinterPropertiesDialog.ui.h:32
 msgid "Ending Banner:"
 msgstr "Nachspann:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:33
+#: ../ui/PrinterPropertiesDialog.ui.h:33
 msgid "Error Policy: \t"
 msgstr "Fehlerrichtlinie:\t"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:34
+#: ../ui/PrinterPropertiesDialog.ui.h:34
 msgid "Finishings:"
 msgstr "Abschlüsse:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:35
+#: ../ui/PrinterPropertiesDialog.ui.h:35
 msgid "Gamma:"
 msgstr "Gamma:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:36
+#: ../ui/PrinterPropertiesDialog.ui.h:36
 msgid "Hold until:"
 msgstr "Angehalten bis:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:37
+#: ../ui/PrinterPropertiesDialog.ui.h:37
 msgid "Hue adjustment:"
 msgstr "Anpassung des Farbtons:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:38
+#: ../ui/PrinterPropertiesDialog.ui.h:38
 msgid "Ink/Toner Levels"
 msgstr "Tinten-/Tonerfüllstand"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:40
+#: ../ui/PrinterPropertiesDialog.ui.h:40
 msgid "Job Options"
 msgstr "Auftragsoptionen"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:41
+#: ../ui/PrinterPropertiesDialog.ui.h:41
 msgid "Job priority:"
 msgstr "Auftragspriorität:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:42
+#: ../ui/PrinterPropertiesDialog.ui.h:42
 msgid "Left margin:"
 msgstr "Linker Seitenrand:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:43
+#: ../ui/PrinterPropertiesDialog.ui.h:43
 msgid "Lines per inch:"
 msgstr "Zeilen pro Zoll:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:44
+#: ../ui/PrinterPropertiesDialog.ui.h:44
 msgid "Location:"
 msgstr "Ort:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:45
+#: ../ui/PrinterPropertiesDialog.ui.h:45
 msgid "Make and Model:"
 msgstr "Marke und Modell:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:46
+#: ../ui/PrinterPropertiesDialog.ui.h:46
 msgid "Media:"
 msgstr "Medien:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:47
+#: ../ui/PrinterPropertiesDialog.ui.h:47
 msgid "Members"
 msgstr "Berechtigte"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:48
+#: ../ui/PrinterPropertiesDialog.ui.h:48
 msgid "Mirror"
 msgstr "Spiegel"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:49
+#: ../ui/PrinterPropertiesDialog.ui.h:49
 msgid "More"
 msgstr "Mehr"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:50
+#: ../ui/PrinterPropertiesDialog.ui.h:50
 msgid "Operation Policy:"
 msgstr "Betriebsrichtlinie:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:51
+#: ../ui/PrinterPropertiesDialog.ui.h:51
 msgid "Orientation:"
 msgstr "Ausrichtung:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:52
+#: ../ui/PrinterPropertiesDialog.ui.h:52
 #, fuzzy
 msgid "Output bin:"
 msgstr "Ausgabe-Reihenfolge"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:53
+#: ../ui/PrinterPropertiesDialog.ui.h:53
 msgid "Output order:"
 msgstr "Ausgabe-Reihenfolge"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:54
+#: ../ui/PrinterPropertiesDialog.ui.h:54
 msgid "Pages per side layout:"
 msgstr "Seiten pro Seiten-Layout:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:55
+#: ../ui/PrinterPropertiesDialog.ui.h:55
 msgid "Pages per side:"
 msgstr "Seiten pro Seite:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:56
+#: ../ui/PrinterPropertiesDialog.ui.h:56
 msgid "Policies"
 msgstr "Richtlinien"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:57
+#: ../ui/PrinterPropertiesDialog.ui.h:57
 msgid "Pretty print"
 msgstr "Schöndruck"
 
 #. Not more than 25 characters
-#: ../ui/PrinterPropertiesDialog.glade.h:59
+#: ../ui/PrinterPropertiesDialog.ui.h:59
 msgid "Print Self-Test Page"
 msgstr "Drucken der Testseite"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:62
+#: ../ui/PrinterPropertiesDialog.ui.h:62
 #, fuzzy
 msgid "Print quality:"
 msgstr "Druckerstatus:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:64
+#: ../ui/PrinterPropertiesDialog.ui.h:64
 msgid "Printer Properties"
 msgstr "Drucker-Einstellungen"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:65
+#: ../ui/PrinterPropertiesDialog.ui.h:65
 msgid "Printer State:"
 msgstr "Druckerstatus:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:66
+#: ../ui/PrinterPropertiesDialog.ui.h:66
 #, fuzzy
 msgid "Printer resolution:"
 msgstr "Drucker-Standort"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:67
+#: ../ui/PrinterPropertiesDialog.ui.h:67
 msgid "Reset"
 msgstr "Zurücksetzen"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:68
+#: ../ui/PrinterPropertiesDialog.ui.h:68
 msgid "Right margin:"
 msgstr "Rechter Seitenrand:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:69
+#: ../ui/PrinterPropertiesDialog.ui.h:69
 msgid "Saturation:"
 msgstr "Sättigung:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:70
+#: ../ui/PrinterPropertiesDialog.ui.h:70
 msgid "Scale to fit"
 msgstr "Zum Einpassen skalieren"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:71
+#: ../ui/PrinterPropertiesDialog.ui.h:71
 msgid "Scaling:"
 msgstr "Skalierung:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:72
+#: ../ui/PrinterPropertiesDialog.ui.h:72
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:73
+#: ../ui/PrinterPropertiesDialog.ui.h:73
 msgid "Shared"
 msgstr "Freigegeben"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:74
+#: ../ui/PrinterPropertiesDialog.ui.h:74
 msgid "Sides:"
 msgstr "Seiten:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:75
+#: ../ui/PrinterPropertiesDialog.ui.h:75
 msgid ""
 "Specify the default job options for this printer.  Jobs arriving at this "
 "print server will have these options added if they are not already set by "
@@ -2715,37 +2707,37 @@ msgstr ""
 "werden diese Optionen hinzugefügt, falls sie nicht bereits von der Anwendung "
 "gesetzt wurden."
 
-#: ../ui/PrinterPropertiesDialog.glade.h:76
+#: ../ui/PrinterPropertiesDialog.ui.h:76
 msgid "Starting Banner:"
 msgstr "Vorspann:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:77
+#: ../ui/PrinterPropertiesDialog.ui.h:77
 msgid "There are no status messages for this printer."
 msgstr "Es liegen keine Statusmeldungen für diesen Drucker vor."
 
-#: ../ui/PrinterPropertiesDialog.glade.h:78
+#: ../ui/PrinterPropertiesDialog.ui.h:78
 msgid "To add a new option, enter its name in the box below and click to add."
 msgstr ""
 "Um eine neue Option hinzuzufügen, geben Sie den Namen im unten aufgeführten "
 "Kasten an und klicken, um sie hinzuzufügen."
 
-#: ../ui/PrinterPropertiesDialog.glade.h:79
+#: ../ui/PrinterPropertiesDialog.ui.h:79
 msgid "Top margin:"
 msgstr "Oberer Seitenrand:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:80
+#: ../ui/PrinterPropertiesDialog.ui.h:80
 msgid "Word wrap"
 msgstr "Zeilenumbruch"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:83
+#: ../ui/PrinterPropertiesDialog.ui.h:83
 msgid "points"
 msgstr "Punkte"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:84
+#: ../ui/PrinterPropertiesDialog.ui.h:84
 msgid "user"
 msgstr "Benutzer"
 
-#: ../ui/PrintersWindow.glade.h:1
+#: ../ui/PrintersWindow.ui.h:1
 msgid ""
 "Printing service not available.  Start the service on this computer or "
 "connect to another server."
@@ -2753,93 +2745,93 @@ msgstr ""
 "Druck-Dienst nicht verfügbar.  Dienst auf diesem Rechner starten oder mit "
 "anderem Server verbinden."
 
-#: ../ui/PrintersWindow.glade.h:2
+#: ../ui/PrintersWindow.ui.h:2
 msgid "Start Service"
 msgstr "Dienst starten"
 
-#: ../ui/PrintersWindow.glade.h:3
+#: ../ui/PrintersWindow.ui.h:3
 msgid "System-Config-Printer"
 msgstr "System-Config-Printer"
 
-#: ../ui/PrintersWindow.glade.h:4
+#: ../ui/PrintersWindow.ui.h:4
 msgid "There are no printers configured yet."
 msgstr "Noch keine Drucker konfiguriert."
 
-#: ../ui/PrintersWindow.glade.h:5
+#: ../ui/PrintersWindow.ui.h:5
 msgid "_Discovered Printers"
 msgstr "_Entdeckte Drucker"
 
-#: ../ui/PrintersWindow.glade.h:6
+#: ../ui/PrintersWindow.ui.h:6
 msgid "_Group"
 msgstr "_Gruppe"
 
-#: ../ui/PrintersWindow.glade.h:7
+#: ../ui/PrintersWindow.ui.h:7
 msgid "_Groups"
 msgstr "_Gruppen"
 
-#: ../ui/PrintersWindow.glade.h:8
+#: ../ui/PrintersWindow.ui.h:8
 msgid "_Help"
 msgstr "_Hilfe"
 
-#: ../ui/PrintersWindow.glade.h:10
+#: ../ui/PrintersWindow.ui.h:10
 msgid "_Server"
 msgstr "_Server"
 
-#: ../ui/PrintersWindow.glade.h:11
+#: ../ui/PrintersWindow.ui.h:11
 msgid "_View"
 msgstr "_Betrachten"
 
-#: ../ui/ServerSettingsDialog.glade.h:1
+#: ../ui/ServerSettingsDialog.ui.h:1
 msgid "<b>Basic Server Settings</b>"
 msgstr "<b>Server-Grundeinstellungen</b>"
 
-#: ../ui/ServerSettingsDialog.glade.h:2
+#: ../ui/ServerSettingsDialog.ui.h:2
 msgid "<b>Browse servers</b>"
 msgstr "<b>Durchsuche Server</b>"
 
-#: ../ui/ServerSettingsDialog.glade.h:3
+#: ../ui/ServerSettingsDialog.ui.h:3
 msgid "<b>Job history</b>"
 msgstr "<b>Auftragsgeschichte</b>"
 
-#: ../ui/ServerSettingsDialog.glade.h:4
+#: ../ui/ServerSettingsDialog.ui.h:4
 msgid "Advanced Server Settings"
 msgstr "Erweiterte Server-Einstellungen"
 
-#: ../ui/ServerSettingsDialog.glade.h:5
+#: ../ui/ServerSettingsDialog.ui.h:5
 msgid "Allow _remote administration"
 msgstr "Fernadministration gestatten"
 
-#: ../ui/ServerSettingsDialog.glade.h:6
+#: ../ui/ServerSettingsDialog.ui.h:6
 msgid "Allow _users to cancel any job (not just their own)"
 msgstr ""
 "Ben_utzern das Löschen jeglicher Druckaufträge erlauben (nicht nur der "
 "eigenen)"
 
-#: ../ui/ServerSettingsDialog.glade.h:7
+#: ../ui/ServerSettingsDialog.ui.h:7
 msgid "Allow printing from the _Internet"
 msgstr "Drucken aus dem _Internet erlauben"
 
-#: ../ui/ServerSettingsDialog.glade.h:8
+#: ../ui/ServerSettingsDialog.ui.h:8
 msgid "Do not preserve job history"
 msgstr "Auftragsverlauf nicht behalten"
 
-#: ../ui/ServerSettingsDialog.glade.h:9
+#: ../ui/ServerSettingsDialog.ui.h:9
 msgid "Preserve job files (allow reprinting)"
 msgstr "Auftragsdaten behalten (ermöglicht erneuten Druck)"
 
-#: ../ui/ServerSettingsDialog.glade.h:10
+#: ../ui/ServerSettingsDialog.ui.h:10
 msgid "Preserve job history but not files"
 msgstr "Auftragsverlauf behalten, Auftragsdaten löschen"
 
-#: ../ui/ServerSettingsDialog.glade.h:11
+#: ../ui/ServerSettingsDialog.ui.h:11
 msgid "Save _debugging information for troubleshooting"
 msgstr "Speichere Fehlerprotokolle zur Fehlerbehebung"
 
-#: ../ui/ServerSettingsDialog.glade.h:12
+#: ../ui/ServerSettingsDialog.ui.h:12
 msgid "Server Settings"
 msgstr "Servereinstellungen"
 
-#: ../ui/ServerSettingsDialog.glade.h:13
+#: ../ui/ServerSettingsDialog.ui.h:13
 msgid ""
 "Usually print servers broadcast their queues. Specify print servers below to "
 "periodically ask for queues instead."
@@ -2847,24 +2839,24 @@ msgstr ""
 "Normalerweise verbreiten Druck-Server ihre Warteschlangen. Geben Sie unten "
 "die Druck-Server an, deren Warteschlangen periodisch abgefragt werden sollen."
 
-#: ../ui/ServerSettingsDialog.glade.h:14
+#: ../ui/ServerSettingsDialog.ui.h:14
 msgid "_Publish shared printers connected to this system"
 msgstr ""
 "Alle gemeinsamen Drucker freigeben, die mit diesem System verbunden sind"
 
-#: ../ui/ServerSettingsDialog.glade.h:15
+#: ../ui/ServerSettingsDialog.ui.h:15
 msgid "_Show printers shared by other systems"
 msgstr "Freigegebene Drucker anderer _Systeme anzeigen"
 
-#: ../ui/SMBBrowseDialog.glade.h:1
+#: ../ui/SMBBrowseDialog.ui.h:1
 msgid "SMB Browser"
 msgstr "SMB-Browser"
 
-#: ../ui/statusicon_popupmenu.glade.h:1
+#: ../ui/statusicon_popupmenu.ui.h:1
 msgid "_Hide"
 msgstr "_Verstecken"
 
-#: ../ui/WaitWindow.glade.h:1
+#: ../ui/WaitWindow.ui.h:1
 msgid "Please Wait"
 msgstr "Bitte warten"
 
@@ -3463,6 +3455,9 @@ msgstr "Applet für Druckerwarteschlange"
 #: ../print-applet.desktop.in.h:2
 msgid "System tray icon for managing print jobs"
 msgstr "Info-Symbol zur Verwaltung von Druckaufträgen"
+
+#~ msgid "duplicating printer"
+#~ msgstr "Drucker wird dupliziert"
 
 #~ msgid "Other"
 #~ msgstr "Sonstiges"
