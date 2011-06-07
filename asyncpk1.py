@@ -658,7 +658,7 @@ if __name__ == '__main__':
             print "cancel error: %s" % repr (exc)
 
         def get_file_clicked (self, button):
-            self.my_file = file ("/tmp/foo", "w")
+            self.my_file = file ("cupsd.conf", "w")
             self.conn.getFile ("/admin/conf/cupsd.conf", file=self.my_file,
                                reply_handler=self.got_file,
                                error_handler=self.get_file_error)
