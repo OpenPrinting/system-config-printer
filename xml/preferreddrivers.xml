@@ -128,7 +128,7 @@
       <attribute name="ppd-make-and-model" match=".* Foomatic/pxlmono"/>
     </drivertype>
 
-    <drivertype name="foomatic-recommended-non-postscript">
+    <drivertype name="foomatic-recommended-nonpostscript">
       <ppdname match="(foomatic(-db-compressed-ppds)?|ijsgutenprint.*):"/>
       <deviceid>
 	<field name="DRV" match=".*,?R1"/>
@@ -169,7 +169,7 @@
       <ppdname match=".*turboprint"/>
     </drivertype>
 
-    <drivertype name="manufacturer-ricoh-postscript">
+    <drivertype name="manufacturer-ricoh-ps">
       <ppdname match=".*/(Ricoh|Lanier|Gestetner|InfoPrint|Infotech|Savin|NRG)/PS/"/>
     </drivertype>
 
@@ -216,9 +216,24 @@
 	       match="(Ricoh|Lanier|Gestetner|InfoPrint|Infotech|Savin|NRG)"/>
       </deviceid>
       <drivers>
-	<drivertype>manufacturer-ricoh-postscript</drivertype>
+	<drivertype>manufacturer-ricoh-ps</drivertype>
 	<drivertype>manufacturer-ricoh-pxl</drivertype>
       </drivers>
+    </printer>
+
+    <!-- HP LaserJet 2100 series: avoid using PostScript for these
+         models because they only understand PS level 2 (bug
+         #710231). -->
+    <printer>
+      <make-and-model
+	  match="(Hewlett-Packard|HP) LaserJet 2100 Series"/>
+      <deviceid>
+	<field name="MFG" match="(HP|Hewlett-Packard)"/>
+	<field name="MDL" match="HP LaserJet 2100 Series"/>
+      </deviceid>
+      <avoid>
+	<drivertype>*-postscript</drivertype>
+      </avoid>
     </printer>
 
     <!-- The gutenprint driver for the Xerox 6250DP is black and
@@ -239,7 +254,7 @@
       <drivers>
 	<drivertype>manufacturer-cmd</drivertype>
 	<drivertype>foomatic-recommended-hpijs</drivertype>
-	<drivertype>foomatic-recommended-non-postscript</drivertype>
+	<drivertype>foomatic-recommended-nonpostscript</drivertype>
 	<drivertype>manufacturer*</drivertype>
 	<drivertype>foomatic-recommended-postscript</drivertype>
 	<drivertype>foomatic-postscript</drivertype>
