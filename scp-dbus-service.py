@@ -26,6 +26,7 @@ import sys
 
 from debug import *
 import asyncconn
+import config
 import jobviewer
 import newprinter
 import ppdcache
@@ -307,12 +308,15 @@ def _client_demo ():
 
 if __name__ == '__main__':
     import ppdippstr
+    import gettext
     import locale
     try:
         locale.setlocale (locale.LC_ALL, "")
     except:
         pass
 
+    gettext.textdomain (config.PACKAGE)
+    gettext.bindtextdomain (config.PACKAGE, config.localedir)
     ppdippstr.init ()
     gobject.threads_init ()
     from dbus.glib import DBusGMainLoop
