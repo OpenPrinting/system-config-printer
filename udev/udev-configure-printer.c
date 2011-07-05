@@ -521,7 +521,7 @@ device_id_from_devpath (const char *devpath,
       udev_device_unref (dev);
       udev_unref (udev);
       syslog (LOG_ERR, "unable to access %s", syspath);
-      exit (1);
+      return NULL;
     }
 
   parent_dev = udev_device_get_parent_with_subsystem_devtype (dev,
@@ -531,7 +531,7 @@ device_id_from_devpath (const char *devpath,
     {
       udev_unref (udev);
       syslog (LOG_ERR, "Failed to get parent");
-      exit (1);
+      return NULL;
     }
 
   usb_device_devpath = strdup (udev_device_get_devpath (parent_dev));
@@ -552,7 +552,7 @@ device_id_from_devpath (const char *devpath,
      * Pretend we didn't find any device URIs that matched, and
      * exit.
      */
-    exit (0);
+    return NULL;
 
   serial = udev_device_get_sysattr_value (parent_dev, "serial");
   if (serial)
@@ -582,21 +582,21 @@ device_id_from_devpath (const char *devpath,
       syslog (LOG_ERR, "Missing sysattr %s",
 	      idVendorStr ?
 	      (idProductStr ? "serial" : "idProduct") : "idVendor");
-      exit (1);
+      return NULL;
     }
 
   idVendor = strtoul (idVendorStr, &end, 16);
   if (end == idVendorStr)
     {
       syslog (LOG_ERR, "Invalid idVendor: %s", idVendorStr);
-      exit (1);
+      return NULL;
     }
 
   idProduct = strtoul (idProductStr, &end, 16);
   if (end == idProductStr)
     {
       syslog (LOG_ERR, "Invalid idProduct: %s", idProductStr);
-      exit (1);
+      return NULL;
     }
 
   syslog (LOG_DEBUG, "Device vendor/product is %04zX:%04zX",
@@ -1374,7 +1374,7 @@ bluetooth_verify_address (const char *bdaddr)
 }
 
 static int
-do_add (const char *cmd, const char *devpath)
+do_add (const char *cmd, const char *devpath, int detach)
 {
   pid_t pid;
   int f;
@@ -1386,7 +1386,7 @@ do_add (const char *cmd, const char *devpath)
   char usblpdev[8] = "";
   gboolean is_bluetooth;
 
-  if (getenv ("DEBUG") == NULL)
+  if (detach && getenv ("DEBUG") == NULL)
     {
       if ((pid = fork ()) == -1)
 	syslog (LOG_ERR, "Failed to fork process");
@@ -1427,7 +1427,7 @@ do_add (const char *cmd, const char *devpath)
       syslog (LOG_DEBUG, "invalid or missing IEEE 1284 Device ID%s%s",
 	      id.full_device_id ? " " : "",
 	      id.full_device_id ? id.full_device_id : "");
-      exit (1);
+      return 1;
     }
 
   syslog (LOG_DEBUG, "MFG:%s MDL:%s SERN:%s serial:%s", id.mfg, id.mdl,
@@ -1613,26 +1613,99 @@ do_remove (const char *devpath)
   return 0;
 }
 
+static int
+do_enumerate (const char *argv0)
+{
+  struct udev *udev;
+  struct udev_enumerate *e;
+  struct udev_list_entry *item = NULL, *first = NULL;
+  int r = 0;
+
+  udev = udev_new ();
+  if (udev == NULL)
+    {
+      syslog (LOG_ERR, "udev_new failed");
+      exit (1);
+    }
+
+  e = udev_enumerate_new (udev);
+  if (e == NULL)
+    {
+      udev_unref (udev);
+      syslog (LOG_ERR, "udev_enumerate_new failed");
+      exit (1);
+    }
+
+  if (udev_enumerate_add_match_tag (e, "udev-configure-printer") < 0)
+    {
+      udev_unref (udev);
+      udev_enumerate_unref (e);
+      syslog (LOG_ERR, "udev_enumerate_add_match_tag failed");
+      exit (1);
+    }
+
+  if (udev_enumerate_scan_devices (e) < 0)
+    {
+      udev_unref (udev);
+      udev_enumerate_unref (e);
+      syslog (LOG_ERR, "udev_enumerate_scan_devices failed");
+      exit (1);
+    }
+
+  first = udev_enumerate_get_list_entry (e);
+  udev_list_entry_foreach (item, first)
+    {
+      int k;
+      const char *p;
+      struct udev_device *d;
+
+      d = udev_device_new_from_syspath (udev, udev_list_entry_get_name(item));
+      if (!d)
+        continue;
+
+      p = udev_device_get_devpath (d);
+      if (p)
+        {
+          k = do_add (argv0, p, 0);
+          if (k != 0)
+            r = k;
+        }
+
+      udev_device_unref (d);
+  }
+
+  udev_enumerate_unref (e);
+  udev_unref (udev);
+
+  return r;
+}
+
 int
 main (int argc, char **argv)
 {
   int add;
+  int enumerate = 0;
 
-  if (argc != 3 ||
-      !((add = !strcmp (argv[1], "add")) ||
-	!strcmp (argv[1], "remove")))
+  if (!(argc == 3 &&
+        ((add = !strcmp (argv[1], "add")) ||
+         !strcmp (argv[1], "remove"))) &&
+      !(argc == 2 &&
+        (enumerate = !strcmp (argv[1], "enumerate"))))
     {
       fprintf (stderr,
 	       "Syntax: %s add {USB device path}\n"
-	       "        %s remove {USB device path}\n",
-	       argv[0], argv[0]);
+	       "        %s remove {USB device path}\n"
+               "        %s enumerate\n",
+	       argv[0], argv[0], argv[0]);
       return 1;
     }
 
   openlog ("udev-configure-printer", 0, LOG_LPR);
   cupsSetPasswordCB (no_password);
   if (add)
-    return do_add (argv[0], argv[2]);
+    return do_add (argv[0], argv[2], 1);
+  if (enumerate)
+    return do_enumerate (argv[0]);
 
   return do_remove (argv[2]);
 }

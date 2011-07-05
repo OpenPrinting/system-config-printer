@@ -1,0 +1,11 @@
+[Unit]
+Description=Enumerate and Configure Plugged-In Printers
+Requires=cups.socket
+After=cups.socket
+
+[Service]
+ExecStart=@udevhelperdir@/udev-configure-printer enumerate
+RemainAfterExit=yes
+
+[Install]
+WantedBy=printer.target

@@ -191,6 +191,16 @@ udevhelper_PROGRAMS=\
 	udev/udev-configure-printer
 udevhelper_SCRIPTS=\
 	udev/udev-add-printer
+
+if HAVE_SYSTEMD
+%.service: %.service.in
+	$(AM_V_GEN)sed -e 's,@udevhelperdir\@,$(udevhelperdir),g' $< > $@
+systemdsystemunit_DATA = \
+	udev/udev-configure-printer.service
+CLEANFILES = \
+	$(systemdsystemunit_DATA)
+endif
+
 endif
 
 man_MANS=					\
@@ -266,6 +276,7 @@ EXTRA_DIST=\
 	profile-ppds.py \
 	udev/udev-add-printer \
 	udev/70-printers.rules \
+	udev/udev-configure-printer.service.in \
 	xml/preferreddrivers.xml
 
 @INTLTOOL_DESKTOP_RULE@
@@ -362,4 +373,3 @@ distclean-local:
 	rm -rf html
 
 .PHONY: update-po missing-languages run help FORCE
-
