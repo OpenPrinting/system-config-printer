@@ -1797,8 +1797,9 @@ class NewPrinterGUI(GtkGUI):
                     iter = model.append (network_iter, row=row)
             else:
                 # Insert this local device in order.
+                network_path = model.get_path (network_iter)
                 iter = model.get_iter_first ()
-                while iter != network_iter:
+                while model.get_path (iter) != network_path:
                     physdev = model.get_value (iter, 1)
                     if physdev > device:
                         break
