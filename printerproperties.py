@@ -100,7 +100,7 @@ class PrinterPropertiesDialog(GtkGUI):
                               "ntbkPrinter",
                               "entPDescription",
                               "entPLocation",
-                              "lblPMakeModel",
+                              "entPMakeModel",
                               "lblPMakeModel2",
                               "lblPState",
                               "entPDevice",
@@ -1330,7 +1330,7 @@ class PrinterPropertiesDialog(GtkGUI):
         self.changed.discard(self.entPDevice)
 
         # Hide make/model and Device URI for classes
-        for widget in (self.lblPMakeModel2, self.lblPMakeModel,
+        for widget in (self.lblPMakeModel2, self.entPMakeModel,
                        self.btnChangePPD, self.lblPDevice2,
                        self.entPDevice, self.btnSelectDevice):
             if printer.is_class:
@@ -1606,7 +1606,7 @@ class PrinterPropertiesDialog(GtkGUI):
     def updatePrinterProperties(self):
         debugprint ("update printer properties")
         printer = self.printer
-        self.lblPMakeModel.set_text(printer.make_and_model)
+        self.entPMakeModel.set_text(printer.make_and_model)
         state = self.printer_states.get (printer.state, _("Unknown"))
         reason = printer.other_attributes.get ('printer-state-message', '')
         if len (reason) > 0:

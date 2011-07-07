@@ -324,14 +324,16 @@
                                     <property name="visible">True</property>
                                     <property name="spacing">6</property>
                                     <child>
-                                      <object class="GtkLabel" id="lblPMakeModel">
+                                      <object class="GtkEntry" id="entPMakeModel">
                                         <property name="visible">True</property>
+                                        <property name="editable">False</property>
                                         <property name="can_focus">True</property>
-                                        <property name="xalign">0</property>
-                                        <property name="label">label15</property>
-                                        <property name="wrap">True</property>
-                                        <property name="selectable">True</property>
-                                        <property name="ellipsize">end</property>
+					<property name="activates_default">False</property>
+					<child internal-child="accessible">
+					  <object class="AtkObject" id="entPMakeModel-atkobject">
+					    <property name="AtkObject::accessible-description" translatable="yes">make and model</property>
+					  </object>
+					</child>
                                       </object>
                                       <packing>
                                         <property name="position">0</property>
