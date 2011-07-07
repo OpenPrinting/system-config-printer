@@ -102,7 +102,7 @@ class PrinterPropertiesDialog(GtkGUI):
                               "entPLocation",
                               "entPMakeModel",
                               "lblPMakeModel2",
-                              "lblPState",
+                              "entPState",
                               "entPDevice",
                               "lblPDevice2",
                               "btnSelectDevice",
@@ -1611,7 +1611,7 @@ class PrinterPropertiesDialog(GtkGUI):
         reason = printer.other_attributes.get ('printer-state-message', '')
         if len (reason) > 0:
             state += ' - ' + reason
-        self.lblPState.set_text(state)
+        self.entPState.set_text(state)
         if len (self.changed) == 0:
             debugprint ("no changes yet: full printer properties update")
             # State
