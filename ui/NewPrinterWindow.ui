@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk+" version="2.16"/>
-  <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkWindow" id="NewPrinterWindow">
+    <property name="can_focus">False</property>
     <property name="title" translatable="yes">New Printer</property>
     <property name="modal">True</property>
     <property name="window_position">center-on-parent</property>
@@ -12,6 +12,7 @@
     <child>
       <object class="GtkVBox" id="vbox9">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <child>
           <object class="GtkNotebook" id="ntbkNewPrinter">
             <property name="visible">True</property>
@@ -20,11 +21,13 @@
             <child>
               <object class="GtkVBox" id="vbox76">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="border_width">12</property>
                 <property name="spacing">12</property>
                 <child>
                   <object class="GtkLabel" id="label238">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="xalign">0</property>
                     <property name="yalign">0</property>
                     <property name="label" translatable="yes">&lt;span weight="bold" size="larger"&gt;Describe Printer&lt;/span&gt;</property>
@@ -40,24 +43,29 @@
                 <child>
                   <object class="GtkVBox" id="vbox1">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="spacing">6</property>
                     <child>
                       <object class="GtkFrame" id="frame17">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="label_xalign">0</property>
                         <property name="shadow_type">none</property>
                         <child>
                           <object class="GtkAlignment" id="alignment29">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="top_padding">6</property>
                             <property name="left_padding">12</property>
                             <child>
                               <object class="GtkVBox" id="vbox30">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="spacing">6</property>
                                 <child>
                                   <object class="GtkLabel" id="label87">
                                     <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
                                     <property name="xalign">0</property>
                                     <property name="label" translatable="yes">Short name for this printer such as "laserjet"</property>
                                   </object>
@@ -86,6 +94,7 @@
                         <child type="label">
                           <object class="GtkLabel" id="label94">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="label" translatable="yes">&lt;b&gt;Printer Name&lt;/b&gt;</property>
                             <property name="use_markup">True</property>
                           </object>
@@ -93,26 +102,31 @@
                       </object>
                       <packing>
                         <property name="expand">False</property>
+                        <property name="fill">True</property>
                         <property name="position">0</property>
                       </packing>
                     </child>
                     <child>
                       <object class="GtkFrame" id="frame18">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="label_xalign">0</property>
                         <property name="shadow_type">none</property>
                         <child>
                           <object class="GtkAlignment" id="alignment30">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="top_padding">6</property>
                             <property name="left_padding">12</property>
                             <child>
                               <object class="GtkVBox" id="vbox31">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="spacing">6</property>
                                 <child>
                                   <object class="GtkLabel" id="label88">
                                     <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
                                     <property name="xalign">0</property>
                                     <property name="label" translatable="yes">Human-readable description such as "HP LaserJet with Duplexer"</property>
                                   </object>
@@ -140,6 +154,7 @@
                         <child type="label">
                           <object class="GtkLabel" id="label95">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="label" translatable="yes">&lt;b&gt;Description&lt;/b&gt; (optional)</property>
                             <property name="use_markup">True</property>
                           </object>
@@ -147,26 +162,31 @@
                       </object>
                       <packing>
                         <property name="expand">False</property>
+                        <property name="fill">True</property>
                         <property name="position">1</property>
                       </packing>
                     </child>
                     <child>
                       <object class="GtkFrame" id="frame19">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="label_xalign">0</property>
                         <property name="shadow_type">none</property>
                         <child>
                           <object class="GtkAlignment" id="alignment31">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="top_padding">6</property>
                             <property name="left_padding">12</property>
                             <child>
                               <object class="GtkVBox" id="vbox32">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="spacing">6</property>
                                 <child>
                                   <object class="GtkLabel" id="label89">
                                     <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
                                     <property name="xalign">0</property>
                                     <property name="label" translatable="yes">Human-readable location such as "Lab 1"</property>
                                   </object>
@@ -194,6 +214,7 @@
                         <child type="label">
                           <object class="GtkLabel" id="label96">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="label" translatable="yes">&lt;b&gt;Location&lt;/b&gt; (optional)</property>
                             <property name="use_markup">True</property>
                           </object>
@@ -201,11 +222,14 @@
                       </object>
                       <packing>
                         <property name="expand">False</property>
+                        <property name="fill">True</property>
                         <property name="position">2</property>
                       </packing>
                     </child>
                   </object>
                   <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
                     <property name="position">1</property>
                   </packing>
                 </child>
@@ -214,6 +238,7 @@
             <child type="tab">
               <object class="GtkLabel" id="label14">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Name</property>
               </object>
               <packing>
@@ -223,11 +248,13 @@
             <child>
               <object class="GtkVBox" id="vbox69">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="border_width">12</property>
                 <property name="spacing">12</property>
                 <child>
                   <object class="GtkLabel" id="label231">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="xalign">0</property>
                     <property name="yalign">0</property>
                     <property name="label" translatable="yes">&lt;span weight="bold" size="larger"&gt;Select Device&lt;/span&gt;</property>
@@ -243,30 +270,35 @@
                 <child>
                   <object class="GtkHBox" id="hbox30">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="spacing">12</property>
                     <child>
                       <object class="GtkScrolledWindow" id="scrolledwindow10">
                         <property name="width_request">220</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="hscrollbar_policy">automatic</property>
-                        <property name="vscrollbar_policy">automatic</property>
                         <property name="shadow_type">in</property>
                         <child>
                           <object class="GtkTreeView" id="tvNPDevices">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <signal name="cursor-changed" handler="on_tvNPDevices_cursor_changed" swapped="no"/>
+                            <child internal-child="selection">
+                              <object class="GtkTreeSelection" id="treeview-selection1"/>
+                            </child>
                           </object>
                         </child>
                       </object>
                       <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
                         <property name="position">0</property>
                       </packing>
                     </child>
                     <child>
                       <object class="GtkVBox" id="vbNPDevices">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="spacing">12</property>
                         <child>
                           <object class="GtkNotebook" id="ntbkNPType">
@@ -276,19 +308,23 @@
                             <child>
                               <object class="GtkVBox" id="vbox27">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <child>
                                   <object class="GtkFrame" id="frame24">
                                     <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
                                     <property name="label_xalign">0</property>
                                     <property name="shadow_type">none</property>
                                     <child>
                                       <object class="GtkAlignment" id="alignment58">
                                         <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
                                         <property name="top_padding">6</property>
                                         <property name="left_padding">12</property>
                                         <child>
                                           <object class="GtkLabel" id="lblNPDeviceDescription">
                                             <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
                                             <property name="xalign">0</property>
                                             <property name="label" translatable="yes">Device description.</property>
                                             <property name="wrap">True</property>
@@ -299,6 +335,7 @@
                                     <child type="label">
                                       <object class="GtkLabel" id="label135">
                                         <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
                                         <property name="ypad">3</property>
                                         <property name="label" translatable="yes">&lt;b&gt;Description&lt;/b&gt;</property>
                                         <property name="use_markup">True</property>
@@ -316,6 +353,7 @@
                             <child type="tab">
                               <object class="GtkLabel" id="label36">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">Empty</property>
                               </object>
                               <packing>
@@ -325,14 +363,17 @@
                             <child>
                               <object class="GtkVBox" id="vbox56">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <child>
                                   <object class="GtkFrame" id="frame31">
                                     <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
                                     <property name="label_xalign">0</property>
                                     <property name="shadow_type">none</property>
                                     <child>
                                       <object class="GtkAlignment" id="alignment76">
                                         <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
                                         <property name="xalign">0</property>
                                         <property name="yalign">1</property>
                                         <property name="top_padding">6</property>
@@ -349,6 +390,7 @@
                                     <child type="label">
                                       <object class="GtkLabel" id="label188">
                                         <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
                                         <property name="ypad">3</property>
                                         <property name="label" translatable="yes">&lt;b&gt;Enter device URI&lt;/b&gt;</property>
                                         <property name="use_markup">True</property>
@@ -357,6 +399,7 @@
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
+                                    <property name="fill">True</property>
                                     <property name="position">0</property>
                                   </packing>
                                 </child>
@@ -368,6 +411,7 @@
                             <child type="tab">
                               <object class="GtkLabel" id="label31">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">Device URI</property>
                               </object>
                               <packing>
@@ -378,16 +422,19 @@
                             <child>
                               <object class="GtkFrame" id="frame16">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="label_xalign">0</property>
                                 <property name="shadow_type">none</property>
                                 <child>
                                   <object class="GtkAlignment" id="alignment28">
                                     <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
                                     <property name="top_padding">6</property>
                                     <property name="left_padding">12</property>
                                     <child>
                                       <object class="GtkTable" id="table18">
                                         <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
                                         <property name="n_rows">2</property>
                                         <property name="n_columns">2</property>
                                         <property name="column_spacing">6</property>
@@ -395,6 +442,7 @@
                                         <child>
                                           <object class="GtkLabel" id="label202">
                                             <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
                                             <property name="xalign">0</property>
                                             <property name="label" translatable="yes">Host:</property>
                                           </object>
@@ -406,6 +454,7 @@
                                         <child>
                                           <object class="GtkLabel" id="label203">
                                             <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
                                             <property name="xalign">0</property>
                                             <property name="label" translatable="yes">Port number:</property>
                                             <accessibility>
@@ -458,6 +507,7 @@
                                 <child type="label">
                                   <object class="GtkLabel" id="label93">
                                     <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
                                     <property name="ypad">3</property>
                                     <property name="label" translatable="yes">&lt;b&gt;Location of the network printer&lt;/b&gt;</property>
                                     <property name="use_markup">True</property>
@@ -471,6 +521,7 @@
                             <child type="tab">
                               <object class="GtkLabel" id="label32">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">JetDirect</property>
                               </object>
                               <packing>
@@ -481,25 +532,30 @@
                             <child>
                               <object class="GtkAlignment" id="alignment82">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="top_padding">3</property>
                                 <property name="right_padding">6</property>
                                 <child>
                                   <object class="GtkFrame" id="frame34">
                                     <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
                                     <property name="label_xalign">0</property>
                                     <property name="shadow_type">none</property>
                                     <child>
                                       <object class="GtkAlignment" id="alignment83">
                                         <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
                                         <property name="top_padding">6</property>
                                         <property name="left_padding">12</property>
                                         <child>
                                           <object class="GtkVBox" id="vbox61">
                                             <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
                                             <property name="spacing">6</property>
                                             <child>
                                               <object class="GtkTable" id="table16">
                                                 <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
                                                 <property name="n_rows">3</property>
                                                 <property name="n_columns">2</property>
                                                 <property name="column_spacing">6</property>
@@ -507,6 +563,7 @@
                                                 <child>
                                                   <object class="GtkLabel" id="label195">
                                                     <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
                                                     <property name="xalign">0</property>
                                                     <property name="label" translatable="yes">Host:</property>
                                                   </object>
@@ -518,6 +575,7 @@
                                                 <child>
                                                   <object class="GtkLabel" id="label197">
                                                     <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
                                                     <property name="xalign">0</property>
                                                     <property name="label" translatable="yes">URI:</property>
                                                   </object>
@@ -549,6 +607,7 @@
                                                 <child>
                                                   <object class="GtkLabel" id="label198">
                                                     <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
                                                     <property name="xalign">0</property>
                                                     <property name="label" translatable="yes">Queue:</property>
                                                     <accessibility>
@@ -601,20 +660,24 @@
                                             <child>
                                               <object class="GtkHBox" id="hbox71">
                                                 <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
                                                 <child>
                                                   <object class="GtkButton" id="btnIPPVerify">
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
                                                     <property name="receives_default">False</property>
+                                                    <property name="use_action_appearance">False</property>
                                                     <signal name="clicked" handler="on_btnIPPVerify_clicked" swapped="no"/>
                                                     <child>
                                                       <object class="GtkAlignment" id="alignment85">
                                                         <property name="visible">True</property>
+                                                        <property name="can_focus">False</property>
                                                         <property name="xscale">0</property>
                                                         <property name="yscale">0</property>
                                                         <child>
                                                           <object class="GtkLabel" id="label199">
                                                             <property name="visible">True</property>
+                                                            <property name="can_focus">False</property>
                                                             <property name="label" translatable="yes">_Verify...</property>
                                                             <property name="use_underline">True</property>
                                                           </object>
@@ -638,11 +701,14 @@
                                             <child>
                                               <object class="GtkLabel" id="label1">
                                                 <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
                                                 <property name="label" translatable="yes">For example:
 ipp://cups-server/printers/printer-queue
 ipp://printer.mydomain/ipp</property>
                                               </object>
                                               <packing>
+                                                <property name="expand">True</property>
+                                                <property name="fill">True</property>
                                                 <property name="position">2</property>
                                               </packing>
                                             </child>
@@ -653,6 +719,7 @@ ipp://printer.mydomain/ipp</property>
                                     <child type="label">
                                       <object class="GtkLabel" id="label194">
                                         <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
                                         <property name="label" translatable="yes">&lt;b&gt;IPP Printer&lt;/b&gt;</property>
                                         <property name="use_markup">True</property>
                                       </object>
@@ -667,6 +734,7 @@ ipp://printer.mydomain/ipp</property>
                             <child type="tab">
                               <object class="GtkLabel" id="label33">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">IPP</property>
                               </object>
                               <packing>
@@ -677,16 +745,19 @@ ipp://printer.mydomain/ipp</property>
                             <child>
                               <object class="GtkFrame" id="frame14">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="label_xalign">0</property>
                                 <property name="shadow_type">none</property>
                                 <child>
                                   <object class="GtkAlignment" id="alignment26">
                                     <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
                                     <property name="top_padding">6</property>
                                     <property name="left_padding">12</property>
                                     <child>
                                       <object class="GtkTable" id="table17">
                                         <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
                                         <property name="n_rows">2</property>
                                         <property name="n_columns">3</property>
                                         <property name="column_spacing">6</property>
@@ -694,11 +765,9 @@ ipp://printer.mydomain/ipp</property>
                                         <child>
                                           <object class="GtkLabel" id="label200">
                                             <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
                                             <property name="xalign">0</property>
                                             <property name="label" translatable="yes">Host:</property>
-                                            <accessibility>
-                                              <relation type="label-for" target="cmbentNPTLpdHost"/>
-                                            </accessibility>
                                           </object>
                                           <packing>
                                             <property name="x_options">GTK_FILL</property>
@@ -708,44 +777,11 @@ ipp://printer.mydomain/ipp</property>
                                         <child>
                                           <object class="GtkLabel" id="label201">
                                             <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
                                             <property name="xalign">0</property>
                                             <property name="label" translatable="yes">Queue:</property>
-                                            <accessibility>
-                                              <relation type="label-for" target="cmbentNPTLpdQueue"/>
-                                            </accessibility>
                                           </object>
                                           <packing>
-                                            <property name="top_attach">1</property>
-                                            <property name="bottom_attach">2</property>
-                                            <property name="x_options">GTK_FILL</property>
-                                            <property name="y_options"></property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkComboBoxEntry" id="cmbentNPTLpdHost">
-                                            <property name="visible">True</property>
-                                            <accessibility>
-                                              <relation type="labelled-by" target="label200"/>
-                                            </accessibility>
-                                            <signal name="changed" handler="on_cmbentNPTLpdHost_changed" swapped="no"/>
-                                          </object>
-                                          <packing>
-                                            <property name="left_attach">1</property>
-                                            <property name="right_attach">2</property>
-                                            <property name="y_options"></property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkComboBoxEntry" id="cmbentNPTLpdQueue">
-                                            <property name="visible">True</property>
-                                            <accessibility>
-                                              <relation type="labelled-by" target="label201"/>
-                                            </accessibility>
-                                            <signal name="changed" handler="on_cmbentNPTLpdQueue_changed" swapped="no"/>
-                                          </object>
-                                          <packing>
-                                            <property name="left_attach">1</property>
-                                            <property name="right_attach">3</property>
                                             <property name="top_attach">1</property>
                                             <property name="bottom_attach">2</property>
                                             <property name="x_options">GTK_FILL</property>
@@ -757,19 +793,23 @@ ipp://printer.mydomain/ipp</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">False</property>
+                                            <property name="use_action_appearance">False</property>
                                             <signal name="clicked" handler="on_btnNPTLpdProbe_clicked" swapped="no"/>
                                             <child>
                                               <object class="GtkAlignment" id="alignment16">
                                                 <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
                                                 <property name="xscale">0</property>
                                                 <property name="yscale">0</property>
                                                 <child>
                                                   <object class="GtkHBox" id="hbox20">
                                                     <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
                                                     <property name="spacing">2</property>
                                                     <child>
                                                       <object class="GtkImage" id="image8">
                                                         <property name="visible">True</property>
+                                                        <property name="can_focus">False</property>
                                                         <property name="stock">gtk-print-preview</property>
                                                       </object>
                                                       <packing>
@@ -781,6 +821,7 @@ ipp://printer.mydomain/ipp</property>
                                                     <child>
                                                       <object class="GtkLabel" id="label71">
                                                         <property name="visible">True</property>
+                                                        <property name="can_focus">False</property>
                                                         <property name="label" translatable="yes">Probe</property>
                                                         <property name="use_underline">True</property>
                                                       </object>
@@ -802,6 +843,34 @@ ipp://printer.mydomain/ipp</property>
                                             <property name="y_options"></property>
                                           </packing>
                                         </child>
+                                        <child>
+                                          <object class="GtkEntry" id="entNPTLpdHost">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="invisible_char">●</property>
+                                            <signal name="changed" handler="on_entNPTLpdHost_changed" swapped="no"/>
+                                          </object>
+                                          <packing>
+                                            <property name="left_attach">1</property>
+                                            <property name="right_attach">2</property>
+                                            <property name="y_options"></property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkEntry" id="entNPTLpdQueue">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="invisible_char">●</property>
+                                            <signal name="changed" handler="on_entNPTLpdQueue_changed" swapped="no"/>
+                                          </object>
+                                          <packing>
+                                            <property name="left_attach">1</property>
+                                            <property name="right_attach">3</property>
+                                            <property name="top_attach">1</property>
+                                            <property name="bottom_attach">2</property>
+                                            <property name="y_options"></property>
+                                          </packing>
+                                        </child>
                                       </object>
                                     </child>
                                   </object>
@@ -809,6 +878,7 @@ ipp://printer.mydomain/ipp</property>
                                 <child type="label">
                                   <object class="GtkLabel" id="label91">
                                     <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
                                     <property name="ypad">3</property>
                                     <property name="label" translatable="yes">&lt;b&gt;Location of the LPD network printer&lt;/b&gt;</property>
                                     <property name="use_markup">True</property>
@@ -822,6 +892,7 @@ ipp://printer.mydomain/ipp</property>
                             <child type="tab">
                               <object class="GtkLabel" id="label35">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">LPD</property>
                               </object>
                               <packing>
@@ -832,6 +903,7 @@ ipp://printer.mydomain/ipp</property>
                             <child>
                               <object class="GtkVBox" id="vbox18">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="border_width">6</property>
                                 <property name="spacing">6</property>
                                 <child>
@@ -851,6 +923,7 @@ ipp://printer.mydomain/ipp</property>
                             <child type="tab">
                               <object class="GtkLabel" id="label37">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">SCSI</property>
                               </object>
                               <packing>
@@ -861,16 +934,19 @@ ipp://printer.mydomain/ipp</property>
                             <child>
                               <object class="GtkFrame" id="frame13">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="label_xalign">0</property>
                                 <property name="shadow_type">none</property>
                                 <child>
                                   <object class="GtkAlignment" id="alignment25">
                                     <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
                                     <property name="top_padding">6</property>
                                     <property name="left_padding">12</property>
                                     <child>
                                       <object class="GtkTable" id="table4">
                                         <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
                                         <property name="n_rows">4</property>
                                         <property name="n_columns">2</property>
                                         <property name="column_spacing">12</property>
@@ -878,6 +954,7 @@ ipp://printer.mydomain/ipp</property>
                                         <child>
                                           <object class="GtkLabel" id="label43">
                                             <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
                                             <property name="xalign">0</property>
                                             <property name="label" translatable="yes">Baud Rate</property>
                                             <accessibility>
@@ -892,6 +969,7 @@ ipp://printer.mydomain/ipp</property>
                                         <child>
                                           <object class="GtkLabel" id="label44">
                                             <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
                                             <property name="xalign">0</property>
                                             <property name="label" translatable="yes">Parity</property>
                                             <accessibility>
@@ -908,6 +986,7 @@ ipp://printer.mydomain/ipp</property>
                                         <child>
                                           <object class="GtkLabel" id="label45">
                                             <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
                                             <property name="xalign">0</property>
                                             <property name="label" translatable="yes">Data Bits</property>
                                             <accessibility>
@@ -924,6 +1003,7 @@ ipp://printer.mydomain/ipp</property>
                                         <child>
                                           <object class="GtkLabel" id="label46">
                                             <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
                                             <property name="xalign">0</property>
                                             <property name="label" translatable="yes">Flow Control</property>
                                             <accessibility>
@@ -940,6 +1020,7 @@ ipp://printer.mydomain/ipp</property>
                                         <child>
                                           <object class="GtkComboBox" id="cmbNPTSerialBaud">
                                             <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
                                             <accessibility>
                                               <relation type="labelled-by" target="label43"/>
                                             </accessibility>
@@ -954,6 +1035,7 @@ ipp://printer.mydomain/ipp</property>
                                         <child>
                                           <object class="GtkComboBox" id="cmbNPTSerialParity">
                                             <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
                                             <accessibility>
                                               <relation type="labelled-by" target="label44"/>
                                             </accessibility>
@@ -970,6 +1052,7 @@ ipp://printer.mydomain/ipp</property>
                                         <child>
                                           <object class="GtkComboBox" id="cmbNPTSerialBits">
                                             <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
                                             <accessibility>
                                               <relation type="labelled-by" target="label45"/>
                                             </accessibility>
@@ -986,6 +1069,7 @@ ipp://printer.mydomain/ipp</property>
                                         <child>
                                           <object class="GtkComboBox" id="cmbNPTSerialFlow">
                                             <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
                                             <accessibility>
                                               <relation type="labelled-by" target="label46"/>
                                             </accessibility>
@@ -1006,6 +1090,7 @@ ipp://printer.mydomain/ipp</property>
                                 <child type="label">
                                   <object class="GtkLabel" id="label90">
                                     <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
                                     <property name="ypad">3</property>
                                     <property name="label" translatable="yes">&lt;b&gt;Settings of the serial port&lt;/b&gt;</property>
                                     <property name="use_markup">True</property>
@@ -1019,6 +1104,7 @@ ipp://printer.mydomain/ipp</property>
                             <child type="tab">
                               <object class="GtkLabel" id="label38">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">Serial</property>
                               </object>
                               <packing>
@@ -1029,33 +1115,40 @@ ipp://printer.mydomain/ipp</property>
                             <child>
                               <object class="GtkAlignment" id="alignment84">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="top_padding">3</property>
                                 <property name="right_padding">6</property>
                                 <child>
                                   <object class="GtkVBox" id="vbox49">
                                     <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
                                     <property name="spacing">6</property>
                                     <child>
                                       <object class="GtkFrame" id="frame30">
                                         <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
                                         <property name="label_xalign">0</property>
                                         <property name="shadow_type">none</property>
                                         <child>
                                           <object class="GtkAlignment" id="alignment75">
                                             <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
                                             <property name="top_padding">6</property>
                                             <property name="left_padding">12</property>
                                             <child>
                                               <object class="GtkVBox" id="vbox55">
                                                 <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
                                                 <property name="spacing">6</property>
                                                 <child>
                                                   <object class="GtkHBox" id="hbox42">
                                                     <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
                                                     <property name="spacing">6</property>
                                                     <child>
                                                       <object class="GtkLabel" id="label129">
                                                         <property name="visible">True</property>
+                                                        <property name="can_focus">False</property>
                                                         <property name="label">smb://</property>
                                                         <accessibility>
                                                           <relation type="label-for" target="entSMBURI"/>
@@ -1077,6 +1170,8 @@ ipp://printer.mydomain/ipp</property>
                                                         <signal name="changed" handler="on_entSMBURI_changed" swapped="no"/>
                                                       </object>
                                                       <packing>
+                                                        <property name="expand">True</property>
+                                                        <property name="fill">True</property>
                                                         <property name="position">1</property>
                                                       </packing>
                                                     </child>
@@ -1086,6 +1181,7 @@ ipp://printer.mydomain/ipp</property>
                                                         <property name="visible">True</property>
                                                         <property name="can_focus">True</property>
                                                         <property name="receives_default">False</property>
+                                                        <property name="use_action_appearance">False</property>
                                                         <property name="use_underline">True</property>
                                                         <signal name="clicked" handler="on_btnSMBBrowse_clicked" swapped="no"/>
                                                       </object>
@@ -1098,12 +1194,14 @@ ipp://printer.mydomain/ipp</property>
                                                   </object>
                                                   <packing>
                                                     <property name="expand">False</property>
+                                                    <property name="fill">True</property>
                                                     <property name="position">0</property>
                                                   </packing>
                                                 </child>
                                                 <child>
                                                   <object class="GtkLabel" id="lblSMBHint">
                                                     <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
                                                     <property name="xalign">0</property>
                                                     <property name="label" translatable="yes">&lt;i&gt;smb://[workgroup/]server[:port]/printer&lt;/i&gt;</property>
                                                     <property name="use_markup">True</property>
@@ -1121,6 +1219,7 @@ ipp://printer.mydomain/ipp</property>
                                         <child type="label">
                                           <object class="GtkLabel" id="label187">
                                             <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
                                             <property name="label" translatable="yes">&lt;b&gt;SMB Printer&lt;/b&gt;</property>
                                             <property name="use_markup">True</property>
                                           </object>
@@ -1128,26 +1227,31 @@ ipp://printer.mydomain/ipp</property>
                                       </object>
                                       <packing>
                                         <property name="expand">False</property>
+                                        <property name="fill">True</property>
                                         <property name="position">0</property>
                                       </packing>
                                     </child>
                                     <child>
                                       <object class="GtkAlignment" id="alignment87">
                                         <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
                                         <property name="left_padding">6</property>
                                         <child>
                                           <object class="GtkFrame" id="frame37">
                                             <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
                                             <property name="label_xalign">0</property>
                                             <property name="shadow_type">none</property>
                                             <child>
                                               <object class="GtkAlignment" id="alignment95">
                                                 <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
                                                 <property name="top_padding">6</property>
                                                 <property name="left_padding">12</property>
                                                 <child>
                                                   <object class="GtkVBox" id="vbox68">
                                                     <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
                                                     <property name="spacing">6</property>
                                                     <child>
                                                       <object class="GtkRadioButton" id="rbtnSMBAuthPrompt">
@@ -1155,6 +1259,7 @@ ipp://printer.mydomain/ipp</property>
                                                         <property name="visible">True</property>
                                                         <property name="can_focus">True</property>
                                                         <property name="receives_default">False</property>
+                                                        <property name="use_action_appearance">False</property>
                                                         <property name="use_underline">True</property>
                                                         <property name="active">True</property>
                                                         <property name="draw_indicator">True</property>
@@ -1168,12 +1273,14 @@ ipp://printer.mydomain/ipp</property>
                                                     <child>
                                                       <object class="GtkVBox" id="vbox2">
                                                         <property name="visible">True</property>
+                                                        <property name="can_focus">False</property>
                                                         <child>
                                                           <object class="GtkRadioButton" id="rbtnSMBAuthSet">
                                                             <property name="label" translatable="yes">Set authentication details now</property>
                                                             <property name="visible">True</property>
                                                             <property name="can_focus">True</property>
                                                             <property name="receives_default">False</property>
+                                                            <property name="use_action_appearance">False</property>
                                                             <property name="use_underline">True</property>
                                                             <property name="draw_indicator">True</property>
                                                             <property name="group">rbtnSMBAuthPrompt</property>
@@ -1188,12 +1295,14 @@ ipp://printer.mydomain/ipp</property>
                                                         <child>
                                                           <object class="GtkAlignment" id="alignment50">
                                                             <property name="visible">True</property>
+                                                            <property name="can_focus">False</property>
                                                             <property name="top_padding">6</property>
                                                             <property name="left_padding">18</property>
                                                             <child>
                                                             <object class="GtkTable" id="tblSMBAuth">
                                                             <property name="visible">True</property>
                                                             <property name="sensitive">False</property>
+                                                            <property name="can_focus">False</property>
                                                             <property name="n_rows">2</property>
                                                             <property name="n_columns">2</property>
                                                             <property name="column_spacing">6</property>
@@ -1201,6 +1310,7 @@ ipp://printer.mydomain/ipp</property>
                                                             <child>
                                                             <object class="GtkLabel" id="label133">
                                                             <property name="visible">True</property>
+                                                            <property name="can_focus">False</property>
                                                             <property name="xalign">0</property>
                                                             <property name="label" translatable="yes">Password:</property>
                                                             <accessibility>
@@ -1217,6 +1327,7 @@ ipp://printer.mydomain/ipp</property>
                                                             <child>
                                                             <object class="GtkLabel" id="label132">
                                                             <property name="visible">True</property>
+                                                            <property name="can_focus">False</property>
                                                             <property name="xalign">0</property>
                                                             <property name="label" translatable="yes">Username:</property>
                                                             <accessibility>
@@ -1263,11 +1374,15 @@ ipp://printer.mydomain/ipp</property>
                                                             </child>
                                                           </object>
                                                           <packing>
+                                                            <property name="expand">True</property>
+                                                            <property name="fill">True</property>
                                                             <property name="position">1</property>
                                                           </packing>
                                                         </child>
                                                       </object>
                                                       <packing>
+                                                        <property name="expand">True</property>
+                                                        <property name="fill">True</property>
                                                         <property name="position">1</property>
                                                       </packing>
                                                     </child>
@@ -1278,6 +1393,7 @@ ipp://printer.mydomain/ipp</property>
                                             <child type="label">
                                               <object class="GtkLabel" id="label227">
                                                 <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
                                                 <property name="label" translatable="yes">&lt;b&gt;Authentication&lt;/b&gt;</property>
                                                 <property name="use_markup">True</property>
                                               </object>
@@ -1287,30 +1403,36 @@ ipp://printer.mydomain/ipp</property>
                                       </object>
                                       <packing>
                                         <property name="expand">False</property>
+                                        <property name="fill">True</property>
                                         <property name="position">1</property>
                                       </packing>
                                     </child>
                                     <child>
                                       <object class="GtkHBox" id="hbox66">
                                         <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
                                         <child>
                                           <object class="GtkAlignment" id="alignment86">
                                             <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
                                             <property name="left_padding">12</property>
                                             <child>
                                               <object class="GtkButton" id="btnSMBVerify">
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">True</property>
                                                 <property name="receives_default">False</property>
+                                                <property name="use_action_appearance">False</property>
                                                 <signal name="clicked" handler="on_btnSMBVerify_clicked" swapped="no"/>
                                                 <child>
                                                   <object class="GtkAlignment" id="alignment51">
                                                     <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
                                                     <property name="xscale">0</property>
                                                     <property name="yscale">0</property>
                                                     <child>
                                                       <object class="GtkLabel" id="label134">
                                                         <property name="visible">True</property>
+                                                        <property name="can_focus">False</property>
                                                         <property name="label" translatable="yes">_Verify...</property>
                                                         <property name="use_underline">True</property>
                                                       </object>
@@ -1343,6 +1465,7 @@ ipp://printer.mydomain/ipp</property>
                             <child type="tab">
                               <object class="GtkLabel" id="label128">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">SMB</property>
                               </object>
                               <packing>
@@ -1353,31 +1476,37 @@ ipp://printer.mydomain/ipp</property>
                             <child>
                               <object class="GtkAlignment" id="alignment97">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="top_padding">3</property>
                                 <property name="right_padding">6</property>
                                 <child>
                                   <object class="GtkFrame" id="frame39">
                                     <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
                                     <property name="label_xalign">0</property>
                                     <property name="shadow_type">none</property>
                                     <child>
                                       <object class="GtkAlignment" id="alignment98">
                                         <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
                                         <property name="top_padding">6</property>
                                         <property name="left_padding">12</property>
                                         <child>
                                           <object class="GtkVBox" id="vbox77">
                                             <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
                                             <property name="spacing">12</property>
                                             <child>
                                               <object class="GtkTable" id="table23">
                                                 <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
                                                 <property name="n_columns">3</property>
                                                 <property name="column_spacing">6</property>
                                                 <property name="row_spacing">6</property>
                                                 <child>
                                                   <object class="GtkLabel" id="label2235">
                                                     <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
                                                     <property name="xalign">0</property>
                                                     <property name="label" translatable="yes">Host:</property>
                                                   </object>
@@ -1405,6 +1534,7 @@ ipp://printer.mydomain/ipp</property>
                                                     <property name="sensitive">False</property>
                                                     <property name="can_focus">True</property>
                                                     <property name="receives_default">False</property>
+                                                    <property name="use_action_appearance">False</property>
                                                     <property name="use_stock">True</property>
                                                     <accelerator key="Return" signal="activate"/>
                                                     <signal name="clicked" handler="on_btnNetworkFind_clicked" swapped="no"/>
@@ -1426,8 +1556,10 @@ ipp://printer.mydomain/ipp</property>
                                             <child>
                                               <object class="GtkVBox" id="vbox78">
                                                 <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
                                                 <child>
                                                   <object class="GtkLabel" id="lblNetworkFindSearching">
+                                                    <property name="can_focus">False</property>
                                                     <property name="xalign">0</property>
                                                     <property name="label" translatable="yes">Searching...</property>
                                                   </object>
@@ -1439,6 +1571,7 @@ ipp://printer.mydomain/ipp</property>
                                                 </child>
                                                 <child>
                                                   <object class="GtkLabel" id="lblNetworkFindNotFound">
+                                                    <property name="can_focus">False</property>
                                                     <property name="xalign">0</property>
                                                     <property name="label" translatable="yes">No printer was found at that address.</property>
                                                     <property name="use_markup">True</property>
@@ -1463,6 +1596,7 @@ ipp://printer.mydomain/ipp</property>
                                     <child type="label">
                                       <object class="GtkLabel" id="label2238">
                                         <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
                                         <property name="label" translatable="yes">&lt;b&gt;Network Printer&lt;/b&gt;</property>
                                         <property name="use_markup">True</property>
                                       </object>
@@ -1473,12 +1607,12 @@ ipp://printer.mydomain/ipp</property>
                               <packing>
                                 <property name="position">8</property>
                                 <property name="tab_fill">False</property>
-                                <property name="tab_pack">end</property>
                               </packing>
                             </child>
                             <child type="tab">
                               <object class="GtkLabel" id="label2231">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">Network</property>
                               </object>
                               <packing>
@@ -1501,14 +1635,15 @@ ipp://printer.mydomain/ipp</property>
                               <object class="GtkScrolledWindow" id="scrolledwindow29">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="hscrollbar_policy">automatic</property>
-                                <property name="vscrollbar_policy">automatic</property>
                                 <property name="shadow_type">in</property>
                                 <child>
                                   <object class="GtkTreeView" id="tvNPDeviceURIs">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <signal name="cursor-changed" handler="on_tvNPDeviceURIs_cursor_changed" swapped="no"/>
+                                    <child internal-child="selection">
+                                      <object class="GtkTreeSelection" id="treeview-selection2"/>
+                                    </child>
                                   </object>
                                 </child>
                               </object>
@@ -1516,23 +1651,29 @@ ipp://printer.mydomain/ipp</property>
                             <child type="label">
                               <object class="GtkLabel" id="label239">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">Connection</property>
                               </object>
                             </child>
                           </object>
                           <packing>
                             <property name="expand">False</property>
+                            <property name="fill">True</property>
                             <property name="pack_type">end</property>
                             <property name="position">1</property>
                           </packing>
                         </child>
                       </object>
                       <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
                         <property name="position">1</property>
                       </packing>
                     </child>
                   </object>
                   <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
                     <property name="position">1</property>
                   </packing>
                 </child>
@@ -1544,6 +1685,7 @@ ipp://printer.mydomain/ipp</property>
             <child type="tab">
               <object class="GtkLabel" id="label15">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Device</property>
               </object>
               <packing>
@@ -1554,11 +1696,13 @@ ipp://printer.mydomain/ipp</property>
             <child>
               <object class="GtkVBox" id="vbox70">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="border_width">12</property>
                 <property name="spacing">12</property>
                 <child>
                   <object class="GtkLabel" id="label232">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="xalign">0</property>
                     <property name="yalign">0</property>
                     <property name="label" translatable="yes">&lt;span weight="bold" size="larger"&gt;Choose Driver&lt;/span&gt;</property>
@@ -1574,6 +1718,7 @@ ipp://printer.mydomain/ipp</property>
                 <child>
                   <object class="GtkVBox" id="vbox36">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="spacing">6</property>
                     <child>
                       <object class="GtkRadioButton" id="rbtnNPFoomatic">
@@ -1581,6 +1726,7 @@ ipp://printer.mydomain/ipp</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="active">True</property>
                         <property name="draw_indicator">True</property>
@@ -1598,6 +1744,7 @@ ipp://printer.mydomain/ipp</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="draw_indicator">True</property>
                         <property name="group">rbtnNPFoomatic</property>
@@ -1614,6 +1761,7 @@ ipp://printer.mydomain/ipp</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="draw_indicator">True</property>
                         <property name="group">rbtnNPFoomatic</property>
@@ -1628,6 +1776,7 @@ ipp://printer.mydomain/ipp</property>
                     <child>
                       <object class="GtkHSeparator" id="hseparator6">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -1643,10 +1792,12 @@ ipp://printer.mydomain/ipp</property>
                         <child>
                           <object class="GtkVBox" id="vbox39">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="spacing">6</property>
                             <child>
                               <object class="GtkLabel" id="label105">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="xalign">0</property>
                                 <property name="label" translatable="yes">The foomatic printer database contains various manufacturer provided PostScript Printer Description (PPD) files and also can generate PPD files for a large number of (non PostScript) printers. But in general manufacturer provided PPD files provide better access to the specific features of the printer.</property>
                                 <property name="wrap">True</property>
@@ -1662,18 +1813,21 @@ ipp://printer.mydomain/ipp</property>
                                 <property name="width_request">120</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="hscrollbar_policy">automatic</property>
-                                <property name="vscrollbar_policy">automatic</property>
                                 <property name="shadow_type">in</property>
                                 <child>
                                   <object class="GtkTreeView" id="tvNPMakes">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <signal name="cursor-changed" handler="on_tvNPMakes_cursor_changed" swapped="no"/>
+                                    <child internal-child="selection">
+                                      <object class="GtkTreeSelection" id="treeview-selection3"/>
+                                    </child>
                                   </object>
                                 </child>
                               </object>
                               <packing>
+                                <property name="expand">True</property>
+                                <property name="fill">True</property>
                                 <property name="position">1</property>
                               </packing>
                             </child>
@@ -1682,6 +1836,7 @@ ipp://printer.mydomain/ipp</property>
                         <child type="tab">
                           <object class="GtkLabel" id="label228">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="label">DB</property>
                           </object>
                           <packing>
@@ -1691,10 +1846,12 @@ ipp://printer.mydomain/ipp</property>
                         <child>
                           <object class="GtkVBox" id="vbox38">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="spacing">6</property>
                             <child>
                               <object class="GtkLabel" id="label103">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="xalign">0</property>
                                 <property name="label" translatable="yes">PostScript Printer Description (PPD) files can often be found on the driver disk that comes with the printer. For PostScript printers they are often part of the Windows&lt;sup&gt;®&lt;/sup&gt; driver.</property>
                                 <property name="use_markup">True</property>
@@ -1709,9 +1866,11 @@ ipp://printer.mydomain/ipp</property>
                             <child>
                               <object class="GtkHBox" id="hbox37">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <child>
                                   <object class="GtkFileChooserButton" id="filechooserPPD">
                                     <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
                                     <property name="width_chars">40</property>
                                     <signal name="selection-changed" handler="on_filechooserPPD_selection_changed" swapped="no"/>
                                   </object>
@@ -1736,6 +1895,7 @@ ipp://printer.mydomain/ipp</property>
                         <child type="tab">
                           <object class="GtkLabel" id="label229">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="label">PPD</property>
                           </object>
                           <packing>
@@ -1746,6 +1906,7 @@ ipp://printer.mydomain/ipp</property>
                         <child>
                           <object class="GtkTable" id="table19">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="n_rows">2</property>
                             <property name="n_columns">2</property>
                             <property name="column_spacing">6</property>
@@ -1753,6 +1914,7 @@ ipp://printer.mydomain/ipp</property>
                             <child>
                               <object class="GtkLabel" id="label206">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="xalign">0</property>
                                 <property name="label" translatable="yes">Make and model:</property>
                               </object>
@@ -1764,6 +1926,7 @@ ipp://printer.mydomain/ipp</property>
                             <child>
                               <object class="GtkHBox" id="hbox72">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="spacing">6</property>
                                 <child>
                                   <object class="GtkEntry" id="entNPDownloadableDriverSearch">
@@ -1783,19 +1946,23 @@ ipp://printer.mydomain/ipp</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">False</property>
+                                    <property name="use_action_appearance">False</property>
                                     <signal name="clicked" handler="on_btnNPDownloadableDriverSearch_clicked" swapped="no"/>
                                     <child>
                                       <object class="GtkAlignment" id="alignment89">
                                         <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
                                         <property name="xscale">0</property>
                                         <property name="yscale">0</property>
                                         <child>
                                           <object class="GtkHBox" id="hbox73">
                                             <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
                                             <property name="spacing">2</property>
                                             <child>
                                               <object class="GtkImage" id="image29">
                                                 <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
                                                 <property name="stock">gtk-find</property>
                                               </object>
                                               <packing>
@@ -1807,6 +1974,7 @@ ipp://printer.mydomain/ipp</property>
                                             <child>
                                               <object class="GtkLabel" id="label207">
                                                 <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
                                                 <property name="label" translatable="yes">_Search</property>
                                                 <property name="use_underline">True</property>
                                               </object>
@@ -1837,6 +2005,7 @@ ipp://printer.mydomain/ipp</property>
                             <child>
                               <object class="GtkLabel" id="label208">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="xalign">0</property>
                                 <property name="label" translatable="yes">Printer model:</property>
                               </object>
@@ -1850,6 +2019,7 @@ ipp://printer.mydomain/ipp</property>
                             <child>
                               <object class="GtkComboBox" id="cmbNPDownloadableDriverFoundPrinters">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <signal name="changed" handler="on_cmbNPDownloadableDriverFoundPrinters_changed" swapped="no"/>
                               </object>
                               <packing>
@@ -1869,6 +2039,7 @@ ipp://printer.mydomain/ipp</property>
                         <child type="tab">
                           <object class="GtkLabel" id="label230">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="label">OpenPrinting</property>
                           </object>
                           <packing>
@@ -1878,11 +2049,15 @@ ipp://printer.mydomain/ipp</property>
                         </child>
                       </object>
                       <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
                         <property name="position">4</property>
                       </packing>
                     </child>
                   </object>
                   <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
                     <property name="position">1</property>
                   </packing>
                 </child>
@@ -1894,6 +2069,7 @@ ipp://printer.mydomain/ipp</property>
             <child type="tab">
               <object class="GtkLabel" id="label16">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="label">PPD</property>
               </object>
               <packing>
@@ -1904,11 +2080,13 @@ ipp://printer.mydomain/ipp</property>
             <child>
               <object class="GtkVBox" id="vbox71">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="border_width">12</property>
                 <property name="spacing">12</property>
                 <child>
                   <object class="GtkLabel" id="label233">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="xalign">0</property>
                     <property name="yalign">0</property>
                     <property name="label" translatable="yes">&lt;span weight="bold" size="larger"&gt;Choose Driver&lt;/span&gt;</property>
@@ -1930,14 +2108,15 @@ ipp://printer.mydomain/ipp</property>
                         <property name="width_request">250</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="hscrollbar_policy">automatic</property>
-                        <property name="vscrollbar_policy">automatic</property>
                         <property name="shadow_type">in</property>
                         <child>
                           <object class="GtkTreeView" id="tvNPModels">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <signal name="cursor-changed" handler="on_tvNPModels_cursor_changed" swapped="no"/>
+                            <child internal-child="selection">
+                              <object class="GtkTreeSelection" id="treeview-selection4"/>
+                            </child>
                           </object>
                         </child>
                       </object>
@@ -1950,29 +2129,34 @@ ipp://printer.mydomain/ipp</property>
                       <object class="GtkVBox" id="vbox58">
                         <property name="width_request">200</property>
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="spacing">6</property>
                         <child>
                           <object class="GtkScrolledWindow" id="scrolledwindow14">
                             <property name="height_request">0</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <property name="hscrollbar_policy">automatic</property>
-                            <property name="vscrollbar_policy">automatic</property>
                             <property name="shadow_type">in</property>
                             <child>
                               <object class="GtkTreeView" id="tvNPDrivers">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <signal name="cursor-changed" handler="on_tvNPDrivers_cursor_changed" swapped="no"/>
+                                <child internal-child="selection">
+                                  <object class="GtkTreeSelection" id="treeview-selection5"/>
+                                </child>
                               </object>
                             </child>
                           </object>
                           <packing>
+                            <property name="expand">True</property>
+                            <property name="fill">True</property>
                             <property name="position">0</property>
                           </packing>
                         </child>
                         <child>
                           <object class="GtkHButtonBox" id="hbuttonbox4">
+                            <property name="can_focus">False</property>
                             <property name="layout_style">end</property>
                             <child>
                               <object class="GtkButton" id="btnNPPDComments">
@@ -1981,6 +2165,7 @@ ipp://printer.mydomain/ipp</property>
                                 <property name="can_focus">True</property>
                                 <property name="can_default">True</property>
                                 <property name="receives_default">False</property>
+                                <property name="use_action_appearance">False</property>
                                 <property name="use_underline">True</property>
                               </object>
                               <packing>
@@ -1992,6 +2177,7 @@ ipp://printer.mydomain/ipp</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
+                            <property name="fill">True</property>
                             <property name="position">1</property>
                           </packing>
                         </child>
@@ -2003,6 +2189,8 @@ ipp://printer.mydomain/ipp</property>
                     </child>
                   </object>
                   <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
                     <property name="position">1</property>
                   </packing>
                 </child>
@@ -2014,6 +2202,7 @@ ipp://printer.mydomain/ipp</property>
             <child type="tab">
               <object class="GtkLabel" id="label104">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="label">PPD2</property>
               </object>
               <packing>
@@ -2024,11 +2213,13 @@ ipp://printer.mydomain/ipp</property>
             <child>
               <object class="GtkVBox" id="vbox72">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="border_width">12</property>
                 <property name="spacing">12</property>
                 <child>
                   <object class="GtkLabel" id="label234">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="xalign">0</property>
                     <property name="yalign">0</property>
                     <property name="label" translatable="yes">&lt;span weight="bold" size="larger"&gt;Choose Class Members&lt;/span&gt;</property>
@@ -2044,34 +2235,40 @@ ipp://printer.mydomain/ipp</property>
                 <child>
                   <object class="GtkHBox" id="hbox31">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="spacing">6</property>
                     <child>
                       <object class="GtkScrolledWindow" id="scrolledwindow11">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="hscrollbar_policy">automatic</property>
-                        <property name="vscrollbar_policy">automatic</property>
                         <property name="shadow_type">in</property>
                         <child>
                           <object class="GtkTreeView" id="tvNCMembers">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <signal name="cursor-changed" handler="on_tvNCMembers_cursor_changed" swapped="no"/>
+                            <child internal-child="selection">
+                              <object class="GtkTreeSelection" id="treeview-selection6"/>
+                            </child>
                           </object>
                         </child>
                       </object>
                       <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
                         <property name="position">0</property>
                       </packing>
                     </child>
                     <child>
                       <object class="GtkAlignment" id="alignment74">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="yalign">1</property>
                         <property name="yscale">0.5</property>
                         <child>
                           <object class="GtkVButtonBox" id="vbuttonbox2">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="layout_style">start</property>
                             <child>
                               <object class="GtkButton" id="btnNCAddMember">
@@ -2080,6 +2277,7 @@ ipp://printer.mydomain/ipp</property>
                                 <property name="can_focus">True</property>
                                 <property name="can_default">True</property>
                                 <property name="receives_default">False</property>
+                                <property name="use_action_appearance">False</property>
                                 <child internal-child="accessible">
                                   <object class="AtkObject" id="btnNCAddMember-atkobject">
                                     <property name="AtkObject::accessible-description" translatable="yes">move left</property>
@@ -2089,15 +2287,18 @@ ipp://printer.mydomain/ipp</property>
                                 <child>
                                   <object class="GtkAlignment" id="alignment33">
                                     <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
                                     <property name="xscale">0</property>
                                     <property name="yscale">0</property>
                                     <child>
                                       <object class="GtkHBox" id="hbox32">
                                         <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
                                         <property name="spacing">2</property>
                                         <child>
                                           <object class="GtkImage" id="image14">
                                             <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
                                             <property name="stock">gtk-go-back</property>
                                           </object>
                                           <packing>
@@ -2109,6 +2310,7 @@ ipp://printer.mydomain/ipp</property>
                                         <child>
                                           <object class="GtkLabel" id="label101">
                                             <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
                                             <property name="use_underline">True</property>
                                           </object>
                                           <packing>
@@ -2135,6 +2337,7 @@ ipp://printer.mydomain/ipp</property>
                                 <property name="can_focus">True</property>
                                 <property name="can_default">True</property>
                                 <property name="receives_default">False</property>
+                                <property name="use_action_appearance">False</property>
                                 <child internal-child="accessible">
                                   <object class="AtkObject" id="btnNCDelMember-atkobject">
                                     <property name="AtkObject::accessible-description" translatable="yes">move right</property>
@@ -2144,6 +2347,7 @@ ipp://printer.mydomain/ipp</property>
                                 <child>
                                   <object class="GtkImage" id="image15">
                                     <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
                                     <property name="stock">gtk-go-forward</property>
                                   </object>
                                 </child>
@@ -2159,6 +2363,7 @@ ipp://printer.mydomain/ipp</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
+                        <property name="fill">True</property>
                         <property name="position">1</property>
                       </packing>
                     </child>
@@ -2166,23 +2371,28 @@ ipp://printer.mydomain/ipp</property>
                       <object class="GtkScrolledWindow" id="scrolledwindow12">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="hscrollbar_policy">automatic</property>
-                        <property name="vscrollbar_policy">automatic</property>
                         <property name="shadow_type">in</property>
                         <child>
                           <object class="GtkTreeView" id="tvNCNotMembers">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <signal name="cursor-changed" handler="on_tvNCNotMembers_cursor_changed" swapped="no"/>
+                            <child internal-child="selection">
+                              <object class="GtkTreeSelection" id="treeview-selection7"/>
+                            </child>
                           </object>
                         </child>
                       </object>
                       <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
                         <property name="position">2</property>
                       </packing>
                     </child>
                   </object>
                   <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
                     <property name="position">1</property>
                   </packing>
                 </child>
@@ -2194,6 +2404,7 @@ ipp://printer.mydomain/ipp</property>
             <child type="tab">
               <object class="GtkLabel" id="label98">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Class Members</property>
               </object>
               <packing>
@@ -2204,11 +2415,13 @@ ipp://printer.mydomain/ipp</property>
             <child>
               <object class="GtkVBox" id="vbox73">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="border_width">12</property>
                 <property name="spacing">12</property>
                 <child>
                   <object class="GtkLabel" id="label235">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="xalign">0</property>
                     <property name="yalign">0</property>
                     <property name="label" translatable="yes">&lt;span weight="bold" size="larger"&gt;Existing Settings&lt;/span&gt;</property>
@@ -2224,10 +2437,12 @@ ipp://printer.mydomain/ipp</property>
                 <child>
                   <object class="GtkVBox" id="vbox41">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="spacing">6</property>
                     <child>
                       <object class="GtkLabel" id="label116">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="xalign">0</property>
                         <property name="label" translatable="yes">Try to transfer the current settings</property>
                       </object>
@@ -2243,6 +2458,7 @@ ipp://printer.mydomain/ipp</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="active">True</property>
                         <property name="draw_indicator">True</property>
@@ -2256,6 +2472,7 @@ ipp://printer.mydomain/ipp</property>
                     <child>
                       <object class="GtkLabel" id="label117">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="xalign">0</property>
                         <property name="xpad">18</property>
                         <property name="label" translatable="yes">This way all current option settings will be lost. The default settings of the new PPD will be used. </property>
@@ -2270,12 +2487,14 @@ ipp://printer.mydomain/ipp</property>
                     <child>
                       <object class="GtkAlignment" id="alignment46">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <child>
                           <object class="GtkRadioButton" id="rbtnChangePPDKeepSettings">
                             <property name="label" translatable="yes">Try to copy the option settings over from the old PPD. </property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
+                            <property name="use_action_appearance">False</property>
                             <property name="use_underline">True</property>
                             <property name="draw_indicator">True</property>
                             <property name="group">rbtnChangePPDasIs</property>
@@ -2291,6 +2510,7 @@ ipp://printer.mydomain/ipp</property>
                     <child>
                       <object class="GtkLabel" id="label118">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="xalign">0</property>
                         <property name="xpad">18</property>
                         <property name="label" translatable="yes">This is done by assuming that options with the same name do have the same meaning. Settings of options that are not present in the new PPD will be lost and options only present in the new PPD will be set to default.</property>
@@ -2304,6 +2524,8 @@ ipp://printer.mydomain/ipp</property>
                     </child>
                   </object>
                   <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
                     <property name="position">1</property>
                   </packing>
                 </child>
@@ -2315,6 +2537,7 @@ ipp://printer.mydomain/ipp</property>
             <child type="tab">
               <object class="GtkLabel" id="label114">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Change PPD</property>
               </object>
               <packing>
@@ -2326,19 +2549,20 @@ ipp://printer.mydomain/ipp</property>
               <object class="GtkScrolledWindow" id="scrNPInstallableOptions">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="hscrollbar_policy">automatic</property>
-                <property name="vscrollbar_policy">automatic</property>
                 <child>
                   <object class="GtkViewport" id="viewport10">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <child>
                       <object class="GtkVBox" id="vbox74">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="border_width">12</property>
                         <property name="spacing">12</property>
                         <child>
                           <object class="GtkLabel" id="label236">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="xalign">0</property>
                             <property name="yalign">0</property>
                             <property name="label" translatable="yes">&lt;span weight="bold" size="larger"&gt;Installable Options&lt;/span&gt;</property>
@@ -2354,9 +2578,11 @@ ipp://printer.mydomain/ipp</property>
                         <child>
                           <object class="GtkVBox" id="vbox59">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <child>
                               <object class="GtkLabel" id="label193">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="xalign">0</property>
                                 <property name="label" translatable="yes">This driver supports additional hardware that may be installed in the printer.</property>
                               </object>
@@ -2369,9 +2595,11 @@ ipp://printer.mydomain/ipp</property>
                             <child>
                               <object class="GtkHSeparator" id="hseparator4">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
+                                <property name="fill">True</property>
                                 <property name="padding">12</property>
                                 <property name="position">1</property>
                               </packing>
@@ -2380,19 +2608,20 @@ ipp://printer.mydomain/ipp</property>
                               <object class="GtkScrolledWindow" id="scrolledwindow28">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="hscrollbar_policy">automatic</property>
-                                <property name="vscrollbar_policy">automatic</property>
                                 <child>
                                   <object class="GtkViewport" id="viewport11">
                                     <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
                                     <property name="shadow_type">none</property>
                                     <child>
                                       <object class="GtkVBox" id="vbNPInstallOptions">
                                         <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
                                         <property name="spacing">6</property>
                                         <child>
                                           <object class="GtkLabel" id="label240">
                                             <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
                                             <property name="label">...</property>
                                           </object>
                                           <packing>
@@ -2407,11 +2636,15 @@ ipp://printer.mydomain/ipp</property>
                                 </child>
                               </object>
                               <packing>
+                                <property name="expand">True</property>
+                                <property name="fill">True</property>
                                 <property name="position">2</property>
                               </packing>
                             </child>
                           </object>
                           <packing>
+                            <property name="expand">True</property>
+                            <property name="fill">True</property>
                             <property name="position">1</property>
                           </packing>
                         </child>
@@ -2427,6 +2660,7 @@ ipp://printer.mydomain/ipp</property>
             <child type="tab">
               <object class="GtkLabel" id="label191">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Installed Options</property>
               </object>
               <packing>
@@ -2437,11 +2671,13 @@ ipp://printer.mydomain/ipp</property>
             <child>
               <object class="GtkVBox" id="vbox75">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="border_width">12</property>
                 <property name="spacing">12</property>
                 <child>
                   <object class="GtkLabel" id="label237">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="xalign">0</property>
                     <property name="yalign">0</property>
                     <property name="label" translatable="yes">&lt;span weight="bold" size="larger"&gt;Choose Driver&lt;/span&gt;</property>
@@ -2457,14 +2693,17 @@ ipp://printer.mydomain/ipp</property>
                 <child>
                   <object class="GtkVBox" id="vbox63">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="spacing">6</property>
                     <child>
                       <object class="GtkVBox" id="vbox64">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="spacing">6</property>
                         <child>
                           <object class="GtkLabel" id="label211">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="xalign">0</property>
                             <property name="label" translatable="yes">For the printer you have selected there are drivers available for download.</property>
                           </object>
@@ -2477,15 +2716,18 @@ ipp://printer.mydomain/ipp</property>
                         <child>
                           <object class="GtkFrame" id="frame36">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="label_xalign">0</property>
                             <property name="shadow_type">none</property>
                             <child>
                               <object class="GtkAlignment" id="alignment91">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="left_padding">12</property>
                                 <child>
                                   <object class="GtkLabel" id="label213">
                                     <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
                                     <property name="xalign">0</property>
                                     <property name="label" translatable="yes">These drivers do not come from your operating system supplier and will not be covered by their commercial support.  See the support and license terms of the driver's supplier.</property>
                                     <property name="wrap">True</property>
@@ -2496,6 +2738,7 @@ ipp://printer.mydomain/ipp</property>
                             <child type="label">
                               <object class="GtkLabel" id="label212">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">&lt;b&gt;Note&lt;/b&gt;</property>
                                 <property name="use_markup">True</property>
                               </object>
@@ -2517,12 +2760,15 @@ ipp://printer.mydomain/ipp</property>
                     <child>
                       <object class="GtkHBox" id="hbox74">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <child>
                           <object class="GtkVBox" id="vbox65">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <child>
                               <object class="GtkLabel" id="label214">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="xalign">0</property>
                                 <property name="ypad">3</property>
                                 <property name="label" translatable="yes">&lt;b&gt;Select Driver&lt;/b&gt;</property>
@@ -2538,23 +2784,28 @@ ipp://printer.mydomain/ipp</property>
                               <object class="GtkScrolledWindow" id="scrolledwindow25">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="hscrollbar_policy">automatic</property>
-                                <property name="vscrollbar_policy">automatic</property>
                                 <property name="shadow_type">in</property>
                                 <child>
                                   <object class="GtkTreeView" id="tvNPDownloadableDrivers">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <signal name="cursor-changed" handler="on_tvNPDownloadableDrivers_cursor_changed" swapped="no"/>
+                                    <child internal-child="selection">
+                                      <object class="GtkTreeSelection" id="treeview-selection8"/>
+                                    </child>
                                   </object>
                                 </child>
                               </object>
                               <packing>
+                                <property name="expand">True</property>
+                                <property name="fill">True</property>
                                 <property name="position">1</property>
                               </packing>
                             </child>
                           </object>
                           <packing>
+                            <property name="expand">True</property>
+                            <property name="fill">True</property>
                             <property name="position">0</property>
                           </packing>
                         </child>
@@ -2565,6 +2816,7 @@ ipp://printer.mydomain/ipp</property>
                             <child>
                               <object class="GtkLabel" id="label218">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="xalign">0</property>
                                 <property name="yalign">0</property>
                                 <property name="xpad">12</property>
@@ -2579,6 +2831,7 @@ ipp://printer.mydomain/ipp</property>
                             <child type="tab">
                               <object class="GtkLabel" id="label215">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">Local Driver</property>
                               </object>
                               <packing>
@@ -2588,11 +2841,13 @@ ipp://printer.mydomain/ipp</property>
                             <child>
                               <object class="GtkVBox" id="vbox67">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="border_width">6</property>
                                 <property name="spacing">12</property>
                                 <child>
                                   <object class="GtkTable" id="table20">
                                     <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
                                     <property name="n_rows">4</property>
                                     <property name="n_columns">4</property>
                                     <property name="column_spacing">6</property>
@@ -2600,6 +2855,7 @@ ipp://printer.mydomain/ipp</property>
                                     <child>
                                       <object class="GtkLabel" id="label225">
                                         <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
                                         <property name="xalign">0</property>
                                         <property name="label" translatable="yes">Description:</property>
                                       </object>
@@ -2613,6 +2869,7 @@ ipp://printer.mydomain/ipp</property>
                                     <child>
                                       <object class="GtkLabel" id="label222">
                                         <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
                                         <property name="xalign">0</property>
                                         <property name="label" translatable="yes">License:</property>
                                       </object>
@@ -2626,6 +2883,7 @@ ipp://printer.mydomain/ipp</property>
                                     <child>
                                       <object class="GtkLabel" id="label221">
                                         <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
                                         <property name="xalign">0</property>
                                         <property name="label" translatable="yes">Supplier:</property>
                                       </object>
@@ -2677,6 +2935,7 @@ ipp://printer.mydomain/ipp</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
+                                        <property name="use_action_appearance">False</property>
                                         <property name="use_underline">True</property>
                                         <property name="draw_indicator">True</property>
                                       </object>
@@ -2710,6 +2969,7 @@ ipp://printer.mydomain/ipp</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
+                                        <property name="use_action_appearance">False</property>
                                         <property name="use_underline">True</property>
                                         <property name="draw_indicator">True</property>
                                       </object>
@@ -2728,6 +2988,7 @@ ipp://printer.mydomain/ipp</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
+                                        <property name="use_action_appearance">False</property>
                                         <property name="use_underline">True</property>
                                         <property name="draw_indicator">True</property>
                                       </object>
@@ -2743,6 +3004,7 @@ ipp://printer.mydomain/ipp</property>
                                     <child>
                                       <object class="GtkLabel" id="label2212">
                                         <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
                                         <property name="xalign">0</property>
                                         <property name="yalign">0</property>
                                         <property name="label" translatable="yes">Support:</property>
@@ -2787,15 +3049,18 @@ ipp://printer.mydomain/ipp</property>
                                     <child>
                                       <object class="GtkAlignment" id="alignment96">
                                         <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
                                         <property name="top_padding">6</property>
                                         <property name="left_padding">12</property>
                                         <child>
                                           <object class="GtkHBox" id="hbox75">
                                             <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
                                             <property name="spacing">12</property>
                                             <child>
                                               <object class="GtkTable" id="table21">
                                                 <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
                                                 <property name="n_rows">2</property>
                                                 <property name="n_columns">2</property>
                                                 <property name="column_spacing">6</property>
@@ -2803,6 +3068,7 @@ ipp://printer.mydomain/ipp</property>
                                                 <child>
                                                   <object class="GtkLabel" id="label2215">
                                                     <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
                                                     <property name="xalign">0</property>
                                                     <property name="label" translatable="yes">Text:</property>
                                                   </object>
@@ -2814,6 +3080,7 @@ ipp://printer.mydomain/ipp</property>
                                                 <child>
                                                   <object class="GtkLabel" id="label2216">
                                                     <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
                                                     <property name="xalign">0</property>
                                                     <property name="label" translatable="yes">Line art:</property>
                                                   </object>
@@ -2827,6 +3094,7 @@ ipp://printer.mydomain/ipp</property>
                                                 <child>
                                                   <object class="GtkHBox" id="hbox76">
                                                     <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
                                                     <child>
                                                       <object class="GtkHScale" id="hsDownloadableDriverPerfText">
                                                         <property name="visible">True</property>
@@ -2835,12 +3103,15 @@ ipp://printer.mydomain/ipp</property>
                                                         <property name="value_pos">left</property>
                                                       </object>
                                                       <packing>
+                                                        <property name="expand">True</property>
+                                                        <property name="fill">True</property>
                                                         <property name="position">0</property>
                                                       </packing>
                                                     </child>
                                                     <child>
                                                       <object class="GtkLabel" id="lblDownloadableDriverPerfTextUnknown">
                                                         <property name="visible">True</property>
+                                                        <property name="can_focus">False</property>
                                                         <property name="label" translatable="yes">Unknown</property>
                                                       </object>
                                                       <packing>
@@ -2859,6 +3130,7 @@ ipp://printer.mydomain/ipp</property>
                                                 <child>
                                                   <object class="GtkHBox" id="hbox77">
                                                     <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
                                                     <child>
                                                       <object class="GtkHScale" id="hsDownloadableDriverPerfLineArt">
                                                         <property name="visible">True</property>
@@ -2867,12 +3139,15 @@ ipp://printer.mydomain/ipp</property>
                                                         <property name="value_pos">left</property>
                                                       </object>
                                                       <packing>
+                                                        <property name="expand">True</property>
+                                                        <property name="fill">True</property>
                                                         <property name="position">0</property>
                                                       </packing>
                                                     </child>
                                                     <child>
                                                       <object class="GtkLabel" id="lblDownloadableDriverPerfLineArtUnknown">
                                                         <property name="visible">True</property>
+                                                        <property name="can_focus">False</property>
                                                         <property name="label" translatable="yes">Unknown</property>
                                                       </object>
                                                       <packing>
@@ -2893,12 +3168,15 @@ ipp://printer.mydomain/ipp</property>
                                                 </child>
                                               </object>
                                               <packing>
+                                                <property name="expand">True</property>
+                                                <property name="fill">True</property>
                                                 <property name="position">0</property>
                                               </packing>
                                             </child>
                                             <child>
                                               <object class="GtkTable" id="table22">
                                                 <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
                                                 <property name="n_rows">2</property>
                                                 <property name="n_columns">2</property>
                                                 <property name="column_spacing">6</property>
@@ -2906,6 +3184,7 @@ ipp://printer.mydomain/ipp</property>
                                                 <child>
                                                   <object class="GtkLabel" id="label2224">
                                                     <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
                                                     <property name="xalign">0</property>
                                                     <property name="label" translatable="yes">Photo:</property>
                                                   </object>
@@ -2919,6 +3198,7 @@ ipp://printer.mydomain/ipp</property>
                                                 <child>
                                                   <object class="GtkHBox" id="hbox79">
                                                     <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
                                                     <child>
                                                       <object class="GtkHScale" id="hsDownloadableDriverPerfPhoto">
                                                         <property name="visible">True</property>
@@ -2927,12 +3207,15 @@ ipp://printer.mydomain/ipp</property>
                                                         <property name="value_pos">left</property>
                                                       </object>
                                                       <packing>
+                                                        <property name="expand">True</property>
+                                                        <property name="fill">True</property>
                                                         <property name="position">0</property>
                                                       </packing>
                                                     </child>
                                                     <child>
                                                       <object class="GtkLabel" id="lblDownloadableDriverPerfPhotoUnknown">
                                                         <property name="visible">True</property>
+                                                        <property name="can_focus">False</property>
                                                         <property name="label" translatable="yes">Unknown</property>
                                                       </object>
                                                       <packing>
@@ -2953,6 +3236,7 @@ ipp://printer.mydomain/ipp</property>
                                                 <child>
                                                   <object class="GtkLabel" id="label2217">
                                                     <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
                                                     <property name="xalign">0</property>
                                                     <property name="label" translatable="yes">Graphics:</property>
                                                   </object>
@@ -2964,6 +3248,7 @@ ipp://printer.mydomain/ipp</property>
                                                 <child>
                                                   <object class="GtkHBox" id="hbox78">
                                                     <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
                                                     <child>
                                                       <object class="GtkHScale" id="hsDownloadableDriverPerfGraphics">
                                                         <property name="visible">True</property>
@@ -2972,12 +3257,15 @@ ipp://printer.mydomain/ipp</property>
                                                         <property name="value_pos">left</property>
                                                       </object>
                                                       <packing>
+                                                        <property name="expand">True</property>
+                                                        <property name="fill">True</property>
                                                         <property name="position">0</property>
                                                       </packing>
                                                     </child>
                                                     <child>
                                                       <object class="GtkLabel" id="lblDownloadableDriverPerfGraphicsUnknown">
                                                         <property name="visible">True</property>
+                                                        <property name="can_focus">False</property>
                                                         <property name="label" translatable="yes">Unknown</property>
                                                       </object>
                                                       <packing>
@@ -2996,6 +3284,8 @@ ipp://printer.mydomain/ipp</property>
                                                 </child>
                                               </object>
                                               <packing>
+                                                <property name="expand">True</property>
+                                                <property name="fill">True</property>
                                                 <property name="position">1</property>
                                               </packing>
                                             </child>
@@ -3006,6 +3296,7 @@ ipp://printer.mydomain/ipp</property>
                                     <child type="label">
                                       <object class="GtkLabel" id="label2230">
                                         <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
                                         <property name="label" translatable="yes">&lt;b&gt;Output Quality&lt;/b&gt;</property>
                                         <property name="use_markup">True</property>
                                       </object>
@@ -3013,29 +3304,32 @@ ipp://printer.mydomain/ipp</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
+                                    <property name="fill">True</property>
                                     <property name="position">1</property>
                                   </packing>
                                 </child>
                                 <child>
                                   <object class="GtkFrame" id="frmNPDownloadableDriverLicenseTerms">
                                     <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
                                     <property name="label_xalign">0</property>
                                     <property name="shadow_type">none</property>
                                     <child>
                                       <object class="GtkAlignment" id="alignment93">
                                         <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
                                         <property name="top_padding">6</property>
                                         <property name="left_padding">12</property>
                                         <child>
                                           <object class="GtkVBox" id="vbox66">
                                             <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
                                             <property name="spacing">12</property>
                                             <child>
                                               <object class="GtkScrolledWindow" id="scrolledwindow26">
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">True</property>
                                                 <property name="hscrollbar_policy">never</property>
-                                                <property name="vscrollbar_policy">automatic</property>
                                                 <child>
                                                   <object class="GtkTextView" id="tvNPDownloadableDriverLicense">
                                                     <property name="visible">True</property>
@@ -3045,18 +3339,22 @@ ipp://printer.mydomain/ipp</property>
                                                 </child>
                                               </object>
                                               <packing>
+                                                <property name="expand">True</property>
+                                                <property name="fill">True</property>
                                                 <property name="position">0</property>
                                               </packing>
                                             </child>
                                             <child>
                                               <object class="GtkVBox" id="vbox3">
                                                 <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
                                                 <child>
                                                   <object class="GtkRadioButton" id="rbtnNPDownloadLicenseYes">
                                                     <property name="label" translatable="yes">Yes, I accept this license</property>
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
                                                     <property name="receives_default">False</property>
+                                                    <property name="use_action_appearance">False</property>
                                                     <property name="use_underline">True</property>
                                                     <property name="draw_indicator">True</property>
                                                     <signal name="toggled" handler="on_rbtnNPDownloadLicense_toggled" swapped="no"/>
@@ -3073,6 +3371,7 @@ ipp://printer.mydomain/ipp</property>
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
                                                     <property name="receives_default">False</property>
+                                                    <property name="use_action_appearance">False</property>
                                                     <property name="use_underline">True</property>
                                                     <property name="draw_indicator">True</property>
                                                     <property name="group">rbtnNPDownloadLicenseYes</property>
@@ -3097,12 +3396,15 @@ ipp://printer.mydomain/ipp</property>
                                     <child type="label">
                                       <object class="GtkLabel" id="label220">
                                         <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
                                         <property name="label" translatable="yes">&lt;b&gt;License Terms&lt;/b&gt;</property>
                                         <property name="use_markup">True</property>
                                       </object>
                                     </child>
                                   </object>
                                   <packing>
+                                    <property name="expand">True</property>
+                                    <property name="fill">True</property>
                                     <property name="position">2</property>
                                   </packing>
                                 </child>
@@ -3114,6 +3416,7 @@ ipp://printer.mydomain/ipp</property>
                             <child type="tab">
                               <object class="GtkLabel" id="label216">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">Driver details</property>
                               </object>
                               <packing>
@@ -3123,16 +3426,22 @@ ipp://printer.mydomain/ipp</property>
                             </child>
                           </object>
                           <packing>
+                            <property name="expand">True</property>
+                            <property name="fill">True</property>
                             <property name="position">1</property>
                           </packing>
                         </child>
                       </object>
                       <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
                         <property name="position">1</property>
                       </packing>
                     </child>
                   </object>
                   <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
                     <property name="position">1</property>
                   </packing>
                 </child>
@@ -3144,6 +3453,7 @@ ipp://printer.mydomain/ipp</property>
             <child type="tab">
               <object class="GtkLabel" id="label209">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Downloadable Drivers</property>
               </object>
               <packing>
@@ -3153,15 +3463,20 @@ ipp://printer.mydomain/ipp</property>
             </child>
           </object>
           <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
             <property name="position">0</property>
           </packing>
         </child>
         <child>
           <object class="GtkHBox" id="hbox80">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="border_width">12</property>
             <child>
-              <object class="GtkImage" id="imgProcessWorking"/>
+              <object class="GtkImage" id="imgProcessWorking">
+                <property name="can_focus">False</property>
+              </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
@@ -3171,6 +3486,7 @@ ipp://printer.mydomain/ipp</property>
             <child>
               <object class="GtkHButtonBox" id="hbuttonbox2">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="spacing">3</property>
                 <property name="layout_style">end</property>
                 <child>
@@ -3180,6 +3496,7 @@ ipp://printer.mydomain/ipp</property>
                     <property name="can_focus">True</property>
                     <property name="can_default">True</property>
                     <property name="receives_default">False</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="use_stock">True</property>
                     <signal name="clicked" handler="on_btnNPBack_clicked" swapped="no"/>
                   </object>
@@ -3196,6 +3513,7 @@ ipp://printer.mydomain/ipp</property>
                     <property name="can_focus">True</property>
                     <property name="can_default">True</property>
                     <property name="receives_default">False</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="use_stock">True</property>
                     <signal name="clicked" handler="on_NPCancel" swapped="no"/>
                   </object>
@@ -3212,6 +3530,7 @@ ipp://printer.mydomain/ipp</property>
                     <property name="can_focus">True</property>
                     <property name="can_default">True</property>
                     <property name="receives_default">False</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="use_stock">True</property>
                     <signal name="clicked" handler="on_btnNPApply_clicked" swapped="no"/>
                   </object>
@@ -3228,6 +3547,7 @@ ipp://printer.mydomain/ipp</property>
                     <property name="can_focus">True</property>
                     <property name="can_default">True</property>
                     <property name="receives_default">False</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="use_stock">True</property>
                     <signal name="clicked" handler="on_btnNPForward_clicked" swapped="no"/>
                   </object>
@@ -3239,6 +3559,8 @@ ipp://printer.mydomain/ipp</property>
                 </child>
               </object>
               <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
                 <property name="position">1</property>
               </packing>
             </child>

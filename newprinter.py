@@ -211,8 +211,8 @@ class NewPrinterGUI(GtkGUI):
                               "cmbNPTSerialBits",
                               "cmbNPTSerialFlow",
                               "btnNPTLpdProbe",
-                              "cmbentNPTLpdHost",
-                              "cmbentNPTLpdQueue",
+                              "entNPTLpdHost",
+                              "entNPTLpdQueue",
                               "entNPTIPPHostname",
                               "lblIPPURI",
                               "entNPTIPPQueuename",
@@ -2646,11 +2646,9 @@ class NewPrinterGUI(GtkGUI):
                 self.entNPTIPPQueuename.show()
                 self.lblIPPURI.hide()
         elif device.type=="lpd":
-            self.cmbentNPTLpdHost.child.set_text ('')
-            self.cmbentNPTLpdQueue.child.set_text ('')
-            model = gtk.ListStore (gobject.TYPE_STRING)
-            self.cmbentNPTLpdQueue.set_model(model)
-            self.cmbentNPTLpdQueue.set_text_column(0)
+            self.entNPTLpdHost.set_text ('')
+            self.entNPTLpdQueue.set_text ('')
+            self.entNPTLpdQueue.set_completion (None)
             self.btnNPTLpdProbe.set_sensitive (False)
             if len (device.uri) > 6:
                 host = device.uri[6:]
@@ -2660,8 +2658,8 @@ class NewPrinterGUI(GtkGUI):
                     host = host[:i]
                 else:
                     printer = ""
-                self.cmbentNPTLpdHost.child.set_text (host)
-                self.cmbentNPTLpdQueue.child.set_text (printer)
+                self.entNPTLpdHost.set_text (host)
+                self.entNPTLpdQueue.set_text (printer)
                 location = host
                 self.btnNPTLpdProbe.set_sensitive (True)
         elif device.uri == "smb":
@@ -2693,17 +2691,17 @@ class NewPrinterGUI(GtkGUI):
 
         self.setNPButtons()
 
-    def on_cmbentNPTLpdHost_changed(self, cmbent):
-        hostname = cmbent.get_active_text()
+    def on_entNPTLpdHost_changed(self, ent):
+        hostname = ent.get_text()
         self.btnNPTLpdProbe.set_sensitive (len (hostname) > 0)
         self.setNPButtons()
 
-    def on_cmbentNPTLpdQueue_changed(self, cmbent):
+    def on_entNPTLpdQueue_changed(self, ent):
         self.setNPButtons()
 
     def on_btnNPTLpdProbe_clicked(self, button):
         # read hostname, probe, fill printer names
-        hostname = self.cmbentNPTLpdHost.get_active_text()
+        hostname = self.entNPTLpdHost.get_text()
         server = probe_printer.LpdServer(hostname)
 
         self.lblWait.set_markup ('<span weight="bold" size="larger">' +
@@ -2715,12 +2713,16 @@ class NewPrinterGUI(GtkGUI):
         printers = server.probe()
         self.WaitWindow.hide ()
 
-        model = self.cmbentNPTLpdQueue.get_model()
-        model.clear()
-        for printer in printers:
-            self.cmbentNPTLpdQueue.append_text(printer)
-        if printers:
-            self.cmbentNPTLpdQueue.set_active(0)
+        model = gtk.ListStore (gobject.TYPE_STRING)
+        for printer in ["test", "one", "two", "three", "foobar", "foobaz"]: # printers:
+            print "[%s]" % printer
+            model.append ([printer])
+
+        completion = gtk.EntryCompletion ()
+        completion.set_model (model)
+        completion.set_text_column (0)
+        completion.set_minimum_key_length (0)
+        self.entNPTLpdQueue.set_completion (completion)
 
     ### Find Network Printer
     def on_entNPTNetworkHostname_changed(self, ent):
@@ -2827,8 +2829,8 @@ class NewPrinterGUI(GtkGUI):
             if self.lblIPPURI.get_property('visible'):
                 device = self.lblIPPURI.get_text()
         elif type == "lpd": # LPD
-            host = self.cmbentNPTLpdHost.get_active_text()
-            printer = self.cmbentNPTLpdQueue.get_active_text()
+            host = self.entNPTLpdHost.get_text()
+            printer = self.entNPTLpdQueue.get_text()
             if host:
                 device += "://" + host
                 if printer:
