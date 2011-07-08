@@ -246,8 +246,10 @@ class PPDsLoader:
         if self._need_requery_cups:
             self._query_cups ()
         else:
-            self._conn.destroy ()
-            self._conn = None
+            if self._conn != None:
+                self._conn.destroy ()
+                self._conn = None
+
             self._call_callback (None)
 
     def _call_callback (self, exc):
