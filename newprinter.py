@@ -2159,6 +2159,12 @@ class NewPrinterGUI(GtkGUI):
                 def do_auth (svr, shr, wg, un, pw):
                     return (group, user, passwd)
                 ctx = pysmb.smbc.Context (debug=debug, auth_fn=do_auth)
+                try:
+                    ctx.optionUseKerberos = True
+                except AttributeError:
+                    # requires pysmbc >= 1.0.12
+                    pass
+
                 f = ctx.open ("smb://%s/%s" % (host, share),
                               os.O_RDWR, 0777)
                 accessible = True
