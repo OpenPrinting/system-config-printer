@@ -160,14 +160,11 @@ class NewPrinterGUI(GtkGUI):
         "hpfax" : 0,
         "dnssd" : 0,
         "socket": 2,
-        "ipp" : 3,
-        "http" : 3,
-        "https" : 3,
-        "lpd" : 4,
-        "scsi" : 5,
-        "serial" : 6,
-        "smb" : 7,
-        "network": 8,
+        "lpd" : 3,
+        "scsi" : 4,
+        "serial" : 5,
+        "smb" : 6,
+        "network": 7,
         }
 
     DOWNLOADABLE_ONLYPPD=True
@@ -213,10 +210,6 @@ class NewPrinterGUI(GtkGUI):
                               "btnNPTLpdProbe",
                               "entNPTLpdHost",
                               "entNPTLpdQueue",
-                              "entNPTIPPHostname",
-                              "lblIPPURI",
-                              "entNPTIPPQueuename",
-                              "btnIPPVerify",
                               "entNPTJetDirectHostname",
                               "entNPTJetDirectPort",
                               "entSMBURI",
@@ -2207,23 +2200,6 @@ class NewPrinterGUI(GtkGUI):
             show_error_dialog (_("Print Share Inaccessible"), text,
                                parent=self.NewPrinterWindow)
 
-    ### IPP Browsing
-    def update_IPP_URI_label(self):
-        hostname = self.entNPTIPPHostname.get_text ()
-        queue = self.entNPTIPPQueuename.get_text ()
-        valid = len (hostname) > 0 and queue != '/printers/'
-
-        if valid:
-            uri = "%s://%s%s" % (self.device.type, hostname, queue)
-            self.lblIPPURI.set_text (uri)
-            self.lblIPPURI.show ()
-            self.entNPTIPPQueuename.show ()
-        else:
-            self.lblIPPURI.hide ()
-
-        self.btnIPPVerify.set_sensitive (valid)
-        self.setNPButtons ()
-
     def entry_changed(self, entry, allowed_chars):
         "Remove all chars from entry's text that are not in allowed_chars."
         try:
@@ -2252,65 +2228,6 @@ class NewPrinterGUI(GtkGUI):
     def on_entNPTJetDirectPort_changed(self, ent):
         self.entry_changed(ent, string.digits)
         self.setNPButtons()
-
-    def on_entNPTIPPHostname_changed(self, ent):
-        allowed_chars = string.letters+string.digits+'_-.:'
-        self.entry_changed(ent, allowed_chars)
-        self.update_IPP_URI_label ()
-
-    def on_entNPTIPPQueuename_changed(self, ent):
-        allowed_chars = string.letters+string.digits+'_-/'
-        self.entry_changed(ent, allowed_chars)
-        self.update_IPP_URI_label ()
-
-    def on_btnIPPVerify_clicked(self, button):
-        uri = self.lblIPPURI.get_text ()
-        (scheme, rest) = urllib.splittype (uri)
-        (hostport, rest) = urllib.splithost (rest)
-        verified = False
-        if hostport != None:
-            (host, port) = urllib.splitnport (hostport, defport=631)
-            if uri.startswith ("https:"):
-                encryption = cups.HTTP_ENCRYPT_ALWAYS
-            else:
-                encryption = cups.HTTP_ENCRYPT_IF_REQUESTED
-
-            def get_attributes():
-                c = cups.Connection (host=host, port=port,
-                                     encryption=encryption)
-                return c.getPrinterAttributes (uri=uri)
-                
-            op = TimedOperation (get_attributes)
-            self.lblWait.set_markup ('<span weight="bold" size="larger">' +
-                                     _('Verifying') + '</span>\n\n' +
-                                     _('Verifying printer'))
-            self.WaitWindow.set_transient_for (self.NewPrinterWindow)
-            self.WaitWindow.show ()
-            busy (self.WaitWindow)
-            source = gobject.timeout_add_seconds (10, op.cancel)
-            try:
-                attributes = op.run ()
-                verified = True
-            except OperationCanceled:
-                pass
-            except cups.IPPError, (e, msg):
-                debugprint ("Failed to get attributes: %s (%d)" % (msg, e))
-            except:
-                nonfatalException ()
-
-            gobject.source_remove (source)
-            self.WaitWindow.hide ()
-        else:
-            debugprint (uri)
-
-        if verified:
-            show_info_dialog (_("Print Share Verified"),
-                              _("This print share is accessible."),
-                              parent=self.NewPrinterWindow)
-        else:
-            show_error_dialog (_("Inaccessible"),
-                               _("This print share is not accessible."),
-                               self.NewPrinterWindow)
 
     def on_expNPDeviceURIs_expanded (self, widget, UNUSED):
         # When the expanded is not expanded we want its packing to be
@@ -2624,27 +2541,6 @@ class NewPrinterGUI(GtkGUI):
                         widget.set_active(0)
 
         # XXX FILL TABS FOR VALID DEVICE URIs
-        elif device.type in ("ipp", "http", "https"):
-            if device.uri.find (":") != -1:
-                match = re.match ("(ipp|https?)://([^/]+)(.*)", device.uri)
-                if match:
-                    server = match.group (2)
-                    printer = match.group (3)
-                else:
-                    server = ""
-                    printer = ""
-
-                self.entNPTIPPHostname.set_text(server)
-                self.entNPTIPPQueuename.set_text(printer)
-                self.lblIPPURI.set_text(device.uri)
-                self.lblIPPURI.show()
-                self.entNPTIPPQueuename.show()
-                location = device.location
-            else:
-                self.entNPTIPPHostname.set_text('')
-                self.entNPTIPPQueuename.set_text('/printers/')
-                self.entNPTIPPQueuename.show()
-                self.lblIPPURI.hide()
         elif device.type=="lpd":
             self.entNPTLpdHost.set_text ('')
             self.entNPTLpdQueue.set_text ('')
