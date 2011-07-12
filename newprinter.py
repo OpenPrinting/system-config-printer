@@ -2821,6 +2821,8 @@ class NewPrinterGUI(GtkGUI):
         label = self.btnNPDownloadableDriverSearch_label
         label.set_text (_("Searching"))
         searchterm = self.entNPDownloadableDriverSearch.get_text ()
+        debugprint ('Searching for "%s"' % searchterm)
+        self.drivers_lock.acquire (0)
         self.openprinting_query_handle = \
             self.openprinting.searchPrinters (searchterm,
                                               self.openprinting_printers_found)
@@ -2828,23 +2830,77 @@ class NewPrinterGUI(GtkGUI):
 
     def openprinting_printers_found (self, status, user_data, printers):
         self.openprinting_query_handle = None
-        self.downloadable_drivers = dict()
+        self.downloadable_printers_unchecked = map (lambda x:
+                                                        (x, printers[x]),
+                                                    printers)
+        self.downloadable_printers = []
+        self.downloadable_drivers = dict() # by printer id of dict
+        if status != 0:
+            # Should report error.
+            print printers
+            print traceback.extract_tb(printers[2], limit=None)
+            self.drivers_lock.release ()
+            return
+
+        # Kick off a search for drivers for each model.
+        self.openprinting_query_next_printer ()
+
+    def openprinting_query_next_printer (self):
+        """
+        If there are more printers to query, kick off a query and
+        return True.
+
+        Otherwise return False.
+        """
+
+        try:
+            a = self.downloadable_printers_unchecked.pop ()
+            (printer_id, printer_name) = a
+        except IndexError:
+            debugprint ("All printer driver queries finished")
+            return False
+
+        extra_options = dict()
+        if self.DOWNLOADABLE_ONLYPPD:
+            extra_options['onlyppdfiles'] = '1'
+
+        debugprint ("Querying drivers for %s" % printer_id)
+        self.openprinting_query_handle = \
+            self.openprinting.listDrivers (printer_id,
+                                           self.openprinting_printer_drivers_found,
+                                           user_data=(printer_id, printer_name),
+                                           extra_options=extra_options)
+
+        return True
+
+    def openprinting_printer_drivers_found (self, status, user_data, drivers):
+        self.openprinting_query_handle = None
+        if status != 0:
+            print drivers
+            print traceback.extract_tb(drivers[2], limit=None)
+            self.drivers_lock.release ()
+            return
+
+        if drivers:
+            debugprint (" - drivers found")
+            (printer_id, printer_name) = user_data
+            self.downloadable_drivers[printer_id] = drivers
+            self.downloadable_printers.append (user_data)
+
+        if not self.openprinting_query_next_printer ():
+            self.drivers_lock.release ()
+            self.openprinting_drivers_found ()
+
+    def openprinting_drivers_found (self):
         button = self.btnNPDownloadableDriverSearch
         label = self.btnNPDownloadableDriverSearch_label
         gtk.gdk.threads_enter ()
         try:
             label.set_text (_("Search"))
             button.set_sensitive (True)
-            if status != 0:
-                # Should report error.
-                print printers
-                print traceback.extract_tb(printers[2], limit=None)
-                gtk.gdk.threads_leave ()
-                return
-
             model = gtk.ListStore (str, str)
-            if len (printers) != 1:
-                if len (printers) > 1:
+            if len (self.downloadable_printers) != 1:
+                if len (self.downloadable_printers) > 1:
                     first = _("-- Select from search results --")
                 else:
                     first = _("-- No matches found --")
@@ -2854,8 +2910,8 @@ class NewPrinterGUI(GtkGUI):
                 model.set_value (iter, 1, None)
 
             sorted_list = []
-            for id, name in printers.iteritems ():
-                sorted_list.append ((id, name))
+            for printer_id, printer_name in self.downloadable_printers:
+                sorted_list.append ((printer_id, printer_name))
 
             sorted_list.sort (lambda x, y: cups.modelSort (x[1], y[1]))
             sought = self.entNPDownloadableDriverSearch.get_text ().lower ()
@@ -2883,40 +2939,6 @@ class NewPrinterGUI(GtkGUI):
             self.openprinting_query_handle = None
             self.drivers_lock.release()
 
-        model = widget.get_model ()
-        iter = widget.get_active_iter ()
-        if iter:
-            id = model.get_value (iter, 1)
-        else:
-            id = None
-
-        if id == None:
-            return
-
-        # A model has been selected, so start the query to find out
-        # which drivers are available.
-        debugprint ("Query drivers for %s" % id)
-        self.drivers_lock.acquire(0)
-        extra_options = dict()
-        if self.DOWNLOADABLE_ONLYPPD:
-            extra_options['onlyppdfiles'] = '1'
-        self.openprinting_query_handle = \
-            self.openprinting.listDrivers (id,
-                                           self.openprinting_drivers_found,
-                                           extra_options=extra_options)
-
-    def openprinting_drivers_found (self, status, user_data, drivers):
-        if status != 0:
-            # Should report error.
-            print drivers
-            print traceback.extract_tb(drivers[2], limit=None)
-            return
-
-        self.openprinting_query_handle = None
-        self.downloadable_drivers = drivers
-        debugprint ("Drivers query completed: %s" % drivers.keys ())
-        self.drivers_lock.release()
-
     def fillDownloadableDrivers(self):
         # Clear out the properties.
         self.lblNPDownloadableDriverSupplier.set_text ('')
@@ -2926,7 +2948,18 @@ class NewPrinterGUI(GtkGUI):
         self.rbtnNPDownloadLicenseNo.set_active (True)
         self.frmNPDownloadableDriverLicenseTerms.hide ()
 
-        drivers = self.downloadable_drivers
+        widget = self.cmbNPDownloadableDriverFoundPrinters
+        model = widget.get_model ()
+        iter = widget.get_active_iter ()
+        if iter:
+            printer_id = model.get_value (iter, 1)
+        else:
+            printer_id = None
+
+        if printer_id == None:
+            return
+
+        drivers = self.downloadable_drivers[printer_id]
         model = gtk.ListStore (str,                     # driver name
                                gobject.TYPE_PYOBJECT)   # driver data
         recommended_iter = None
