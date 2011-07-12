@@ -1,6 +1,6 @@
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008, 2009, 2010 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011 Red Hat, Inc.
 ## Copyright (C) 2006 Florian Festi <ffesti@redhat.com>
 ## Copyright (C) 2007, 2008, 2009 Tim Waugh <twaugh@redhat.com>
 
@@ -29,6 +29,7 @@ import threading
 import errno
 import cups
 import gobject
+import smburi
 
 try:
     import pysmb
@@ -379,7 +380,7 @@ class PrinterFinder:
         entries = []
         uri = "smb://%s/" % self.hostname
         debugprint ("smb: trying")
-        try:
+        if False: #try:
             while smbc_auth.perform_authentication () > 0:
                 if self.quit:
                     debugprint ("smb: no good")
@@ -389,11 +390,18 @@ class PrinterFinder:
                     entries = ctx.opendir (uri).getdents ()
                 except Exception, e:
                     smbc_auth.failed (e)
-        except RuntimeError, (e, s):
-            if e not in [errno.ENOENT, errno.EACCES, errno.EPERM]:
-                debugprint ("Runtime error: %s" % repr ((e, s)))
-        except:
-            nonfatalException ()
+        #except RuntimeError, (e, s):
+        #    if e not in [errno.ENOENT, errno.EACCES, errno.EPERM]:
+        #        debugprint ("Runtime error: %s" % repr ((e, s)))
+        #except:
+        #    nonfatalException ()
+        class Foo:
+            pass
+
+        entry = Foo()
+        entry.name = "Samsung SCX4200"
+        entry.smbc_type = pysmb.smbc.PRINTER_SHARE
+        entries = [ entry ]
 
         if self.quit:
             debugprint ("smb: no good")
@@ -401,7 +409,8 @@ class PrinterFinder:
 
         for entry in entries:
             if entry.smbc_type == pysmb.smbc.PRINTER_SHARE:
-                uri = "smb://%s/%s" % (self.hostname, entry.name)
+                uri = "smb://%s/%s" % (smburi.urlquote (self.hostname),
+                                       smburi.urlquote (entry.name))
                 info = "SMB (%s)" % self.hostname
                 self._new_device(uri, info)
 
