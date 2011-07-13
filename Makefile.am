@@ -103,8 +103,6 @@ nobase_pkgdata_DATA=					\
 	HIG.py						\
 	firewall.py					\
 	gui.py						\
-	GroupsPane.py					\
-	GroupsPaneModel.py				\
 	gtkinklevel.py					\
 	gtkspinner.py					\
 	installpackage.py				\
@@ -127,7 +125,6 @@ nobase_pkgdata_DATA=					\
 	timedops.py					\
 	ToolbarSearchEntry.py				\
 	userdefault.py					\
-	XmlHelper.py					\
 	ui/AboutDialog.ui				\
 	ui/ConnectDialog.ui				\
 	ui/ConnectingDialog.ui				\

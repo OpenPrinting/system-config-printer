@@ -83,8 +83,6 @@ from errordialogs import *
 import userdefault
 from serversettings import ServerSettings
 from ToolbarSearchEntry import *
-from GroupsPane import *
-from GroupsPaneModel import *
 from SearchCriterion import *
 import statereason
 import firewall
@@ -177,10 +175,8 @@ class GUI(GtkGUI):
                               "statusbarMain",
                               "toolbar",
                               "server_menubar_item",
-                              "group_menubar_item",
                               "printer_menubar_item",
-                              "view_discovered_printers",
-                              "view_groups"],
+                              "view_discovered_printers"],
                          "AboutDialog":
                              ["AboutDialog"],
                          "ConnectDialog":
@@ -241,12 +237,6 @@ class GUI(GtkGUI):
                  None, None, self.on_create_class_activate),
                 ("view-print-queue", gtk.STOCK_FIND, _("View Print _Queue"),
                  None, None, self.on_view_print_queue_activate),
-                ("add-to-group", None, _("_Add to Group"),
-                 None, None, None),
-                ("save-as-group", None, _("Save Results as _Group"),
-                 None, None, self.on_save_as_group_activate),
-                ("save-as-search-group", None, _("Save Filter as _Search Group"),
-                 None, None, self.on_save_as_search_group_activate),
                 ])
         printer_manager_action_group.add_toggle_actions ([
                 ("enable-printer", None, _("E_nabled"),
@@ -290,9 +280,6 @@ class GUI(GtkGUI):
  <accelerator action="edit-printer"/>
  <accelerator action="create-class"/>
  <accelerator action="view-print-queue"/>
- <accelerator action="add-to-group"/>
- <accelerator action="save-as-group"/>
- <accelerator action="save-as-search-group"/>
  <accelerator action="enable-printer"/>
  <accelerator action="share-printer"/>
  <accelerator action="filter-name"/>
@@ -367,7 +354,6 @@ class GUI(GtkGUI):
                             "create-class",
                             "set-default-printer",
                             None,
-                            "add-to-group",
                             "view-print-queue"]:
             if not action_name:
                 item = gtk.SeparatorMenuItem ()
@@ -403,52 +389,19 @@ class GUI(GtkGUI):
         self.status_context_id = self.statusbarMain.get_context_id(
             "Connection")
 
-        # Setup search and printer groups
+        # Setup search
         self.setup_toolbar_for_search_entry ()
         self.current_filter_text = ""
         self.current_filter_mode = "filter-name"
-
-        self.groups_pane = GroupsPane ()
-        self.current_groups_pane_item = self.groups_pane.get_selected_item ()
-        self.groups_pane.connect ('item-activated',
-                                  self.on_groups_pane_item_activated)
-        self.groups_pane.connect ('items-changed',
-                                  self.on_groups_pane_items_changed)
-        self.PrintersWindow.add_accel_group (
-            self.groups_pane.ui_manager.get_accel_group ())
-        self.view_area_hpaned = gtk.HPaned ()
-        self.view_area_hpaned.add1 (self.groups_pane)
-        self.groups_pane_visible = False
-        if self.groups_pane.n_groups () > 0:
-            self.view_groups.set_active (True)
-
-        # Group menubar item
-        self.group_menubar_item.set_submenu (self.groups_pane.groups_menu)
-
-        # "Add to Group" submenu
-        self.add_to_group_menu = gtk.Menu ()
-        self.update_add_to_group_menu ()
-        action = printer_manager_action_group.get_action ("add-to-group")
-        for proxy in action.get_proxies ():
-            if isinstance (proxy, gtk.MenuItem):
-                item = proxy
-                break
-        item.set_submenu (self.add_to_group_menu)
 
         # Search entry drop down menu
         menu = gtk.Menu ()
         for action_name in ["filter-name",
                             "filter-description",
                             "filter-location",
-                            "filter-manufacturer",
-                            None,
-                            "save-as-group",
-                            "save-as-search-group"]:
-            if not action_name:
-                item = gtk.SeparatorMenuItem ()
-            else:
-                action = printer_manager_action_group.get_action (action_name)
-                item = action.create_menu_item ()
+                            "filter-manufacturer"]:
+            action = printer_manager_action_group.get_action (action_name)
+            item = action.create_menu_item ()
             menu.append (item)
         menu.show_all ()
         self.search_entry.set_drop_down_menu (menu)
@@ -540,58 +493,8 @@ class GUI(GtkGUI):
         self.toolbar.show_all ()
 
     def on_search_entry_search (self, UNUSED, text):
-        self.ui_manager.get_action ("/save-as-group").set_sensitive (
-            text and True or False)
-        self.ui_manager.get_action ("/save-as-search-group").set_sensitive (
-            text and True or False)
         self.current_filter_text = text
         self.populateList ()
-
-    def on_groups_pane_item_activated (self, UNUSED, item):
-        self.search_entry.clear ()
-
-        if isinstance (item, SavedSearchGroupItem):
-            crit = item.criteria[0]
-            if crit.subject == SearchCriterion.SUBJECT_NAME:
-                self.ui_manager.get_action ("/filter-name").activate ()
-            elif crit.subject == SearchCriterion.SUBJECT_DESC:
-                self.ui_manager.get_action ("/filter-description").activate ()
-            elif crit.subject == SearchCriterion.SUBJECT_LOCATION:
-                self.ui_manager.get_action ("/filter-location").activate ()
-            elif crit.subject == SearchCriterion.SUBJECT_MANUF:
-                self.ui_manager.get_action ("/filter-manufacturer").activate ()
-            else:
-                nonfatalException ()
-
-            self.search_entry.set_text (crit.value)
-
-        self.current_groups_pane_item = item
-        self.populateList ()
-
-    def on_add_to_group_menu_item_activate (self, menuitem, group):
-        group.add_queues (self.groups_pane.currently_selected_queues)
-
-    def update_add_to_group_menu (self):
-        for child in self.add_to_group_menu.get_children ():
-            self.add_to_group_menu.remove (child)
-        static_groups = self.groups_pane.get_static_groups ()
-        for group in static_groups:
-            item = gtk.MenuItem (group.name, False)
-            item.connect ("activate",
-                          self.on_add_to_group_menu_item_activate, group)
-            self.add_to_group_menu.append (item)
-        if len (static_groups) > 0:
-            item = gtk.SeparatorMenuItem ()
-            self.add_to_group_menu.append (item)
-        action = self.groups_pane.ui_manager.get_action ("/new-group-from-selection")
-        item = action.create_menu_item ()
-        self.add_to_group_menu.append (item)
-        self.add_to_group_menu.show_all ()
-
-    def on_groups_pane_items_changed (self, UNUSED):
-        if not self.groups_pane_visible:
-            self.view_groups.set_active (True)
-        self.update_add_to_group_menu ()
 
     def on_filter_criterion_changed (self, UNUSED, selected_action):
         self.current_filter_mode = selected_action.get_name ()
@@ -629,13 +532,11 @@ class GUI(GtkGUI):
         any_discovered = False
         any_shared = False
         any_unshared = False
-        self.groups_pane.currently_selected_queues = []
         model = iconview.get_model ()
         for path in paths:
             iter = model.get_iter (path)
             object = model.get_value (iter, 0)
             name = unicode (model.get_value (iter, 2))
-            self.groups_pane.currently_selected_queues.append (name)
             if object.discovered:
                 any_discovered = True
             if object.enabled:
@@ -648,9 +549,6 @@ class GUI(GtkGUI):
                 any_unshared = True
 
         n = len (paths)
-        self.groups_pane.ui_manager.get_action (
-            "/new-group-from-selection").set_sensitive (n > 0)
-
         self.ui_manager.get_action ("/edit-printer").set_sensitive (n == 1)
 
         self.ui_manager.get_action ("/duplicate-printer").set_sensitive (n == 1)
@@ -686,8 +584,6 @@ class GUI(GtkGUI):
             n > 0 and not any_discovered)
 
         self.ui_manager.get_action ("/create-class").set_sensitive (n > 1)
-
-        self.ui_manager.get_action ("/add-to-group").set_sensitive (n > 0)
 
         self.updating_widgets = False
 
@@ -850,29 +746,9 @@ class GUI(GtkGUI):
         remote_printers = []
         remote_classes = []
 
-        # Choose a view according to the groups pane item
-        if (isinstance (self.current_groups_pane_item, AllPrintersItem) or
-            isinstance (self.current_groups_pane_item, SavedSearchGroupItem)):
-            delete_action = self.ui_manager.get_action ("/delete-printer")
-            delete_action.set_properties (label = None)
-            printers_set = self.printers
-        elif isinstance (self.current_groups_pane_item, FavouritesItem):
-            printers_set = {} # FIXME
-        elif isinstance (self.current_groups_pane_item, StaticGroupItem):
-            delete_action = self.ui_manager.get_action ("/delete-printer")
-            delete_action.set_properties (label = _("Remove from Group"))
-            printers_set = {}
-            deleted_printers = []
-            for printer_name in self.current_groups_pane_item.printer_queues:
-                try:
-                    printer = self.printers[printer_name]
-                    printers_set[printer_name] = printer
-                except KeyError:
-                    deleted_printers.append (printer_name)
-            self.current_groups_pane_item.remove_queues (deleted_printers)
-        else:
-            printers_set = self.printers
-            nonfatalException ()
+        delete_action = self.ui_manager.get_action ("/delete-printer")
+        delete_action.set_properties (label = None)
+        printers_set = self.printers
 
         # Filter printers
         if len (self.current_filter_text) > 0:
@@ -1088,7 +964,6 @@ class GUI(GtkGUI):
         page = self.DESTS_PAGE_DESTS
         if self.cups:
             if (not self.current_filter_text and
-                isinstance (self.current_groups_pane_item, AllPrintersItem) and
                 not self.mainlist.get_iter_first ()):
                 page = self.DESTS_PAGE_NO_PRINTERS
         else:
@@ -1625,16 +1500,7 @@ class GUI(GtkGUI):
     # Delete
 
     def on_delete_activate(self, UNUSED):
-        if isinstance (self.current_groups_pane_item, StaticGroupItem):
-            paths = self.dests_iconview.get_selected_items ()
-            model = self.dests_iconview.get_model ()
-            selected_names = []
-            for path in paths:
-                selected_names.append (model[path][2])
-            self.current_groups_pane_item.remove_queues (selected_names)
-            self.populateList ()
-        else:
-            self.delete_selected_printer_queues ()
+        self.delete_selected_printer_queues ()
 
     def delete_selected_printer_queues (self):
         paths = self.dests_iconview.get_selected_items ()
@@ -1827,24 +1693,6 @@ class GUI(GtkGUI):
         i = self.jobviewers.index (viewer)
         del self.jobviewers[i]
 
-    def on_view_groups_activate (self, widget):
-        if widget.get_active ():
-            if not self.groups_pane_visible:
-                # Show it.
-                self.view_area_vbox.remove (self.view_area_scrolledwindow)
-                self.view_area_hpaned.add2 (self.view_area_scrolledwindow)
-                self.view_area_vbox.add (self.view_area_hpaned)
-                self.view_area_vbox.show_all ()
-                self.groups_pane_visible = True
-        else:
-            if self.groups_pane_visible:
-                # Hide it.
-                self.view_area_vbox.remove (self.view_area_hpaned)
-                self.view_area_hpaned.remove (self.view_area_scrolledwindow)
-                self.view_area_vbox.add (self.view_area_scrolledwindow)
-                self.view_area_vbox.show_all ()
-                self.groups_pane_visible = False
-
     def on_view_discovered_printers_activate (self, UNUSED):
         self.populateList ()
 
@@ -1854,35 +1702,6 @@ class GUI(GtkGUI):
 
     def on_troubleshoot_quit(self, troubleshooter):
         del self.troubleshooter
-
-    def on_save_as_group_activate (self, UNUSED):
-        model = self.dests_iconview.get_model ()
-        printer_queues = []
-        for object in model:
-            printer_queues.append (object[2])
-        self.groups_pane.create_new_group (printer_queues,
-                                           self.current_filter_text)
-
-    def on_save_as_search_group_activate (self, UNUSED):
-        criterion = None
-        if self.current_filter_mode == "filter-name":
-            criterion = SearchCriterion (subject = SearchCriterion.SUBJECT_NAME,
-                                         value   = self.current_filter_text)
-        elif self.current_filter_mode == "filter-description":
-            criterion = SearchCriterion (subject = SearchCriterion.SUBJECT_DESC,
-                                         value   = self.current_filter_text)
-        elif self.current_filter_mode == "filter-location":
-            criterion = SearchCriterion (subject = SearchCriterion.SUBJECT_LOCATION,
-                                         value   = self.current_filter_text)
-        elif self.current_filter_mode == "filter-manufacturer":
-            criterion = SearchCriterion (subject = SearchCriterion.SUBJECT_MANUF,
-                                         value   = self.current_filter_text)
-        else:
-            nonfatalException ()
-            return
-
-        self.groups_pane.create_new_search_group (criterion,
-                                                  self.current_filter_text)
 
     # About dialog
     def on_about_activate(self, widget):
