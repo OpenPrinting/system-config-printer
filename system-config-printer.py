@@ -1087,7 +1087,9 @@ class GUI(GtkGUI):
         # Set up the dests_notebook page.
         page = self.DESTS_PAGE_DESTS
         if self.cups:
-            if not self.mainlist.get_iter_first ():
+            if (not self.current_filter_text and
+                isinstance (self.current_groups_pane_item, AllPrintersItem) and
+                not self.mainlist.get_iter_first ()):
                 page = self.DESTS_PAGE_NO_PRINTERS
         else:
             page = self.DESTS_PAGE_NO_SERVICE
