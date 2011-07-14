@@ -1,4 +1,4 @@
-AM_CFLAGS=-g -O2 -Wall $(GLIB_CFLAGS)
+CFLAGS=-g -O2 -Wall
 
 SUBDIRS=po
 
@@ -183,6 +183,7 @@ udevrules_DATA=udev/70-printers.rules
 udev_udev_configure_printer_SOURCES=\
 	udev/udev-configure-printer.c
 udev_udev_configure_printer_LDADD=-lcups -ludev -lusb $(GLIB_LIBS)
+udev_udev_configure_printer_CFLAGS=$(AM_CFLAGS) $(GLIB_CFLAGS)
 udevhelperdir=$(sysconfdir)/udev
 udevhelper_PROGRAMS=\
 	udev/udev-configure-printer
