@@ -1683,14 +1683,18 @@ do_enumerate (const char *argv0)
 int
 main (int argc, char **argv)
 {
-  int add;
+  int add = 0;
   int enumerate = 0;
 
+  if (argc > 1)
+    {
+      add = !strcmp (argv[1], "add");
+      enumerate = !strcmp (argv[1], "enumerate");
+    }
+
   if (!(argc == 3 &&
-        ((add = !strcmp (argv[1], "add")) ||
-         !strcmp (argv[1], "remove"))) &&
-      !(argc == 2 &&
-        (enumerate = !strcmp (argv[1], "enumerate"))))
+        (add || !strcmp (argv[1], "remove"))) &&
+      !(argc == 2 && enumerate))
     {
       fprintf (stderr,
 	       "Syntax: %s add {USB device path}\n"
