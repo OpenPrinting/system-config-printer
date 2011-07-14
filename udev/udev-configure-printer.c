@@ -535,24 +535,27 @@ device_id_from_devpath (const char *devpath,
     }
 
   usb_device_devpath = strdup (udev_device_get_devpath (parent_dev));
-  syslog (LOG_DEBUG, "parent devpath is %s", usb_device_devpath);
+  syslog (LOG_DEBUG, "device devpath is %s", usb_device_devpath);
 
   for (entry = map->entries; entry; entry = entry->next)
     if (!strcmp (entry->devpath, usb_device_devpath))
       break;
 
   if (entry)
-    /* The map already had an entry so has already been dealt
-     * with.  This can happen because there are two "add"
-     * triggers: one for the usb_device device and the other for
-     * the usblp device.  We have most likely been triggered by
-     * the usblp device, so the usb_device rule got there before
-     * us and succeeded.
-     *
-     * Pretend we didn't find any device URIs that matched, and
-     * exit.
-     */
-    return NULL;
+    {
+      /* The map already had an entry so has already been dealt
+       * with.  This can happen because there are two "add"
+       * triggers: one for the usb_device device and the other for
+       * the usblp device.  We have most likely been triggered by
+       * the usblp device, so the usb_device rule got there before
+       * us and succeeded.
+       *
+       * Pretend we didn't find any device URIs that matched, and
+       * exit.
+       */
+      syslog (LOG_DEBUG, "Device already handled");
+      return NULL;
+    }
 
   serial = udev_device_get_sysattr_value (parent_dev, "serial");
   if (serial)
@@ -1423,12 +1426,7 @@ do_add (const char *cmd, const char *devpath, int detach)
   }
 
   if (!id.mfg || !id.mdl)
-    {
-      syslog (LOG_DEBUG, "invalid or missing IEEE 1284 Device ID%s%s",
-	      id.full_device_id ? " " : "",
-	      id.full_device_id ? id.full_device_id : "");
-      return 1;
-    }
+    return 1;
 
   syslog (LOG_DEBUG, "MFG:%s MDL:%s SERN:%s serial:%s", id.mfg, id.mdl,
 	  id.sern ? id.sern : "-", usbserial[0] ? usbserial : "-");
