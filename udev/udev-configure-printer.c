@@ -823,15 +823,12 @@ find_matching_device_uris (struct device_id *id,
   cups = httpConnectEncrypt (cupsServer (), ippPort(), cupsEncryption ());
   if (cups == NULL)
     {
-      /* Don't bother retrying here.  Instead, the CUPS initscript
-	 should run these commands after cupsd is started:
-
-	 udevadm trigger --subsystem-match=usb \
-	                 --attr-match=bInterfaceClass=07 \
-			 --attr-match=bInterfaceSubClass=01
-
-	 udevadm trigger --subsystem-match=usb \
-	                 --property-match=DEVNAME="/dev/usb/lp*"
+      /* Don't bother retrying here.  We've probably been run from
+	 udev before the cups.socket systemd unit is running.  We'll
+	 get run again, as the systemd service
+	 udev-configure-printer.service, after cups.socket.  For more
+	 information:
+	 http://0pointer.de/blog/projects/socket-activation2.html
       */
 
       syslog (LOG_DEBUG, "failed to connect to CUPS server; giving up");
