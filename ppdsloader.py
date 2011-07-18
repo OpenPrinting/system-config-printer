@@ -130,6 +130,8 @@ class PPDsLoader(gobject.GObject):
         return self._exc
 
     def _dialog_response (self, dialog, response):
+        dialog.destroy ()
+        self._dialog = None
         self.emit ('finished')
 
     def _query_cups (self):
@@ -187,12 +189,20 @@ class PPDsLoader(gobject.GObject):
 
         conn.destroy ()
         self._conn = None
+        if self._dialog != None:
+            self._dialog.destroy ()
+            self._dialog = None
+
         self.emit ('finished')
 
     def _cups_error (self, conn, exc):
         conn.destroy ()
         self._conn = None
         self._ppds = None
+        if self._dialog != None:
+            self._dialog.destroy ()
+            self._dialog = None
+
         self.emit ('finished')
 
     def _query_packagekit (self):
@@ -262,6 +272,10 @@ class PPDsLoader(gobject.GObject):
             if self._conn != None:
                 self._conn.destroy ()
                 self._conn = None
+
+            if self._dialog != None:
+                self._dialog.destroy ()
+                self._dialog = None
 
             self.emit ('finished')
 
