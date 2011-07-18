@@ -27,6 +27,7 @@ import sys
 from debug import *
 import asyncconn
 import config
+import cupshelpers
 import jobviewer
 import newprinter
 import ppdcache
@@ -39,6 +40,7 @@ CONFIG_NEWPRINTERDIALOG_IFACE=CONFIG_IFACE + ".NewPrinterDialog"
 CONFIG_PRINTERPROPERTIESDIALOG_IFACE=CONFIG_IFACE + ".PrinterPropertiesDialog"
 CONFIG_JOBVIEWER_IFACE=CONFIG_IFACE + ".JobViewer"
 
+g_ppds = None
 g_killtimer = None
 
 class KillTimer:
@@ -66,15 +68,132 @@ class KillTimer:
         self._holds += 1
 
     def remove_hold (self):
-        self._holds -= 1
-        if self._holds == 0:
-            debugprint ("Kill timer started")
-            self._add_timeout ()
+        if self._holds > 0:
+            self._holds -= 1
+            if self._holds == 0:
+                debugprint ("Kill timer started")
+                self._add_timeout ()
 
     def alive (self):
         if self._holds == 0:
             gobject.source_remove (self._timer)
             self._add_timeout ()
+
+class FetchedPPDs(gobject.GObject):
+    __gsignals__ = {
+        'ready': (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, []),
+        'error': (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
+                  [gobject.TYPE_PYOBJECT])
+        }
+
+    def __init__ (self, cupsconn, language):
+        gobject.GObject.__init__ (self)
+        self._cupsconn = cupsconn
+        self._language = language
+        self._ppds = None
+
+    def is_ready (self):
+        return self._ppds != None
+
+    def get_ppds (self):
+        return self._ppds
+
+    def run (self):
+        debugprint ("FetchPPDs: running")
+        try:
+            self._cupsconn.getPPDs2 (reply_handler=self._cups_getppds_reply,
+                                     error_handler=self._cups_error)
+        except AttributeError:
+            # getPPDs2 requires pycups >= 1.9.52
+            self._cupsconn.getPPDs (reply_handler=self._cups_getppds_reply,
+                                    error_handler=self._cups_error)
+
+    def _cups_error (self, conn, exc):
+        debugprint ("FetchPPDs: error: %s" % repr (exc))
+        self.emit ('error', exc)
+
+    def _cups_getppds_reply (self, conn, result):
+        debugprint ("FetchPPDs: success")
+        self._ppds = cupshelpers.ppds.PPDs (result, language=self._language)
+        self.emit ('ready')
+
+gobject.type_register (FetchedPPDs)
+
+class GetBestDriversRequest:
+    def __init__ (self, device_id, device_make_and_model, device_uri,
+                  cupsconn, language, reply_handler, error_handler):
+        self.device_id = device_id
+        self.device_make_and_model = device_make_and_model
+        self.device_uri = device_uri
+        self.reply_handler = reply_handler
+        self.error_handler = error_handler
+        self._signals = []
+
+        global g_ppds
+        if g_ppds == None:
+            debugprint ("GetBestDrivers request: need to fetch PPDs")
+            g_ppds = FetchedPPDs (cupsconn, language)
+            self._signals.append (g_ppds.connect ('ready', self._ppds_ready))
+            self._signals.append (g_ppds.connect ('error', self._ppds_error))
+            g_ppds.run ()
+        else:
+            if g_ppds.is_ready ():
+                debugprint ("GetBestDrivers request: PPDs already fetched")
+                self._ppds_ready (g_ppds)
+            else:
+                debugprint ("GetBestDrivers request: waiting for PPDs")
+                self._signals.append (g_ppds.connect ('ready',
+                                                      self._ppds_ready))
+                self._signals.append (g_ppds.connect ('error',
+                                                      self._ppds_error))
+
+        debugprint ("+%s" % self)
+
+    def __del__ (self):
+        debugprint ("-%s" % self)
+
+    def _disconnect_signals (self):
+        for s in self._signals:
+            g_ppds.disconnect (s)
+
+    def _ppds_error (self, fetchedppds, exc):
+        self._disconnect_signals ()
+        self.error_handler (exc)
+
+    def _ppds_ready (self, fetchedppds):
+        self._disconnect_signals ()
+        ppds = fetchedppds.get_ppds ()
+
+        try:
+            if self.device_id:
+                id_dict = cupshelpers.parseDeviceID (self.device_id)
+            else:
+                id_dict = {}
+                (mfg,
+                 mdl) = cupshelpers.ppds.ppdMakeModelSplit (self.device_make_and_model)
+                id_dict["MFG"] = mfg
+                id_dict["MDL"] = mdl
+                id_dict["DES"] = ""
+                id_dict["CMD"] = []
+
+            fit = ppds.getPPDNamesFromDeviceID (id_dict["MFG"],
+                                                id_dict["MDL"],
+                                                id_dict["DES"],
+                                                id_dict["CMD"],
+                                                self.device_uri,
+                                                self.device_make_and_model)
+
+            ppdnamelist = ppds.orderPPDNamesByPreference (fit.keys ())
+
+            g_killtimer.remove_hold ()
+            self.reply_handler (map (lambda x: (x, fit[x]), ppdnamelist))
+        except Exception, e:
+            try:
+                g_killtimer.remove_hold ()
+            except:
+                pass
+
+            self.error_handler (e)
 
 class ConfigPrintingNewPrinterDialog(dbus.service.Object):
     def __init__ (self, bus, path, cupsconn):
@@ -227,6 +346,8 @@ class ConfigPrinting(dbus.service.Object):
         self._pathn = 0
         self._jobapplet = None
         self._jobappletpath = None
+        self._ppds = None
+        self._language = locale.getlocale (locale.LC_MESSAGES)[0]
 
     def destroy (self):
         self._cupsconn.destroy ()
@@ -260,6 +381,16 @@ class ConfigPrinting(dbus.service.Object):
             self._jobappletpath = path
 
        return self._jobappletpath
+
+    @dbus.service.method(dbus_interface=CONFIG_IFACE,
+                         in_signature='sss', out_signature='a(ss)',
+                         async_callbacks=('reply_handler', 'error_handler'))
+    def GetBestDrivers(self, device_id, device_make_and_model, device_uri,
+                   reply_handler, error_handler):
+        g_killtimer.add_hold ()
+        GetBestDriversRequest (device_id, device_make_and_model, device_uri,
+                               self._cupsconn, self._language[0],
+                               reply_handler, error_handler)
 
 def _client_demo ():
     # Client demo
