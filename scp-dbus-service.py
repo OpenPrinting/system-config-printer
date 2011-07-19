@@ -39,6 +39,8 @@ CONFIG_NEWPRINTERDIALOG_IFACE=CONFIG_IFACE + ".NewPrinterDialog"
 CONFIG_PRINTERPROPERTIESDIALOG_IFACE=CONFIG_IFACE + ".PrinterPropertiesDialog"
 CONFIG_JOBVIEWER_IFACE=CONFIG_IFACE + ".JobViewer"
 
+g_killtimer = None
+
 class KillTimer:
     def __init__ (self, timeout=30, killfunc=None):
         self._timeout = timeout
@@ -75,7 +77,7 @@ class KillTimer:
             self._add_timeout ()
 
 class ConfigPrintingNewPrinterDialog(dbus.service.Object):
-    def __init__ (self, bus, path, cupsconn, killtimer):
+    def __init__ (self, bus, path, cupsconn):
         bus_name = dbus.service.BusName (CONFIG_BUS, bus=bus)
         dbus.service.Object.__init__ (self, bus_name, path)
         self.dialog = newprinter.NewPrinterGUI()
@@ -88,7 +90,6 @@ class ConfigPrintingNewPrinterDialog(dbus.service.Object):
                                              self.on_printer_modified)]
         self._ppdcache = ppdcache.PPDCache ()
         self._cupsconn = cupsconn
-        self._killtimer = killtimer
         debugprint ("+%s" % self)
 
     def __del__ (self):
@@ -97,14 +98,14 @@ class ConfigPrintingNewPrinterDialog(dbus.service.Object):
     @dbus.service.method(dbus_interface=CONFIG_NEWPRINTERDIALOG_IFACE,
                          in_signature='uss', out_signature='')
     def NewPrinterFromDevice(self, xid, device_uri, device_id):
-        self._killtimer.add_hold ()
+        g_killtimer.add_hold ()
         self.dialog.init ('printer_with_uri', device_uri=device_uri,
                           devid=device_id, xid=xid)
 
     @dbus.service.method(dbus_interface=CONFIG_NEWPRINTERDIALOG_IFACE,
                          in_signature='uss', out_signature='')
     def ChangePPD(self, xid, name, device_id):
-        self._killtimer.add_hold ()
+        g_killtimer.add_hold ()
         self.xid = xid
         self.name = name
         self.device_id = device_id
@@ -140,13 +141,13 @@ class ConfigPrintingNewPrinterDialog(dbus.service.Object):
         pass
 
     def on_dialog_canceled(self, obj):
-        self._killtimer.remove_hold ()
+        g__killtimer.remove_hold ()
         self.DialogCanceled ()
         self.remove_handles ()
         self.remove_from_connection ()
 
     def on_printer_added(self, obj, name):
-        self._killtimer.remove_hold ()
+        g_killtimer.remove_hold ()
         self.PrinterAdded (name)
         self.remove_handles ()
         self.remove_from_connection ()
@@ -156,7 +157,7 @@ class ConfigPrintingNewPrinterDialog(dbus.service.Object):
             self.dialog.disconnect (handle)
 
 class ConfigPrintingPrinterPropertiesDialog(dbus.service.Object):
-    def __init__ (self, bus, path, xid, name, killtimer):
+    def __init__ (self, bus, path, xid, name):
         bus_name = dbus.service.BusName (CONFIG_BUS, bus=bus)
         dbus.service.Object.__init__ (self, bus_name=bus_name, object_path=path)
         self.dialog = printerproperties.PrinterPropertiesDialog ()
@@ -165,8 +166,7 @@ class ConfigPrintingPrinterPropertiesDialog(dbus.service.Object):
         self.closed_handle = handle
         self.dialog.show (name)
         self.dialog.dialog.set_modal (False)
-        self._killtimer = killtimer
-        killtimer.add_hold ()
+        g_killtimer.add_hold ()
 
     @dbus.service.method(dbus_interface=CONFIG_PRINTERPROPERTIESDIALOG_IFACE,
                          in_signature='', out_signature='')
@@ -181,22 +181,21 @@ class ConfigPrintingPrinterPropertiesDialog(dbus.service.Object):
 
     def on_dialog_closed (self, dialog):
         dialog.destroy ()
-        self._killtimer.remove_hold ()
+        g_killtimer.remove_hold ()
         self.Finished ()
         self.dialog.disconnect (self.closed_handle)
         self.remove_from_connection ()
 
 class ConfigPrintingJobApplet(dbus.service.Object):
-    def __init__ (self, bus, path, killtimer):
+    def __init__ (self, bus, path):
         bus_name = dbus.service.BusName (CONFIG_BUS, bus=bus)
         dbus.service.Object.__init__ (self, bus_name=bus_name, object_path=path)
         self.jobapplet = jobviewer.JobViewer(bus=dbus.SystemBus (),
                                              applet=True, my_jobs=True)
         handle = self.jobapplet.connect ('finished', self.on_jobapplet_finished)
         self.finished_handle = handle
-        self._killtimer = killtimer
         self.has_finished = False
-        killtimer.add_hold ()
+        g_killtimer.add_hold ()
         debugprint ("+%s" % self)
 
     def __del__ (self):
@@ -214,14 +213,13 @@ class ConfigPrintingJobApplet(dbus.service.Object):
 
     def on_jobapplet_finished (self, jobapplet):
         self.Finished ()
-        self._killtimer.remove_hold ()
+        g_killtimer.remove_hold ()
         self.has_finished = True
         self.jobapplet.disconnect (self.finished_handle)
         self.remove_from_connection ()
 
 class ConfigPrinting(dbus.service.Object):
-    def __init__ (self, killtimer):
-        self._killtimer = killtimer
+    def __init__ (self):
         self.bus = dbus.SessionBus ()
         bus_name = dbus.service.BusName (CONFIG_BUS, bus=self.bus)
         dbus.service.Object.__init__ (self, bus_name, CONFIG_PATH)
@@ -239,9 +237,8 @@ class ConfigPrinting(dbus.service.Object):
         self._pathn += 1
         path = "%s/NewPrinterDialog/%s" % (CONFIG_PATH, self._pathn)
         ConfigPrintingNewPrinterDialog (self.bus, path,
-                                        self._cupsconn,
-                                        killtimer=self._killtimer)
-        self._killtimer.alive ()
+                                        self._cupsconn)
+        g_killtimer.alive ()
         return path
 
     @dbus.service.method(dbus_interface=CONFIG_IFACE,
@@ -249,9 +246,8 @@ class ConfigPrinting(dbus.service.Object):
     def PrinterPropertiesDialog(self, xid, name):
         self._pathn += 1
         path = "%s/PrinterPropertiesDialog/%s" % (CONFIG_PATH, self._pathn)
-        ConfigPrintingPrinterPropertiesDialog (self.bus, path, xid, name,
-                                               killtimer=self._killtimer)
-        self._killtimer.alive ()
+        ConfigPrintingPrinterPropertiesDialog (self.bus, path, xid, name)
+        g_killtimer.alive ()
         return path
 
     @dbus.service.method(dbus_interface=CONFIG_IFACE,
@@ -260,8 +256,7 @@ class ConfigPrinting(dbus.service.Object):
        if self._jobapplet == None or self._jobapplet.has_finished:
             self._pathn += 1
             path = "%s/JobApplet/%s" % (CONFIG_PATH, self._pathn)
-            self._jobapplet = ConfigPrintingJobApplet (self.bus, path,
-                                                       self._killtimer)
+            self._jobapplet = ConfigPrintingJobApplet (self.bus, path)
             self._jobappletpath = path
 
        return self._jobappletpath
@@ -336,7 +331,7 @@ if __name__ == '__main__':
 
     debugprint ("Service running...")
     loop = gobject.MainLoop ()
-    killtimer = KillTimer (killfunc=loop.quit)
-    cp = ConfigPrinting (killtimer=killtimer)
+    g_killtimer = KillTimer (killfunc=loop.quit)
+    cp = ConfigPrinting ()
     loop.run ()
     cp.destroy ()
