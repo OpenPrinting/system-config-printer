@@ -151,7 +151,7 @@ class PPDsLoader(gobject.GObject):
             conn.getPPDs2 (reply_handler=self._cups_reply,
                            error_handler=self._cups_error)
         except AttributeError:
-            # getPPDs requires pycups >= 1.9.52
+            # getPPDs2 requires pycups >= 1.9.52
             conn.getPPDs (reply_handler=self._cups_reply,
                           error_handler=self._cups_error)
 
