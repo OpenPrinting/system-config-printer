@@ -131,7 +131,9 @@ class GetBestDriversRequest:
         self.reply_handler = reply_handler
         self.error_handler = error_handler
         self._signals = []
+        debugprint ("+%s" % self)
 
+        g_killtimer.add_hold ()
         global g_ppds
         if g_ppds == None:
             debugprint ("GetBestDrivers request: need to fetch PPDs")
@@ -149,8 +151,6 @@ class GetBestDriversRequest:
                                                       self._ppds_ready))
                 self._signals.append (g_ppds.connect ('error',
                                                       self._ppds_error))
-
-        debugprint ("+%s" % self)
 
     def __del__ (self):
         debugprint ("-%s" % self)
@@ -444,7 +444,6 @@ class ConfigPrinting(dbus.service.Object):
                          async_callbacks=('reply_handler', 'error_handler'))
     def GetBestDrivers(self, device_id, device_make_and_model, device_uri,
                    reply_handler, error_handler):
-        g_killtimer.add_hold ()
         GetBestDriversRequest (device_id, device_make_and_model, device_uri,
                                self._cupsconn, self._language[0],
                                reply_handler, error_handler)
