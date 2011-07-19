@@ -803,6 +803,9 @@ def missingPackagesAndExecutables(ppd):
                 exepath = pathcheck (exe,
                                      "/usr/lib/cups/filter:"
                                      "/usr/lib64/cups/filter")
+                if not exepath:
+                    exe = "/usr/lib/cups/filter/" + exe
+                    break
 
     if exe and not exepath:
         # We didn't find a necessary executable.  Complain.
