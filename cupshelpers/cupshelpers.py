@@ -21,6 +21,7 @@
 
 import cups, pprint, os, tempfile, re, string
 import locale
+import packagekit.client, packagekit.enums
 from . import _debugprint
 
 class Printer:
@@ -827,7 +828,25 @@ def missingPackagesAndExecutables(ppd):
     @returns: string list pair, representing missing packages and
     missing executables
     """
-    return ([], missingExecutables(ppd))
+    executables = missingExecutables(ppd)
+    packages = []
+    if executables:
+        unresolved_executables = []
+        client = packagekit.client.PackageKitClient ()
+        for executable in executables:
+            if not executable.startswith ("/"):
+                executable = "/usr/bin/" + executable
+
+            result = client.search_file ([executable],
+                                         packagekit.enums.FILTER_INSTALLED)
+            if result:
+                packages.extend (map (lambda x: x.name, result))
+            else:
+                unresolved_executables.append (executable)
+
+        executables = unresolved_executables
+        
+    return (packages, executables)
 
 def _main():
     c = cups.Connection()
