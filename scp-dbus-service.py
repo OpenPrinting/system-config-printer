@@ -29,8 +29,10 @@ import asyncconn
 import config
 import cups
 import cupshelpers
+import dnssdresolve
 import jobviewer
 import newprinter
+import PhysicalDevice
 import ppdcache
 import printerproperties
 
@@ -194,6 +196,60 @@ class GetBestDriversRequest:
             except:
                 pass
 
+            self.error_handler (e)
+
+class GroupPhysicalDevicesRequest:
+    def __init__ (self, devices, reply_handler, error_handler):
+        self.devices = devices
+        self.reply_handler = reply_handler
+        self.error_handler = error_handler
+        debugprint ("+%s" % self)
+
+        try:
+            g_killtimer.add_hold ()
+            need_resolving = {}
+            self.deviceobjs = {}
+            for device_uri, device_dict in self.devices.iteritems ():
+                deviceobj = cupshelpers.Device (device_uri, **device_dict)
+                self.deviceobjs[device_uri] = deviceobj
+                if device_uri.startswith ("dnssd://"):
+                    need_resolving[device_uri] = deviceobj
+
+            if len (need_resolving) > 0:
+                resolver = dnssdresolve.DNSSDHostNamesResolver (need_resolving)
+                resolver.resolve (reply_handler=self._group)
+            else:
+                self._group ()
+        except Exception, e:
+            g_killtimer.remove_hold ()
+            self.error_handler (e)
+
+    def __del__ (self):
+        debugprint ("-%s" % self)
+
+    def _group (self, resolved_devices=None):
+        # We can ignore resolved_devices because the actual objects
+        # (in self.devices) have been modified.
+        try:
+            self.physdevs = []
+            for device_uri, deviceobj in self.deviceobjs.iteritems ():
+                newphysicaldevice = PhysicalDevice.PhysicalDevice (deviceobj)
+                matched = False
+                try:
+                    i = self.physdevs.index (newphysicaldevice)
+                    self.physdevs[i].add_device (deviceobj)
+                except ValueError:
+                    self.physdevs.append (newphysicaldevice)
+
+            uris_by_phys = []
+            for physdev in self.physdevs:
+                uris_by_phys.append (map (lambda x: x.uri,
+                                          physdev.get_devices ()))
+
+            g_killtimer.remove_hold ()
+            self.reply_handler (uris_by_phys)
+        except Exception, e:
+            g_killtimer.remove_hold ()
             self.error_handler (e)
 
 class ConfigPrintingNewPrinterDialog(dbus.service.Object):
@@ -398,6 +454,12 @@ class ConfigPrinting(dbus.service.Object):
     def MissingExecutables(self, ppd_filename):
         ppd = cups.PPD (ppd_filename)
         return cupshelpers.missingExecutables (ppd)
+
+    @dbus.service.method(dbus_interface=CONFIG_IFACE,
+                         in_signature='a{sa{ss}}', out_signature='aas',
+                         async_callbacks=('reply_handler', 'error_handler'))
+    def GroupPhysicalDevices(self, devices, reply_handler, error_handler):
+        GroupPhysicalDevicesRequest (devices, reply_handler, error_handler)
 
 def _client_demo ():
     # Client demo
