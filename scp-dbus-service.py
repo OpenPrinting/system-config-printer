@@ -27,6 +27,7 @@ import sys
 from debug import *
 import asyncconn
 import config
+import cups
 import cupshelpers
 import jobviewer
 import newprinter
@@ -391,6 +392,14 @@ class ConfigPrinting(dbus.service.Object):
         GetBestDriversRequest (device_id, device_make_and_model, device_uri,
                                self._cupsconn, self._language[0],
                                reply_handler, error_handler)
+
+    @dbus.service.method(dbus_interface=CONFIG_IFACE,
+                         in_signature='s', out_signature='as')
+    def MissingExecutables(self, ppd_filename):
+        ppd = cups.PPD (ppd_filename)
+        (packages,
+         executables) = cupshelpers.missingPackagesAndExecutables (ppd)
+        return executables
 
 def _client_demo ():
     # Client demo
