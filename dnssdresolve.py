@@ -62,7 +62,7 @@ class DNSSDHostNamesResolver:
             hostname = hostname.encode('utf-8')
             hostname = re.sub("%(?i)[\dabcdef]{2}", expandhex, hostname)
 
-            elements = hostname.split (".")
+            elements = hostname.rsplit (".", 3)
             if len (elements) != 4:
                 self._resolved ()
                 continue
