@@ -687,14 +687,13 @@ def setPPDPageSize(ppd, language):
     except:
         _debugprint ("Failed to set PageSize (%s not available?)" % size)
 
-def missingPackagesAndExecutables(ppd):
+def missingExecutables(ppd):
     """
     Check that all relevant executables for a PPD are installed.
 
     @param ppd: PPD
     @type ppd: cups.PPD object
-    @returns: string list pair, representing missing packages and
-    missing executables
+    @returns: string list, representing missing executables
     """
 
     # First, a local function.  How to check that something exists
@@ -735,7 +734,6 @@ def missingPackagesAndExecutables(ppd):
         _debugprint ("%s: NOT found in %s" % (name,path))
         return None
 
-    pkgs_to_install = []
     exes_to_install = []
 
     def add_missing (exe):
@@ -818,7 +816,18 @@ def missingPackagesAndExecutables(ppd):
                 if not exepath:
                     add_missing ("/usr/lib/cups/filter/" + exe)
 
-    return (pkgs_to_install, exes_to_install)
+    return exes_to_install
+
+def missingPackagesAndExecutables(ppd):
+    """
+    Check that all relevant executables for a PPD are installed.
+
+    @param ppd: PPD
+    @type ppd: cups.PPD object
+    @returns: string list pair, representing missing packages and
+    missing executables
+    """
+    return ([], missingExecutables(ppd))
 
 def _main():
     c = cups.Connection()

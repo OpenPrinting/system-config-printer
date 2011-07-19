@@ -397,9 +397,7 @@ class ConfigPrinting(dbus.service.Object):
                          in_signature='s', out_signature='as')
     def MissingExecutables(self, ppd_filename):
         ppd = cups.PPD (ppd_filename)
-        (packages,
-         executables) = cupshelpers.missingPackagesAndExecutables (ppd)
-        return executables
+        return cupshelpers.missingExecutables (ppd)
 
 def _client_demo ():
     # Client demo
