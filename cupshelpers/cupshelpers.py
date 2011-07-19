@@ -738,6 +738,14 @@ def missingPackagesAndExecutables(ppd):
     pkgs_to_install = []
     exes_to_install = []
 
+    def add_missing (exe):
+        # Strip out foomatic '%'-style place-holders.
+        p = exe.find ('%')
+        if p != -1:
+            exe = exe[:p]
+
+        exes_to_install.append (exe)
+
     # Find a 'FoomaticRIPCommandLine' attribute.
     exe = exepath = None
     attr = ppd.findAttr ('FoomaticRIPCommandLine')
@@ -761,7 +769,8 @@ def missingPackagesAndExecutables(ppd):
                 exe = args[0]
                 exepath = pathcheck (exe)
                 if not exepath:
-                    break
+                    add_missing (exe)
+                    continue
 
                 # Main executable found.  But if it's 'gs',
                 # perhaps there is an IJS server we also need
@@ -775,6 +784,9 @@ def missingPackagesAndExecutables(ppd):
                         if arg.startswith (search):
                             exe = arg[len (search):]
                             exepath = pathcheck (exe)
+                            if not exepath:
+                                add_missing (exe)
+
                             break
 
                         argi += 1
@@ -804,54 +816,7 @@ def missingPackagesAndExecutables(ppd):
                                      "/usr/lib/cups/filter:"
                                      "/usr/lib64/cups/filter")
                 if not exepath:
-                    exe = "/usr/lib/cups/filter/" + exe
-                    break
-
-    if exe and not exepath:
-        # We didn't find a necessary executable.  Complain.
-
-        # Strip out foomatic '%'-style place-holders.
-        p = exe.find ('%')
-        if p != -1:
-            exe = exe[:p]
-
-        pkgs = {
-            # The foomatic filter
-            'foomatic-rip': 'foomatic',
-            # Foomatic command line executables
-            'gs': 'ghostscript',
-            'perl': 'perl',
-            'foo2oak-wrapper': None,
-            'pnm2ppa': 'pnm2ppa',
-            'c2050': 'c2050',
-            'c2070': 'c2070',
-            'cjet': 'cjet',
-            'lm1100': 'lx',
-            'esc-m': 'min12xxw',
-            'min12xxw': 'min12xxw',
-            'pbm2l2030': 'pbm2l2030',
-            'pbm2l7k': 'pbm2l7k',
-            'pbm2lex': 'pbm2l7k',
-            # IJS servers (used by foomatic)
-            'hpijs': 'hpijs',
-            'ijsgutenprint.5.0': 'gutenprint',
-            'ijsgutenprint.5.2': 'gutenprint',
-            # CUPS filters
-            'rastertogutenprint.5.0': 'gutenprint-cups',
-            'rastertogutenprint.5.2': 'gutenprint-cups',
-            'commandtoepson': 'gutenprint-cups',
-            'commandtocanon': 'gutenprint-cups',
-            }
-        try:
-            pkg = pkgs[exe]
-        except:
-            pkg = None
-
-        if pkg:
-            _debugprint ("%s included in package %s" % (exe, pkg))
-            pkgs_to_install.append (pkg)
-        else:
-            exes_to_install.append (exe)
+                    add_missing ("/usr/lib/cups/filter/" + exe)
 
     return (pkgs_to_install, exes_to_install)
 
