@@ -24,7 +24,7 @@
 import config
 
 import dbus
-import pickle
+import json
 from debug import *
 
 class Firewall:
@@ -55,7 +55,7 @@ class Firewall:
                     return
 
                 p = self._firewall.read ()
-                self._fw_data = pickle.loads (p.encode ('utf-8'))
+                self._fw_data = json.loads (p.encode ('utf-8'))
             except dbus.DBusException, e:
                 self._fw_data = (None, None)
                 if error_handler:
@@ -84,7 +84,7 @@ class Firewall:
 
     def write (self):
         try:
-            self._firewall.write (pickle.dumps (self._fw_data[0]))
+            self._firewall.write (json.dumps (self._fw_data[0]))
         except:
             pass
 
