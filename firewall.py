@@ -24,7 +24,7 @@
 import config
 
 import dbus
-import pickle
+import json
 
 class Firewall:
     ALLOW_IPP_CLIENT = "--service=ipp-client"
@@ -44,7 +44,7 @@ class Firewall:
                                         "org.fedoraproject.Config.Firewall")
                 self._firewall = iface
                 p = self._firewall.read ()
-                self._fw_data = pickle.loads (p.encode ('utf-8'))
+                self._fw_data = json.loads (p.encode ('utf-8'))
             except dbus.DBusException:
                 self._fw_data = (None, None)
 
@@ -52,7 +52,7 @@ class Firewall:
 
     def write (self):
         try:
-            self._firewall.write (pickle.dumps (self._fw_data[0]))
+            self._firewall.write (json.dumps (self._fw_data[0]))
         except:
             pass
 
