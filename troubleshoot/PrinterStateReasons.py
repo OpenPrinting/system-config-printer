@@ -2,7 +2,7 @@
 
 ## Printing troubleshooter
 
-## Copyright (C) 2008, 2009, 2010 Red Hat, Inc.
+## Copyright (C) 2008, 2009, 2010, 2011 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 
@@ -54,7 +54,7 @@ class PrinterStateReasons(Question):
                                   parent=parent)
         dict = self.op.run ()
 
-        ppdcache = ppdcache.PPDCache ()
+        the_ppdcache = ppdcache.PPDCache ()
 
         text = ''
         state_message = dict['printer-state-message']
@@ -75,7 +75,7 @@ class PrinterStateReasons(Question):
             if reason == "none":
                 continue
 
-            r = statereason.StateReason (queue, reason, ppdcache)
+            r = statereason.StateReason (queue, reason, the_ppdcache)
             (title, description) = r.get_description ()
             level = r.get_level ()
             if level == statereason.StateReason.ERROR:
