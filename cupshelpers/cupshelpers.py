@@ -1,6 +1,6 @@
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008, 2009, 2010 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011 Red Hat, Inc.
 ## Authors:
 ##  Florian Festi <ffesti@redhat.com>
 ##  Tim Waugh <twaugh@redhat.com>
@@ -838,9 +838,9 @@ def missingPackagesAndExecutables(ppd):
                 executable = "/usr/bin/" + executable
 
             result = client.search_file ([executable],
-                                         packagekit.enums.FILTER_INSTALLED)
+                                         packagekit.enums.FILTER_NOT_INSTALLED)
             if result:
-                packages.extend (map (lambda x: x.name, result))
+                packages.extend (set (map (lambda x: x.name, result)))
             else:
                 unresolved_executables.append (executable)
 
