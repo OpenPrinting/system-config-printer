@@ -1,7 +1,8 @@
 ## system-config-printer
 
-## Copyright (C) 2008 Red Hat, Inc.
-## Copyright (C) 2008 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2008, 2011 Red Hat, Inc.
+## Authors:
+##  Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -20,7 +21,8 @@
 __all__  = ['set_debugprint_fn',
             'Device', 'Printer', 'activateNewPrinter',
             'copyPPDOptions', 'getDevices', 'getPrinters',
-            'missingPackagesAndExecutables', 'parseDeviceID',
+            'missingPackagesAndExecutables', 'missingExecutables',
+            'parseDeviceID',
             'setPPDPageSize',
             'ppds',
             'openprinting']
@@ -50,6 +52,7 @@ from cupshelpers import				\
     getDevices,					\
     getPrinters,				\
     missingPackagesAndExecutables,		\
+    missingExecutables,                         \
     parseDeviceID,				\
     setPPDPageSize
 
