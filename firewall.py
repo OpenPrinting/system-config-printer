@@ -2,7 +2,7 @@
 
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008, 2009, 2010 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 
@@ -45,7 +45,7 @@ class Firewall:
                 self._firewall = iface
                 p = self._firewall.read ()
                 self._fw_data = json.loads (p.encode ('utf-8'))
-            except dbus.DBusException:
+            except (dbus.DBusException, ValueError):
                 self._fw_data = (None, None)
 
         return self._fw_data
