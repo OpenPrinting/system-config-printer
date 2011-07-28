@@ -56,7 +56,7 @@ class Firewall:
 
                 p = self._firewall.read ()
                 self._fw_data = json.loads (p.encode ('utf-8'))
-            except dbus.DBusException, e:
+            except (dbus.DBusException, ValueError), e:
                 self._fw_data = (None, None)
                 if error_handler:
                     debugprint ("D-Bus exception examining firewall")
