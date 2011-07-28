@@ -74,7 +74,12 @@ class Firewall:
             self._get_fw_data ()
 
     def reply_handler (self, result):
-        self._fw_data = pickle.loads (result.encode ('utf-8'))
+        try:
+            self._fw_data = json.loads (result.encode ('utf-8'))
+        except ValueError, e:
+            self.error_handler (e)
+            return
+
         debugprint ("Firewall data obtained")
         self._client_reply_handler (self._fw_data)
 
