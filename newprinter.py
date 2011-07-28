@@ -2616,8 +2616,7 @@ class NewPrinterGUI(GtkGUI):
         self.WaitWindow.hide ()
 
         model = gtk.ListStore (gobject.TYPE_STRING)
-        for printer in ["test", "one", "two", "three", "foobar", "foobaz"]: # printers:
-            print "[%s]" % printer
+        for printer in printers:
             model.append ([printer])
 
         completion = gtk.EntryCompletion ()
