@@ -123,6 +123,7 @@ class LpdServer:
     def __init__(self, hostname):
         self.hostname = hostname
         self.max_lpt_com = 8
+        self.stop = False
 
     def probe_queue(self,name, result):
         s = open_socket(self.hostname, 515)
@@ -171,11 +172,18 @@ class LpdServer:
 
         return candidate
 
+    def destroy(self):
+        debugprint ("LpdServer exiting: destroy called")
+        self.stop = True
+
     def probe(self):
         result = []
         for name in self.get_possible_queue_names ():
             while gtk.events_pending ():
                 gtk.main_iteration ()
+
+            if self.stop:
+                break
 
             found = self.probe_queue(name, result)
             if not found and name.startswith ("pr"):

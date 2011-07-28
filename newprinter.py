@@ -341,8 +341,9 @@ class NewPrinterGUI(GtkGUI):
 
         # Since some dialogs are reused we can't let the delete-event's
         # default handler destroy them
-        for dialog in [self.SMBBrowseDialog, self.WaitWindow]:
-            dialog.connect ("delete-event", on_delete_just_hide)
+        self.SMBBrowseDialog.connect ("delete-event", on_delete_just_hide)
+        self.WaitWindow_handler = self.WaitWindow.connect ("delete-event",
+                                                           on_delete_just_hide)
 
         try:
             slip.gtk.label_set_autowrap(self.NewPrinterWindow)
@@ -2612,7 +2613,16 @@ class NewPrinterGUI(GtkGUI):
         self.WaitWindow.set_transient_for (self.NewPrinterWindow)
         self.WaitWindow.show_now ()
         busy (self.WaitWindow)
+        def stop (widget, event):
+            server.destroy ()
+            return True
+
+        self.WaitWindow.disconnect (self.WaitWindow_handler)
+        signal = self.WaitWindow.connect ("delete-event", stop)
         printers = server.probe()
+        self.WaitWindow.disconnect (signal)
+        self.WaitWindow_handler = self.WaitWindow.connect ("delete-event",
+                                                           on_delete_just_hide)
         self.WaitWindow.hide ()
 
         model = gtk.ListStore (gobject.TYPE_STRING)
