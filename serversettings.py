@@ -2,7 +2,7 @@
 
 ## system-config-printer
 
-## Copyright (C) 2008, 2009, 2010 Red Hat, Inc.
+## Copyright (C) 2008, 2009, 2010, 2011 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 
@@ -257,7 +257,7 @@ class ServerSettings(GtkGUI):
 
     def on_add_clicked (self, button):
         model = self.browse_treeview.get_model ()
-        iter = model.insert (0, row=[_("Enter IP address")])
+        iter = model.insert (0, row=[_("Enter hostname")])
         button.set_sensitive (False)
         col = self.browse_treeview.get_columns ()[0]
         cell = col.get_cell_renderers ()[0]
