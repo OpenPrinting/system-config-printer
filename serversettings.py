@@ -23,6 +23,7 @@
 import config
 from gettext import gettext as _
 import cups
+import dbus
 import gobject
 import gtk
 import os
