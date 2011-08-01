@@ -619,7 +619,10 @@ class PrinterPropertiesDialog(GtkGUI):
 
         if (response == gtk.RESPONSE_OK or
             response == gtk.RESPONSE_APPLY):
-            failed = self.save_printer (self.printer)
+            if (response == gtk.RESPONSE_OK and len (self.changed) == 0):
+                failed = False
+            else:
+                failed = self.save_printer (self.printer)
 
         if response == gtk.RESPONSE_APPLY and not failed:
             try:
@@ -957,8 +960,7 @@ class PrinterPropertiesDialog(GtkGUI):
 
         self.btnPrinterPropertiesApply.set_sensitive (len (self.changed) > 0 and
                                                       not self.conflicts)
-        self.btnPrinterPropertiesOK.set_sensitive (len (self.changed) > 0 and
-                                                   not self.conflicts)
+        self.btnPrinterPropertiesOK.set_sensitive (not self.conflicts)
 
     def save_printer(self, printer, saveall=False, parent=None):
         if parent == None:
