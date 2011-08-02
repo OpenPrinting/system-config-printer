@@ -22,11 +22,6 @@
 import cups, pprint, os, tempfile, re, string
 import locale
 from . import _debugprint
-try:
-    import packagekit.client, packagekit.enums
-    HAVE_PACKAGEKIT=True
-except ImportError:
-    HAVE_PACKAGEKIT=False
 
 class Printer:
     _flags_blacklist = ["options", "local"]
@@ -833,24 +828,7 @@ def missingPackagesAndExecutables(ppd):
     missing executables
     """
     executables = missingExecutables(ppd)
-    packages = []
-    if executables and HAVE_PACKAGEKIT:
-        unresolved_executables = []
-        client = packagekit.client.PackageKitClient ()
-        for executable in executables:
-            if not executable.startswith ("/"):
-                executable = "/usr/bin/" + executable
-
-            result = client.search_file ([executable],
-                                         packagekit.enums.FILTER_NOT_INSTALLED)
-            if result:
-                packages.extend (set (map (lambda x: x.name, result)))
-            else:
-                unresolved_executables.append (executable)
-
-        executables = unresolved_executables
-        
-    return (packages, executables)
+    return ([], executables)
 
 def _main():
     c = cups.Connection()
