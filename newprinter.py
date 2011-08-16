@@ -2223,7 +2223,7 @@ class NewPrinterGUI(GtkGUI):
             entry.set_text(new_text)
 
     def on_entNPTDevice_changed(self, ent):
-        allowed_chars = string.letters+string.digits+'_-./:%()'
+        allowed_chars = string.letters+string.digits+'_-./:%()@?=&'
         self.entry_changed(ent, allowed_chars)
         self.setNPButtons()
 
