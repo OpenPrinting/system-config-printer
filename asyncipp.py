@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-## Copyright (C) 2007, 2008, 2009, 2010 Red Hat, Inc.
+## Copyright (C) 2007, 2008, 2009, 2010, 2011 Red Hat, Inc.
 ## Copyright (C) 2008 Novell, Inc.
 ## Author: Tim Waugh <twaugh@redhat.com>
 
@@ -567,7 +567,7 @@ class IPPAuthConnection(IPPConnection):
                                 port=port, encryption=encryption)
 
     def destroy (self):
-        del self.semantic
+        self.semantic = None
         IPPConnection.destroy (self)
 
     def _call_function (self, fn, *args, **kwds):
