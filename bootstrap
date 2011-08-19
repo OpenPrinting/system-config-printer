@@ -14,7 +14,8 @@ if [ -d .git ] && git --version 2>/dev/null >/dev/null && \
 fi
 
 if [ -x /usr/bin/tx ]; then
-  tx init
+  rm -rf .tx
+  tx init --host=https://www.transifex.net
   tx set --execute --auto-local -r system-config-printer.1-2-x \
     'po/<lang>.po' --source-lang en \
     --source-file po/system-config-printer.pot
