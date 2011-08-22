@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: system-config-printer.master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2011-07-28 16:48+0100\n"
+"POT-Creation-Date: 2011-08-22 12:15+0100\n"
 "PO-Revision-Date: 2010-06-08 11:29+1000\n"
 "Last-Translator: Leah Liu <lliu@redhat.com>\n"
 "Language-Team: Wei Liu\n"
@@ -284,7 +284,7 @@ msgstr "任务属性"
 
 #: ../jobviewer.py:706 ../jobviewer.py:1007 ../jobviewer.py:1709
 #: ../jobviewer.py:1739 ../jobviewer.py:2119 ../jobviewer.py:2124
-#: ../jobviewer.py:2138 ../jobviewer.py:2217 ../printerproperties.py:1610
+#: ../jobviewer.py:2138 ../jobviewer.py:2217 ../printerproperties.py:1612
 #: ../ui/NewPrinterWindow.ui.h:89 ../troubleshoot/ChooseNetworkPrinter.py:100
 #: ../troubleshoot/ChooseNetworkPrinter.py:101
 #: ../troubleshoot/ChooseNetworkPrinter.py:104
@@ -681,7 +681,7 @@ msgid "Allow all incoming mDNS traffic"
 msgstr "允许所有进入的 mDNS 流量"
 
 #: ../newprinter.py:1664 ../newprinter.py:1667 ../newprinter.py:2081
-#: ../newprinter.py:2087 ../serversettings.py:541 ../serversettings.py:546
+#: ../newprinter.py:2087 ../serversettings.py:542 ../serversettings.py:547
 msgid "Adjust Firewall"
 msgstr "调整防火墙"
 
@@ -929,7 +929,7 @@ msgid "adding printer %s"
 msgstr "正在添加打印机 %s"
 
 #: ../newprinter.py:3555 ../newprinter.py:3566 ../newprinter.py:3583
-#: ../printerproperties.py:972 ../system-config-printer.py:1561
+#: ../printerproperties.py:974 ../system-config-printer.py:1561
 #: ../system-config-printer.py:1586
 #, python-format
 msgid "modifying printer %s"
@@ -1464,24 +1464,24 @@ msgstr ""
 "只有在冲突被解决后，才能应用所做\n"
 "修改。"
 
-#: ../printerproperties.py:932
+#: ../printerproperties.py:935
 msgid "Installable Options"
 msgstr "可安装选项"
 
-#: ../printerproperties.py:933 ../ui/PrinterPropertiesDialog.ui.h:63
+#: ../printerproperties.py:936 ../ui/PrinterPropertiesDialog.ui.h:63
 msgid "Printer Options"
 msgstr "打印机选项"
 
-#: ../printerproperties.py:970
+#: ../printerproperties.py:972
 #, python-format
 msgid "modifying class %s"
 msgstr "正在修改分类 %s"
 
-#: ../printerproperties.py:987
+#: ../printerproperties.py:989
 msgid "This will delete this class!"
 msgstr "这将删除这个 class！"
 
-#: ../printerproperties.py:988
+#: ../printerproperties.py:990
 msgid "Proceed anyway?"
 msgstr "继续处理？"
 
@@ -1489,61 +1489,61 @@ msgstr "继续处理？"
 #. but we have never fetched the server settings to see whether
 #. the server is publishing shared printers.  Fetch the settings
 #. now so that we can update the "not published" label if necessary.
-#: ../printerproperties.py:1080 ../serversettings.py:195
+#: ../printerproperties.py:1082 ../serversettings.py:196
 msgid "fetching server settings"
 msgstr "正在取回服务器设置"
 
-#: ../printerproperties.py:1167
+#: ../printerproperties.py:1169
 msgid "printing test page"
 msgstr "正在打印测试页"
 
-#: ../printerproperties.py:1180 ../printerproperties.py:1220
+#: ../printerproperties.py:1182 ../printerproperties.py:1222
 msgid "Not possible"
 msgstr "不可能"
 
-#: ../printerproperties.py:1181 ../printerproperties.py:1221
+#: ../printerproperties.py:1183 ../printerproperties.py:1223
 msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
 msgstr "远程的服务器没有接受这个打印任务，这可能是因为那个打印机没有共享。"
 
-#: ../printerproperties.py:1193 ../printerproperties.py:1213
+#: ../printerproperties.py:1195 ../printerproperties.py:1215
 msgid "Submitted"
 msgstr "提交"
 
-#: ../printerproperties.py:1194
+#: ../printerproperties.py:1196
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr "测试页作为任务 %d 被发送"
 
-#: ../printerproperties.py:1206
+#: ../printerproperties.py:1208
 msgid "sending maintenance command"
 msgstr "正在发送维护命令"
 
-#: ../printerproperties.py:1214
+#: ../printerproperties.py:1216
 #, python-format
 msgid "Maintenance command submitted as job %d"
 msgstr "将维护命令作为任务 %d 提交"
 
-#: ../printerproperties.py:1301 ../printerproperties.py:1306
-#: ../printerproperties.py:1402
+#: ../printerproperties.py:1303 ../printerproperties.py:1308
+#: ../printerproperties.py:1404
 msgid "Error"
 msgstr "错误"
 
-#: ../printerproperties.py:1302
+#: ../printerproperties.py:1304
 msgid "The PPD file for this queue is damaged."
 msgstr ""
 
-#: ../printerproperties.py:1307
+#: ../printerproperties.py:1309
 msgid "There was a problem connecting to the CUPS server."
 msgstr "连接到 CUPS 服务器时出现问题。"
 
-#: ../printerproperties.py:1403
+#: ../printerproperties.py:1405
 #, python-format
 msgid "Option '%s' has value '%s' and cannot be edited."
 msgstr "选项 '%s' 有值 '%s'，且无法编辑。"
 
-#: ../printerproperties.py:1519
+#: ../printerproperties.py:1521
 msgid "Marker levels are not reported for this printer."
 msgstr "未报告这台打印机的标记等级。"
 
@@ -1552,20 +1552,20 @@ msgstr "未报告这台打印机的标记等级。"
 msgid "You must log in to access %s."
 msgstr ""
 
-#: ../serversettings.py:91
+#: ../serversettings.py:92
 msgid "Problems?"
 msgstr "问题？"
 
-#: ../serversettings.py:260
+#: ../serversettings.py:261
 #, fuzzy
 msgid "Enter hostname"
 msgstr "打印机状态："
 
-#: ../serversettings.py:505
+#: ../serversettings.py:506
 msgid "modifying server settings"
 msgstr "正在修改服务器设置"
 
-#: ../serversettings.py:542
+#: ../serversettings.py:543
 msgid "Adjust the firewall now to allow all incoming IPP connections?"
 msgstr "是否现在调整防火墙以便允许所有进入的 IPP 连接？"
 
