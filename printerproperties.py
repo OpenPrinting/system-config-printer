@@ -926,7 +926,7 @@ class PrinterPropertiesDialog(GtkGUI):
             debugprint ("Conflicts detected")
             self.btnConflict.show()
             for option in self.conflicts:
-                if option.tab_label == self.lblPInstallOptions:
+                if option.tab_label.get_text () == self.lblPInstallOptions.get_text ():
                     installablebold = True
                 else:
                     optionsbold = True
@@ -945,12 +945,12 @@ class PrinterPropertiesDialog(GtkGUI):
         if store:
             for n in range (self.ntbkPrinter.get_n_pages ()):
                 page = self.ntbkPrinter.get_nth_page (n)
-                label = self.ntbkPrinter.get_tab_label (page)
+                label = self.ntbkPrinter.get_tab_label (page).get_text ()
                 try:
-                    if label == self.lblPInstallOptions:
+                    if label == self.lblPInstallOptions.get_text():
                         iter = store.get_iter ((n,))
                         store.set_value (iter, 0, installabletext)
-                    elif label == self.lblPOptions:
+                    elif label == self.lblPOptions.get_text ():
                         iter = store.get_iter ((n,))
                         store.set_value (iter, 0, optionstext)
                 except ValueError:
