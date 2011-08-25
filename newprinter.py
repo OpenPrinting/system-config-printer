@@ -3618,10 +3618,11 @@ class NewPrinterGUI(GtkGUI):
                     isinstance (self.orig_ppd, cups.PPD)):
                     cupshelpers.copyPPDOptions(self.orig_ppd, ppd)
                 else:
-                    # write Installable Options to ppd
-                    for option in self.options.itervalues():
-                        option.writeback()
                     cupshelpers.setPPDPageSize(ppd, self.language[0])
+
+                # write Installable Options to ppd
+                for option in self.options.itervalues():
+                    option.writeback()
 
                 try:
                     self.cups.addPrinter(name, ppd=ppd)
