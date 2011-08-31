@@ -312,8 +312,8 @@ class ConfigPrintingNewPrinterDialog(dbus.service.Object):
         pass
 
     @dbus.service.signal(dbus_interface=CONFIG_NEWPRINTERDIALOG_IFACE,
-                         signature='s')
-    def PrinterModified(self, name):
+                         signature='sb')
+    def PrinterModified(self, name, ppd_has_changed):
         pass
 
     def on_dialog_canceled(self, obj):
@@ -325,6 +325,12 @@ class ConfigPrintingNewPrinterDialog(dbus.service.Object):
     def on_printer_added(self, obj, name):
         g_killtimer.remove_hold ()
         self.PrinterAdded (name)
+        self.remove_handles ()
+        self.remove_from_connection ()
+
+    def on_printer_modified(self, obj, name, ppd_has_changed):
+        g_killtimer.remove_hold ()
+        self.PrinterModifed (name, ppd_has_changed)
         self.remove_handles ()
         self.remove_from_connection ()
 

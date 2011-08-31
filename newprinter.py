@@ -146,7 +146,8 @@ class NewPrinterGUI(GtkGUI):
         'printer-added' :   (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
                              [gobject.TYPE_STRING]),
         'printer-modified': (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
-                             [gobject.TYPE_STRING]),
+                             [gobject.TYPE_STRING, # printer name
+                              gobject.TYPE_BOOLEAN]), # PPD modified?
         'dialog-canceled':  (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, [])
         }
 
@@ -3639,7 +3640,7 @@ class NewPrinterGUI(GtkGUI):
         if self.dialog_mode in ["printer", "printer_with_uri", "class"]:
             self.emit ('printer-added', name)
         else:
-            self.emit ('printer-modified', name)
+            self.emit ('printer-modified', name, self.orig_ppd != self.ppd)
 
         self.device = None
         del self.printers

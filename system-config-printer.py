@@ -1892,7 +1892,7 @@ class GUI(GtkGUI):
                                      "printer.") % (name, (exes + pkgs)[0]),
                                    parent)
 
-    def on_printer_modified (self, obj, name):
+    def on_printer_modified (self, obj, name, ppd_has_changed):
         debugprint ("Printer modified by user: %s" % name)
         # Load information about the printer,
         # e.g. self.propertiesDlg.server_side_options and self.propertiesDlg.ppd

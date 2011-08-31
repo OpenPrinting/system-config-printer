@@ -1833,12 +1833,16 @@ class PrinterPropertiesDialog(GtkGUI):
         ready (self.dialog)
 
     # NewPrinterGUI signal handlers
-    def on_printer_modified (self, obj, name):
+    def on_printer_modified (self, obj, name, ppd_has_changed):
         debugprint ("on_printer_modified called")
         if self.dialog.get_property ('visible') and self.printer:
             try:
                 self.printer.getAttributes ()
-                self.updatePrinterProperties ()
+                if ppd_has_changed:
+                    self.load (name)
+                else:
+                    self.updatePrinterProperties ()
+
             except cups.IPPError:
                 pass
 
