@@ -442,7 +442,7 @@ class Monitor(gobject.GObject):
                         continue
 
                     jobs[jobid] = attrs
-                except AttributeError:
+                except KeyError:
                     jobs[jobid] = {'job-k-octets': 0}
                 except cups.IPPError, (e, m):
                     self.emit ('cups-ipp-error', e, m)
