@@ -1848,7 +1848,7 @@ class PrinterPropertiesDialog(GtkGUI):
 
     # Monitor signal handlers
     def on_printer_event (self, mon, printer, eventname, event):
-        self.on_printer_modified (None, printer)
+        self.on_printer_modified (None, printer, False)
 
     def on_printer_removed (self, mon, printer):
         if (self.dialog.get_property ('visible') and
