@@ -153,7 +153,18 @@ class PhysicalDevice:
         # If the manufacturer/model is not known, or useless (in the
         # case of the hpfax backend or a dnssd URI pointing to a remote
         # CUPS queue), show the device-info fiel instead.
-        if self.mfg == '' or \
+        if (self.devices[0].uri.startswith('ipp:') and \
+            self.devices[0].uri.find('/printers/') != -1):
+            if not self.dnssd_hostname:
+                info = "%s" % self._network_host
+            elif not self._network_host:
+                info = "%s" % self.dnssd_hostname
+            else:
+                if self._network_host != self.dnssd_hostname:
+                    info = "%s (%s)" % (self.dnssd_hostname, self._network_host)
+                else:
+                    info = "%s" % self._network_host
+        elif self.mfg == '' or \
            (self.mfg == "HP" and self.mdl.startswith("Fax")) or \
            ((self.devices[0].uri.startswith('dnssd:') or \
              self.devices[0].uri.startswith('mdns:')) and \
@@ -162,10 +173,14 @@ class PhysicalDevice:
         else:
             info = "%s %s" % (self.mfg, self.mdl)
         if ((self._network_host and len (self._network_host) > 0) or \
-              (self.dnssd_hostname and len (self.dnssd_hostname))) and not \
-             ((self.devices[0].uri.startswith('dnssd:') or \
-               self.devices[0].uri.startswith('mdns:')) and \
-              self.devices[0].uri.endswith('/cups')):
+            (self.dnssd_hostname and len (self.dnssd_hostname) > 0)) and not \
+            ((self.devices[0].uri.startswith('dnssd:') or \
+              self.devices[0].uri.startswith('mdns:')) and \
+              self.devices[0].uri.endswith('/cups')) and \
+            (not self._network_host or \
+             info.find(self._network_host) == -1) and \
+            (not self.dnssd_hostname or \
+             info.find(self.dnssd_hostname) == -1):
             if not self.dnssd_hostname:
                 info += " (%s)" % self._network_host
             elif not self._network_host:
