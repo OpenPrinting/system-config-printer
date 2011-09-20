@@ -1096,6 +1096,11 @@ class JobViewer (GtkGUI):
         if self.notify_has_persistence:
             return
 
+        # Don't handle tooltips during the mainloop recursion at the
+        # end of this function as it seems to cause havoc (bug #664044,
+        # bug #739745).
+        self.statusicon.set_has_tooltip (False)
+
         self.statusicon.set_visible (open_notifications > 0 or
                                      num_jobs > self.num_jobs_when_hidden)
 
