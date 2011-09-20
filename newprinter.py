@@ -920,11 +920,11 @@ class NewPrinterGUI(GtkGUI):
                 # not automatically set up on our local CUPS server
                 # (for example DNS-SD broadcasted queue from Mac OS X)
                 self.remotecupsqueue = None
-                res = re.search ("ipp://(\S+(:\d+|))/printers/(\S+)", uri)
+                res = re.search ("ipp://(\S+?)(:\d+|)/printers/(\S+)", uri)
                 if res:
                     resg = res.groups()
                     if len (resg[1]) > 0:
-                        port = int (resg[1])
+                        port = int (resg[1][1:])
                     else:
                         port = 631
                     try:
@@ -2319,7 +2319,18 @@ class NewPrinterGUI(GtkGUI):
             elif device.type == "smb":
                 device.menuentry = _("Windows Printer via SAMBA")
             elif device.type == "ipp":
-                device.menuentry = _("IPP")
+                (scheme, rest) = urllib.splittype (device.uri)
+                (hostport, rest) = urllib.splithost (rest)
+                (queue, rest) = urllib.splitquery (rest)
+                if queue != '':
+                    if queue[0] == '/':
+                        queue = queue[1:]
+                    if queue.startswith("printers/"):
+                        queue = queue[9:]
+                if queue != '':
+                    device.menuentry = _("IPP") + " (%s)" % queue
+                else:
+                    device.menuentry = _("IPP")
             elif device.type == "http" or device.type == "https":
                 device.menuentry = _("HTTP")
             elif device.type == "dnssd" or device.type == "mdns":
@@ -2738,8 +2749,11 @@ class NewPrinterGUI(GtkGUI):
                 if port:
                     device += ":" + port
         elif type in ("ipp", "http", "https"): # IPP
-            if self.lblIPPURI.get_property('visible'):
-                device = self.lblIPPURI.get_text()
+            try:
+                if self.lblIPPURI.get_property('visible'):
+                    device = self.lblIPPURI.get_text()
+            except:
+                device = self.entNPTDevice.get_text()
         elif type == "lpd": # LPD
             host = self.entNPTLpdHost.get_text()
             printer = self.entNPTLpdQueue.get_text()
