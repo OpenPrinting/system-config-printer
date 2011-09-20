@@ -395,13 +395,13 @@ class PrinterFinder:
         #        debugprint ("Runtime error: %s" % repr ((e, s)))
         #except:
         #    nonfatalException ()
-        class Foo:
-            pass
+        #class Foo:
+        #    pass
 
-        entry = Foo()
-        entry.name = "Samsung SCX4200"
-        entry.smbc_type = pysmb.smbc.PRINTER_SHARE
-        entries = [ entry ]
+        #entry = Foo()
+        #entry.name = "Samsung SCX4200"
+        #entry.smbc_type = pysmb.smbc.PRINTER_SHARE
+        #entries = [ entry ]
 
         if self.quit:
             debugprint ("smb: no good")
