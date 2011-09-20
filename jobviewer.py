@@ -1084,6 +1084,11 @@ class JobViewer (GtkGUI, monitor.Watcher):
         debugprint ("num_jobs: %d" % num_jobs)
         debugprint ("num_jobs_when_hidden: %d" % self.num_jobs_when_hidden)
 
+        # Don't handle tooltips during the mainloop recursion at the
+        # end of this function as it seems to cause havoc (bug #664044,
+        # bug #739745).
+        self.statusicon.set_has_tooltip (False)
+
         self.statusicon.set_visible (self.special_status_icon or
                                      open_notifications > 0 or
                                      num_jobs > self.num_jobs_when_hidden)
