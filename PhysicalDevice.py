@@ -152,12 +152,15 @@ class PhysicalDevice:
     def get_info (self):
         # If the manufacturer/model is not known, or useless (in the
         # case of the hpfax backend or a dnssd URI pointing to a remote
-        # CUPS queue), show the device-info fiel instead.
+        # CUPS queue), show the device-info field instead.
         if (self.devices[0].uri.startswith('ipp:') and \
-            self.devices[0].uri.find('/printers/') != -1):
+            self.devices[0].uri.find('/printers/') != -1) or \
+           ((self.devices[0].uri.startswith('dnssd:') or \
+             self.devices[0].uri.startswith('mdns:')) and \
+            self.devices[0].uri.endswith('/cups')):
             if not self.dnssd_hostname:
                 info = "%s" % self._network_host
-            elif not self._network_host:
+            elif not self._network_host or self._network_host.find(":") != -1:
                 info = "%s" % self.dnssd_hostname
             else:
                 if self._network_host != self.dnssd_hostname:
@@ -165,10 +168,7 @@ class PhysicalDevice:
                 else:
                     info = "%s" % self._network_host
         elif self.mfg == '' or \
-           (self.mfg == "HP" and self.mdl.startswith("Fax")) or \
-           ((self.devices[0].uri.startswith('dnssd:') or \
-             self.devices[0].uri.startswith('mdns:')) and \
-            self.devices[0].uri.endswith('/cups')):
+           (self.mfg == "HP" and self.mdl.startswith("Fax")):
             info = self._ppdippstr.get (self.devices[0].info)
         else:
             info = "%s %s" % (self.mfg, self.mdl)

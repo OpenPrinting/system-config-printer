@@ -2341,6 +2341,8 @@ class NewPrinterGUI(GtkGUI):
                     cupsqueue = cupsqueue[1:]
                 if cupsqueue == 'cups':
                     device.menuentry = _("Remote CUPS printer via DNS-SD")
+                    if device.info != '':
+                         device.menuentry += " (%s)" % device.info
                 else:
                     protocol = None
                     if name.find("._ipp") != -1:
