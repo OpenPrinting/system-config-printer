@@ -397,6 +397,7 @@ class NewPrinterGUI(GtkGUI):
         # Devices expander
         self.expNPDeviceURIs.connect ("notify::expanded",
                                       self.on_expNPDeviceURIs_expanded)
+        self.expNPDeviceURIs.set_expanded(1)
 
         # SMB browser
         self.smb_store = gtk.TreeStore (gobject.TYPE_PYOBJECT)
