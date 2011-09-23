@@ -100,19 +100,19 @@
     </drivertype>
 
     <drivertype name="foomatic-recommended-hpijs">
-      <attribute name="ppd-make-and-model" match=".* Foomatic/hpijs"/>
+      <attribute name="ppd-make-and-model" match=".* Foomatic/hpijs.*"/>
       <deviceid>
-	<field name="DRV" match=",?R1"/>
+	<field name="DRV" match=".*,?R1"/>
       </deviceid>
     </drivertype>
 
     <drivertype name="foomatic-hpijs">
-      <attribute name="ppd-make-and-model" match=".* Foomatic/hpijs"/>
+      <attribute name="ppd-make-and-model" match=".* Foomatic/hpijs.*"/>
     </drivertype>
 
     <drivertype name="foomatic-recommended-postscript">
       <ppdname match="foomatic(-db-compressed-ppds)?:"/>
-      <attribute name="ppd-make-and-model" match=".* Postscript"/>
+      <attribute name="ppd-make-and-model" match=".*Postscript"/>
       <deviceid>
 	<field name="DRV" match=".*,?R1"/>
       </deviceid>
