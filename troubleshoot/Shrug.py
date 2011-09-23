@@ -2,7 +2,7 @@
 
 ## Printing troubleshooter
 
-## Copyright (C) 2008, 2010 Red Hat, Inc.
+## Copyright (C) 2008, 2010, 2011 Red Hat, Inc.
 ## Author: Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
@@ -61,22 +61,40 @@ class Shrug(Question):
         self.save.disconnect (self.save_sigid)
 
     def on_save_clicked (self, button):
-        dialog = gtk.FileChooserDialog (parent=self.troubleshooter.get_window(),
-                                        action=gtk.FILE_CHOOSER_ACTION_SAVE,
-                                        buttons=(gtk.STOCK_CANCEL,
-                                                 gtk.RESPONSE_CANCEL,
-                                                 gtk.STOCK_SAVE,
-                                                 gtk.RESPONSE_OK))
-        dialog.set_do_overwrite_confirmation (True)
-        dialog.set_current_name ("troubleshoot.txt")
-        dialog.set_default_response (gtk.RESPONSE_OK)
-        dialog.set_local_only (True)
-        response = dialog.run ()
-        dialog.hide ()
-        if response != gtk.RESPONSE_OK:
-            return
+        while True:
+            parent = self.troubleshooter.get_window()
+            dialog = gtk.FileChooserDialog (parent=parent,
+                                            action=gtk.FILE_CHOOSER_ACTION_SAVE,
+                                            buttons=(gtk.STOCK_CANCEL,
+                                                     gtk.RESPONSE_CANCEL,
+                                                     gtk.STOCK_SAVE,
+                                                     gtk.RESPONSE_OK))
+            dialog.set_do_overwrite_confirmation (True)
+            dialog.set_current_name ("troubleshoot.txt")
+            dialog.set_default_response (gtk.RESPONSE_OK)
+            dialog.set_local_only (True)
+            response = dialog.run ()
+            dialog.hide ()
+            if response != gtk.RESPONSE_OK:
+                return
 
-        f = file (dialog.get_filename (), "w")
-        f.write (self.buffer.get_text (self.buffer.get_start_iter (),
-                                       self.buffer.get_end_iter ()))
-        del f
+            try:
+                f = file (dialog.get_filename (), "w")
+                f.write (self.buffer.get_text (self.buffer.get_start_iter (),
+                                               self.buffer.get_end_iter ()))
+            except IOError, e:
+                err = gtk.MessageDialog (parent,
+                                         gtk.DIALOG_MODAL |
+                                         gtk.DIALOG_DESTROY_WITH_PARENT,
+                                         gtk.MESSAGE_ERROR,
+                                         gtk.BUTTONS_CLOSE,
+                                         _("Error saving file"))
+                err.format_secondary_text (_("There was an error saving "
+                                             " the file:") + "\n" +
+                                           e.strerror)
+                err.run ()
+                err.destroy ()
+                continue
+
+            del f
+            break
