@@ -2751,12 +2751,6 @@ class NewPrinterGUI(GtkGUI):
                 device += "://" + host
                 if port:
                     device += ":" + port
-        elif type in ("ipp", "http", "https"): # IPP
-            try:
-                if self.lblIPPURI.get_property('visible'):
-                    device = self.lblIPPURI.get_text()
-            except:
-                device = self.entNPTDevice.get_text()
         elif type == "lpd": # LPD
             host = self.entNPTLpdHost.get_text()
             printer = self.entNPTLpdQueue.get_text()
