@@ -92,7 +92,7 @@ class Shrug(Question):
                                          gtk.BUTTONS_CLOSE,
                                          _("Error saving file"))
                 err.format_secondary_text (_("There was an error saving "
-                                             " the file:") + "\n" +
+                                             "the file:") + "\n" +
                                            e.strerror)
                 err.run ()
                 err.destroy ()
