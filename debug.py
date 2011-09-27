@@ -46,9 +46,6 @@ def nonfatalException (type="non-fatal", end="Continuing anyway.."):
     set_debugging (True)
     debugprint ("Caught %s exception.  Traceback:" % type)
     (type, value, tb) = sys.exc_info ()
-    tblast = traceback.extract_tb (tb, limit=None)
-    if len (tblast):
-        tblast = tblast[:len (tblast) - 1]
     extxt = traceback.format_exception_only (type, value)
     for line in traceback.format_tb(tb):
         debugprint (line.strip ())
