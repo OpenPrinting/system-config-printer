@@ -875,12 +875,19 @@ class PrinterPropertiesDialog(GtkGUI):
     # set buttons sensitivity
     def setDataButtonState(self):
         try:
-            printable = (self.ppd != None and
-                         not bool (self.changed) and
+            attrs = self.printer.other_attributes
+            formats = attrs.get('document-format-supported', [])
+            printable = (not bool (self.changed) and
                          self.printer.enabled and
                          not self.printer.rejecting)
+            try:
+                formats.index ('application/postscript')
+                testpage = printable
+            except ValueError:
+                # PostScript not accepted
+                testpage = False
 
-            self.btnPrintTestPage.set_sensitive (printable)
+            self.btnPrintTestPage.set_sensitive (testpage)
             adjustable = not (self.printer.discovered or bool (self.changed))
             for button in [self.btnChangePPD,
                            self.btnSelectDevice]:
@@ -888,9 +895,8 @@ class PrinterPropertiesDialog(GtkGUI):
 
             selftest = False
             cleanheads = False
-            if (self.printer.type & cups.CUPS_PRINTER_COMMANDS) != 0:
-                attrs = self.printer.other_attributes
-                formats = attrs.get('document-format-supported', [])
+            if (printable and
+                (self.printer.type & cups.CUPS_PRINTER_COMMANDS) != 0):
                 try:
                     # Is the command format supported?
                     formats.index ('application/vnd.cups-command')
@@ -1134,10 +1140,6 @@ class PrinterPropertiesDialog(GtkGUI):
         self.btnPrintTestPage.clicked ()
 
     def on_btnPrintTestPage_clicked(self, button):
-        if self.ppd == False:
-            # Can't print a test page for a raw queue.
-            return
-
         printer = self.printer
         if not printer:
             # Printer has been deleted meanwhile
