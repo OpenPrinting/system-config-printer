@@ -566,6 +566,15 @@ class JobViewer (GtkGUI):
         self.monitor.connect ('printer-removed', self.printer_removed)
         self.monitor.refresh ()
 
+        self.my_monitor = None
+        if not my_jobs:
+            self.my_monitor = monitor.Monitor(bus=bus, my_jobs=True,
+                                              host=self.host, port=self.port,
+                                              encryption=self.encryption)
+            self.my_monitor.connect ('job-added', self.job_added)
+            self.my_monitor.connect ('job-event', self.job_event)
+            self.my_monitor.refresh ()
+
         if not self.applet:
             self.JobsWindow.show ()
 
@@ -606,6 +615,8 @@ class JobViewer (GtkGUI):
 
     def cleanup (self):
         self.monitor.cleanup ()
+        if self.my_monitor:
+            self.my_monitor.cleanup ()
 
         self.JobsWindow.hide ()
 
@@ -697,7 +708,8 @@ class JobViewer (GtkGUI):
         else:
             which_jobs = "not-completed"
         self.monitor.refresh(which_jobs=which_jobs, refresh_all=False)
-
+        if self.my_monitor:
+            self.my_monitor.refresh(which_jobs=which_jobs, refresh_all=False)
 
     def update_job_creation_times(self):
         now = time.time ()
@@ -806,6 +818,8 @@ class JobViewer (GtkGUI):
 
     def update_monitor (self):
         self.monitor.update ()
+        if self.my_monitor:
+            self.my_monitor.update ()
 
     def update_job (self, job, data, connection=None):
         # Fetch required attributes for this job if they are missing.
@@ -957,7 +971,7 @@ class JobViewer (GtkGUI):
                         c._begin_operation (_("authenticating job"))
                         c.authenticateJob (job, auth_info)
                         c._end_operation ()
-                        self.monitor.update ()
+                        self.update_monitor ()
                         debugprint ("Automatically authenticated job %d" % job)
                         self.authenticated_jobs.add (job)
                         return
@@ -1040,7 +1054,7 @@ class JobViewer (GtkGUI):
             c.authenticateJob (jobid, auth_info)
             remember = dialog.get_remember_password ()
             self.authenticated_jobs.add (jobid)
-            self.monitor.update ()
+            self.update_monitor ()
         except cups.IPPError, (e, m):
             self.show_IPP_Error (e, m)
 
@@ -1293,13 +1307,13 @@ class JobViewer (GtkGUI):
                 if (e != cups.IPP_NOT_POSSIBLE and
                     e != cups.IPP_NOT_FOUND):
                     self.show_IPP_Error (e, m)
-                self.monitor.update ()
+                self.update_monitor ()
                 c._end_operation ()
                 return
             c._end_operation ()
 
         del c
-        self.monitor.update ()
+        self.update_monitor ()
 
     def on_job_release_activate(self, menuitem):
         try:
@@ -1318,13 +1332,13 @@ class JobViewer (GtkGUI):
                 if (e != cups.IPP_NOT_POSSIBLE and
                     e != cups.IPP_NOT_FOUND):
                     self.show_IPP_Error (e, m)
-                self.monitor.update ()
+                self.update_monitor ()
                 c._end_operation ()
                 return
             c._end_operation ()
 
         del c
-        self.monitor.update ()
+        self.update_monitor ()
 
     def on_job_reprint_activate(self, menuitem):
         try:
@@ -1337,12 +1351,12 @@ class JobViewer (GtkGUI):
             del c
         except cups.IPPError, (e, m):
             self.show_IPP_Error (e, m)
-            self.monitor.update ()
+            self.update_monitor ()
             return
         except RuntimeError:
             return
 
-        self.monitor.update ()
+        self.update_monitor ()
 
     def on_job_retrieve_activate(self, menuitem):
         try:
@@ -1402,11 +1416,11 @@ class JobViewer (GtkGUI):
 
             except cups.IPPError, (e, m):
                 self.show_IPP_Error (e, m)
-                self.monitor.update ()
+                self.update_monitor ()
                 return
 
         del c
-        self.monitor.update ()
+        self.update_monitor ()
 
     def on_job_move_activate(self, menuitem, job_printer_uri):
         try:
@@ -1419,7 +1433,7 @@ class JobViewer (GtkGUI):
             del c
         except cups.IPPError, (e, m):
             self.show_IPP_Error (e, m)
-            self.monitor.update ()
+            self.update_monitor ()
             return
         except RuntimeError:
             return
@@ -1428,7 +1442,7 @@ class JobViewer (GtkGUI):
             debugprint ("Move requires pycups >= 1.9.47")
             return
 
-        self.monitor.update ()
+        self.update_monitor ()
 
     def on_job_authenticate_activate(self, menuitem):
         for jobid in self.jobids:
@@ -1436,6 +1450,9 @@ class JobViewer (GtkGUI):
 
     def on_refresh_clicked(self, toolbutton):
         self.monitor.refresh ()
+        if self.my_monitor:
+            self.my_monitor.refresh ()
+
         self.update_job_creation_times ()
 
     def on_job_attributes_activate(self, menuitem):
@@ -1787,6 +1804,12 @@ class JobViewer (GtkGUI):
         # completed jobs and one was reprinted.
         if not self.jobiters.has_key (jobid):
             self.add_job (jobid, jobdata)
+        elif mon == self.my_monitor:
+            # Copy over any missing attributes such as user and title.
+            for attr, value in jobdata.iteritems ():
+                if not self.jobs[jobid].has_key (attr):
+                    self.jobs[jobid][attr] = value
+                    debugprint ("Add %s=%s (my job)" % (attr, value))
 
         # If we failed to get required attributes for the job, bail.
         if not self.jobiters.has_key (jobid):
