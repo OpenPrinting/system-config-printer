@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-## Copyright (C) 2007, 2008, 2009, 2010 Red Hat, Inc.
+## Copyright (C) 2007, 2008, 2009, 2010, 2011 Red Hat, Inc.
 ## Author: Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
@@ -241,8 +241,15 @@ class Connection:
             except cups.IPPError, (e, m):
                 if self._use_pk and m == 'pkcancel':
                     raise cups.IPPError (0, _("Operation canceled"))
+                try:
+                    ipp_auth_canceled = cups.IPP_AUTHENTICATION_CANCELED
+                except AttributeError:
+                    # requires pycups 1.9.60
+                    ipp_auth_canceled = 4096
+
                 if not self._cancel and (e == cups.IPP_NOT_AUTHORIZED or
-                                         e == cups.IPP_FORBIDDEN):
+                                         e == cups.IPP_FORBIDDEN or
+                                         e == ipp_auth_canceled):
                     self._failed (e == cups.IPP_FORBIDDEN)
                 elif not self._cancel and e == cups.IPP_SERVICE_UNAVAILABLE:
                     if self._lock:
@@ -264,6 +271,7 @@ class Connection:
                     if self._cancel and not self._cannot_auth:
                         raise cups.IPPError (0, _("Operation canceled"))
 
+                    debugprint ("%s: %s" % (e, m))
                     raise
             except cups.HTTPError, (s,):
                 if not self._cancel:
