@@ -122,12 +122,6 @@
       <ppdname match="foomatic(-db-compressed-ppds)?:.*-Postscript"/>
     </drivertype>
 
-    <drivertype name="foomatic-pxlmono">
-      <!-- Treat this one specially because of the size of the output
-           it generates (see bug #661814) -->
-      <attribute name="ppd-make-and-model" match=".* Foomatic/pxlmono"/>
-    </drivertype>
-
     <drivertype name="foomatic-recommended-nonpostscript">
       <ppdname match="(foomatic(-db-compressed-ppds)?|ijsgutenprint.*):"/>
       <deviceid>
@@ -294,7 +288,6 @@
 	<drivertype>generic-pcl5e</drivertype>
 	<drivertype>generic-pcl5</drivertype>
 	<drivertype>generic-pcl</drivertype>
-	<drivertype>foomatic-pxlmono</drivertype>
 	<drivertype>generic-escp</drivertype>
 	<drivertype>ghostscript</drivertype>
 	<drivertype>generic</drivertype>
