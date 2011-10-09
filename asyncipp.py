@@ -504,6 +504,8 @@ class _IPPAuthOperation:
 
     def _on_auth_dialog_response (self, dialog, response):
         (user, password) = dialog.get_auth_info ()
+        if user == '':
+            user = self._user;
         authconn.global_authinfocache.cache_auth_info ((user,
                                                         password),
                                                        host=self._conn.thread.host,

@@ -488,8 +488,9 @@ class Connection:
             self._on_authentication_response (d, response)
 
     def _on_authentication_response (self, dialog, response):
-        (self._use_user,
-         self._use_password) = dialog.get_auth_info ()
+        (user, self._use_password) = dialog.get_auth_info ()
+        if user != '':
+            self._use_user = user
         global_authinfocache.cache_auth_info ((self._use_user,
                                                self._use_password),
                                               host=self._server,
