@@ -379,8 +379,14 @@ class _IPPAuthOperation:
         forbidden = False
         if type (exc) == cups.IPPError:
             (e, m) = exc.args
+            try:
+                ipp_auth_canceled = cups.IPP_AUTHENTICATION_CANCELED
+            except AttributeError:
+                # requires pycups 1.9.60
+                ipp_auth_canceled = 4096
             if (e == cups.IPP_NOT_AUTHORIZED or
-                e == cups.IPP_FORBIDDEN):
+                e == cups.IPP_FORBIDDEN or
+                e == ipp_auth_canceled):
                 forbidden = (e == cups.IPP_FORBIDDEN)
             elif e == cups.IPP_SERVICE_UNAVAILABLE:
                 return self._reconnect_error (conn, exc)
