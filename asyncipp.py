@@ -334,17 +334,6 @@ class _IPPAuthOperation:
         self._client_reply_handler = reply_handler
         self._client_error_handler = error_handler
 
-        if user:
-            host = conn.thread.host
-            port = conn.thread.port
-            creds = authconn.global_authinfocache.lookup_auth_info (host=host,
-                                                                    port=port)
-            if creds:
-                if creds[0] == user:
-                    self._use_password = creds[1]
-                    self._reconnected = True
-                del creds
-
         debugprint ("+%s" % self)
 
     def __del__ (self):
@@ -429,11 +418,36 @@ class _IPPAuthOperation:
             return self._error (exc)
 
         # Now reconnect and retry.
+        host = conn.thread.host
+        port = conn.thread.port
+        authconn.global_authinfocache.remove_auth_info (host=host,
+                                                        port=port)
+        self._use_password = ''
         conn.reconnect (self._user,
                         reply_handler=self._reconnect_reply,
                         error_handler=self._reconnect_error)
 
     def auth_handler (self, prompt, conn, method=None, resource=None):
+        if self._auth_called == False:
+            if self._user == None:
+                self._user = cups.getUser()
+            if self._user:
+                host = conn.thread.host
+                port = conn.thread.port
+                creds = authconn.global_authinfocache.lookup_auth_info (host=host,
+                                                                        port=port)
+                if creds:
+                    if creds[0] == self._user:
+                        self._use_password = creds[1]
+                        self._reconnected = True
+                    del creds
+        else:
+            host = conn.thread.host
+            port = conn.thread.port
+            authconn.global_authinfocache.remove_auth_info (host=host,
+                                                            port=port)
+            self._use_password = ''
+            
         self._auth_called = True
         if self._reconnected:
             debugprint ("Supplying password after reconnection")
@@ -491,6 +505,10 @@ class _IPPAuthOperation:
 
     def _on_auth_dialog_response (self, dialog, response):
         (user, password) = dialog.get_auth_info ()
+        authconn.global_authinfocache.cache_auth_info ((user,
+                                                        password),
+                                                       host=self._conn.thread.host,
+                                                       port=self._conn.thread.port)
         self._dialog = dialog
         dialog.hide ()
 
@@ -498,6 +516,8 @@ class _IPPAuthOperation:
             response == gtk.RESPONSE_DELETE_EVENT):
             self._cancel = True
             self._conn.set_auth_info ('')
+            authconn.global_authinfocache.remove_auth_info (host=self._conn.thread.host,
+                                                            port=self._conn.thread.port)
             debugprint ("Auth canceled")
             return
 

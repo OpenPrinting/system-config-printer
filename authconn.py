@@ -132,6 +132,15 @@ class _AuthInfoCache:
         except KeyError:
             return None
 
+    def remove_auth_info (self, host=None, port=None):
+        if port == None:
+            port = 631
+
+        try:
+            del self.creds[(host,port)]
+        except KeyError:
+            return None
+
 global_authinfocache = _AuthInfoCache ()
 
 class Connection:
@@ -155,12 +164,6 @@ class Connection:
         self._operation_stack = []
         self._lock = lock
         self._gui_event = threading.Event ()
-
-        creds = global_authinfocache.lookup_auth_info (host=host, port=port)
-        if creds != None:
-            if (creds[0] != 'root' or try_as_root):
-                (self._use_user, self._use_password) = creds
-            del creds
 
         self._connect ()
 
@@ -329,6 +332,12 @@ class Connection:
 
     def _perform_authentication (self):
         self._passes += 1
+
+        creds = global_authinfocache.lookup_auth_info (host=self._server, port=self._port)
+        if creds != None:
+            if (creds[0] != 'root' or self._try_as_root):
+                (self._use_user, self._use_password) = creds
+            del creds
 
         debugprint ("Authentication pass: %d" % self._passes)
         if self._passes == 1:
