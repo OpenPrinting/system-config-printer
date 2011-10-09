@@ -406,7 +406,6 @@ class _IPPAuthOperation:
             # first.
             debugprint ("Authentication: Try as root")
             self._user = "root"
-            self._try_as_root = False
             conn.reconnect (self._user,
                             reply_handler=self._reconnect_reply,
                             error_handler=self._reconnect_error)
