@@ -446,7 +446,7 @@ class _IPPAuthOperation:
             authconn.global_authinfocache.remove_auth_info (host=host,
                                                             port=port)
             self._use_password = ''
-            
+
         self._auth_called = True
         if self._reconnected:
             debugprint ("Supplying password after reconnection")
