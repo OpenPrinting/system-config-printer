@@ -25,18 +25,14 @@ import cups
 import ppdippstr
 import re
 
+cups.require ("1.9.55")
+
 # Special IPP type
 class IPPResolution(tuple):
     def __new__ (cls, values):
-        try:
-            cls.UNITS_BY_VAL = { cups.IPP_RES_UNITS_INCH: "dpi",
-                                 cups.IPP_RES_UNITS_CM: "dpc" }
-            cls.UNITS_DEFAULT = cups.IPP_RES_UNITS_INCH
-        except AttributeError:
-            # Requires pycups > 1.9.55
-            cls.UNITS_BY_VAL = { 3: "dpi",
-                                  4: "dpc" }
-            cls.UNITS_DEFAULT = 3
+        cls.UNITS_BY_VAL = { cups.IPP_RES_UNITS_INCH: "dpi",
+                             cups.IPP_RES_UNITS_CM: "dpc" }
+        cls.UNITS_DEFAULT = cups.IPP_RES_UNITS_INCH
 
         cls.UNITS_BY_STR = {}
         for v, s in cls.UNITS_BY_VAL.iteritems ():
@@ -413,16 +409,9 @@ class OptionSelectOne(Option):
 
 class OptionSelectOneResolution(OptionSelectOne):
     def __init__(self, name, value, supported, on_change):
-        try:
-            self.UNITS_BY_VAL = { cups.IPP_RES_UNITS_INCH: "dpi",
-                                  cups.IPP_RES_UNITS_CM: "dpc" }
-            self.UNITS_DEFAULT = cups.IPP_RES_UNITS_INCH
-        except AttributeError:
-            # Requires pycups > 1.9.55
-            self.UNITS_BY_VAL = { 3: "dpi",
-                                  4: "dpc" }
-            self.UNITS_DEFAULT = 3
-
+        self.UNITS_BY_VAL = { cups.IPP_RES_UNITS_INCH: "dpi",
+                              cups.IPP_RES_UNITS_CM: "dpc" }
+        self.UNITS_DEFAULT = cups.IPP_RES_UNITS_INCH
         self.UNITS_BY_STR = {}
         for v, s in self.UNITS_BY_VAL.iteritems ():
             self.UNITS_BY_STR[s] = v

@@ -25,6 +25,8 @@ import gobject
 import gtk
 import Queue
 
+cups.require ("1.9.60")
+
 import authconn
 from debug import *
 import debug
@@ -77,11 +79,7 @@ class _IPPConnectionThread(threading.Thread):
         else:
             self.user = cups.getUser ()
 
-        try:
-            cups.setPasswordCB2 (self._auth)
-        except AttributeError:
-            # Requires pycups >= 1.9.47.  Fall back to rubbish API.
-            cups.setPasswordCB (self._auth)
+        cups.setPasswordCB2 (self._auth)
 
         try:
             conn = cups.Connection (host=self.host,
@@ -117,11 +115,7 @@ class _IPPConnectionThread(threading.Thread):
                 self.user = args[0]
                 cups.setUser (self.user)
                 debugprint ("Set user=%s; reconnecting..." % self.user)
-                try:
-                    cups.setPasswordCB2 (self._auth)
-                except AttributeError:
-                    # Requires pycups >= 1.9.47.  Fall back to rubbish API.
-                    cups.setPasswordCB (self._auth)
+                cups.setPasswordCB2 (self._auth)
 
                 try:
                     conn = cups.Connection (host=self.host,
@@ -166,11 +160,7 @@ class _IPPConnectionThread(threading.Thread):
         del self._auth_queue
         del conn
 
-        try:
-            cups.setPasswordCB2 (None)
-        except AttributeError:
-            # Requires pycups >= 1.9.47.  Fall back to rubbish API.
-            cups.setPasswordCB (lambda x: '')
+        cups.setPasswordCB2 (None)
 
     def _auth (self, prompt, conn=None, method=None, resource=None):
         def prompt_auth (prompt):
@@ -368,14 +358,9 @@ class _IPPAuthOperation:
         forbidden = False
         if type (exc) == cups.IPPError:
             (e, m) = exc.args
-            try:
-                ipp_auth_canceled = cups.IPP_AUTHENTICATION_CANCELED
-            except AttributeError:
-                # requires pycups 1.9.60
-                ipp_auth_canceled = 4096
             if (e == cups.IPP_NOT_AUTHORIZED or
                 e == cups.IPP_FORBIDDEN or
-                e == ipp_auth_canceled):
+                e == cups.IPP_AUTHENTICATION_CANCELED):
                 forbidden = (e == cups.IPP_FORBIDDEN)
             elif e == cups.IPP_SERVICE_UNAVAILABLE:
                 return self._reconnect_error (conn, exc)

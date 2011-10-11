@@ -36,6 +36,8 @@ import PhysicalDevice
 import ppdcache
 import printerproperties
 
+cups.require ("1.9.52")
+
 CONFIG_BUS='org.fedoraproject.Config.Printing'
 CONFIG_PATH='/org/fedoraproject/Config/Printing'
 CONFIG_IFACE='org.fedoraproject.Config.Printing'
@@ -103,13 +105,8 @@ class FetchedPPDs(gobject.GObject):
 
     def run (self):
         debugprint ("FetchPPDs: running")
-        try:
-            self._cupsconn.getPPDs2 (reply_handler=self._cups_getppds_reply,
-                                     error_handler=self._cups_error)
-        except AttributeError:
-            # getPPDs2 requires pycups >= 1.9.52
-            self._cupsconn.getPPDs (reply_handler=self._cups_getppds_reply,
-                                    error_handler=self._cups_error)
+        self._cupsconn.getPPDs2 (reply_handler=self._cups_getppds_reply,
+                                 error_handler=self._cups_error)
 
     def _cups_error (self, conn, exc):
         debugprint ("FetchPPDs: error: %s" % repr (exc))

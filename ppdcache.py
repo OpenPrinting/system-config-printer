@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-## Copyright (C) 2010 Red Hat, Inc.
+## Copyright (C) 2010, 2011 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 
@@ -25,6 +25,8 @@ import gtk
 import os
 import tempfile
 from debug import *
+
+cups.require ("1.9.50")
 
 class PPDCache:
     def __init__ (self, host=None, port=None, encryption=None):
@@ -71,20 +73,11 @@ class PPDCache:
                 return
 
             debugprint ("%s: fetch PPD for %s" % (self, name))
-            try:
-                self._cups.getPPD3 (name,
-                                    reply_handler=lambda c, r:
-                                        self._got_ppd3 (c, name, r, callback),
-                                    error_handler=lambda c, r:
-                                        self._got_ppd3 (c, name, r, callback))
-            except AttributeError:
-                # getPPD3 requires pycups >= 1.9.50
-                self._cups.getPPD (name,
-                                   reply_handler=lambda c, r:
-                                       self._got_ppd (c, name, r, callback),
-                                   error_handler=lambda c, r:
-                                       self._got_ppd (c, name, r, callback))
-
+            self._cups.getPPD3 (name,
+                                reply_handler=lambda c, r:
+                                    self._got_ppd3 (c, name, r, callback),
+                                error_handler=lambda c, r:
+                                    self._got_ppd3 (c, name, r, callback))
             return
 
         # Copy from our file object to a new temporary file, create a

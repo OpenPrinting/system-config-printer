@@ -47,6 +47,8 @@ import config
 import statereason
 import errordialogs
 
+cups.require("1.9.47")
+
 try:
     import gnomekeyring
     USE_KEYRING=True
@@ -1436,10 +1438,6 @@ class JobViewer (GtkGUI):
             self.update_monitor ()
             return
         except RuntimeError:
-            return
-        except AttributeError:
-            # Requires pycups >= 1.9.47
-            debugprint ("Move requires pycups >= 1.9.47")
             return
 
         self.update_monitor ()

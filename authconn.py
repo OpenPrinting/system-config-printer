@@ -28,6 +28,7 @@ from debug import *
 from gettext import gettext as _
 N_ = lambda x: x
 
+cups.require("1.9.60")
 class AuthDialog(gtk.Dialog):
     AUTH_FIELD={'username': N_("Username:"),
                 'password': N_("Password:"),
@@ -244,15 +245,10 @@ class Connection:
             except cups.IPPError, (e, m):
                 if self._use_pk and m == 'pkcancel':
                     raise cups.IPPError (0, _("Operation canceled"))
-                try:
-                    ipp_auth_canceled = cups.IPP_AUTHENTICATION_CANCELED
-                except AttributeError:
-                    # requires pycups 1.9.60
-                    ipp_auth_canceled = 4096
 
                 if not self._cancel and (e == cups.IPP_NOT_AUTHORIZED or
                                          e == cups.IPP_FORBIDDEN or
-                                         e == ipp_auth_canceled):
+                                         e == cups.IPP_AUTHENTICATION_CANCELED):
                     self._failed (e == cups.IPP_FORBIDDEN)
                 elif not self._cancel and e == cups.IPP_SERVICE_UNAVAILABLE:
                     if self._lock:

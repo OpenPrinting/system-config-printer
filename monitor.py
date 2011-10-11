@@ -18,7 +18,7 @@
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 import cups
-cups.require("1.9.42")
+cups.require("1.9.50")
 import dbus
 import dbus.glib
 import gobject
@@ -627,18 +627,11 @@ class Monitor(gobject.GObject):
              "job-name",
              "time-at-creation"]
         try:
-            try:
-                fetched = c.getJobs (which_jobs=self.which_jobs,
-                                     my_jobs=self.my_jobs,
-                                     first_job_id=self.fetch_first_job_id,
-                                     limit=limit,
-                                     requested_attributes=r)
-            except TypeError:
-                # requested_attributes requires pycups 1.9.50
-                fetched = c.getJobs (which_jobs=self.which_jobs,
-                                     my_jobs=self.my_jobs,
-                                     first_job_id=self.fetch_first_job_id,
-                                     limit=limit)
+            fetched = c.getJobs (which_jobs=self.which_jobs,
+                                 my_jobs=self.my_jobs,
+                                 first_job_id=self.fetch_first_job_id,
+                                 limit=limit,
+                                 requested_attributes=r)
         except cups.IPPError, (e, m):
             self.emit ('cups-ipp-error', e, m)
             self.fetch_jobs_timer = None
