@@ -301,7 +301,7 @@ for device, attrs in devices.iteritems ():
             break
     if mdls:
         (s, bestmatches) = ppds._findBestMatchPPDs (mdls, mdl)
-        if s == ppds.STATUS_SUCCESS:
+        if s == ppds.FIT_EXACT:
             matches = matches.union (set (bestmatches))
 
     missing = set (matches) - set (drivers)
