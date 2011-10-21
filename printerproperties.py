@@ -1539,12 +1539,10 @@ class PrinterPropertiesDialog(GtkGUI):
             for color, name, marker_type, level in markers:
                 if name == None:
                     name = ''
-                else:
-                    ppd = printer.getPPD()
-                    if ppd != False:
-                        localized_name = ppd.localizeMarkerName(name)
-                        if localized_name != None:
-                            name = localized_name
+                elif self.ppd != False:
+                    localized_name = self.ppd.localizeMarkerName(name)
+                    if localized_name != None:
+                        name = localized_name
 
                 row = num_markers / 4
                 col = num_markers % 4
