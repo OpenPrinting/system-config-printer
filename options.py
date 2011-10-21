@@ -30,9 +30,9 @@ cups.require ("1.9.55")
 # Special IPP type
 class IPPResolution(tuple):
     def __new__ (cls, values):
-        cls.UNITS_BY_VAL = { cups.IPP_RES_UNITS_INCH: "dpi",
-                             cups.IPP_RES_UNITS_CM: "dpc" }
-        cls.UNITS_DEFAULT = cups.IPP_RES_UNITS_INCH
+        cls.UNITS_BY_VAL = { cups.IPP_RES_PER_INCH: "dpi",
+                             cups.IPP_RES_PER_CM: "dpc" }
+        cls.UNITS_DEFAULT = cups.IPP_RES_PER_INCH
 
         cls.UNITS_BY_STR = {}
         for v, s in cls.UNITS_BY_VAL.iteritems ():
@@ -409,9 +409,9 @@ class OptionSelectOne(Option):
 
 class OptionSelectOneResolution(OptionSelectOne):
     def __init__(self, name, value, supported, on_change):
-        self.UNITS_BY_VAL = { cups.IPP_RES_UNITS_INCH: "dpi",
-                              cups.IPP_RES_UNITS_CM: "dpc" }
-        self.UNITS_DEFAULT = cups.IPP_RES_UNITS_INCH
+        self.UNITS_BY_VAL = { cups.IPP_RES_PER_INCH: "dpi",
+                              cups.IPP_RES_PER_CM: "dpc" }
+        self.UNITS_DEFAULT = cups.IPP_RES_PER_INCH
         self.UNITS_BY_STR = {}
         for v, s in self.UNITS_BY_VAL.iteritems ():
             self.UNITS_BY_STR[s] = v

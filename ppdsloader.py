@@ -24,6 +24,7 @@ import gobject
 import gtk
 import cupshelpers
 
+import cups
 cups.require ("1.9.52")
 
 import asyncconn
