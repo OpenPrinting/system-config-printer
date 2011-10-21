@@ -108,10 +108,11 @@ class PPDCache:
         if isinstance (result, Exception):
             self._schedule_callback (callback, name, result, None)
         else:
-            debugprint ("%s: caching %s" % (self, result))
             # Store an open file object, then remove the actual file.
             # This way we don't leave temporary files around.
             self._cache[name] = file (result)
+            debugprint ("%s: caching %s (fd %d)" % (self, result,
+                                                    self._cache[name].fileno()))
             os.unlink (result)
             self.fetch_ppd (name, callback)
 
@@ -119,14 +120,14 @@ class PPDCache:
         (status, modtime, filename) = result
         if status in [cups.HTTP_OK, cups.HTTP_NOT_MODIFIED]:
             if status == cups.HTTP_OK:
-                debugprint ("%s: caching %s (%s) - %s" % (self,
-                                                          filename,
-                                                          modtime,
-                                                          status))
                 # Store an open file object, then remove the actual
                 # file.  This way we don't leave temporary files
                 # around.
                 self._cache[name] = file (filename)
+                debugprint ("%s: caching %s (fd %d) "
+                            "(%s) - %s" % (self, filename,
+                                           self._cache[name].fileno (),
+                                           modtime, status))
                 os.unlink (filename)
                 self._modtimes[name] = modtime
 

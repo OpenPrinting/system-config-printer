@@ -519,12 +519,12 @@ class PrinterPropertiesDialog(GtkGUI):
                 del self.signal_ids[coll]
 
     def do_destroy (self):
-        debugprint ("DESTROY: %s" % self)
         if self.PrinterPropertiesDialog:
             self.PrinterPropertiesDialog.destroy ()
             self.PrinterPropertiesDialog = None
 
     def destroy (self):
+        debugprint ("DESTROY: %s" % self)
         self._disconnect ()
         self.ppd = None
         self.ppd_local = None
