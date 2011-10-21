@@ -161,6 +161,9 @@ class Monitor(gobject.GObject):
     def get_jobs (self):
         return self.jobs.copy ()
 
+    def get_ppdcache (self):
+        return self.ppdcache
+
     def cleanup (self):
         if self.sub_id != -1:
             user = cups.getUser ()
