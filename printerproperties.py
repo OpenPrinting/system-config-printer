@@ -556,8 +556,7 @@ class PrinterPropertiesDialog(GtkGUI):
         if self._monitor == None:
             self.set_monitor (monitor.Monitor (monitor_jobs=False))
 
-        self._ppdcache = ppdcache.PPDCache (host=host,
-                                            encryption=encryption)
+        self._ppdcache = self._monitor.get_ppdcache ()
 
         self._disconnect ("newPrinterGUI")
         self.newPrinterGUI = newprinter.NewPrinterGUI ()
