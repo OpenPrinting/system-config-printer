@@ -2850,18 +2850,21 @@ class NewPrinterGUI(GtkGUI):
         self.cmbNPDownloadableDriverFoundPrinters.set_sensitive (False)
 
     def openprinting_printers_found (self, status, user_data, printers):
+        if status != 0:
+            # Should report error.
+            print "HTTP Status %d" % status
+            print printers
+            print traceback.extract_tb(printers[2], limit=None)
+            self.downloadable_printers = []
+            self.openprinting_drivers_found ()
+            return
+
         self.openprinting_query_handle = None
         self.downloadable_printers_unchecked = map (lambda x:
                                                         (x, printers[x]),
                                                     printers)
         self.downloadable_printers = []
         self.downloadable_drivers = dict() # by printer id of dict
-        if status != 0:
-            # Should report error.
-            print printers
-            print traceback.extract_tb(printers[2], limit=None)
-            self.drivers_lock.release ()
-            return
 
         # Kick off a search for drivers for each model.
         self.openprinting_query_next_printer ()
@@ -2897,9 +2900,11 @@ class NewPrinterGUI(GtkGUI):
     def openprinting_printer_drivers_found (self, status, user_data, drivers):
         self.openprinting_query_handle = None
         if status != 0:
+            print "HTTP Status %d" % status
             print drivers
             print traceback.extract_tb(drivers[2], limit=None)
-            self.drivers_lock.release ()
+            self.downloadable_printers = []
+            self.openprinting_drivers_found ()
             return
 
         if drivers:
