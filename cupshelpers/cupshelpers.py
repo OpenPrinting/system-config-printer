@@ -208,7 +208,7 @@ class Printer:
                 else:
                     raise
 
-        if result != False and self._ppd != None:
+        if result == None and self._ppd != None:
             result = cups.PPD (self._ppd)
 
         return result
