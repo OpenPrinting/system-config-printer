@@ -2,7 +2,7 @@
 
 ## system-config-printer
 
-## Copyright (C) 2008 Red Hat, Inc.
+## Copyright (C) 2008, 2011 Red Hat, Inc.
 ## Copyright (C) 2008 Till Kamppeter <till.kamppeter@gmail.com>
 
 ## This program is free software; you can redistribute it and/or modify
@@ -60,11 +60,11 @@ class _QueryThread (threading.Thread):
         result = None
         status = 1
         try:
-            conn = urllib.urlopen(self.url);
-            status = conn.getcode();
+            conn = urllib.urlopen(self.url)
+            status = conn.getcode()
             if (status == 200):
                 result = conn.read()
-                status = 0;
+                status = 0
             else:
                 result = sys.exc_info ()
         except:
