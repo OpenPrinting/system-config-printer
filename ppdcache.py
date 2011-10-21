@@ -88,6 +88,7 @@ class PPDCache:
         tmpf = file (tmpfname, "w")
         tmpf.writelines (f.readlines ())
         del tmpf
+        os.close (tmpfd)
         try:
             ppd = cups.PPD (tmpfname)
             os.unlink (tmpfname)
