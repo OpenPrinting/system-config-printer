@@ -111,7 +111,7 @@ _RE_ignore_suffix = re.compile (","
                                 "| ufr ii"      # Canon UFR II
                                 "| br-script"  # Brother PPDs
                                 )
-_RE_ignore_series = re.compile (" series", re.I)
+_RE_ignore_series = re.compile (" series| all-in-one", re.I)
 
 def ppdMakeModelSplit (ppd_make_and_model):
     """
