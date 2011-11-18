@@ -288,7 +288,7 @@ class PrinterFinder:
 
         (stdout, stderr) = p.communicate ()
         if p.returncode != 0:
-            debugprint ("snmp: no good")
+            debugprint ("snmp: no good (return code %d)" % p.returncode)
             return
 
         if self.quit:
@@ -364,7 +364,6 @@ class PrinterFinder:
                                   stdout=subprocess.PIPE,
                                   stderr=null)
         except OSError, e:
-            debugprint ("hplip: no good")
             if e == errno.ENOENT:
                 return
 
@@ -372,7 +371,7 @@ class PrinterFinder:
 
         (stdout, stderr) = p.communicate ()
         if p.returncode != 0:
-            debugprint ("hplip: no good")
+            debugprint ("hplip: no good (return code %d)" % p.returncode)
             return
 
         if self.quit:
@@ -380,6 +379,7 @@ class PrinterFinder:
             return
 
         uri = stdout.strip ()
+        debugprint ("hplip: uri is %s" % uri)
         if uri.find (":") != -1:
             self._new_device(uri, uri)
 
