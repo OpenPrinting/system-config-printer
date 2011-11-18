@@ -398,7 +398,7 @@ class PrinterFinder:
         entries = []
         uri = "smb://%s/" % self.hostname
         debugprint ("smb: trying")
-        if False: #try:
+        try:
             while smbc_auth.perform_authentication () > 0:
                 if self.quit:
                     debugprint ("smb: no good")
@@ -408,18 +408,11 @@ class PrinterFinder:
                     entries = ctx.opendir (uri).getdents ()
                 except Exception, e:
                     smbc_auth.failed (e)
-        #except RuntimeError, (e, s):
-        #    if e not in [errno.ENOENT, errno.EACCES, errno.EPERM]:
-        #        debugprint ("Runtime error: %s" % repr ((e, s)))
-        #except:
-        #    nonfatalException ()
-        #class Foo:
-        #    pass
-
-        #entry = Foo()
-        #entry.name = "Samsung SCX4200"
-        #entry.smbc_type = pysmb.smbc.PRINTER_SHARE
-        #entries = [ entry ]
+        except RuntimeError, (e, s):
+            if e not in [errno.ENOENT, errno.EACCES, errno.EPERM]:
+                debugprint ("Runtime error: %s" % repr ((e, s)))
+        except:
+            nonfatalException ()
 
         if self.quit:
             debugprint ("smb: no good")
