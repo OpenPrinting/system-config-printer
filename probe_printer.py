@@ -486,3 +486,21 @@ class PrinterFinder:
             self._new_device(uri, info, location)
 
         debugprint ("ipp: done")
+
+if __name__ == '__main__':
+    import sys
+    if len (sys.argv) < 2:
+        print "Need printer address"
+        sys.exit (1)
+
+    set_debugging (True)
+    loop = gobject.MainLoop ()
+
+    def display (device):
+        if device == None:
+            loop.quit ()
+
+    addr = sys.argv[1]
+    p = PrinterFinder ()
+    p.find (addr, display)
+    loop.run ()
