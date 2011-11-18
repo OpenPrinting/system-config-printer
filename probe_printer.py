@@ -127,7 +127,8 @@ class LpdServer:
 
     def probe_queue(self,name, result):
         s = open_socket(self.hostname, 515)
-        if not s: return False
+        if not s:
+            return None
         print name
         
         try:
@@ -186,6 +187,10 @@ class LpdServer:
                 break
 
             found = self.probe_queue(name, result)
+            if found == None:
+                # Couldn't even connect.
+                break
+
             if not found and name.startswith ("pr"):
                 break
             time.sleep(0.1) # avoid DOS and following counter measures 
@@ -333,6 +338,11 @@ class PrinterFinder:
                 return
 
             found = lpd.probe_queue (name, [])
+            if found == None:
+                # Couldn't even connect.
+                debugprint ("lpd: couldn't connect")
+                break
+
             if found:
                 uri = "lpd://%s/%s" % (self.hostname, name)
                 self._new_device(uri, self.hostname)
