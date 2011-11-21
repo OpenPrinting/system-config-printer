@@ -314,7 +314,7 @@ class ConfigPrintingNewPrinterDialog(dbus.service.Object):
         pass
 
     def on_dialog_canceled(self, obj):
-        g__killtimer.remove_hold ()
+        g_killtimer.remove_hold ()
         self.DialogCanceled ()
         self.remove_handles ()
         self.remove_from_connection ()
