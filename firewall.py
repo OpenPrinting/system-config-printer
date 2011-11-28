@@ -35,6 +35,8 @@ class Firewall:
 
     def _get_fw_data (self, reply_handler=None, error_handler=None):
         try:
+            debugprint ("%s in _get_fw_data: _fw_data is %s" %
+                        (self, repr(self._fw_data)))
             if self._fw_data:
                 debugprint ("Using cached firewall data")
                 if reply_handler == None:
