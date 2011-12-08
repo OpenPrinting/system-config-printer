@@ -81,16 +81,17 @@ class CheckPrinterSanity(Question):
             elif scheme == "smb":
                 u = smburi.SMBURI (uri)
                 (group, host, share, user, password) = u.separate ()
-                os.environ['HOST'] = host
+                new_environ = os.environ.copy()
+                new_environ['LC_ALL'] = "C"
                 if group:
-                    os.environ['GROUP'] = group
-                    cmdline = 'LC_ALL=C nmblookup -W "$GROUP" "$HOST"'
+                    args = ["nmblookup", "-W", group, host]
                 else:
-                    cmdline = 'LC_ALL=C nmblookup "$HOST"'
+                    args = ["nmblookup", host]
                 try:
                     p = TimedSubprocess (parent=parent,
                                          timeout=5000,
-                                         args=cmdline, shell=True,
+                                         args=args,
+                                         env=new_environ,
                                          close_fds=True,
                                          stdin=file("/dev/null"),
                                          stdout=subprocess.PIPE,
@@ -110,13 +111,15 @@ class CheckPrinterSanity(Question):
                     # Problem executing command.
                     pass
             elif scheme == "hp":
-                os.environ['URI'] = uri
+                new_environ = os.environ.copy()
+                new_environ['LC_ALL'] = "C"
+                new_environ['DISPLAY'] = ""
                 try:
                     p = TimedSubprocess (parent=parent,
                                          timeout=3000,
-                                         args='LC_ALL=C DISPLAY= hp-info -d"$URI"',
+                                         args=["hp-info", "-d" + uri,
                                          close_fds=True,
-                                         shell=True,
+                                         env=new_environ,
                                          stdin=file("/dev/null"),
                                          stdout=subprocess.PIPE,
                                          stderr=subprocess.PIPE)

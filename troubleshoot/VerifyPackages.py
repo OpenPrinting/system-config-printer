@@ -46,13 +46,16 @@ class VerifyPackages(Question):
         null = file ("/dev/null", "r+")
         parent = self.troubleshooter.get_window ()
 
+        new_environ = os.environ.copy()
+        new_environ['LC_ALL'] = "C"
+
         for package in packages:
-            verification_args = "LC_ALL=C " + package_manager + " -V " + package
+            verification_args = [package_manager, "-V", package]
             try:
                 self.op = TimedSubprocess (parent=parent,
                                            args=verification_args,
                                            close_fds=True,
-                                           shell=True,
+                                           env=new_environ,
                                            stdin=null,
                                            stdout=subprocess.PIPE,
                                            stderr=null)

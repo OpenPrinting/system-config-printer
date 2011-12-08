@@ -1425,11 +1425,13 @@ class NewPrinterGUI(GtkGUI):
         self.add_devices (devices, current_uri, no_more=True)
 
     def get_hpfax_device_id(self, faxuri):
-        os.environ["URI"] = faxuri
-        cmd = 'LC_ALL=C DISPLAY= hp-info -x -i -d"${URI}"'
-        debugprint (faxuri + ": " + cmd)
+        new_environ = os.environ.copy()
+        new_environ['LC_ALL'] = "C"
+        new_environ['DISPLAY'] = ""
+        args = ["hp-info", "-x", "-i", "-d" + faxuri]
+        debugprint (faxuri + ": " + args)
         try:
-            p = subprocess.Popen (cmd, shell=True, close_fds=True,
+            p = subprocess.Popen (args, env=new_environ, close_fds=True,
                                   stdin=file("/dev/null"),
                                   stdout=subprocess.PIPE,
                                   stderr=subprocess.PIPE)
@@ -1456,11 +1458,10 @@ class NewPrinterGUI(GtkGUI):
             return 'MFG:HP;MDL:Fax;DES:HP Fax;'
 
     def get_hplip_scan_type_for_uri(self, uri):
-        os.environ["URI"] = uri
-        cmd = 'hp-query -k scan-type -d "${URI}"'
-        debugprint (uri + ": " + cmd)
+        args = ["hp-query", "-k", "scan-type", "-d", uri]
+        debugprint (uri + ": " + args)
         try:
-            p = subprocess.Popen (cmd, shell=True, close_fds=True,
+            p = subprocess.Popen (args, close_fds=True,
                                   stdin=file("/dev/null"),
                                   stdout=subprocess.PIPE,
                                   stderr=subprocess.PIPE)
@@ -1483,15 +1484,14 @@ class NewPrinterGUI(GtkGUI):
         return value
 
     def get_hplip_uri_for_network_printer(self, host, mode):
-        os.environ["HOST"] = host
         if mode == "print": mod = "-c"
         elif mode == "fax": mod = "-f"
         else: mod = "-c"
-        cmd = 'hp-makeuri ' + mod + ' "${HOST}"'
-        debugprint (host + ": " + cmd)
+        args = ["hp-makeuri", mod, host]
+        debugprint (host + ": " + args)
         uri = None
         try:
-            p = subprocess.Popen (cmd, shell=True, close_fds=True,
+            p = subprocess.Popen (args, close_fds=True,
                                   stdin=file("/dev/null"),
                                   stdout=subprocess.PIPE,
                                   stderr=subprocess.PIPE)
@@ -1527,12 +1527,11 @@ class NewPrinterGUI(GtkGUI):
                 host = device.uri[s:s+e]
         # Try to get make and model via SNMP
         if host:
-            os.environ["HOST"] = host
-            cmd = '/usr/lib/cups/backend/snmp "${HOST}"'
-            debugprint (host + ": " + cmd)
+            args = ["/usr/lib/cups/backend/snmp", host]
+            debugprint (host + ": " + args)
             stdout = None
             try:
-                p = subprocess.Popen (cmd, shell=True, close_fds=True,
+                p = subprocess.Popen (args, close_fds=True,
                                       stdin=file("/dev/null"),
                                       stdout=subprocess.PIPE,
                                       stderr=subprocess.PIPE)

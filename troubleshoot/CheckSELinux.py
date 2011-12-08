@@ -45,17 +45,19 @@ class CheckSELinux(Question):
         if not selinux.is_selinux_enabled():
             return False
 
-        paths = "/etc/cups/ /usr/lib/cups/ /usr/share/cups/"
+        paths = ["/etc/cups/", "/usr/lib/cups/", "/usr/share/cups/"]
         null = file ("/dev/null", "r+")
         parent = self.troubleshooter.get_window ()
         contexts = {}
-        restorecon_args = "LC_ALL=C " + RESTORECON + " -nvR " + paths
+        new_environ = os.environ.copy()
+        new_environ['LC_ALL'] = "C"
+        restorecon_args = [RESTORECON, "-nvR"].extend(paths)
         try:
             # Run restorecon -nvR
             self.op = TimedSubprocess (parent=parent,
                                        args=restorecon_args,
                                        close_fds=True,
-                                       shell=True,
+                                       env=new_environ,
                                        stdin=null,
                                        stdout=subprocess.PIPE,
                                        stderr=null)

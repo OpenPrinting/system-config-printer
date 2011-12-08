@@ -57,13 +57,16 @@ class CheckUSBPermissions(Question):
         if not os.access (GETFACL, os.X_OK):
             return False
 
+        new_environ = os.environ.copy()
+        new_environ['LC_ALL'] = "C"
+
         # Run lsusb
         parent = self.troubleshooter.get_window ()
         try:
             self.op = TimedSubprocess (parent=parent,
-                                       args="LC_ALL=C " + LSUSB + " -v",
+                                       args=[LSUSB, "-v"],
                                        close_fds=True,
-                                       shell=True,
+                                       env=new_environ,
                                        stdin=file("/dev/null"),
                                        stdout=subprocess.PIPE,
                                        stderr=subprocess.PIPE)
@@ -141,10 +144,9 @@ class CheckUSBPermissions(Question):
         for path in paths:
             try:
                 self.op = TimedSubprocess (parent=parent,
-                                           args="LC_ALL=C %s %s" % (GETFACL,
-                                                                    path),
+                                           args=[GETFACL, path],
                                            close_fds=True,
-                                           shell=True,
+                                           env=new_environ,
                                            stdin=file("/dev/null"),
                                            stdout=subprocess.PIPE,
                                            stderr=subprocess.PIPE)
