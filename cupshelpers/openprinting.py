@@ -19,7 +19,7 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-import urllib, platform, threading, tempfile, traceback
+import pycurl, urllib, platform, threading, tempfile, traceback
 import os, sys
 from xml.etree.ElementTree import XML
 from . import Device
@@ -42,10 +42,18 @@ class _QueryThread (threading.Thread):
         self.parameters = parameters
         self.callback = callback
         self.user_data = user_data
+        self.result = ""
 
         self.setDaemon (True)
 
     def run (self):
+
+        # Callback function for pycURL collecting the data coming from
+        # the web server
+        def collect_data(result):
+            self.result += result;
+            return len(result)
+
         # CGI script to be executed
         query_command = "/query.cgi"
         # Headers for the post request
@@ -55,23 +63,27 @@ class _QueryThread (threading.Thread):
                   (urllib.urlencode (self.parameters),
                    self.parent.language[0],
                    self.parent.language[0]))
-        self.url = "http://%s%s?%s" % (self.parent.base_url, query_command, params)
+        self.url = "https://%s%s?%s" % (self.parent.base_url, query_command, params)
         # Send request
         result = None
+        self.result = ""
         status = 1
         try:
-            conn = urllib.urlopen(self.url)
-            status = conn.getcode()
-            if (status == 200):
-                result = conn.read()
-                status = 0
-            else:
-                result = sys.exc_info ()
+            curl = pycurl.Curl()
+            curl.setopt(pycurl.SSL_VERIFYPEER, 1)
+            curl.setopt(pycurl.SSL_VERIFYHOST, 2)
+            curl.setopt(pycurl.WRITEFUNCTION, collect_data)
+            curl.setopt(pycurl.URL, self.url)
+            status = curl.perform()
+            if status == None: status = 0
+            if (status != 0):
+                self.result = sys.exc_info ()
         except:
-            result = sys.exc_info ()
+            self.result = sys.exc_info ()
+            if status == None: status = 0
 
         if self.callback != None:
-            self.callback (status, self.user_data, result)
+            self.callback (status, self.user_data, self.result)
 
 class OpenPrinting:
     def __init__(self, language=None):
