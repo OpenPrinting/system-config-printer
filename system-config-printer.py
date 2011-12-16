@@ -1690,8 +1690,13 @@ class GUI(GtkGUI):
         self.jobviewers.append (viewer)
 
     def on_jobviewer_exit (self, viewer):
-        i = self.jobviewers.index (viewer)
-        del self.jobviewers[i]
+        try:
+            i = self.jobviewers.index (viewer)
+            del self.jobviewers[i]
+        except ValueError:
+            # This shouldn't happen, but does (bug #757520).
+            debugprint ("Jobviewer exited but not in list:\n"
+                        "%s\n%s" % (repr (viewer), repr (self.jobviewers)))
 
     def on_view_discovered_printers_activate (self, UNUSED):
         self.populateList ()
