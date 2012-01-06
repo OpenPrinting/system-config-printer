@@ -3659,7 +3659,7 @@ class NewPrinterGUI(GtkGUI):
             self.emit ('printer-modified', name, self.orig_ppd != self.ppd)
 
         self.device = None
-        del self.printers
+        self.printers = {}
 
 def show_help():
     print ("\nThis is the test/debug mode of the new-printer dialog of " \
