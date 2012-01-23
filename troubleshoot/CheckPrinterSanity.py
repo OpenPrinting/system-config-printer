@@ -2,7 +2,7 @@
 
 ## Printing troubleshooter
 
-## Copyright (C) 2008, 2009, 2010 Red Hat, Inc.
+## Copyright (C) 2008, 2009, 2010, 2012 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 
@@ -117,7 +117,7 @@ class CheckPrinterSanity(Question):
                 try:
                     p = TimedSubprocess (parent=parent,
                                          timeout=3000,
-                                         args=["hp-info", "-d" + uri,
+                                         args=["hp-info", "-d" + uri],
                                          close_fds=True,
                                          env=new_environ,
                                          stdin=file("/dev/null"),
