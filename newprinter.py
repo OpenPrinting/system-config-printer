@@ -1429,7 +1429,7 @@ class NewPrinterGUI(GtkGUI):
         new_environ['LC_ALL'] = "C"
         new_environ['DISPLAY'] = ""
         args = ["hp-info", "-x", "-i", "-d" + faxuri]
-        debugprint (faxuri + ": " + args)
+        debugprint (faxuri + ": " + repr(args))
         try:
             p = subprocess.Popen (args, env=new_environ, close_fds=True,
                                   stdin=file("/dev/null"),
@@ -1459,7 +1459,7 @@ class NewPrinterGUI(GtkGUI):
 
     def get_hplip_scan_type_for_uri(self, uri):
         args = ["hp-query", "-k", "scan-type", "-d", uri]
-        debugprint (uri + ": " + args)
+        debugprint (uri + ": " + repr(args))
         try:
             p = subprocess.Popen (args, close_fds=True,
                                   stdin=file("/dev/null"),
@@ -1488,7 +1488,7 @@ class NewPrinterGUI(GtkGUI):
         elif mode == "fax": mod = "-f"
         else: mod = "-c"
         args = ["hp-makeuri", mod, host]
-        debugprint (host + ": " + args)
+        debugprint (host + ": " + repr(args))
         uri = None
         try:
             p = subprocess.Popen (args, close_fds=True,
@@ -1528,7 +1528,7 @@ class NewPrinterGUI(GtkGUI):
         # Try to get make and model via SNMP
         if host:
             args = ["/usr/lib/cups/backend/snmp", host]
-            debugprint (host + ": " + args)
+            debugprint (host + ": " + repr(args))
             stdout = None
             try:
                 p = subprocess.Popen (args, close_fds=True,
