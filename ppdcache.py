@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-## Copyright (C) 2010, 2011 Red Hat, Inc.
+## Copyright (C) 2010, 2011, 2012 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 
@@ -182,4 +182,5 @@ if __name__ == "__main__":
 
     if p:
         gobject.timeout_add_seconds (1, cache.fetch_ppd, p, signal)
+        gobject.timeout_add_seconds (5, loop.quit)
     loop.run ()
