@@ -119,7 +119,19 @@ class PPDCache:
     def _got_ppd3 (self, connection, name, result, callback):
         (status, modtime, filename) = result
         if status in [cups.HTTP_OK, cups.HTTP_NOT_MODIFIED]:
-            if status == cups.HTTP_OK:
+            if status == cups.HTTP_NOT_MODIFIED:
+                # The file is no newer than the one we already have.
+
+                # We have our own cache so don't need the provided file.
+                try:
+                    os.unlink (filename)
+                except OSError:
+                    # File disappeared?
+                    debugprint ("%s: file %s disappeared?" % (self, filename))
+
+            elif status == cups.HTTP_OK:
+                # Our version of the file was older.  Cache the new version.
+
                 # Store an open file object, then remove the actual
                 # file.  This way we don't leave temporary files
                 # around.
