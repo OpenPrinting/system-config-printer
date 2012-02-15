@@ -122,12 +122,12 @@ class PPDCache:
             if status == cups.HTTP_NOT_MODIFIED:
                 # The file is no newer than the one we already have.
 
-                # We have our own cache so don't need the provided file.
+                # CUPS before 1.5.3 created a temporary file in error
+                # in this situation (STR #4018) so remove that.
                 try:
                     os.unlink (filename)
                 except OSError:
-                    # File disappeared?
-                    debugprint ("%s: file %s disappeared?" % (self, filename))
+                    pass
 
             elif status == cups.HTTP_OK:
                 # Our version of the file was older.  Cache the new version.
