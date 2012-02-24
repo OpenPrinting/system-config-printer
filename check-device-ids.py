@@ -320,8 +320,8 @@ for device, attrs in devices.iteritems ():
                 value = id_fields[field]
                 ppd_value = ppd_id_fields[field]
                 if value.lower () != ppd_value.lower ():
-                    print "%s             %s:%s;" % (more, field, ppd_value)
-                    print "%s       should be:%s;" % (more, value)
+                    print "%s                      %s:%s;" % (more, field, ppd_value)
+                    print "%s                should be:%s;" % (more, value)
         else:
             print "%s       MISSING  %s [%s]" % (more, each,
                                                  driver_uri_to_pkg (each))
