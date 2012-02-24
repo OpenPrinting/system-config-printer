@@ -2,7 +2,7 @@
 
 ## check-device-ids
 
-## Copyright (C) 2010, 2011 Red Hat, Inc.
+## Copyright (C) 2010, 2011, 2012 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 
@@ -306,7 +306,24 @@ for device, attrs in devices.iteritems ():
 
     missing = set (matches) - set (drivers)
     for each in missing:
-        print "%s       MISSING  %s [%s]" % (more, each,
-                                             driver_uri_to_pkg (each))
+        try:
+            ppd_device_id = ppds.getInfoFromPPDName (each).get ('ppd-device-id')
+        except Exception, e:
+            print e
+            ppd_device_id = None
+
+        if ppd_device_id:
+            print "%s       WRONG    %s [%s]" % (more, each,
+                                                 driver_uri_to_pkg (each))
+            ppd_id_fields = cupshelpers.parseDeviceID (ppd_device_id)
+            for field in ["MFG", "MDL"]:
+                value = id_fields[field]
+                ppd_value = ppd_id_fields[field]
+                if value.lower () != ppd_value.lower ():
+                    print "%s             %s:%s;" % (more, field, ppd_value)
+                    print "%s       should be:%s;" % (more, value)
+        else:
+            print "%s       MISSING  %s [%s]" % (more, each,
+                                                 driver_uri_to_pkg (each))
 
     i += 1
