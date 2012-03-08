@@ -1618,7 +1618,9 @@ class NewPrinterGUI(GtkGUI):
         try:
             if (self._host == 'localhost' or
                 self._host[0] == '/'):
-                self.firewall = firewall.Firewall ()
+                self.firewall = firewall.FirewallD ()
+                if not self.firewall.running():
+                    self.firewall = firewall.SystemConfigFirewall ()
                 debugprint ("Examining firewall")
                 self.firewall.read (reply_handler=self.on_firewall_read,
                                     error_handler=lambda x:
@@ -1648,11 +1650,11 @@ class NewPrinterGUI(GtkGUI):
                 secondary_text += ("- " +
                                    _("Allow all incoming IPP Browse packets") +
                                    "\n")
-                f.add_rule (f.ALLOW_IPP_CLIENT)
+                f.add_service (firewall.IPP_CLIENT_SERVICE)
             if not mdns_allowed:
                 secondary_text += ("- " +
                                    _("Allow all incoming mDNS traffic") + "\n")
-                f.add_rule (f.ALLOW_MDNS)
+                f.add_service (firewall.MDNS_SERVICE)
 
             if not allowed:
                 debugprint ("Asking for permission to adjust firewall:\n%s" %
@@ -1678,7 +1680,7 @@ class NewPrinterGUI(GtkGUI):
     def adjust_firewall_response (self, dialog, response):
         dialog.destroy ()
         if response == gtk.RESPONSE_YES:
-            self.firewall.add_rule (self.firewall.ALLOW_IPP_SERVER)
+            self.firewall.add_service (firewall.IPP_SERVER_SERVICE)
             self.firewall.write ()
 
         debugprint ("Fetching devices after firewall dialog response")
@@ -2090,7 +2092,7 @@ class NewPrinterGUI(GtkGUI):
                 dialog.destroy ()
 
                 if response == gtk.RESPONSE_YES:
-                    f.add_rule (f.ALLOW_SAMBA_CLIENT)
+                    f.add_service (firewall.SAMBA_CLIENT_SERVICE)
                     f.write ()
         except (dbus.DBusException, Exception):
             nonfatalException ()

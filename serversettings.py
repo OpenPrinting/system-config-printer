@@ -526,7 +526,9 @@ class ServerSettings(GtkGUI):
             try:
                 if (self._host == 'localhost' or
                     self._host[0] == '/'):
-                    f = firewall.Firewall ()
+                    f = firewall.FirewallD ()
+                    if not f.running():
+                        f = firewall.SystemConfigFirewall ()
                     allowed = f.check_ipp_server_allowed ()
                 else:
                     # This is a remote server.  Nothing we can do
@@ -549,7 +551,7 @@ class ServerSettings(GtkGUI):
                     dialog.destroy ()
 
                     if response == gtk.RESPONSE_YES:
-                        f.add_rule (f.ALLOW_IPP_SERVER)
+                        f.add_service (firewall.IPP_SERVER_SERVICE)
                         f.write ()
             except (dbus.DBusException, Exception):
                 nonfatalException ()
