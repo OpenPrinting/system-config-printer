@@ -2,7 +2,7 @@
 
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008, 2009, 2011 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2009, 2011, 2012 Red Hat, Inc.
 ## Copyright (C) 2006, 2007 Florian Festi <ffesti@redhat.com>
 ## Copyright (C) 2006, 2007, 2008, 2009 Tim Waugh <twaugh@redhat.com>
 
@@ -37,6 +37,7 @@ class SMBURI:
             if group or host or share or user or password:
                 raise RuntimeError
 
+            uri = uri.encode ('utf-8')
             if uri.startswith ("smb://"):
                 uri = uri[6:]
 
