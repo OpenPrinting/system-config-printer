@@ -451,7 +451,6 @@ device_id_from_devpath (const char *devpath,
   struct usb_uri_map_entry *entry;
   struct udev *udev;
   struct udev_device *dev, *parent_dev = NULL;
-  const char *sys;
   const char *idVendorStr, *idProductStr, *serial;
   char *end;
   unsigned long idVendor, idProduct;
@@ -500,8 +499,7 @@ device_id_from_devpath (const char *devpath,
       *dest = '\0';
     }
 
-  sys = udev_get_sys_path (udev);
-  syslen = strlen (sys);
+  syslen = strlen ("/sys");
   devpathlen = strlen (devpath);
   syspath = malloc (syslen + devpathlen + 1);
   if (syspath == NULL)
@@ -511,7 +509,7 @@ device_id_from_devpath (const char *devpath,
       exit (1);
     }
 
-  memcpy (syspath, sys, syslen);
+  memcpy (syspath, "/sys", syslen);
   memcpy (syspath + syslen, devpath, devpathlen);
   syspath[syslen + devpathlen] = '\0';
 
