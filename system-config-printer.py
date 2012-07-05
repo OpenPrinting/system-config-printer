@@ -46,7 +46,8 @@ def show_help():
     print ("\nThis is system-config-printer, " \
            "a CUPS server configuration program.\n\n"
            "Options:\n\n"
-           "  --debug   Enable debugging output.\n")
+           "  --debug                 Enable debugging output.\n"
+           "  --show-jobs <printer>   Show the print queue for <printer>\n")
 
 if len(sys.argv)>1 and sys.argv[1] == '--help':
     show_help ()
@@ -1969,33 +1970,41 @@ class GUI(GtkGUI):
         debugprint ("Trying to recover connection")
         gobject.idle_add (self.service_started_try)
 
-def main():
+def main(show_jobs):
     cups.setUser (os.environ.get ("CUPS_USER", cups.getUser()))
     gtk.gdk.threads_init ()
     gobject.threads_init()
     from dbus.glib import DBusGMainLoop
     DBusGMainLoop (set_as_default=True)
 
-    mainwindow = GUI()
+    if show_jobs:
+        viewer = jobviewer.JobViewer (None, None, my_jobs=False,
+                                      specific_dests=[show_jobs])
+        viewer.connect ('finished', gtk.main_quit)
+    else:
+        mainwindow = GUI()
 
     if gtk.__dict__.has_key("main"):
         gtk.main()
     else:
         gtk.mainloop()
 
-
 if __name__ == "__main__":
     import getopt
     try:
         opts, args = getopt.gnu_getopt (sys.argv[1:], '',
-                                        ['debug'])
+                                        ['debug', 'show-jobs='])
     except getopt.GetoptError:
         show_help ()
         sys.exit (1)
+
+    show_jobs = False
 
     for opt, optarg in opts:
         if opt == '--debug':
             set_debugging (True)
             cupshelpers.ppds.set_debugprint_fn (debugprint)
+        elif opt == '--show-jobs':
+            show_jobs = optarg
 
-    main()
+    main(show_jobs)
