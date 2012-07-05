@@ -217,6 +217,8 @@ class OpenPrinting:
                 callback (status, user_data, result)
 
             try:
+                # filter out invalid UTF-8 to avoid breaking the XML parser
+                result = result.decode('UTF-8', errors='replace').encode('UTF-8')
                 root = XML (result)
                 drivers = {}
                 # We store the drivers as a dict of:
