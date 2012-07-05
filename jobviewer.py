@@ -1683,6 +1683,20 @@ class JobViewer (GtkGUI):
             # This seems to be some sort of 'magic' state reason that
             # is for internal use only.
             "com.apple.print.recoverable",
+
+            # Human-readable text for this reason has misleading wording,
+            # suppress it.
+            "connecting-to-device",
+
+            # "cups-remote-..." reasons have no human-readable text yet and
+            # so get considered as errors, suppress them, too.
+            "cups-remote-pending",
+            "cups-remote-pending-held",
+            "cups-remote-processing",
+            "cups-remote-stopped",
+            "cups-remote-canceled",
+            "cups-remote-aborted",
+            "cups-remote-completed"
             ]
 
         if reason.get_reason () in blacklist:
