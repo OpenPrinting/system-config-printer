@@ -45,8 +45,9 @@
 #include <ctype.h>
 #include <syslog.h>
 #include <unistd.h>
-#include <usb.h>
+#include <libusb.h>
 #include <glib.h>
+#include <dirent.h>
 
 #define DISABLED_REASON "Unplugged or turned off"
 #define MATCH_ONLY_DISABLED 1
@@ -516,6 +517,12 @@ parse_device_id (const char *device_id,
   free (fieldname);
 }
 
+int
+device_file_filter(const struct dirent *entry)
+{
+  return ((strstr(entry->d_name, "lp") != NULL) ? 1 : 0);
+}
+
 static char *
 device_id_from_devpath (const char *devpath,
 			const struct usb_uri_map *map,
@@ -530,15 +537,23 @@ device_id_from_devpath (const char *devpath,
   char *end;
   unsigned long idVendor, idProduct;
   size_t syslen, devpathlen;
-  char *syspath;
-  struct usb_bus *bus;
-  struct usb_dev_handle *handle = NULL;
+  char *syspath, *devicefilepath;
+  libusb_device **list;
+  struct libusb_device	*device;
+  struct libusb_device_handle *handle = NULL;
+  struct libusb_device_descriptor devdesc;
+  struct libusb_config_descriptor *confptr = NULL;
+  const struct libusb_interface *ifaceptr = NULL;
+  const struct libusb_interface_descriptor *altptr = NULL;
+  char libusbserial[1024];
   char ieee1284_id[1024];
   const char *device_id = NULL;
-  int conf = 0, iface = 0;
+  int conf = 0, iface = 0, altset = 0, numdevs = 0, i, n, m;
   int got = 0;
   char *usb_device_devpath;
   char *usblpdevpos, *dest;
+  struct dirent **namelist;
+  int num_names;
 
   id->full_device_id = id->mfg = id->mdl = id->sern = NULL;
 
@@ -547,31 +562,6 @@ device_id_from_devpath (const char *devpath,
     {
       syslog (LOG_ERR, "udev_new failed");
       exit (1);
-    }
-
-  /* For devices discovered via the usblp kernel module we read out the number
-   * of the /dev/usb/lp* device file, as there can be queues set up with
-   * non-standard CUPS backends based on the /dev/usb/lp* device file and
-   * we want to avoid that an additional queue with a standard CUPS backend
-   * gets set up.
-   */
-  usblpdevpos = strstr(devpath, "/usb/lp");
-  if (usblpdevpos != NULL)
-    usblpdevpos += 7;
-  else
-    {
-      usblpdevpos = strstr(devpath, "/usblp");
-      if (usblpdevpos != NULL)
-	usblpdevpos += 6;
-    }
-  if (usblpdevpos != NULL)
-    {
-      for (dest = usblpdev;
-	   (*usblpdevpos >= '0') && (*usblpdevpos <= '9') &&
-	     (dest - usblpdev < usblpdevlen);
-	   usblpdevpos ++, dest ++)
-	*dest = *usblpdevpos;
-      *dest = '\0';
     }
 
   syslen = strlen ("/sys");
@@ -583,10 +573,44 @@ device_id_from_devpath (const char *devpath,
       syslog (LOG_ERR, "out of memory");
       exit (1);
     }
-
   memcpy (syspath, "/sys", syslen);
   memcpy (syspath + syslen, devpath, devpathlen);
   syspath[syslen + devpathlen] = '\0';
+
+  devicefilepath = malloc (syslen + devpathlen + 5);
+  if (devicefilepath == NULL)
+    {
+      udev_unref (udev);
+      syslog (LOG_ERR, "out of memory");
+      exit (1);
+    }
+  memcpy (devicefilepath, syspath, syslen + devpathlen);
+  memcpy (devicefilepath + syslen + devpathlen, "/usb", 4);
+  devicefilepath[syslen + devpathlen + 4] = '\0';
+
+  /* For devices under control of the usblp kernel module we read out the number
+   * of the /dev/usb/lp* device file, as there can be queues set up with 
+   * non-standard CUPS backends based on the /dev/usb/lp* device file and
+   * we want to avoid that an additional queue with a standard CUPS backend
+   * gets set up.
+   */
+  num_names = scandir(devicefilepath, &namelist, device_file_filter, alphasort);
+  if (num_names <= 0)
+    num_names = scandir(syspath, &namelist, device_file_filter, alphasort);
+  if (num_names > 0)
+    {
+      usblpdevpos = strstr(namelist[0]->d_name, "lp");
+      if (usblpdevpos != NULL)
+	{
+	  usblpdevpos += 2;
+	  for (dest = usblpdev;
+	       (*usblpdevpos >= '0') && (*usblpdevpos <= '9') &&
+		 (dest - usblpdev < usblpdevlen);
+	       usblpdevpos ++, dest ++)
+	    *dest = *usblpdevpos;
+	  *dest = '\0';
+	}
+    }
 
   dev = udev_device_new_from_syspath (udev, syspath);
   if (dev == NULL)
@@ -639,15 +663,17 @@ device_id_from_devpath (const char *devpath,
   else
     usbserial[0] = '\0';
 
-  /* See if we were triggered by a usblp add event. */
-  device_id = udev_device_get_sysattr_value (dev, "device/ieee1284_id");
+  /* See if  the device is controlled by the usblp kernel module
+     and so the module has already read the device ID for us */
+  device_id = udev_device_get_sysattr_value (dev, "ieee1284_id");
   if (device_id)
     {
       got = 1;
       goto got_deviceid;
     }
 
-  /* This is a low-level USB device.  Use libusb to fetch the Device ID. */
+  /* The usblp kernel module is not attached to this device. Use libusb to
+     fetch the Device ID. */
   idVendorStr = udev_device_get_sysattr_value (parent_dev, "idVendor");
   idProductStr = udev_device_get_sysattr_value (parent_dev, "idProduct");
 
@@ -678,99 +704,107 @@ device_id_from_devpath (const char *devpath,
   syslog (LOG_DEBUG, "Device vendor/product is %04zX:%04zX",
 	  idVendor, idProduct);
 
-  usb_init ();
-  usb_find_busses ();
-  usb_find_devices ();
-  for (bus = usb_get_busses (); bus && !got; bus = bus->next)
-    {
-      struct usb_device *device;
-      for (device = bus->devices; device && !got; device = device->next)
-	{
-	  struct usb_config_descriptor *confptr;
-	  if (device->descriptor.idVendor != idVendor ||
-	      device->descriptor.idProduct != idProduct ||
-	      !device->config)
-	    continue;
+  libusb_init(NULL);
+  numdevs = libusb_get_device_list(NULL, &list);
+  if (numdevs > 0)
+    for (i = 0; i < numdevs; i++)
+      {
+	device = list[i];
 
-	  conf = 0;
-	  for (confptr = device->config;
-	       conf < device->descriptor.bNumConfigurations && !got;
-	       conf++, confptr++)
-	    {
-	      struct usb_interface *ifaceptr;
-	      iface = 0;
-	      for (ifaceptr = confptr->interface;
-		   iface < confptr->bNumInterfaces && !got;
-		   iface++, ifaceptr++)
-		{
-		  struct usb_interface_descriptor *altptr;
-		  int altset = 0;
-		  for (altptr = ifaceptr->altsetting;
-		       altset < ifaceptr->num_altsetting && !got;
-		       altset++, altptr++)
-		    {
-		      if (altptr->bInterfaceClass == USB_CLASS_PRINTER &&
-			  altptr->bInterfaceSubClass == 1)
-			{
-			  int n;
-			  handle = usb_open (device);
-			  if (!handle)
-			    {
-			      syslog (LOG_DEBUG, "failed to open device");
-			      continue;
-			    }
+	if (libusb_get_device_descriptor(device, &devdesc) < 0)
+	  continue;
 
-			  n = altptr->bInterfaceNumber;
-			  if (usb_claim_interface (handle, n) < 0)
-			    {
-			      usb_close (handle);
-			      handle = NULL;
-			      syslog (LOG_DEBUG, "failed to claim interface");
-			      continue;
-			    }
+	if (!devdesc.bNumConfigurations || !devdesc.idVendor ||
+	    !devdesc.idProduct)
+	  continue;
 
-			  if (n != 0 && usb_claim_interface (handle, 0) < 0)
-			    {
-			      usb_close (handle);
-			      handle = NULL;
-			      syslog (LOG_DEBUG, "failed to claim interface 0");
-			      continue;
-			    }
+	if (devdesc.idVendor != idVendor || devdesc.idProduct != idProduct)
+	  continue;
 
-			  n = altptr->bAlternateSetting;
-			  if (usb_set_altinterface (handle, n) < 0)
-			    {
-			      usb_close (handle);
-			      handle = NULL;
-			      syslog (LOG_DEBUG, "failed set altinterface");
-			      continue;
-			    }
+	for (conf = 0; conf < devdesc.bNumConfigurations; conf ++)
+	  {
+	    if (libusb_get_config_descriptor(device, conf, &confptr) < 0)
+	      continue;
+	    for (iface = 0, ifaceptr = confptr->interface;
+		 iface < confptr->bNumInterfaces;
+		 iface ++, ifaceptr ++)
+	      {
+		for (altset = 0, altptr = ifaceptr->altsetting;
+		     altset < ifaceptr->num_altsetting;
+		     altset ++, altptr ++)
+		  {
+		    if (altptr->bInterfaceClass != LIBUSB_CLASS_PRINTER ||
+			altptr->bInterfaceSubClass != 1)
+		      continue;
+		    
+		    if (libusb_open(device, &handle) < 0)
+		      {
+			syslog (LOG_DEBUG, "failed to open device");
+			continue;
+		      }
 
-			  memset (ieee1284_id, '\0', sizeof (ieee1284_id));
-			  if (usb_control_msg (handle,
-					       USB_TYPE_CLASS |
-					       USB_ENDPOINT_IN |
-					       USB_RECIP_INTERFACE,
-					       0, conf, iface,
-					       ieee1284_id,
-					       sizeof (ieee1284_id),
-					       5000) < 0)
-			    {
-			      usb_close (handle);
-			      handle = NULL;
-			      syslog (LOG_ERR, "Failed to fetch Device ID");
-			      continue;
-			    }
+		    if (usbserial[0] != '\0' &&
+			(libusb_get_string_descriptor_ascii(handle,
+						devdesc.iSerialNumber,
+						(unsigned char *)libusbserial,
+						sizeof(libusbserial))) > 0 &&
+			strcmp(usbserial, libusbserial) != 0)
+		      {
+			libusb_close (handle);
+			handle = NULL;
+			continue;
+		      }
+		      
+		    n = altptr->bInterfaceNumber;
+		    if (libusb_claim_interface(handle, n) < 0)
+		      {
+			libusb_close (handle);
+			handle = NULL;
+			syslog (LOG_DEBUG, "failed to claim interface");
+			continue;
+		      }
+		    if (n != 0 && libusb_claim_interface(handle, 0) < 0)
+		      {
+			syslog (LOG_DEBUG, "failed to claim interface 0");
+		      }
+		    
+		    m = altptr->bAlternateSetting;
+		    if (libusb_set_interface_alt_setting(handle, n, m)
+			< 0)
+		      {
+			libusb_close (handle);
+			handle = NULL;
+			syslog (LOG_DEBUG, "failed set altinterface");
+			continue;
+		      }
 
-			  got = 1;
-			  usb_close (handle);
-			  break;
-			}
-		    }
-		}
-	    }
-	}
-    }
+		    memset (ieee1284_id, '\0', sizeof (ieee1284_id));
+		    if (libusb_control_transfer(handle,
+						LIBUSB_REQUEST_TYPE_CLASS |
+						LIBUSB_ENDPOINT_IN |
+						LIBUSB_RECIPIENT_INTERFACE,
+						0, conf,
+						(n << 8) | m,
+						(unsigned char *)ieee1284_id,
+						sizeof (ieee1284_id),
+						5000) < 0)
+		      {
+			libusb_close (handle);
+			handle = NULL;
+			syslog (LOG_ERR, "Failed to fetch Device ID");
+			continue;
+		      }
+
+		    got = 1;
+		    libusb_close (handle);
+		    break;
+		  }
+	      }
+	  }
+      }
+
+  libusb_free_device_list(list, 1);
+  libusb_exit(NULL);
 
  got_deviceid:
   if (got)
@@ -1231,6 +1265,7 @@ for_each_matching_queue (struct device_uris *device_uris,
     "printer-state-message",
   };
   char usblpdevstr1[32] = "", usblpdevstr2[32] = "";
+  int firstqueue = 1;
 
   if (cups == NULL)
     return 0;
@@ -1273,9 +1308,6 @@ for_each_matching_queue (struct device_uris *device_uris,
 	       usblpdev);
       snprintf(usblpdevstr2, sizeof(usblpdevstr2), "/usblp%s",
 	       usblpdev);
-      syslog (LOG_DEBUG,
-	      "Consider also queues with \"%s\" or \"%s\" in their URIs as matching",
-	      usblpdevstr1, usblpdevstr2);
     }
 
   for (attr = ippFirstAttribute (answer); attr; attr = ippNextAttribute (answer))
@@ -1317,8 +1349,6 @@ for_each_matching_queue (struct device_uris *device_uris,
 	goto skip;
 
       this_device_uri_n = normalize_device_uri(this_device_uri);
-      syslog (LOG_DEBUG, "URI of print queue: %s, normalized: %s",
-	      this_device_uri, this_device_uri_n);
       pi1 = strstr (this_device_uri, "interface=");
       ps1 = strstr (this_device_uri, "serial=");
       for (i = 0; i < device_uris->n_uris; i++)
@@ -1350,8 +1380,18 @@ for_each_matching_queue (struct device_uris *device_uris,
 	    l = strlen(this_device_uri);
 	  else
 	    l = strlen(device_uris->uri[i]);
-	  syslog (LOG_DEBUG, "URI of detected printer: %s, normalized: %s",
-		  device_uris->uri[i], device_uri_n);
+	  if (firstqueue == 1)
+	    {
+	      syslog (LOG_DEBUG, "URI of detected printer: %s, normalized: %s",
+		      device_uris->uri[i], device_uri_n);
+	      if (i == 0 && strlen(usblpdev) > 0)
+		syslog (LOG_DEBUG,
+			"Consider also queues with \"%s\" or \"%s\" in their URIs as matching",
+			usblpdevstr1, usblpdevstr2);
+	    }
+	  if (i == 0)
+	    syslog (LOG_DEBUG, "URI of print queue: %s, normalized: %s",
+		    this_device_uri, this_device_uri_n);
 	  if ((!strncmp (device_uris->uri[i], this_device_uri, l)) ||
 	      (strstr (device_uri_n, this_device_uri_n) ==
 	       device_uri_n) ||
@@ -1370,9 +1410,12 @@ for_each_matching_queue (struct device_uris *device_uris,
 		  (flags & MATCH_ONLY_DISABLED) == 0)
 		{
 		  (*fn) (this_printer_uri, context);
+		  break;
 		}
 	    }
 	}
+
+      firstqueue = 0;
 
     skip:
       if (!attr)
