@@ -925,7 +925,12 @@ class PrinterPropertiesDialog(GtkGUI):
         except:
             nonfatalException()
 
-        if self.ppd or (self.printer.remote and not self.printer.discovered):
+        if self.ppd or \
+           ((self.printer.remote or \
+             ((self.printer.device_uri.startswith('dnssd:') or \
+               self.printer.device_uri.startswith('mdns:')) and \
+              self.printer.device_uri.endswith('/cups'))) and not \
+            self.printer.discovered):
             self.btnPrintTestPage.show ()
         else:
             self.btnPrintTestPage.hide ()
