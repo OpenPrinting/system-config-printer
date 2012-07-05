@@ -925,6 +925,11 @@ class PrinterPropertiesDialog(GtkGUI):
         except:
             nonfatalException()
 
+        if self.ppd or (self.printer.remote and not self.printer.discovered):
+            self.btnPrintTestPage.show ()
+        else:
+            self.btnPrintTestPage.hide ()
+
         installablebold = False
         optionsbold = False
         if self.conflicts:

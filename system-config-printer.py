@@ -1773,7 +1773,9 @@ class GUI(GtkGUI):
 
         # Finally, suggest printing a test page.
         self.propertiesDlg.load (name)
-        if self.propertiesDlg.ppd:
+        if self.propertiesDlg.ppd or \
+           (self.propertiesDlg.printer.remote and not \
+            self.propertiesDlg.printer.discovered):
             try:
                 self.checkDriverExists (self.PrintersWindow, name,
                                         ppd=self.propertiesDlg.ppd)
