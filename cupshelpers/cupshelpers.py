@@ -562,17 +562,50 @@ class Device:
                 return -1
             if self.type == "parallel":
                 return 1
-            if other.type == "hp" or other.type == "hpfax":
+            if other.type == "hp":
                 return 1
-            if self.type == "hp" or self.type == "hpfax":
+            if self.type == "hp":
+                return -1
+            if other.type == "hpfax":
+                return 1
+            if self.type == "hpfax":
                 return -1
             if other.type == "dnssd":
                 return 1
             if self.type == "dnssd":
                 return -1
+            if other.type == "socket":
+                return 1
+            if self.type == "socket":
+                return -1
+            if other.type == "lpd":
+                return 1
+            if self.type == "lpd":
+                return -1
+            if other.type == "ipps":
+                return 1
+            if self.type == "ipps":
+                return -1
+            if other.type == "ipp":
+                return 1
+            if self.type == "ipp":
+                return -1
             if other.type == "usb":
                 return 1
             if self.type == "usb":
+                return -1
+        if self.type == "dnssd" and other.type == "dnssd":
+            if other.uri.find("._pdl-datastream") != -1: # Socket
+                return 1
+            if self.uri.find("._pdl-datastream") != -1:
+                return -1
+            if other.uri.find("._printer") != -1: # LPD
+                return 1
+            if self.uri.find("._printer") != -1:
+                return -1
+            if other.uri.find("._ipp") != -1: # IPP
+                return 1
+            if self.uri.find("._ipp") != -1:
                 return -1
         result = cmp(bool(self.id), bool(other.id))
         if not result:
