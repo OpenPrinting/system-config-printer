@@ -220,6 +220,18 @@
       </drivers>
     </printer>
 
+    <printer>
+      <make-and-model
+	  match="(Hewlett-Packard|HP) LaserJet 1[23]\d\d.*"/>
+      <drivers>
+	<drivertype>hpcups</drivertype>
+      </drivers>
+      <avoid>
+	<drivertype>*-postscript</drivertype>
+	<drivertype>manufacturer*</drivertype>
+      </avoid>
+    </printer>
+
     <!-- HP LaserJet 2100 series: avoid using PostScript for these
          models because they only understand PS level 2 (bug
          #710231). -->
