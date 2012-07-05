@@ -101,6 +101,7 @@ _RE_ignore_suffix = re.compile (","
                                 "| \("
                                 "| postscript"
                                 "| ps"
+                                "| pdf"
                                 "| pxl"
                                 "| zjs"         # hpcups
                                 "| zxs"         # hpcups

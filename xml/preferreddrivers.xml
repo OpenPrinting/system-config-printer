@@ -177,6 +177,11 @@
       </fit>
     </drivertype>
 
+    <drivertype name="pdf">
+      <attribute name="ppd-make-and-model"
+		 match=".*\bpdf\b"/>
+    </drivertype>
+
     <!-- Catch-all -->
     <drivertype name="manufacturer"/>
   </drivertypes>
@@ -250,6 +255,7 @@
 	<drivertype>foomatic-recommended-hpijs</drivertype>
 	<drivertype>foomatic-recommended-nonpostscript</drivertype>
 	<drivertype>manufacturer*</drivertype>
+	<drivertype>pdf</drivertype>
 	<drivertype>foomatic-recommended-postscript</drivertype>
 	<drivertype>foomatic-postscript</drivertype>
 	<drivertype>hpcups</drivertype>
