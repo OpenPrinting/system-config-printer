@@ -52,6 +52,81 @@
 #define MATCH_ONLY_DISABLED 1
 #define USB_URI_MAP "/var/run/udev-configure-printer/usb-uris"
 
+#if (CUPS_VERSION_MAJOR > 1) || (CUPS_VERSION_MINOR > 5)
+#define HAVE_CUPS_1_6 1
+#endif
+
+/*
+ * CUPS 1.6 makes various structures private and
+ * introduces these ippGet and ippSet functions
+ * for all of the fields in these structures.
+ * http://www.cups.org/str.php?L3928
+ * We define (same signatures) our own accessors when CUPS < 1.6.
+ */
+#ifndef HAVE_CUPS_1_6
+const char *
+ippGetName(ipp_attribute_t *attr)
+{
+  return (attr->name);
+}
+
+ipp_op_t
+ippGetOperation(ipp_t *ipp)
+{
+  return (ipp->request.op.operation_id);
+}
+
+ipp_status_t
+ippGetStatusCode(ipp_t *ipp)
+{
+  return (ipp->request.status.status_code);
+}
+
+ipp_tag_t
+ippGetGroupTag(ipp_attribute_t *attr)
+{
+  return (attr->group_tag);
+}
+
+ipp_tag_t
+ippGetValueTag(ipp_attribute_t *attr)
+{
+  return (attr->value_tag);
+}
+
+int
+ippGetInteger(ipp_attribute_t *attr,
+              int             element)
+{
+  return (attr->values[element].integer);
+}
+
+const char *
+ippGetString(ipp_attribute_t *attr,
+             int             element,
+             const char      **language)
+{
+  return (attr->values[element].string.text);
+}
+
+ipp_attribute_t	*
+ippFirstAttribute(ipp_t *ipp)
+{
+  if (!ipp)
+    return (NULL);
+  return (ipp->current = ipp->attrs);
+}
+
+ipp_attribute_t *
+ippNextAttribute(ipp_t *ipp)
+{
+  if (!ipp || !ipp->current)
+    return (NULL);
+  return (ipp->current = ipp->current->next);
+}
+
+#endif
+
 struct device_uris
 {
   size_t n_uris;
@@ -475,7 +550,7 @@ device_id_from_devpath (const char *devpath,
     }
 
   /* For devices discovered via the usblp kernel module we read out the number
-   * of the /dev/usb/lp* device file, as there can be queues set up with 
+   * of the /dev/usb/lp* device file, as there can be queues set up with
    * non-standard CUPS backends based on the /dev/usb/lp* device file and
    * we want to avoid that an additional queue with a standard CUPS backend
    * gets set up.
@@ -767,15 +842,15 @@ cupsDoRequestOrDie (http_t *http,
   if (answer == NULL)
     {
       syslog (LOG_ERR, "failed to send IPP request %d",
-	      request->request.op.operation_id);
+	      ippGetOperation (request));
       exit (1);
     }
 
-  if (answer->request.status.status_code > IPP_OK_CONFLICT)
+  if (ippGetStatusCode (answer) > IPP_OK_CONFLICT)
     {
       syslog (LOG_ERR, "IPP request %d failed (%d)",
-	      request->request.op.operation_id,
-	      answer->request.status.status_code);
+	      ippGetOperation (request),
+	      ippGetStatusCode (answer));
       exit (1);
     }
 
@@ -843,26 +918,26 @@ find_matching_device_uris (struct device_id *id,
   answer = cupsDoRequestOrDie (cups, request, "/");
   httpClose (cups);
 
-  for (attr = answer->attrs; attr; attr = attr->next)
+  for (attr = ippFirstAttribute (answer); attr; attr = ippNextAttribute (answer))
     {
       const char *device_uri = NULL;
       struct device_id this_id;
       this_id.full_device_id = this_id.mfg = this_id.mdl = this_id.sern = NULL;
 
-      while (attr && attr->group_tag != IPP_TAG_PRINTER)
-	attr = attr->next;
+      while (attr && ippGetGroupTag (attr) != IPP_TAG_PRINTER)
+	attr = ippNextAttribute (answer);
 
       if (!attr)
 	break;
 
-      for (; attr && attr->group_tag == IPP_TAG_PRINTER; attr = attr->next)
+      for (; attr && ippGetGroupTag (attr) == IPP_TAG_PRINTER; attr = ippNextAttribute (answer))
 	{
-	  if (attr->value_tag == IPP_TAG_URI &&
-	      !strcmp (attr->name, "device-uri"))
-	    device_uri = attr->values[0].string.text;
-	  else if (attr->value_tag == IPP_TAG_TEXT &&
-		   !strcmp (attr->name, "device-id"))
-	    parse_device_id (attr->values[0].string.text, &this_id);
+	  if (ippGetValueTag (attr) == IPP_TAG_URI &&
+	      !strcmp (ippGetName (attr), "device-uri"))
+	    device_uri = ippGetString (attr, 0, NULL);
+	  else if (ippGetValueTag (attr) == IPP_TAG_TEXT &&
+		   !strcmp (ippGetName (attr), "device-id"))
+	    parse_device_id (ippGetString (attr, 0, NULL), &this_id);
 	}
 
       /* Only use device schemes in our preference order for matching
@@ -1173,9 +1248,9 @@ for_each_matching_queue (struct device_uris *device_uris,
       exit (1);
     }
 
-  if (answer->request.status.status_code > IPP_OK_CONFLICT)
+  if (ippGetStatusCode (answer) > IPP_OK_CONFLICT)
     {
-      if (answer->request.status.status_code == IPP_NOT_FOUND)
+      if (ippGetStatusCode (answer) == IPP_NOT_FOUND)
 	{
 	  /* No printer queues configured. */
 	  ippDelete (answer);
@@ -1183,7 +1258,7 @@ for_each_matching_queue (struct device_uris *device_uris,
 	}
 
       syslog (LOG_ERR, "CUPS-Get-Printers request failed (%d)",
-	      answer->request.status.status_code);
+	      ippGetStatusCode (answer));
       exit (1);
     }
 
@@ -1203,7 +1278,7 @@ for_each_matching_queue (struct device_uris *device_uris,
 	      usblpdevstr1, usblpdevstr2);
     }
 
-  for (attr = answer->attrs; attr; attr = attr->next)
+  for (attr = ippFirstAttribute (answer); attr; attr = ippNextAttribute (answer))
     {
       const char *this_printer_uri = NULL;
       const char *this_device_uri = NULL;
@@ -1213,27 +1288,27 @@ for_each_matching_queue (struct device_uris *device_uris,
       char *this_device_uri_n, *device_uri_n;
       const char *ps1, *ps2, *pi1, *pi2;
 
-      while (attr && attr->group_tag != IPP_TAG_PRINTER)
-	attr = attr->next;
+      while (attr && ippGetGroupTag (attr) != IPP_TAG_PRINTER)
+	attr = ippNextAttribute (answer);
 
       if (!attr)
 	break;
 
-      for (; attr && attr->group_tag == IPP_TAG_PRINTER; attr = attr->next)
+      for (; attr && ippGetGroupTag (attr) == IPP_TAG_PRINTER; attr = ippNextAttribute (answer))
 	{
-	  if (attr->value_tag == IPP_TAG_URI)
+	  if (ippGetValueTag (attr) == IPP_TAG_URI)
 	    {
-	      if (!strcmp (attr->name, "device-uri"))
-		this_device_uri = attr->values[0].string.text;
-	      else if (!strcmp (attr->name, "printer-uri-supported"))
-		this_printer_uri = attr->values[0].string.text;
+	      if (!strcmp (ippGetName (attr), "device-uri"))
+		this_device_uri = ippGetString (attr, 0, NULL);
+	      else if (!strcmp (ippGetName (attr), "printer-uri-supported"))
+		this_printer_uri = ippGetString (attr, 0, NULL);
 	    }
-	  else if (attr->value_tag == IPP_TAG_TEXT &&
-		   !strcmp (attr->name, "printer-state-message"))
-	    printer_state_message = attr->values[0].string.text;
-	  else if (attr->value_tag == IPP_TAG_ENUM &&
-		   !strcmp (attr->name, "printer-state"))
-	    state = attr->values[0].integer;
+	  else if (ippGetValueTag (attr) == IPP_TAG_TEXT &&
+		   !strcmp (ippGetName (attr), "printer-state-message"))
+	    printer_state_message = ippGetString (attr, 0, NULL);
+	  else if (ippGetValueTag (attr) == IPP_TAG_ENUM &&
+		   !strcmp (ippGetName (attr), "printer-state"))
+	    state = ippGetInteger (attr, 0);
 	}
 
       if (!this_device_uri)
@@ -1254,8 +1329,8 @@ for_each_matching_queue (struct device_uris *device_uris,
 	     level USB (libusb) we cannot simply compare URIs, must
 	     consider also URIs as equal if one has an "interface"
 	     or "serial" attribute and the other not. If both have
-	     the attribute it must naturally match. We check which attributes 
-             are there and this way determine up to which length the two URIs 
+	     the attribute it must naturally match. We check which attributes
+             are there and this way determine up to which length the two URIs
              must match. Here we can assume that if a URI has an "interface"
 	     attribute it has also a "serial" attribute, as this URI is
 	     an URI obtained via libusb and these always have a "serial"
@@ -1278,13 +1353,13 @@ for_each_matching_queue (struct device_uris *device_uris,
 	  syslog (LOG_DEBUG, "URI of detected printer: %s, normalized: %s",
 		  device_uris->uri[i], device_uri_n);
 	  if ((!strncmp (device_uris->uri[i], this_device_uri, l)) ||
-	      (strstr (device_uri_n, this_device_uri_n) == 
+	      (strstr (device_uri_n, this_device_uri_n) ==
 	       device_uri_n) ||
-	      (strstr (this_device_uri_n, device_uri_n) == 
+	      (strstr (this_device_uri_n, device_uri_n) ==
 	       this_device_uri_n) ||
 	      ((strlen(usblpdev) > 0) &&
 	       ((strstr (this_device_uri, usblpdevstr1) != NULL) ||
-	       (strstr (this_device_uri, usblpdevstr2) != NULL)))) 
+	       (strstr (this_device_uri, usblpdevstr2) != NULL))))
 	    {
 	      matched++;
 	      syslog (LOG_DEBUG, "Queue %s has matching device URI",
@@ -1330,7 +1405,7 @@ enable_queue (const char *printer_uri, void *context)
       return;
     }
 
-  if (answer->request.status.status_code > IPP_OK_CONFLICT)
+  if (ippGetStatusCode (answer) > IPP_OK_CONFLICT)
     syslog (LOG_ERR, "IPP-Resume-Printer request failed");
   else
     syslog (LOG_INFO, "Re-enabled printer %s", printer_uri);
@@ -1517,7 +1592,7 @@ remove_queue (const char *printer_uri)
       return;
     }
 
-  if (answer->request.status.status_code > IPP_OK_CONFLICT)
+  if (ippGetStatusCode (answer) > IPP_OK_CONFLICT)
     syslog (LOG_ERR, "IPP-Delete-Printer request failed");
   else
     syslog (LOG_INFO, "Deleted printer %s as the corresponding device "
@@ -1551,7 +1626,7 @@ disable_queue (const char *printer_uri, void *context)
       return;
     }
 
-  if (answer->request.status.status_code > IPP_OK_CONFLICT)
+  if (ippGetStatusCode (answer) > IPP_OK_CONFLICT)
     syslog (LOG_ERR, "IPP-Pause-Printer request failed");
   else
     syslog (LOG_INFO, "Disabled printer %s as the corresponding device "
