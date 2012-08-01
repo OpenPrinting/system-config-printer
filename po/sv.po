@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: system-config-printer\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2012-03-01 14:14+0000\n"
+"POT-Creation-Date: 2012-08-01 16:58+0100\n"
 "PO-Revision-Date: 2011-08-19 20:32+0000\n"
 "Last-Translator: goeran <goeran@uddeborg.se>\n"
 "Language-Team: Swedish (http://www.transifex.net/projects/p/fedora/team/"
@@ -61,11 +61,11 @@ msgstr "Försök igen"
 msgid "Operation canceled"
 msgstr "Åtgärden avbruten"
 
-#: ../authconn.py:33 ../pysmb.py:123 ../ui/NewPrinterWindow.ui.h:91
+#: ../authconn.py:33 ../pysmb.py:123 ../ui/NewPrinterWindow.ui.h:40
 msgid "Username:"
 msgstr "Användarnamn:"
 
-#: ../authconn.py:34 ../pysmb.py:129 ../ui/NewPrinterWindow.ui.h:61
+#: ../authconn.py:34 ../pysmb.py:129 ../ui/NewPrinterWindow.ui.h:39
 msgid "Password:"
 msgstr "Lösenord:"
 
@@ -110,7 +110,7 @@ msgstr "Uppgradering krävs"
 msgid "Server error"
 msgstr "Serverfel"
 
-#: ../errordialogs.py:79 ../system-config-printer.py:668
+#: ../errordialogs.py:79 ../system-config-printer.py:669
 msgid "Not connected"
 msgstr "Inte ansluten"
 
@@ -244,7 +244,7 @@ msgstr "Användare"
 msgid "Document"
 msgstr "Dokument"
 
-#: ../jobviewer.py:452 ../system-config-printer.py:811
+#: ../jobviewer.py:452 ../system-config-printer.py:812
 #: ../troubleshoot/PrintTestPage.py:84
 msgid "Printer"
 msgstr "Skrivare"
@@ -283,10 +283,10 @@ msgstr "Dokumentets utskriftsstatus (%s)"
 msgid "Job attributes"
 msgstr "Jobbattribut"
 
-#: ../jobviewer.py:720 ../jobviewer.py:1023 ../jobviewer.py:1729
-#: ../jobviewer.py:1759 ../jobviewer.py:2145 ../jobviewer.py:2150
-#: ../jobviewer.py:2164 ../jobviewer.py:2243 ../printerproperties.py:1611
-#: ../ui/NewPrinterWindow.ui.h:89 ../troubleshoot/ChooseNetworkPrinter.py:100
+#: ../jobviewer.py:720 ../jobviewer.py:1023 ../jobviewer.py:1743
+#: ../jobviewer.py:1773 ../jobviewer.py:2159 ../jobviewer.py:2164
+#: ../jobviewer.py:2178 ../jobviewer.py:2257 ../printerproperties.py:1621
+#: ../ui/NewPrinterWindow.ui.h:93 ../troubleshoot/ChooseNetworkPrinter.py:100
 #: ../troubleshoot/ChooseNetworkPrinter.py:101
 #: ../troubleshoot/ChooseNetworkPrinter.py:104
 #: ../troubleshoot/ChooseNetworkPrinter.py:105
@@ -358,8 +358,8 @@ msgstr "hämtad"
 msgid "Save File"
 msgstr "Spara fil"
 
-#: ../jobviewer.py:1474 ../system-config-printer.py:248
-#: ../ui/NewPrinterWindow.ui.h:55 ../troubleshoot/ChooseNetworkPrinter.py:35
+#: ../jobviewer.py:1474 ../system-config-printer.py:249
+#: ../ui/NewPrinterWindow.ui.h:9 ../troubleshoot/ChooseNetworkPrinter.py:35
 #: ../troubleshoot/ChoosePrinter.py:36 ../troubleshoot/DeviceListed.py:36
 msgid "Name"
 msgstr "Namn"
@@ -386,111 +386,111 @@ msgstr "%d dokument är köade"
 msgid "processing / pending:   %d / %d"
 msgstr "bearbetar / väntar: %d / %d"
 
-#: ../jobviewer.py:1760
+#: ../jobviewer.py:1774
 msgid "Document printed"
 msgstr "Dokumentet har skrivits ut"
 
-#: ../jobviewer.py:1761
+#: ../jobviewer.py:1775
 #, python-format
 msgid "Document `%s' has been sent to `%s' for printing."
 msgstr "Dokumentet \"%s\" har skickats till \"%s\" för utskrift."
 
-#: ../jobviewer.py:1922
+#: ../jobviewer.py:1936
 #, python-format
 msgid "There was a problem sending document `%s' (job %d) to the printer."
 msgstr ""
 "Det uppstod ett problem vid sändning av dokumentet \"%s\" (jobb %d) till "
 "skrivaren."
 
-#: ../jobviewer.py:1925
+#: ../jobviewer.py:1939
 #, python-format
 msgid "There was a problem processing document `%s' (job %d)."
 msgstr "Det uppstod ett problem vid behandling av dokumentet \"%s\" (jobb %d)."
 
 #. Give up and use the provided message untranslated.
-#: ../jobviewer.py:1932
+#: ../jobviewer.py:1946
 #, python-format
 msgid "There was a problem printing document `%s' (job %d): `%s'."
 msgstr ""
 "Det uppstod ett problem vid utskrift av dokumentet \"%s\" (jobb %d): `%s'."
 
-#: ../jobviewer.py:1939 ../jobviewer.py:1955
+#: ../jobviewer.py:1953 ../jobviewer.py:1969
 msgid "Print Error"
 msgstr "Utskriftsfel"
 
-#: ../jobviewer.py:1940
+#: ../jobviewer.py:1954
 msgid "_Diagnose"
 msgstr "_Diagnosticera"
 
-#: ../jobviewer.py:1961
+#: ../jobviewer.py:1975
 #, python-format
 msgid "The printer called `%s' has been disabled."
 msgstr "Skrivaren med namnet \"%s\" har inaktiverats."
 
-#: ../jobviewer.py:2156
+#: ../jobviewer.py:2170
 msgid "disabled"
 msgstr "inaktiverad"
 
-#: ../jobviewer.py:2178
+#: ../jobviewer.py:2192
 msgid "Held for authentication"
 msgstr "Hålls kvar för autentisering"
 
-#: ../jobviewer.py:2180 ../troubleshoot/PrintTestPage.py:42
+#: ../jobviewer.py:2194 ../troubleshoot/PrintTestPage.py:42
 msgid "Held"
 msgstr "Kvarhållen"
 
-#: ../jobviewer.py:2216
+#: ../jobviewer.py:2230
 #, python-format
 msgid "Held until %s"
 msgstr "Hålls kvar till %s"
 
-#: ../jobviewer.py:2220
+#: ../jobviewer.py:2234
 msgid "Held until day-time"
 msgstr "Hålls kvar till dagtid"
 
-#: ../jobviewer.py:2222
+#: ../jobviewer.py:2236
 msgid "Held until evening"
 msgstr "Hålls kvar till kväll"
 
-#: ../jobviewer.py:2224
+#: ../jobviewer.py:2238
 msgid "Held until night-time"
 msgstr "Hålls kvar till nattid"
 
-#: ../jobviewer.py:2226
+#: ../jobviewer.py:2240
 msgid "Held until second shift"
 msgstr "Hålls kvar till andra skiftet"
 
-#: ../jobviewer.py:2228
+#: ../jobviewer.py:2242
 msgid "Held until third shift"
 msgstr "Hålls kvar till tredje skiftet"
 
-#: ../jobviewer.py:2230
+#: ../jobviewer.py:2244
 msgid "Held until weekend"
 msgstr "Hålls kvar till helg"
 
-#: ../jobviewer.py:2233 ../troubleshoot/PrintTestPage.py:41
+#: ../jobviewer.py:2247 ../troubleshoot/PrintTestPage.py:41
 msgid "Pending"
 msgstr "Väntar"
 
-#: ../jobviewer.py:2234 ../printerproperties.py:68
-#: ../system-config-printer.py:132 ../troubleshoot/PrintTestPage.py:43
+#: ../jobviewer.py:2248 ../printerproperties.py:68
+#: ../system-config-printer.py:133 ../troubleshoot/PrintTestPage.py:43
 msgid "Processing"
 msgstr "Behandlar"
 
-#: ../jobviewer.py:2235 ../printerproperties.py:70
-#: ../system-config-printer.py:134 ../troubleshoot/PrintTestPage.py:44
+#: ../jobviewer.py:2249 ../printerproperties.py:70
+#: ../system-config-printer.py:135 ../troubleshoot/PrintTestPage.py:44
 msgid "Stopped"
 msgstr "Stoppad"
 
-#: ../jobviewer.py:2236 ../troubleshoot/PrintTestPage.py:45
+#: ../jobviewer.py:2250 ../troubleshoot/PrintTestPage.py:45
 msgid "Canceled"
 msgstr "Avbruten"
 
-#: ../jobviewer.py:2237 ../troubleshoot/PrintTestPage.py:46
+#: ../jobviewer.py:2251 ../troubleshoot/PrintTestPage.py:46
 msgid "Aborted"
 msgstr "Avbruten"
 
-#: ../jobviewer.py:2238 ../troubleshoot/PrintTestPage.py:47
+#: ../jobviewer.py:2252 ../troubleshoot/PrintTestPage.py:47
 msgid "Completed"
 msgstr "Färdig"
 
@@ -602,7 +602,7 @@ msgstr "Modeller"
 msgid "Drivers"
 msgstr "Drivrutiner"
 
-#: ../newprinter.py:333 ../ui/NewPrinterWindow.ui.h:34
+#: ../newprinter.py:333 ../ui/NewPrinterWindow.ui.h:101
 msgid "Downloadable Drivers"
 msgstr "Hämtningsbara drivrutiner"
 
@@ -636,7 +636,7 @@ msgstr "Alla filer (*)"
 msgid "Search"
 msgstr "Sök"
 
-#: ../newprinter.py:616 ../newprinter.py:637 ../ui/NewPrinterWindow.ui.h:57
+#: ../newprinter.py:616 ../newprinter.py:637 ../ui/NewPrinterWindow.ui.h:1
 msgid "New Printer"
 msgstr "Ny skrivare"
 
@@ -758,7 +758,7 @@ msgid "HP Linux Imaging and Printing (HPLIP)"
 msgstr "HP Linux Imaging and Printing (HPLIP)"
 
 #: ../newprinter.py:2301 ../newprinter.py:2430 ../newprinter.py:2432
-#: ../system-config-printer.py:814
+#: ../system-config-printer.py:815
 msgid "Fax"
 msgstr "Fax"
 
@@ -840,7 +840,7 @@ msgstr "Lokal skrivare upptäckt av Hardware Abstraction Layer (HAL)."
 msgid "Searching for printers"
 msgstr "Söker efter skrivare"
 
-#: ../newprinter.py:2731 ../ui/NewPrinterWindow.ui.h:58
+#: ../newprinter.py:2731 ../ui/NewPrinterWindow.ui.h:45
 msgid "No printer was found at that address."
 msgstr "Ingen skrivare hittades på den adressen."
 
@@ -939,8 +939,8 @@ msgid "adding printer %s"
 msgstr "lägger till skrivaren %s"
 
 #: ../newprinter.py:3571 ../newprinter.py:3582 ../newprinter.py:3599
-#: ../printerproperties.py:979 ../system-config-printer.py:1561
-#: ../system-config-printer.py:1586
+#: ../printerproperties.py:989 ../system-config-printer.py:1562
+#: ../system-config-printer.py:1587
 #, python-format
 msgid "modifying printer %s"
 msgstr "ändrar skrivaren %s"
@@ -1242,11 +1242,11 @@ msgstr "LPT 1"
 msgid "fetching PPDs"
 msgstr "hämtar PPD-filer"
 
-#: ../printerproperties.py:67 ../system-config-printer.py:131
+#: ../printerproperties.py:67 ../system-config-printer.py:132
 msgid "Idle"
 msgstr "Overksam"
 
-#: ../printerproperties.py:69 ../system-config-printer.py:133
+#: ../printerproperties.py:69 ../system-config-printer.py:134
 msgid "Busy"
 msgstr "Upptagen"
 
@@ -1475,24 +1475,24 @@ msgstr ""
 "Ändringar kan bara användas efter\n"
 "dessa konflikter har lösts."
 
-#: ../printerproperties.py:940
+#: ../printerproperties.py:950
 msgid "Installable Options"
 msgstr "Installerbara alternativ"
 
-#: ../printerproperties.py:941 ../ui/PrinterPropertiesDialog.ui.h:63
+#: ../printerproperties.py:951 ../ui/PrinterPropertiesDialog.ui.h:41
 msgid "Printer Options"
 msgstr "Skrivaralternativ"
 
-#: ../printerproperties.py:977
+#: ../printerproperties.py:987
 #, python-format
 msgid "modifying class %s"
 msgstr "ändrar klassen %s"
 
-#: ../printerproperties.py:994
+#: ../printerproperties.py:1004
 msgid "This will delete this class!"
 msgstr "Detta kommer ta bort denna klass!"
 
-#: ../printerproperties.py:995
+#: ../printerproperties.py:1005
 msgid "Proceed anyway?"
 msgstr "Fortsätt ändå?"
 
@@ -1500,19 +1500,19 @@ msgstr "Fortsätt ändå?"
 #. but we have never fetched the server settings to see whether
 #. the server is publishing shared printers.  Fetch the settings
 #. now so that we can update the "not published" label if necessary.
-#: ../printerproperties.py:1087 ../serversettings.py:196
+#: ../printerproperties.py:1097 ../serversettings.py:196
 msgid "fetching server settings"
 msgstr "hämtar serverinställningar"
 
-#: ../printerproperties.py:1170
+#: ../printerproperties.py:1180
 msgid "printing test page"
 msgstr "skriver ut testsida"
 
-#: ../printerproperties.py:1183 ../printerproperties.py:1223
+#: ../printerproperties.py:1193 ../printerproperties.py:1233
 msgid "Not possible"
 msgstr "Inte möjligt"
 
-#: ../printerproperties.py:1184 ../printerproperties.py:1224
+#: ../printerproperties.py:1194 ../printerproperties.py:1234
 msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
@@ -1520,43 +1520,43 @@ msgstr ""
 "Fjärrservern accepterade inte utskriftsjobbet, troligen på grund av att "
 "skrivaren inte är utdelad."
 
-#: ../printerproperties.py:1196 ../printerproperties.py:1216
+#: ../printerproperties.py:1206 ../printerproperties.py:1226
 msgid "Submitted"
 msgstr "Skickad"
 
-#: ../printerproperties.py:1197
+#: ../printerproperties.py:1207
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr "Testsida skickad som jobb %d"
 
-#: ../printerproperties.py:1209
+#: ../printerproperties.py:1219
 msgid "sending maintenance command"
 msgstr "skickar underhållskommando"
 
-#: ../printerproperties.py:1217
+#: ../printerproperties.py:1227
 #, python-format
 msgid "Maintenance command submitted as job %d"
 msgstr "Underhållskommando skickat som jobb %d"
 
-#: ../printerproperties.py:1304 ../printerproperties.py:1309
-#: ../printerproperties.py:1405
+#: ../printerproperties.py:1314 ../printerproperties.py:1319
+#: ../printerproperties.py:1415
 msgid "Error"
 msgstr "Fel"
 
-#: ../printerproperties.py:1305
+#: ../printerproperties.py:1315
 msgid "The PPD file for this queue is damaged."
 msgstr "PPD-filen för denna kö är skadad."
 
-#: ../printerproperties.py:1310
+#: ../printerproperties.py:1320
 msgid "There was a problem connecting to the CUPS server."
 msgstr "Det uppstod ett problem vid anslutning till CUPS-servern."
 
-#: ../printerproperties.py:1406
+#: ../printerproperties.py:1416
 #, python-format
 msgid "Option '%s' has value '%s' and cannot be edited."
 msgstr "Alternativet \"%s\" har värdet \"%s\" och kan inte redigeras."
 
-#: ../printerproperties.py:1522
+#: ../printerproperties.py:1532
 msgid "Marker levels are not reported for this printer."
 msgstr "Färgnivåer rapporteras inte för denna skrivare."
 
@@ -1582,193 +1582,193 @@ msgid "Adjust the firewall now to allow all incoming IPP connections?"
 msgstr ""
 "Justera brandväggen nu för att tillåta alla inkommande IPP-anslutningar?"
 
-#: ../system-config-printer.py:213
+#: ../system-config-printer.py:214
 msgid "_Connect..."
 msgstr "_Anslut..."
 
-#: ../system-config-printer.py:214
+#: ../system-config-printer.py:215
 msgid "Choose a different CUPS server"
 msgstr "Välj en annan CUPS-server"
 
-#: ../system-config-printer.py:216
+#: ../system-config-printer.py:217
 msgid "_Settings..."
 msgstr "_Inställningar..."
 
-#: ../system-config-printer.py:217
+#: ../system-config-printer.py:218
 msgid "Adjust server settings"
 msgstr "Justera serverinställningar"
 
-#: ../system-config-printer.py:219 ../ui/PrintersWindow.ui.h:7
+#: ../system-config-printer.py:220 ../ui/PrintersWindow.ui.h:3
 msgid "_Printer"
 msgstr "_Skrivare"
 
-#: ../system-config-printer.py:221
+#: ../system-config-printer.py:222
 msgid "_Class"
 msgstr "_Klass"
 
-#: ../system-config-printer.py:226
+#: ../system-config-printer.py:227
 msgid "_Rename"
 msgstr "_Byt namn"
 
-#: ../system-config-printer.py:228
+#: ../system-config-printer.py:229
 msgid "_Duplicate"
 msgstr "_Duplicera"
 
-#: ../system-config-printer.py:232
+#: ../system-config-printer.py:233
 msgid "Set As De_fault"
 msgstr "Ange som sta_ndard"
 
-#: ../system-config-printer.py:236
+#: ../system-config-printer.py:237
 msgid "_Create class"
 msgstr "_Skapa klass"
 
-#: ../system-config-printer.py:238
+#: ../system-config-printer.py:239
 msgid "View Print _Queue"
 msgstr "Visa utskriftsk_ö"
 
-#: ../system-config-printer.py:242
+#: ../system-config-printer.py:243
 msgid "E_nabled"
 msgstr "_Aktiverad"
 
-#: ../system-config-printer.py:244
+#: ../system-config-printer.py:245
 msgid "_Shared"
 msgstr "_Utdelad"
 
-#: ../system-config-printer.py:249
+#: ../system-config-printer.py:250
 msgid "Description"
 msgstr "Beskrivning"
 
-#: ../system-config-printer.py:250 ../troubleshoot/ChooseNetworkPrinter.py:37
+#: ../system-config-printer.py:251 ../troubleshoot/ChooseNetworkPrinter.py:37
 #: ../troubleshoot/ChoosePrinter.py:38
 msgid "Location"
 msgstr "Placering"
 
-#: ../system-config-printer.py:251
+#: ../system-config-printer.py:252
 msgid "Manufacturer / Model"
 msgstr "Tillverkare / Modell"
 
-#: ../system-config-printer.py:325
+#: ../system-config-printer.py:326
 msgid "_New"
 msgstr "_Ny"
 
-#: ../system-config-printer.py:663
-#, python-format
-msgid "Printing - %s"
-msgstr "Skriver ut - %s"
+#: ../system-config-printer.py:664
+#, fuzzy, python-format
+msgid "Print Settings - %s"
+msgstr "Inställningar"
 
-#: ../system-config-printer.py:666
+#: ../system-config-printer.py:667
 #, python-format
 msgid "Connected to %s"
 msgstr "Ansluten till %s"
 
-#: ../system-config-printer.py:717
+#: ../system-config-printer.py:718
 msgid "obtaining queue details"
 msgstr "hämtar ködetaljer"
 
-#: ../system-config-printer.py:805
+#: ../system-config-printer.py:806
 msgid "Network printer (discovered)"
 msgstr "Nätverksskrivare (upptäckt)"
 
-#: ../system-config-printer.py:808
+#: ../system-config-printer.py:809
 msgid "Network class (discovered)"
 msgstr "Nätverksklass (upptäckt)"
 
-#: ../system-config-printer.py:817
+#: ../system-config-printer.py:818
 msgid "Class"
 msgstr "Klass"
 
-#: ../system-config-printer.py:820 ../system-config-printer.py:826
+#: ../system-config-printer.py:821 ../system-config-printer.py:827
 #: ../troubleshoot/LocalOrRemote.py:30
 msgid "Network printer"
 msgstr "Nätverksskrivare"
 
-#: ../system-config-printer.py:823
+#: ../system-config-printer.py:824
 msgid "Network print share"
 msgstr "Skrivarutdelning på nätverket"
 
-#: ../system-config-printer.py:977
+#: ../system-config-printer.py:978
 msgid "Service framework not available"
 msgstr "Tjänsteramverket är inte tillgängligt"
 
-#: ../system-config-printer.py:979
+#: ../system-config-printer.py:980
 msgid "Cannot start service on remote server"
 msgstr "Det går inte att starta en tjänst på en fjärrserver"
 
-#: ../system-config-printer.py:1027 ../ui/ConnectingDialog.ui.h:2
+#: ../system-config-printer.py:1028 ../ui/ConnectingDialog.ui.h:4
 #, no-c-format, python-format
 msgid "<i>Opening connection to %s</i>"
 msgstr "<i>Öppnar anslutning till %s</i>"
 
-#: ../system-config-printer.py:1182
+#: ../system-config-printer.py:1183
 msgid "Set Default Printer"
 msgstr "Ange standardskrivare"
 
-#: ../system-config-printer.py:1184
+#: ../system-config-printer.py:1185
 msgid "Do you want to set this as the system-wide default printer?"
 msgstr "Vill du ange denna skrivare som systemets standard?"
 
-#: ../system-config-printer.py:1186
+#: ../system-config-printer.py:1187
 msgid "Set as the _system-wide default printer"
 msgstr "Ange som _systemets standardskrivare"
 
-#: ../system-config-printer.py:1188
+#: ../system-config-printer.py:1189
 msgid "_Clear my personal default setting"
 msgstr "_Töm min personliga standardinställning"
 
-#: ../system-config-printer.py:1189
+#: ../system-config-printer.py:1190
 msgid "Set as my _personal default printer"
 msgstr "Ange som min _personliga standardskrivare"
 
-#: ../system-config-printer.py:1194
+#: ../system-config-printer.py:1195
 msgid "setting default printer"
 msgstr "anger standardskrivare"
 
-#: ../system-config-printer.py:1240
+#: ../system-config-printer.py:1241
 msgid "Cannot Rename"
 msgstr "Kan inte byta namn"
 
-#: ../system-config-printer.py:1241
+#: ../system-config-printer.py:1242
 msgid "There are queued jobs."
 msgstr "Det finns kölagda jobb."
 
-#: ../system-config-printer.py:1259
+#: ../system-config-printer.py:1260
 msgid "Renaming will lose history"
 msgstr "Namnbyte kommer att ta bort historiken"
 
-#: ../system-config-printer.py:1261
+#: ../system-config-printer.py:1262
 msgid "Completed jobs will no longer be available for re-printing."
 msgstr ""
 "Färdiga jobb kommer inte längre att vara tillgänglig för ytterligare "
 "utskrifter."
 
-#: ../system-config-printer.py:1362
+#: ../system-config-printer.py:1363
 msgid "renaming printer"
 msgstr "byter namn på skrivare"
 
-#: ../system-config-printer.py:1514
+#: ../system-config-printer.py:1515
 #, python-format
 msgid "Really delete class '%s'?"
 msgstr "Verkligen ta bort klassen \"%s\"?"
 
-#: ../system-config-printer.py:1516
+#: ../system-config-printer.py:1517
 #, python-format
 msgid "Really delete printer '%s'?"
 msgstr "Verkligen ta bort skrivaren \"%s\"?"
 
-#: ../system-config-printer.py:1518
+#: ../system-config-printer.py:1519
 msgid "Really delete selected destinations?"
 msgstr "Verkligen ta bort markerade mål?"
 
-#: ../system-config-printer.py:1539
+#: ../system-config-printer.py:1540
 #, python-format
 msgid "deleting printer %s"
 msgstr "tar bort skrivaren %s"
 
-#: ../system-config-printer.py:1626
+#: ../system-config-printer.py:1627
 msgid "Publish Shared Printers"
 msgstr "Publicera utdelade skrivare"
 
-#: ../system-config-printer.py:1627
+#: ../system-config-printer.py:1628
 msgid ""
 "Shared printers are not available to other people unless the 'Publish shared "
 "printers' option is enabled in the server settings."
@@ -1777,32 +1777,32 @@ msgstr ""
 "alternativet \"Publicera utdelade skrivare\" har aktiverats i "
 "serverinställningarna."
 
-#: ../system-config-printer.py:1788
+#: ../system-config-printer.py:1794
 msgid "Would you like to print a test page?"
 msgstr "Vill du skriva ut en testsida?"
 
 #. Not more than 25 characters
-#: ../system-config-printer.py:1790 ../ui/PrinterPropertiesDialog.ui.h:61
+#: ../system-config-printer.py:1796 ../ui/PrinterPropertiesDialog.ui.h:12
 #: ../troubleshoot/PrintTestPage.py:72
 msgid "Print Test Page"
 msgstr "Skriv ut testsida"
 
-#: ../system-config-printer.py:1876
+#: ../system-config-printer.py:1882
 msgid "Install driver"
 msgstr "Installera drivrutin"
 
-#: ../system-config-printer.py:1877 ../troubleshoot/CheckPPDSanity.py:133
+#: ../system-config-printer.py:1883 ../troubleshoot/CheckPPDSanity.py:133
 #, python-format
 msgid "Printer '%s' requires the %s package but it is not currently installed."
 msgstr ""
 "Skrivaren \"%s\" kräver paketet %s men det är inte installerat för "
 "närvarande."
 
-#: ../system-config-printer.py:1893
+#: ../system-config-printer.py:1899
 msgid "Missing driver"
 msgstr "Saknad drivrutin"
 
-#: ../system-config-printer.py:1894
+#: ../system-config-printer.py:1900
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "
@@ -1812,13 +1812,13 @@ msgstr ""
 "Installera det innan du använder denna skrivare."
 
 #: ../ui/AboutDialog.ui.h:1
-msgid "A CUPS configuration tool."
-msgstr "Ett konfigurationsverktyg för CUPS."
-
-#: ../ui/AboutDialog.ui.h:2
 #, fuzzy
 msgid "Copyright © 2006-2012 Red Hat, Inc."
 msgstr "Copyright © 2006-2008 Red Hat, Inc."
+
+#: ../ui/AboutDialog.ui.h:2
+msgid "A CUPS configuration tool."
+msgstr "Ett konfigurationsverktyg för CUPS."
 
 #: ../ui/AboutDialog.ui.h:3
 msgid ""
@@ -1864,24 +1864,24 @@ msgstr ""
 "tp-sv@listor.tp-sv.se"
 
 #: ../ui/ConnectDialog.ui.h:1
-msgid "CUPS _server:"
-msgstr "CUPS-_server:"
-
-#: ../ui/ConnectDialog.ui.h:2
 msgid "Connect to CUPS server"
 msgstr "Anslut till CUPS-server"
 
-#: ../ui/ConnectDialog.ui.h:3
+#: ../ui/ConnectDialog.ui.h:2
 msgid "Require _encryption"
 msgstr "Kräv _kryptering"
 
-#: ../ui/ConnectingDialog.ui.h:3
-msgid "<span weight=\"bold\" size=\"larger\">Connecting to CUPS server</span>"
-msgstr "<span weight=\"bold\" size=\"larger\">Ansluter till CUPS-server</span>"
+#: ../ui/ConnectDialog.ui.h:3
+msgid "CUPS _server:"
+msgstr "CUPS-_server:"
 
-#: ../ui/ConnectingDialog.ui.h:4
+#: ../ui/ConnectingDialog.ui.h:1
 msgid "Connecting to CUPS server"
 msgstr "Ansluter till CUPS-server"
+
+#: ../ui/ConnectingDialog.ui.h:2
+msgid "<span weight=\"bold\" size=\"larger\">Connecting to CUPS server</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">Ansluter till CUPS-server</span>"
 
 #: ../ui/InstallDialog.ui.h:1
 msgid "_Install"
@@ -1892,16 +1892,16 @@ msgid "Refresh job list"
 msgstr "Uppdatera jobblista"
 
 #: ../ui/JobsWindow.ui.h:2
-msgid "Show _completed jobs"
-msgstr "Visa _slutförda jobb"
+msgid "_Refresh"
+msgstr "_Uppdatera"
 
 #: ../ui/JobsWindow.ui.h:3
 msgid "Show completed jobs"
 msgstr "Visa slutförda jobb"
 
 #: ../ui/JobsWindow.ui.h:4
-msgid "_Refresh"
-msgstr "_Uppdatera"
+msgid "Show _completed jobs"
+msgstr "Visa _slutförda jobb"
 
 #: ../ui/NewPrinterName.ui.h:1
 msgid "Duplicate Printer"
@@ -1911,151 +1911,55 @@ msgstr "Duplicera skrivare"
 msgid "New name for the printer"
 msgstr "Nytt namn för skrivaren"
 
-#: ../ui/NewPrinterWindow.ui.h:1
-msgid "<b>Authentication</b>"
-msgstr "<b>Autentisering</b>"
-
 #: ../ui/NewPrinterWindow.ui.h:2
-msgid "<b>Description</b>"
-msgstr "<b>Beskrivning</b>"
+msgid "<span weight=\"bold\" size=\"larger\">Describe Printer</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">Beskriv skrivaren</span>"
 
 #: ../ui/NewPrinterWindow.ui.h:3
+msgid "Short name for this printer such as \"laserjet\""
+msgstr "Kort namn för denna skrivare, som t.ex. \"laserjet\""
+
+#: ../ui/NewPrinterWindow.ui.h:4
+msgid "<b>Printer Name</b>"
+msgstr "<b>Skrivarnamn</b>"
+
+#: ../ui/NewPrinterWindow.ui.h:5
+msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
+msgstr "Läsbar beskrivning som t.ex. \"HP LaserJet med Duplexer\""
+
+#: ../ui/NewPrinterWindow.ui.h:6
 msgid "<b>Description</b> (optional)"
 msgstr "<b>Beskrivning</b> (valfritt)"
 
-#: ../ui/NewPrinterWindow.ui.h:4
-msgid "<b>Enter device URI</b>"
-msgstr "<b>Ange enhets-URI</b>"
-
-#: ../ui/NewPrinterWindow.ui.h:5
-msgid "<b>License Terms</b>"
-msgstr "<b>Licensvillkor</b>"
-
-#: ../ui/NewPrinterWindow.ui.h:6
-msgid "<b>Location of the LPD network printer</b>"
-msgstr "<b>Placering av LPD-nätverksskrivaren</b>"
-
 #: ../ui/NewPrinterWindow.ui.h:7
-msgid "<b>Location of the network printer</b>"
-msgstr "<b>Placering av nätverksskrivaren</b>"
+msgid "Human-readable location such as \"Lab 1\""
+msgstr "Läsbar placering, som t.ex. \"Labb 1\""
 
 #: ../ui/NewPrinterWindow.ui.h:8
 msgid "<b>Location</b> (optional)"
 msgstr "<b>Placering</b> (valfritt)"
 
-#: ../ui/NewPrinterWindow.ui.h:9
-msgid "<b>Network Printer</b>"
-msgstr "<b>Nätverksskrivare</b>"
-
 #: ../ui/NewPrinterWindow.ui.h:10
-msgid "<b>Note</b>"
-msgstr "<b>Anteckning</b>"
-
-#: ../ui/NewPrinterWindow.ui.h:11
-msgid "<b>Output Quality</b>"
-msgstr "<b>Utskriftskvalitet</b>"
-
-#: ../ui/NewPrinterWindow.ui.h:12
-msgid "<b>Printer Name</b>"
-msgstr "<b>Skrivarnamn</b>"
-
-#: ../ui/NewPrinterWindow.ui.h:13
-msgid "<b>SMB Printer</b>"
-msgstr "<b>SMB-skrivare</b>"
-
-#: ../ui/NewPrinterWindow.ui.h:14
-msgid "<b>Select Driver</b>"
-msgstr "<b>Välj drivrutin</b>"
-
-#: ../ui/NewPrinterWindow.ui.h:15
-msgid "<b>Settings of the serial port</b>"
-msgstr "<b>Inställningar för serieporten</b>"
-
-#: ../ui/NewPrinterWindow.ui.h:16
-msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
-msgstr "<i>smb://[arbetsgrupp/]server[:port]/skrivare</i>"
-
-#: ../ui/NewPrinterWindow.ui.h:17
-msgid "<span weight=\"bold\" size=\"larger\">Choose Class Members</span>"
-msgstr "<span weight=\"bold\" size=\"larger\">Välj klassmedlemmar</span>"
-
-#: ../ui/NewPrinterWindow.ui.h:18
-msgid "<span weight=\"bold\" size=\"larger\">Choose Driver</span>"
-msgstr "<span weight=\"bold\" size=\"larger\">Välj drivrutin</span>"
-
-#: ../ui/NewPrinterWindow.ui.h:19
-msgid "<span weight=\"bold\" size=\"larger\">Describe Printer</span>"
-msgstr "<span weight=\"bold\" size=\"larger\">Beskriv skrivaren</span>"
-
-#: ../ui/NewPrinterWindow.ui.h:20
-msgid "<span weight=\"bold\" size=\"larger\">Existing Settings</span>"
-msgstr "<span weight=\"bold\" size=\"larger\">Befintliga inställningar</span>"
-
-#: ../ui/NewPrinterWindow.ui.h:21
-msgid "<span weight=\"bold\" size=\"larger\">Installable Options</span>"
-msgstr "<span weight=\"bold\" size=\"larger\">Installerbara alternativ</span>"
-
-#: ../ui/NewPrinterWindow.ui.h:22
 msgid "<span weight=\"bold\" size=\"larger\">Select Device</span>"
 msgstr "<span weight=\"bold\" size=\"larger\">Välj enhet</span>"
 
-#: ../ui/NewPrinterWindow.ui.h:23
-msgid "Baud Rate"
-msgstr "Baudhastighet"
-
-#: ../ui/NewPrinterWindow.ui.h:24
-msgid "Browse..."
-msgstr "Bläddra"
-
-#: ../ui/NewPrinterWindow.ui.h:25
-msgid "Change PPD"
-msgstr "Byt PPD"
-
-#: ../ui/NewPrinterWindow.ui.h:26
-msgid "Class Members"
-msgstr "Klassmedlemmar"
-
-#: ../ui/NewPrinterWindow.ui.h:27
-msgid "Comments..."
-msgstr "Kommentarer..."
-
-#: ../ui/NewPrinterWindow.ui.h:28
-msgid "Connection"
-msgstr "Anslutning"
-
-#: ../ui/NewPrinterWindow.ui.h:29
-msgid "Data Bits"
-msgstr "Databitar"
-
-#: ../ui/NewPrinterWindow.ui.h:30 ../ui/PrinterPropertiesDialog.ui.h:29
-msgid "Description:"
-msgstr "Beskrivning:"
-
-#: ../ui/NewPrinterWindow.ui.h:31
-msgid "Device"
-msgstr "Enhet"
-
-#: ../ui/NewPrinterWindow.ui.h:32 ../troubleshoot/DeviceListed.py:40
-msgid "Device URI"
-msgstr "Enhets-URI"
-
-#: ../ui/NewPrinterWindow.ui.h:33
+#: ../ui/NewPrinterWindow.ui.h:11
 msgid "Device description."
 msgstr "Enhetsbeskrivning."
 
-#: ../ui/NewPrinterWindow.ui.h:35
-msgid "Driver details"
-msgstr "Detaljer om drivrutin"
+#: ../ui/NewPrinterWindow.ui.h:12
+msgid "<b>Description</b>"
+msgstr "<b>Beskrivning</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:36
+#: ../ui/NewPrinterWindow.ui.h:13
 msgid "Empty"
 msgstr "Tom"
 
-#: ../ui/NewPrinterWindow.ui.h:37
-msgid "Flow Control"
-msgstr "Flödeskontroll"
+#: ../ui/NewPrinterWindow.ui.h:14
+msgid "<b>Enter device URI</b>"
+msgstr "<b>Ange enhets-URI</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:38
+#: ../ui/NewPrinterWindow.ui.h:15
 msgid ""
 "For example:\n"
 "ipp://cups-server/printers/printer-queue\n"
@@ -2065,164 +1969,139 @@ msgstr ""
 "ipp://cups-server/printers/printer-queue\n"
 "ipp://printer.mindomän/ipp"
 
-#: ../ui/NewPrinterWindow.ui.h:41
-msgid ""
-"For the printer you have selected there are drivers available for download."
-msgstr ""
-"Det finns drivrutiner tillgängliga för hämtning för den skrivare som du har "
-"valt."
+#: ../ui/NewPrinterWindow.ui.h:18 ../troubleshoot/DeviceListed.py:40
+msgid "Device URI"
+msgstr "Enhets-URI"
 
-#: ../ui/NewPrinterWindow.ui.h:42
-msgid "Free software"
-msgstr "Fri programvara"
-
-#: ../ui/NewPrinterWindow.ui.h:43
-msgid "Graphics:"
-msgstr "Grafik:"
-
-#: ../ui/NewPrinterWindow.ui.h:44
+#: ../ui/NewPrinterWindow.ui.h:19
 msgid "Host:"
 msgstr "Värd:"
 
-#: ../ui/NewPrinterWindow.ui.h:45
-msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
-msgstr "Läsbar beskrivning som t.ex. \"HP LaserJet med Duplexer\""
-
-#: ../ui/NewPrinterWindow.ui.h:46
-msgid "Human-readable location such as \"Lab 1\""
-msgstr "Läsbar placering, som t.ex. \"Labb 1\""
-
-#: ../ui/NewPrinterWindow.ui.h:47 ../ui/PrinterPropertiesDialog.ui.h:39
-msgid "Installed Options"
-msgstr "Installerade alternativ"
-
-#: ../ui/NewPrinterWindow.ui.h:48
-msgid "JetDirect"
-msgstr "JetDirect"
-
-#: ../ui/NewPrinterWindow.ui.h:49
-msgid "LPD"
-msgstr "LPD"
-
-#: ../ui/NewPrinterWindow.ui.h:50
-msgid "License:"
-msgstr "Licens:"
-
-#: ../ui/NewPrinterWindow.ui.h:51
-msgid "Line art:"
-msgstr "Radkonst:"
-
-#: ../ui/NewPrinterWindow.ui.h:52
-msgid "Local Driver"
-msgstr "Lokal drivrutin"
-
-#: ../ui/NewPrinterWindow.ui.h:53
-msgid "Make and model:"
-msgstr "Märke och modell:"
-
-#: ../ui/NewPrinterWindow.ui.h:54
-msgid "Manufacturer"
-msgstr "Tillverkare"
-
-#: ../ui/NewPrinterWindow.ui.h:56
-msgid "Network"
-msgstr "Nätverk"
-
-#: ../ui/NewPrinterWindow.ui.h:59
-msgid "No, I do not accept this license"
-msgstr "Nej, jag godkänner inte denna licens"
-
-#: ../ui/NewPrinterWindow.ui.h:60
-msgid "Parity"
-msgstr "Paritet"
-
-#: ../ui/NewPrinterWindow.ui.h:62
-msgid "Patented algorithms"
-msgstr "Patenterade algoritmer"
-
-#: ../ui/NewPrinterWindow.ui.h:63
-msgid "Photo:"
-msgstr "Foto:"
-
-#: ../ui/NewPrinterWindow.ui.h:64
+#: ../ui/NewPrinterWindow.ui.h:20
 msgid "Port number:"
 msgstr "Portnummer:"
 
-#: ../ui/NewPrinterWindow.ui.h:65
-msgid ""
-"PostScript Printer Description (PPD) files can often be found on the driver "
-"disk that comes with the printer. For PostScript printers they are often "
-"part of the Windows<sup>®</sup> driver."
-msgstr ""
-"Postscripts skrivarbeskrivningsfiler (PostScript Printer Description, PPD) "
-"kan man ofta hitta på drivrutinsdisketten som följer med skrivaren.  För "
-"PostScript-skrivare är de ofta en del av Windows<sup>®</sup>-drivrutinen."
+#: ../ui/NewPrinterWindow.ui.h:21
+msgid "<b>Location of the network printer</b>"
+msgstr "<b>Placering av nätverksskrivaren</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:66
-msgid "Printer model:"
-msgstr "Skrivarmodell:"
+#: ../ui/NewPrinterWindow.ui.h:22
+msgid "JetDirect"
+msgstr "JetDirect"
 
-#: ../ui/NewPrinterWindow.ui.h:67
-msgid "Probe"
-msgstr "Sök av"
-
-#: ../ui/NewPrinterWindow.ui.h:68
-msgid "Prompt user if authentication is required"
-msgstr "Fråga användaren om autentisering krävs"
-
-#: ../ui/NewPrinterWindow.ui.h:69
-msgid "Provide PPD file"
-msgstr "Tillhandahåll PPD-fil"
-
-#: ../ui/NewPrinterWindow.ui.h:70
+#: ../ui/NewPrinterWindow.ui.h:23
 msgid "Queue:"
 msgstr "Kö:"
 
-#: ../ui/NewPrinterWindow.ui.h:71
+#: ../ui/NewPrinterWindow.ui.h:24
+msgid "Probe"
+msgstr "Sök av"
+
+#: ../ui/NewPrinterWindow.ui.h:25
+msgid "<b>Location of the LPD network printer</b>"
+msgstr "<b>Placering av LPD-nätverksskrivaren</b>"
+
+#: ../ui/NewPrinterWindow.ui.h:26
+msgid "LPD"
+msgstr "LPD"
+
+#: ../ui/NewPrinterWindow.ui.h:27
 msgid "SCSI"
 msgstr "SCSI"
 
-#: ../ui/NewPrinterWindow.ui.h:72
-msgid "SMB"
-msgstr "SMB"
+#: ../ui/NewPrinterWindow.ui.h:28
+msgid "Baud Rate"
+msgstr "Baudhastighet"
 
-#: ../ui/NewPrinterWindow.ui.h:73
-msgid "Search for a printer driver to download"
-msgstr "Sök efter en skrivardrivrutin att hämta ner"
+#: ../ui/NewPrinterWindow.ui.h:29
+msgid "Parity"
+msgstr "Paritet"
 
-#: ../ui/NewPrinterWindow.ui.h:74
-msgid "Searching..."
-msgstr "Söker..."
+#: ../ui/NewPrinterWindow.ui.h:30
+msgid "Data Bits"
+msgstr "Databitar"
 
-#: ../ui/NewPrinterWindow.ui.h:75
-msgid "Select printer from database"
-msgstr "Välj skrivare från databasen"
+#: ../ui/NewPrinterWindow.ui.h:31
+msgid "Flow Control"
+msgstr "Flödeskontroll"
 
-#: ../ui/NewPrinterWindow.ui.h:76
+#: ../ui/NewPrinterWindow.ui.h:32
+msgid "<b>Settings of the serial port</b>"
+msgstr "<b>Inställningar för serieporten</b>"
+
+#: ../ui/NewPrinterWindow.ui.h:33
 msgid "Serial"
 msgstr "Seriell"
 
-#: ../ui/NewPrinterWindow.ui.h:77
+#: ../ui/NewPrinterWindow.ui.h:34
+msgid "Browse..."
+msgstr "Bläddra"
+
+#: ../ui/NewPrinterWindow.ui.h:35
+msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
+msgstr "<i>smb://[arbetsgrupp/]server[:port]/skrivare</i>"
+
+#: ../ui/NewPrinterWindow.ui.h:36
+msgid "<b>SMB Printer</b>"
+msgstr "<b>SMB-skrivare</b>"
+
+#: ../ui/NewPrinterWindow.ui.h:37
+msgid "Prompt user if authentication is required"
+msgstr "Fråga användaren om autentisering krävs"
+
+#: ../ui/NewPrinterWindow.ui.h:38
 msgid "Set authentication details now"
 msgstr "Ange autentiseringsdetaljer nu"
 
-#: ../ui/NewPrinterWindow.ui.h:78
-msgid "Short name for this printer such as \"laserjet\""
-msgstr "Kort namn för denna skrivare, som t.ex. \"laserjet\""
+#: ../ui/NewPrinterWindow.ui.h:41
+msgid "<b>Authentication</b>"
+msgstr "<b>Autentisering</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:79
-msgid "Supplier:"
-msgstr "Leverantör:"
+#: ../ui/NewPrinterWindow.ui.h:42
+msgid "_Verify..."
+msgstr "_Verifiera..."
 
-#: ../ui/NewPrinterWindow.ui.h:80
-msgid "Support:"
-msgstr "Stöd:"
+#: ../ui/NewPrinterWindow.ui.h:43
+msgid "SMB"
+msgstr "SMB"
 
-#: ../ui/NewPrinterWindow.ui.h:81
-msgid "Text:"
-msgstr "Text:"
+#: ../ui/NewPrinterWindow.ui.h:44
+msgid "Searching..."
+msgstr "Söker..."
 
-#: ../ui/NewPrinterWindow.ui.h:82
+#: ../ui/NewPrinterWindow.ui.h:46
+msgid "<b>Network Printer</b>"
+msgstr "<b>Nätverksskrivare</b>"
+
+#: ../ui/NewPrinterWindow.ui.h:47
+msgid "Network"
+msgstr "Nätverk"
+
+#: ../ui/NewPrinterWindow.ui.h:48
+msgid "Connection"
+msgstr "Anslutning"
+
+#: ../ui/NewPrinterWindow.ui.h:49
+msgid "Device"
+msgstr "Enhet"
+
+#: ../ui/NewPrinterWindow.ui.h:50
+msgid "<span weight=\"bold\" size=\"larger\">Choose Driver</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">Välj drivrutin</span>"
+
+#: ../ui/NewPrinterWindow.ui.h:51
+msgid "Select printer from database"
+msgstr "Välj skrivare från databasen"
+
+#: ../ui/NewPrinterWindow.ui.h:52
+msgid "Provide PPD file"
+msgstr "Tillhandahåll PPD-fil"
+
+#: ../ui/NewPrinterWindow.ui.h:53
+msgid "Search for a printer driver to download"
+msgstr "Sök efter en skrivardrivrutin att hämta ner"
+
+#: ../ui/NewPrinterWindow.ui.h:54
 msgid ""
 "The foomatic printer database contains various manufacturer provided "
 "PostScript Printer Description (PPD) files and also can generate PPD files "
@@ -2236,25 +2115,73 @@ msgstr ""
 "tillverkarnas egna PPD-filer bättre tillgång till specifika funktioner för "
 "skrivaren."
 
-#: ../ui/NewPrinterWindow.ui.h:83
+#: ../ui/NewPrinterWindow.ui.h:55
 msgid ""
-"These drivers do not come from your operating system supplier and will not "
-"be covered by their commercial support.  See the support and license terms "
-"of the driver's supplier."
+"PostScript Printer Description (PPD) files can often be found on the driver "
+"disk that comes with the printer. For PostScript printers they are often "
+"part of the Windows<sup>®</sup> driver."
 msgstr ""
-"Dessa drivrutiner kommer inte från leverantören av ditt operativsystem och "
-"deras kommersiella support gäller inte för dem. Se villkoren för support och "
-"licensvillkor för drivrutinens leverantör."
+"Postscripts skrivarbeskrivningsfiler (PostScript Printer Description, PPD) "
+"kan man ofta hitta på drivrutinsdisketten som följer med skrivaren.  För "
+"PostScript-skrivare är de ofta en del av Windows<sup>®</sup>-drivrutinen."
 
-#: ../ui/NewPrinterWindow.ui.h:84
+#: ../ui/NewPrinterWindow.ui.h:56
+msgid "Make and model:"
+msgstr "Märke och modell:"
+
+#: ../ui/NewPrinterWindow.ui.h:57
+msgid "_Search"
+msgstr "_Sök"
+
+#: ../ui/NewPrinterWindow.ui.h:58
+msgid "Printer model:"
+msgstr "Skrivarmodell:"
+
+#: ../ui/NewPrinterWindow.ui.h:59
+msgid "Comments..."
+msgstr "Kommentarer..."
+
+#: ../ui/NewPrinterWindow.ui.h:60
+msgid "<span weight=\"bold\" size=\"larger\">Choose Class Members</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">Välj klassmedlemmar</span>"
+
+#: ../ui/NewPrinterWindow.ui.h:61 ../ui/PrinterPropertiesDialog.ui.h:37
+msgid "move left"
+msgstr "flytta åt vänster"
+
+#: ../ui/NewPrinterWindow.ui.h:62 ../ui/PrinterPropertiesDialog.ui.h:38
+msgid "move right"
+msgstr "flytta åt höger"
+
+#: ../ui/NewPrinterWindow.ui.h:63
+msgid "Class Members"
+msgstr "Klassmedlemmar"
+
+#: ../ui/NewPrinterWindow.ui.h:64
+msgid "<span weight=\"bold\" size=\"larger\">Existing Settings</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">Befintliga inställningar</span>"
+
+#: ../ui/NewPrinterWindow.ui.h:65
+msgid "Try to transfer the current settings"
+msgstr "Försök att överföra de aktuella inställningarna"
+
+#: ../ui/NewPrinterWindow.ui.h:66
+msgid "Use the new PPD (Postscript Printer Description) as is."
+msgstr "Använd den nya PPD (Postscript Printer Description) som den är."
+
+#: ../ui/NewPrinterWindow.ui.h:67
 msgid ""
-"This driver supports additional hardware that may be installed in the "
-"printer."
+"This way all current option settings will be lost. The default settings of "
+"the new PPD will be used. "
 msgstr ""
-"Den här drivrutinen ger stöd för ytterligare maskinvara som kan installeras "
-"i skrivaren."
+"På det här sättet kommer alla nuvarande alternativinställningar gå "
+"förlorade. Standardinställningar för den nya PPD kommer att användas. "
 
-#: ../ui/NewPrinterWindow.ui.h:85
+#: ../ui/NewPrinterWindow.ui.h:68
+msgid "Try to copy the option settings over from the old PPD. "
+msgstr "Försök kopiera alternativinställningarna från den gamla PPD. "
+
+#: ../ui/NewPrinterWindow.ui.h:69
 msgid ""
 "This is done by assuming that options with the same name do have the same "
 "meaning. Settings of options that are not present in the new PPD will be "
@@ -2264,27 +2191,52 @@ msgstr ""
 "Inställningar av alternativ som inte finns i den nya PPD går förlorade och "
 "alternativ som bara finns i den nya PPD kommer ställas in som standard."
 
-#: ../ui/NewPrinterWindow.ui.h:86
+#: ../ui/NewPrinterWindow.ui.h:70
+msgid "Change PPD"
+msgstr "Byt PPD"
+
+#: ../ui/NewPrinterWindow.ui.h:71
+msgid "<span weight=\"bold\" size=\"larger\">Installable Options</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">Installerbara alternativ</span>"
+
+#: ../ui/NewPrinterWindow.ui.h:72
 msgid ""
-"This way all current option settings will be lost. The default settings of "
-"the new PPD will be used. "
+"This driver supports additional hardware that may be installed in the "
+"printer."
 msgstr ""
-"På det här sättet kommer alla nuvarande alternativinställningar gå "
-"förlorade. Standardinställningar för den nya PPD kommer att användas. "
+"Den här drivrutinen ger stöd för ytterligare maskinvara som kan installeras "
+"i skrivaren."
 
-#: ../ui/NewPrinterWindow.ui.h:87
-msgid "Try to copy the option settings over from the old PPD. "
-msgstr "Försök kopiera alternativinställningarna från den gamla PPD. "
+#: ../ui/NewPrinterWindow.ui.h:73 ../ui/PrinterPropertiesDialog.ui.h:40
+msgid "Installed Options"
+msgstr "Installerade alternativ"
 
-#: ../ui/NewPrinterWindow.ui.h:88
-msgid "Try to transfer the current settings"
-msgstr "Försök att överföra de aktuella inställningarna"
+#: ../ui/NewPrinterWindow.ui.h:74
+msgid ""
+"For the printer you have selected there are drivers available for download."
+msgstr ""
+"Det finns drivrutiner tillgängliga för hämtning för den skrivare som du har "
+"valt."
 
-#: ../ui/NewPrinterWindow.ui.h:90
-msgid "Use the new PPD (Postscript Printer Description) as is."
-msgstr "Använd den nya PPD (Postscript Printer Description) som den är."
+#: ../ui/NewPrinterWindow.ui.h:75
+msgid ""
+"These drivers do not come from your operating system supplier and will not "
+"be covered by their commercial support.  See the support and license terms "
+"of the driver's supplier."
+msgstr ""
+"Dessa drivrutiner kommer inte från leverantören av ditt operativsystem och "
+"deras kommersiella support gäller inte för dem. Se villkoren för support och "
+"licensvillkor för drivrutinens leverantör."
 
-#: ../ui/NewPrinterWindow.ui.h:92
+#: ../ui/NewPrinterWindow.ui.h:76
+msgid "<b>Note</b>"
+msgstr "<b>Anteckning</b>"
+
+#: ../ui/NewPrinterWindow.ui.h:77
+msgid "<b>Select Driver</b>"
+msgstr "<b>Välj drivrutin</b>"
+
+#: ../ui/NewPrinterWindow.ui.h:78
 msgid ""
 "With this choice no driver download will be performed. In the next steps a "
 "locally installed driver will be selected."
@@ -2292,91 +2244,157 @@ msgstr ""
 "Med detta val kommer ingen drivrutin att hämtas ner. I de nästkommande "
 "stegen kommer en lokalt installerad drivrutin att väljas."
 
-#: ../ui/NewPrinterWindow.ui.h:93
-msgid "Yes, I accept this license"
-msgstr "Ja, jag godkänner denna licens"
+#: ../ui/NewPrinterWindow.ui.h:79
+msgid "Local Driver"
+msgstr "Lokal drivrutin"
 
-#: ../ui/NewPrinterWindow.ui.h:94
-msgid "_Search"
-msgstr "_Sök"
+#: ../ui/NewPrinterWindow.ui.h:80 ../ui/PrinterPropertiesDialog.ui.h:2
+msgid "Description:"
+msgstr "Beskrivning:"
 
-#: ../ui/NewPrinterWindow.ui.h:95
-msgid "_Verify..."
-msgstr "_Verifiera..."
+#: ../ui/NewPrinterWindow.ui.h:81
+msgid "License:"
+msgstr "Licens:"
 
-#: ../ui/NewPrinterWindow.ui.h:96
+#: ../ui/NewPrinterWindow.ui.h:82
+msgid "Supplier:"
+msgstr "Leverantör:"
+
+#: ../ui/NewPrinterWindow.ui.h:83
 msgid "license"
 msgstr "licens"
 
-#: ../ui/NewPrinterWindow.ui.h:97 ../ui/PrinterPropertiesDialog.ui.h:82
-msgid "move left"
-msgstr "flytta åt vänster"
-
-#: ../ui/NewPrinterWindow.ui.h:98 ../ui/PrinterPropertiesDialog.ui.h:83
-msgid "move right"
-msgstr "flytta åt höger"
-
-#: ../ui/NewPrinterWindow.ui.h:99
+#: ../ui/NewPrinterWindow.ui.h:84
 msgid "short description"
 msgstr "kort beskrivning"
 
-#: ../ui/NewPrinterWindow.ui.h:100
+#: ../ui/NewPrinterWindow.ui.h:85
+msgid "Manufacturer"
+msgstr "Tillverkare"
+
+#: ../ui/NewPrinterWindow.ui.h:86
 msgid "supplier"
 msgstr "leverantör"
 
-#: ../ui/NewPrinterWindow.ui.h:101
+#: ../ui/NewPrinterWindow.ui.h:87
+msgid "Free software"
+msgstr "Fri programvara"
+
+#: ../ui/NewPrinterWindow.ui.h:88
+msgid "Patented algorithms"
+msgstr "Patenterade algoritmer"
+
+#: ../ui/NewPrinterWindow.ui.h:89
+msgid "Support:"
+msgstr "Stöd:"
+
+#: ../ui/NewPrinterWindow.ui.h:90
 msgid "support contacts"
 msgstr "supportkontakter"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:1
-msgid " "
-msgstr " "
+#: ../ui/NewPrinterWindow.ui.h:91
+msgid "Text:"
+msgstr "Text:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:2
-msgid "<b>Banner</b>"
-msgstr "<b>Banderoll</b>"
+#: ../ui/NewPrinterWindow.ui.h:92
+msgid "Line art:"
+msgstr "Radkonst:"
+
+#: ../ui/NewPrinterWindow.ui.h:94
+msgid "Photo:"
+msgstr "Foto:"
+
+#: ../ui/NewPrinterWindow.ui.h:95
+msgid "Graphics:"
+msgstr "Grafik:"
+
+#: ../ui/NewPrinterWindow.ui.h:96
+msgid "<b>Output Quality</b>"
+msgstr "<b>Utskriftskvalitet</b>"
+
+#: ../ui/NewPrinterWindow.ui.h:97
+msgid "Yes, I accept this license"
+msgstr "Ja, jag godkänner denna licens"
+
+#: ../ui/NewPrinterWindow.ui.h:98
+msgid "No, I do not accept this license"
+msgstr "Nej, jag godkänner inte denna licens"
+
+#: ../ui/NewPrinterWindow.ui.h:99
+msgid "<b>License Terms</b>"
+msgstr "<b>Licensvillkor</b>"
+
+#: ../ui/NewPrinterWindow.ui.h:100
+msgid "Driver details"
+msgstr "Detaljer om drivrutin"
+
+#: ../ui/PrinterPropertiesDialog.ui.h:1
+msgid "Printer Properties"
+msgstr "Skrivaregenskaper"
 
 #: ../ui/PrinterPropertiesDialog.ui.h:3
-msgid "<b>Common Options</b>"
-msgstr "<b>Vanliga alternativ</b>"
+msgid "Location:"
+msgstr "Placering:"
 
 #: ../ui/PrinterPropertiesDialog.ui.h:4
-msgid "<b>Image Options</b>"
-msgstr "<b>Bildalternativ</b>"
+msgid "Device URI:"
+msgstr "Enhets-URI:"
 
 #: ../ui/PrinterPropertiesDialog.ui.h:5
-msgid "<b>Ink/Toner Levels</b>"
-msgstr "<b>Nivåer för bläck/toner</b>"
+msgid "Printer State:"
+msgstr "Skrivartillstånd:"
 
 #: ../ui/PrinterPropertiesDialog.ui.h:6
-msgid "<b>Other Options (Advanced)</b>"
-msgstr "<b>Andra alternativ (Avancerat)</b>"
+msgid "Change..."
+msgstr "Ändra..."
 
 #: ../ui/PrinterPropertiesDialog.ui.h:7
-msgid "<b>Policies</b>"
-msgstr "<b>Policyer</b>"
+msgid "Make and Model:"
+msgstr "Tillverkare och modell."
 
 #: ../ui/PrinterPropertiesDialog.ui.h:8
+msgid "printer state"
+msgstr "skrivartillstånd"
+
+#: ../ui/PrinterPropertiesDialog.ui.h:9
+msgid "make and model"
+msgstr "märke och modell"
+
+#: ../ui/PrinterPropertiesDialog.ui.h:10
 msgid "<b>Settings</b>"
 msgstr "<b>Inställningar</b>"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:9
-msgid "<b>State</b>"
-msgstr "<b>Tillstånd</b>"
+#. Not more than 25 characters
+#: ../ui/PrinterPropertiesDialog.ui.h:14
+msgid "Print Self-Test Page"
+msgstr "Skriv ut självtestsida"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:10
-msgid "<b>Status Messages</b>"
-msgstr "<b>Statusmeddelanden</b>"
+#. Not more than 25 characters
+#: ../ui/PrinterPropertiesDialog.ui.h:16
+msgid "Clean Print Heads"
+msgstr "Rengör skrivhuvuden"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:11
+#: ../ui/PrinterPropertiesDialog.ui.h:17
 msgid "<b>Tests and Maintenance</b>"
 msgstr "<b>Tester och underhåll</b>"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:12
-msgid "<b>Text Options</b>"
-msgstr "<b>Textalternativ</b>"
+#: ../ui/PrinterPropertiesDialog.ui.h:18
+msgid "Settings"
+msgstr "Inställningar"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:13
+#: ../ui/PrinterPropertiesDialog.ui.h:19
+msgid "Enabled"
+msgstr "Aktiverad"
+
+#: ../ui/PrinterPropertiesDialog.ui.h:20
+msgid "Accepting jobs"
+msgstr "Accepterar jobb"
+
+#: ../ui/PrinterPropertiesDialog.ui.h:21
+msgid "Shared"
+msgstr "Utdelad"
+
+#: ../ui/PrinterPropertiesDialog.ui.h:22
 msgid ""
 "<i>Not published\n"
 "See server settings</i>"
@@ -2384,221 +2402,63 @@ msgstr ""
 "<i>Inte publicerad\n"
 "Se serverinställningar</i>"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:15
-msgid "Accepting jobs"
-msgstr "Accepterar jobb"
-
-#: ../ui/PrinterPropertiesDialog.ui.h:16
-msgid "Access Control"
-msgstr "Åtkomstkontroll"
-
-#: ../ui/PrinterPropertiesDialog.ui.h:17
-msgid "Add or Remove Members"
-msgstr "Lägg till eller ta bort medlemmar"
-
-#: ../ui/PrinterPropertiesDialog.ui.h:18
-msgid "Allow printing for everyone except these users:"
-msgstr "Tillåt utskrifter för alla utom dessa användare:"
-
-#: ../ui/PrinterPropertiesDialog.ui.h:19
-msgid "Bottom margin:"
-msgstr "Nederkantsmarginal:"
-
-#: ../ui/PrinterPropertiesDialog.ui.h:20
-msgid "Brightness:"
-msgstr "Ljusstyrka:"
-
-#: ../ui/PrinterPropertiesDialog.ui.h:21
-msgid "Change..."
-msgstr "Ändra..."
-
-#: ../ui/PrinterPropertiesDialog.ui.h:22
-msgid "Characters per inch:"
-msgstr "Tecken per tum:"
-
-#. Not more than 25 characters
 #: ../ui/PrinterPropertiesDialog.ui.h:24
-msgid "Clean Print Heads"
-msgstr "Rengör skrivhuvuden"
+msgid "<b>State</b>"
+msgstr "<b>Tillstånd</b>"
 
 #: ../ui/PrinterPropertiesDialog.ui.h:25
-msgid "Co_nflicts"
-msgstr "Ko_nflikter"
-
-#: ../ui/PrinterPropertiesDialog.ui.h:26
-msgid "Columns:"
-msgstr "Kolumner:"
-
-#: ../ui/PrinterPropertiesDialog.ui.h:27
-msgid "Copies:"
-msgstr "Kopior:"
-
-#: ../ui/PrinterPropertiesDialog.ui.h:28
-msgid "Deny printing for everyone except these users:"
-msgstr "Neka utskrifter för alla utom dessa användare:"
-
-#: ../ui/PrinterPropertiesDialog.ui.h:30
-msgid "Device URI:"
-msgstr "Enhets-URI:"
-
-#: ../ui/PrinterPropertiesDialog.ui.h:31
-msgid "Enabled"
-msgstr "Aktiverad"
-
-#: ../ui/PrinterPropertiesDialog.ui.h:32
-msgid "Ending Banner:"
-msgstr "Slutbanderoll:"
-
-#: ../ui/PrinterPropertiesDialog.ui.h:33
 msgid "Error Policy: \t"
 msgstr "Felpolicy: \t"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:34
-msgid "Finishings:"
-msgstr "Efterbearbetning:"
-
-#: ../ui/PrinterPropertiesDialog.ui.h:35
-msgid "Gamma:"
-msgstr "Gamma:"
-
-#: ../ui/PrinterPropertiesDialog.ui.h:36
-msgid "Hold until:"
-msgstr "Håll kvar tills:"
-
-#: ../ui/PrinterPropertiesDialog.ui.h:37
-msgid "Hue adjustment:"
-msgstr "Färgtonsjustering:"
-
-#: ../ui/PrinterPropertiesDialog.ui.h:38
-msgid "Ink/Toner Levels"
-msgstr "Nivåer för bläck/toner"
-
-#: ../ui/PrinterPropertiesDialog.ui.h:40
-msgid "Job Options"
-msgstr "Jobbalternativ"
-
-#: ../ui/PrinterPropertiesDialog.ui.h:41
-msgid "Job priority:"
-msgstr "Jobbprioritet:"
-
-#: ../ui/PrinterPropertiesDialog.ui.h:42
-msgid "Left margin:"
-msgstr "Vänstermarginal:"
-
-#: ../ui/PrinterPropertiesDialog.ui.h:43
-msgid "Lines per inch:"
-msgstr "Rader per tum:"
-
-#: ../ui/PrinterPropertiesDialog.ui.h:44
-msgid "Location:"
-msgstr "Placering:"
-
-#: ../ui/PrinterPropertiesDialog.ui.h:45
-msgid "Make and Model:"
-msgstr "Tillverkare och modell."
-
-#: ../ui/PrinterPropertiesDialog.ui.h:46
-msgid "Media:"
-msgstr "Media:"
-
-#: ../ui/PrinterPropertiesDialog.ui.h:47
-msgid "Members"
-msgstr "Medlemmar"
-
-#: ../ui/PrinterPropertiesDialog.ui.h:48
-msgid "Mirror"
-msgstr "Spegla"
-
-#: ../ui/PrinterPropertiesDialog.ui.h:49
-msgid "More"
-msgstr "Mera"
-
-#: ../ui/PrinterPropertiesDialog.ui.h:50
+#: ../ui/PrinterPropertiesDialog.ui.h:26
 msgid "Operation Policy:"
 msgstr "Operationspolicy:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:51
-msgid "Orientation:"
-msgstr "Orientering:"
+#: ../ui/PrinterPropertiesDialog.ui.h:27
+msgid "<b>Policies</b>"
+msgstr "<b>Policyer</b>"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:52
-msgid "Output bin:"
-msgstr "Utmatningsfack:"
+#: ../ui/PrinterPropertiesDialog.ui.h:28
+msgid "Starting Banner:"
+msgstr "Startbanderoll"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:53
-msgid "Output order:"
-msgstr "Utmatningsordning:"
+#: ../ui/PrinterPropertiesDialog.ui.h:29
+msgid "Ending Banner:"
+msgstr "Slutbanderoll:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:54
-msgid "Pages per side layout:"
-msgstr "Sidor per bladlayout:"
+#: ../ui/PrinterPropertiesDialog.ui.h:30
+msgid "<b>Banner</b>"
+msgstr "<b>Banderoll</b>"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:55
-msgid "Pages per side:"
-msgstr "Sida per blad:"
-
-#: ../ui/PrinterPropertiesDialog.ui.h:56
+#: ../ui/PrinterPropertiesDialog.ui.h:31
 msgid "Policies"
 msgstr "Policy"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:57
-msgid "Pretty print"
-msgstr "Skönutskrift"
+#: ../ui/PrinterPropertiesDialog.ui.h:32
+msgid "Allow printing for everyone except these users:"
+msgstr "Tillåt utskrifter för alla utom dessa användare:"
 
-#. Not more than 25 characters
-#: ../ui/PrinterPropertiesDialog.ui.h:59
-msgid "Print Self-Test Page"
-msgstr "Skriv ut självtestsida"
+#: ../ui/PrinterPropertiesDialog.ui.h:33
+msgid "Deny printing for everyone except these users:"
+msgstr "Neka utskrifter för alla utom dessa användare:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:62
-msgid "Print quality:"
-msgstr "Utskriftskvalitet:"
+#: ../ui/PrinterPropertiesDialog.ui.h:34
+msgid "user"
+msgstr "användare"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:64
-msgid "Printer Properties"
-msgstr "Skrivaregenskaper"
+#: ../ui/PrinterPropertiesDialog.ui.h:35
+msgid "Access Control"
+msgstr "Åtkomstkontroll"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:65
-msgid "Printer State:"
-msgstr "Skrivartillstånd:"
+#: ../ui/PrinterPropertiesDialog.ui.h:36
+msgid "Add or Remove Members"
+msgstr "Lägg till eller ta bort medlemmar"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:66
-msgid "Printer resolution:"
-msgstr "Skrivarupplösning:"
+#: ../ui/PrinterPropertiesDialog.ui.h:39
+msgid "Members"
+msgstr "Medlemmar"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:67
-msgid "Reset"
-msgstr "Återställ"
-
-#: ../ui/PrinterPropertiesDialog.ui.h:68
-msgid "Right margin:"
-msgstr "Högermarginal:"
-
-#: ../ui/PrinterPropertiesDialog.ui.h:69
-msgid "Saturation:"
-msgstr "Mättnad:"
-
-#: ../ui/PrinterPropertiesDialog.ui.h:70
-msgid "Scale to fit"
-msgstr "Skala för att passa"
-
-#: ../ui/PrinterPropertiesDialog.ui.h:71
-msgid "Scaling:"
-msgstr "Skalning:"
-
-#: ../ui/PrinterPropertiesDialog.ui.h:72
-msgid "Settings"
-msgstr "Inställningar"
-
-#: ../ui/PrinterPropertiesDialog.ui.h:73
-msgid "Shared"
-msgstr "Utdelad"
-
-#: ../ui/PrinterPropertiesDialog.ui.h:74
-msgid "Sides:"
-msgstr "Sidor:"
-
-#: ../ui/PrinterPropertiesDialog.ui.h:75
+#: ../ui/PrinterPropertiesDialog.ui.h:42
 msgid ""
 "Specify the default job options for this printer.  Jobs arriving at this "
 "print server will have these options added if they are not already set by "
@@ -2608,63 +2468,195 @@ msgstr ""
 "skrivare. Jobb som kommer till denna skrivarserver kommer ha dessa "
 "inställningar som standard om det inte redan satts av programmet."
 
+#: ../ui/PrinterPropertiesDialog.ui.h:43
+msgid "Copies:"
+msgstr "Kopior:"
+
+#: ../ui/PrinterPropertiesDialog.ui.h:44
+msgid "Orientation:"
+msgstr "Orientering:"
+
+#: ../ui/PrinterPropertiesDialog.ui.h:45
+msgid "Pages per side:"
+msgstr "Sida per blad:"
+
+#: ../ui/PrinterPropertiesDialog.ui.h:46
+msgid "Scale to fit"
+msgstr "Skala för att passa"
+
+#: ../ui/PrinterPropertiesDialog.ui.h:47
+msgid "Pages per side layout:"
+msgstr "Sidor per bladlayout:"
+
+#: ../ui/PrinterPropertiesDialog.ui.h:48
+msgid "Brightness:"
+msgstr "Ljusstyrka:"
+
+#: ../ui/PrinterPropertiesDialog.ui.h:49
+msgid "Reset"
+msgstr "Återställ"
+
+#: ../ui/PrinterPropertiesDialog.ui.h:50
+msgid "Finishings:"
+msgstr "Efterbearbetning:"
+
+#: ../ui/PrinterPropertiesDialog.ui.h:51
+msgid "Job priority:"
+msgstr "Jobbprioritet:"
+
+#: ../ui/PrinterPropertiesDialog.ui.h:52
+msgid "Media:"
+msgstr "Media:"
+
+#: ../ui/PrinterPropertiesDialog.ui.h:53
+msgid "Sides:"
+msgstr "Sidor:"
+
+#: ../ui/PrinterPropertiesDialog.ui.h:54
+msgid "Hold until:"
+msgstr "Håll kvar tills:"
+
+#: ../ui/PrinterPropertiesDialog.ui.h:55
+msgid "Output order:"
+msgstr "Utmatningsordning:"
+
+#: ../ui/PrinterPropertiesDialog.ui.h:56
+msgid "Print quality:"
+msgstr "Utskriftskvalitet:"
+
+#: ../ui/PrinterPropertiesDialog.ui.h:57
+msgid "Printer resolution:"
+msgstr "Skrivarupplösning:"
+
+#: ../ui/PrinterPropertiesDialog.ui.h:58
+msgid "Output bin:"
+msgstr "Utmatningsfack:"
+
+#: ../ui/PrinterPropertiesDialog.ui.h:59
+msgid "More"
+msgstr "Mera"
+
+#: ../ui/PrinterPropertiesDialog.ui.h:60
+msgid "<b>Common Options</b>"
+msgstr "<b>Vanliga alternativ</b>"
+
+#: ../ui/PrinterPropertiesDialog.ui.h:61
+msgid "Scaling:"
+msgstr "Skalning:"
+
+#: ../ui/PrinterPropertiesDialog.ui.h:62
+msgid "Mirror"
+msgstr "Spegla"
+
+#: ../ui/PrinterPropertiesDialog.ui.h:63
+msgid "Saturation:"
+msgstr "Mättnad:"
+
+#: ../ui/PrinterPropertiesDialog.ui.h:64
+msgid "Hue adjustment:"
+msgstr "Färgtonsjustering:"
+
+#: ../ui/PrinterPropertiesDialog.ui.h:65
+msgid "Gamma:"
+msgstr "Gamma:"
+
+#: ../ui/PrinterPropertiesDialog.ui.h:66
+msgid "<b>Image Options</b>"
+msgstr "<b>Bildalternativ</b>"
+
+#: ../ui/PrinterPropertiesDialog.ui.h:67
+msgid "Characters per inch:"
+msgstr "Tecken per tum:"
+
+#: ../ui/PrinterPropertiesDialog.ui.h:68
+msgid "Lines per inch:"
+msgstr "Rader per tum:"
+
+#: ../ui/PrinterPropertiesDialog.ui.h:69
+msgid "points"
+msgstr "punkter"
+
+#: ../ui/PrinterPropertiesDialog.ui.h:70
+msgid " "
+msgstr " "
+
+#: ../ui/PrinterPropertiesDialog.ui.h:71
+msgid "Left margin:"
+msgstr "Vänstermarginal:"
+
+#: ../ui/PrinterPropertiesDialog.ui.h:72
+msgid "Right margin:"
+msgstr "Högermarginal:"
+
+#: ../ui/PrinterPropertiesDialog.ui.h:73
+msgid "Pretty print"
+msgstr "Skönutskrift"
+
+#: ../ui/PrinterPropertiesDialog.ui.h:74
+msgid "Word wrap"
+msgstr "Textradbrytning"
+
+#: ../ui/PrinterPropertiesDialog.ui.h:75
+msgid "Columns:"
+msgstr "Kolumner:"
+
 #: ../ui/PrinterPropertiesDialog.ui.h:76
-msgid "Starting Banner:"
-msgstr "Startbanderoll"
+msgid "Top margin:"
+msgstr "Överkantsmarginal:"
 
 #: ../ui/PrinterPropertiesDialog.ui.h:77
-msgid "There are no status messages for this printer."
-msgstr "Det finns inga statusmeddelanden för denna skrivare."
+msgid "Bottom margin:"
+msgstr "Nederkantsmarginal:"
 
 #: ../ui/PrinterPropertiesDialog.ui.h:78
+msgid "<b>Text Options</b>"
+msgstr "<b>Textalternativ</b>"
+
+#: ../ui/PrinterPropertiesDialog.ui.h:79
 msgid "To add a new option, enter its name in the box below and click to add."
 msgstr ""
 "För att lägga till ett nytt alternativ, ange dess namn i rutan nedan och "
 "klicka för att lägga till."
 
-#: ../ui/PrinterPropertiesDialog.ui.h:79
-msgid "Top margin:"
-msgstr "Överkantsmarginal:"
-
 #: ../ui/PrinterPropertiesDialog.ui.h:80
-msgid "Word wrap"
-msgstr "Textradbrytning"
+msgid "<b>Other Options (Advanced)</b>"
+msgstr "<b>Andra alternativ (Avancerat)</b>"
 
 #: ../ui/PrinterPropertiesDialog.ui.h:81
-msgid "make and model"
-msgstr "märke och modell"
+msgid "Job Options"
+msgstr "Jobbalternativ"
+
+#: ../ui/PrinterPropertiesDialog.ui.h:82
+msgid "<b>Ink/Toner Levels</b>"
+msgstr "<b>Nivåer för bläck/toner</b>"
+
+#: ../ui/PrinterPropertiesDialog.ui.h:83
+msgid "There are no status messages for this printer."
+msgstr "Det finns inga statusmeddelanden för denna skrivare."
 
 #: ../ui/PrinterPropertiesDialog.ui.h:84
-msgid "points"
-msgstr "punkter"
+msgid "<b>Status Messages</b>"
+msgstr "<b>Statusmeddelanden</b>"
 
 #: ../ui/PrinterPropertiesDialog.ui.h:85
-msgid "printer state"
-msgstr "skrivartillstånd"
+msgid "Ink/Toner Levels"
+msgstr "Nivåer för bläck/toner"
 
 #: ../ui/PrinterPropertiesDialog.ui.h:86
-msgid "user"
-msgstr "användare"
+msgid "Co_nflicts"
+msgstr "Ko_nflikter"
 
 #: ../ui/PrintersWindow.ui.h:1
-msgid ""
-"Printing service not available.  Start the service on this computer or "
-"connect to another server."
-msgstr ""
-"Skrivartjänsten är inte tillgänglig.  Starta tjänsten på den här datorn "
-"eller anslut till en annan server."
-
-#: ../ui/PrintersWindow.ui.h:2
-msgid "Start Service"
-msgstr "Starta tjänst"
-
-#: ../ui/PrintersWindow.ui.h:3
 msgid "System-Config-Printer"
 msgstr "System-Config-Printer"
 
+#: ../ui/PrintersWindow.ui.h:2
+msgid "_Server"
+msgstr "S_erver"
+
 #: ../ui/PrintersWindow.ui.h:4
-msgid "There are no printers configured yet."
-msgstr "Det finns inga skrivare konfigurerade ännu."
+msgid "_View"
+msgstr "_Visa"
 
 #: ../ui/PrintersWindow.ui.h:5
 msgid "_Discovered Printers"
@@ -2674,34 +2666,42 @@ msgstr "_Upptäckta skrivare"
 msgid "_Help"
 msgstr "_Hjälp"
 
-#: ../ui/PrintersWindow.ui.h:8
-msgid "_Server"
-msgstr "S_erver"
-
-#: ../ui/PrintersWindow.ui.h:9
+#: ../ui/PrintersWindow.ui.h:7
 #, fuzzy
 msgid "_Troubleshoot"
 msgstr "Felsökning för utskrifter"
 
+#: ../ui/PrintersWindow.ui.h:8
+msgid "There are no printers configured yet."
+msgstr "Det finns inga skrivare konfigurerade ännu."
+
+#: ../ui/PrintersWindow.ui.h:9
+msgid ""
+"Printing service not available.  Start the service on this computer or "
+"connect to another server."
+msgstr ""
+"Skrivartjänsten är inte tillgänglig.  Starta tjänsten på den här datorn "
+"eller anslut till en annan server."
+
 #: ../ui/PrintersWindow.ui.h:10
-msgid "_View"
-msgstr "_Visa"
+msgid "Start Service"
+msgstr "Starta tjänst"
 
 #: ../ui/ServerSettingsDialog.ui.h:1
-msgid "<b>Basic Server Settings</b>"
-msgstr "<b>Grundläggande serverinställningar</b>"
+msgid "Server Settings"
+msgstr "Serverinställningar"
 
 #: ../ui/ServerSettingsDialog.ui.h:2
-msgid "<b>Browse servers</b>"
-msgstr "<b>Bläddra servrar</b>"
+msgid "_Show printers shared by other systems"
+msgstr "_Visa skrivare som är utdelade av andra system"
 
 #: ../ui/ServerSettingsDialog.ui.h:3
-msgid "<b>Job history</b>"
-msgstr "<b>Jobbhistorik</b>"
+msgid "_Publish shared printers connected to this system"
+msgstr "_Publicera utdelade skrivare anslutna till detta system"
 
 #: ../ui/ServerSettingsDialog.ui.h:4
-msgid "Advanced Server Settings"
-msgstr "Avancerade serverinställningar"
+msgid "Allow printing from the _Internet"
+msgstr "Tillåt utskrifter från _Internet"
 
 #: ../ui/ServerSettingsDialog.ui.h:5
 msgid "Allow _remote administration"
@@ -2712,30 +2712,26 @@ msgid "Allow _users to cancel any job (not just their own)"
 msgstr "Tillåt _användare att ta bort jobb (inte bara sina egna)"
 
 #: ../ui/ServerSettingsDialog.ui.h:7
-msgid "Allow printing from the _Internet"
-msgstr "Tillåt utskrifter från _Internet"
+msgid "Save _debugging information for troubleshooting"
+msgstr "Spara _felsökningsinformation för problemlösning"
 
 #: ../ui/ServerSettingsDialog.ui.h:8
 msgid "Do not preserve job history"
 msgstr "Behåll inte jobbhistorik"
 
 #: ../ui/ServerSettingsDialog.ui.h:9
-msgid "Preserve job files (allow reprinting)"
-msgstr "Behåll jobbhistorik (upprepa utskrifter)"
-
-#: ../ui/ServerSettingsDialog.ui.h:10
 msgid "Preserve job history but not files"
 msgstr "Behåll jobbhistorik men inte filer"
 
+#: ../ui/ServerSettingsDialog.ui.h:10
+msgid "Preserve job files (allow reprinting)"
+msgstr "Behåll jobbhistorik (upprepa utskrifter)"
+
 #: ../ui/ServerSettingsDialog.ui.h:11
-msgid "Save _debugging information for troubleshooting"
-msgstr "Spara _felsökningsinformation för problemlösning"
+msgid "<b>Job history</b>"
+msgstr "<b>Jobbhistorik</b>"
 
 #: ../ui/ServerSettingsDialog.ui.h:12
-msgid "Server Settings"
-msgstr "Serverinställningar"
-
-#: ../ui/ServerSettingsDialog.ui.h:13
 msgid ""
 "Usually print servers broadcast their queues. Specify print servers below to "
 "periodically ask for queues instead."
@@ -2743,38 +2739,43 @@ msgstr ""
 "Oftast brukar skrivarservrar annonsera ut sina köer. Ange skrivarservrar "
 "nedan att fråga periodiskt efter köer istället."
 
+#: ../ui/ServerSettingsDialog.ui.h:13
+msgid "<b>Browse servers</b>"
+msgstr "<b>Bläddra servrar</b>"
+
 #: ../ui/ServerSettingsDialog.ui.h:14
-msgid "_Publish shared printers connected to this system"
-msgstr "_Publicera utdelade skrivare anslutna till detta system"
+msgid "Advanced Server Settings"
+msgstr "Avancerade serverinställningar"
 
 #: ../ui/ServerSettingsDialog.ui.h:15
-msgid "_Show printers shared by other systems"
-msgstr "_Visa skrivare som är utdelade av andra system"
+msgid "<b>Basic Server Settings</b>"
+msgstr "<b>Grundläggande serverinställningar</b>"
 
 #: ../ui/SMBBrowseDialog.ui.h:1
 msgid "SMB Browser"
 msgstr "SMB-bläddrare"
 
 #: ../ui/statusicon_popupmenu.ui.h:1
+msgid "_Hide"
+msgstr "_Dölj"
+
+#: ../ui/statusicon_popupmenu.ui.h:2
 #, fuzzy
 msgid "_Configure Printers"
 msgstr "Konfigurera skrivare"
-
-#: ../ui/statusicon_popupmenu.ui.h:2
-msgid "_Hide"
-msgstr "_Dölj"
 
 #: ../ui/WaitWindow.ui.h:1
 msgid "Please Wait"
 msgstr "Var god vänta"
 
 #: ../system-config-printer.desktop.in.h:1
-msgid "Configure printers"
-msgstr "Konfigurera skrivare"
+#, fuzzy
+msgid "Print Settings"
+msgstr "Inställningar"
 
 #: ../system-config-printer.desktop.in.h:2
-msgid "Printing"
-msgstr "Utskrifter"
+msgid "Configure printers"
+msgstr "Konfigurera skrivare"
 
 #: ../statereason.py:94
 msgid "Toner low"
@@ -2914,9 +2915,10 @@ msgid "Printing troubleshooter"
 msgstr "Felsökning för utskrifter"
 
 #: ../troubleshoot/base.py:35
+#, fuzzy
 msgid ""
-"To start this tool, select System->Administration->Printing from the main "
-"menu."
+"To start this tool, select System->Administration->Print Settings from the "
+"main menu."
 msgstr ""
 "Välj System->Administration->Utskrifter från huvudmenyn för att starta detta "
 "verktyg."
@@ -3361,3 +3363,9 @@ msgstr "Panelprogram för utskriftskö"
 #: ../print-applet.desktop.in.h:2
 msgid "System tray icon for managing print jobs"
 msgstr "Aktivitetsfältsikon för administration av utskriftsjobb"
+
+#~ msgid "Printing - %s"
+#~ msgstr "Skriver ut - %s"
+
+#~ msgid "Printing"
+#~ msgstr "Utskrifter"
