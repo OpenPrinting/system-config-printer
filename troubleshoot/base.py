@@ -2,7 +2,7 @@
 
 ## Printing troubleshooter
 
-## Copyright (C) 2008, 2010 Red Hat, Inc.
+## Copyright (C) 2008, 2010, 2012 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 
@@ -33,7 +33,7 @@ __all__ = [ 'gtk',
             'TEXT_start_print_admin_tool' ]
 
 TEXT_start_print_admin_tool = N_("To start this tool, select "
-                                 "System->Administration->Printing "
+                                 "System->Administration->Print Settings "
                                  "from the main menu.")
 
 class Question:

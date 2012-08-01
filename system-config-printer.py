@@ -661,7 +661,7 @@ class GUI(GtkGUI):
         connected = bool(self.cups)
 
         host = CUPS_server_hostname ()
-        self.PrintersWindow.set_title(_("Printing - %s") % host)
+        self.PrintersWindow.set_title(_("Print Settings - %s") % host)
 
         if connected:
             status_msg = _("Connected to %s") % host
