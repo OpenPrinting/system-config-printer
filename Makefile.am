@@ -51,6 +51,7 @@ cupshelpers/config.py: cupshelpers/config.py.in Makefile
 	sed \
 	  -e "s|\@prefix\@|$(prefix)|" \
 	  -e "s|\@sysconfdir\@|$(sysconfdir)|" \
+	  -e "s|\@cupsserverbindir\@|$(cupsserverbindir)|" \
 	  $< > $@
 
 # Use distutils to build the module.

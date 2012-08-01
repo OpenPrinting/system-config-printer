@@ -32,6 +32,9 @@ fi
 AC_SUBST(DESKTOPVENDOR)
 AC_SUBST(DESKTOPPREFIX)
 
+cupsserverbindir="`cups-config --serverbin`"
+AC_SUBST(cupsserverbindir)
+
 PKG_CHECK_MODULES(GLIB, glib-2.0, has_glib=yes, has_glib=no)
 
 AC_ARG_WITH(udev-rules,

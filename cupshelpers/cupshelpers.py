@@ -844,10 +844,10 @@ def missingExecutables(ppd):
                     continue
 
                 exepath = pathcheck (exe,
-                                     "/usr/lib/cups/filter:"
+                                     config.cupsserverbindir + "/filter:"
                                      "/usr/lib64/cups/filter")
                 if not exepath:
-                    add_missing ("/usr/lib/cups/filter/" + exe)
+                    add_missing (config.cupsserverbindir + "/filter/" + exe)
 
     return exes_to_install
 
