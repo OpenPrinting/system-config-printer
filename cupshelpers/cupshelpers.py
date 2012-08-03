@@ -1,6 +1,6 @@
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2012 Red Hat, Inc.
 ## Authors:
 ##  Florian Festi <ffesti@redhat.com>
 ##  Tim Waugh <twaugh@redhat.com>
@@ -22,6 +22,7 @@
 import cups, pprint, os, tempfile, re, string
 import locale
 from . import _debugprint
+from . import config
 
 class Printer:
     _flags_blacklist = ["options", "local"]
