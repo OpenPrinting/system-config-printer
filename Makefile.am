@@ -101,7 +101,7 @@ nobase_pkgdata_DATA=					\
 	dnssdresolve.py					\
 	errordialogs.py					\
 	HIG.py						\
-	firewall.py					\
+	firewallsettings.py					\
 	gui.py						\
 	gtkinklevel.py					\
 	gtkspinner.py					\

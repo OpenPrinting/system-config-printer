@@ -38,43 +38,28 @@ MDNS_PORT            = "5353"
 MDNS_PROTOCOL        = "udp"
 SAMBA_CLIENT_SERVICE = "samba-client"
 
-
 class FirewallD:
-    DBUS_INTERFACE = "org.fedoraproject.FirewallD1"
-    DBUS_INTERFACE_ZONE = DBUS_INTERFACE+".zone"
-    DBUS_PATH = "/org/fedoraproject/FirewallD1"
-
     def __init__ (self):
         try:
             bus = dbus.SystemBus ()
-            obj = bus.get_object (self.DBUS_INTERFACE, self.DBUS_PATH)
-            self._firewall = dbus.Interface (obj, self.DBUS_INTERFACE_ZONE)
-            self._firewall_properties = dbus.Interface(obj,
-                            dbus_interface='org.freedesktop.DBus.Properties')
-        except (dbus.DBusException), e:
-            self._firewall = None
-            self._firewall_properties = None
+            from firewall.client import FirewallClient
+            self._fw = FirewallClient(bus)
+            zone_name = self._get_active_zone()
+            if zone_name:
+                self._zone = self._fw.config().getZoneByName(zone_name)
+            else:
+                self._zone = None
+            self.running = True
+            debugprint ("Using /org/fedoraproject/FirewallD1")
+        except (ImportError, dbus.DBusException):
+            self._fw = None
             self._zone = None
-            return
-
-        self._fw_data = []
-        self._zone=self._get_active_zone()
-        self._timeout=60
-        debugprint ("Using FirewallD, active zone: %s" % self._zone)
-
-    def running (self):
-        return self._firewall and self._firewall_properties and \
-             str(self._firewall_properties.Get(self.DBUS_INTERFACE, "state")) \
-             == "RUNNING"
+            self.running = False
 
     def _get_active_zone (self):
-        try:
-            zones = map (str, self._firewall.getActiveZones())
-            # remove immutable zones
-            zones = [z for z in zones if not self._firewall.isImmutable(z)]
-        except (dbus.DBusException), e:
-            debugprint ("FirewallD getting active zones failed")
-            return None
+        zones = map (str, self._fw.getActiveZones())
+        # remove immutable zones
+        zones = [z for z in zones if not self._fw.isImmutable(z)]
 
         if not zones:
             debugprint ("FirewallD: no changeable zone")
@@ -90,89 +75,71 @@ class FirewallD:
             debugprint ("FirewallD returned more zones, taking first one")
             return zones[0]
 
-    def _addService (self, service):
-        if not self._zone:
-            return
-
+    def _get_fw_data (self, reply_handler=None, error_handler=None):
         try:
-            self._firewall.addService (self._zone, service, self._timeout)
-        except (dbus.DBusException), e:
-            debugprint ("FirewallD allowing service %s failed" % service)
-            pass
+            debugprint ("%s in _get_fw_data: _fw_data is %s" %
+                        (self, repr(self._fw_data.getServices())))
+            if self._fw_data:
+                debugprint ("Using cached firewall data")
+                if reply_handler:
+                    reply_handler (self._fw_data)
+        except AttributeError:
+            try:
+                self._fw_data = self._zone.getSettings()
+                debugprint ("Firewall data obtained")
+                if reply_handler:
+                    reply_handler (self._fw_data) 
+            except (dbus.DBusException, AttributeError, ValueError), e:
+                self._fw_data = None
+                debugprint ("Exception examining firewall")
+                if error_handler:
+                    error_handler (e)
 
-    def add_service (self, service):
-        self._fw_data.append (service)
-
-    def write (self):
-        map (self._addService, self._fw_data)
-        self._fw_data = []
+        return self._fw_data
 
     def read (self, reply_handler=None, error_handler=None):
         if reply_handler:
-            # FIXME:
-            # Here I would like to just call the reply_handler() because we
-            # don't need to do anything else here, but if I remove the
-            # getServices() call and directly call reply_handler()
-            # the firewall dialog that the NewPrinterGUI.on_firewall_read()
-            # creates becomes unresponsive.
+            self._get_fw_data (reply_handler,
+                               error_handler)
+        else:
+            self._get_fw_data ()
 
-            #reply_handler (self._fw_data)
-            self._firewall.getServices (self._zone if self._zone else "",
-                                        reply_handler=reply_handler,
-                                        error_handler=error_handler)
-        return
+    def write (self):
+        if self._zone:
+            self._zone.update(self._fw_data)
+
+    def add_service (self, service):
+        if not self._get_fw_data ():
+            return
+
+        self._fw_data.addService(service)
 
     def check_ipp_client_allowed (self):
-        if not self._zone:
+        if not self._get_fw_data ():
             return True
 
-        try:
-            return (self._firewall.queryService(self._zone,
-                                                IPP_CLIENT_SERVICE)
-                 or self._firewall.queryPort(self._zone,
-                                             IPP_CLIENT_PORT,
-                                             IPP_CLIENT_PROTOCOL))
-        except (dbus.DBusException), e:
-            debugprint ("FirewallD query ipp-client service/port failed")
-            return True
+        return (IPP_CLIENT_SERVICE in self._fw_data.getServices() or
+               [IPP_CLIENT_PORT, IPP_CLIENT_PROTOCOL] in self._fw_data.getPorts())
 
     def check_ipp_server_allowed (self):
-        if not self._zone:
+        if not self._get_fw_data ():
             return True
 
-        try:
-            return (self._firewall.queryService(self._zone,
-                                                IPP_SERVER_SERVICE)
-                 or self._firewall.queryPort(self._zone,
-                                             IPP_SERVER_PORT,
-                                             IPP_SERVER_PROTOCOL))
-        except (dbus.DBusException), e:
-            debugprint ("FirewallD query ipp-server service/port failed")
-            return True
+        return (IPP_SERVER_SERVICE in self._fw_data.getServices() or
+               [IPP_SERVER_PORT, IPP_SERVER_PROTOCOL] in self._fw_data.getPorts())
 
     def check_samba_client_allowed (self):
-        if not self._zone:
+        if not self._get_fw_data ():
             return True
 
-        try:
-            return self._firewall.queryService(self._zone,
-                                               SAMBA_CLIENT_SERVICE)
-        except (dbus.DBusException), e:
-            debugprint ("FirewallD query samba-client service failed")
-            return True
-
+        return (IPP_CLIENT_SERVICE in self._fw_data.getServices())
 
     def check_mdns_allowed (self):
-        if not self._zone:
+        if not self._get_fw_data ():
             return True
 
-        try:
-            return (self._firewall.queryService(self._zone, MDNS_SERVICE)
-                 or self._firewall.queryPort(self._zone, MDNS_PORT,
-                                                         MDNS_PROTOCOL))
-        except (dbus.DBusException), e:
-            debugprint ("FirewallD query mdns service/port failed")
-            return True
+        return (MDNS_SERVICE in self._fw_data.getServices() or
+               [MDNS_PORT, MDNS_PROTOCOL] in self._fw_data.getPorts())
 
 
 
@@ -185,11 +152,12 @@ class SystemConfigFirewall:
         try:
             bus = dbus.SystemBus ()
             obj = bus.get_object (self.DBUS_INTERFACE, self.DBUS_PATH)
-            self._firewall = dbus.Interface (obj, self.DBUS_INTERFACE)
+            self._fw = dbus.Interface (obj, self.DBUS_INTERFACE)
             debugprint ("Using system-config-firewall")
         except (dbus.DBusException), e:
             debugprint ("No firewall ")
-            self._firewall = None
+            self._fw = None
+            self._fw_data = (None, None)
 
     def _get_fw_data (self, reply_handler=None, error_handler=None):
         try:
@@ -204,16 +172,16 @@ class SystemConfigFirewall:
         except AttributeError:
             try:
                 if reply_handler:
-                    self._firewall.read (reply_handler=reply_handler,
-                                         error_handler=error_handler)
+                    self._fw.read (reply_handler=reply_handler,
+                                   error_handler=error_handler)
                     return
 
-                p = self._firewall.read ()
+                p = self._fw.read ()
                 self._fw_data = json.loads (p.encode ('utf-8'))
             except (dbus.DBusException, AttributeError, ValueError), e:
                 self._fw_data = (None, None)
                 if error_handler:
-                    debugprint ("D-Bus exception examining firewall")
+                    debugprint ("Exception examining firewall")
                     self._client_error_handler (e)
 
         return self._fw_data
@@ -243,7 +211,7 @@ class SystemConfigFirewall:
 
     def write (self):
         try:
-            self._firewall.write (json.dumps (self._fw_data[0]))
+            self._fw.write (json.dumps (self._fw_data[0]))
         except:
             pass
 
@@ -252,6 +220,7 @@ class SystemConfigFirewall:
         if filename == None: return True
         isect = set (search).intersection (set (args))
         return len (isect) != 0
+
 
     def add_service (self, service):
         try:
