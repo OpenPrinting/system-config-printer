@@ -107,6 +107,7 @@ class FirewallD:
     def write (self):
         if self._zone:
             self._zone.update(self._fw_data)
+        self._fw.reload()
 
     def add_service (self, service):
         if not self._get_fw_data ():
