@@ -370,6 +370,7 @@ class GUI(GtkGUI):
         self.newPrinterGUI = np = newprinter.NewPrinterGUI()
         np.connect ("printer-added", self.on_new_printer_added)
         np.connect ("printer-modified", self.on_printer_modified)
+        np.connect ("dialog-canceled", self.on_new_printer_not_added)
 
         # Set up "About" dialog
         self.AboutDialog.set_program_name(config.PACKAGE)
@@ -1728,26 +1729,44 @@ class GUI(GtkGUI):
     # == New Printer Dialog ==============================================
     # ====================================================================
 
+    def sensitise_new_printer_widgets(self, sensitive=True):
+        self.btnNew.set_sensitive (sensitive)
+        self.btnAddFirstPrinter.set_sensitive (sensitive)
+        self.ui_manager.get_action ("/new-printer").set_sensitive (sensitive)
+        self.ui_manager.get_action ("/new-class").set_sensitive (sensitive)
+
+    def desensitise_new_printer_widgets(self):
+        self.sensitise_new_printer_widgets (False)
+
     # new printer
     def on_new_printer_activate(self, widget):
         busy (self.PrintersWindow)
+        self.desensitise_new_printer_widgets ()
         if not self.newPrinterGUI.init("printer",
                                        host=self.connect_server,
                                        encryption=self.connect_encrypt,
                                        parent=self.PrintersWindow):
+            self.sensitise_new_printer_widgets ()
             self.monitor.update ()
         ready (self.PrintersWindow)
 
     # new class
     def on_new_class_activate(self, widget):
+        self.desensitise_new_printer_widgets ()
         if not self.newPrinterGUI.init("class",
                                        host=self.connect_server,
                                        encryption=self.connect_encrypt,
                                        parent=self.PrintersWindow):
+            self.sensitise_new_printer_widgets ()
             self.monitor.update ()
+
+    def on_new_printer_not_added (self, obj):
+        self.sensitise_new_printer_widgets ()
 
     def on_new_printer_added (self, obj, name):
         debugprint ("New printer added: %s" % name)
+
+        self.sensitise_new_printer_widgets ()
         self.populateList ()
 
         if not self.printers.has_key (name):
