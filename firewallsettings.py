@@ -41,12 +41,11 @@ SAMBA_CLIENT_SERVICE = "samba-client"
 class FirewallD:
     def __init__ (self):
         try:
-            bus = dbus.SystemBus ()
             from firewall.client import FirewallClient
-            self._fw = FirewallClient(bus)
-            zone_name = self._get_active_zone()
+            self._fw = FirewallClient ()
+            zone_name = self._get_active_zone ()
             if zone_name:
-                self._zone = self._fw.config().getZoneByName(zone_name)
+                self._zone = self._fw.config().getZoneByName (zone_name)
             else:
                 self._zone = None
             self.running = True
@@ -57,20 +56,20 @@ class FirewallD:
             self.running = False
 
     def _get_active_zone (self):
-        zones = map (str, self._fw.getActiveZones())
+        zones = self._fw.getActiveZones().keys()
         # remove immutable zones
         zones = [z for z in zones if not self._fw.isImmutable(z)]
 
         if not zones:
             debugprint ("FirewallD: no changeable zone")
             return None
-        elif len(zones) == 1:
+        elif len (zones) == 1:
             # most probable case
             return zones[0]
         else:
             # Do we need to handle the 'more active zones' case ?
             # It's quite unlikely case because that would mean that more
-            # interfaces are up and running and they are
+            # network connections are up and running and they are
             # in different network zones at the same time.
             debugprint ("FirewallD returned more zones, taking first one")
             return zones[0]
@@ -85,7 +84,7 @@ class FirewallD:
                     reply_handler (self._fw_data)
         except AttributeError:
             try:
-                self._fw_data = self._zone.getSettings()
+                self._fw_data = self._zone.getSettings ()
                 debugprint ("Firewall data obtained")
                 if reply_handler:
                     reply_handler (self._fw_data) 
@@ -106,41 +105,41 @@ class FirewallD:
 
     def write (self):
         if self._zone:
-            self._zone.update(self._fw_data)
-        self._fw.reload()
+            self._zone.update (self._fw_data)
+        self._fw.reload ()
 
     def add_service (self, service):
         if not self._get_fw_data ():
             return
 
-        self._fw_data.addService(service)
+        self._fw_data.addService (service)
 
     def check_ipp_client_allowed (self):
         if not self._get_fw_data ():
             return True
 
-        return (IPP_CLIENT_SERVICE in self._fw_data.getServices() or
-               [IPP_CLIENT_PORT, IPP_CLIENT_PROTOCOL] in self._fw_data.getPorts())
+        return (IPP_CLIENT_SERVICE in self._fw_data.getServices () or
+               [IPP_CLIENT_PORT, IPP_CLIENT_PROTOCOL] in self._fw_data.getPorts ())
 
     def check_ipp_server_allowed (self):
         if not self._get_fw_data ():
             return True
 
-        return (IPP_SERVER_SERVICE in self._fw_data.getServices() or
-               [IPP_SERVER_PORT, IPP_SERVER_PROTOCOL] in self._fw_data.getPorts())
+        return (IPP_SERVER_SERVICE in self._fw_data.getServices () or
+               [IPP_SERVER_PORT, IPP_SERVER_PROTOCOL] in self._fw_data.getPorts ())
 
     def check_samba_client_allowed (self):
         if not self._get_fw_data ():
             return True
 
-        return (IPP_CLIENT_SERVICE in self._fw_data.getServices())
+        return (IPP_CLIENT_SERVICE in self._fw_data.getServices ())
 
     def check_mdns_allowed (self):
         if not self._get_fw_data ():
             return True
 
-        return (MDNS_SERVICE in self._fw_data.getServices() or
-               [MDNS_PORT, MDNS_PROTOCOL] in self._fw_data.getPorts())
+        return (MDNS_SERVICE in self._fw_data.getServices () or
+               [MDNS_PORT, MDNS_PROTOCOL] in self._fw_data.getPorts ())
 
 
 
