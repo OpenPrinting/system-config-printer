@@ -71,6 +71,7 @@ class PPDsLoader(gobject.GObject):
 
         self._ppdsmatch_result = None
         self._jockey_queried = False
+        self._jockey_has_answered = False
         self._local_cups = (self._host == None or
                             self._host == "localhost" or
                             self._host[0] == '/')
@@ -256,6 +257,7 @@ class PPDsLoader(gobject.GObject):
 
     def _jockey_reply (self, conn, result):
         debugprint ("Got Jockey result: %s" % repr (result))
+        self._jockey_has_answered = True
         try:
             self._installed_files = result[1]
         except:

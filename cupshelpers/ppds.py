@@ -499,7 +499,7 @@ class PPDs:
             for ppdname in ppdnamelist:
                 (path, slash, ppdfname) = ppdname.rpartition ("/")
                 if ppdfname in downloadedfnames:
-                    downloadedppdnames.add (ppdname)
+                    downloadedppdnames.append (ppdname)
 
             # Finally, promote the matching ones to the head of the list.
             if downloadedppdnames:

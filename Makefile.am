@@ -88,6 +88,7 @@ nobase_pkgdata_SCRIPTS=				\
 	pysmb.py				\
 	scp-dbus-service.py			\
 	system-config-printer.py		\
+	install-printerdriver.py		\
 	troubleshoot/__init__.py		\
 	applet.py
 
@@ -175,6 +176,7 @@ cupshelpers_DATA=\
 
 bin_SCRIPTS=					\
 	system-config-printer			\
+	install-printerdriver			\
 	system-config-printer-applet		\
 	dbus/scp-dbus-service
 
