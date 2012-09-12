@@ -250,6 +250,7 @@ class OpenPrinting:
                 #       { arch:
                 #         { file:
                 #           { 'url': url,
+                #             'fingerprint': signature key fingerprint URL
                 #             'realversion': upstream version string,
                 #             'version': packaged version string,
                 #             'release': package release string
@@ -327,7 +328,8 @@ class OpenPrinting:
                             for package in arch.findall ('package'):
                                 rpm = {}
                                 for attribute in ['realversion','version',
-                                                  'release', 'url', 'pkgsys']:
+                                                  'release', 'url', 'pkgsys',
+                                                  'fingerprint']:
                                     element = package.find (attribute)
                                     if element != None:
                                         rpm[attribute] = element.text
