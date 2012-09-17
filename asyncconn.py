@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-## Copyright (C) 2007, 2008, 2009, 2010 Red Hat, Inc.
+## Copyright (C) 2007, 2008, 2009, 2010, 2012 Red Hat, Inc.
 ## Copyright (C) 2008 Novell, Inc.
 ## Authors: Tim Waugh <twaugh@redhat.com>, Vincent Untz
 
@@ -20,12 +20,10 @@
 
 import cups
 import gobject
-import gtk
 import os
 
 import asyncipp
 import asyncpk1
-import authconn
 import config
 from debug import *
 import debug
