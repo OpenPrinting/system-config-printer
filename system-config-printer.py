@@ -85,7 +85,6 @@ from serversettings import ServerSettings
 from ToolbarSearchEntry import *
 from SearchCriterion import *
 import statereason
-import firewall
 import newprinter
 from newprinter import busy, ready
 import printerproperties

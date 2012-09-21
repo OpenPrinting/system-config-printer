@@ -1619,7 +1619,7 @@ class NewPrinterGUI(GtkGUI):
             if (self._host == 'localhost' or
                 self._host[0] == '/'):
                 self.firewall = firewallsettings.FirewallD ()
-                if not self.firewall.running:
+                if not self.firewall.running():
                     self.firewall = firewallsettings.SystemConfigFirewall ()
 
                 debugprint ("Examining firewall")
