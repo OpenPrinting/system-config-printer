@@ -161,7 +161,7 @@ class FirewallD:
         if not self._get_fw_data ():
             return True
 
-        return (IPP_CLIENT_SERVICE in self._fw_data[self.services_idx])
+        return (SAMBA_CLIENT_SERVICE in self._fw_data[self.services_idx])
 
     def check_mdns_allowed (self):
         if not self._get_fw_data ():
