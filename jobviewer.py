@@ -1,5 +1,5 @@
 
-## Copyright (C) 2007, 2008, 2009, 2010, 2011 Red Hat, Inc.
+## Copyright (C) 2007, 2008, 2009, 2010, 2011, 2012 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 ##  Jiri Popelka <jpopelka@redhat.com>
@@ -958,6 +958,8 @@ class JobViewer (GtkGUI):
                     except gnomekeyring.DeniedError:
                         debugprint ("gnomekeyring: denied for %s" %
                                     keyring_attrs)
+                    except Exception, e:
+                        debugprint ("gnomekeyring: caught exception %s" % e)
 
                 if try_keyring and c == None:
                     try:
