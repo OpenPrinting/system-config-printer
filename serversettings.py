@@ -214,9 +214,16 @@ class ServerSettings(GtkGUI):
             if self.server_settings.has_key(setting):
                 widget.set_active(int(self.server_settings[setting]))
                 widget.set_sensitive(True)
+                widget.show()
             else:
                 widget.set_active(False)
                 widget.set_sensitive(False)
+                widget.hide()
+
+        if self.server_settings.has_key(cups.CUPS_SERVER_REMOTE_PRINTERS):
+            self.frameBrowseServers.show()
+        else:
+            self.frameBrowseServers.hide()
 
         try:
             flag = cups.CUPS_SERVER_SHARE_PRINTERS
