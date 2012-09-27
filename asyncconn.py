@@ -22,8 +22,6 @@ import cups
 import gobject
 import os
 
-import asyncipp
-import asyncpk1
 import config
 from debug import *
 import debug
@@ -128,6 +126,7 @@ class Connection(SemanticOperations):
 
         if use_pk and try_as_root:
             debugprint ("Using polkit-1 connection class")
+            import asyncpk1
             c = asyncpk1.PK1Connection (reply_handler=subst_reply_handler,
                                         error_handler=subst_error_handler,
                                         host=host, port=port,
@@ -136,6 +135,7 @@ class Connection(SemanticOperations):
             self._conn = c
         else:
             debugprint ("Using IPP connection class")
+            import asyncipp
             c = asyncipp.IPPAuthConnection (reply_handler=subst_reply_handler,
                                             error_handler=subst_error_handler,
                                             auth_handler=subst_auth_handler,

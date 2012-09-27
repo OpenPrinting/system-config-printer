@@ -21,7 +21,10 @@
 import cups
 import dbus
 import gobject
-import gtk
+try:
+    import gtk
+except:
+    pass
 import os
 import sys
 import tempfile
@@ -102,9 +105,15 @@ class _PK1AsyncMethodCall:
             return
 
         if str (error) == '':
-            gtk.gdk.threads_enter ()
+            try:
+                gtk.gdk.threads_enter ()
+            except:
+                pass
             self._client_reply_handler (self._conn, self._unpack_fn (*args))
-            gtk.gdk.threads_leave ()
+            try:
+                gtk.gdk.threads_leave ()
+            except:
+                pass
             self._destroy ()
             return
 
@@ -117,9 +126,15 @@ class _PK1AsyncMethodCall:
 
         if exc.get_dbus_name () == CUPS_PK_NEED_AUTH:
             exc = cups.IPPError (cups.IPP_NOT_AUTHORIZED, 'pkcancel')
-            gtk.gdk.threads_enter ()
+            try:
+                gtk.gdk.threads_enter ()
+            except:
+                pass
             self._client_error_handler (self._conn, exc)
-            gtk.gdk.threads_leave ()
+            try:
+                gtk.gdk.threads_leave ()
+            except:
+                pass
             self._destroy ()
             return
 
