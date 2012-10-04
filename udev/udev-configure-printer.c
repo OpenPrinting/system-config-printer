@@ -524,31 +524,21 @@ device_file_filter(const struct dirent *entry)
 }
 
 static char *
-get_ieee1284_id_from_child (struct udev_device *parent)
+get_ieee1284_id_from_child (struct udev *udev, struct udev_device *parent)
 {
-  struct udev *udev;
   struct udev_enumerate *udev_enum;
   struct udev_list_entry *item, *first = NULL;
   char *device_id = NULL;
 
-  udev = udev_new ();
-  if (udev == NULL)
-    {
-      syslog (LOG_ERR, "udev_new failed");
-      exit (1);
-    }
-
   udev_enum = udev_enumerate_new (udev);
   if (!udev_enum)
     {
-      udev_unref (udev);
       syslog (LOG_ERR, "udev_enumerate_new failed");
       exit (1);
     }
 
   if (udev_enumerate_add_match_parent (udev_enum, parent) < 0)
     {
-      udev_unref (udev);
       udev_enumerate_unref (udev_enum);
       syslog (LOG_ERR, "uname to add parent match");
       exit (1);
@@ -556,7 +546,6 @@ get_ieee1284_id_from_child (struct udev_device *parent)
 
   if (udev_enumerate_scan_devices (udev_enum) < 0)
     {
-      udev_unref (udev);
       udev_enumerate_unref (udev_enum);
       syslog (LOG_ERR, "udev_enumerate_scan_devices failed");
       exit (1);
@@ -581,7 +570,6 @@ get_ieee1284_id_from_child (struct udev_device *parent)
 	break;
     }
 
-  udev_unref (udev);
   udev_enumerate_unref (udev_enum);
   return device_id;
 }
@@ -741,14 +729,13 @@ get_ieee1284_id_using_libusb (struct udev_device *dev,
 }
 
 static char *
-device_id_from_devpath (const char *devpath,
+device_id_from_devpath (struct udev *udev, const char *devpath,
 			const struct usb_uri_map *map,
 			struct device_id *id,
 			char *usbserial, size_t usbseriallen,
 			char *usblpdev, size_t usblpdevlen)
 {
   struct usb_uri_map_entry *entry;
-  struct udev *udev;
   struct udev_device *dev;
   const char *serial;
   size_t syslen, devpathlen;
@@ -761,19 +748,11 @@ device_id_from_devpath (const char *devpath,
 
   id->full_device_id = id->mfg = id->mdl = id->sern = NULL;
 
-  udev = udev_new ();
-  if (udev == NULL)
-    {
-      syslog (LOG_ERR, "udev_new failed");
-      exit (1);
-    }
-
   syslen = strlen ("/sys");
   devpathlen = strlen (devpath);
   syspath = malloc (syslen + devpathlen + 1);
   if (syspath == NULL)
     {
-      udev_unref (udev);
       syslog (LOG_ERR, "out of memory");
       exit (1);
     }
@@ -784,7 +763,6 @@ device_id_from_devpath (const char *devpath,
   devicefilepath = malloc (syslen + devpathlen + 5);
   if (devicefilepath == NULL)
     {
-      udev_unref (udev);
       syslog (LOG_ERR, "out of memory");
       exit (1);
     }
@@ -820,7 +798,6 @@ device_id_from_devpath (const char *devpath,
   if (dev == NULL)
     {
       udev_device_unref (dev);
-      udev_unref (udev);
       syslog (LOG_ERR, "unable to access %s", syspath);
       return NULL;
     }
@@ -857,7 +834,7 @@ device_id_from_devpath (const char *devpath,
   else
     usbserial[0] = '\0';
 
-  device_id = get_ieee1284_id_from_child (dev);
+  device_id = get_ieee1284_id_from_child (udev, dev);
   if (!device_id)
     /* Use libusb to fetch the Device ID. */
     device_id = get_ieee1284_id_using_libusb (dev, usbserial);
@@ -866,7 +843,6 @@ device_id_from_devpath (const char *devpath,
     parse_device_id (device_id, id);
 
   udev_device_unref (dev);
-  udev_unref (udev);
   return usb_device_devpath;
 }
 
@@ -901,12 +877,11 @@ device_id_from_bluetooth (const char *bdaddr, struct device_id *id)
 }
 
 static char *
-devpath_from_esc_devname (const char *esc_devname)
+devpath_from_esc_devname (struct udev *udev, const char *esc_devname)
 {
   char *devname_ending = g_strdup (esc_devname);
   char *devname;
   const char *devpath;
-  struct udev *udev;
   struct udev_enumerate *udev_enum;
   struct udev_list_entry *first = NULL;
   struct udev_device *device;
@@ -915,24 +890,15 @@ devpath_from_esc_devname (const char *esc_devname)
   devname = g_strdup_printf("/dev/bus/%s", devname_ending);
   g_free (devname_ending);
 
-  udev = udev_new ();
-  if (udev == NULL)
-    {
-      syslog (LOG_ERR, "udev_new failed");
-      exit (1);
-    }
-
   udev_enum = udev_enumerate_new (udev);
   if (udev_enum == NULL)
     {
-      udev_unref (udev);
       syslog (LOG_ERR, "udev_enumerate_new failed");
       exit (1);
     }
 
   if (udev_enumerate_add_match_property (udev_enum, "DEVNAME", devname) < 0)
     {
-      udev_unref (udev);
       udev_enumerate_unref (udev_enum);
       syslog (LOG_ERR, "udev_enumerate_add_match_property failed");
       exit (1);
@@ -940,7 +906,6 @@ devpath_from_esc_devname (const char *esc_devname)
 
   if (udev_enumerate_scan_devices (udev_enum) < 0)
     {
-      udev_unref (udev);
       udev_enumerate_unref (udev_enum);
       syslog (LOG_ERR, "udev_enumerate_scan_devices failed");
       exit (1);
@@ -949,7 +914,6 @@ devpath_from_esc_devname (const char *esc_devname)
   first = udev_enumerate_get_list_entry (udev_enum);
   if (first == NULL)
     {
-      udev_unref (udev);
       udev_enumerate_unref (udev_enum);
       syslog (LOG_ERR, "no device named %s found", devname);
       exit (1);
@@ -959,14 +923,12 @@ devpath_from_esc_devname (const char *esc_devname)
 					 udev_list_entry_get_name (first));
   if (device == NULL)
     {
-      udev_unref (udev);
       udev_enumerate_unref (udev_enum);
       syslog (LOG_ERR, "unable to examine device");
       exit (1);
     }
 
   devpath = udev_device_get_devpath (device);
-  udev_unref (udev);
   udev_enumerate_unref (udev_enum);
   if (!devpath)
     {
@@ -1624,6 +1586,7 @@ do_add (const char *cmd, const char *esc_devname)
   struct device_id id;
   struct device_uris device_uris;
   struct usb_uri_map *map;
+  struct udev *udev;
   char *devpath = NULL;
   char *usb_device_devpath = NULL;
   char usbserial[256];
@@ -1639,8 +1602,15 @@ do_add (const char *cmd, const char *esc_devname)
     usbserial[0] = '\0';
     device_id_from_bluetooth (esc_devname, &id);
   } else {
-    devpath = devpath_from_esc_devname (esc_devname);
-    usb_device_devpath = device_id_from_devpath (devpath, map, &id,
+    udev = udev_new ();
+    if (udev == NULL)
+      {
+	syslog (LOG_ERR, "udev_new failed");
+	exit (1);
+      }
+
+    devpath = devpath_from_esc_devname (udev, esc_devname);
+    usb_device_devpath = device_id_from_devpath (udev, devpath, map, &id,
 						 usbserial, sizeof (usbserial),
 						 usblpdev, sizeof (usblpdev));
     g_free (devpath);
