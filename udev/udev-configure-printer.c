@@ -587,22 +587,15 @@ get_ieee1284_id_from_child (struct udev_device *parent)
 }
 
 static char *
-device_id_from_devpath (const char *devpath,
-			const struct usb_uri_map *map,
-			struct device_id *id,
-			char *usbserial, size_t usbseriallen,
-			char *usblpdev, size_t usblpdevlen)
+get_ieee1284_id_using_libusb (struct udev_device *dev,
+			      const char *usbserial)
 {
-  struct usb_uri_map_entry *entry;
-  struct udev *udev;
-  struct udev_device *dev;
-  const char *idVendorStr, *idProductStr, *serial;
-  char *end;
+  const char *idVendorStr, *idProductStr;
   unsigned long idVendor, idProduct;
-  size_t syslen, devpathlen;
-  char *syspath, *devicefilepath;
+  char *end;
+  int conf = 0, iface = 0, altset = 0, numdevs = 0, i, n, m;
   libusb_device **list;
-  struct libusb_device	*device;
+  struct libusb_device *device;
   struct libusb_device_handle *handle = NULL;
   struct libusb_device_descriptor devdesc;
   struct libusb_config_descriptor *confptr = NULL;
@@ -610,127 +603,13 @@ device_id_from_devpath (const char *devpath,
   const struct libusb_interface_descriptor *altptr = NULL;
   char libusbserial[1024];
   char ieee1284_id[1024];
-  const char *device_id = NULL;
-  int conf = 0, iface = 0, altset = 0, numdevs = 0, i, n, m;
   int got = 0;
-  char *usb_device_devpath;
-  char *usblpdevpos, *dest;
-  struct dirent **namelist;
-  int num_names;
 
-  id->full_device_id = id->mfg = id->mdl = id->sern = NULL;
-
-  udev = udev_new ();
-  if (udev == NULL)
-    {
-      syslog (LOG_ERR, "udev_new failed");
-      exit (1);
-    }
-
-  syslen = strlen ("/sys");
-  devpathlen = strlen (devpath);
-  syspath = malloc (syslen + devpathlen + 1);
-  if (syspath == NULL)
-    {
-      udev_unref (udev);
-      syslog (LOG_ERR, "out of memory");
-      exit (1);
-    }
-  memcpy (syspath, "/sys", syslen);
-  memcpy (syspath + syslen, devpath, devpathlen);
-  syspath[syslen + devpathlen] = '\0';
-
-  devicefilepath = malloc (syslen + devpathlen + 5);
-  if (devicefilepath == NULL)
-    {
-      udev_unref (udev);
-      syslog (LOG_ERR, "out of memory");
-      exit (1);
-    }
-  memcpy (devicefilepath, syspath, syslen + devpathlen);
-  memcpy (devicefilepath + syslen + devpathlen, "/usb", 4);
-  devicefilepath[syslen + devpathlen + 4] = '\0';
-
-  /* For devices under control of the usblp kernel module we read out the number
-   * of the /dev/usb/lp* device file, as there can be queues set up with 
-   * non-standard CUPS backends based on the /dev/usb/lp* device file and
-   * we want to avoid that an additional queue with a standard CUPS backend
-   * gets set up.
-   */
-  num_names = scandir(devicefilepath, &namelist, device_file_filter, alphasort);
-  if (num_names <= 0)
-    num_names = scandir(syspath, &namelist, device_file_filter, alphasort);
-  if (num_names > 0)
-    {
-      usblpdevpos = strstr(namelist[0]->d_name, "lp");
-      if (usblpdevpos != NULL)
-	{
-	  usblpdevpos += 2;
-	  for (dest = usblpdev;
-	       (*usblpdevpos >= '0') && (*usblpdevpos <= '9') &&
-		 (dest - usblpdev < usblpdevlen);
-	       usblpdevpos ++, dest ++)
-	    *dest = *usblpdevpos;
-	  *dest = '\0';
-	}
-    }
-
-  dev = udev_device_new_from_syspath (udev, syspath);
-  if (dev == NULL)
-    {
-      udev_device_unref (dev);
-      udev_unref (udev);
-      syslog (LOG_ERR, "unable to access %s", syspath);
-      return NULL;
-    }
-
-  usb_device_devpath = strdup (udev_device_get_devpath (dev));
-  syslog (LOG_DEBUG, "device devpath is %s", usb_device_devpath);
-
-  for (entry = map->entries; entry; entry = entry->next)
-    if (!strcmp (entry->devpath, usb_device_devpath))
-      break;
-
-  if (entry)
-    {
-      /* The map already had an entry so has already been dealt
-       * with.  This can happen because there are two "add"
-       * triggers: one for the usb_device device and the other for
-       * the usblp device.  We have most likely been triggered by
-       * the usblp device, so the usb_device rule got there before
-       * us and succeeded.
-       *
-       * Pretend we didn't find any device URIs that matched, and
-       * exit.
-       */
-      syslog (LOG_DEBUG, "Device already handled");
-      return NULL;
-    }
-
-  serial = udev_device_get_sysattr_value (dev, "serial");
-  if (serial)
-    {
-      strncpy (usbserial, serial, usbseriallen);
-      usbserial[usbseriallen - 1] = '\0';
-    }
-  else
-    usbserial[0] = '\0';
-
-  device_id = get_ieee1284_id_from_child (dev);
-  if (device_id)
-    {
-      got = 1;
-      goto got_deviceid;
-    }
-
-  /* Use libusb to fetch the Device ID. */
   idVendorStr = udev_device_get_sysattr_value (dev, "idVendor");
   idProductStr = udev_device_get_sysattr_value (dev, "idProduct");
 
   if (!idVendorStr || !idProductStr)
     {
-      udev_device_unref (dev);
-      udev_unref (udev);
       syslog (LOG_ERR, "Missing sysattr %s",
 	      idVendorStr ?
 	      (idProductStr ? "serial" : "idProduct") : "idVendor");
@@ -856,13 +735,135 @@ device_id_from_devpath (const char *devpath,
   libusb_free_device_list(list, 1);
   libusb_exit(NULL);
 
- got_deviceid:
   if (got)
+    return g_strdup (ieee1284_id + 2);
+  return NULL;
+}
+
+static char *
+device_id_from_devpath (const char *devpath,
+			const struct usb_uri_map *map,
+			struct device_id *id,
+			char *usbserial, size_t usbseriallen,
+			char *usblpdev, size_t usblpdevlen)
+{
+  struct usb_uri_map_entry *entry;
+  struct udev *udev;
+  struct udev_device *dev;
+  const char *serial;
+  size_t syslen, devpathlen;
+  char *syspath, *devicefilepath;
+  const char *device_id = NULL;
+  char *usb_device_devpath;
+  char *usblpdevpos, *dest;
+  struct dirent **namelist;
+  int num_names;
+
+  id->full_device_id = id->mfg = id->mdl = id->sern = NULL;
+
+  udev = udev_new ();
+  if (udev == NULL)
     {
-      if (!device_id)
-	device_id = ieee1284_id + 2;
-      parse_device_id (device_id, id);
+      syslog (LOG_ERR, "udev_new failed");
+      exit (1);
     }
+
+  syslen = strlen ("/sys");
+  devpathlen = strlen (devpath);
+  syspath = malloc (syslen + devpathlen + 1);
+  if (syspath == NULL)
+    {
+      udev_unref (udev);
+      syslog (LOG_ERR, "out of memory");
+      exit (1);
+    }
+  memcpy (syspath, "/sys", syslen);
+  memcpy (syspath + syslen, devpath, devpathlen);
+  syspath[syslen + devpathlen] = '\0';
+
+  devicefilepath = malloc (syslen + devpathlen + 5);
+  if (devicefilepath == NULL)
+    {
+      udev_unref (udev);
+      syslog (LOG_ERR, "out of memory");
+      exit (1);
+    }
+  memcpy (devicefilepath, syspath, syslen + devpathlen);
+  memcpy (devicefilepath + syslen + devpathlen, "/usb", 4);
+  devicefilepath[syslen + devpathlen + 4] = '\0';
+
+  /* For devices under control of the usblp kernel module we read out the number
+   * of the /dev/usb/lp* device file, as there can be queues set up with 
+   * non-standard CUPS backends based on the /dev/usb/lp* device file and
+   * we want to avoid that an additional queue with a standard CUPS backend
+   * gets set up.
+   */
+  num_names = scandir(devicefilepath, &namelist, device_file_filter, alphasort);
+  if (num_names <= 0)
+    num_names = scandir(syspath, &namelist, device_file_filter, alphasort);
+  if (num_names > 0)
+    {
+      usblpdevpos = strstr(namelist[0]->d_name, "lp");
+      if (usblpdevpos != NULL)
+	{
+	  usblpdevpos += 2;
+	  for (dest = usblpdev;
+	       (*usblpdevpos >= '0') && (*usblpdevpos <= '9') &&
+		 (dest - usblpdev < usblpdevlen);
+	       usblpdevpos ++, dest ++)
+	    *dest = *usblpdevpos;
+	  *dest = '\0';
+	}
+    }
+
+  dev = udev_device_new_from_syspath (udev, syspath);
+  if (dev == NULL)
+    {
+      udev_device_unref (dev);
+      udev_unref (udev);
+      syslog (LOG_ERR, "unable to access %s", syspath);
+      return NULL;
+    }
+
+  usb_device_devpath = strdup (udev_device_get_devpath (dev));
+  syslog (LOG_DEBUG, "device devpath is %s", usb_device_devpath);
+
+  for (entry = map->entries; entry; entry = entry->next)
+    if (!strcmp (entry->devpath, usb_device_devpath))
+      break;
+
+  if (entry)
+    {
+      /* The map already had an entry so has already been dealt
+       * with.  This can happen because there are two "add"
+       * triggers: one for the usb_device device and the other for
+       * the usblp device.  We have most likely been triggered by
+       * the usblp device, so the usb_device rule got there before
+       * us and succeeded.
+       *
+       * Pretend we didn't find any device URIs that matched, and
+       * exit.
+       */
+      syslog (LOG_DEBUG, "Device already handled");
+      return NULL;
+    }
+
+  serial = udev_device_get_sysattr_value (dev, "serial");
+  if (serial)
+    {
+      strncpy (usbserial, serial, usbseriallen);
+      usbserial[usbseriallen - 1] = '\0';
+    }
+  else
+    usbserial[0] = '\0';
+
+  device_id = get_ieee1284_id_from_child (dev);
+  if (!device_id)
+    /* Use libusb to fetch the Device ID. */
+    device_id = get_ieee1284_id_using_libusb (dev, usbserial);
+
+  if (device_id)
+    parse_device_id (device_id, id);
 
   udev_device_unref (dev);
   udev_unref (udev);
