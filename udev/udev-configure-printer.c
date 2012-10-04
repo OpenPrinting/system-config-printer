@@ -1,6 +1,6 @@
 /* -*- Mode: C; c-file-style: "gnu" -*-
  * udev-configure-printer - a udev callout to configure print queues
- * Copyright (C) 2009, 2010, 2011 Red Hat, Inc.
+ * Copyright (C) 2009, 2010, 2011, 2012 Red Hat, Inc.
  * Author: Tim Waugh <twaugh@redhat.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -524,6 +524,69 @@ device_file_filter(const struct dirent *entry)
 }
 
 static char *
+get_ieee1284_id_from_child (struct udev_device *parent)
+{
+  struct udev *udev;
+  struct udev_enumerate *udev_enum;
+  struct udev_list_entry *item, *first = NULL;
+  char *device_id = NULL;
+
+  udev = udev_new ();
+  if (udev == NULL)
+    {
+      syslog (LOG_ERR, "udev_new failed");
+      exit (1);
+    }
+
+  udev_enum = udev_enumerate_new (udev);
+  if (!udev_enum)
+    {
+      udev_unref (udev);
+      syslog (LOG_ERR, "udev_enumerate_new failed");
+      exit (1);
+    }
+
+  if (udev_enumerate_add_match_parent (udev_enum, parent) < 0)
+    {
+      udev_unref (udev);
+      udev_enumerate_unref (udev_enum);
+      syslog (LOG_ERR, "uname to add parent match");
+      exit (1);
+    }
+
+  if (udev_enumerate_scan_devices (udev_enum) < 0)
+    {
+      udev_unref (udev);
+      udev_enumerate_unref (udev_enum);
+      syslog (LOG_ERR, "udev_enumerate_scan_devices failed");
+      exit (1);
+    }
+
+  first = udev_enumerate_get_list_entry (udev_enum);
+  udev_list_entry_foreach (item, first)
+    {
+      const char *ieee1284_id = NULL;
+      struct udev_device *dev;
+      dev = udev_device_new_from_syspath (udev,
+					  udev_list_entry_get_name (item));
+      if (dev == NULL)
+	continue;
+
+      ieee1284_id = udev_device_get_sysattr_value (dev, "ieee1284_id");
+      if (ieee1284_id)
+	device_id = g_strdup (ieee1284_id);
+
+      udev_device_unref (dev);
+      if (device_id)
+	break;
+    }
+
+  udev_unref (udev);
+  udev_enumerate_unref (udev_enum);
+  return device_id;
+}
+
+static char *
 device_id_from_devpath (const char *devpath,
 			const struct usb_uri_map *map,
 			struct device_id *id,
@@ -532,7 +595,7 @@ device_id_from_devpath (const char *devpath,
 {
   struct usb_uri_map_entry *entry;
   struct udev *udev;
-  struct udev_device *dev, *parent_dev = NULL;
+  struct udev_device *dev;
   const char *idVendorStr, *idProductStr, *serial;
   char *end;
   unsigned long idVendor, idProduct;
@@ -621,17 +684,7 @@ device_id_from_devpath (const char *devpath,
       return NULL;
     }
 
-  parent_dev = udev_device_get_parent_with_subsystem_devtype (dev,
-							      "usb",
-							      "usb_device");
-  if (!parent_dev)
-    {
-      udev_unref (udev);
-      syslog (LOG_ERR, "Failed to get parent");
-      return NULL;
-    }
-
-  usb_device_devpath = strdup (udev_device_get_devpath (parent_dev));
+  usb_device_devpath = strdup (udev_device_get_devpath (dev));
   syslog (LOG_DEBUG, "device devpath is %s", usb_device_devpath);
 
   for (entry = map->entries; entry; entry = entry->next)
@@ -654,7 +707,7 @@ device_id_from_devpath (const char *devpath,
       return NULL;
     }
 
-  serial = udev_device_get_sysattr_value (parent_dev, "serial");
+  serial = udev_device_get_sysattr_value (dev, "serial");
   if (serial)
     {
       strncpy (usbserial, serial, usbseriallen);
@@ -663,19 +716,16 @@ device_id_from_devpath (const char *devpath,
   else
     usbserial[0] = '\0';
 
-  /* See if  the device is controlled by the usblp kernel module
-     and so the module has already read the device ID for us */
-  device_id = udev_device_get_sysattr_value (dev, "ieee1284_id");
+  device_id = get_ieee1284_id_from_child (dev);
   if (device_id)
     {
       got = 1;
       goto got_deviceid;
     }
 
-  /* The usblp kernel module is not attached to this device. Use libusb to
-     fetch the Device ID. */
-  idVendorStr = udev_device_get_sysattr_value (parent_dev, "idVendor");
-  idProductStr = udev_device_get_sysattr_value (parent_dev, "idProduct");
+  /* Use libusb to fetch the Device ID. */
+  idVendorStr = udev_device_get_sysattr_value (dev, "idVendor");
+  idProductStr = udev_device_get_sysattr_value (dev, "idProduct");
 
   if (!idVendorStr || !idProductStr)
     {
@@ -847,6 +897,84 @@ device_id_from_bluetooth (const char *bdaddr, struct device_id *id)
     parse_device_id (device_id, id);
 
   g_free (device_id);
+}
+
+static char *
+devpath_from_esc_devname (const char *esc_devname)
+{
+  char *devname_ending = g_strdup (esc_devname);
+  char *devname;
+  const char *devpath;
+  struct udev *udev;
+  struct udev_enumerate *udev_enum;
+  struct udev_list_entry *first = NULL;
+  struct udev_device *device;
+
+  g_strdelimit (devname_ending, "-", '/');
+  devname = g_strdup_printf("/dev/bus/%s", devname_ending);
+  g_free (devname_ending);
+
+  udev = udev_new ();
+  if (udev == NULL)
+    {
+      syslog (LOG_ERR, "udev_new failed");
+      exit (1);
+    }
+
+  udev_enum = udev_enumerate_new (udev);
+  if (udev_enum == NULL)
+    {
+      udev_unref (udev);
+      syslog (LOG_ERR, "udev_enumerate_new failed");
+      exit (1);
+    }
+
+  if (udev_enumerate_add_match_property (udev_enum, "DEVNAME", devname) < 0)
+    {
+      udev_unref (udev);
+      udev_enumerate_unref (udev_enum);
+      syslog (LOG_ERR, "udev_enumerate_add_match_property failed");
+      exit (1);
+    }
+
+  if (udev_enumerate_scan_devices (udev_enum) < 0)
+    {
+      udev_unref (udev);
+      udev_enumerate_unref (udev_enum);
+      syslog (LOG_ERR, "udev_enumerate_scan_devices failed");
+      exit (1);
+    }
+
+  first = udev_enumerate_get_list_entry (udev_enum);
+  if (first == NULL)
+    {
+      udev_unref (udev);
+      udev_enumerate_unref (udev_enum);
+      syslog (LOG_ERR, "no device named %s found", devname);
+      exit (1);
+    }
+
+  device = udev_device_new_from_syspath (udev,
+					 udev_list_entry_get_name (first));
+  if (device == NULL)
+    {
+      udev_unref (udev);
+      udev_enumerate_unref (udev_enum);
+      syslog (LOG_ERR, "unable to examine device");
+      exit (1);
+    }
+
+  devpath = udev_device_get_devpath (device);
+  udev_unref (udev);
+  udev_enumerate_unref (udev_enum);
+  if (!devpath)
+    {
+      syslog (LOG_ERR, "no devpath for device");
+      exit (1);
+    }
+
+  g_free (devname);
+  return g_strdup (devpath);
 }
 
 static char *
@@ -1490,52 +1618,31 @@ bluetooth_verify_address (const char *bdaddr)
 }
 
 static int
-do_add (const char *cmd, const char *devpath, int detach)
+do_add (const char *cmd, const char *esc_devname)
 {
-  pid_t pid;
-  int f;
   struct device_id id;
   struct device_uris device_uris;
   struct usb_uri_map *map;
+  char *devpath = NULL;
   char *usb_device_devpath = NULL;
   char usbserial[256];
   char usblpdev[8] = "";
   gboolean is_bluetooth;
 
-  if (detach && getenv ("DEBUG") == NULL)
-    {
-      if ((pid = fork ()) == -1)
-	syslog (LOG_ERR, "Failed to fork process");
-      else if (pid != 0)
-	/* Parent. */
-	exit (0);
+  syslog (LOG_DEBUG, "add %s", esc_devname);
 
-      close (STDIN_FILENO);
-      close (STDOUT_FILENO);
-      close (STDERR_FILENO);
-      f = open ("/dev/null", O_RDWR);
-      if (f != STDIN_FILENO)
-	dup2 (f, STDIN_FILENO);
-      if (f != STDOUT_FILENO)
-	dup2 (f, STDOUT_FILENO);
-      if (f != STDERR_FILENO)
-	dup2 (f, STDERR_FILENO);
-
-      setsid ();
-    }
-
-  syslog (LOG_DEBUG, "add %s", devpath);
-
-  is_bluetooth = bluetooth_verify_address (devpath);
+  is_bluetooth = bluetooth_verify_address (esc_devname);
 
   map = read_usb_uri_map ();
   if (is_bluetooth) {
     usbserial[0] = '\0';
-    device_id_from_bluetooth (devpath, &id);
+    device_id_from_bluetooth (esc_devname, &id);
   } else {
+    devpath = devpath_from_esc_devname (esc_devname);
     usb_device_devpath = device_id_from_devpath (devpath, map, &id,
 						 usbserial, sizeof (usbserial),
 						 usblpdev, sizeof (usblpdev));
+    g_free (devpath);
   }
 
   if (!id.mfg || !id.mdl)
@@ -1724,73 +1831,6 @@ do_remove (const char *devpath)
   return 0;
 }
 
-static int
-do_enumerate (const char *argv0)
-{
-  struct udev *udev;
-  struct udev_enumerate *e;
-  struct udev_list_entry *item = NULL, *first = NULL;
-  int r = 0;
-
-  udev = udev_new ();
-  if (udev == NULL)
-    {
-      syslog (LOG_ERR, "udev_new failed");
-      exit (1);
-    }
-
-  e = udev_enumerate_new (udev);
-  if (e == NULL)
-    {
-      udev_unref (udev);
-      syslog (LOG_ERR, "udev_enumerate_new failed");
-      exit (1);
-    }
-
-  if (udev_enumerate_add_match_tag (e, "udev-configure-printer") < 0)
-    {
-      udev_unref (udev);
-      udev_enumerate_unref (e);
-      syslog (LOG_ERR, "udev_enumerate_add_match_tag failed");
-      exit (1);
-    }
-
-  if (udev_enumerate_scan_devices (e) < 0)
-    {
-      udev_unref (udev);
-      udev_enumerate_unref (e);
-      syslog (LOG_ERR, "udev_enumerate_scan_devices failed");
-      exit (1);
-    }
-
-  first = udev_enumerate_get_list_entry (e);
-  udev_list_entry_foreach (item, first)
-    {
-      int k;
-      const char *p;
-      struct udev_device *d;
-
-      d = udev_device_new_from_syspath (udev, udev_list_entry_get_name(item));
-      if (!d)
-        continue;
-
-      p = udev_device_get_devpath (d);
-      if (p)
-        {
-          k = do_add (argv0, p, 0);
-          if (k != 0)
-            r = k;
-        }
-
-      udev_device_unref (d);
-  }
-
-  udev_enumerate_unref (e);
-  udev_unref (udev);
-
-  return r;
-}
-
 int
 main (int argc, char **argv)
 {
@@ -1818,9 +1858,9 @@ main (int argc, char **argv)
   openlog ("udev-configure-printer", 0, LOG_LPR);
   cupsSetPasswordCB (no_password);
   if (add)
-    return do_add (argv[0], argv[2], 1);
+    return do_add (argv[0], argv[2]);
   if (enumerate)
-    return do_enumerate (argv[0]);
+    return 0; // no-op
 
   return do_remove (argv[2]);
 }

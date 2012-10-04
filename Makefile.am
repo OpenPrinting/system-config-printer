@@ -195,7 +195,7 @@ if HAVE_SYSTEMD
 %.service: %.service.in
 	$(AM_V_GEN)sed -e 's,@udevhelperdir\@,$(udevhelperdir),g' $< > $@
 systemdsystemunit_DATA = \
-	udev/udev-configure-printer.service
+	udev/configure-printer@.service
 CLEANFILES = \
 	$(systemdsystemunit_DATA)
 endif
@@ -275,7 +275,7 @@ EXTRA_DIST=\
 	profile-ppds.py \
 	udev/udev-add-printer \
 	udev/70-printers.rules \
-	udev/udev-configure-printer.service.in \
+	udev/configure-printer@.service.in \
 	xml/preferreddrivers.xml
 
 @INTLTOOL_DESKTOP_RULE@
