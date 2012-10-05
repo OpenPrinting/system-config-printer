@@ -22,10 +22,13 @@
 /*
  * The protocol for this program is:
  *
- * udev-configure-printer add {DEVPATH}
- * udev-configure-printer remove {DEVPATH}
+ * udev-configure-printer add {DEVADDR}
+ * udev-configure-printer remove {DEVADDR}
  *
- * where DEVPATH is the path (%p) of the device
+ * where DEVADDR is one of:
+ *   the USB address of the device in the form usb-$env{BUSNUM}-$env{DEVNUM}
+ *   the device path of the device (%p)
+ *   the bluetooth address of the device
  */
 
 #define LIBUDEV_I_KNOW_THE_API_IS_SUBJECT_TO_CHANGE 1
@@ -877,9 +880,9 @@ device_id_from_bluetooth (const char *bdaddr, struct device_id *id)
 }
 
 static char *
-devpath_from_esc_devname (struct udev *udev, const char *esc_devname)
+devpath_from_usb_devaddr (struct udev *udev, const char *devaddr)
 {
-  char *devname_ending = g_strdup (esc_devname);
+  char *devname_ending = g_strdup (devaddr);
   char *devname;
   const char *devpath;
   struct udev_enumerate *udev_enum;
@@ -1581,7 +1584,7 @@ bluetooth_verify_address (const char *bdaddr)
 }
 
 static int
-do_add (const char *cmd, const char *esc_devname)
+do_add (const char *cmd, const char *devaddr)
 {
   struct device_id id;
   struct device_uris device_uris;
@@ -1593,14 +1596,14 @@ do_add (const char *cmd, const char *esc_devname)
   char usblpdev[8] = "";
   gboolean is_bluetooth;
 
-  syslog (LOG_DEBUG, "add %s", esc_devname);
+  syslog (LOG_DEBUG, "add %s", devaddr);
 
-  is_bluetooth = bluetooth_verify_address (esc_devname);
+  is_bluetooth = bluetooth_verify_address (devaddr);
 
   map = read_usb_uri_map ();
   if (is_bluetooth) {
     usbserial[0] = '\0';
-    device_id_from_bluetooth (esc_devname, &id);
+    device_id_from_bluetooth (devaddr, &id);
   } else {
     udev = udev_new ();
     if (udev == NULL)
@@ -1609,11 +1612,16 @@ do_add (const char *cmd, const char *esc_devname)
 	exit (1);
       }
 
-    devpath = devpath_from_esc_devname (udev, esc_devname);
+    if (!strncmp (devaddr, "usb-", 4))
+      devpath = devpath_from_usb_devaddr (udev, devaddr);
+    else
+      devpath = g_strdup (devaddr);
+
     usb_device_devpath = device_id_from_devpath (udev, devpath, map, &id,
 						 usbserial, sizeof (usbserial),
 						 usblpdev, sizeof (usblpdev));
     g_free (devpath);
+    udev_unref (udev);
   }
 
   if (!id.mfg || !id.mdl)
@@ -1758,23 +1766,39 @@ disable_queue (const char *printer_uri, void *context)
 }
 
 static int
-do_remove (const char *devpath)
+do_remove (const char *devaddr)
 {
   struct usb_uri_map *map;
   struct usb_uri_map_entry *entry, **prev;
   struct device_uris *uris = NULL;
   char usblpdev[8] = "";
-  syslog (LOG_DEBUG, "remove %s", devpath);
+  gchar *devpath = NULL;
+  syslog (LOG_DEBUG, "remove %s", devaddr);
 
-  if (bluetooth_verify_address (devpath))
+  if (bluetooth_verify_address (devaddr))
     {
       char *device_uri;
 
-      device_uri = uri_from_bdaddr (devpath);
+      device_uri = uri_from_bdaddr (devaddr);
       remove_queue (devpath);
       g_free (device_uri);
       return 0;
     }
+
+  if (!strncmp (devaddr, "usb-", 4))
+    {
+      struct udev *udev = udev_new ();
+      if (udev == NULL)
+	{
+	  syslog (LOG_ERR, "udev_new failed");
+	  exit (1);
+	}
+
+      devpath = devpath_from_usb_devaddr (udev, devaddr);
+      udev_unref (udev);
+    }
+  else
+    devpath = g_strdup (devaddr);
 
   map = read_usb_uri_map ();
   prev = &map->entries;
@@ -1799,6 +1823,7 @@ do_remove (const char *devpath)
     }
 
   free_usb_uri_map (map);
+  g_free (devpath);
   return 0;
 }
 
