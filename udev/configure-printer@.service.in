@@ -5,8 +5,3 @@ After=cups.socket
 
 [Service]
 ExecStart=@udevhelperdir@/configure-printer add "%i"
-ExecStop=@udevhelperdir@/configure-printer remove "%i"
-RemainAfterExit=Yes
-
-[Install]
-#WantedBy=printer.target
