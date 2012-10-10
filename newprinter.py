@@ -2,7 +2,7 @@
 
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2012 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 ##  Florian Festi <ffesti@redhat.com>
@@ -1275,7 +1275,7 @@ class NewPrinterGUI(GtkGUI):
                                 debugprint ("nextNPTab: No exact driver match, querying OpenPrinting")
                                 debugprint ('nextNPTab: Searching for "%s"' % devid)
                                 self.searchedfordriverpackages = True
-                                self.drivers_lock.acquire (0)
+                                self.drivers_lock.acquire ()
                                 self.openprinting_query_handle = \
                                     self.openprinting.searchPrinters (devid,
                                                                       self.openprinting_printers_found)
@@ -3151,7 +3151,7 @@ class NewPrinterGUI(GtkGUI):
         label.set_text (_("Searching"))
         searchterm = self.entNPDownloadableDriverSearch.get_text ()
         debugprint ('Searching for "%s"' % searchterm)
-        self.drivers_lock.acquire (0)
+        self.drivers_lock.acquire ()
         self.openprinting_query_handle = \
             self.openprinting.searchPrinters (searchterm,
                                               self.openprinting_printers_found)
@@ -3287,7 +3287,11 @@ class NewPrinterGUI(GtkGUI):
         except:
             nonfatalException()
         #gtk.gdk.threads_leave ()
-        self.drivers_lock.release ()
+
+        # Lock may have been released when printer list was changed,
+        # or we may have caught an exception before that.
+        if (self.drivers_lock.locked ()):
+            self.drivers_lock.release ()
 
     def on_cmbNPDownloadableDriverFoundPrinters_changed(self, widget):
         self.setNPButtons ()
