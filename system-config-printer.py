@@ -1984,7 +1984,9 @@ def main(show_jobs):
         mainwindow = GUI()
 
     if gtk.__dict__.has_key("main"):
+        gtk.gdk.threads_enter()
         gtk.main()
+        gtk.gdk.threads_leave()
     else:
         gtk.mainloop()
 
