@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-## Copyright (C) 2008, 2009, 2010 Red Hat, Inc.
+## Copyright (C) 2008, 2009, 2010, 2012 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 
@@ -213,6 +213,14 @@ class PhysicalDevice:
         if (self._network_host != None or
             other._network_host != None):
             return cmp (self._network_host, other._network_host)
+
+        devs = other.get_devices()
+        if devs:
+            uris = map (lambda x: x.uri, self.devices)
+            for dev in devs:
+                if dev.uri in uris:
+                    # URI match
+                    return 0
 
         if (other.mfg == '' and other.mdl == '') or \
            (self.mfg == '' and self.mdl == ''):
