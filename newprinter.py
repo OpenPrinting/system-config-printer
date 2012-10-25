@@ -2644,7 +2644,7 @@ class NewPrinterGUI(GtkGUI):
                 (scheme, rest) = urllib.splittype (device.uri)
                 (name, rest) = urllib.splithost (rest)
                 (cupsqueue, rest) = urllib.splitquery (rest)
-                if cupsqueue[0] == '/':
+                if cupsqueue != '' and cupsqueue[0] == '/':
                     cupsqueue = cupsqueue[1:]
                 if cupsqueue == 'cups':
                     device.menuentry = _("Remote CUPS printer via DNS-SD")
@@ -2795,7 +2795,7 @@ class NewPrinterGUI(GtkGUI):
                 (scheme, rest) = urllib.splittype (device.uri)
                 (name, rest) = urllib.splithost (rest)
                 (cupsqueue, rest) = urllib.splitquery (rest)
-                if cupsqueue[0] == '/':
+                if cupsqueue != '' and cupsqueue[0] == '/':
                     cupsqueue = cupsqueue[1:]
                 if cupsqueue == 'cups':
                     text = _("Remote CUPS printer via DNS-SD")
