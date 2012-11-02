@@ -2271,17 +2271,20 @@ class JobViewer (GtkGUI):
             icon = self.icon_jobs
 
         if s == cups.IPP_JOB_HELD:
-            theme = gtk.icon_theme_get_default ()
-            emblem = theme.load_icon (gtk.STOCK_MEDIA_PAUSE, 22 / 2, 0)
-            copy = icon.copy ()
-            emblem.composite (copy, 0, 0,
-                              copy.get_width (),
-                              copy.get_height (),
-                              copy.get_width () / 2 - 1,
-                              copy.get_height () / 2 - 1,
-                              1.0, 1.0,
-                              gtk.gdk.INTERP_NEAREST, 255)
-            icon = copy
+            try:
+                theme = gtk.icon_theme_get_default ()
+                emblem = theme.load_icon (gtk.STOCK_MEDIA_PAUSE, 22 / 2, 0)
+                copy = icon.copy ()
+                emblem.composite (copy, 0, 0,
+                                  copy.get_width (),
+                                  copy.get_height (),
+                                  copy.get_width () / 2 - 1,
+                                  copy.get_height () / 2 - 1,
+                                  1.0, 1.0,
+                                  gtk.gdk.INTERP_NEAREST, 255)
+                icon = copy
+            except gobject.GError:
+                debugprint ("No %s icon available" % gtk.STOCK_MEDIA_PAUSE)
         else:
             # Check state reasons.
             printer = data['job-printer-name']
