@@ -20,7 +20,7 @@
 import threading
 import cups
 import cupspk
-import gobject
+from gi.repository import GLib
 from gi.repository import Gdk
 from gi.repository import Gtk
 import os
@@ -43,7 +43,7 @@ class AuthDialog(Gtk.Dialog):
                   allow_remember=False):
         if title == None:
             title = _("Authentication")
-        gobject.GObject.__init__ (self, title, parent, flags, buttons)
+        Gtk.Dialog.__init__ (self, title, parent, flags, buttons)
         self.auth_info_required = auth_info_required
         self.set_default_response (Gtk.ResponseType.OK)
         self.set_border_width (6)
@@ -254,7 +254,7 @@ class Connection:
                 elif not self._cancel and e == cups.IPP_SERVICE_UNAVAILABLE:
                     if self._lock:
                         self._gui_event.clear ()
-                        gobject.timeout_add (1, self._ask_retry_server_error, m)
+                        GLib.timeout_add (1, self._ask_retry_server_error, m)
                         self._gui_event.wait ()
                     else:
                         self._ask_retry_server_error (m)
@@ -403,14 +403,14 @@ class Connection:
         if self._dialog_shown:
             if self._lock:
                 self._gui_event.clear ()
-                gobject.timeout_add (1, self._show_not_authorized_dialog)
+                GLib.timeout_add (1, self._show_not_authorized_dialog)
                 self._gui_event.wait ()
             else:
                 self._show_not_authorized_dialog ()
 
         if self._lock:
             self._gui_event.clear ()
-            gobject.timeout_add (1, self._perform_authentication_with_dialog)
+            GLib.timeout_add (1, self._perform_authentication_with_dialog)
             self._gui_event.wait ()
         else:
             self._perform_authentication_with_dialog ()

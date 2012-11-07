@@ -21,14 +21,14 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-import gobject
+from gi.repository import GObject
 from gi.repository import Gtk
 import os
 
 import config
 pkgdata = config.pkgdatadir
 
-class GtkGUI(gobject.GObject):
+class GtkGUI(GObject.GObject):
     def getWidgets(self, widgets, domain=None):
         ui_dir = os.environ.get ("SYSTEM_CONFIG_PRINTER_UI",
                                  os.path.join (pkgdata, "ui"))

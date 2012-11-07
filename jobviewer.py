@@ -26,8 +26,8 @@ import dbus.glib
 import dbus.service
 from gi.repository import Notify
 import gettext
-import glib
-import gobject
+from gi.repository import GLib
+from gi.repository import GObject
 from gi.repository import Gdk
 from gi.repository import Gtk
 from gui import GtkGUI
@@ -161,18 +161,17 @@ class PrinterURIIndex:
         return name
 
 
-class CancelJobsOperation(gobject.GObject):
+class CancelJobsOperation(GObject.GObject):
     __gsignals__ = {
-        'destroy':     (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, []),
-        'job-deleted': (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
-                        [gobject.TYPE_INT]),
-        'ipp-error':   (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
-                        [gobject.TYPE_INT, gobject.TYPE_PYOBJECT]),
-        'finished':    (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, [])
+        'destroy':     (GObject.SignalFlags.RUN_LAST, None, ()),
+        'job-deleted': (GObject.SignalFlags.RUN_LAST, None, (int,)),
+        'ipp-error':   (GObject.SignalFlags.RUN_LAST, None,
+                        (int, str)), #gobject.TYPE_PYOBJECT)),
+        'finished':    (GObject.SignalFlags.RUN_LAST, None, ())
         }
 
     def __init__ (self, parent, host, port, encryption, jobids, purge_job):
-        gobject.GObject.__init__ (self)
+        GObject.GObject.__init__ (self)
         self.jobids = list (jobids)
         self.purge_job = purge_job
         self.host = host
@@ -306,7 +305,7 @@ class CancelJobsOperation(gobject.GObject):
                                   reply_handler=self.cancelJob_finish,
                                   error_handler=self.cancelJob_error)
 
-gobject.type_register (CancelJobsOperation)
+#GObject.type_register (CancelJobsOperation)
 
 class JobViewer (GtkGUI):
     required_job_attributes = set(['job-k-octets',
@@ -318,14 +317,14 @@ class JobViewer (GtkGUI):
                                    'job-preserved'])
 
     __gsignals__ = {
-        'finished':    (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, [])
+        'finished':    (GObject.SignalType.RUN_LAST, None, ())
         }
 
     def __init__(self, bus=None, loop=None,
                  applet=False, suppress_icon_hide=False,
                  my_jobs=True, specific_dests=None,
                  parent=None):
-        gobject.GObject.__init__ (self)
+        GObject.GObject.__init__ (self)
         self.loop = loop
         self.applet = applet
         self.suppress_icon_hide = suppress_icon_hide
@@ -515,7 +514,7 @@ class JobViewer (GtkGUI):
         def load_icon(theme, icon):
             try:
                 pixbuf = theme.load_icon (icon, ICON_SIZE, 0)
-            except gobject.GError:
+            except GObject.GError:
                 debugprint ("No %s icon available" % icon)
                 # Just create an empty pixbuf.
                 pixbuf = GdkPixbuf.Pixbuf (Gdk.COLORSPACE_RGB,
@@ -628,14 +627,14 @@ class JobViewer (GtkGUI):
                 if notification.get_data ('closed') != True:
                     try:
                         notification.close ()
-                    except gobject.GError:
+                    except GObject.GError:
                         # Can fail if the notification wasn't even shown
                         # yet (as in bug #571603).
                         pass
                     notification.set_data ('closed', True)
 
         if self.job_creation_times_timer != None:
-            gobject.source_remove (self.job_creation_times_timer)
+            GLib.source_remove (self.job_creation_times_timer)
             self.job_creation_times_timer = None
 
         for op in self.ops:
@@ -759,12 +758,12 @@ class JobViewer (GtkGUI):
                 Gdk.threads_leave ()
                 return ret
 
-            t = gobject.timeout_add_seconds (60, update_times_with_locking)
+            t = GLib.timeout_add_seconds (60, update_times_with_locking)
             self.job_creation_times_timer = t
 
         if not need_update:
             if self.job_creation_times_timer:
-                gobject.source_remove (self.job_creation_times_timer)
+                GLib.source_remove (self.job_creation_times_timer)
                 self.job_creation_times_timer = None
 
         # Return code controls whether the timeout will recur.
@@ -815,7 +814,7 @@ class JobViewer (GtkGUI):
                 Gdk.threads_leave ()
                 return False
 
-            gobject.timeout_add (500, start_updating_job_creation_times)
+            GLib.timeout_add (500, start_updating_job_creation_times)
 
     def update_monitor (self):
         self.monitor.update ()
@@ -1250,7 +1249,7 @@ class JobViewer (GtkGUI):
                 env[name] = value
             p = subprocess.Popen ([ "system-config-printer" ],
                                   close_fds=True, env=env)
-            gobject.timeout_add_seconds (10, self.poll_subprocess, p)
+            GLib.timeout_add_seconds (10, self.poll_subprocess, p)
 
     def poll_subprocess(self, process):
         returncode = process.poll ()
@@ -1477,8 +1476,7 @@ class JobViewer (GtkGUI):
                 cell = Gtk.CellRendererText ()
                 attr_treeview.insert_column_with_attributes(1, _("Value"),
                                                             cell, text=1)
-                attr_store = Gtk.ListStore(gobject.TYPE_STRING,
-                                           gobject.TYPE_STRING)
+                attr_store = Gtk.ListStore(str, str)
                 attr_treeview.set_model(attr_store)
                 attr_treeview.get_selection().set_mode(Gtk.SelectionMode.NONE)
                 attr_store.set_sort_column_id (0, Gtk.SortType.ASCENDING)
@@ -1564,7 +1562,7 @@ class JobViewer (GtkGUI):
                                       pixbuf.get_height () / 2,
                                       0.5, 0.5,
                                       GdkPixbuf.InterpType.BILINEAR, 255)
-                except gobject.GError:
+                except GObject.GError:
                     debugprint ("No %s icon available" % icon)
 
         return pixbuf
@@ -1730,7 +1728,7 @@ class JobViewer (GtkGUI):
         self.set_statusicon_visibility ()
         try:
             notification.show ()
-        except gobject.GError:
+        except GObject.GError:
             nonfatalException ()
 
     def on_state_reason_notification_closed (self, notification, reason=None):
@@ -1785,7 +1783,7 @@ class JobViewer (GtkGUI):
         self.set_statusicon_visibility ()
         try:
             notification.show ()
-        except gobject.GError:
+        except GObject.GError:
             nonfatalException ()
 
     def on_completed_job_notification_closed (self, notification, reason=None):
@@ -2077,7 +2075,7 @@ class JobViewer (GtkGUI):
             if notification.get_data ('closed') != True:
                 try:
                     notification.close ()
-                except gobject.GError:
+                except GObject.GError:
                     # Can fail if the notification wasn't even shown
                     # yet (as in bug #545733).
                     pass
@@ -2135,7 +2133,7 @@ class JobViewer (GtkGUI):
         if notification.get_data ('closed') != True:
             try:
                 notification.close ()
-            except gobject.GError:
+            except GObject.GError:
                 # Can fail if the notification wasn't even shown
                 pass
             notification.set_data ('closed', True)
@@ -2282,7 +2280,7 @@ class JobViewer (GtkGUI):
                                   1.0, 1.0,
                                   GdkPixbuf.InterpType.NEAREST, 255)
                 icon = copy
-            except gobject.GError:
+            except GObject.GError:
                 debugprint ("No %s icon available" % gtk.STOCK_MEDIA_PAUSE)
         else:
             # Check state reasons.
@@ -2334,4 +2332,4 @@ class JobViewer (GtkGUI):
 
         return True
 
-gobject.type_register (JobViewer)
+#gobject.type_register (JobViewer)
