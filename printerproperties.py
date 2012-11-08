@@ -495,6 +495,7 @@ class PrinterPropertiesDialog(GtkGUI):
 
         self._monitor = None
         self._ppdcache = None
+        self.connect_signals ()
         debugprint ("+%s" % self)
 
     def __del__ (self):

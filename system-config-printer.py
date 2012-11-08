@@ -371,10 +371,7 @@ class GUI(GtkGUI):
         self.AboutDialog.set_version(config.VERSION)
         self.AboutDialog.set_icon_name('printer')
 
-        try:
-            slip.gtk.label_set_autowrap(self.PrintersWindow)
-        except: # no slip.gtk module
-            gtk_label_autowrap.set_autowrap(self.PrintersWindow)
+        gtk_label_autowrap.set_autowrap(self.PrintersWindow)
 
         try:
             self.cups = authconn.Connection(self.PrintersWindow)
@@ -441,6 +438,8 @@ class GUI(GtkGUI):
 
         # Printer Properties dialog
         self.propertiesDlg = printerproperties.PrinterPropertiesDialog ()
+
+        self.connect_signals ()
 
         try:
             self.populateList()
@@ -1544,7 +1543,7 @@ class GUI(GtkGUI):
         self.monitor.update ()
 
     # Enable/disable
-    def on_enabled_activate(self, toggle_action, UNUSED):
+    def on_enabled_activate(self, toggle_action):
         if self.updating_widgets:
             return
         enable = toggle_action.get_active ()
@@ -1569,7 +1568,7 @@ class GUI(GtkGUI):
         self.monitor.update ()
 
     # Shared
-    def on_shared_activate(self, menuitem, UNUSED):
+    def on_shared_activate(self, menuitem):
         if self.updating_widgets:
             return
         share = menuitem.get_active ()

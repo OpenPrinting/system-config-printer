@@ -119,6 +119,7 @@ class ServerSettings(GtkGUI):
         if parent:
             self.dialog.set_transient_for (parent)
 
+        self.connect_signals ()
         self.dialog.show ()
 
     def get_dialog (self):

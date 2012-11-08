@@ -2,7 +2,7 @@
 
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008, 2009, 2010 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2012 Red Hat, Inc.
 ## Authors:
 ##  Florian Festi <ffesti@redhat.com>
 ##  Tim Waugh <twaugh@redhat.com>
@@ -33,7 +33,7 @@ class GtkGUI(GObject.GObject):
         ui_dir = os.environ.get ("SYSTEM_CONFIG_PRINTER_UI",
                                  os.path.join (pkgdata, "ui"))
         for xmlfile, names in widgets.iteritems ():
-            bld = Gtk.Builder ()
+            self._bld = bld = Gtk.Builder ()
 
             if domain:
                 bld.set_translation_domain (domain)
@@ -55,4 +55,5 @@ class GtkGUI(GObject.GObject):
                                             self.focus_on_map)
                 widget.show()
 
-            bld.connect_signals (self)
+    def connect_signals (self):
+        self._bld.connect_signals (self)

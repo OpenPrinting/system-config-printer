@@ -415,10 +415,7 @@ class NewPrinterGUI(GtkGUI):
         self.WaitWindow_handler = self.WaitWindow.connect ("delete-event",
                                                            on_delete_just_hide)
 
-        try:
-            slip.gtk.label_set_autowrap(self.NewPrinterWindow)
-        except: # no slip.gtk module
-            gtk_label_autowrap.set_autowrap(self.NewPrinterWindow)
+        gtk_label_autowrap.set_autowrap(self.NewPrinterWindow)
 
         self.ntbkNewPrinter.set_show_tabs(False)
         self.ntbkPPDSource.set_show_tabs(False)
@@ -522,6 +519,8 @@ class NewPrinterGUI(GtkGUI):
         ppd_filter.set_name(_("All files (*)"))
         ppd_filter.add_pattern("*")
         self.filechooserPPD.add_filter(ppd_filter)
+
+        self.connect_signals ()
         debugprint ("+%s" % self)
 
     def __del__ (self):
@@ -2570,7 +2569,6 @@ class NewPrinterGUI(GtkGUI):
         return False
 
     def on_tvNPDevices_cursor_changed(self, widget):
-
         # Reset previous driver search result
         self.installed_driver_files = []
         self.searchedfordriverpackages = False

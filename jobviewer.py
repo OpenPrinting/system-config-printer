@@ -546,6 +546,7 @@ class JobViewer (GtkGUI):
         if bus == None:
             bus = dbus.SystemBus ()
 
+        self.connect_signals ()
         self.set_process_pending (True)
         self.host = cups.getServer ()
         self.port = cups.getPort ()
