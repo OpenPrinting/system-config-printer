@@ -1,7 +1,7 @@
 ## This code was translated to python from the original C version in
 ## Rhythmbox. The original authors are:
 
-## Copyright (C) 2002 Jorn Baayen <jorn@nl.linux.org>
+## Copyright (C) 2002, 2012 Jorn Baayen <jorn@nl.linux.org>
 ## Copyright (C) 2003 Colin Walters <walters@verbum.org>
 
 ## Further modifications by:
@@ -25,7 +25,8 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-import gobject
+from gi.repository import GObject
+from gi.repository import GLib
 from gi.repository import Gdk
 from gi.repository import Gtk
 import HIG
@@ -33,22 +34,22 @@ from gettext import gettext as _
 
 class ToolbarSearchEntry (Gtk.HBox):
     __gproperties__ = {
-        'search_timeout' : (gobject.TYPE_UINT,
+        'search_timeout' : (GObject.TYPE_UINT,
                             'search timeout',
                             'search signal rate limiter (in ms)',
                             0,
                             5000,
                             300,
-                            gobject.PARAM_READWRITE)
+                            GObject.PARAM_READWRITE)
         }
 
     __gsignals__ = {
-        'search' : (gobject.SIGNAL_RUN_LAST,
-                    gobject.TYPE_NONE,
-                    [ gobject.TYPE_STRING ]),
-        'activate' : (gobject.SIGNAL_RUN_LAST,
-                      gobject.TYPE_NONE,
-                      [])
+        'search' : (GObject.SIGNAL_RUN_LAST,
+                    None,
+                    (str,)),
+        'activate' : (GObject.SIGNAL_RUN_LAST,
+                      None,
+                      ())
         }
 
     def __init__ (self):
@@ -58,7 +59,7 @@ class ToolbarSearchEntry (Gtk.HBox):
         self.search_timeout = 300
         self.menu = None
 
-        Gtk.HBox.__gobject_init__ (self)
+        Gtk.HBox.__init__ (self)
         self.set_spacing (HIG.PAD_NORMAL)
         self.set_border_width (HIG.PAD_NORMAL)
 
@@ -105,7 +106,7 @@ class ToolbarSearchEntry (Gtk.HBox):
 
     def clear (self):
         if self.timeout != 0:
-            gobject.source_remove (self.timeout)
+            GLib.source_remove (self.timeout)
             self.timeout = 0
 
         self.entry.set_text ("")
@@ -137,14 +138,14 @@ class ToolbarSearchEntry (Gtk.HBox):
         self.check_style ()
 
         if self.timeout != 0:
-            gobject.source_remove (self.timeout)
+            GLib.source_remove (self.timeout)
             self.timeout = 0
 
        	# emit it now if we have no more text
         has_text = self.entry.get_text_length () > 0
         if has_text:
-            self.timeout = gobject.timeout_add (self.search_timeout,
-                                                self.on_search_timeout)
+            self.timeout = GLib.timeout_add (self.search_timeout,
+                                             self.on_search_timeout)
         else:
             self.on_search_timeout ()
 
@@ -162,7 +163,7 @@ class ToolbarSearchEntry (Gtk.HBox):
         if self.timeout == 0:
             return False
 
-        gobject.source_remove (self.timeout)
+        GLib.source_remove (self.timeout)
         self.timeout = 0
 
         self.emit ('search', self.entry.get_text ())
@@ -202,4 +203,4 @@ class ToolbarSearchEntry (Gtk.HBox):
 
             self.menu.popup (None, None, None, event.button, event.time)
 
-gobject.type_register (ToolbarSearchEntry)
+#gobject.type_register (ToolbarSearchEntry)

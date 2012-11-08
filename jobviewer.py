@@ -50,7 +50,7 @@ import errordialogs
 cups.require("1.9.47")
 
 try:
-    import gnomekeyring
+    from gi.repository import GnomeKeyring
     USE_KEYRING=True
 except ImportError:
     USE_KEYRING=False
@@ -163,11 +163,11 @@ class PrinterURIIndex:
 
 class CancelJobsOperation(GObject.GObject):
     __gsignals__ = {
-        'destroy':     (GObject.SignalFlags.RUN_LAST, None, ()),
-        'job-deleted': (GObject.SignalFlags.RUN_LAST, None, (int,)),
-        'ipp-error':   (GObject.SignalFlags.RUN_LAST, None,
-                        (int, str)), #gobject.TYPE_PYOBJECT)),
-        'finished':    (GObject.SignalFlags.RUN_LAST, None, ())
+        'destroy':     (GObject.SIGNAL_RUN_LAST, None, ()),
+        'job-deleted': (GObject.SIGNAL_RUN_LAST, None, (int,)),
+        'ipp-error':   (GObject.SIGNAL_RUN_LAST, None,
+                        (int, GObject.TYPE_PYOBJECT)),
+        'finished':    (GObject.SIGNAL_RUN_LAST, None, ())
         }
 
     def __init__ (self, parent, host, port, encryption, jobids, purge_job):
@@ -317,7 +317,7 @@ class JobViewer (GtkGUI):
                                    'job-preserved'])
 
     __gsignals__ = {
-        'finished':    (GObject.SignalType.RUN_LAST, None, ())
+        'finished':    (GObject.SIGNAL_RUN_LAST, None, ())
         }
 
     def __init__(self, bus=None, loop=None,
@@ -919,7 +919,7 @@ class JobViewer (GtkGUI):
 
                 # Find out which auth-info is required.
                 try_keyring = USE_KEYRING
-                keyring_attrs = dict()
+                keyring_attrs = {}
                 auth_info = None
                 if try_keyring and 'password' in auth_info_required:
                     auth_info_required = data.get ('auth-info-required', [])
@@ -933,31 +933,30 @@ class JobViewer (GtkGUI):
                     else:
                         (serverport, rest) = urllib.splithost (rest)
                         (server, port) = urllib.splitnport (serverport)
-                    keyring_attrs.update ({ "server": str (server.lower ()),
-                                            "protocol": str (scheme)})
+                    keyring_attrs.update ({"server": str (server.lower ()),
+                                           "protocol": str (scheme)})
 
                 if job in self.authenticated_jobs:
                     # We've already tried to authenticate this job before.
                     try_keyring = False
 
                 if try_keyring and 'password' in auth_info_required:
-                    type = gnomekeyring.ITEM_NETWORK_PASSWORD
-                    try:
-                        items = gnomekeyring.find_items_sync (type,
-                                                              keyring_attrs)
+                    type = GnomeKeyring.ItemType.NETWORK_PASSWORD
+                    attrs = GnomeKeyring.Attribute.list_new ()
+                    for key, val in keyring_attrs.iteritems ():
+                        GnomeKeyring.Attribute.list_append_string (attrs,
+                                                                   key,
+                                                                   val)
+                    (result, items) = GnomeKeyring.find_items_sync (type,
+                                                                    attrs)
+                    if result == GnomeKeyring.Result.OK:
                         auth_info = map (lambda x: '', auth_info_required)
                         ind = auth_info_required.index ('username')
                         auth_info[ind] = items[0].attributes.get ('user', '')
                         ind = auth_info_required.index ('password')
                         auth_info[ind] = items[0].secret
-                    except gnomekeyring.NoMatchError:
-                        debugprint ("gnomekeyring: no match for %s" %
-                                    keyring_attrs)
-                    except gnomekeyring.DeniedError:
-                        debugprint ("gnomekeyring: denied for %s" %
-                                    keyring_attrs)
-                    except Exception, e:
-                        debugprint ("gnomekeyring: caught exception %s" % e)
+                    else:
+                        debugprint ("gnomekeyring: look-up result %s" % result)
 
                 if try_keyring and c == None:
                     try:
@@ -1064,22 +1063,27 @@ class JobViewer (GtkGUI):
 
         if remember:
             try:
-                keyring = gnomekeyring.get_default_keyring_sync ()
-                type = gnomekeyring.ITEM_NETWORK_PASSWORD
-                attrs = dialog.get_data ("keyring-attrs")
+                keyring = GnomeKeyring.get_default_keyring_sync ()
+                type = GnomeKeyring.ItemType.NETWORK_PASSWORD
+                keyring_attrs = dialog.get_data ("keyring-attrs")
                 auth_info_required = dialog.get_data ('auth-info-required')
-                if attrs != None and auth_info_required != None:
+                if keyring_attrs != None and auth_info_required != None:
                     try:
                         ind = auth_info_required.index ('username')
-                        attrs['user'] = auth_info[ind]
+                        keyring_attrs['user'] = auth_info[ind]
                     except IndexError:
                         pass
 
-                    name = "%s@%s (%s)" % (attrs.get ("user"),
-                                           attrs.get ("server"),
-                                           attrs.get ("protocol"))
+                    name = "%s@%s (%s)" % (keyring_attrs.get ("user"),
+                                           keyring_attrs.get ("server"),
+                                           keyring_attrs.get ("protocol"))
                     ind = auth_info_required.index ('password')
                     secret = auth_info[ind]
+                    attrs = GnomeKeyring.Attribute.list_new ()
+                    for key, val in keyring_attrs.iteritems ():
+                        GnomeKeyring.Attribute.list_append_string (attrs,
+                                                                   key,
+                                                                   val)
                     id = gnomekeyring.item_create_sync (keyring, type, name,
                                                         attrs, secret, True)
                     debugprint ("keyring: created id %d for %s" % (id, name))

@@ -2,7 +2,7 @@
 
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2012 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 ##  Florian Festi <ffesti@redhat.com>
@@ -63,7 +63,8 @@ gettext.textdomain (config.PACKAGE)
 gettext.bindtextdomain (config.PACKAGE, config.localedir)
 
 import cupshelpers
-import gobject # for TYPE_STRING and TYPE_PYOBJECT
+from gi.repository import GObject
+from gi.repository import GLib
 from gui import GtkGUI
 from debug import *
 import gtk_label_autowrap
@@ -403,10 +404,10 @@ class GUI(GtkGUI):
         self.servicestart = ServiceStart ()
 
         # Setup icon view
-        self.mainlist = Gtk.ListStore(gobject.TYPE_PYOBJECT, # Object
-                                      GdkPixbuf.Pixbuf,      # Pixbuf
-                                      gobject.TYPE_STRING,   # Name
-                                      gobject.TYPE_STRING)   # Tooltip
+        self.mainlist = Gtk.ListStore(str,              # Object
+                                      GdkPixbuf.Pixbuf, # Pixbuf
+                                      str,              # Name
+                                      str)              # Tooltip
 
         self.dests_iconview.set_model(self.mainlist)
         self.dests_iconview.set_column_spacing (30)
@@ -852,7 +853,7 @@ class GUI(GtkGUI):
                 (result, w, h) = Gtk.icon_size_lookup (Gtk.IconSize.DIALOG)
                 try:
                     pixbuf = theme.load_icon (icon, w, 0)
-                except gobject.GError:
+                except GLib.GError:
                     # Not in theme.
                     pixbuf = None
                     for p in [iconpath, 'icons/']:
@@ -860,7 +861,7 @@ class GUI(GtkGUI):
                             pixbuf = GdkPixbuf.Pixbuf.new_from_file ("%s%s.png" %
                                                                    (p, icon))
                             break
-                        except gobject.GError:
+                        except GLib.GError:
                             pass
 
                     if pixbuf == None:
@@ -926,7 +927,7 @@ class GUI(GtkGUI):
                                                   1.0, 1.0,
                                                   GdkPixbuf.InterpType.NEAREST, 255)
                         pixbuf = copy
-                    except gobject.GError:
+                    except GLib.GError:
                         debugprint ("No %s icon available" % def_emblem)
 
                 if emblem:
@@ -942,7 +943,7 @@ class GUI(GtkGUI):
                                                 1.0, 1.0,
                                                 GdkPixbuf.InterpType.NEAREST, 255)
                         pixbuf = copy
-                    except gobject.GError:
+                    except GLib.GError:
                         debugprint ("No %s icon available" % emblem)
 
                 self.mainlist.append (row=[object, pixbuf, name, tip])
@@ -990,7 +991,7 @@ class GUI(GtkGUI):
                           self.propertiesDlg.printer.getServer()) \
                           or cups.getServer()
 
-        store = Gtk.ListStore (gobject.TYPE_STRING)
+        store = Gtk.ListStore (str)
         self.cmbServername.set_model(store)
         self.cmbServername.set_entry_text_column (0)
         for server in servers:
@@ -1023,7 +1024,7 @@ class GUI(GtkGUI):
                                       servername)
         self.ConnectingDialog.set_transient_for(self.PrintersWindow)
         self.ConnectingDialog.show()
-        gobject.timeout_add (40, self.update_connecting_pbar)
+        GLib.timeout_add (40, self.update_connecting_pbar)
         self.connect_server = servername
         # We need to set the connecting user in this thread as well.
         cups.setServer(self.connect_server)
@@ -1615,7 +1616,7 @@ class GUI(GtkGUI):
             self.populateList ()
             Gdk.threads_leave ()
             return False
-        gobject.idle_add (deferred_refresh)
+        GLib.idle_add (deferred_refresh)
 
     def advise_publish(self):
         if not self.server_is_publishing:
@@ -1813,13 +1814,13 @@ class GUI(GtkGUI):
                                  error_handler=self.on_start_service_reply)
 
     def on_start_service_reply (self, *args):
-        gobject.timeout_add_seconds (1, self.service_started_try)
+        GLib.timeout_add_seconds (1, self.service_started_try)
 
     def service_started_try (self):
         Gdk.threads_enter ()
         self.on_btnRefresh_clicked (None)
         Gdk.threads_leave ()
-        gobject.timeout_add_seconds (1, self.service_started_retry)
+        GLib.timeout_add_seconds (1, self.service_started_retry)
         return False
 
     def service_started_retry (self):
@@ -1938,9 +1939,9 @@ class GUI(GtkGUI):
             return False
 
         if self.populateList_timer:
-            gobject.source_remove (self.populateList_timer)
+            GLib.source_remove (self.populateList_timer)
 
-        self.populateList_timer = gobject.timeout_add (200, deferred_refresh)
+        self.populateList_timer = GLib.timeout_add (200, deferred_refresh)
         debugprint ("Deferred populateList by 200ms")
 
     ## Monitor signal handlers
@@ -1963,12 +1964,12 @@ class GUI(GtkGUI):
 
     def cups_connection_recovered (self, mon):
         debugprint ("Trying to recover connection")
-        gobject.idle_add (self.service_started_try)
+        GLib.idle_add (self.service_started_try)
 
 def main(show_jobs):
     cups.setUser (os.environ.get ("CUPS_USER", cups.getUser()))
     Gdk.threads_init ()
-    gobject.threads_init()
+    GObject.threads_init()
     from dbus.glib import DBusGMainLoop
     DBusGMainLoop (set_as_default=True)
 

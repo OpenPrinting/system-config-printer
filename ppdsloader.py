@@ -2,7 +2,7 @@
 
 ## system-config-printer
 
-## Copyright (C) 2010, 2011 Red Hat, Inc.
+## Copyright (C) 2010, 2011, 2012 Red Hat, Inc.
 ## Author: Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
@@ -20,7 +20,7 @@
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 import dbus
-import gobject
+from gi.repository import GObject
 from gi.repository import Gtk
 import cupshelpers
 
@@ -31,7 +31,7 @@ import asyncconn
 from debug import debugprint
 from gettext import gettext as _
 
-class PPDsLoader(gobject.GObject):
+class PPDsLoader(GObject.GObject):
     """
     1. If PackageKit support is available, and this is a local server,
     try to use PackageKit to install relevant drivers.  We do this
@@ -48,13 +48,13 @@ class PPDsLoader(gobject.GObject):
     """
 
     __gsignals__ = {
-        'finished': (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, [])
+        'finished': (GObject.SIGNAL_RUN_LAST, None, ())
         }
 
     def __init__ (self, device_id=None, parent=None, device_uri=None,
                   host=None, encryption=None, language=None,
                   device_make_and_model=None):
-        gobject.GObject.__init__ (self)
+        GObject.GObject.__init__ (self)
         debugprint ("+%s" % self)
         self._device_id = device_id
         self._device_uri = device_uri
@@ -279,7 +279,7 @@ class PPDsLoader(gobject.GObject):
 
             self.emit ('finished')
 
-gobject.type_register(PPDsLoader)
+#gobject.type_register(PPDsLoader)
 
 if __name__ == "__main__":
     class Foo:
@@ -309,9 +309,8 @@ if __name__ == "__main__":
 
             ppdsloader.destroy ()
 
-    import gobject
     from debug import set_debugging
     set_debugging (True)
-    gobject.threads_init ()
+    GObject.threads_init ()
     Foo ()
     Gtk.main ()

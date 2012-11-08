@@ -20,7 +20,7 @@
 
 import asyncconn
 import cups
-import gobject
+from gi.repository import GLib
 from gi.repository import Gdk
 from gi.repository import Gtk
 import os
@@ -175,15 +175,16 @@ class PPDCache:
             Gdk.threads_leave ()
             return False
 
-        gobject.idle_add (cb_func, callback, name, result, exc)
+        GLib.idle_add (cb_func, callback, name, result, exc)
 
 if __name__ == "__main__":
     import sys
     from debug import *
+    from gi.repository import GObject
     set_debugging (True)
-    gobject.threads_init ()
+    GObject.threads_init ()
     Gdk.threads_init ()
-    loop = gobject.MainLoop ()
+    loop = GObject.MainLoop ()
 
     def signal (name, result, exc):
         debugprint ("**** %s" % name)
@@ -200,6 +201,6 @@ if __name__ == "__main__":
         cache.fetch_ppd (p, signal)
 
     if p:
-        gobject.timeout_add_seconds (1, cache.fetch_ppd, p, signal)
-        gobject.timeout_add_seconds (5, loop.quit)
+        GLib.timeout_add_seconds (1, cache.fetch_ppd, p, signal)
+        GLib.timeout_add_seconds (5, loop.quit)
     loop.run ()

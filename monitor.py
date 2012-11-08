@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-## Copyright (C) 2007, 2008, 2009, 2010, 2011 Red Hat, Inc.
+## Copyright (C) 2007, 2008, 2009, 2010, 2011, 2012 Red Hat, Inc.
 ## Author: Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
@@ -21,7 +21,8 @@ import cups
 cups.require("1.9.50")
 import dbus
 import dbus.glib
-import gobject
+from gi.repository import GObject
+from gi.repository import GLib
 import time
 from debug import *
 import pprint
@@ -61,44 +62,40 @@ def collect_printer_state_reasons (connection, ppdcache):
             result[name].append (StateReason (name, reason, ppdcache))
     return result
 
-class Monitor(gobject.GObject):
+class Monitor(GObject.GObject):
     __gsignals__ = {
-        'refresh':               (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
-                                  []),
-        'monitor-exited' :       (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
-                                  []),
-        'state-reason-added':    (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
-                                  [gobject.TYPE_PYOBJECT]),
-        'state-reason-removed':  (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
-                                  [gobject.TYPE_PYOBJECT]),
-        'still-connecting':      (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
-                                  [gobject.TYPE_PYOBJECT]),
-        'now-connected':         (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
-                                  [gobject.TYPE_STRING]),
-        'job-added':             (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
-                                  [gobject.TYPE_INT, gobject.TYPE_STRING,
-                                   gobject.TYPE_PYOBJECT,
-                                   gobject.TYPE_PYOBJECT]),
-        'job-event':             (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
-                                  [gobject.TYPE_INT, gobject.TYPE_STRING,
-                                   gobject.TYPE_PYOBJECT,
-                                   gobject.TYPE_PYOBJECT]),
-        'job-removed':           (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
-                                  [gobject.TYPE_INT, gobject.TYPE_STRING,
-                                   gobject.TYPE_PYOBJECT]),
-        'printer-added':         (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
-                                  [gobject.TYPE_STRING]),
-        'printer-event':         (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
-                                  [gobject.TYPE_STRING, gobject.TYPE_STRING,
-                                   gobject.TYPE_PYOBJECT]),
-        'printer-removed':       (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
-                                  [gobject.TYPE_STRING]),
-        'cups-connection-error': (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
-                                  []),
-        'cups-connection-recovered': (gobject.SIGNAL_RUN_LAST,
-                                      gobject.TYPE_NONE, []),
-        'cups-ipp-error':        (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
-                                  [gobject.TYPE_INT, gobject.TYPE_STRING])
+        'refresh':               (GObject.SIGNAL_RUN_LAST, None, ()),
+        'monitor-exited' :       (GObject.SIGNAL_RUN_LAST, None, ()),
+        'state-reason-added':    (GObject.SIGNAL_RUN_LAST, None,
+                                  (GObject.TYPE_PYOBJECT,)),
+        'state-reason-removed':  (GObject.SIGNAL_RUN_LAST, None,
+                                  (GObject.TYPE_PYOBJECT,)),
+        'still-connecting':      (GObject.SIGNAL_RUN_LAST, None,
+                                  (GObject.TYPE_PYOBJECT,)),
+        'now-connected':         (GObject.SIGNAL_RUN_LAST, None,
+                                  (str,)),
+        'job-added':             (GObject.SIGNAL_RUN_LAST, None,
+                                  (int, str,
+                                   GObject.TYPE_PYOBJECT,
+                                   GObject.TYPE_PYOBJECT,)),
+        'job-event':             (GObject.SIGNAL_RUN_LAST, None,
+                                  (int, str,
+                                   GObject.TYPE_PYOBJECT,
+                                   GObject.TYPE_PYOBJECT,)),
+        'job-removed':           (GObject.SIGNAL_RUN_LAST, None,
+                                  (int, str,
+                                   GObject.TYPE_PYOBJECT,)),
+        'printer-added':         (GObject.SIGNAL_RUN_LAST, None,
+                                  (str,)),
+        'printer-event':         (GObject.SIGNAL_RUN_LAST, None,
+                                  (str, str,
+                                   GObject.TYPE_PYOBJECT,)),
+        'printer-removed':       (GObject.SIGNAL_RUN_LAST, None,
+                                  (str,)),
+        'cups-connection-error': (GObject.SIGNAL_RUN_LAST, None, ()),
+        'cups-connection-recovered': (GObject.SIGNAL_RUN_LAST, None, ()),
+        'cups-ipp-error':        (GObject.SIGNAL_RUN_LAST, None,
+                                  (int, str,))
         }
 
     # Monitor jobs and printers.
@@ -108,7 +105,7 @@ class Monitor(gobject.GObject):
     def __init__(self, bus=None, my_jobs=True,
                  specific_dests=None, monitor_jobs=True, host=None,
                  port=None, encryption=None):
-        gobject.GObject.__init__ (self)
+        GObject.GObject.__init__ (self)
         self.my_jobs = my_jobs
         self.specific_dests = specific_dests
         self.monitor_jobs = monitor_jobs
@@ -188,7 +185,7 @@ class Monitor(gobject.GObject):
             if timer:
                 timers.append (timer)
         for timer in timers:
-            gobject.source_remove (timer)
+            GLib.source_remove (timer)
 
         self.emit ('monitor-exited')
 
@@ -199,8 +196,8 @@ class Monitor(gobject.GObject):
         """Timer callback to check on connecting-to-device reasons."""
         if not self.process_pending_events:
             # Defer the timer by setting a new one.
-            timer = gobject.timeout_add (200, self.check_still_connecting,
-                                         printer)
+            timer = GLib.timeout_add (200, self.check_still_connecting,
+                                      printer)
             self.connecting_timers[printer] = timer
             return False
 
@@ -248,8 +245,8 @@ class Monitor(gobject.GObject):
                                 self.still_connecting.add (printer)
                                 self.emit ('still-connecting', reason)
                             if self.connecting_timers.has_key (printer):
-                                gobject.source_remove (self.connecting_timers
-                                                       [printer])
+                                GLib.source_remove (self.connecting_timers
+                                                    [printer])
                                 del self.connecting_timers[printer]
                                 debugprint ("Stopped connecting timer "
                                             "for `%s'" % printer)
@@ -258,7 +255,7 @@ class Monitor(gobject.GObject):
                     break
 
             if connected and self.connecting_timers.has_key (printer):
-                gobject.source_remove (self.connecting_timers[printer])
+                GLib.source_remove (self.connecting_timers[printer])
                 del self.connecting_timers[printer]
                 debugprint ("Stopped connecting timer for `%s'" % printer)
 
@@ -269,7 +266,7 @@ class Monitor(gobject.GObject):
                 remove.add (printer)
                 self.emit ('now-connected', printer)
                 if self.connecting_timers.has_key (printer):
-                    gobject.source_remove (self.connecting_timers[printer])
+                    GLib.source_remove (self.connecting_timers[printer])
                     del self.connecting_timers[printer]
                     debugprint ("Stopped connecting timer for `%s'" % printer)
 
@@ -304,7 +301,7 @@ class Monitor(gobject.GObject):
                             break
 
                     if have_processing_job:
-                        t = gobject.timeout_add_seconds (
+                        t = GLib.timeout_add_seconds (
                             (1 + CONNECTING_TIMEOUT),
                             self.check_still_connecting,
                             printer)
@@ -330,9 +327,9 @@ class Monitor(gobject.GObject):
         if not self.process_pending_events:
             # Defer the timer callback.
             if self.update_timer:
-                gobject.source_remove (self.update_timer)
+                GLib.source_remove (self.update_timer)
 
-            self.update_timer = gobject.timeout_add (200,
+            self.update_timer = GLib.timeout_add (200,
                                                      self.get_notifications)
             debugprint ("Deferred get_notifications by 200ms")
             return False
@@ -485,11 +482,11 @@ class Monitor(gobject.GObject):
         # D-Bus signals, however, rely on those instead.
         if not self.received_any_dbus_signals:
             if self.update_timer:
-                gobject.source_remove (self.update_timer)
+                GLib.source_remove (self.update_timer)
 
             interval = notifications['notify-get-interval']
-            t = gobject.timeout_add_seconds (interval,
-                                             self.get_notifications)
+            t = GLib.timeout_add_seconds (interval,
+                                          self.get_notifications)
             debugprint ("Next notifications fetch in %ds" % interval)
             self.update_timer = t
 
@@ -520,7 +517,7 @@ class Monitor(gobject.GObject):
                 self.emit ('cups-ipp-error', e, m)
 
             if self.update_timer:
-                gobject.source_remove (self.update_timer)
+                GLib.source_remove (self.update_timer)
 
             debugprint ("Canceled subscription %d" % self.sub_id)
 
@@ -549,7 +546,7 @@ class Monitor(gobject.GObject):
         cups.setUser (user)
 
         if self.sub_id != -1:
-            self.update_timer = gobject.timeout_add_seconds (
+            self.update_timer = GLib.timeout_add_seconds (
                 MIN_REFRESH_INTERVAL,
                 self.get_notifications)
             debugprint ("Next notifications fetch in %ds" %
@@ -568,9 +565,9 @@ class Monitor(gobject.GObject):
 
             self.fetch_first_job_id = 1
             if self.fetch_jobs_timer:
-                gobject.source_remove (self.fetch_jobs_timer)
-            self.fetch_jobs_timer = gobject.timeout_add (5, self.fetch_jobs,
-                                                         refresh_all)
+                GLib.source_remove (self.fetch_jobs_timer)
+            self.fetch_jobs_timer = GLib.timeout_add (5, self.fetch_jobs,
+                                                      refresh_all)
         else:
             jobs = {}
 
@@ -738,9 +735,9 @@ class Monitor(gobject.GObject):
 
     def update(self):
         if self.update_timer:
-            gobject.source_remove (self.update_timer)
+            GLib.source_remove (self.update_timer)
 
-        self.update_timer = gobject.timeout_add (200, self.get_notifications)
+        self.update_timer = GLib.timeout_add (200, self.get_notifications)
         debugprint ("Next notifications fetch in 200ms (update called)")
 
     def handle_dbus_signal(self, *args):
@@ -748,8 +745,6 @@ class Monitor(gobject.GObject):
         self.update ()
         if not self.received_any_dbus_signals:
             self.received_any_dbus_signals = True
-
-gobject.type_register (Monitor)
 
 if __name__ == '__main__':
     class SignalWatcher:
@@ -813,7 +808,7 @@ if __name__ == '__main__':
     m = Monitor ()
     SignalWatcher (m)
     m.refresh ()
-    loop = gobject.MainLoop ()
+    loop = GObject.MainLoop ()
     try:
         loop.run ()
     finally:

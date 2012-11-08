@@ -3,7 +3,7 @@
 ## system-config-printer
 ## CUPS backend
  
-## Copyright (C) 2002, 2003, 2006, 2007, 2008, 2010 Red Hat, Inc.
+## Copyright (C) 2002, 2003, 2006, 2007, 2008, 2010, 2012 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
  
@@ -23,7 +23,6 @@
 
 import errno
 from gettext import gettext as _
-import gobject
 from gi.repository import Gdk
 from gi.repository import Gtk
 import os

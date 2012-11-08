@@ -2,7 +2,7 @@
 
 ## system-config-printer
 
-## Copyright (C) 2008, 2009, 2010, 2011 Red Hat, Inc.
+## Copyright (C) 2008, 2009, 2010, 2011, 2012 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 
@@ -24,7 +24,7 @@ import config
 from gettext import gettext as _
 import cups
 import dbus
-import gobject
+from gi.repository import GObject
 from gi.repository import Gtk
 import os
 import socket
@@ -46,7 +46,7 @@ except AttributeError:
 # Set up "Problems?" link button
 class _UnobtrusiveButton(Gtk.Button):
     def __init__ (self, **args):
-        gobject.GObject.__init__ (self, **args)
+        Gtk.Button.__init__ (self, **args)
         self.set_relief (Gtk.ReliefStyle.NONE)
         label = self.get_child ()
         text = label.get_text ()
@@ -58,15 +58,15 @@ class _UnobtrusiveButton(Gtk.Button):
 class ServerSettings(GtkGUI):
 
     __gsignals__ = {
-        'settings-applied': (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, []),
-        'dialog-canceled': (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, []),
-        'problems-clicked': (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, [])
+        'settings-applied': (GObject.SignalFlags.RUN_LAST, None, ()),
+        'dialog-canceled': (GObject.SignalFlags.RUN_LAST, None, ()),
+        'problems-clicked': (GObject.SignalFlags.RUN_LAST, None, ()),
         }
 
     RESOURCE="/admin/conf/cupsd.conf"
 
     def __init__ (self, host=None, encryption=None, parent=None):
-        gobject.GObject.__init__ (self)
+        GObject.GObject.__init__ (self)
         self.cupsconn = authconn.Connection (host=host, encryption=encryption)
         self._host = host
         self._parent = parent
@@ -186,7 +186,7 @@ class ServerSettings(GtkGUI):
         self.preserve_job_history = preserve_job_history
         self.preserve_job_files = preserve_job_files
 
-        model = Gtk.ListStore (gobject.TYPE_STRING)
+        model = Gtk.ListStore (str)
         self.browse_treeview.set_model (model)
         for server in self.browse_poll:
             model.append (row=[server])
@@ -566,11 +566,11 @@ class ServerSettings(GtkGUI):
         # Now reconnect, in case the server needed to reload.
         self._reconnect ()
 
-gobject.type_register (ServerSettings)
+#gobject.type_register (ServerSettings)
 
 if __name__ == '__main__':
     os.environ['SYSTEM_CONFIG_PRINTER_UI'] = 'ui'
-    loop = gobject.MainLoop ()
+    loop = GObject.MainLoop ()
 
     def quit (*args):
         loop.quit ()

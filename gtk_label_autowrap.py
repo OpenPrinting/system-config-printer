@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2004, 2007 Red Hat, Inc.
+# Copyright (C) 2004, 2007, 2012 Red Hat, Inc.
 # Authors:
 # Thomas Woerner <twoerner@redhat.com>
 # Florian Festi <ffesti@redhat.com>
@@ -19,7 +19,7 @@
 #
 
 from gi.repository import Gtk
-from pango import SCALE
+from gi.repository import Pango
 
 ### set autowrapping for all labels in this widget tree
 def set_autowrap(widget):
@@ -44,7 +44,7 @@ def label_size_allocate(widget, allocation):
     if lw_old == allocation.width:
         return
 
-    layout.set_width(allocation.width * SCALE)
+    layout.set_width(allocation.width * Pango.SCALE)
     lw, lh = layout.get_pixel_size()
 
     if lh_old != lh:

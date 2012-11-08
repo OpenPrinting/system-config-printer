@@ -1,6 +1,6 @@
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2012 Red Hat, Inc.
 ## Copyright (C) 2006 Florian Festi <ffesti@redhat.com>
 ## Copyright (C) 2007, 2008, 2009 Tim Waugh <twaugh@redhat.com>
 
@@ -29,7 +29,8 @@ import subprocess
 import threading
 import errno
 import cups
-import gobject
+from gi.repository import GObject
+from gi.repository import GLib
 import smburi
 
 try:
@@ -222,7 +223,7 @@ class BackgroundSmbAuthContext(pysmb.AuthContext):
             return pysmb.AuthContext.perform_authentication (self)
 
         self._gui_event.clear ()
-        gobject.timeout_add (1, self._do_perform_authentication)
+        GLib.timeout_add (1, self._do_perform_authentication)
         self._gui_event.wait ()
         return self._do_perform_authentication_result
 
@@ -495,7 +496,7 @@ if __name__ == '__main__':
         sys.exit (1)
 
     set_debugging (True)
-    loop = gobject.MainLoop ()
+    loop = GObject.MainLoop ()
 
     def display (device):
         if device == None:

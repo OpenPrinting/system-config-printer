@@ -1,6 +1,6 @@
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2012 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 ##  Florian Festi <ffesti@redhat.com>
@@ -19,7 +19,6 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-import gobject
 from gi.repository import Gtk
 import cups
 import ppdippstr
@@ -142,7 +141,7 @@ class OptionAlwaysShown(OptionInterface):
         if (type(self.widget) == Gtk.ComboBox and
             self.widget.get_model () == None):
             print "No ComboBox model for %s" % self.name
-            model = Gtk.ListStore (gobject.TYPE_STRING)
+            model = Gtk.ListStore (str)
             self.widget.set_model (model)
 
         if combobox_map != None and ipp_type == int:
@@ -221,7 +220,7 @@ class OptionAlwaysShown(OptionInterface):
         t = type(self.widget)
         if t == Gtk.SpinButton:
             return self.widget.set_value (ipp_value)
-     elif t == Gtk.ComboBox:
+        elif t == Gtk.ComboBox:
             if ((self.ipp_type == str or self.ipp_type == IPPResolution)
                 and self.combobox_map == None):
                 model = self.widget.get_model ()

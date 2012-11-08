@@ -2,7 +2,7 @@
 
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2012 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 ##  Florian Festi <ffesti@redhat.com>
@@ -31,7 +31,8 @@ import locale
 from gettext import gettext as _
 
 import cupshelpers, options
-import gobject
+from gi.repository import GObject
+from gi.repository import GLib
 from gui import GtkGUI
 from optionwidgets import OptionWidget
 from debug import *
@@ -60,8 +61,8 @@ def on_delete_just_hide (widget, event):
 class PrinterPropertiesDialog(GtkGUI):
 
     __gsignals__ = {
-        'destroy':       ( gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, []),
-        'dialog-closed': ( gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, [])
+        'destroy':       ( GObject.SIGNAL_RUN_LAST, None, ()),
+        'dialog-closed': ( GObject.SIGNAL_RUN_LAST, None, ()),
         }
 
     printer_states = { cups.IPP_PRINTER_IDLE: _("Idle"),
@@ -70,7 +71,7 @@ class PrinterPropertiesDialog(GtkGUI):
                        cups.IPP_PRINTER_STOPPED: _("Stopped") }
 
     def __init__(self):
-        gobject.GObject.__init__ (self)
+        GObject.GObject.__init__ (self)
 
         try:
             self.language = locale.getlocale(locale.LC_MESSAGES)
@@ -322,7 +323,7 @@ class PrinterPropertiesDialog(GtkGUI):
 
                        (self.cmbJOOutputBin, []),
                        ]:
-            model = Gtk.ListStore (gobject.TYPE_STRING)
+            model = Gtk.ListStore (str)
             for row in opts:
                 model.append (row=row)
 
@@ -1254,8 +1255,8 @@ class PrinterPropertiesDialog(GtkGUI):
         if translationdict == None:
             translationdict = ppdippstr.TranslationDict ()
 
-        model = Gtk.ListStore (gobject.TYPE_STRING,
-                               gobject.TYPE_STRING)
+        model = Gtk.ListStore (str,
+                               str)
         combobox.set_model (model)
         set_active = False
         for nr, val in enumerate(values):
@@ -1467,7 +1468,7 @@ class PrinterPropertiesDialog(GtkGUI):
 
     def updatePrinterPropertiesTreeView (self):
         # Now update the tree view (which we use instead of the notebook tabs).
-        store = Gtk.ListStore (gobject.TYPE_STRING, gobject.TYPE_INT)
+        store = Gtk.ListStore (str, int)
         self.ntbkPrinter.set_show_tabs (False)
         for n in range (self.ntbkPrinter.get_n_pages ()):
             page = self.ntbkPrinter.get_nth_page (n)
@@ -1609,7 +1610,7 @@ class PrinterPropertiesDialog(GtkGUI):
         try:
             pixbuf = theme.load_icon (icon, 22, 0)
             cell.set_property ("pixbuf", pixbuf)
-        except gobject.GError, exc:
+        except GLib.GError, exc:
             pass # Couldn't load icon
 
     def set_printer_state_reason_text (self, column, cell, model, iter, *data):
@@ -1902,7 +1903,7 @@ if __name__ == '__main__':
     os.environ["SYSTEM_CONFIG_PRINTER_UI"] = "ui"
     locale.setlocale (locale.LC_ALL, "")
     ppdippstr.init ()
-    loop = gobject.MainLoop ()
+    loop = GObject.MainLoop ()
     def on_dialog_closed (obj):
         obj.destroy ()
         loop.quit ()

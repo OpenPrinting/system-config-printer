@@ -2,7 +2,7 @@
 
 ## system-config-printer
 
-## Copyright (C) 2009, 2010 Red Hat, Inc
+## Copyright (C) 2009, 2010, 2012 Red Hat, Inc
 ## Author: Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
@@ -19,8 +19,7 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-import glib
-import gobject
+from gi.repository import GLib
 from gi.repository import Gtk
 from gi.repository import GdkPixbuf
 
@@ -46,7 +45,7 @@ class Spinner:
                         x += size
 
                     y += size
-            except gobject.GError:
+            except GLib.GError:
                 # Failed to load icon.
                 pass
 
@@ -76,8 +75,8 @@ class Spinner:
         return True
 
     def start (self, timeout=125):
-        self._task = gobject.timeout_add (timeout, self._next_frame)
+        self._task = GLib.timeout_add (timeout, self._next_frame)
 
     def stop (self):
-        gobject.source_remove (self._task)
+        GLib.source_remove (self._task)
         self._rest ()

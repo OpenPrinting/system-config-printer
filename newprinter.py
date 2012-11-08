@@ -52,19 +52,14 @@ try:
 except:
     PYSMB_AVAILABLE=False
 
-import cupshelpers, options
-import gobject
+import options
+from gi.repository import GObject
+from gi.repository import GLib
 from gui import GtkGUI
 from optionwidgets import OptionWidget
 from debug import *
 import probe_printer
-
-try:
-    # label_set_autowrap()
-    import slip.gtk
-except:
-    import gtk_label_autowrap
-
+import gtk_label_autowrap
 import urllib
 from smburi import SMBURI
 from errordialogs import *
@@ -207,13 +202,12 @@ def download_gpg_fingerprint(url):
 class NewPrinterGUI(GtkGUI):
 
     __gsignals__ = {
-        'destroy':          (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, []),
-        'printer-added' :   (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
-                             [gobject.TYPE_STRING]),
-        'printer-modified': (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
-                             [gobject.TYPE_STRING, # printer name
-                              gobject.TYPE_BOOLEAN]), # PPD modified?
-        'dialog-canceled':  (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, [])
+        'destroy':          (GObject.SIGNAL_RUN_LAST, None, ()),
+        'printer-added' :   (GObject.SIGNAL_RUN_LAST, None, (str,)),
+        'printer-modified': (GObject.SIGNAL_RUN_LAST, None,
+                             (str,    # printer name
+                              bool,)), # PPD modified?
+        'dialog-canceled':  (GObject.SIGNAL_RUN_LAST, None, ()),
         }
 
     new_printer_device_tabs = {
@@ -238,7 +232,7 @@ class NewPrinterGUI(GtkGUI):
     DOWNLOADABLE_PKG_ONLYSIGNED=True
 
     def __init__(self):
-        gobject.GObject.__init__ (self)
+        GObject.GObject.__init__ (self)
         self.language = locale.getlocale (locale.LC_MESSAGES)
 
         self.options = {} # keyword -> Option object
@@ -383,7 +377,7 @@ class NewPrinterGUI(GtkGUI):
                          [_("DTR/DSR (Hardware)")]]),
 
                        ]:
-            model = Gtk.ListStore (gobject.TYPE_STRING)
+            model = Gtk.ListStore (str)
             for row in opts:
                 model.append (row=row)
 
@@ -486,7 +480,7 @@ class NewPrinterGUI(GtkGUI):
         self.expNPDeviceURIs.set_expanded(1)
 
         # SMB browser
-        self.smb_store = Gtk.TreeStore (gobject.TYPE_PYOBJECT)
+        self.smb_store = Gtk.TreeStore (GObject.TYPE_PYOBJECT)
         self.btnSMBBrowse.set_sensitive (PYSMB_AVAILABLE)
         if not PYSMB_AVAILABLE:
             self.btnSMBBrowse.set_tooltip_text (_("Browsing not available "
@@ -1885,9 +1879,9 @@ class NewPrinterGUI(GtkGUI):
 
     def fillDeviceTab(self, current_uri=None):
         self.device_selected = -1
-        model = Gtk.TreeStore (gobject.TYPE_STRING,   # device-info
-                               gobject.TYPE_PYOBJECT, # PhysicalDevice obj
-                               gobject.TYPE_BOOLEAN)  # Separator?
+        model = Gtk.TreeStore (str,                   # device-info
+                               GObject.TYPE_PYOBJECT, # PhysicalDevice obj
+                               bool)                  # Separator?
         other = cupshelpers.Device('', **{'device-info' :_("Enter URI")})
         physother = PhysicalDevice (other)
         self.devices = [physother]
@@ -2669,7 +2663,7 @@ class NewPrinterGUI(GtkGUI):
                 device.menuentry = device.uri
 
         model = Gtk.ListStore (str,                    # URI description
-                               gobject.TYPE_PYOBJECT)  # cupshelpers.Device
+                               GObject.TYPE_PYOBJECT)  # cupshelpers.Device
         self.tvNPDeviceURIs.set_model (model)
 
         # If this is a network device, check whether HPLIP can drive it.
@@ -2947,7 +2941,7 @@ class NewPrinterGUI(GtkGUI):
                                                            on_delete_just_hide)
         self.WaitWindow.hide ()
 
-        model = Gtk.ListStore (gobject.TYPE_STRING)
+        model = Gtk.ListStore (str)
         for printer in printers:
             model.append ([printer])
 
@@ -2986,7 +2980,7 @@ class NewPrinterGUI(GtkGUI):
             if self.printer_finder == None:
                 return
 
-            gobject.idle_add (self.found_network_printer_callback, new_device)
+            GLib.idle_add (self.found_network_printer_callback, new_device)
 
         self.btnNetworkFind.set_sensitive (False)
         self.entNPTNetworkHostname.set_sensitive (False)
@@ -3334,7 +3328,7 @@ class NewPrinterGUI(GtkGUI):
 
         drivers = self.downloadable_drivers[printer_id]
         model = Gtk.ListStore (str,                     # driver name
-                               gobject.TYPE_PYOBJECT)   # driver data
+                               GObject.TYPE_PYOBJECT)   # driver data
         recommended_iter = None
         first_iter = None
         for driver in drivers.values ():
@@ -4053,7 +4047,7 @@ def show_help():
            "            selection can be tested for printers which are not\n"
            "            physically available.\n")
 
-gobject.type_register (NewPrinterGUI)
+#gobject.type_register (NewPrinterGUI)
 
 if __name__ == '__main__':
     import getopt
@@ -4078,7 +4072,7 @@ if __name__ == '__main__':
     import locale
     locale.setlocale (locale.LC_ALL, "")
     ppdippstr.init ()
-    gobject.threads_init ()
+    GObject.threads_init ()
     set_debugging (True)
 
     n = NewPrinterGUI ()
