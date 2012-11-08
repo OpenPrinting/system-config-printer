@@ -586,7 +586,7 @@ class GUI(GtkGUI):
                                             None, 0, 0L)
 
     def dests_iconview_button_press_event (self, iconview, event):
-        if event.button.button > 1:
+        if event.button > 1:
             click_path = iconview.get_path_at_pos (int (event.x),
                                                    int (event.y))
             paths = iconview.get_selected_items ()
@@ -601,7 +601,7 @@ class GUI(GtkGUI):
                         break
                 iconview.set_cursor (click_path, cell, False)
             self.printer_context_menu.popup_for_device (None, None, None, None, 
-                                             None, event.button.button, event.time)
+                                             None, event.button, event.time)
         return False
 
     def dests_iconview_key_press_event (self, iconview, event):

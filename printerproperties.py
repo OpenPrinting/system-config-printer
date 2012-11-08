@@ -1414,6 +1414,7 @@ class PrinterPropertiesDialog(GtkGUI):
 
                     self.server_side_options[option.name] = option
                 except:
+                    nonfatalException()
                     option_editable = False
                     show_error_dialog (_("Error"),
                                        _("Option '%s' has value '%s' "
