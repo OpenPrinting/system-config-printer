@@ -220,7 +220,7 @@ class OptionAlwaysShown(OptionInterface):
         t = type(self.widget)
         if t == Gtk.SpinButton:
             return self.widget.set_value (ipp_value)
-        elif t == Gtk.ComboBox:
+        elif t == Gtk.ComboBox or t == Gtk.ComboBoxText:
             if ((self.ipp_type == str or self.ipp_type == IPPResolution)
                 and self.combobox_map == None):
                 model = self.widget.get_model ()
@@ -240,7 +240,7 @@ class OptionAlwaysShown(OptionInterface):
         elif t == Gtk.CheckButton:
             return self.widget.set_active (ipp_value)
         else:
-            raise NotImplementedError
+            raise NotImplementedError, (t, self.name)
 
     def get_widget_value(self):
         t = type(self.widget)

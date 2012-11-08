@@ -401,10 +401,10 @@ class GUI(GtkGUI):
         self.servicestart = ServiceStart ()
 
         # Setup icon view
-        self.mainlist = Gtk.ListStore(str,              # Object
-                                      GdkPixbuf.Pixbuf, # Pixbuf
-                                      str,              # Name
-                                      str)              # Tooltip
+        self.mainlist = Gtk.ListStore(GObject.TYPE_PYOBJECT,    # Object
+                                      GdkPixbuf.Pixbuf,         # Pixbuf
+                                      str,                      # Name
+                                      str)                      # Tooltip
 
         self.dests_iconview.set_model(self.mainlist)
         self.dests_iconview.set_column_spacing (30)
