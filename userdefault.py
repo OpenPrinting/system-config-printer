@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-## Copyright (C) 2006, 2007, 2008, 2010 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2010, 2012 Red Hat, Inc.
 ## Author: Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
@@ -122,15 +122,16 @@ class UserDefaultPrompt:
         primary.set_alignment (0.0, 0.0)
         vboxouter.pack_start (primary, False, False, 0)
         vboxradio = Gtk.VBox.new (False, 0)
-        systemwide = Gtk.RadioButton (label=systemwidelabel)
+        systemwide = Gtk.RadioButton.new_with_mnemonic (None, systemwidelabel)
         vboxradio.pack_start (systemwide, False, False, 0)
-        clearpersonal = Gtk.CheckButton (clearpersonallabel)
+        clearpersonal = Gtk.CheckButton.new_with_mnemonic (clearpersonallabel)
         alignment = Gtk.Alignment.new (0, 0, 0, 0)
         alignment.set_padding (0, 0, 12, 0)
         alignment.add (clearpersonal)
         vboxradio.pack_start (alignment, False, False, 0)
         vboxouter.pack_start (vboxradio, False, False, 0)
-        personal = Gtk.RadioButton.new_with_label_from_widget(systemwide, personallabel)
+        personal = Gtk.RadioButton.new_with_mnemonic_from_widget(systemwide,
+                                                                 personallabel)
         vboxouter.pack_start (personal, False, False, 0)
         hbox.pack_start (vboxouter, False, False, 0)
         dialog.vbox.pack_start (hbox, False, False, 0)
