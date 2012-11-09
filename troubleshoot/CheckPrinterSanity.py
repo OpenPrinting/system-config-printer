@@ -23,7 +23,6 @@
 from gi.repository import Gtk
 
 import cups
-import gobject
 import os
 import smburi
 import subprocess

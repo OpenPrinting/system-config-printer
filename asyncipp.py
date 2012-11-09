@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-## Copyright (C) 2007, 2008, 2009, 2010, 2011 Red Hat, Inc.
+## Copyright (C) 2007, 2008, 2009, 2010, 2011, 2012 Red Hat, Inc.
 ## Copyright (C) 2008 Novell, Inc.
 ## Author: Tim Waugh <twaugh@redhat.com>
 
@@ -21,7 +21,8 @@
 import threading
 import config
 import cups
-import gobject
+from gi.repository import GObject
+from gi.repository import GLib
 from gi.repository import Gdk
 from gi.repository import Gtk
 import Queue
@@ -177,7 +178,7 @@ class _IPPConnectionThread(threading.Thread):
         if self._auth_handler == None:
             return ""
 
-        gobject.idle_add (prompt_auth, prompt)
+        GLib.idle_add (prompt_auth, prompt)
         password = self._auth_queue.get ()
         return password
 
@@ -190,7 +191,7 @@ class _IPPConnectionThread(threading.Thread):
             return False
 
         if not self._destroyed and self._reply_handler:
-            gobject.idle_add (send_reply, self._reply_handler, result)
+            GLib.idle_add (send_reply, self._reply_handler, result)
 
     def _error (self, exc):
         def send_error (handler, exc):
@@ -202,7 +203,7 @@ class _IPPConnectionThread(threading.Thread):
 
         if not self._destroyed and self._error_handler:
             debugprint ("Add %s to idle" % self._error_handler)
-            gobject.idle_add (send_error, self._error_handler, exc)
+            GLib.idle_add (send_error, self._error_handler, exc)
 
 ###
 ### This is the user-visible class.  Although it does not inherit from
@@ -260,7 +261,7 @@ class IPPConnection:
             delattr (self, binding)
 
         if self.thread.isAlive ():
-            gobject.timeout_add_seconds (1, self._reap_thread)
+            GLib.timeout_add_seconds (1, self._reap_thread)
 
     def _reap_thread (self):
         if self.thread.idle:
@@ -635,7 +636,7 @@ class IPPAuthConnection(IPPConnection):
 if __name__ == "__main__":
     # Demo
     set_debugging (True)
-    gobject.threads_init ()
+    GObject.threads_init ()
     class UI:
         def __init__ (self):
             w = Gtk.Window ()

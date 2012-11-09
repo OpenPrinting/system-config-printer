@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-## Copyright (C) 2009, 2010 Red Hat, Inc.
+## Copyright (C) 2009, 2010, 2012 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 
@@ -24,7 +24,7 @@ import cairo
 
 class GtkInkLevel (Gtk.DrawingArea):
     def __init__ (self, color, level=0):
-        gobject.GObject.__init__ (self)
+        Gtk.DrawingArea.__init__ (self)
         self.connect ('expose-event', self.expose_event)
         self._level = level
         try:
@@ -119,7 +119,7 @@ class GtkInkLevel (Gtk.DrawingArea):
 
 if __name__ == '__main__':
     # Try it out.
-    import gobject
+    from gi.repository import GLib
     import time
     def adjust_level (level):
         Gdk.threads_enter ()
@@ -145,10 +145,10 @@ if __name__ == '__main__':
     hbox.pack_start (clevel, False, False, 0)
     hbox.pack_start (mlevel, False, False, 0)
     hbox.pack_start (ylevel, False, False, 0)
-    gobject.timeout_add (10, adjust_level, klevel)
-    gobject.timeout_add (10, adjust_level, clevel)
-    gobject.timeout_add (10, adjust_level, mlevel)
-    gobject.timeout_add (10, adjust_level, ylevel)
+    GLib.timeout_add (10, adjust_level, klevel)
+    GLib.timeout_add (10, adjust_level, clevel)
+    GLib.timeout_add (10, adjust_level, mlevel)
+    GLib.timeout_add (10, adjust_level, ylevel)
     w.show_all ()
     w.connect ('delete_event', Gtk.main_quit)
     Gdk.threads_init ()

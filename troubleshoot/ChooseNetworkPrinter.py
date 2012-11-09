@@ -2,7 +2,7 @@
 
 ## Printing troubleshooter
 
-## Copyright (C) 2008, 2009, 2011 Red Hat, Inc.
+## Copyright (C) 2008, 2009, 2011, 2012 Red Hat, Inc.
 ## Author: Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
@@ -22,7 +22,7 @@
 from gi.repository import Gtk
 
 import cups
-import gobject
+from gi.repository import GObject
 from timedops import TimedOperation
 from base import *
 class ChooseNetworkPrinter(Question):
@@ -65,10 +65,10 @@ class ChooseNetworkPrinter(Question):
 
         server = answers['remote_server_try_connect']
 
-        model = Gtk.ListStore (gobject.TYPE_STRING,
-                               gobject.TYPE_STRING,
-                               gobject.TYPE_STRING,
-                               gobject.TYPE_PYOBJECT)
+        model = Gtk.ListStore (str,
+                               str,
+                               str,
+                               GObject.TYPE_PYOBJECT)
         self.model = model
         self.treeview.set_model (model)
         iter = model.append (None)

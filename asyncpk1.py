@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-## Copyright (C) 2007, 2008, 2009, 2010 Red Hat, Inc.
+## Copyright (C) 2007, 2008, 2009, 2010, 2012 Red Hat, Inc.
 ## Copyright (C) 2008 Novell, Inc.
 ## Authors: Tim Waugh <twaugh@redhat.com>, Vincent Untz
 
@@ -20,7 +20,6 @@
 
 import cups
 import dbus
-import gobject
 try:
     from gi.repository import Gdk
     from gi.repository import Gtk
@@ -566,7 +565,8 @@ class PK1Connection:
     ## ...
 
 if __name__ == '__main__':
-    gobject.threads_init ()
+    from gi.repository import GObject
+    GObject.threads_init ()
     from debug import set_debugging
     set_debugging (True)
     class UI:

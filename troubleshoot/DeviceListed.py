@@ -2,7 +2,7 @@
 
 ## Printing troubleshooter
 
-## Copyright (C) 2008 Red Hat, Inc.
+## Copyright (C) 2008, 2012 Red Hat, Inc.
 ## Copyright (C) 2008 Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
@@ -22,7 +22,7 @@
 from gi.repository import Gtk
 
 import cups
-import gobject
+from gi.repository import GObject
 from timedops import TimedOperation
 from base import *
 class DeviceListed(Question):
@@ -63,10 +63,10 @@ class DeviceListed(Question):
             answers.get ('cups_printer_remote', False)):
             return False
 
-        model = Gtk.ListStore (gobject.TYPE_STRING,
-                               gobject.TYPE_STRING,
-                               gobject.TYPE_STRING,
-                               gobject.TYPE_PYOBJECT)
+        model = Gtk.ListStore (str,
+                               str,
+                               str,
+                               GObject.TYPE_PYOBJECT)
         self.treeview.set_model (model)
         iter = model.append (None)
         model.set (iter, 0, _("Not listed"), 1, '', 2, '', 3, None)

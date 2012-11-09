@@ -2,7 +2,7 @@
 
 ## Printing troubleshooter
 
-## Copyright (C) 2008, 2009, 2010 Red Hat, Inc.
+## Copyright (C) 2008, 2009, 2010, 2012 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 
@@ -23,7 +23,7 @@
 import cups
 import dbus
 import dbus.glib
-import gobject
+from gi.repository import GLib
 import os
 from gi.repository import Gdk
 from gi.repository import Gtk
@@ -150,11 +150,11 @@ class PrintTestPage(Question):
         label_text = self.main_label_text + mediatype_string
         self.main_label.set_markup (label_text)
 
-        model = Gtk.ListStore (gobject.TYPE_BOOLEAN,
-                               gobject.TYPE_INT,
-                               gobject.TYPE_STRING,
-                               gobject.TYPE_STRING,
-                               gobject.TYPE_STRING)
+        model = Gtk.ListStore (bool,
+                               int,
+                               str,
+                               str,
+                               str)
         self.treeview.set_model (model)
         self.job_to_iter = {}
 
@@ -252,7 +252,7 @@ class PrintTestPage(Question):
                                      path=DBUS_PATH,
                                      dbus_interface=DBUS_IFACE)
 
-        self.timer = gobject.timeout_add_seconds (1, self.update_jobs_list)
+        self.timer = GLib.timeout_add_seconds (1, self.update_jobs_list)
 
     def disconnect_signals (self):
         if self.bus:
@@ -282,7 +282,7 @@ class PrintTestPage(Question):
         except:
             pass
 
-        gobject.source_remove (self.timer)
+        GLib.source_remove (self.timer)
 
     def collect_answer (self):
         if not self.displayed:
@@ -345,8 +345,8 @@ class PrintTestPage(Question):
 
     def handle_dbus_signal (self, *args):
         debugprint ("D-Bus signal caught: updating jobs list soon")
-        gobject.source_remove (self.timer)
-        self.timer = gobject.timeout_add (200, self.update_jobs_list)
+        GLib.source_remove (self.timer)
+        self.timer = GLib.timeout_add (200, self.update_jobs_list)
 
     def update_job (self, jobid, job_dict):
         iter = self.job_to_iter[jobid]
@@ -525,8 +525,8 @@ class PrintTestPage(Question):
 
         # Update again when we're told to. (But we might update sooner if
         # there is a D-Bus signal.)
-        gobject.source_remove (self.timer)
-        self.timer = gobject.timeout_add_seconds (
+        GLib.source_remove (self.timer)
+        self.timer = GLib.timeout_add_seconds (
             notifications['notify-get-interval'],
             self.update_jobs_list)
         debugprint ("Update again in %ds" %

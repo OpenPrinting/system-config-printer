@@ -2,7 +2,7 @@
 
 ## system-config-printer
 
-## Copyright (C) 2010, 2011 Red Hat, Inc.
+## Copyright (C) 2010, 2011, 2012 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 
@@ -21,7 +21,8 @@
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 import dbus.service
-import gobject
+from gi.repository import GObject
+from gi.repository import GLib
 import sys
 
 from debug import *
@@ -56,7 +57,7 @@ class KillTimer:
         self._add_timeout ()
 
     def _add_timeout (self):
-        self._timer = gobject.timeout_add_seconds (self._timeout, self._kill)
+        self._timer = GLib.timeout_add_seconds (self._timeout, self._kill)
 
     def _kill (self):
         debugprint ("Timeout (%ds), exiting" % self._timeout)
@@ -68,7 +69,7 @@ class KillTimer:
     def add_hold (self):
         if self._holds == 0:
             debugprint ("Kill timer stopped")
-            gobject.source_remove (self._timer)
+            GLib.source_remove (self._timer)
 
         self._holds += 1
 
@@ -81,18 +82,18 @@ class KillTimer:
 
     def alive (self):
         if self._holds == 0:
-            gobject.source_remove (self._timer)
+            GLib.source_remove (self._timer)
             self._add_timeout ()
 
-class FetchedPPDs(gobject.GObject):
+class FetchedPPDs(GObject.GObject):
     __gsignals__ = {
-        'ready': (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, []),
-        'error': (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
-                  [gobject.TYPE_PYOBJECT])
+        'ready': (GObject.SIGNAL_RUN_LAST, None, ()),
+        'error': (GObject.SIGNAL_RUN_LAST, None,
+                  (GObject.TYPE_PYOBJECT,))
         }
 
     def __init__ (self, cupsconn, language):
-        gobject.GObject.__init__ (self)
+        GObject.GObject.__init__ (self)
         self._cupsconn = cupsconn
         self._language = language
         self._ppds = None
@@ -117,7 +118,7 @@ class FetchedPPDs(gobject.GObject):
         self._ppds = cupshelpers.ppds.PPDs (result, language=self._language)
         self.emit ('ready')
 
-gobject.type_register (FetchedPPDs)
+#gobject.type_register (FetchedPPDs)
 
 class GetBestDriversRequest:
     def __init__ (self, device_id, device_make_and_model, device_uri,
@@ -484,7 +485,7 @@ def _client_demo ():
 
     obj = bus.get_object (CONFIG_BUS, path)
     iface = dbus.Interface (obj, CONFIG_NEWPRINTERDIALOG_IFACE)
-    loop = gobject.MainLoop ()
+    loop = GObject.MainLoop ()
     def on_canceled(path=None):
         print "%s: Dialog canceled" % path
         loop.quit ()
@@ -515,7 +516,7 @@ if __name__ == '__main__':
     gettext.textdomain (config.PACKAGE)
     gettext.bindtextdomain (config.PACKAGE, config.localedir)
     ppdippstr.init ()
-    gobject.threads_init ()
+    GObject.threads_init ()
     from dbus.glib import DBusGMainLoop
     DBusGMainLoop (set_as_default=True)
 
@@ -532,7 +533,7 @@ if __name__ == '__main__':
         sys.exit (0)
 
     debugprint ("Service running...")
-    loop = gobject.MainLoop ()
+    loop = GObject.MainLoop ()
     g_killtimer = KillTimer (killfunc=loop.quit)
     cp = ConfigPrinting ()
     loop.run ()

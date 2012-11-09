@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-## Copyright (C) 2007, 2008, 2009, 2010, 2011 Red Hat, Inc.
+## Copyright (C) 2007, 2008, 2009, 2010, 2011, 2012 Red Hat, Inc.
 ## Author: Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
@@ -25,7 +25,8 @@ from debug import *
 import dbus
 import dbus.glib
 import dbus.service
-import gobject
+from gi.repository import GObject
+from gi.repository import GLib
 from gi.repository import Notify
 import time
 import locale
@@ -95,7 +96,7 @@ class NewPrinterNotification(dbus.service.Object):
             self.notification = n
 
         self.getting_ready += 1
-        gobject.timeout_add_seconds (TIMEOUT, self.timeout_ready)
+        GLib.timeout_add_seconds (TIMEOUT, self.timeout_ready)
 
     def on_notification_closed (self, notification):
         notification.set_data ('closed', True)
@@ -274,7 +275,7 @@ class NewPrinterNotification(dbus.service.Object):
 
     def collect_exit_code (self, pid):
         # We do this with timers instead of signals because we already
-        # have gobject imported, but don't (yet) import signal;
+        # have GLib imported, but don't (yet) import signal;
         # let's try not to inflate the process size.
         import os
         try:
@@ -339,18 +340,18 @@ class RunLoop:
     def __del__ (self):
         self.remove_signal_receiver ()
         if self.timer:
-            gobject.source_remove (self.timer)
+            GLib.source_remove (self.timer)
 
     def handle_dbus_signal (self, *args):
         if self.timer:
-            gobject.source_remove (self.timer)
-        self.timer = gobject.timeout_add (200, self.check_for_jobs)
+            GLib.source_remove (self.timer)
+        self.timer = GLib.timeout_add (200, self.check_for_jobs)
 
     def check_for_jobs (self, *args):
         debugprint ("checking for jobs")
         if any_jobs ():
             if self.timer != None:
-                gobject.source_remove (self.timer)
+                GLib.source_remove (self.timer)
 
             self.remove_signal_receiver ()
 
@@ -441,7 +442,7 @@ if __name__ == '__main__':
         except:
             pass
 
-    loop = gobject.MainLoop ()
+    loop = GObject.MainLoop ()
     runloop = RunLoop (session_bus, system_bus, loop)
     try:
         runloop.run ()
