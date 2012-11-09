@@ -32,8 +32,10 @@ class GtkGUI(GObject.GObject):
     def getWidgets(self, widgets, domain=None):
         ui_dir = os.environ.get ("SYSTEM_CONFIG_PRINTER_UI",
                                  os.path.join (pkgdata, "ui"))
+        self._bld = []
         for xmlfile, names in widgets.iteritems ():
-            self._bld = bld = Gtk.Builder ()
+            bld = Gtk.Builder ()
+            self._bld.append (bld)
 
             if domain:
                 bld.set_translation_domain (domain)
@@ -56,4 +58,4 @@ class GtkGUI(GObject.GObject):
                 widget.show()
 
     def connect_signals (self):
-        self._bld.connect_signals (self)
+        map (lambda x: x.connect_signals (self), self._bld)
