@@ -4059,8 +4059,6 @@ def show_help():
            "            selection can be tested for printers which are not\n"
            "            physically available.\n")
 
-#gobject.type_register (NewPrinterGUI)
-
 if __name__ == '__main__':
     import getopt
     try:

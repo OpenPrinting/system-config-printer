@@ -202,5 +202,3 @@ class ToolbarSearchEntry (Gtk.HBox):
                 return
 
             self.menu.popup (None, None, None, event.button, event.time)
-
-#gobject.type_register (ToolbarSearchEntry)

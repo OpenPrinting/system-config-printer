@@ -118,8 +118,6 @@ class FetchedPPDs(GObject.GObject):
         self._ppds = cupshelpers.ppds.PPDs (result, language=self._language)
         self.emit ('ready')
 
-#gobject.type_register (FetchedPPDs)
-
 class GetBestDriversRequest:
     def __init__ (self, device_id, device_make_and_model, device_uri,
                   cupsconn, language, reply_handler, error_handler):

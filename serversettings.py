@@ -567,8 +567,6 @@ class ServerSettings(GtkGUI):
         # Now reconnect, in case the server needed to reload.
         self._reconnect ()
 
-#gobject.type_register (ServerSettings)
-
 if __name__ == '__main__':
     os.environ['SYSTEM_CONFIG_PRINTER_UI'] = 'ui'
     loop = GObject.MainLoop ()

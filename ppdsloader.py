@@ -279,8 +279,6 @@ class PPDsLoader(GObject.GObject):
 
             self.emit ('finished')
 
-#gobject.type_register(PPDsLoader)
-
 if __name__ == "__main__":
     class Foo:
         def __init__ (self):

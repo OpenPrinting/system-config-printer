@@ -306,8 +306,6 @@ class CancelJobsOperation(GObject.GObject):
                                   reply_handler=self.cancelJob_finish,
                                   error_handler=self.cancelJob_error)
 
-#GObject.type_register (CancelJobsOperation)
-
 class JobViewer (GtkGUI):
     required_job_attributes = set(['job-k-octets',
                                    'job-name',
@@ -2319,5 +2317,3 @@ class JobViewer (GtkGUI):
             text += " - " + title
 
         cell.set_property ("text", text)
-
-#gobject.type_register (JobViewer)
