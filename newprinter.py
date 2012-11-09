@@ -449,7 +449,7 @@ class NewPrinterGUI(GtkGUI):
             self.DOWNLOADABLE_ONLYPPD = True;
 
         def protect_toggle (toggle_widget):
-            active = toggle_widget.get_data ('protect_active')
+            active = getattr (toggle_widget, 'protect_active', None)
             if active != None:
                 toggle_widget.set_active (active)
 
@@ -2669,7 +2669,7 @@ class NewPrinterGUI(GtkGUI):
         self.tvNPDeviceURIs.set_model (model)
 
         # If this is a network device, check whether HPLIP can drive it.
-        if physicaldevice.get_data ('checked-hplip') != True:
+        if getattr (physicaldevice, 'checked_hplip', None) != True:
             hp_drivable = False
             hp_scannable = False
             is_network = False
@@ -2737,10 +2737,10 @@ class NewPrinterGUI(GtkGUI):
                             "HP Linux Imaging and Printing (HPLIP)"
                         physicaldevice.add_device (faxdev)
 
-            physicaldevice.set_data ('hp-scannable', True)
-            physicaldevice.set_data ('checked-hplip', True)
+            physicaldevice.hp_scannable = True
+            physicaldevice.checked_hplip = True
 
-        device.hp_scannable = physicaldevice.get_data ('hp-scannable')
+        device.hp_scannable = getattr (physicaldevice, 'hp_scannable', None)
 
         # Fill the list of connections for this device.
         n = 0
@@ -3013,7 +3013,7 @@ class NewPrinterGUI(GtkGUI):
                         self.on_tvNPDevices_cursor_changed (self.tvNPDevices)
             except ValueError:
                 # New physical device.
-                dev.set_data ('checked-hplip', True)
+                dev.checked_hplip = True
                 self.devices.append (dev)
                 self.devices.sort ()
                 model = self.tvNPDevices.get_model ()
@@ -3617,7 +3617,7 @@ class NewPrinterGUI(GtkGUI):
         active = driver['manufacturersupplied']
 
         def set_protect_active (widget, active):
-            widget.set_data ('protect_active', active)
+            widget.protect_active = active
             widget.set_active (active)
 
         set_protect_active (vendor, active)

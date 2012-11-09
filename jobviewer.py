@@ -626,14 +626,14 @@ class JobViewer (GtkGUI):
         for l in [self.new_printer_notifications.values (),
                   self.state_reason_notifications.values ()]:
             for notification in l:
-                if notification.get_data ('closed') != True:
+                if getattr (notification, 'closed', None) != True:
                     try:
                         notification.close ()
                     except GObject.GError:
                         # Can fail if the notification wasn't even shown
                         # yet (as in bug #571603).
                         pass
-                    notification.set_data ('closed', True)
+                    notification.closed = True
 
         if self.job_creation_times_timer != None:
             GLib.source_remove (self.job_creation_times_timer)
@@ -653,7 +653,7 @@ class JobViewer (GtkGUI):
     def on_delete_event(self, *args):
         if self.applet or not self.loop:
             self.JobsWindow.hide ()
-            self.JobsWindow.set_data ('visible', False)
+            self.JobsWindow.visible = False
             if not self.applet:
                 # Being run from main app, not applet
                 self.cleanup ()
@@ -672,7 +672,7 @@ class JobViewer (GtkGUI):
         return errordialogs.show_IPP_Error (exception, message, self.JobsWindow)
 
     def toggle_window_display(self, icon, force_show=False):
-        visible = self.JobsWindow.get_data('visible')
+        visible = getattr (self.JobsWindow, 'visible', None)
         if force_show:
             visible = False
 
@@ -702,7 +702,7 @@ class JobViewer (GtkGUI):
                 if aw != None:
                     aw.set_skip_taskbar_hint (False)
 
-        self.JobsWindow.set_data ('visible', not visible)
+        self.JobsWindow.visible = not visible
 
     def on_show_completed_jobs_clicked(self, toggletoolbutton):
         if toggletoolbutton.get_active():
@@ -996,8 +996,8 @@ class JobViewer (GtkGUI):
         auth_info_required = data['auth-info-required']
         dialog = authconn.AuthDialog (auth_info_required=auth_info_required,
                                       allow_remember=USE_KEYRING)
-        dialog.set_data ('keyring-attrs', keyring_attrs)
-        dialog.set_data ('auth-info-required', auth_info_required)
+        dialog.keyring_attrs = keyring_attrs
+        dialog.auth_info_required = auth_info_required
         dialog.set_position (Gtk.WindowPosition.CENTER)
 
         # Pre-fill 'username' field.
@@ -1025,7 +1025,7 @@ class JobViewer (GtkGUI):
         self.auth_info_dialogs[job] = dialog
         dialog.connect ('response', self.auth_info_dialog_response)
         dialog.connect ('delete-event', self.auth_info_dialog_delete)
-        dialog.set_data ('job-id', job)
+        dialog.job_id = job
         dialog.show_all ()
         dialog.set_keep_above (True)
         dialog.show_now ()
@@ -1034,7 +1034,7 @@ class JobViewer (GtkGUI):
         self.auth_info_dialog_response (dialog, Gtk.ResponseType.CANCEL)
 
     def auth_info_dialog_response (self, dialog, response):
-        jobid = dialog.get_data ('job-id')
+        jobid = dialog.job_id
         del self.auth_info_dialogs[jobid]
 
         if response != Gtk.ResponseType.OK:
@@ -1067,8 +1067,12 @@ class JobViewer (GtkGUI):
             try:
                 keyring = GnomeKeyring.get_default_keyring_sync ()
                 type = GnomeKeyring.ItemType.NETWORK_PASSWORD
-                keyring_attrs = dialog.get_data ("keyring-attrs")
-                auth_info_required = dialog.get_data ('auth-info-required')
+                keyring_attrs = getattr (dialog,
+                                         "keyring_attrs",
+                                         None)
+                auth_info_required = getattr (dialog,
+                                              "auth_info_required",
+                                              None)
                 if keyring_attrs != None and auth_info_required != None:
                     try:
                         ind = auth_info_required.index ('username')
@@ -1107,7 +1111,7 @@ class JobViewer (GtkGUI):
         open_notifications = len (self.new_printer_notifications.keys ())
         open_notifications += len (self.completed_job_notifications.keys ())
         for reason, notification in self.state_reason_notifications.iteritems():
-            if notification.get_data ('closed') != True:
+            if getattr (notification, 'closed', None) != True:
                 open_notifications += 1
         num_jobs = len (self.active_jobs)
 
@@ -1784,7 +1788,7 @@ class JobViewer (GtkGUI):
         notification.set_urgency (Notify.URGENCY_LOW)
         notification.connect ('closed',
                               self.on_completed_job_notification_closed)
-        notification.set_data ('jobid', jobid)
+        notification.jobid = jobid
         self.completed_job_notifications[jobid] = notification
         self.set_statusicon_visibility ()
         try:
@@ -1793,7 +1797,7 @@ class JobViewer (GtkGUI):
             nonfatalException ()
 
     def on_completed_job_notification_closed (self, notification, reason=None):
-        jobid = notification.get_data ('jobid')
+        jobid = notification.jobid
         del self.completed_job_notifications[jobid]
         self.set_statusicon_visibility ()
 
@@ -2078,7 +2082,7 @@ class JobViewer (GtkGUI):
         tuple = reason.get_tuple ()
         try:
             notification = self.state_reason_notifications[tuple]
-            if notification.get_data ('closed') != True:
+            if getattr (notification, 'closed', None) != True:
                 try:
                     notification.close ()
                 except GObject.GError:
@@ -2136,7 +2140,7 @@ class JobViewer (GtkGUI):
             debugprint ("Unexpected now_connected signal")
             return
 
-        if notification.get_data ('closed') != True:
+        if getattr (notification, 'closed', None) != True:
             try:
                 notification.close ()
             except GObject.GError:

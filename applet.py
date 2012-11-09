@@ -90,7 +90,7 @@ class NewPrinterNotification(dbus.service.Object):
                                        _("Please wait..."),
                                        'printer')
             n.set_timeout (TIMEOUT + 5000)
-            n.set_data ('closed', False)
+            n.closed = False
             n.connect ('closed', self.on_notification_closed)
             n.show ()
             self.notification = n
@@ -99,14 +99,14 @@ class NewPrinterNotification(dbus.service.Object):
         GLib.timeout_add_seconds (TIMEOUT, self.timeout_ready)
 
     def on_notification_closed (self, notification):
-        notification.set_data ('closed', True)
+        notification.closed = True
 
     def timeout_ready (self):
         if self.getting_ready > 0:
             self.getting_ready -= 1
         if (self.getting_ready == 0 and
             self.notification and
-            not self.notification.get_data ('closed')):
+            not getattr (self.notification, 'closed', None):
             self.notification.close ()
 
         return False

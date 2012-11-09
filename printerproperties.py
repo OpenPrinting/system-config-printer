@@ -817,7 +817,7 @@ class PrinterPropertiesDialog(GtkGUI):
 
             btn = Gtk.Button(stock=Gtk.STOCK_REMOVE)
             btn.connect("clicked", self.on_btnJOOtherRemove_clicked)
-            btn.set_data("pyobject", opt)
+            btn.pyobject = opt
             btn.set_sensitive (editable)
             self.tblJOOther.attach(btn, 2, 3, i, i + 1,
                                    xoptions=0,
@@ -848,7 +848,7 @@ class PrinterPropertiesDialog(GtkGUI):
             option.selector.grab_focus ()
 
     def on_btnJOOtherRemove_clicked(self, button):
-        option = button.get_data("pyobject")
+        option = button.pyobject
         self.other_job_options.remove (option)
         self.draw_other_job_options ()
         if option.is_new:

@@ -211,7 +211,7 @@ class ServerSettings(GtkGUI):
             (self.chkServerRemoteAdmin, cups.CUPS_SERVER_REMOTE_ADMIN),
             (self.chkServerAllowCancelAll, cups.CUPS_SERVER_USER_CANCEL_ANY),
             (self.chkServerLogDebug, cups.CUPS_SERVER_DEBUG_LOGGING),]:
-            widget.set_data("setting", setting)
+            widget.setting = setting
             if self.server_settings.has_key(setting):
                 widget.set_active(int(self.server_settings[setting]))
                 widget.set_sensitive(True)
@@ -238,7 +238,7 @@ class ServerSettings(GtkGUI):
 
     def on_server_changed(self, widget):
         debugprint ("on_server_changed: %s" % widget)
-        setting = widget.get_data("setting")
+        setting = widget.setting
         if self.server_settings.has_key (setting):
             if str(int(widget.get_active())) == self.server_settings[setting]:
                 self.changed.discard(widget)
