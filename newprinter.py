@@ -2756,7 +2756,7 @@ class NewPrinterGUI(GtkGUI):
             model.append ((device.menuentry, device))
             n += 1
         column = self.tvNPDeviceURIs.get_column (0)
-        self.tvNPDevices.set_cursor (Gtk.TreePath(), column, False)
+        self.tvNPDeviceURIs.set_cursor (Gtk.TreePath(), column, False)
         if n > 1:
             self.expNPDeviceURIs.show_all ()
         else:
