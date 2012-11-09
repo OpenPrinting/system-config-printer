@@ -629,7 +629,7 @@ class JobViewer (GtkGUI):
                 if getattr (notification, 'closed', None) != True:
                     try:
                         notification.close ()
-                    except GObject.GError:
+                    except GLib.GError:
                         # Can fail if the notification wasn't even shown
                         # yet (as in bug #571603).
                         pass
@@ -921,7 +921,7 @@ class JobViewer (GtkGUI):
 
                 # Find out which auth-info is required.
                 try_keyring = USE_KEYRING
-                keyring_attrs = {}
+                keyring_attrs = dict()
                 auth_info = None
                 if try_keyring and 'password' in auth_info_required:
                     auth_info_required = data.get ('auth-info-required', [])
@@ -935,8 +935,8 @@ class JobViewer (GtkGUI):
                     else:
                         (serverport, rest) = urllib.splithost (rest)
                         (server, port) = urllib.splitnport (serverport)
-                    keyring_attrs.update ({"server": str (server.lower ()),
-                                           "protocol": str (scheme)})
+                    keyring_attrs.update ({ "server": str (server.lower ()),
+                                            "protocol": str (scheme)})
 
                 if job in self.authenticated_jobs:
                     # We've already tried to authenticate this job before.
@@ -2085,7 +2085,7 @@ class JobViewer (GtkGUI):
             if getattr (notification, 'closed', None) != True:
                 try:
                     notification.close ()
-                except GObject.GError:
+                except GLib.GError:
                     # Can fail if the notification wasn't even shown
                     # yet (as in bug #545733).
                     pass
@@ -2143,7 +2143,7 @@ class JobViewer (GtkGUI):
         if getattr (notification, 'closed', None) != True:
             try:
                 notification.close ()
-            except GObject.GError:
+            except GLib.GError:
                 # Can fail if the notification wasn't even shown
                 pass
             notification.set_data ('closed', True)
@@ -2319,27 +2319,5 @@ class JobViewer (GtkGUI):
             text += " - " + title
 
         cell.set_property ("text", text)
-
-    def _on_treeview_query_tooltip (self, tv, x, y, keyboard_mode, tooltip):
-        if keyboard_mode:
-            (path, column) = tv.get_cursor ()
-            if path is None:
-                return False
-        else:
-            bin_x, bin_y = tv.convert_widget_to_bin_window_coords (x, y)
-            ret = tv.get_path_at_pos (bin_x, bin_y)
-            if ret is None:
-                return False
-            path = ret[0]
-            column = ret[1]
-
-        cells = column.get_cell_renderers ()
-        for cell in cells:
-            if type (cell) == Gtk.CellRendererText:
-                tooltip.set_markup (cell.get_property ("text"))
-                self.treeview.set_tooltip_cell (tooltip, path, column, cell)
-                break
-
-        return True
 
 #gobject.type_register (JobViewer)
