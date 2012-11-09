@@ -25,7 +25,7 @@ import cairo
 class GtkInkLevel (Gtk.DrawingArea):
     def __init__ (self, color, level=0):
         Gtk.DrawingArea.__init__ (self)
-        self.connect ('expose-event', self.expose_event)
+        self.connect ('draw', self.draw)
         self._level = level
         try:
             self._color = Gdk.color_parse (color)
@@ -41,14 +41,9 @@ class GtkInkLevel (Gtk.DrawingArea):
     def get_level (self):
         return self._level
 
-    def expose_event (self, widget, event):
-        ctx = self.get_window().cairo_create ()
-        ctx.rectangle (event.area.x, event.area.y,
-                       event.area.width,
-                       event.area.height)
-        ctx.clip ()
-
-        (w, h) = self.get_window().get_size ()
+    def draw (self, widget, ctx):
+        w = widget.get_allocated_width ()
+        h = widget.get_allocated_height ()
         ratio = 1.0 * h / w
         if ratio < 1.5:
             w = h * 2.0 / 3.0
@@ -58,9 +53,7 @@ class GtkInkLevel (Gtk.DrawingArea):
         ctx.translate (thickness, thickness)
         ctx.scale (w - 2 * thickness, h - 2 * thickness)
         thickness = max (ctx.device_to_user_distance (thickness, thickness))
-        self.draw (ctx, thickness)
 
-    def draw (self, ctx, thickness):
         r = self._color.red / 65535.0
         g = self._color.green / 65535.0
         b = self._color.blue / 65535.0
