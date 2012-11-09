@@ -121,8 +121,8 @@ class ToolbarSearchEntry (Gtk.HBox):
         if self.is_a11y_theme:
             return
 
-        (result, bg_colour) = Gdk.color_parse ('#f7f7be') # yellow-ish
-        (result, fg_colour) = Gdk.color_parse ('#000000') # black
+        bg_colour = Gdk.color_parse ('#f7f7be') # yellow-ish
+        fg_colour = Gdk.color_parse ('#000000') # black
 
         text = self.entry.get_text ()
         if len (text) > 0:
