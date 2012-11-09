@@ -520,6 +520,8 @@ class NewPrinterGUI(GtkGUI):
         ppd_filter.add_pattern("*")
         self.filechooserPPD.add_filter(ppd_filter)
 
+        self.device_selected = -1
+        self.dialog_mode = "printer"
         self.connect_signals ()
         debugprint ("+%s" % self)
 
@@ -849,11 +851,17 @@ class NewPrinterGUI(GtkGUI):
 
     def on_tvNCMembers_cursor_changed(self, widget):
         selection = widget.get_selection()
+        if selection == None:
+            return
+
         model_from, rows = selection.get_selected_rows()
         self.btnNCDelMember.set_sensitive(rows != [])
 
     def on_tvNCNotMembers_cursor_changed(self, widget):
         selection = widget.get_selection()
+        if selection == None:
+            return
+
         model_from, rows = selection.get_selected_rows()
         self.btnNCAddMember.set_sensitive(rows != [])
 
@@ -3600,7 +3608,11 @@ class NewPrinterGUI(GtkGUI):
         self.rbtnNPDownloadLicenseNo.set_active (True)
         self.frmNPDownloadableDriverLicenseTerms.hide ()
 
-        model, iter = widget.get_selection ().get_selected ()
+        selection = widget.get_selection ()
+        if selection == None:
+            return
+
+        model, iter = selection.get_selected ()
         if not iter:
             path, column = widget.get_cursor()
             iter = model.get_iter (path)
