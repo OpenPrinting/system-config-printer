@@ -2971,7 +2971,8 @@ class NewPrinterGUI(GtkGUI):
             self.entNPTDevice.set_text (text)
             model = self.tvNPDevices.get_model ()
             path = model.get_path (self.devices_uri_iter)
-            self.tvNPDevices.set_cursor (path)
+            self.tvNPDevices.set_cursor (path=path, cell=None,
+                                         start_editing=False)
             self.entNPTDevice.select_region (0, 0)
             self.entNPTDevice.set_position (-1)
             return

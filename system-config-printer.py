@@ -463,7 +463,8 @@ class GUI(GtkGUI):
             if name == queue:
                 path = model.get_path (iter)
                 self.dests_iconview.scroll_to_path (path, True, 0.5, 0.5)
-                self.dests_iconview.set_cursor (path)
+                self.dests_iconview.set_cursor (path=path, cell=None,
+                                                start_editing=False)
                 self.dests_iconview.item_activated (path)
                 break
             iter = model.iter_next (iter)
@@ -1761,7 +1762,8 @@ class GUI(GtkGUI):
                 path = model.get_path (iter)
                 self.dests_iconview.scroll_to_path (path, True, 0.5, 0.5)
                 self.dests_iconview.unselect_all ()
-                self.dests_iconview.set_cursor (path)
+                self.dests_iconview.set_cursor (path=path, cell=None,
+                                                start_editing=False)
                 self.dests_iconview.select_path (path)
                 break
 
