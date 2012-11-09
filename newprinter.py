@@ -101,7 +101,7 @@ def moveClassMembers(treeview_from, treeview_to):
 
 def getCurrentClassMembers(treeview):
     model = treeview.get_model()
-    iter = model.get_iter_root()
+    iter = model.get_iter_first()
     result = []
     while iter:
         result.append(model.get(iter, 0)[0])
