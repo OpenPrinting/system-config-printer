@@ -319,8 +319,6 @@ class PrinterPropertiesDialog(GtkGUI):
                          [_("Normal")],
                          [_("High")]]),
 
-                       (self.cmbJOPrinterResolution, []),
-
                        (self.cmbJOOutputBin, []),
                        ]:
             model = Gtk.ListStore (str)

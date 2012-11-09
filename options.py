@@ -173,7 +173,7 @@ class OptionAlwaysShown(OptionInterface):
         if (supported != None and
             self.use_supported):
             if (type(self.widget) == Gtk.ComboBox and
-                (self.ipp_type == str or self.ipp_type == IPPResolution)):
+                self.ipp_type == str):
                 model = self.widget.get_model ()
                 model.clear ()
                 translations = ppdippstr.job_options.get (self.name)
@@ -183,9 +183,7 @@ class OptionAlwaysShown(OptionInterface):
                     i = 0
 
                 for each in supported:
-                    txt = each
-                    if self.ipp_type != str:
-                        txt = str (self.ipp_type (each))
+                    txt = str (self.ipp_type (each))
 
                     if translations:
                         self.combobox_map.append (txt)
@@ -197,6 +195,25 @@ class OptionAlwaysShown(OptionInterface):
 
                     iter = model.append ()
                     model.set_value (iter, 0, text)
+            elif type(self.widget) == Gtk.ComboBoxText:
+                self.widget.remove_all () # emits 'changed'
+                translations = ppdippstr.job_options.get (self.name)
+                if translations:
+                    self.combobox_map = []
+                    self.combobox_dict = dict()
+                    i = 0
+
+                for each in supported:
+                    txt = str (self.ipp_type (each))
+                    if translations:
+                        self.combobox_map.append (txt)
+                        text = translations.get (txt)
+                        self.combobox_dict[each] = text
+                        i += 1
+                    else:
+                        text = txt
+
+                    self.widget.append_text (text)
             elif (type(self.widget) == Gtk.ComboBox and
                   self.ipp_type == int and
                   self.combobox_map != None):
@@ -259,12 +276,17 @@ class OptionAlwaysShown(OptionInterface):
         elif t == Gtk.ComboBox:
             if self.combobox_map:
                 return self.combobox_map[self.widget.get_active()]
-            if self.ipp_type == str or self.ipp_type == IPPResolution:
-                raise TypeError, 'you need to convert this widget to GtkComboBoxText:' + str(self.widget)
             return self.ipp_type (self.widget.get_active ())
         elif t == Gtk.ComboBoxText:
-            if self.ipp_type == str:
-                return self.widget.get_active_text ()
+            s = self.widget.get_active_text ()
+            if s == None:
+                # If the widget is being re-initialised, there will be
+                # a changed signal emitted at the point where there
+                # are no entries to select from.
+                s = self.system_default
+            if self.combobox_map:
+                return self.combobox_map (s)
+            return self.ipp_type (s)
         elif t == Gtk.CheckButton:
             return self.ipp_type (self.widget.get_active ())
 
