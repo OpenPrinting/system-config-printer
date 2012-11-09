@@ -88,7 +88,7 @@ def validDeviceURI (uri):
 def moveClassMembers(treeview_from, treeview_to):
     selection = treeview_from.get_selection()
     model_from, rows = selection.get_selected_rows()
-    rows = [Gtk.TreeRowReference(model_from, row) for row in rows]
+    rows = [Gtk.TreeRowReference.new(model_from, row) for row in rows]
 
     model_to = treeview_to.get_model()
 
