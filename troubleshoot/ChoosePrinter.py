@@ -21,6 +21,11 @@
 
 from gi.repository import Gtk
 
+class NoPrinter:
+    pass
+
+NotListed = NoPrinter()
+
 import cups
 from gi.repository import GObject
 from timedops import TimedOperation
@@ -63,7 +68,7 @@ class ChoosePrinter(Question):
                                GObject.TYPE_PYOBJECT)
         self.treeview.set_model (model)
         iter = model.append (None)
-        model.set (iter, 0, _("Not listed"), 1, '', 2, '', 3, None)
+        model.set (iter, 0, _("Not listed"), 1, '', 2, '', 3, NotListed)
 
         parent = self.troubleshooter.get_window ()
         try:
@@ -124,7 +129,7 @@ class ChoosePrinter(Question):
     def collect_answer (self):
         model, iter = self.treeview.get_selection ().get_selected ()
         dest = model.get_value (iter, 3)
-        if dest == None:
+        if dest == NotListed:
             class enum_dests:
                 def __init__ (self, model):
                     self.dests = []
@@ -132,7 +137,7 @@ class ChoosePrinter(Question):
 
                 def each (self, model, path, iter, user_data):
                     dest = model.get_value (iter, 3)
-                    if dest:
+                    if dest != NotListed:
                         self.dests.append ((dest.name, dest.instance))
 
             return { 'cups_queue_listed': False,

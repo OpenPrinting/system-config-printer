@@ -21,6 +21,11 @@
 
 from gi.repository import Gtk
 
+class NoDevice:
+    pass
+
+NotListed = NoDevice()
+
 import cups
 from gi.repository import GObject
 from timedops import TimedOperation
@@ -69,7 +74,7 @@ class DeviceListed(Question):
                                GObject.TYPE_PYOBJECT)
         self.treeview.set_model (model)
         iter = model.append (None)
-        model.set (iter, 0, _("Not listed"), 1, '', 2, '', 3, None)
+        model.set (iter, 0, _("Not listed"), 1, '', 2, '', 3, NotListed)
 
         devices = {}
         parent = self.troubleshooter.get_window ()
@@ -138,7 +143,7 @@ class DeviceListed(Question):
 
         model, iter = self.treeview.get_selection ().get_selected ()
         device = model.get_value (iter, 3)
-        if device == None:
+        if device == NotListed:
             class enum_devices:
                 def __init__ (self, model):
                     self.devices = {}
@@ -147,7 +152,7 @@ class DeviceListed(Question):
                 def each (self, model, path, iter, user_data):
                     uri = model.get_value (iter, 2)
                     device = model.get_value (iter, 3)
-                    if device:
+                    if device != NotListed:
                         self.devices[uri] = device
 
             self.answers['cups_device_listed'] = False
