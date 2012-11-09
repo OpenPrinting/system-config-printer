@@ -2,7 +2,7 @@
 
 ## Printing troubleshooter
 
-## Copyright (C) 2008 Red Hat, Inc.
+## Copyright (C) 2008, 2012 Red Hat, Inc.
 ## Copyright (C) 2008 Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
@@ -34,7 +34,7 @@ class ErrorLogParse(Question):
         textview = Gtk.TextView ()
         textview.set_editable (False)
         sw.add (textview)
-        page.pack_start (sw, False, False, 0)
+        page.pack_start (sw, True, True, 0)
         self.buffer = textview.get_buffer ()
         troubleshooter.new_page (page, self)
 
