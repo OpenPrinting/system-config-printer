@@ -317,7 +317,7 @@ class GUI(GtkGUI):
                             None,
                             "quit"]:
             if action_name == "new":
-                item = Gtk.MenuItem.new_with_label(_("_New"))
+                item = Gtk.MenuItem.new_with_mnemonic(_("_New"))
                 item.set_sensitive (True)
                 self.menuItemNew = item
             elif not action_name:
