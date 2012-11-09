@@ -1,14 +1,14 @@
 ## This code was translated to python from the original C version in
 ## Rhythmbox. The original authors are:
 
-## Copyright (C) 2002, 2012 Jorn Baayen <jorn@nl.linux.org>
+## Copyright (C) 2002 Jorn Baayen <jorn@nl.linux.org>
 ## Copyright (C) 2003 Colin Walters <walters@verbum.org>
 
 ## Further modifications by:
 
 ## Copyright (C) 2008 Rui Matos <tiagomatos@gmail.com>
 
-## Copyright (C) 2009 Red Hat, Inc.
+## Copyright (C) 2009, 2012 Red Hat, Inc.
 ## Author: Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
