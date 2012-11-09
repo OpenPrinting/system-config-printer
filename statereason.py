@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-## Copyright (C) 2007, 2008, 2009, 2010 Red Hat, Inc.
+## Copyright (C) 2007, 2008, 2009, 2010, 2012 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 ##  Jiri Popelka <jpopelka@redhat.com>
@@ -29,9 +29,9 @@ class StateReason:
     ERROR=3
 
     LEVEL_ICON={
-        REPORT: "dialog-info",
-        WARNING: "dialog-warning",
-        ERROR: "dialog-error"
+        REPORT: "gtk-dialog-info",
+        WARNING: "gtk-dialog-warning",
+        ERROR: "gtk-dialog-error"
         }
 
     def __init__(self, printer, reason, ppdcache=None):
