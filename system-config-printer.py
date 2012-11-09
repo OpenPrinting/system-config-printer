@@ -1725,7 +1725,7 @@ class GUI(GtkGUI):
     # ====================================================================
 
     # new printer
-    def on_new_printer_activate(self, widget, UNUSED):
+    def on_new_printer_activate(self, widget, *UNUSED):
         busy (self.PrintersWindow)
         if not self.newPrinterGUI.init("printer",
                                        host=self.connect_server,
@@ -1735,7 +1735,7 @@ class GUI(GtkGUI):
         ready (self.PrintersWindow)
 
     # new class
-    def on_new_class_activate(self, widget, UNUSED):
+    def on_new_class_activate(self, widget, *UNUSED):
         if not self.newPrinterGUI.init("class",
                                        host=self.connect_server,
                                        encryption=self.connect_encrypt,
