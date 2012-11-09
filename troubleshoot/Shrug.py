@@ -65,7 +65,6 @@ class Shrug(Question):
         self.save.disconnect (self.save_sigid)
 
     def on_save_clicked (self, button):
-<<<<<<< HEAD
         while True:
             parent = self.troubleshooter.get_window()
             dialog = Gtk.FileChooserDialog (parent=parent,
