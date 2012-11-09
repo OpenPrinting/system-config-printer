@@ -84,8 +84,9 @@ class Shrug(Question):
 
             try:
                 f = file (dialog.get_filename (), "w")
-                f.write (self.buffer.get_text (self.buffer.get_start_iter (),
-                                               self.buffer.get_end_iter ()))
+                f.write (self.buffer.get_text (start=self.buffer.get_start_iter (),
+                                               end=self.buffer.get_end_iter (),
+                                               include_hidden_chars=False))
             except IOError, e:
                 err = Gtk.MessageDialog (parent,
                                          Gtk.DialogFlags.MODAL |
