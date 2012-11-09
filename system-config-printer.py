@@ -67,7 +67,6 @@ from gi.repository import GObject
 from gi.repository import GLib
 from gui import GtkGUI
 from debug import *
-import gtk_label_autowrap
 import urllib
 import troubleshoot
 import installpackage
@@ -370,8 +369,6 @@ class GUI(GtkGUI):
         self.AboutDialog.set_program_name(config.PACKAGE)
         self.AboutDialog.set_version(config.VERSION)
         self.AboutDialog.set_icon_name('printer')
-
-        gtk_label_autowrap.set_autowrap(self.PrintersWindow)
 
         try:
             self.cups = authconn.Connection(self.PrintersWindow)

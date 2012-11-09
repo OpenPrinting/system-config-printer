@@ -59,7 +59,6 @@ from gui import GtkGUI
 from optionwidgets import OptionWidget
 from debug import *
 import probe_printer
-import gtk_label_autowrap
 import urllib
 from smburi import SMBURI
 from errordialogs import *
@@ -414,8 +413,6 @@ class NewPrinterGUI(GtkGUI):
         self.SMBBrowseDialog.connect ("delete-event", on_delete_just_hide)
         self.WaitWindow_handler = self.WaitWindow.connect ("delete-event",
                                                            on_delete_just_hide)
-
-        gtk_label_autowrap.set_autowrap(self.NewPrinterWindow)
 
         self.ntbkNewPrinter.set_show_tabs(False)
         self.ntbkPPDSource.set_show_tabs(False)

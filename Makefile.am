@@ -119,7 +119,6 @@ nobase_pkgdata_DATA=					\
 	ppdsloader.py					\
 	printerproperties.py				\
 	probe_printer.py				\
-	gtk_label_autowrap.py				\
 	SearchCriterion.py				\
 	serversettings.py				\
 	smburi.py					\
