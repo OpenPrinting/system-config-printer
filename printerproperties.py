@@ -746,7 +746,7 @@ class PrinterPropertiesDialog(GtkGUI):
 
     def on_btnPDelUser_clicked(self, button):
         model, rows = self.tvPUsers.get_selection().get_selected_rows()
-        rows = [Gtk.TreeRowReference(model, row) for row in rows]
+        rows = [Gtk.TreeRowReference.new (model, row) for row in rows]
         for row in rows:
             path = row.get_path()
             iter = model.get_iter(path)
