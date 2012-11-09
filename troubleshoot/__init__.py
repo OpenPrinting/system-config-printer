@@ -2,7 +2,7 @@
 
 ## Printing troubleshooter
 
-## Copyright (C) 2008, 2009, 2010 Red Hat, Inc.
+## Copyright (C) 2008, 2009, 2010, 2012 Red Hat, Inc.
 ## Author: Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
@@ -85,8 +85,6 @@ class Troubleshooter:
 
         forward = Gtk.Button (stock=Gtk.STOCK_GO_FORWARD)
         forward.connect ('clicked', self._on_forward_clicked)
-        forward.set_property('can-default', True)
-        forward.set_property('has-default', True)
         self.forward = forward
 
         box.pack_start (back, False, False, 0)
@@ -94,6 +92,8 @@ class Troubleshooter:
         box.pack_start (close, False, False, 0)
         box.pack_start (forward, False, False, 0)
         vbox.pack_start (box, False, False, 0)
+        forward.set_property('can-default', True)
+        forward.set_property('has-default', True)
 
         ntbk.set_current_page (0)
         ntbk.set_show_tabs (False)
