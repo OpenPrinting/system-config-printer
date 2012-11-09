@@ -3267,7 +3267,7 @@ class NewPrinterGUI(GtkGUI):
 
                 iter = model.append (None)
                 model.set_value (iter, 0, first)
-                model.set_value (iter, 1, None)
+                model.set_value (iter, 1, '')
 
             sorted_list = []
             for printer_id, printer_name in self.downloadable_printers:
@@ -3315,7 +3315,7 @@ class NewPrinterGUI(GtkGUI):
         if iter:
             printer_id = model.get_value (iter, 1)
             printer_str = model.get_value (iter, 0)
-            if printer_id == None:
+            if printer_id == '':
                 widget.set_active (1)
                 iter = widget.get_active_iter ()
                 if iter:
@@ -3353,7 +3353,7 @@ class NewPrinterGUI(GtkGUI):
         if not self.rbtnNPDownloadableDriverSearch.get_active():
             iter = model.append (None)
             model.set_value (iter, 0, _("Local Driver"))
-            model.set_value (iter, 1, None)
+            model.set_value (iter, 1, 0)
 
         if recommended_iter == None:
             recommended_iter = first_iter
@@ -3615,7 +3615,7 @@ class NewPrinterGUI(GtkGUI):
             path, column = widget.get_cursor()
             iter = model.get_iter (path)
         driver = model.get_value (iter, 1)
-        if driver == None:
+        if driver == 0:
             self.ntbkNPDownloadableDriverProperties.set_current_page(0)
             self.setNPButtons()
             return
