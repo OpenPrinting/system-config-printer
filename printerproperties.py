@@ -759,7 +759,11 @@ class PrinterPropertiesDialog(GtkGUI):
         self.btnPAddUser.set_sensitive(bool(widget.get_text()))
 
     def on_tvPUsers_cursor_changed(self, widget):
-        model, rows = widget.get_selection().get_selected_rows()
+        selection = widget.get_selection ()
+        if selection == None:
+            return
+
+        model, rows = selection.get_selected_rows()
         self.btnPDelUser.set_sensitive(bool(rows))
 
     # Server side options

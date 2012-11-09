@@ -2348,7 +2348,11 @@ class NewPrinterGUI(GtkGUI):
         self.setNPButtons ()
 
     def on_tvSMBBrowser_cursor_changed(self, widget):
-        store, iter = self.tvSMBBrowser.get_selection().get_selected()
+        selection = self.tvSMBBrowser.get_selection()
+        if selection == None:
+            return
+
+        store, iter = selection.get_selected()
         is_share = False
         if iter:
             entry = store.get_value (iter, 0)
