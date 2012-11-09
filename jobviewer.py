@@ -1216,7 +1216,7 @@ class JobViewer (GtkGUI):
                     uri = self.printer_uri_index.lookup_cached_by_name (printer)
                 except KeyError:
                     uri = None
-                menuitem = Gtk.MenuItem (printer, False)
+                menuitem = Gtk.MenuItem (label=printer)
                 menuitem.set_sensitive (uri != None)
                 menuitem.show ()
                 menuitem.connect ('activate', self.on_job_move_activate, uri)
@@ -1240,11 +1240,11 @@ class JobViewer (GtkGUI):
 
     def show_treeview_popup_menu (self, treeview, event, event_button):
         # Right-clicked.
-        self.job_context_menu.popup (None, None, None, event_button,
+        self.job_context_menu.popup (None, None, None, None, event_button,
                                      event.get_time ())
 
     def on_icon_popupmenu(self, icon, button, time):
-        self.statusicon_popupmenu.popup (None, None, None, button, time)
+        self.statusicon_popupmenu.popup (None, None, None, None, button, time)
 
     def on_icon_hide_activate(self, menuitem):
         self.num_jobs_when_hidden = len (self.jobs.keys ())
