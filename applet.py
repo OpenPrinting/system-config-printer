@@ -87,8 +87,8 @@ class NewPrinterNotification(dbus.service.Object):
         TIMEOUT=1200000
         if self.getting_ready == 0:
             n = Notify.Notification (_("Configuring new printer"),
-                                       _("Please wait..."),
-                                       'printer')
+                                     _("Please wait..."),
+                                     'printer')
             n.set_timeout (TIMEOUT + 5000)
             n.closed = False
             n.connect ('closed', self.on_notification_closed)
