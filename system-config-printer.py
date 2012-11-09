@@ -981,7 +981,7 @@ class GUI(GtkGUI):
     def on_connect_servername_changed(self, widget):
         self.btnConnect.set_sensitive (len (widget.get_active_text () or '') > 0)
 
-    def on_connect_activate(self, widget, UNUSED):
+    def on_connect_activate(self, widget):
         # Use browsed queues to build up a list of known IPP servers
         servers = self.getServers()
         current_server = (self.propertiesDlg.printer and
