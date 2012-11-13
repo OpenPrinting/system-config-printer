@@ -1243,15 +1243,14 @@ class JobViewer (GtkGUI):
         self.set_statusicon_visibility ()
 
     def on_icon_configure_printers_activate(self, menuitem):
-        if self.loop:
-            env = {}
-            for name, value in os.environ.iteritems ():
-                if name == "SYSTEM_CONFIG_PRINTER_UI":
-                    continue
-                env[name] = value
-            p = subprocess.Popen ([ "system-config-printer" ],
-                                  close_fds=True, env=env)
-            gobject.timeout_add_seconds (10, self.poll_subprocess, p)
+        env = {}
+        for name, value in os.environ.iteritems ():
+            if name == "SYSTEM_CONFIG_PRINTER_UI":
+                continue
+            env[name] = value
+        p = subprocess.Popen ([ "system-config-printer" ],
+                              close_fds=True, env=env)
+        gobject.timeout_add_seconds (10, self.poll_subprocess, p)
 
     def poll_subprocess(self, process):
         returncode = process.poll ()
