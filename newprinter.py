@@ -591,15 +591,9 @@ class NewPrinterGUI(GtkGUI):
 
     def init(self, dialog_mode, device_uri=None, name=None, ppd=None,
              devid="", host=None, encryption=None, parent=None, xid=0):
-        if xid != 0:
-            display = Gdk.Display.get_default ()
-            parent = Gdk.window_foreign_new_for_display (display, xid)
-            debugprint ("Parent is %s" % parent)
-            self.parent = parent
-        else:
-            self.parent = parent
-            if not self.parent:
-                self.NewPrinterWindow.set_focus_on_map (False)
+        self.parent = parent
+        if not self.parent:
+            self.NewPrinterWindow.set_focus_on_map (False)
             
         self.dialog_mode = dialog_mode
         self.orig_ppd = ppd
@@ -1151,8 +1145,7 @@ class NewPrinterGUI(GtkGUI):
                         not os.access ("/etc/sane.d/dll.d/hpaio", os.R_OK)):
                         try:
                             pk = installpackage.PackageKit ()
-                            xid = self.NewPrinterWindow.window.xid
-                            pk.InstallPackageName (xid, 0, "libsane-hpaio")
+                            pk.InstallPackageName (0, 0, "libsane-hpaio")
                         except:
                             pass
 

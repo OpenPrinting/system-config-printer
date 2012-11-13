@@ -207,19 +207,14 @@ class PPDsLoader(GObject.GObject):
     def _query_packagekit (self):
         debugprint ("Asking PackageKit to install drivers")
         try:
-            xid = self._parent.get_window().xid
-        except:
-            xid = 0
-
-        try:
             obj = self._bus.get_object ("org.freedesktop.PackageKit",
                                         "/org/freedesktop/PackageKit")
             proxy = dbus.Interface (obj, "org.freedesktop.PackageKit.Modify")
             resources = [self._gpk_device_id]
             interaction = "hide-finished"
             debugprint ("Calling InstallPrinterDrivers (%s, %s, %s)" %
-                        (repr (xid), repr (resources), repr (interaction)))
-            proxy.InstallPrinterDrivers (dbus.UInt32 (xid),
+                        (repr (0), repr (resources), repr (interaction)))
+            proxy.InstallPrinterDrivers (dbus.UInt32 (0),
                                          resources, interaction,
                                          reply_handler=self._packagekit_reply,
                                          error_handler=self._packagekit_error,

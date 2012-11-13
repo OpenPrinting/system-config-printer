@@ -1885,8 +1885,7 @@ class GUI(GtkGUI):
                 if response == Gtk.ResponseType.OK:
                     # Install the package.
                     try:
-                        xid = parent.get_window().xid
-                        pk.InstallPackageName (xid, 0, pkg)
+                        pk.InstallPackageName (0, 0, pkg)
                     except:
                         pass # should handle error
             else:
