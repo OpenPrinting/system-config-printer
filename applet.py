@@ -27,7 +27,6 @@ import dbus.glib
 import dbus.service
 from gi.repository import GObject
 from gi.repository import GLib
-from gi.repository import Notify
 import time
 import locale
 import gettext
@@ -43,7 +42,7 @@ except locale.Error, e:
     locale.setlocale (locale.LC_ALL, "")
 
 try:
-    import pynotify
+    from gi.repository import Notify
 except RuntimeError, e:
     print "%s:" % DOMAIN, e
     print "This is a graphical application and requires DISPLAY to be set."
@@ -106,7 +105,7 @@ class NewPrinterNotification(dbus.service.Object):
             self.getting_ready -= 1
         if (self.getting_ready == 0 and
             self.notification and
-            not getattr (self.notification, 'closed', None):
+            not getattr (self.notification, 'closed', None)):
             self.notification.close ()
 
         return False
