@@ -495,7 +495,7 @@ class Monitor(GObject.GObject):
     def refresh(self, which_jobs=None, refresh_all=True):
         debugprint ("refresh")
 
-        self.emit ('refresh')
+        GLib.idle_add (self.emit, 'refresh')
         if which_jobs != None:
             self.which_jobs = which_jobs
 
@@ -506,7 +506,7 @@ class Monitor(GObject.GObject):
                                  port=self.port,
                                  encryption=self.encryption)
         except RuntimeError:
-            self.emit ('cups-connection-error')
+            GLib.idle_add (self.emit, 'cups-connection-error')
             cups.setUser (user)
             return
 
@@ -514,7 +514,9 @@ class Monitor(GObject.GObject):
             try:
                 c.cancelSubscription (self.sub_id)
             except cups.IPPError, (e, m):
-                self.emit ('cups-ipp-error', e, m)
+                GLib.idle_add (lambda (e, m):
+                                   self.emit ('cups-ipp-error', e, m),
+                               (e, m))
 
             if self.update_timer:
                 GLib.source_remove (self.update_timer)
@@ -541,7 +543,9 @@ class Monitor(GObject.GObject):
             debugprint ("Created subscription %d, events=%s" % (self.sub_id,
                                                                 repr (events)))
         except cups.IPPError, (e, m):
-            self.emit ('cups-ipp-error', e, m)
+            GLib.idle_add (lambda (e, m):
+                               self.emit ('cups-ipp-error', e, m),
+                           (e, m))
 
         cups.setUser (user)
 
@@ -577,10 +581,12 @@ class Monitor(GObject.GObject):
             dests = c.getPrinters ()
             self.printers = set(dests.keys ())
         except cups.IPPError, (e, m):
-            self.emit ('cups-ipp-error', e, m)
+            GLib.idle_add (lambda (e, m):
+                               self.emit ('cups-ipp-error', e, m),
+                           (e, m))
             return
         except RuntimeError:
-            self.emit ('cups-connection-error')
+            GLib.idle_add (self.emit, 'cups-connection-error')
             return
 
         if self.specific_dests != None:
@@ -593,9 +599,11 @@ class Monitor(GObject.GObject):
 
         self.set_process_pending (False)
         for printer in self.printers:
-            self.emit ('printer-added', printer)
+            GLib.idle_add (lambda x: self.emit ('printer-added', x), printer)
         for jobid, job in jobs.iteritems ():
-            self.emit ('job-added', jobid, '', {}, job)
+            GLib.idle_add (lambda (jobid, job):
+                               self.emit ('job-added', jobid, '', {}, job),
+                           (jobid, job))
         self.update_jobs (jobs)
         self.jobs = jobs
         self.set_process_pending (True)
