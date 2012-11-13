@@ -1646,6 +1646,7 @@ class JobViewer (GtkGUI):
             self.worst_reason = worst_reason
             debugprint ("Worst reason: %s" % worst_reason)
 
+        Gdk.threads_enter ()
         self.statusbar.pop (0)
         if self.worst_reason != None:
             (title, tooltip) = self.worst_reason.get_description ()
@@ -1673,6 +1674,8 @@ class JobViewer (GtkGUI):
             self.statusicon.set_from_pixbuf (pixbuf)
             self.set_statusicon_visibility ()
             self.set_statusicon_tooltip (tooltip=tooltip)
+
+        Gdk.threads_leave ()
 
     ## Notifications
     def notify_printer_state_reason_if_important (self, reason):
