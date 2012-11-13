@@ -663,7 +663,7 @@ class JobViewer (GtkGUI):
         for page in range(self.notebook.get_n_pages()):
             self.notebook.remove_page(-1)
         self.jobs_attrs = {}
-        self.JobsAttributesWindow.hide_all()
+        self.JobsAttributesWindow.hide()
         return True
 
     def show_IPP_Error(self, exception, message):
