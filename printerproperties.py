@@ -1079,7 +1079,6 @@ class PrinterPropertiesDialog(GtkGUI):
                 if option not in self.server_side_options:
                     printer.unsetOption(option)
             for option in self.server_side_options.itervalues():
-                #XXX for debugging: print 'option', option, option.name, option.get_current_value()
                 if (option.is_changed() or
                     (saveall and
                      option.get_current_value () != option.get_default())):
