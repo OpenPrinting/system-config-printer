@@ -608,13 +608,13 @@ class GUI(GtkGUI):
         if ((event.keyval == Gdk.KEY_BackSpace or
              event.keyval == Gdk.KEY_Delete or
              event.keyval == Gdk.KEY_KP_Delete) and
-            ((event.get_state()[1] & modifiers) == 0)):
+            ((event.get_state() & modifiers) == 0)):
 
             self.ui_manager.get_action ("/delete-printer").activate ()
             return True
 
         if ((event.keyval == Gdk.KEY_F2) and
-            ((event.get_state()[1] & modifiers) == 0)):
+            ((event.get_state() & modifiers) == 0)):
 
             self.ui_manager.get_action ("/rename-printer").activate ()
             return True
