@@ -1612,7 +1612,7 @@ class JobViewer (GtkGUI):
             else:
                 tooltip = _("%d documents queued") % num_jobs
 
-        self.statusicon.set_tooltip (tooltip)
+        self.statusicon.set_tooltip_markup (tooltip)
 
     def update_status (self, have_jobs=None):
         # Found out which printer state reasons apply to our active jobs.
