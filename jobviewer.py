@@ -1745,7 +1745,7 @@ class JobViewer (GtkGUI):
 
     def on_state_reason_notification_closed (self, notification, reason=None):
         debugprint ("Notification %s closed" % repr (notification))
-        notification.set_data ('closed', True)
+        notification.closed = True
         self.set_statusicon_visibility ()
         return
 
@@ -2148,7 +2148,7 @@ class JobViewer (GtkGUI):
             except GLib.GError:
                 # Can fail if the notification wasn't even shown
                 pass
-            notification.set_data ('closed', True)
+            notification.closed = True
 
     def printer_added (self, mon, printer):
         self.printer_uri_index.add_printer (printer)
