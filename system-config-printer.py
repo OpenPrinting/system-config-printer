@@ -636,7 +636,7 @@ class GUI(GtkGUI):
         else:
             nonfatalException ()
 
-    def on_server_settings_activate (self, menuitem, UNUSED):
+    def on_server_settings_activate (self, menuitem):
         try:
             self.serverSettings = ServerSettings (host=self.connect_server,
                                                   encryption=self.connect_encrypt,
