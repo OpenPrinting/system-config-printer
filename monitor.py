@@ -495,7 +495,7 @@ class Monitor(GObject.GObject):
     def refresh(self, which_jobs=None, refresh_all=True):
         debugprint ("refresh")
 
-        GLib.idle_add (self.emit, 'refresh')
+        self.emit ('refresh')
         if which_jobs != None:
             self.which_jobs = which_jobs
 
