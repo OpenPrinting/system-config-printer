@@ -1291,7 +1291,6 @@ class GUI(GtkGUI):
         self.rename_sigids = ids
         self.rename_entry_sigid = None
         self.dests_iconview.set_cursor (path, cell, True)
-        self.dests_iconview.grab_focus ()
 
     def printer_name_edit_start (self, cell, editable, path):
         debugprint ("editing-started")
