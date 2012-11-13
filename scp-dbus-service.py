@@ -495,14 +495,12 @@ def _client_demo ():
         print "%s: Printer '%s' added" % (path, name)
         loop.quit ()
 
-    w = Gtk.Window ()
-    w.show_now ()
     iface.connect_to_signal ("DialogCanceled", on_canceled,
                              path_keyword="path")
     iface.connect_to_signal ("PrinterAdded", on_added,
                              path_keyword="path")
 
-    iface.NewPrinterFromDevice (w.get_window().xid, device_uri, device_id)
+    iface.NewPrinterFromDevice (0, device_uri, device_id)
     loop.run ()
 
 if __name__ == '__main__':
