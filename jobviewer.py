@@ -802,10 +802,11 @@ class JobViewer (GtkGUI):
             (start, end) = range
             if (self.store.get_sort_column_id () == (0,
                                                      Gtk.SortType.DESCENDING) and
-                start == (1,)):
+                start == Gtk.TreePath(1)):
                 # This job was added job above the visible range, and
                 # we are sorting by descending job ID.  Scroll to it.
-                self.treeview.scroll_to_cell ((0,), None, False, 0.0, 0.0)
+                self.treeview.scroll_to_cell (Gtk.TreePath(), None,
+                                              False, 0.0, 0.0)
 
         if not self.job_creation_times_timer:
             def start_updating_job_creation_times():

@@ -336,7 +336,7 @@ class ServerSettings(GtkGUI):
         cell.stop_editing (True)
         cell.set_property ('editable', False)
         model = self.browse_treeview.get_model ()
-        iter = model.get_iter ((0,))
+        iter = model.get_iter (Gtk.TreePath())
         model.remove (iter)
         self.add.set_sensitive (True)
         self.remove.set_sensitive (False)
