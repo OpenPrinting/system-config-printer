@@ -72,7 +72,7 @@ class ChooseNetworkPrinter(Question):
         self.model = model
         self.treeview.set_model (model)
         iter = model.append (None)
-        model.set (iter, 0, _("Not listed"), 1, '', 2, '', 3, None)
+        model.set (iter, 0, _("Not listed"), 1, '', 2, '', 3, 0)
 
         parent = self.troubleshooter.get_window ()
 
@@ -143,7 +143,7 @@ class ChooseNetworkPrinter(Question):
             return {}
 
         dest = model.get_value (iter, 3)
-        if dest == None:
+        if dest == 0:
             class enum_dests:
                 def __init__ (self, model):
                     self.dests = []
