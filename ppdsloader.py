@@ -198,6 +198,7 @@ class PPDsLoader(gobject.GObject):
         conn.destroy ()
         self._conn = None
         self._ppds = None
+        self._exc = exc
         if self._dialog != None:
             self._dialog.destroy ()
             self._dialog = None
