@@ -1566,7 +1566,7 @@ class NewPrinterGUI(GtkGUI):
                 uri = self.getDeviceURI ()
                 valid = validDeviceURI (uri)
             except:
-                pass
+                nonfatalException ()
             self.btnNPForward.set_sensitive(valid)
             self.btnNPBack.hide ()
         else:
