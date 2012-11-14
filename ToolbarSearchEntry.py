@@ -201,4 +201,4 @@ class ToolbarSearchEntry (Gtk.HBox):
             if not self.menu:
                 return
 
-            self.menu.popup (None, None, None, event.button, event.time)
+            self.menu.popup (None, None, None, None, event.button, event.time)
