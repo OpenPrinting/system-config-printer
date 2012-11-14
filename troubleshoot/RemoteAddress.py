@@ -19,6 +19,8 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+from gi.repository import Gtk
+
 from base import *
 class RemoteAddress(Question):
     def __init__ (self, troubleshooter):
@@ -27,22 +29,22 @@ class RemoteAddress(Question):
                                   _("Please enter as many details as you "
                                     "can about the network address of this "
                                     "printer."))
-        table = gtk.Table (2, 2)
+        table = Gtk.Table (2, 2)
         table.set_row_spacings (6)
         table.set_col_spacings (6)
         page.pack_start (table, False, False, 0)
 
-        label = gtk.Label (_("Server name:"))
+        label = Gtk.Label(label=_("Server name:"))
         label.set_alignment (0, 0)
         table.attach (label, 0, 1, 0, 1)
-        self.server_name = gtk.Entry ()
+        self.server_name = Gtk.Entry ()
         self.server_name.set_activates_default (True)
         table.attach (self.server_name, 1, 2, 0, 1)
 
-        label = gtk.Label (_("Server IP address:"))
+        label = Gtk.Label(label=_("Server IP address:"))
         label.set_alignment (0, 0)
         table.attach (label, 0, 1, 1, 2)
-        self.server_ipaddr = gtk.Entry ()
+        self.server_ipaddr = Gtk.Entry ()
         self.server_ipaddr.set_activates_default (True)
         table.attach (self.server_ipaddr, 1, 2, 1, 2)
 

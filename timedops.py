@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-## Copyright (C) 2008, 2009, 2010 Red Hat, Inc.
+## Copyright (C) 2008, 2009, 2010, 2012 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 
@@ -19,9 +19,10 @@
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 import dbus.mainloop.glib
-import glib
-import gobject
-import gtk
+from gi.repository import GObject
+from gi.repository import GLib
+from gi.repository import Gdk
+from gi.repository import Gtk
 import subprocess
 import threading
 from gettext import gettext as _
@@ -30,7 +31,8 @@ from debug import *
 # Initialise threading for D-Bus.  This is needed as long as it is
 # used from two separate threads.  We only do this in a few places
 # now, but in particular the troubleshooter does this (bug #662047).
-glib.threads_init ()
+GObject.threads_init ()
+Gdk.threads_init ()
 dbus.mainloop.glib.threads_init ()
 
 class OperationCanceled(RuntimeError):
@@ -55,29 +57,29 @@ class TimedSubprocess(Timed):
         self.show_dialog = show_dialog
         for f in [self.subp.stdout, self.subp.stderr]:
             if f != None:
-                source = gobject.io_add_watch (f,
-                                               gobject.IO_IN |
-                                               gobject.IO_HUP |
-                                               gobject.IO_ERR,
-                                               self.watcher)
+                source = GLib.io_add_watch (f,
+                                            GLib.IO_IN |
+                                            GLib.IO_HUP |
+                                            GLib.IO_ERR,
+                                            self.watcher)
                 self.io_source.append (source)
 
         self.wait_window = None
 
     def run (self):
         if self.show_dialog:
-            self.wait_source = gobject.timeout_add_seconds (
+            self.wait_source = GLib.timeout_add_seconds (
                 1,
                 self.show_wait_window)
 
-        self.timeout_source = gobject.timeout_add (self.timeout,
-                                                   self.do_timeout)
-        gtk.main ()
-        gobject.source_remove (self.timeout_source)
+        self.timeout_source = GLib.timeout_add (self.timeout,
+                                                self.do_timeout)
+        Gtk.main ()
+        GLib.source_remove (self.timeout_source)
         if self.show_dialog:
-            gobject.source_remove (self.wait_source)
+            GLib.source_remove (self.wait_source)
         for source in self.io_source:
-            gobject.source_remove (source)
+            GLib.source_remove (source)
         if self.wait_window != None:
             self.wait_window.destroy ()
         return (self.output.get (self.subp.stdout, '').split ('\n'),
@@ -85,50 +87,50 @@ class TimedSubprocess(Timed):
                 self.subp.poll ())
 
     def do_timeout (self):
-        gtk.main_quit ()
+        Gtk.main_quit ()
         return False
 
     def watcher (self, source, condition):
-        if condition & gobject.IO_IN:
+        if condition & GLib.IO_IN:
             buffer = self.output.get (source, '')
             buffer += source.read ()
             self.output[source] = buffer
 
-        if condition & gobject.IO_HUP:
+        if condition & GLib.IO_HUP:
             self.watchers -= 1
             if self.watchers == 0:
-                gtk.main_quit ()
+                Gtk.main_quit ()
                 return False
 
         return True
 
     def show_wait_window (self):
-        gtk.gdk.threads_enter ()
-        wait = gtk.MessageDialog (self.parent,
-                                  gtk.DIALOG_MODAL |
-                                  gtk.DIALOG_DESTROY_WITH_PARENT,
-                                  gtk.MESSAGE_INFO,
-                                  gtk.BUTTONS_CANCEL,
+        Gdk.threads_enter ()
+        wait = Gtk.MessageDialog (self.parent,
+                                  Gtk.DialogFlags.MODAL |
+                                  Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                                  Gtk.MessageType.INFO,
+                                  Gtk.ButtonsType.CANCEL,
                                   _("Please wait"))
         wait.connect ("delete_event", lambda *args: False)
         wait.connect ("response", self.wait_window_response)
         if self.parent:
             wait.set_transient_for (self.parent)
-        wait.set_position (gtk.WIN_POS_CENTER_ON_PARENT)
+        wait.set_position (Gtk.WindowPosition.CENTER_ON_PARENT)
         wait.format_secondary_text (_("Gathering information"))
         wait.show_all ()
         self.wait_window = wait
-        gtk.gdk.threads_leave ()
+        Gdk.threads_leave ()
         return False
 
     def wait_window_response (self, dialog, response):
-        if response == gtk.RESPONSE_CANCEL:
+        if response == Gtk.ResponseType.CANCEL:
             self.cancel ()
 
     def cancel (self):
         if self.watchers > 0:
             debugprint ("Command canceled")
-            gtk.main_quit ()
+            Gtk.main_quit ()
             self.watchers = 0
 
         return False
@@ -177,31 +179,31 @@ class TimedOperation(Timed):
 
         self.use_callback = callback != None
         if self.use_callback:
-            self.timeout_source = gobject.timeout_add (50, self._check_thread)
+            self.timeout_source = GLib.timeout_add (50, self._check_thread)
 
     def run (self):
         if self.use_callback:
             raise RuntimeError
 
         if self.show_dialog:
-            wait = gtk.MessageDialog (self.parent,
-                                      gtk.DIALOG_MODAL |
-                                      gtk.DIALOG_DESTROY_WITH_PARENT,
-                                      gtk.MESSAGE_INFO,
-                                      gtk.BUTTONS_CANCEL,
+            wait = Gtk.MessageDialog (self.parent,
+                                      Gtk.DialogFlags.MODAL |
+                                      Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                                      Gtk.MessageType.INFO,
+                                      Gtk.ButtonsType.CANCEL,
                                       _("Please wait"))
             wait.connect ("delete_event", lambda *args: False)
             wait.connect ("response", self._wait_window_response)
             if self.parent:
                 wait.set_transient_for (self.parent)
 
-            wait.set_position (gtk.WIN_POS_CENTER_ON_PARENT)
+            wait.set_position (Gtk.WindowPosition.CENTER_ON_PARENT)
             wait.format_secondary_text (_("Gathering information"))
             wait.show_all ()
 
-        self.timeout_source = gobject.timeout_add (50, self._check_thread)
-        gtk.main ()
-        gobject.source_remove (self.timeout_source)
+        self.timeout_source = GLib.timeout_add (50, self._check_thread)
+        Gtk.main ()
+        GLib.source_remove (self.timeout_source)
         if self.show_dialog:
             wait.destroy ()
 
@@ -221,12 +223,12 @@ class TimedOperation(Timed):
                 else:
                     self.callback (self.thread.result, self.thread.exception)
         else:
-            gtk.main_quit ()
+            Gtk.main_quit ()
 
         return False
 
     def _wait_window_response (self, dialog, response):
-        if response == gtk.RESPONSE_CANCEL:
+        if response == Gtk.ResponseType.CANCEL:
             self.cancel ()
 
     def cancel (self):
@@ -234,6 +236,6 @@ class TimedOperation(Timed):
         if self.use_callback:
             self.callback = None
         else:
-            gtk.main_quit ()
+            Gtk.main_quit ()
 
         return False

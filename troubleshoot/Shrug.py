@@ -19,6 +19,8 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+from gi.repository import Gtk
+
 from base import *
 class Shrug(Question):
     def __init__ (self, troubleshooter):
@@ -31,23 +33,23 @@ class Shrug(Question):
                                     "would like to report a bug, please "
                                     "include this information."))
 
-        expander = gtk.Expander (_("Diagnostic Output (Advanced)"))
+        expander = Gtk.Expander.new(_("Diagnostic Output (Advanced)"))
         expander.set_expanded (False)
-        sw = gtk.ScrolledWindow ()
+        sw = Gtk.ScrolledWindow ()
         expander.add (sw)
-        textview = gtk.TextView ()
+        textview = Gtk.TextView ()
         textview.set_editable (False)
         sw.add (textview)
-        page.pack_start (expander)
+        page.pack_start (expander, False, False, 0)
         self.buffer = textview.get_buffer ()
 
-        box = gtk.HButtonBox ()
+        box = Gtk.HButtonBox ()
         box.set_border_width (0)
         box.set_spacing (3)
-        box.set_layout (gtk.BUTTONBOX_END)
+        box.set_layout (Gtk.ButtonBoxStyle.END)
         page.pack_start (box, False, False, 0)
 
-        self.save = gtk.Button (stock=gtk.STOCK_SAVE)
+        self.save = Gtk.Button (stock=Gtk.STOCK_SAVE)
         box.pack_start (self.save, False, False, 0)
 
         troubleshooter.new_page (page, self)
@@ -65,31 +67,32 @@ class Shrug(Question):
     def on_save_clicked (self, button):
         while True:
             parent = self.troubleshooter.get_window()
-            dialog = gtk.FileChooserDialog (parent=parent,
-                                            action=gtk.FILE_CHOOSER_ACTION_SAVE,
-                                            buttons=(gtk.STOCK_CANCEL,
-                                                     gtk.RESPONSE_CANCEL,
-                                                     gtk.STOCK_SAVE,
-                                                     gtk.RESPONSE_OK))
+            dialog = Gtk.FileChooserDialog (parent=parent,
+                                            action=Gtk.FileChooserAction.SAVE,
+                                            buttons=(Gtk.STOCK_CANCEL,
+                                                     Gtk.ResponseType.CANCEL,
+                                                     Gtk.STOCK_SAVE,
+                                                     Gtk.ResponseType.OK))
             dialog.set_do_overwrite_confirmation (True)
             dialog.set_current_name ("troubleshoot.txt")
-            dialog.set_default_response (gtk.RESPONSE_OK)
+            dialog.set_default_response (Gtk.ResponseType.OK)
             dialog.set_local_only (True)
             response = dialog.run ()
             dialog.hide ()
-            if response != gtk.RESPONSE_OK:
+            if response != Gtk.ResponseType.OK:
                 return
 
             try:
                 f = file (dialog.get_filename (), "w")
-                f.write (self.buffer.get_text (self.buffer.get_start_iter (),
-                                               self.buffer.get_end_iter ()))
+                f.write (self.buffer.get_text (start=self.buffer.get_start_iter (),
+                                               end=self.buffer.get_end_iter (),
+                                               include_hidden_chars=False))
             except IOError, e:
-                err = gtk.MessageDialog (parent,
-                                         gtk.DIALOG_MODAL |
-                                         gtk.DIALOG_DESTROY_WITH_PARENT,
-                                         gtk.MESSAGE_ERROR,
-                                         gtk.BUTTONS_CLOSE,
+                err = Gtk.MessageDialog (parent,
+                                         Gtk.DialogFlags.MODAL |
+                                         Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                                         Gtk.MessageType.ERROR,
+                                         Gtk.ButtonsType.CLOSE,
                                          _("Error saving file"))
                 err.format_secondary_text (_("There was an error saving "
                                              "the file:") + "\n" +

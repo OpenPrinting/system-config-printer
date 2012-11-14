@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-## Copyright (C) 2006, 2007, 2008, 2010 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2010, 2012 Red Hat, Inc.
 ## Author: Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
@@ -17,7 +17,7 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-import gtk
+from gi.repository import Gtk
 import os
 import subprocess
 
@@ -99,40 +99,39 @@ class UserDefaultPrompt:
         self.set_default_fn = set_default_fn
         self.refresh_fn = refresh_fn
         self.name = name
-        dialog = gtk.Dialog (title,
+        dialog = Gtk.Dialog (title,
                              parent,
-                             gtk.DIALOG_MODAL |
-                             gtk.DIALOG_DESTROY_WITH_PARENT |
-                             gtk.DIALOG_NO_SEPARATOR,
-                             (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
-                              gtk.STOCK_OK, gtk.RESPONSE_OK))
-        dialog.set_default_response (gtk.RESPONSE_OK)
+                             Gtk.DialogFlags.MODAL |
+                             Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                             (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
+                              Gtk.STOCK_OK, Gtk.ResponseType.OK))
+        dialog.set_default_response (Gtk.ResponseType.OK)
         dialog.set_border_width (6)
         dialog.set_resizable (False)
-        hbox = gtk.HBox (False, 12)
+        hbox = Gtk.HBox.new (False, 12)
         hbox.set_border_width (6)
-        image = gtk.Image ()
-        image.set_from_stock (gtk.STOCK_DIALOG_QUESTION, gtk.ICON_SIZE_DIALOG)
+        image = Gtk.Image ()
+        image.set_from_stock (Gtk.STOCK_DIALOG_QUESTION, Gtk.IconSize.DIALOG)
         image.set_alignment (0.0, 0.0)
         hbox.pack_start (image, False, False, 0)
-        vboxouter = gtk.VBox (False, 6)
-        primary = gtk.Label ()
+        vboxouter = Gtk.VBox.new (False, 6)
+        primary = Gtk.Label ()
         primary.set_markup ('<span weight="bold" size="larger">' +
                             primarylabel + '</span>')
         primary.set_line_wrap (True)
         primary.set_alignment (0.0, 0.0)
         vboxouter.pack_start (primary, False, False, 0)
-        vboxradio = gtk.VBox (False, 0)
-        systemwide = gtk.RadioButton (label=systemwidelabel)
+        vboxradio = Gtk.VBox.new (False, 0)
+        systemwide = Gtk.RadioButton.new_with_mnemonic (None, systemwidelabel)
         vboxradio.pack_start (systemwide, False, False, 0)
-        clearpersonal = gtk.CheckButton (clearpersonallabel)
-        alignment = gtk.Alignment (0, 0, 0, 0)
+        clearpersonal = Gtk.CheckButton.new_with_mnemonic (clearpersonallabel)
+        alignment = Gtk.Alignment.new (0, 0, 0, 0)
         alignment.set_padding (0, 0, 12, 0)
         alignment.add (clearpersonal)
-        vboxradio.pack_start (alignment)
+        vboxradio.pack_start (alignment, False, False, 0)
         vboxouter.pack_start (vboxradio, False, False, 0)
-        personal = gtk.RadioButton (group=systemwide,
-                                    label=personallabel)
+        personal = Gtk.RadioButton.new_with_mnemonic_from_widget(systemwide,
+                                                                 personallabel)
         vboxouter.pack_start (personal, False, False, 0)
         hbox.pack_start (vboxouter, False, False, 0)
         dialog.vbox.pack_start (hbox, False, False, 0)
@@ -153,7 +152,7 @@ class UserDefaultPrompt:
                                           self.systemwide.get_active ())
 
     def on_response (self, dialog, response_id):
-        if response_id != gtk.RESPONSE_OK:
+        if response_id != Gtk.ResponseType.OK:
             dialog.destroy ()
             return
 

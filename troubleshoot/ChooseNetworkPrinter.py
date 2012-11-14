@@ -2,7 +2,7 @@
 
 ## Printing troubleshooter
 
-## Copyright (C) 2008, 2009, 2011 Red Hat, Inc.
+## Copyright (C) 2008, 2009, 2011, 2012 Red Hat, Inc.
 ## Author: Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
@@ -19,8 +19,10 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+from gi.repository import Gtk
+
 import cups
-import gobject
+from gi.repository import GObject
 from timedops import TimedOperation
 from base import *
 class ChooseNetworkPrinter(Question):
@@ -31,13 +33,13 @@ class ChooseNetworkPrinter(Question):
                                      "are trying to use from the list below. "
                                      "If it does not appear in the list, "
                                      "select 'Not listed'."))
-        tv = gtk.TreeView ()
-        name = gtk.TreeViewColumn (_("Name"),
-                                   gtk.CellRendererText (), text=0)
-        location = gtk.TreeViewColumn (_("Location"),
-                                       gtk.CellRendererText (), text=1)
-        info = gtk.TreeViewColumn (_("Information"),
-                                   gtk.CellRendererText (), text=2)
+        tv = Gtk.TreeView ()
+        name = Gtk.TreeViewColumn (_("Name"),
+                                   Gtk.CellRendererText (), text=0)
+        location = Gtk.TreeViewColumn (_("Location"),
+                                       Gtk.CellRendererText (), text=1)
+        info = Gtk.TreeViewColumn (_("Information"),
+                                   Gtk.CellRendererText (), text=2)
         name.set_property ("resizable", True)
         location.set_property ("resizable", True)
         info.set_property ("resizable", True)
@@ -45,9 +47,9 @@ class ChooseNetworkPrinter(Question):
         tv.append_column (location)
         tv.append_column (info)
         tv.set_rules_hint (True)
-        sw = gtk.ScrolledWindow ()
-        sw.set_policy (gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-        sw.set_shadow_type (gtk.SHADOW_IN)
+        sw = Gtk.ScrolledWindow ()
+        sw.set_policy (Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
+        sw.set_shadow_type (Gtk.ShadowType.IN)
         sw.add (tv)
         page1.pack_start (sw, True, True, 0)
         self.treeview = tv
@@ -63,14 +65,14 @@ class ChooseNetworkPrinter(Question):
 
         server = answers['remote_server_try_connect']
 
-        model = gtk.ListStore (gobject.TYPE_STRING,
-                               gobject.TYPE_STRING,
-                               gobject.TYPE_STRING,
-                               gobject.TYPE_PYOBJECT)
+        model = Gtk.ListStore (str,
+                               str,
+                               str,
+                               GObject.TYPE_PYOBJECT)
         self.model = model
         self.treeview.set_model (model)
         iter = model.append (None)
-        model.set (iter, 0, _("Not listed"), 1, '', 2, '', 3, None)
+        model.set (iter, 0, _("Not listed"), 1, '', 2, '', 3, 0)
 
         parent = self.troubleshooter.get_window ()
 
@@ -141,7 +143,7 @@ class ChooseNetworkPrinter(Question):
             return {}
 
         dest = model.get_value (iter, 3)
-        if dest == None:
+        if dest == 0:
             class enum_dests:
                 def __init__ (self, model):
                     self.dests = []

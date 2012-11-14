@@ -3,7 +3,7 @@
 ## system-config-printer
 ## CUPS backend
  
-## Copyright (C) 2002, 2003, 2006, 2007, 2008, 2010 Red Hat, Inc.
+## Copyright (C) 2002, 2003, 2006, 2007, 2008, 2010, 2012 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
  
@@ -23,8 +23,8 @@
 
 import errno
 from gettext import gettext as _
-import gobject
-import gtk
+from gi.repository import Gdk
+from gi.repository import Gtk
 import os
 import pwd
 import smbc
@@ -82,11 +82,11 @@ class AuthContext:
         self.auth_called = False
 
         if self.dialog_shown:
-            d = gtk.MessageDialog (self.parent,
-                                   gtk.DIALOG_MODAL |
-                                   gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_ERROR,
-                                   gtk.BUTTONS_CLOSE)
+            d = Gtk.MessageDialog (self.parent,
+                                   Gtk.DialogFlags.MODAL |
+                                   Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                                   Gtk.MessageType.ERROR,
+                                   Gtk.ButtonsType.CLOSE)
             d.set_title (_("Not authorized"))
             d.set_markup ('<span weight="bold" size="larger">' +
                           _("Not authorized") + '</span>\n\n' +
@@ -95,21 +95,21 @@ class AuthContext:
             d.destroy ()
 
         # After that, prompt
-        d = gtk.Dialog (_("Authentication"), self.parent,
-                        gtk.DIALOG_MODAL | gtk.DIALOG_NO_SEPARATOR,
-                        (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
-                         gtk.STOCK_OK, gtk.RESPONSE_OK))
-        d.set_default_response (gtk.RESPONSE_OK)
+        d = Gtk.Dialog (_("Authentication"), self.parent,
+                        Gtk.DialogFlags.MODAL,
+                        (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
+                         Gtk.STOCK_OK, Gtk.ResponseType.OK))
+        d.set_default_response (Gtk.ResponseType.OK)
         d.set_border_width (6)
         d.set_resizable (False)
-        hbox = gtk.HBox (False, 12)
+        hbox = Gtk.HBox.new (False, 12)
         hbox.set_border_width (6)
-        image = gtk.Image ()
-        image.set_from_stock (gtk.STOCK_DIALOG_AUTHENTICATION,
-                              gtk.ICON_SIZE_DIALOG)
+        image = Gtk.Image ()
+        image.set_from_stock (Gtk.STOCK_DIALOG_AUTHENTICATION,
+                              Gtk.IconSize.DIALOG)
         hbox.pack_start (image, False, False, 0)
-        vbox = gtk.VBox (False, 12)
-        label = gtk.Label ('<span weight="bold" size="larger">' +
+        vbox = Gtk.VBox (False, 12)
+        label = Gtk.Label(label='<span weight="bold" size="larger">' +
                            _("You must log in to access %s.") % self.for_server +
                            '</span>')
         label.set_use_markup (True)
@@ -117,23 +117,23 @@ class AuthContext:
         label.set_line_wrap (True)
         vbox.pack_start (label, False, False, 0)
 
-        table = gtk.Table (3, 2)
+        table = Gtk.Table (3, 2)
         table.set_row_spacings (6)
         table.set_col_spacings (6)
-        table.attach (gtk.Label (_("Username:")), 0, 1, 0, 1, 0, 0)
-        username_entry = gtk.Entry ()
+        table.attach (Gtk.Label(label=_("Username:")), 0, 1, 0, 1, 0, 0)
+        username_entry = Gtk.Entry ()
         table.attach (username_entry, 1, 2, 0, 1, 0, 0)
-        table.attach (gtk.Label (_("Domain:")), 0, 1, 1, 2, 0, 0)
-        domain_entry = gtk.Entry ()
+        table.attach (Gtk.Label(label=_("Domain:")), 0, 1, 1, 2, 0, 0)
+        domain_entry = Gtk.Entry ()
         table.attach (domain_entry, 1, 2, 1, 2, 0, 0)
-        table.attach (gtk.Label (_("Password:")), 0, 1, 2, 3, 0, 0)
-        password_entry = gtk.Entry ()
+        table.attach (Gtk.Label(label=_("Password:")), 0, 1, 2, 3, 0, 0)
+        password_entry = Gtk.Entry ()
         password_entry.set_activates_default (True)
         password_entry.set_visibility (False)
         table.attach (password_entry, 1, 2, 2, 3, 0, 0)
         vbox.pack_start (table, False, False, 0)
         hbox.pack_start (vbox, False, False, 0)
-        d.vbox.pack_start (hbox)
+        d.vbox.pack_start (hbox, False, False, 0)
         self.dialog_shown = True
         d.show_all ()
         d.show_now ()
@@ -145,13 +145,13 @@ class AuthContext:
         domain_entry.set_text (self.use_workgroup)
 
         d.set_keep_above (True)
-        gtk.gdk.pointer_grab (d.window, True)
-        gtk.gdk.keyboard_grab (d.window, True)
+        Gdk.pointer_grab (d.get_window(), True)
+        Gdk.keyboard_grab (d.get_window(), True)
         response = d.run ()
-        gtk.gdk.keyboard_ungrab ()
-        gtk.gdk.pointer_ungrab ()
+        Gdk.keyboard_ungrab ()
+        Gdk.pointer_ungrab ()
 
-        if response == gtk.RESPONSE_CANCEL:
+        if response == Gtk.ResponseType.CANCEL:
             self.cancel = True
             d.destroy ()
             return -1

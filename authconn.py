@@ -20,8 +20,9 @@
 import threading
 import cups
 import cupspk
-import gobject
-import gtk
+from gi.repository import GLib
+from gi.repository import Gdk
+from gi.repository import Gtk
 import os
 from errordialogs import *
 from debug import *
@@ -29,47 +30,47 @@ from gettext import gettext as _
 N_ = lambda x: x
 
 cups.require("1.9.60")
-class AuthDialog(gtk.Dialog):
+class AuthDialog(Gtk.Dialog):
     AUTH_FIELD={'username': N_("Username:"),
                 'password': N_("Password:"),
                 'domain': N_("Domain:")}
 
     def __init__ (self, title=None, parent=None,
-                  flags=gtk.DIALOG_MODAL | gtk.DIALOG_NO_SEPARATOR,
-                  buttons=(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
-                           gtk.STOCK_OK, gtk.RESPONSE_OK),
+                  flags=Gtk.DialogFlags.MODAL,
+                  buttons=(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
+                           Gtk.STOCK_OK, Gtk.ResponseType.OK),
                   auth_info_required=['username', 'password'],
                   allow_remember=False):
         if title == None:
             title = _("Authentication")
-        gtk.Dialog.__init__ (self, title, parent, flags, buttons)
+        Gtk.Dialog.__init__ (self, title, parent, flags, buttons)
         self.auth_info_required = auth_info_required
-        self.set_default_response (gtk.RESPONSE_OK)
+        self.set_default_response (Gtk.ResponseType.OK)
         self.set_border_width (6)
         self.set_resizable (False)
-        hbox = gtk.HBox (False, 12)
+        hbox = Gtk.HBox.new (False, 12)
         hbox.set_border_width (6)
-        image = gtk.Image ()
-        image.set_from_stock (gtk.STOCK_DIALOG_AUTHENTICATION,
-                              gtk.ICON_SIZE_DIALOG)
+        image = Gtk.Image ()
+        image.set_from_stock (Gtk.STOCK_DIALOG_AUTHENTICATION,
+                              Gtk.IconSize.DIALOG)
         image.set_alignment (0.0, 0.0)
         hbox.pack_start (image, False, False, 0)
-        vbox = gtk.VBox (False, 12)
-        self.prompt_label = gtk.Label ()
+        vbox = Gtk.VBox.new (False, 12)
+        self.prompt_label = Gtk.Label ()
         vbox.pack_start (self.prompt_label, False, False, 0)
 
         num_fields = len (auth_info_required)
-        table = gtk.Table (num_fields, 2)
+        table = Gtk.Table (num_fields, 2)
         table.set_row_spacings (6)
         table.set_col_spacings (6)
 
         self.field_entry = []
         for i in range (num_fields):
             field = auth_info_required[i]
-            label = gtk.Label (_(self.AUTH_FIELD.get (field, field)))
+            label = Gtk.Label (_(self.AUTH_FIELD.get (field, field)))
             label.set_alignment (0, 0.5)
             table.attach (label, 0, 1, i, i + 1)
-            entry = gtk.Entry ()
+            entry = Gtk.Entry ()
             entry.set_visibility (field != 'password')
             table.attach (entry, 1, 2, i, i + 1, 0, 0)
             self.field_entry.append (entry)
@@ -77,12 +78,12 @@ class AuthDialog(gtk.Dialog):
         self.field_entry[num_fields - 1].set_activates_default (True)
         vbox.pack_start (table, False, False, 0)
         hbox.pack_start (vbox, False, False, 0)
-        self.vbox.pack_start (hbox)
+        self.vbox.pack_start (hbox, False, False, 0)
 
         if allow_remember:
-            cb = gtk.CheckButton (_("Remember password"))
+            cb = Gtk.CheckButton (_("Remember password"))
             cb.set_active (False)
-            vbox.pack_start (cb)
+            vbox.pack_start (cb, False, False, 0)
             self.remember_checkbox = cb
 
         self.vbox.show_all ()
@@ -253,12 +254,12 @@ class Connection:
                 elif not self._cancel and e == cups.IPP_SERVICE_UNAVAILABLE:
                     if self._lock:
                         self._gui_event.clear ()
-                        gobject.timeout_add (1, self._ask_retry_server_error, m)
+                        GLib.timeout_add (1, self._ask_retry_server_error, m)
                         self._gui_event.wait ()
                     else:
                         self._ask_retry_server_error (m)
 
-                    if self._retry_response == gtk.RESPONSE_OK:
+                    if self._retry_response == Gtk.ResponseType.OK:
                         debugprint ("retrying operation...")
                         retry = True
                         self._passes -= 1
@@ -282,28 +283,28 @@ class Connection:
 
     def _ask_retry_server_error (self, message):
         if self._lock:
-            gtk.gdk.threads_enter ()
+            Gdk.threads_enter ()
 
         try:
             msg = _("CUPS server error (%s)") % self._operation_stack[0]
         except IndexError:
             msg = _("CUPS server error")
 
-        d = gtk.MessageDialog (self._parent,
-                               gtk.DIALOG_MODAL |
-                               gtk.DIALOG_DESTROY_WITH_PARENT,
-                               gtk.MESSAGE_ERROR,
-                               gtk.BUTTONS_NONE,
+        d = Gtk.MessageDialog (self._parent,
+                               Gtk.DialogFlags.MODAL |
+                               Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                               Gtk.MessageType.ERROR,
+                               Gtk.ButtonsType.NONE,
                                msg)
                                
         d.format_secondary_text (_("There was an error during the "
                                    "CUPS operation: '%s'." % message))
-        d.add_buttons (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
-                       _("Retry"), gtk.RESPONSE_OK)
-        d.set_default_response (gtk.RESPONSE_OK)
+        d.add_buttons (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
+                       _("Retry"), Gtk.ResponseType.OK)
+        d.set_default_response (Gtk.ResponseType.OK)
         if self._lock:
             d.connect ("response", self._on_retry_server_error_response)
-            gtk.gdk.threads_leave ()
+            Gdk.threads_leave ()
         else:
             self._retry_response = d.run ()
             d.destroy ()
@@ -402,14 +403,14 @@ class Connection:
         if self._dialog_shown:
             if self._lock:
                 self._gui_event.clear ()
-                gobject.timeout_add (1, self._show_not_authorized_dialog)
+                GLib.timeout_add (1, self._show_not_authorized_dialog)
                 self._gui_event.wait ()
             else:
                 self._show_not_authorized_dialog ()
 
         if self._lock:
             self._gui_event.clear ()
-            gobject.timeout_add (1, self._perform_authentication_with_dialog)
+            GLib.timeout_add (1, self._perform_authentication_with_dialog)
             self._gui_event.wait ()
         else:
             self._perform_authentication_with_dialog ()
@@ -430,12 +431,12 @@ class Connection:
 
     def _show_not_authorized_dialog (self):
         if self._lock:
-            gtk.gdk.threads_enter ()
-        d = gtk.MessageDialog (self._parent,
-                               gtk.DIALOG_MODAL |
-                               gtk.DIALOG_DESTROY_WITH_PARENT,
-                               gtk.MESSAGE_ERROR,
-                               gtk.BUTTONS_CLOSE)
+            Gdk.threads_enter ()
+        d = Gtk.MessageDialog (self._parent,
+                               Gtk.DialogFlags.MODAL |
+                               Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                               Gtk.MessageType.ERROR,
+                               Gtk.ButtonsType.CLOSE)
         d.set_title (_("Not authorized"))
         d.set_markup ('<span weight="bold" size="larger">' +
                       _("Not authorized") + '</span>\n\n' +
@@ -444,7 +445,7 @@ class Connection:
             d.connect ("response", self._on_not_authorized_dialog_response)
             d.show_all ()
             d.show_now ()
-            gtk.gdk.threads_leave ()
+            Gdk.threads_leave ()
         else:
             d.run ()
             d.destroy ()
@@ -455,7 +456,7 @@ class Connection:
 
     def _perform_authentication_with_dialog (self):
         if self._lock:
-            gtk.gdk.threads_enter ()
+            Gdk.threads_enter ()
 
         # Prompt.
         if len (self._operation_stack) > 0:
@@ -478,7 +479,7 @@ class Connection:
         self._dialog_shown = True
         if self._lock:
             d.connect ("response", self._on_authentication_response)
-            gtk.gdk.threads_leave ()
+            Gdk.threads_leave ()
         else:
             response = d.run ()
             self._on_authentication_response (d, response)
@@ -493,8 +494,8 @@ class Connection:
                                               port=self._port)
         dialog.destroy ()
 
-        if (response == gtk.RESPONSE_CANCEL or
-            response == gtk.RESPONSE_DELETE_EVENT):
+        if (response == Gtk.ResponseType.CANCEL or
+            response == Gtk.ResponseType.DELETE_EVENT):
             self._cancel = True
 
         if self._lock:
@@ -502,7 +503,7 @@ class Connection:
 
 if __name__ == '__main__':
     # Test it out.
-    gtk.gdk.threads_init ()
+    Gdk.threads_init ()
     from timedops import TimedOperation
     set_debugging (True)
     c = TimedOperation (Connection, args=(None,)).run ()

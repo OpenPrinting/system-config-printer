@@ -2,7 +2,7 @@
 
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008, 2009, 2010 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2012 Red Hat, Inc.
 ## Authors:
 ##  Florian Festi <ffesti@redhat.com>
 ##  Tim Waugh <twaugh@redhat.com>
@@ -21,19 +21,21 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-import gobject
-import gtk
+from gi.repository import GObject
+from gi.repository import Gtk
 import os
 
 import config
 pkgdata = config.pkgdatadir
 
-class GtkGUI(gobject.GObject):
+class GtkGUI(GObject.GObject):
     def getWidgets(self, widgets, domain=None):
         ui_dir = os.environ.get ("SYSTEM_CONFIG_PRINTER_UI",
                                  os.path.join (pkgdata, "ui"))
+        self._bld = []
         for xmlfile, names in widgets.iteritems ():
-            bld = gtk.Builder ()
+            bld = Gtk.Builder ()
+            self._bld.append (bld)
 
             if domain:
                 bld.set_translation_domain (domain)
@@ -51,8 +53,9 @@ class GtkGUI(gobject.GObject):
                 win = None
             
             if win != None:
-                gtk.Window.set_focus_on_map(widget.get_top_level (),
+                Gtk.Window.set_focus_on_map(widget.get_top_level (),
                                             self.focus_on_map)
                 widget.show()
 
-            bld.connect_signals (self)
+    def connect_signals (self):
+        map (lambda x: x.connect_signals (self), self._bld)

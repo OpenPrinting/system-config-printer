@@ -20,6 +20,8 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+from gi.repository import Gtk
+
 import cups
 import ppdcache
 import statereason
@@ -31,7 +33,7 @@ class PrinterStateReasons(Question):
         page = self.initial_vbox (_("Status Messages"),
                                   _("There are status messages associated with "
                                     "this queue."))
-        self.label = gtk.Label ()
+        self.label = Gtk.Label ()
         self.label.set_alignment (0, 0)
         self.label.set_line_wrap (True)
         page.pack_start (self.label, False, False, 0)

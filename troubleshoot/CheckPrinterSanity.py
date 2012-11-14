@@ -20,8 +20,9 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+from gi.repository import Gtk
+
 import cups
-import gobject
 import os
 import smburi
 import subprocess
@@ -31,7 +32,7 @@ from base import *
 class CheckPrinterSanity(Question):
     def __init__ (self, troubleshooter):
         Question.__init__ (self, troubleshooter, "Check printer sanity")
-        troubleshooter.new_page (gtk.Label (), self)
+        troubleshooter.new_page (Gtk.Label (), self)
         self.troubleshooter = troubleshooter
 
     def display (self):

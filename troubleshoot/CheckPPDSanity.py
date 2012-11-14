@@ -20,6 +20,8 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+from gi.repository import Gtk
+
 import cups
 import cupshelpers
 import installpackage
@@ -31,18 +33,18 @@ from base import *
 class CheckPPDSanity(Question):
     def __init__ (self, troubleshooter):
         Question.__init__ (self, troubleshooter, "Check PPD sanity")
-        vbox = gtk.VBox ()
+        vbox = Gtk.VBox ()
         vbox.set_border_width (12)
         vbox.set_spacing (12)
-        self.label = gtk.Label ()
+        self.label = Gtk.Label ()
         self.label.set_line_wrap (True)
         self.label.set_use_markup (True)
         self.label.set_alignment (0, 0)
         vbox.pack_start (self.label, False, False, 0)
 
-        box = gtk.HButtonBox ()
-        box.set_layout (gtk.BUTTONBOX_START)
-        self.install_button = gtk.Button (_("Install"))
+        box = Gtk.HButtonBox ()
+        box.set_layout (Gtk.ButtonBoxStyle.START)
+        self.install_button = Gtk.Button (_("Install"))
         box.add (self.install_button)
         # Although we want this hidden initially,
         # troubleshooter.new_page will call show_all() on the widget

@@ -2,7 +2,7 @@
 
 ## Printing troubleshooter
 
-## Copyright (C) 2008 Red Hat, Inc.
+## Copyright (C) 2008, 2012 Red Hat, Inc.
 ## Copyright (C) 2008 Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
@@ -19,6 +19,8 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+from gi.repository import Gtk
+
 from base import *
 class ErrorLogParse(Question):
 
@@ -28,11 +30,11 @@ class ErrorLogParse(Question):
         Question.__init__ (self, troubleshooter, "Error log parse")
         page = self.initial_vbox (_("Error log messages"),
                                   _("There are messages in the error log."))
-        sw = gtk.ScrolledWindow ()
-        textview = gtk.TextView ()
+        sw = Gtk.ScrolledWindow ()
+        textview = Gtk.TextView ()
         textview.set_editable (False)
         sw.add (textview)
-        page.pack_start (sw)
+        page.pack_start (sw, True, True, 0)
         self.buffer = textview.get_buffer ()
         troubleshooter.new_page (page, self)
 

@@ -1,8 +1,8 @@
 # vim: set ts=4 sw=4 et: coding=UTF-8
 #
 # Copyright (C) 2008 Novell, Inc.
-# Copyright (C) 2008, 2009, 2010 Red Hat, Inc.
-# Copyright (C) 2008, 2009, 2010 Tim Waugh <twaugh@redhat.com>
+# Copyright (C) 2008, 2009, 2010, 2012 Red Hat, Inc.
+# Copyright (C) 2008, 2009, 2010, 2012 Tim Waugh <twaugh@redhat.com>
 #
 # Authors: Vincent Untz
 #
@@ -33,7 +33,6 @@ import tempfile
 
 import cups
 import dbus
-import gtk
 from debug import debugprint
 
 from dbus.mainloop.glib import DBusGMainLoop

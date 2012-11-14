@@ -20,13 +20,12 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-import gtk
+from gi.repository import Gtk
 from gettext import gettext as _
 N_ = lambda x: x
 from debug import *
 
-__all__ = [ 'gtk',
-            '_',
+__all__ = [ '_',
             'debugprint', 'get_debugging', 'set_debugging',
             'Question',
             'Multichoice',
@@ -64,7 +63,7 @@ class Question:
 
     ## Helper functions
     def initial_vbox (self, title='', text=''):
-        vbox = gtk.VBox ()
+        vbox = Gtk.VBox ()
         vbox.set_border_width (12)
         vbox.set_spacing (12)
         if title:
@@ -72,7 +71,7 @@ class Question:
         else:
             s = ''
         s += text
-        label = gtk.Label (s)
+        label = Gtk.Label(label=s)
         label.set_alignment (0, 0)
         label.set_line_wrap (True)
         label.set_use_markup (True)
@@ -84,15 +83,18 @@ class Multichoice(Question):
                   question_text, choices, name=None):
         Question.__init__ (self, troubleshooter, name)
         page = self.initial_vbox (question_title, question_text)
-        choice_vbox = gtk.VBox ()
+        choice_vbox = Gtk.VBox ()
         choice_vbox.set_spacing (6)
         page.pack_start (choice_vbox, False, False, 0)
         self.question_tag = question_tag
         self.widgets = []
+        button = None
         for choice, tag in choices:
-            button = gtk.RadioButton (label=choice)
-            if len (self.widgets) > 0:
-                button.set_group (self.widgets[0][0])
+            if button:
+                button = Gtk.RadioButton.new_with_label_from_widget(button, choice)
+            else:
+                # special case to work around GNOME#635253
+                button = Gtk.RadioButton.new_with_label([], choice)
             choice_vbox.pack_start (button, False, False, 0)
             self.widgets.append ((button, tag))
 

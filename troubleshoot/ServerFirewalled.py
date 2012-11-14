@@ -19,6 +19,8 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+from gi.repository import Gtk
+
 from base import *
 class ServerFirewalled(Question):
     def __init__ (self, troubleshooter):
@@ -26,7 +28,7 @@ class ServerFirewalled(Question):
         page = self.initial_vbox (_("Check Server Firewall"),
                                    _("It is not possible to connect to the "
                                      "server."))
-        self.label = gtk.Label ()
+        self.label = Gtk.Label ()
         self.label.set_alignment (0, 0)
         self.label.set_line_wrap (True)
         page.pack_start (self.label, False, False, 0)

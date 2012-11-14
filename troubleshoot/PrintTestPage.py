@@ -2,7 +2,7 @@
 
 ## Printing troubleshooter
 
-## Copyright (C) 2008, 2009, 2010 Red Hat, Inc.
+## Copyright (C) 2008, 2009, 2010, 2012 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 
@@ -23,9 +23,11 @@
 import cups
 import dbus
 import dbus.glib
-import gobject
+from gi.repository import GLib
 import os
-import pango
+from gi.repository import Gdk
+from gi.repository import Gtk
+from gi.repository import Pango
 import tempfile
 import time
 from timedops import TimedOperation, OperationCanceled
@@ -48,11 +50,11 @@ class PrintTestPage(Question):
 
     def __init__ (self, troubleshooter):
         Question.__init__ (self, troubleshooter, "Print test page")
-        page = gtk.VBox ()
+        page = Gtk.VBox ()
         page.set_spacing (12)
         page.set_border_width (12)
 
-        label = gtk.Label ()
+        label = Gtk.Label ()
         label.set_alignment (0, 0)
         label.set_use_markup (True)
         label.set_line_wrap (True)
@@ -65,34 +67,34 @@ class PrintTestPage(Question):
                                   "print that document now and mark the print "
                                   "job below."))
 
-        hbox = gtk.HButtonBox ()
+        hbox = Gtk.HButtonBox ()
         hbox.set_border_width (0)
         hbox.set_spacing (3)
-        hbox.set_layout (gtk.BUTTONBOX_START)
-        self.print_button = gtk.Button (_("Print Test Page"))
+        hbox.set_layout (Gtk.ButtonBoxStyle.START)
+        self.print_button = Gtk.Button (_("Print Test Page"))
         hbox.pack_start (self.print_button, False, False, 0)
 
-        self.cancel_button = gtk.Button (_("Cancel All Jobs"))
+        self.cancel_button = Gtk.Button (_("Cancel All Jobs"))
         hbox.pack_start (self.cancel_button, False, False, 0)
         page.pack_start (hbox, False, False, 0)
 
-        tv = gtk.TreeView ()
-        test_cell = gtk.CellRendererToggle ()
-        test = gtk.TreeViewColumn (_("Test"), test_cell, active=0)
-        job = gtk.TreeViewColumn (_("Job"), gtk.CellRendererText (), text=1)
-        printer_cell = gtk.CellRendererText ()
-        printer = gtk.TreeViewColumn (_("Printer"), printer_cell, text=2)
-        name_cell = gtk.CellRendererText ()
-        name = gtk.TreeViewColumn (_("Document"), name_cell, text=3)
-        status = gtk.TreeViewColumn (_("Status"), gtk.CellRendererText (),
+        tv = Gtk.TreeView ()
+        test_cell = Gtk.CellRendererToggle ()
+        test = Gtk.TreeViewColumn (_("Test"), test_cell, active=0)
+        job = Gtk.TreeViewColumn (_("Job"), Gtk.CellRendererText (), text=1)
+        printer_cell = Gtk.CellRendererText ()
+        printer = Gtk.TreeViewColumn (_("Printer"), printer_cell, text=2)
+        name_cell = Gtk.CellRendererText ()
+        name = Gtk.TreeViewColumn (_("Document"), name_cell, text=3)
+        status = Gtk.TreeViewColumn (_("Status"), Gtk.CellRendererText (),
                                      text=4)
         test_cell.set_radio (False)
         self.test_cell = test_cell
         printer.set_resizable (True)
-        printer_cell.set_property ("ellipsize", pango.ELLIPSIZE_END)
+        printer_cell.set_property ("ellipsize", Pango.EllipsizeMode.END)
         printer_cell.set_property ("width-chars", 20)
         name.set_resizable (True)
-        name_cell.set_property ("ellipsize", pango.ELLIPSIZE_END)
+        name_cell.set_property ("ellipsize", Pango.EllipsizeMode.END)
         name_cell.set_property ("width-chars", 20)
         status.set_resizable (True)
         tv.append_column (test)
@@ -101,23 +103,22 @@ class PrintTestPage(Question):
         tv.append_column (name)
         tv.append_column (status)
         tv.set_rules_hint (True)
-        sw = gtk.ScrolledWindow ()
-        sw.set_policy (gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-        sw.set_shadow_type (gtk.SHADOW_IN)
+        sw = Gtk.ScrolledWindow ()
+        sw.set_policy (Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
+        sw.set_shadow_type (Gtk.ShadowType.IN)
         sw.add (tv)
         self.treeview = tv
-        page.pack_start (sw)
+        page.pack_start (sw, False, False, 0)
 
-        label = gtk.Label (_("Did the marked print jobs print correctly?"))
+        label = Gtk.Label(label=_("Did the marked print jobs print correctly?"))
         label.set_line_wrap (True)
         label.set_alignment (0, 0)
         page.pack_start (label, False, False, 0)
 
-        vbox = gtk.VBox ()
+        vbox = Gtk.VBox ()
         vbox.set_spacing (6)
-        self.yes = gtk.RadioButton (label=_("Yes"))
-        no = gtk.RadioButton (label=_("No"))
-        no.set_group (self.yes)
+        self.yes = Gtk.RadioButton (label=_("Yes"))
+        no = Gtk.RadioButton.new_with_label_from_widget (self.yes, _("No"))
         vbox.pack_start (self.yes, False, False, 0)
         vbox.pack_start (no, False, False, 0)
         page.pack_start (vbox, False, False, 0)
@@ -149,11 +150,11 @@ class PrintTestPage(Question):
         label_text = self.main_label_text + mediatype_string
         self.main_label.set_markup (label_text)
 
-        model = gtk.ListStore (gobject.TYPE_BOOLEAN,
-                               gobject.TYPE_INT,
-                               gobject.TYPE_STRING,
-                               gobject.TYPE_STRING,
-                               gobject.TYPE_STRING)
+        model = Gtk.ListStore (bool,
+                               int,
+                               str,
+                               str,
+                               str)
         self.treeview.set_model (model)
         self.job_to_iter = {}
 
@@ -251,7 +252,7 @@ class PrintTestPage(Question):
                                      path=DBUS_PATH,
                                      dbus_interface=DBUS_IFACE)
 
-        self.timer = gobject.timeout_add_seconds (1, self.update_jobs_list)
+        self.timer = GLib.timeout_add_seconds (1, self.update_jobs_list)
 
     def disconnect_signals (self):
         if self.bus:
@@ -281,7 +282,7 @@ class PrintTestPage(Question):
         except:
             pass
 
-        gobject.source_remove (self.timer)
+        GLib.source_remove (self.timer)
 
     def collect_answer (self):
         if not self.displayed:
@@ -344,8 +345,8 @@ class PrintTestPage(Question):
 
     def handle_dbus_signal (self, *args):
         debugprint ("D-Bus signal caught: updating jobs list soon")
-        gobject.source_remove (self.timer)
-        self.timer = gobject.timeout_add (200, self.update_jobs_list)
+        GLib.source_remove (self.timer)
+        self.timer = GLib.timeout_add (200, self.update_jobs_list)
 
     def update_job (self, jobid, job_dict):
         iter = self.job_to_iter[jobid]
@@ -474,7 +475,7 @@ class PrintTestPage(Question):
 
         # Enter the GDK lock.  We need to do this because we were
         # called from a timeout.
-        gtk.gdk.threads_enter ()
+        Gdk.threads_enter ()
 
         parent = self.troubleshooter.get_window ()
         self.op = TimedOperation (get_notifications,
@@ -483,7 +484,7 @@ class PrintTestPage(Question):
         try:
             notifications = self.op.run ()
         except (OperationCanceled, cups.IPPError):
-            gtk.gdk.threads_leave ()
+            Gdk.threads_leave ()
             return True
 
         answers = self.troubleshooter.answers
@@ -524,11 +525,11 @@ class PrintTestPage(Question):
 
         # Update again when we're told to. (But we might update sooner if
         # there is a D-Bus signal.)
-        gobject.source_remove (self.timer)
-        self.timer = gobject.timeout_add_seconds (
+        GLib.source_remove (self.timer)
+        self.timer = GLib.timeout_add_seconds (
             notifications['notify-get-interval'],
             self.update_jobs_list)
         debugprint ("Update again in %ds" %
                     notifications['notify-get-interval'])
-        gtk.gdk.threads_leave ()
+        Gdk.threads_leave ()
         return False

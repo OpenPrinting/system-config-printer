@@ -26,10 +26,12 @@ import subprocess
 from timedops import TimedSubprocess
 import urllib
 from base import *
+from gi.repository import Gtk
+
 class CheckUSBPermissions(Question):
     def __init__ (self, troubleshooter):
         Question.__init__ (self, troubleshooter, "Check USB permissions")
-        troubleshooter.new_page (gtk.Label (), self)
+        troubleshooter.new_page (Gtk.Label (), self)
 
     def display (self):
         self.answers = {}

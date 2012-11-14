@@ -2,7 +2,7 @@
 
 ## system-config-printer
 
-## Copyright (C) 2008, 2009, 2010, 2011 Red Hat, Inc.
+## Copyright (C) 2008, 2009, 2010, 2011, 2012 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 
@@ -24,8 +24,8 @@ import config
 from gettext import gettext as _
 import cups
 import dbus
-import gobject
-import gtk
+from gi.repository import GObject
+from gi.repository import Gtk
 import os
 import socket
 import tempfile
@@ -44,10 +44,10 @@ except AttributeError:
     try_CUPS_SERVER_REMOTE_ANY = "_remote_any"
 
 # Set up "Problems?" link button
-class _UnobtrusiveButton(gtk.Button):
+class _UnobtrusiveButton(Gtk.Button):
     def __init__ (self, **args):
-        gtk.Button.__init__ (self, **args)
-        self.set_relief (gtk.RELIEF_NONE)
+        Gtk.Button.__init__ (self, **args)
+        self.set_relief (Gtk.ReliefStyle.NONE)
         label = self.get_child ()
         text = label.get_text ()
         label.set_use_markup (True)
@@ -58,15 +58,15 @@ class _UnobtrusiveButton(gtk.Button):
 class ServerSettings(GtkGUI):
 
     __gsignals__ = {
-        'settings-applied': (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, []),
-        'dialog-canceled': (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, []),
-        'problems-clicked': (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, [])
+        'settings-applied': (GObject.SignalFlags.RUN_LAST, None, ()),
+        'dialog-canceled': (GObject.SignalFlags.RUN_LAST, None, ()),
+        'problems-clicked': (GObject.SignalFlags.RUN_LAST, None, ()),
         }
 
     RESOURCE="/admin/conf/cupsd.conf"
 
     def __init__ (self, host=None, encryption=None, parent=None):
-        gobject.GObject.__init__ (self)
+        GObject.GObject.__init__ (self)
         self.cupsconn = authconn.Connection (host=host, encryption=encryption)
         self._host = host
         self._parent = parent
@@ -105,12 +105,12 @@ class ServerSettings(GtkGUI):
         self.remove = self.btAdvServerRemove
 
         selection = self.browse_treeview.get_selection ()
-        selection.set_mode (gtk.SELECTION_MULTIPLE)
+        selection.set_mode (Gtk.SelectionMode.MULTIPLE)
         self._connect (selection, 'changed', self.on_treeview_selection_changed)
 
         for column in self.browse_treeview.get_columns():
             self.browse_treeview.remove_column(column)
-        col = gtk.TreeViewColumn ('', gtk.CellRendererText (), text=0)
+        col = Gtk.TreeViewColumn ('', Gtk.CellRendererText (), text=0)
         self.browse_treeview.append_column (col)
 
         self._fillAdvanced ()
@@ -119,6 +119,7 @@ class ServerSettings(GtkGUI):
         if parent:
             self.dialog.set_transient_for (parent)
 
+        self.connect_signals ()
         self.dialog.show ()
 
     def get_dialog (self):
@@ -186,7 +187,7 @@ class ServerSettings(GtkGUI):
         self.preserve_job_history = preserve_job_history
         self.preserve_job_files = preserve_job_files
 
-        model = gtk.ListStore (gobject.TYPE_STRING)
+        model = Gtk.ListStore (str)
         self.browse_treeview.set_model (model)
         for server in self.browse_poll:
             model.append (row=[server])
@@ -210,7 +211,7 @@ class ServerSettings(GtkGUI):
             (self.chkServerRemoteAdmin, cups.CUPS_SERVER_REMOTE_ADMIN),
             (self.chkServerAllowCancelAll, cups.CUPS_SERVER_USER_CANCEL_ANY),
             (self.chkServerLogDebug, cups.CUPS_SERVER_DEBUG_LOGGING),]:
-            widget.set_data("setting", setting)
+            widget.setting = setting
             if self.server_settings.has_key(setting):
                 widget.set_active(int(self.server_settings[setting]))
                 widget.set_sensitive(True)
@@ -237,7 +238,7 @@ class ServerSettings(GtkGUI):
 
     def on_server_changed(self, widget):
         debugprint ("on_server_changed: %s" % widget)
-        setting = widget.get_data("setting")
+        setting = widget.setting
         if self.server_settings.has_key (setting):
             if str(int(widget.get_active())) == self.server_settings[setting]:
                 self.changed.discard(widget)
@@ -268,9 +269,9 @@ class ServerSettings(GtkGUI):
         iter = model.insert (0, row=[_("Enter hostname")])
         button.set_sensitive (False)
         col = self.browse_treeview.get_columns ()[0]
-        cell = col.get_cell_renderers ()[0]
+        cell = col.get_cells ()[0]
         cell.set_property ('editable', True)
-        self.browse_treeview.set_cursor ((0,), col, start_editing=True)
+        self.browse_treeview.set_cursor (Gtk.TreePath(), col, True)
         self._connect (cell, 'edited', self.on_browse_poll_edited, 'edit')
         self._connect (cell, 'editing-canceled',
                        self.on_browse_poll_edit_cancel, 'edit')
@@ -279,7 +280,7 @@ class ServerSettings(GtkGUI):
         model = self.browse_treeview.get_model ()
         iter = model.get_iter (path)
         model.set_value (iter, 0, newvalue)
-        cell.stop_editing (canceled=False)
+        cell.stop_editing (False)
         cell.set_property ('editable', False)
         self.add.set_sensitive (True)
         self._disconnect ('edit')
@@ -332,10 +333,10 @@ class ServerSettings(GtkGUI):
             model.remove (iter)
 
     def on_browse_poll_edit_cancel (self, cell):
-        cell.stop_editing (canceled=True)
+        cell.stop_editing (True)
         cell.set_property ('editable', False)
         model = self.browse_treeview.get_model ()
-        iter = model.get_iter ((0,))
+        iter = model.get_iter (Gtk.TreePath())
         model.remove (iter)
         self.add.set_sensitive (True)
         self.remove.set_sensitive (False)
@@ -345,7 +346,7 @@ class ServerSettings(GtkGUI):
         model = self.browse_treeview.get_model ()
         selection = self.browse_treeview.get_selection ()
         rows = selection.get_selected_rows ()
-        refs = map (lambda path: gtk.TreeRowReference (model, path),
+        refs = map (lambda path: Gtk.TreeRowReference.new (model, path),
                     rows[1])
         for ref in refs:
             path = ref.get_path ()
@@ -353,8 +354,8 @@ class ServerSettings(GtkGUI):
             model.remove (iter)
 
     def on_response (self, dialog, response):
-        if (response == gtk.RESPONSE_CANCEL or
-            response != gtk.RESPONSE_OK):
+        if (response == Gtk.ResponseType.CANCEL or
+            response != Gtk.ResponseType.OK):
             self._disconnect ()
             self.dialog.hide ()
             self.emit ('dialog-canceled')
@@ -541,21 +542,21 @@ class ServerSettings(GtkGUI):
                     allowed = True
 
                 if not allowed:
-                    dialog = gtk.MessageDialog (self.ServerSettingsDialog,
-                                                gtk.DIALOG_MODAL |
-                                                gtk.DIALOG_DESTROY_WITH_PARENT,
-                                                gtk.MESSAGE_QUESTION,
-                                                gtk.BUTTONS_NONE,
+                    dialog = Gtk.MessageDialog (self.ServerSettingsDialog,
+                                                Gtk.DialogFlags.MODAL |
+                                                Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                                                Gtk.MessageType.QUESTION,
+                                                Gtk.ButtonsType.NONE,
                                                 _("Adjust Firewall"))
                     dialog.format_secondary_text (_("Adjust the firewall now "
                                                     "to allow all incoming IPP "
                                                     "connections?"))
-                    dialog.add_buttons (gtk.STOCK_CANCEL, gtk.RESPONSE_NO,
-                                        _("Adjust Firewall"), gtk.RESPONSE_YES)
+                    dialog.add_buttons (Gtk.STOCK_CANCEL, Gtk.ResponseType.NO,
+                                        _("Adjust Firewall"), Gtk.ResponseType.YES)
                     response = dialog.run ()
                     dialog.destroy ()
 
-                    if response == gtk.RESPONSE_YES:
+                    if response == Gtk.ResponseType.YES:
                         f.add_rule (f.ALLOW_IPP_SERVER)
                         f.write ()
             except (dbus.DBusException, Exception):
@@ -566,11 +567,9 @@ class ServerSettings(GtkGUI):
         # Now reconnect, in case the server needed to reload.
         self._reconnect ()
 
-gobject.type_register (ServerSettings)
-
 if __name__ == '__main__':
     os.environ['SYSTEM_CONFIG_PRINTER_UI'] = 'ui'
-    loop = gobject.MainLoop ()
+    loop = GObject.MainLoop ()
 
     def quit (*args):
         loop.quit ()

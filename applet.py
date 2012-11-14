@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-## Copyright (C) 2007, 2008, 2009, 2010, 2011 Red Hat, Inc.
+## Copyright (C) 2007, 2008, 2009, 2010, 2011, 2012 Red Hat, Inc.
 ## Author: Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
@@ -25,7 +25,8 @@ from debug import *
 import dbus
 import dbus.glib
 import dbus.service
-import gobject
+from gi.repository import GObject
+from gi.repository import GLib
 import time
 import locale
 import gettext
@@ -41,7 +42,7 @@ except locale.Error, e:
     locale.setlocale (locale.LC_ALL, "")
 
 try:
-    import pynotify
+    from gi.repository import Notify
 except RuntimeError, e:
     print "%s:" % DOMAIN, e
     print "This is a graphical application and requires DISPLAY to be set."
@@ -50,8 +51,8 @@ except RuntimeError, e:
 APPDIR="/usr/share/system-config-printer"
 ICON="printer"
 
-# We need to call pynotify.init before we can check the server for caps
-pynotify.init('System Config Printer Notification')
+# We need to call Notify.init before we can check the server for caps
+Notify.init('System Config Printer Notification')
 
 # D-Bus APIs of other objects we'll use.
 PRINTING_BUS="org.fedoraproject.Config.Printing"
@@ -84,27 +85,27 @@ class NewPrinterNotification(dbus.service.Object):
     def GetReady (self):
         TIMEOUT=1200000
         if self.getting_ready == 0:
-            n = pynotify.Notification (_("Configuring new printer"),
-                                       _("Please wait..."),
-                                       'printer')
+            n = Notify.Notification (_("Configuring new printer"),
+                                     _("Please wait..."),
+                                     'printer')
             n.set_timeout (TIMEOUT + 5000)
-            n.set_data ('closed', False)
+            n.closed = False
             n.connect ('closed', self.on_notification_closed)
             n.show ()
             self.notification = n
 
         self.getting_ready += 1
-        gobject.timeout_add_seconds (TIMEOUT, self.timeout_ready)
+        GLib.timeout_add_seconds (TIMEOUT, self.timeout_ready)
 
     def on_notification_closed (self, notification):
-        notification.set_data ('closed', True)
+        notification.closed = True
 
     def timeout_ready (self):
         if self.getting_ready > 0:
             self.getting_ready -= 1
         if (self.getting_ready == 0 and
             self.notification and
-            not self.notification.get_data ('closed')):
+            not getattr (self.notification, 'closed', None)):
             self.notification.close ()
 
         return False
@@ -124,10 +125,10 @@ class NewPrinterNotification(dbus.service.Object):
                 text = _("No printer driver for %s.") % device
             else:
                 text = _("No driver for this printer.")
-            n = pynotify.Notification (title, text, 'printer')
-            if "actions" in pynotify.get_server_caps():
-                n.set_urgency (pynotify.URGENCY_CRITICAL)
-                n.set_timeout (pynotify.EXPIRES_NEVER)
+            n = Notify.Notification (title, text, 'printer')
+            if "actions" in Notify.get_server_caps():
+                n.set_urgency (Notify.URGENCY_CRITICAL)
+                n.set_timeout (Notify.EXPIRES_NEVER)
                 n.add_action ("setup-printer", _("Search"),
                               lambda x, y:
                                   self.setup_printer (x, y, name, devid))
@@ -173,12 +174,12 @@ class NewPrinterNotification(dbus.service.Object):
                 pkgs = reduce (lambda x,y: x + ", " + y, missing_pkgs)
                 title = _("Install printer driver")
                 text = _("`%s' requires driver installation: %s.") % (name, pkgs)
-                n = pynotify.Notification (title, text)
+                n = Notify.Notification (title, text)
                 import installpackage
-                if "actions" in pynotify.get_server_caps():
+                if "actions" in Notify.get_server_caps():
                     try:
                         self.packagekit = installpackage.PackageKit ()
-                        n.set_timeout (pynotify.EXPIRES_NEVER)
+                        n.set_timeout (Notify.EXPIRES_NEVER)
                         n.add_action ("install-driver", _("Install"),
                                       lambda x, y:
                                           self.install_driver (x, y,
@@ -196,9 +197,9 @@ class NewPrinterNotification(dbus.service.Object):
             elif status == self.STATUS_SUCCESS:
                 devid = "MFG:%s;MDL:%s;DES:%s;CMD:%s;" % (mfg, mdl, des, cmd)
                 text = _("`%s' is ready for printing.") % name
-                n = pynotify.Notification (title, text)
-                if "actions" in pynotify.get_server_caps():
-                    n.set_urgency (pynotify.URGENCY_NORMAL)
+                n = Notify.Notification (title, text)
+                if "actions" in Notify.get_server_caps():
+                    n.set_urgency (Notify.URGENCY_NORMAL)
                     n.add_action ("test-page", _("Print test page"),
                                   lambda x, y:
                                       self.print_test_page (x, y, name))
@@ -208,16 +209,16 @@ class NewPrinterNotification(dbus.service.Object):
                 devid = "MFG:%s;MDL:%s;DES:%s;CMD:%s;" % (mfg, mdl, des, cmd)
                 text = (_("`%s' has been added, using the `%s' driver.") %
                         (name, driver))
-                n = pynotify.Notification (title, text, 'printer')
-                if "actions" in pynotify.get_server_caps():
-                    n.set_urgency (pynotify.URGENCY_CRITICAL)
+                n = Notify.Notification (title, text, 'printer')
+                if "actions" in Notify.get_server_caps():
+                    n.set_urgency (Notify.URGENCY_CRITICAL)
                     n.add_action ("test-page", _("Print test page"),
                                   lambda x, y:
                                       self.print_test_page (x, y, name, devid))
                     n.add_action ("find-driver", _("Find driver"),
                                   lambda x, y: 
                                   self.find_driver (x, y, name, devid))
-                    n.set_timeout (pynotify.EXPIRES_NEVER)
+                    n.set_timeout (Notify.EXPIRES_NEVER)
                 else:
                     self.configure (None, None, name)
 
@@ -273,7 +274,7 @@ class NewPrinterNotification(dbus.service.Object):
 
     def collect_exit_code (self, pid):
         # We do this with timers instead of signals because we already
-        # have gobject imported, but don't (yet) import signal;
+        # have GLib imported, but don't (yet) import signal;
         # let's try not to inflate the process size.
         import os
         try:
@@ -338,18 +339,18 @@ class RunLoop:
     def __del__ (self):
         self.remove_signal_receiver ()
         if self.timer:
-            gobject.source_remove (self.timer)
+            GLib.source_remove (self.timer)
 
     def handle_dbus_signal (self, *args):
         if self.timer:
-            gobject.source_remove (self.timer)
-        self.timer = gobject.timeout_add (200, self.check_for_jobs)
+            GLib.source_remove (self.timer)
+        self.timer = GLib.timeout_add (200, self.check_for_jobs)
 
     def check_for_jobs (self, *args):
         debugprint ("checking for jobs")
         if any_jobs ():
             if self.timer != None:
-                gobject.source_remove (self.timer)
+                GLib.source_remove (self.timer)
 
             self.remove_signal_receiver ()
 
@@ -391,7 +392,7 @@ if __name__ == '__main__':
             set_debugging (True)
 
     # Must be done before connecting to D-Bus (for some reason).
-    if not pynotify.init (PROGRAM_NAME):
+    if not Notify.init (PROGRAM_NAME):
         try:
             print >> sys.stderr, ("%s: unable to initialize pynotify" %
                                   PROGRAM_NAME)
@@ -440,7 +441,7 @@ if __name__ == '__main__':
         except:
             pass
 
-    loop = gobject.MainLoop ()
+    loop = GObject.MainLoop ()
     runloop = RunLoop (session_bus, system_bus, loop)
     try:
         runloop.run ()

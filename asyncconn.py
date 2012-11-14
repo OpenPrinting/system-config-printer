@@ -19,7 +19,6 @@
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 import cups
-import gobject
 import os
 
 import config
@@ -224,8 +223,9 @@ class Connection(SemanticOperations):
 
 if __name__ == "__main__":
     # Demo
+    from gi.repository import GObject
     set_debugging (True)
-    gobject.threads_init ()
+    GObject.threads_init ()
 
     class Test:
         def __init__ (self, quit):
@@ -255,7 +255,7 @@ if __name__ == "__main__":
             self.destroy ()
 
     t = Test (False)
-    loop = gobject.MainLoop ()
+    loop = GObject.MainLoop ()
     t.getDevices ()
     t.destroy ()
 

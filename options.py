@@ -1,6 +1,6 @@
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2012 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 ##  Florian Festi <ffesti@redhat.com>
@@ -19,8 +19,7 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-import gobject
-import gtk
+from gi.repository import Gtk
 import cups
 import ppdippstr
 import re
@@ -70,7 +69,7 @@ def OptionWidget(name, v, s, on_change):
                 if not isinstance(vv, str): raise ValueError
             return OptionSelectMany(name, v, s, on_change)
         print v, s
-        raise NotImplemented
+        raise NotImplementedError
     else:
         if (isinstance(s, int) or
             isinstance(s, float) or
@@ -110,10 +109,10 @@ class OptionInterface:
         return None
 
     def get_current_value(self):
-        raise NotImplemented
+        raise NotImplementedError
 
     def is_changed(self):
-        raise NotImplemented
+        raise NotImplementedError
 
 class OptionAlwaysShown(OptionInterface):
     # States
@@ -139,10 +138,10 @@ class OptionAlwaysShown(OptionInterface):
         self.set_default (system_default)
         self.combobox_map = combobox_map
 
-        if (type(self.widget) == gtk.ComboBox and
+        if (type(self.widget) == Gtk.ComboBox and
             self.widget.get_model () == None):
             print "No ComboBox model for %s" % self.name
-            model = gtk.ListStore (gobject.TYPE_STRING)
+            model = Gtk.ListStore (str)
             self.widget.set_model (model)
 
         if combobox_map != None and ipp_type == int:
@@ -173,8 +172,8 @@ class OptionAlwaysShown(OptionInterface):
         system default."""
         if (supported != None and
             self.use_supported):
-            if (type(self.widget) == gtk.ComboBox and
-                (self.ipp_type == str or self.ipp_type == IPPResolution)):
+            if (type(self.widget) == Gtk.ComboBox and
+                self.ipp_type == str):
                 model = self.widget.get_model ()
                 model.clear ()
                 translations = ppdippstr.job_options.get (self.name)
@@ -184,9 +183,7 @@ class OptionAlwaysShown(OptionInterface):
                     i = 0
 
                 for each in supported:
-                    txt = each
-                    if self.ipp_type != str:
-                        txt = str (self.ipp_type (each))
+                    txt = str (self.ipp_type (each))
 
                     if translations:
                         self.combobox_map.append (txt)
@@ -198,7 +195,26 @@ class OptionAlwaysShown(OptionInterface):
 
                     iter = model.append ()
                     model.set_value (iter, 0, text)
-            elif (type(self.widget) == gtk.ComboBox and
+            elif type(self.widget) == Gtk.ComboBoxText:
+                self.widget.remove_all () # emits 'changed'
+                translations = ppdippstr.job_options.get (self.name)
+                if translations:
+                    self.combobox_map = []
+                    self.combobox_dict = dict()
+                    i = 0
+
+                for each in supported:
+                    txt = str (self.ipp_type (each))
+                    if translations:
+                        self.combobox_map.append (txt)
+                        text = translations.get (txt)
+                        self.combobox_dict[each] = text
+                        i += 1
+                    else:
+                        text = txt
+
+                    self.widget.append_text (text)
+            elif (type(self.widget) == Gtk.ComboBox and
                   self.ipp_type == int and
                   self.combobox_map != None):
                 model = self.widget.get_model ()
@@ -219,9 +235,9 @@ class OptionAlwaysShown(OptionInterface):
 
     def set_widget_value(self, ipp_value):
         t = type(self.widget)
-        if t == gtk.SpinButton:
+        if t == Gtk.SpinButton:
             return self.widget.set_value (ipp_value)
-        elif t == gtk.ComboBox:
+        elif t == Gtk.ComboBox or t == Gtk.ComboBoxText:
             if ((self.ipp_type == str or self.ipp_type == IPPResolution)
                 and self.combobox_map == None):
                 model = self.widget.get_model ()
@@ -238,14 +254,14 @@ class OptionAlwaysShown(OptionInterface):
                 else:
                     index = ipp_value
                 return self.widget.set_active (index)
-        elif t == gtk.CheckButton:
+        elif t == Gtk.CheckButton:
             return self.widget.set_active (ipp_value)
         else:
-            raise NotImplemented
+            raise NotImplementedError, (t, self.name)
 
     def get_widget_value(self):
         t = type(self.widget)
-        if t == gtk.SpinButton:
+        if t == Gtk.SpinButton:
             # Ideally we would use self.widget.get_value() here, but
             # it doesn't work if the value has been typed in and then
             # the Apply button immediately clicked.  To handle this,
@@ -257,17 +273,25 @@ class OptionAlwaysShown(OptionInterface):
             except ValueError:
                 # Can't convert result of get_text() to ipp_type.
                 return self.ipp_type (self.widget.get_value ())
-        elif t == gtk.ComboBox:
+        elif t == Gtk.ComboBox:
             if self.combobox_map:
                 return self.combobox_map[self.widget.get_active()]
-            if self.ipp_type == str or self.ipp_type == IPPResolution:
-                return self.widget.get_active_text ()
             return self.ipp_type (self.widget.get_active ())
-        elif t == gtk.CheckButton:
+        elif t == Gtk.ComboBoxText:
+            s = self.widget.get_active_text ()
+            if s == None:
+                # If the widget is being re-initialised, there will be
+                # a changed signal emitted at the point where there
+                # are no entries to select from.
+                s = self.system_default
+            if self.combobox_map:
+                return self.combobox_map (s)
+            return self.ipp_type (s)
+        elif t == Gtk.CheckButton:
             return self.ipp_type (self.widget.get_active ())
 
-        print t
-        raise NotImplemented
+        print t, self.widget, self.ipp_type
+        raise NotImplementedError
 
     def get_current_value(self):
         return self.get_widget_value ()
@@ -365,11 +389,11 @@ class Option(OptionInterface):
         label = name
         if not label.endswith (':'):
             label += ':'
-        self.label = gtk.Label(label)
+        self.label = Gtk.Label(label=label)
         self.label.set_alignment(0.0, 0.5)
 
     def get_current_value(self):
-        raise NotImplemented
+        raise NotImplementedError
 
     def is_changed(self):
         return (self.is_new or
@@ -385,7 +409,7 @@ class OptionSelectOne(Option):
     def __init__(self, name, value, supported, on_change):
         Option.__init__(self, name, value, supported, on_change)
 
-        self.selector = gtk.combo_box_new_text()
+        self.selector = Gtk.ComboBoxText()
         
         selected = None
         for nr, choice in enumerate(supported):
@@ -437,7 +461,7 @@ class OptionSelectOneResolution(OptionSelectOne):
 class OptionSelectOneNumber(OptionSelectOne):
 
     def get_current_value(self):
-        return int(self.selector.get_active_text())
+        return int(self.selector.get_active_text() or 0)
 
 # ---------------------------------------------------------------------------
 
@@ -446,10 +470,10 @@ class OptionSelectMany(Option):
     def __init__(self, name, value, supported, on_change):
         Option.__init__(self, name, value, supported, on_change)
         self.checkboxes = []
-        vbox = gtk.VBox()
+        vbox = Gtk.VBox()
 
         for s in supported:
-            checkbox = gtk.CheckButton(label=s)
+            checkbox = Gtk.CheckButton(label=s)
             checkbox.set_active(s in value)
             vbox.add(checkbox)
             checkbox.connect("toggled", self.changed)
@@ -475,8 +499,8 @@ class OptionNumeric(Option):
         if not isinstance(supported, tuple):
             supported = (0, supported)
         Option.__init__(self, name, value, supported, on_change)
-        adj = gtk.Adjustment(value, supported[0], supported[1], 1.0, 5.0, 0.0)
-        self.selector = gtk.SpinButton(adj, climb_rate=1.0, digits=digits)
+        adj = Gtk.Adjustment(value, supported[0], supported[1], 1.0, 5.0, 0.0)
+        self.selector = Gtk.SpinButton(adj, climb_rate=1.0, digits=digits)
         if not self.is_float:
             self.selector.set_numeric(True)
         self.selector.connect("changed", self.changed)
@@ -492,7 +516,7 @@ class OptionText(Option):
     def __init__(self, name, value, supported, on_change):
         Option.__init__(self, name, value, supported, on_change)
 
-        self.selector = gtk.Entry()
+        self.selector = Gtk.Entry()
         self.selector.set_text(value)
         self.selector.connect("changed", self.changed)
 

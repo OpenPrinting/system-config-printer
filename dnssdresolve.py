@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-## Copyright (C) 2010, 2011 Red Hat, Inc.
+## Copyright (C) 2010, 2011, 2012 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 
@@ -137,8 +137,9 @@ if __name__ == '__main__':
             print args
             self._loop.quit ()
 
-    import gobject
-    loop = gobject.MainLoop ()
+    from gi.repository import GObject
+    from gi.repository import GLib
+    loop = GObject.MainLoop ()
     set_debugging (True)
-    gobject.idle_add (Test (loop, devices).run)
+    GLib.idle_add (Test (loop, devices).run)
     loop.run ()
