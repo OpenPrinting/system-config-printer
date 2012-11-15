@@ -3035,6 +3035,9 @@ class NewPrinterGUI(GtkGUI):
     ###
 
     def getDeviceURI(self):
+        if self.dialog_mode in ['printer_with_uri', 'ppd']:
+            return self.device.uri
+
         type = self.device.type
         page = self.new_printer_device_tabs.get (type, 1)
         device = type
