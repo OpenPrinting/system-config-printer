@@ -2,7 +2,7 @@
 
 ## Printing troubleshooter
 
-## Copyright (C) 2008, 2009, 2010, 2011 Red Hat, Inc.
+## Copyright (C) 2008, 2009, 2010, 2011, 2012 Red Hat, Inc.
 ## Author: Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
@@ -40,7 +40,7 @@ class Shrug(Question):
         textview = Gtk.TextView ()
         textview.set_editable (False)
         sw.add (textview)
-        page.pack_start (expander, False, False, 0)
+        page.pack_start (expander, True, True, 0)
         self.buffer = textview.get_buffer ()
 
         box = Gtk.HButtonBox ()
