@@ -1550,7 +1550,7 @@ class PrinterPropertiesDialog(GtkGUI):
                                homogeneous=True)
             table.set_col_spacings (6)
             table.set_row_spacings (12)
-            self.vboxMarkerLevels.pack_start (table)
+            self.vboxMarkerLevels.pack_start (table, False, False, 0)
             for color, name, marker_type, level in markers:
                 if name == None:
                     name = ''
