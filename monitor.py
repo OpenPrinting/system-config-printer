@@ -284,7 +284,9 @@ class Monitor(GObject.GObject):
                 reasons_now.add (tuple)
                 if not self.reasons_seen.has_key (tuple):
                     # New reason.
-                    self.emit ('state-reason-added', reason)
+                    GLib.idle_add (lambda x:
+                                       self.emit ('state-reason-added', x),
+                                   reason)
                     self.reasons_seen[tuple] = reason
 
                 if (reason.get_reason () == "connecting-to-device" and
@@ -321,7 +323,8 @@ class Monitor(GObject.GObject):
                 # Reason no longer present.
                 reason = self.reasons_seen[tuple]
                 del self.reasons_seen[tuple]
-                self.emit ('state-reason-removed', reason)
+                GLib.idle_add (lambda x: self.emit ('state-reason-removed', x),
+                               reason)
 
     def get_notifications(self):
         if not self.process_pending_events:
