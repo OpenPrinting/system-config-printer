@@ -2,7 +2,7 @@
 
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2012 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 ##  Florian Festi <ffesti@redhat.com>
@@ -562,6 +562,8 @@ class PrinterPropertiesDialog(GtkGUI):
         self.newPrinterGUI = newprinter.NewPrinterGUI ()
         self._connect ("newPrinterGUI", self.newPrinterGUI,
                        "printer-modified", self.on_printer_modified)
+        self._connect ("newPrinterGUI", self.newPrinterGUI,
+                       "dialog-canceled", self.on_printer_not_modified)
         if parent:
             self.dialog.set_transient_for (parent)
 
@@ -1820,30 +1822,47 @@ class PrinterPropertiesDialog(GtkGUI):
             self.changed.discard(self.tvClassMembers)
         self.setDataButtonState()
 
+    def sensitise_new_printer_widgets (self, sensitive=True):
+        sensitive = sensitive and not (self.printer.discovered or
+                                       bool (self.changed))
+        for button in [self.btnChangePPD,
+                       self.btnSelectDevice]:
+            button.set_sensitive (sensitive)
+
+    def desensitise_new_printer_widgets (self):
+        self.sensitise_new_printer_widgets (False)
+        
     # change device
     def on_btnSelectDevice_clicked(self, button):
         busy (self.dialog)
-        self.newPrinterGUI.init("device", device_uri=self.printer.device_uri,
-                                name=self.printer.name,
-                                host=self._host,
-                                encryption=self._encryption,
-                                parent=self.dialog)
+        self.desensitise_new_printer_widgets ()
+        if not self.newPrinterGUI.init("device", device_uri=self.printer.device_uri,
+                                       name=self.printer.name,
+                                       host=self._host,
+                                       encryption=self._encryption,
+                                       parent=self.dialog):
+            self.sensitise_new_printer_widgets ()
+
         ready (self.dialog)
 
     # change PPD
     def on_btnChangePPD_clicked(self, button):
         busy (self.dialog)
-        self.newPrinterGUI.init("ppd", device_uri=self.printer.device_uri,
-                                ppd=self.ppd,
-                                name=self.printer.name,
-                                host=self._host,
-                                encryption=self._encryption,
-                                parent=self.dialog)
+        self.desensitise_new_printer_widgets ()
+        if not self.newPrinterGUI.init("ppd", device_uri=self.printer.device_uri,
+                                       ppd=self.ppd,
+                                       name=self.printer.name,
+                                       host=self._host,
+                                       encryption=self._encryption,
+                                       parent=self.dialog):
+            self.sensitise_new_printer_widgets ()
+
         ready (self.dialog)
 
     # NewPrinterGUI signal handlers
     def on_printer_modified (self, obj, name, ppd_has_changed):
         debugprint ("on_printer_modified called")
+        self.sensitise_new_printer_widgets ()
         if self.dialog.get_property ('visible') and self.printer:
             try:
                 self.printer.getAttributes ()
@@ -1854,6 +1873,9 @@ class PrinterPropertiesDialog(GtkGUI):
 
             except cups.IPPError:
                 pass
+
+    def on_printer_not_modified (self, obj):
+        self.sensitise_new_printer_widgets ()
 
     # Monitor signal handlers
     def on_printer_event (self, mon, printer, eventname, event):
