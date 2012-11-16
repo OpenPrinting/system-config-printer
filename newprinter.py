@@ -64,7 +64,7 @@ from smburi import SMBURI
 from errordialogs import *
 from PhysicalDevice import PhysicalDevice
 import gtkspinner
-import firewall
+import firewallsettings
 import asyncconn
 import ppdsloader
 import dnssdresolve
@@ -1904,11 +1904,14 @@ class NewPrinterGUI(GtkGUI):
         try:
             if (self._host == 'localhost' or
                 self._host[0] == '/'):
-                self.firewall = firewall.Firewall ()
+                self.firewall = firewallsettings.FirewallD ()
+                if not self.firewall.running:
+                    self.firewall = firewallsettings.SystemConfigFirewall ()
+
                 debugprint ("Examining firewall")
                 self.firewall.read (reply_handler=self.on_firewall_read,
                                     error_handler=lambda x:
-                                        self.start_fetching_devices())
+                                    self.start_fetching_devices())
                 allowed = False
             else:
                 # This is a remote server.  Nothing we can do about
@@ -1934,11 +1937,11 @@ class NewPrinterGUI(GtkGUI):
                 secondary_text += ("- " +
                                    _("Allow all incoming IPP Browse packets") +
                                    "\n")
-                f.add_rule (f.ALLOW_IPP_CLIENT)
+                f.add_service (firewallsettings.IPP_CLIENT_SERVICE)
             if not mdns_allowed:
                 secondary_text += ("- " +
                                    _("Allow all incoming mDNS traffic") + "\n")
-                f.add_rule (f.ALLOW_MDNS)
+                f.add_service (firewallsettings.MDNS_SERVICE)
 
             if not allowed:
                 debugprint ("Asking for permission to adjust firewall:\n%s" %
@@ -1964,7 +1967,7 @@ class NewPrinterGUI(GtkGUI):
     def adjust_firewall_response (self, dialog, response):
         dialog.destroy ()
         if response == Gtk.ResponseType.YES:
-            self.firewall.add_rule (self.firewall.ALLOW_IPP_SERVER)
+            self.firewall.add_service (firewallsettings.IPP_SERVER_SERVICE)
             self.firewall.write ()
 
         debugprint ("Fetching devices after firewall dialog response")
@@ -2360,7 +2363,9 @@ class NewPrinterGUI(GtkGUI):
         try:
             # Note: we do the browsing from *this* machine, regardless
             # of which CUPS server we are connected to.
-            f = firewall.Firewall ()
+            f = firewallsettings.FirewallD ()
+            if not f.running:
+                f = firewallsettings.SystemConfigFirewall ()
             allowed = f.check_samba_client_allowed ()
             secondary_text = TEXT_adjust_firewall + "\n\n"
             if not allowed:
@@ -2380,7 +2385,7 @@ class NewPrinterGUI(GtkGUI):
                 dialog.destroy ()
 
                 if response == Gtk.ResponseType.YES:
-                    f.add_rule (f.ALLOW_SAMBA_CLIENT)
+                    f.add_service (firewallsettings.SAMBA_CLIENT_SERVICE)
                     f.write ()
         except (dbus.DBusException, Exception):
             nonfatalException ()

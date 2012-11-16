@@ -303,9 +303,9 @@ class GUI(GtkGUI):
         self.btnNew.connect ('clicked', self.on_new_printer_activate)
         self.toolbar.add (self.btnNew)
         self.toolbar.add (Gtk.SeparatorToolItem ())
-        refreshbutton = Gtk.ToolButton.new_from_stock(Gtk.STOCK_REFRESH)
-        refreshbutton.connect ('clicked', self.on_btnRefresh_clicked)
-        self.toolbar.add (refreshbutton)
+        self.refreshbutton = Gtk.ToolButton.new_from_stock(Gtk.STOCK_REFRESH)
+        self.refreshbutton.connect ('clicked', self.on_btnRefresh_clicked)
+        self.toolbar.add (self.refreshbutton)
         self.toolbar.show_all ()
 
         server_context_menu = Gtk.Menu ()
@@ -364,6 +364,7 @@ class GUI(GtkGUI):
         self.newPrinterGUI = np = newprinter.NewPrinterGUI()
         np.connect ("printer-added", self.on_new_printer_added)
         np.connect ("printer-modified", self.on_printer_modified)
+        np.connect ("dialog-canceled", self.on_new_printer_not_added)
 
         # Set up "About" dialog
         self.AboutDialog.set_program_name(config.PACKAGE)
@@ -435,6 +436,8 @@ class GUI(GtkGUI):
 
         # Printer Properties dialog
         self.propertiesDlg = printerproperties.PrinterPropertiesDialog ()
+        self.propertiesDlg.connect ("dialog-closed",
+                                    self.on_properties_dialog_closed)
 
         self.connect_signals ()
 
@@ -498,11 +501,13 @@ class GUI(GtkGUI):
         name = unicode (model.get_value (iter, 2))
         object = model.get_value (iter, 0)
 
+        self.desensitise_main_window_widgets ()
         try:
             self.propertiesDlg.show (name, host=self.connect_server,
                                      encryption=self.connect_encrypt,
                                      parent=self.PrintersWindow)
         except cups.IPPError, (e, m):
+            self.sensitise_main_window_widgets ()
             show_IPP_Error (e, m, self.PrintersWindow)
             if e == cups.IPP_SERVICE_UNAVAILABLE:
                 self.cups = None
@@ -510,11 +515,15 @@ class GUI(GtkGUI):
                 self.populateList ()
             return
         except RuntimeError:
+            self.sensitise_main_window_widgets ()
             # Perhaps cupsGetPPD2 failed for a browsed printer.
 
             # Check that we're still connected.
             self.monitor.update ()
             return
+
+    def on_properties_dialog_closed (self, obj):
+        self.sensitise_main_window_widgets ()
 
     def dests_iconview_selection_changed (self, iconview):
         self.updating_widgets = True
@@ -1701,6 +1710,34 @@ class GUI(GtkGUI):
     def on_troubleshoot_quit(self, troubleshooter):
         del self.troubleshooter
 
+    def sensitise_main_window_widgets (self, sensitive=True):
+        self.dests_iconview.set_sensitive (sensitive)
+        self.btnNew.set_sensitive (sensitive)
+        self.btnAddFirstPrinter.set_sensitive (sensitive)
+        self.refreshbutton.set_sensitive (sensitive)
+        self.view_discovered_printers.set_sensitive (sensitive)
+        self.search_entry.set_sensitive (sensitive)
+        for action in ["/connect-to-server",
+                       "/server-settings",
+                       "/new-printer",
+                       "/new-class",
+                       "/rename-printer",
+                       "/duplicate-printer",
+                       "/delete-printer",
+                       "/set-default-printer",
+                       "/edit-printer",
+                       "/create-class",
+                       "/enable-printer",
+                       "/share-printer",
+                       "/filter-name",
+                       "/filter-description",
+                       "/filter-location",
+                       "/filter-manufacturer"]:
+            self.ui_manager.get_action (action).set_sensitive (sensitive)
+
+    def desensitise_main_window_widgets (self):
+        self.sensitise_main_window_widgets (False)
+
     # About dialog
     def on_about_activate(self, widget):
         self.AboutDialog.set_transient_for (self.PrintersWindow)
@@ -1721,26 +1758,44 @@ class GUI(GtkGUI):
     # == New Printer Dialog ==============================================
     # ====================================================================
 
+    def sensitise_new_printer_widgets(self, sensitive=True):
+        self.btnNew.set_sensitive (sensitive)
+        self.btnAddFirstPrinter.set_sensitive (sensitive)
+        self.ui_manager.get_action ("/new-printer").set_sensitive (sensitive)
+        self.ui_manager.get_action ("/new-class").set_sensitive (sensitive)
+
+    def desensitise_new_printer_widgets(self):
+        self.sensitise_new_printer_widgets (False)
+
     # new printer
     def on_new_printer_activate(self, widget, *UNUSED):
         busy (self.PrintersWindow)
+        self.desensitise_new_printer_widgets ()
         if not self.newPrinterGUI.init("printer",
                                        host=self.connect_server,
                                        encryption=self.connect_encrypt,
                                        parent=self.PrintersWindow):
+            self.sensitise_new_printer_widgets ()
             self.monitor.update ()
         ready (self.PrintersWindow)
 
     # new class
     def on_new_class_activate(self, widget, *UNUSED):
+        self.desensitise_new_printer_widgets ()
         if not self.newPrinterGUI.init("class",
                                        host=self.connect_server,
                                        encryption=self.connect_encrypt,
                                        parent=self.PrintersWindow):
+            self.sensitise_new_printer_widgets ()
             self.monitor.update ()
+
+    def on_new_printer_not_added (self, obj):
+        self.sensitise_new_printer_widgets ()
 
     def on_new_printer_added (self, obj, name):
         debugprint ("New printer added: %s" % name)
+
+        self.sensitise_new_printer_widgets ()
         self.populateList ()
 
         if not self.printers.has_key (name):
