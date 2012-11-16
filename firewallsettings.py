@@ -43,6 +43,12 @@ class FirewallD:
         try:
             from firewall.client import FirewallClient
             self._fw = FirewallClient ()
+            if not self._fw.connected:
+                debugprint ("FirewallD seems to be installed but not running")
+                self._fw = None
+                self._zone = None
+                self.running = False
+                return
             zone_name = self._get_active_zone ()
             if zone_name:
                 self._zone = self._fw.config().getZoneByName (zone_name)
