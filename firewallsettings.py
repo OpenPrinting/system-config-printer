@@ -39,52 +39,26 @@ MDNS_PROTOCOL        = "udp"
 SAMBA_CLIENT_SERVICE = "samba-client"
 
 class FirewallD:
-    DBUS_INTERFACE = "org.fedoraproject.FirewallD1"
-    DBUS_INTERFACE_ZONE = DBUS_INTERFACE+".zone"
-    DBUS_INTERFACE_CONFIG = DBUS_INTERFACE+".config"
-    DBUS_PATH = "/org/fedoraproject/FirewallD1"
-    DBUS_PATH_CONFIG = DBUS_PATH+"/config"
-    services_idx = 5
-    ports_idx = 6
     def __init__ (self):
         try:
-            bus = dbus.SystemBus ()
-            obj = bus.get_object (self.DBUS_INTERFACE, self.DBUS_PATH)
-            self._fw = dbus.Interface(obj, self.DBUS_INTERFACE)
-            self._fw_zone = dbus.Interface(obj, self.DBUS_INTERFACE_ZONE)
-            self._fw_properties = dbus.Interface(obj,
-                            dbus_interface='org.freedesktop.DBus.Properties')
-            obj_config = bus.get_object (self.DBUS_INTERFACE,
-                                         self.DBUS_PATH_CONFIG)
-            self._fw_config = dbus.Interface (obj_config,
-                                              self.DBUS_INTERFACE_CONFIG)
+            from firewall.client import FirewallClient
+            self._fw = FirewallClient ()
             zone_name = self._get_active_zone ()
             if zone_name:
-                zone_path = self._fw_config.getZoneByName (zone_name)
-                self._zone = bus.get_object (self.DBUS_INTERFACE, zone_path)
+                self._zone = self._fw.config().getZoneByName (zone_name)
             else:
                 self._zone = None
+            self.running = True
             debugprint ("Using /org/fedoraproject/FirewallD1")
         except (ImportError, dbus.DBusException):
             self._fw = None
-            self._fw_zone = None
-            self._fw_properties = None
-            self._fw_config = None
             self._zone = None
-
-    def running (self):
-        return self._fw_properties and \
-               str(self._fw_properties.Get(self.DBUS_INTERFACE, "state")) \
-               == "RUNNING"
+            self.running = False
 
     def _get_active_zone (self):
-        try:
-            zones = map (str, self._fw_zone.getActiveZones())
-            # remove immutable zones
-            zones = [z for z in zones if not self._fw_zone.isImmutable(z)]
-        except dbus.DBusException:
-            debugprint ("FirewallD getting active zones failed")
-            zones = None
+        zones = self._fw.getActiveZones().keys()
+        # remove immutable zones
+        zones = [z for z in zones if not self._fw.isImmutable(z)]
 
         if not zones:
             debugprint ("FirewallD: no changeable zone")
@@ -102,9 +76,8 @@ class FirewallD:
 
     def _get_fw_data (self, reply_handler=None, error_handler=None):
         try:
-            repr_data = map (str, self._fw_data[self.services_idx])
             debugprint ("%s in _get_fw_data: _fw_data is %s" %
-                        (self, repr(repr_data)))
+                        (self, repr(self._fw_data.getServices())))
             if self._fw_data:
                 debugprint ("Using cached firewall data")
                 if reply_handler:
@@ -139,36 +112,35 @@ class FirewallD:
         if not self._get_fw_data ():
             return
 
-        #self._fw_data.addService (service)
-        if service not in self._fw_data[self.services_idx]:
-            self._fw_data[self.services_idx].append(service)
+        self._fw_data.addService (service)
 
     def check_ipp_client_allowed (self):
         if not self._get_fw_data ():
             return True
 
-        return (IPP_CLIENT_SERVICE in self._fw_data[self.services_idx] or
-               [IPP_CLIENT_PORT, IPP_CLIENT_PROTOCOL] in self._fw_data[self.ports_idx])
+        return (IPP_CLIENT_SERVICE in self._fw_data.getServices () or
+               [IPP_CLIENT_PORT, IPP_CLIENT_PROTOCOL] in self._fw_data.getPorts ())
 
     def check_ipp_server_allowed (self):
         if not self._get_fw_data ():
             return True
 
-        return (IPP_SERVER_SERVICE in self._fw_data[self.services_idx] or
-               [IPP_SERVER_PORT, IPP_SERVER_PROTOCOL] in self._fw_data[self.ports_idx])
+        return (IPP_SERVER_SERVICE in self._fw_data.getServices () or
+               [IPP_SERVER_PORT, IPP_SERVER_PROTOCOL] in self._fw_data.getPorts ())
 
     def check_samba_client_allowed (self):
         if not self._get_fw_data ():
             return True
 
-        return (SAMBA_CLIENT_SERVICE in self._fw_data[self.services_idx])
+        return (SAMBA_CLIENT_SERVICE in self._fw_data.getServices ())
 
     def check_mdns_allowed (self):
         if not self._get_fw_data ():
             return True
 
-        return (MDNS_SERVICE in self._fw_data[self.services_idx] or
-               [MDNS_PORT, MDNS_PROTOCOL] in self._fw_data[self.ports_idx])
+        return (MDNS_SERVICE in self._fw_data.getServices () or
+               [MDNS_PORT, MDNS_PROTOCOL] in self._fw_data.getPorts ())
+
 
 
 

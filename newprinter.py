@@ -1619,7 +1619,7 @@ class NewPrinterGUI(GtkGUI):
             if (self._host == 'localhost' or
                 self._host[0] == '/'):
                 self.firewall = firewallsettings.FirewallD ()
-                if not self.firewall.running():
+                if not self.firewall.running:
                     self.firewall = firewallsettings.SystemConfigFirewall ()
 
                 debugprint ("Examining firewall")
@@ -2074,7 +2074,7 @@ class NewPrinterGUI(GtkGUI):
             # Note: we do the browsing from *this* machine, regardless
             # of which CUPS server we are connected to.
             f = firewallsettings.FirewallD ()
-            if not f.running():
+            if not f.running:
                 f = firewallsettings.SystemConfigFirewall ()
             allowed = f.check_samba_client_allowed ()
             secondary_text = TEXT_adjust_firewall + "\n\n"

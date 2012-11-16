@@ -527,7 +527,7 @@ class ServerSettings(GtkGUI):
                 if (self._host == 'localhost' or
                     self._host[0] == '/'):
                     f = firewallsettings.FirewallD ()
-                    if not f.running():
+                    if not f.running:
                         f = firewallsettings.SystemConfigFirewall ()
 
                     allowed = f.check_ipp_server_allowed ()
