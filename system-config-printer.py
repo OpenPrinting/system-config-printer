@@ -2,7 +2,7 @@
 
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2012 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 ##  Florian Festi <ffesti@redhat.com>
@@ -308,9 +308,9 @@ class GUI(GtkGUI):
         self.btnNew.connect ('clicked', self.on_new_printer_activate)
         self.toolbar.add (self.btnNew)
         self.toolbar.add (gtk.SeparatorToolItem ())
-        refreshbutton = gtk.ToolButton (gtk.STOCK_REFRESH)
-        refreshbutton.connect ('clicked', self.on_btnRefresh_clicked)
-        self.toolbar.add (refreshbutton)
+        self.refreshbutton = gtk.ToolButton (gtk.STOCK_REFRESH)
+        self.refreshbutton.connect ('clicked', self.on_btnRefresh_clicked)
+        self.toolbar.add (self.refreshbutton)
         self.toolbar.show_all ()
 
         server_context_menu = gtk.Menu ()
@@ -446,6 +446,8 @@ class GUI(GtkGUI):
 
         # Printer Properties dialog
         self.propertiesDlg = printerproperties.PrinterPropertiesDialog ()
+        self.propertiesDlg.connect ("dialog-closed",
+                                    self.on_properties_dialog_closed)
 
         try:
             self.populateList()
@@ -506,11 +508,13 @@ class GUI(GtkGUI):
         name = unicode (model.get_value (iter, 2))
         object = model.get_value (iter, 0)
 
+        self.desensitise_main_window_widgets ()
         try:
             self.propertiesDlg.show (name, host=self.connect_server,
                                      encryption=self.connect_encrypt,
                                      parent=self.PrintersWindow)
         except cups.IPPError, (e, m):
+            self.sensitise_main_window_widgets ()
             show_IPP_Error (e, m, self.PrintersWindow)
             if e == cups.IPP_SERVICE_UNAVAILABLE:
                 self.cups = None
@@ -518,11 +522,15 @@ class GUI(GtkGUI):
                 self.populateList ()
             return
         except RuntimeError:
+            self.sensitise_main_window_widgets ()
             # Perhaps cupsGetPPD2 failed for a browsed printer.
 
             # Check that we're still connected.
             self.monitor.update ()
             return
+
+    def on_properties_dialog_closed (self, obj):
+        self.sensitise_main_window_widgets ()
 
     def dests_iconview_selection_changed (self, iconview):
         self.updating_widgets = True
@@ -1707,6 +1715,34 @@ class GUI(GtkGUI):
 
     def on_troubleshoot_quit(self, troubleshooter):
         del self.troubleshooter
+
+    def sensitise_main_window_widgets (self, sensitive=True):
+        self.dests_iconview.set_sensitive (sensitive)
+        self.btnNew.set_sensitive (sensitive)
+        self.btnAddFirstPrinter.set_sensitive (sensitive)
+        self.refreshbutton.set_sensitive (sensitive)
+        self.view_discovered_printers.set_sensitive (sensitive)
+        self.search_entry.set_sensitive (sensitive)
+        for action in ["/connect-to-server",
+                       "/server-settings",
+                       "/new-printer",
+                       "/new-class",
+                       "/rename-printer",
+                       "/duplicate-printer",
+                       "/delete-printer",
+                       "/set-default-printer",
+                       "/edit-printer",
+                       "/create-class",
+                       "/enable-printer",
+                       "/share-printer",
+                       "/filter-name",
+                       "/filter-description",
+                       "/filter-location",
+                       "/filter-manufacturer"]:
+            self.ui_manager.get_action (action).set_sensitive (sensitive)
+
+    def desensitise_main_window_widgets (self):
+        self.sensitise_main_window_widgets (False)
 
     # About dialog
     def on_about_activate(self, widget):
