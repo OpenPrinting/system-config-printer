@@ -1828,8 +1828,10 @@ class PrinterPropertiesDialog(GtkGUI):
         self.setDataButtonState()
 
     def sensitise_new_printer_widgets (self, sensitive=True):
-        sensitive = sensitive and not (self.printer.discovered or
-                                       bool (self.changed))
+        sensitive = (sensitive and
+                     self.printer and
+                     not (self.printer.discovered or
+                          bool (self.changed)))
         for button in [self.btnChangePPD,
                        self.btnSelectDevice]:
             button.set_sensitive (sensitive)
