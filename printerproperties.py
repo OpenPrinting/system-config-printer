@@ -1829,7 +1829,7 @@ class PrinterPropertiesDialog(GtkGUI):
 
     def sensitise_new_printer_widgets (self, sensitive=True):
         sensitive = (sensitive and
-                     self.printer and
+                     self.printer != None and
                      not (self.printer.discovered or
                           bool (self.changed)))
         for button in [self.btnChangePPD,
