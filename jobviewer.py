@@ -611,7 +611,7 @@ class JobViewer (GtkGUI):
         toolbar.insert (item, 0)
         vbox.pack_start (toolbar, False, False, 0)
         self.notebook = Gtk.Notebook()
-        vbox.pack_start (self.notebook, False, False, 0)
+        vbox.pack_start (self.notebook, True, True, 0)
 
     def cleanup (self):
         self.monitor.cleanup ()
