@@ -220,6 +220,9 @@
       </drivers>
     </printer>
 
+    <!-- Use hpcups instead of PostScript with HP LaserJet 12xx/13xx
+	 as they do not come with enough memory for
+	 PostScript (Ubuntu bug #872991). -->
     <printer>
       <make-and-model
 	  match="(Hewlett-Packard|HP) LaserJet 1[23]\d\d.*"/>
