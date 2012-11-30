@@ -220,6 +220,9 @@
       </drivers>
     </printer>
 
+    <!-- Use hpcups instead of PostScript with HP LaserJet 12xx/13xx
+	 as they do not come with enough memory for
+	 PostScript (Ubuntu bug #872991). -->
     <printer>
       <make-and-model
 	  match="(Hewlett-Packard|HP) LaserJet 1[23]\d\d.*"/>
@@ -264,27 +267,13 @@
       <!-- For all printers -->
       <drivers>
 	<drivertype>manufacturer-cmd</drivertype>
-	<drivertype>foomatic-recommended-hpijs</drivertype>
+	<drivertype>hpcups</drivertype>
 	<drivertype>foomatic-recommended-nonpostscript</drivertype>
 	<drivertype>manufacturer*</drivertype>
 	<drivertype>pdf</drivertype>
 	<drivertype>foomatic-recommended-postscript</drivertype>
 	<drivertype>splix</drivertype>
 	<drivertype>foomatic-postscript</drivertype>
-	<drivertype>hpcups</drivertype>
-	<drivertype>hpijs</drivertype>
-      </drivers>
-    </printer>
-
-    <printer>
-      <!-- Use hpijs on HP printers at this point (i.e. in preference
-           to gutenprint) -->
-      <make-and-model match="(HP|Hewlett-Packard) "/>
-      <deviceid>
-	<field name="MFG" match="HP|Hewlett-Packard"/>
-      </deviceid>
-      <drivers>
-	<drivertype>foomatic-hpijs</drivertype>
       </drivers>
     </printer>
 
@@ -293,7 +282,6 @@
       <drivers>
 	<drivertype>gutenprint-simplified</drivertype>
 	<drivertype>gutenprint-expert</drivertype>
-	<drivertype>foomatic-hpijs</drivertype>
 	<drivertype>foomatic-gutenprint</drivertype>
 	<drivertype>foomatic</drivertype>
 	<drivertype>cups</drivertype>
@@ -309,6 +297,14 @@
 	<drivertype>generic-escp</drivertype>
 	<drivertype>ghostscript</drivertype>
 	<drivertype>generic</drivertype>
+
+	<!-- HP's pre-hpcups driver, hpijs.  Low down the list as it
+	     is known to handle landscape page orientations
+	     incorrectly, e.g.
+	     https://bugs.freedesktop.org/show_bug.cgi?id=44664 -->
+	<drivertype>foomatic-recommended-hpijs</drivertype>
+	<drivertype>hpijs</drivertype>
+	<drivertype>foomatic-hpijs</drivertype>
 
 	<!-- Last of all, 3rd party non-free drivers -->
 	<drivertype>hpcups-plugin</drivertype>
