@@ -3899,6 +3899,9 @@ class NewPrinterGUI(GtkGUI):
             except cups.IPPError, (e, msg):
                 self.show_IPP_Error(e, msg)
                 return
+            except RuntimeError:
+                # Printer already in class?
+                continue
         elif self.dialog_mode == "printer" or \
                 self.dialog_mode == "printer_with_uri":
             uri = None
