@@ -2,8 +2,8 @@
 
 ## Printing troubleshooter
 
-## Copyright (C) 2008 Red Hat, Inc.
-## Copyright (C) 2008 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2008, 2012 Red Hat, Inc.
+## Copyright (C) 2008, 2012 Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -60,10 +60,22 @@ class Locale(Question):
         self.answers['user_locale_ctype'] = ctype
 
         try:
-            i18n = file ("/etc/sysconfig/i18n").readlines ()
-            for line in i18n:
-                if line.startswith ("LANG="):
-                    system_lang = line[5:].strip ('\n"')
+            system_lang = None
+            conf = None
+            for conffile in ["/etc/locale.conf", "/etc/sysconfig/i18n"]:
+                try:
+                    conf = file (conffile).readlines ()
+                except IOError:
+                    continue
+
+            if conf != None:
+                for line in conf:
+                    if line.startswith("LC_PAPER="):
+                        system_lang = line[9:].strip ('\n"')
+                    elif system_lang == None and line.startswith ("LANG="):
+                        system_lang = line[5:].strip ('\n"')
+
+                if system_lang != None:
                     dot = system_lang.find ('.')
                     if dot != -1:
                         system_lang = system_lang[:dot]
