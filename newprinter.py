@@ -2,7 +2,7 @@
 
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2012 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 ##  Florian Festi <ffesti@redhat.com>
@@ -3899,13 +3899,14 @@ class NewPrinterGUI(GtkGUI):
             members = getCurrentClassMembers(self.tvNCMembers)
             try:
                 for member in members:
-                    self.cups.addPrinterToClass(member, name)
+                    try:
+                        self.cups.addPrinterToClass(member, name)
+                    except RuntimeError:
+                        # Printer already in class?
+                        continue
             except cups.IPPError, (e, msg):
                 self.show_IPP_Error(e, msg)
                 return
-            except RuntimeError:
-                # Printer already in class?
-                continue
         elif self.dialog_mode == "printer" or \
                 self.dialog_mode == "printer_with_uri":
             uri = None

@@ -2,7 +2,7 @@
 
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2012 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 ##  Florian Festi <ffesti@redhat.com>
@@ -1507,17 +1507,24 @@ class GUI(GtkGUI):
     def delete_selected_printer_queues (self):
         paths = self.dests_iconview.get_selected_items ()
         model = self.dests_iconview.get_model ()
+        to_delete = []
         n = len (paths)
         if n == 1:
-            iter = model.get_iter (paths[0])
-            object = model.get_value (iter, 0)
-            name = model.get_value (iter, 2)
-            if object.is_class:
+            itr = model.get_iter (paths[0])
+            obj = model.get_value (itr, 0)
+            name = unicode (model.get_value (itr, 2), 'utf-8')
+            if obj.is_class:
                 message_format = _("Really delete class '%s'?") % name
             else:
                 message_format = _("Really delete printer '%s'?") % name
+
+            to_delete.append (name)
         else:
             message_format = _("Really delete selected destinations?")
+            for path in paths:
+                itr = model.get_iter (path)
+                name = unicode (model.get_value (itr, 2), 'utf-8')
+                to_delete.append (name)
 
         dialog = Gtk.MessageDialog(self.PrintersWindow,
                                    Gtk.DialogFlags.DESTROY_WITH_PARENT |
@@ -1535,11 +1542,8 @@ class GUI(GtkGUI):
             return
 
         try:
-            for path in paths:
-                iter = model.get_iter (path)
-                name = model.get_value (iter, 2)
+            for name in to_delete:
                 self.cups._begin_operation (_("deleting printer %s") % name)
-                name = unicode (name)
                 self.cups.deletePrinter (name)
                 self.cups._end_operation ()
         except cups.IPPError, (e, msg):
@@ -1556,11 +1560,15 @@ class GUI(GtkGUI):
         iconview = self.dests_iconview
         paths = iconview.get_selected_items ()
         model = iconview.get_model ()
+        printers = []
         for path in paths:
-            iter = model.get_iter (path)
-            printer = model.get_value (iter, 0)
-            name = unicode (model.get_value (iter, 2), 'utf-8')
-            self.cups._begin_operation (_("modifying printer %s") % name)
+            itr = model.get_itr (path)
+            printer = model.get_value (itr, 0)
+            printers.append (printer)
+
+        for printer in printers:
+            self.cups._begin_operation (_("modifying printer %s") %
+                                        unicode (printer.name, 'utf-8'))
             try:
                 printer.setEnabled (enable)
             except cups.IPPError, (e, m):
@@ -1581,12 +1589,16 @@ class GUI(GtkGUI):
         iconview = self.dests_iconview
         paths = iconview.get_selected_items ()
         model = iconview.get_model ()
-        success = False
+        printers = []
         for path in paths:
-            iter = model.get_iter (path)
-            printer = model.get_value (iter, 0)
+            itr = model.get_itr (path)
+            printer = model.get_value (itr, 0)
+            printers.append (printer)
+
+        success = False
+        for printer in printers:
             self.cups._begin_operation (_("modifying printer %s") %
-                                        printer.name)
+                                        unicode (printer.name, 'utf-8'))
             try:
                 printer.setShared (share)
                 success = True
