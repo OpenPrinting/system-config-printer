@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-## Copyright (C) 2007, 2008, 2009, 2010, 2011, 2012 Red Hat, Inc.
+## Copyright (C) 2007, 2008, 2009, 2010, 2011, 2012, 2013 Red Hat, Inc.
 ## Copyright (C) 2008 Novell, Inc.
 ## Author: Tim Waugh <twaugh@redhat.com>
 
@@ -147,7 +147,7 @@ class _IPPConnectionThread(threading.Thread):
                 debugprint ("...success")
                 self._reply (result)
             except Exception, e:
-                debugprint ("...failure")
+                debugprint ("...failure (%s)" % repr (e))
                 self._error (e)
 
             self._queue.task_done ()
