@@ -1562,7 +1562,7 @@ class GUI(GtkGUI):
         model = iconview.get_model ()
         printers = []
         for path in paths:
-            itr = model.get_itr (path)
+            itr = model.get_iter (path)
             printer = model.get_value (itr, 0)
             printers.append (printer)
 
@@ -1591,7 +1591,7 @@ class GUI(GtkGUI):
         model = iconview.get_model ()
         printers = []
         for path in paths:
-            itr = model.get_itr (path)
+            itr = model.get_iter (path)
             printer = model.get_value (itr, 0)
             printers.append (printer)
 
