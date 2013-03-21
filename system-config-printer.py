@@ -1567,8 +1567,9 @@ class GUI(GtkGUI):
             printers.append (printer)
 
         for printer in printers:
+            print repr (printer.name)
             self.cups._begin_operation (_("modifying printer %s") %
-                                        unicode (printer.name, 'utf-8'))
+                                        unicode (printer.name))
             try:
                 printer.setEnabled (enable)
             except cups.IPPError, (e, m):
@@ -1598,7 +1599,7 @@ class GUI(GtkGUI):
         success = False
         for printer in printers:
             self.cups._begin_operation (_("modifying printer %s") %
-                                        unicode (printer.name, 'utf-8'))
+                                        unicode (printer.name))
             try:
                 printer.setShared (share)
                 success = True
