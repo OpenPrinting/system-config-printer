@@ -347,11 +347,14 @@ class _IPPAuthOperation:
             return self._reconnect_error (conn, exc)
 
         if self._cancel:
+            debugprint ("%s (_error_handler): canceled so chaining up" % self)
             return self._error (exc)
 
         if self._reconnect:
             self._reconnect = False
             self._reconnected = True
+            debugprint ("%s (_error_handler): reconnecting (as %s)..." %
+                        (self, self_user))
             conn.reconnect (self._user,
                             reply_handler=self._reconnect_reply,
                             error_handler=self._reconnect_error)
@@ -379,6 +382,10 @@ class _IPPAuthOperation:
             return self._error (exc)
 
         # Not authorized.
+        if forbidden:
+            debugprint ("%s (_error_handler): forbidden" % self)
+        else:
+            debugprint ("%s (_error_handler): not authorized" % self)
 
         if (self._try_as_root and
             self._user != 'root' and
@@ -409,6 +416,8 @@ class _IPPAuthOperation:
         authconn.global_authinfocache.remove_auth_info (host=host,
                                                         port=port)
         self._use_password = ''
+        debugprint ("%s (_error_handler): reconnecting (as %s)..." %
+                    (self, self._user))
         conn.reconnect (self._user,
                         reply_handler=self._reconnect_reply,
                         error_handler=self._reconnect_error)
@@ -565,21 +574,30 @@ class _IPPAuthOperation:
                        _("Retry"), Gtk.ResponseType.OK)
         d.set_default_response (Gtk.ResponseType.OK)
         d.connect ("response", self._on_retry_server_error_response)
+        debugprint ("%s (_reconnect_error): presenting error dialog (%s; %s)" %
+                    (self, msg, message))
         d.show ()
 
     def _on_retry_server_error_response (self, dialog, response):
         dialog.destroy ()
         if response == Gtk.ResponseType.OK:
+            debugprint ("%s: got retry response, reconnecting (as %s)..." %
+                        (self, self._conn.thread.user))
             self._conn.reconnect (self._conn.thread.user,
                                   reply_handler=self._reconnect_reply,
                                   error_handler=self._reconnect_error)
         else:
+            debugprint ("%s: got cancel response" % self)
             self._error (cups.IPPError (0, _("Operation canceled")))
 
     def _error (self, exc):
         if self._client_error_handler:
+            debugprint ("%s (_error): calling %s" %
+                        (self, self._client_error_handler))
             self._client_error_handler (self._conn, exc)
             self._destroy ()
+        else:
+            debugprint ("%s (_error): no client error handler set" % self)
 
 ###
 ### The user-visible class.

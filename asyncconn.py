@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-## Copyright (C) 2007, 2008, 2009, 2010, 2012 Red Hat, Inc.
+## Copyright (C) 2007, 2008, 2009, 2010, 2012, 2013 Red Hat, Inc.
 ## Copyright (C) 2008 Novell, Inc.
 ## Authors: Tim Waugh <twaugh@redhat.com>, Vincent Untz
 
@@ -81,18 +81,25 @@ class _AsyncMethodCall:
         kwds['reply_handler'] = self.reply_handler
         kwds['error_handler'] = self.error_handler
         kwds['auth_handler'] = self.auth_handler
+        debugprint ("%s: calling %s" % (self, self._fn))
         self._fn (*args, **kwds)
 
     def reply_handler (self, *args):
         if not self._destroyed:
+            debugprint ("%s: to reply_handler at %s" % (self,
+                                                        self._reply_handler))
             self._reply_handler (self, self._reply_data, *args)
 
     def error_handler (self, *args):
         if not self._destroyed:
+            debugprint ("%s: to error_handler at %s" % (self,
+                                                        self._error_handler))
             self._error_handler (self, self._error_data, *args)
 
     def auth_handler (self, *args):
         if not self._destroyed:
+            debugprint ("%s: to auth_handler at %s" % (self,
+                                                       self._auth_handler))
             self._auth_handler (self, self.auth_data, *args)
 
 ######
@@ -198,6 +205,7 @@ class Connection(SemanticOperations):
             del self._methodcalls[i]
             args = args[1:]
         if reply_handler and not self._destroyed:
+            debugprint ("%s: chaining up to %s" % (self, reply_handler))
             reply_handler (self, *args)
 
     def _subst_error_handler (self, methodcall, error_handler, *args):
@@ -207,6 +215,7 @@ class Connection(SemanticOperations):
             del self._methodcalls[i]
             args = args[1:]
         if error_handler and not self._destroyed:
+            debugprint ("%s: chaining up to %s" % (self, error_handler))
             error_handler (self, *args)
 
     def _subst_auth_handler (self, methodcall, auth_handler, prompt, method, resource):
@@ -215,6 +224,7 @@ class Connection(SemanticOperations):
             i = self._methodcalls.index (methodcall)
             del self._methodcalls[i]
         if auth_handler and not self._destroyed:
+            debugprint ("%s: chaining up to %s" % (self, auth_handler))
             auth_handler (prompt, self, method, resource)
 
     def set_auth_info (self, password):
