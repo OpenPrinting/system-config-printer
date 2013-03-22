@@ -560,6 +560,8 @@ class NewPrinterGUI(GtkGUI):
             self.spinner.stop ()
 
     def show_IPP_Error (self, exception, message):
+        debugprint ("%s: IPP error dialog (%s, %s)" % (self, repr (exception),
+                                                       repr (message)))
         return show_IPP_Error (exception, message, parent=self.NewPrinterWindow)
 
     def option_changed(self, option):
@@ -810,7 +812,7 @@ class NewPrinterGUI(GtkGUI):
             try:
                 raise exc
             except cups.IPPError, (e, m):
-                show_IPP_Error (e, m, parent=self.NewPrinterWindow)
+                self.show_IPP_Error (e, m)
                 return
 
         ppds = ppdsloader.get_ppds ()
