@@ -2,7 +2,7 @@
 
 ## system-config-printer
 
-## Copyright (C) 2010, 2011, 2012 Red Hat, Inc.
+## Copyright (C) 2010, 2011, 2012, 2013 Red Hat, Inc.
 ## Author: Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
@@ -131,6 +131,7 @@ class PPDsLoader(GObject.GObject):
         return self._ppdsmatch_result
 
     def get_error (self):
+        debugprint ("%s: stored error is %s" % (self, repr (self._exc)))
         return self._exc
 
     def _dialog_response (self, dialog, response):

@@ -591,6 +591,7 @@ class _IPPAuthOperation:
             self._error (cups.IPPError (0, _("Operation canceled")))
 
     def _error (self, exc):
+        debugprint ("%s (_error): handling %s" % (self, repr (exc)))
         if self._client_error_handler:
             debugprint ("%s (_error): calling %s" %
                         (self, self._client_error_handler))

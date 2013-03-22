@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-## Copyright (C) 2007, 2008, 2009, 2010, 2012 Red Hat, Inc.
+## Copyright (C) 2007, 2008, 2009, 2010, 2012, 2013 Red Hat, Inc.
 ## Copyright (C) 2008 Novell, Inc.
 ## Authors: Tim Waugh <twaugh@redhat.com>, Vincent Untz
 
@@ -78,6 +78,7 @@ class _PK1AsyncMethodCall:
         pk_method = proxy.get_dbus_method (self._pk_method_name)
 
         try:
+            debugprint ("%s: calling %s" % (self, pk_method))
             pk_method (*self._pk_args,
                         reply_handler=self._pk_reply_handler,
                         error_handler=self._pk_error_handler,
@@ -109,6 +110,8 @@ class _PK1AsyncMethodCall:
                 Gdk.threads_enter ()
             except:
                 pass
+            debugprint ("%s: no error, calling reply handler %s" %
+                        (self, self._client_reply_handler))
             self._client_reply_handler (self._conn, self._unpack_fn (*args))
             try:
                 Gdk.threads_leave ()
@@ -130,6 +133,8 @@ class _PK1AsyncMethodCall:
                 Gdk.threads_enter ()
             except:
                 pass
+            debugprint ("%s: no auth, calling error handler %s" %
+                        (self, self._client_error_handler))
             self._client_error_handler (self._conn, exc)
             try:
                 Gdk.threads_leave ()
@@ -146,12 +151,15 @@ class _PK1AsyncMethodCall:
         # Make the 'connection' parameter consistent with PK callbacks.
         self._fallback_kwds["reply_handler"] = self._ipp_reply_handler
         self._fallback_kwds["error_handler"] = self._ipp_error_handler
+        debugprint ("%s: calling %s" % (self, self._fallback_fn))
         self._fallback_fn (*self._fallback_args, **self._fallback_kwds)
 
     def _ipp_reply_handler (self, conn, *args):
         if self._destroyed:
             return
 
+        debugprint ("%s: chaining up to %s" % (self,
+                                               self._client_reply_handler))
         self._client_reply_handler (self._conn, *args)
         self._destroy ()
 
@@ -159,6 +167,8 @@ class _PK1AsyncMethodCall:
         if self._destroyed:
             return
 
+        debugprint ("%s: chaining up to %s" % (self,
+                                               self._client_error_handler))
         self._client_error_handler (self._conn, *args)
         self._destroy ()
 
