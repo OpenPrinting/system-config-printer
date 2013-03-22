@@ -809,6 +809,7 @@ class NewPrinterGUI(GtkGUI):
     def _getPPDs_reply (self, ppdsloader):
         exc = ppdsloader.get_error ()
         if exc:
+            ppdsloader.destroy ()
             try:
                 raise exc
             except cups.IPPError, (e, m):
