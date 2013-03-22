@@ -347,38 +347,44 @@ class NewPrinterGUI(GtkGUI):
         # Fill in liststores for combo-box widgets
         for (widget,
              opts) in [(self.cmbNPTSerialBaud,
-                        [_("Default"),
-                         _("1200"),
-                         _("2400"),
-                         _("4800"),
-                         _("9600"),
-                         _("19200"),
-                         _("38400"),
-                         _("57600"),
-                         _("115200")]),
+                        [[_("Default"), ""],
+                         ["1200", "1200"],
+                         ["2400", "2400"],
+                         ["4800", "4800"],
+                         ["9600", "9600"],
+                         ["19200", "19200"],
+                         ["38400", "38400"],
+                         ["57600", "57600"],
+                         ["115200", "115200"]]),
 
                        (self.cmbNPTSerialParity,
-                        [_("Default"),
-                         _("None"),
-                         _("Odd"),
-                         _("Even")]),
+                        [[_("Default"), ""],
+                         [_("None"), "none"],
+                         [_("Odd"), "odd"],
+                         [_("Even"), "even"]]),
 
                        (self.cmbNPTSerialBits,
-                        [_("Default"),
-                         _("8"),
-                         _("7")]),
+                        [[_("Default"), ""],
+                         ["8", "8"],
+                         ["7", "7"]]),
 
                        (self.cmbNPTSerialFlow,
-                        [_("Default"),
-                         _("None"),
-                         _("XON/XOFF (Software)"),
-                         _("RTS/CTS (Hardware)"),
-                         _("DTR/DSR (Hardware)")]),
+                        [[_("Default"), ""],
+                         [_("None"), "none"],
+                         [_("XON/XOFF (Software)"), "soft"],
+                         [_("RTS/CTS (Hardware)"), "hard"],
+                         [_("DTR/DSR (Hardware)"), "hard"]]),
 
                        ]:
-            widget.remove_all ()
+            store = Gtk.ListStore (str, str)
             for row in opts:
-                widget.append_text (row)
+                store.append (row)
+
+            widget.set_model (store)
+            cell = Gtk.CellRendererText ()
+            widget.clear ()
+            widget.pack_start (cell, True)
+            widget.add_attribute (cell, 'text', 0)
 
         # Set up some lists
         m = Gtk.SelectionMode.MULTIPLE
@@ -2837,32 +2843,26 @@ class NewPrinterGUI(GtkGUI):
                     name, value = option.split("=")
                     option_dict[name] = value
 
-                for widget, name, optionvalues in (
-                    (self.cmbNPTSerialBaud, "baud", None),
-                    (self.cmbNPTSerialBits, "bits", None),
-                    (self.cmbNPTSerialParity, "parity",
-                     ["none", "odd", "even"]),
-                    (self.cmbNPTSerialFlow, "flow",
-                     ["none", "soft", "hard", "hard"])):
+                for widget, name in (
+                    (self.cmbNPTSerialBaud, "baud"),
+                    (self.cmbNPTSerialBits, "bits"),
+                    (self.cmbNPTSerialParity, "parity"),
+                    (self.cmbNPTSerialFlow, "flow")):
                     if option_dict.has_key(name): # option given in URI?
-                        if optionvalues is None: # use text in widget
-                            model = widget.get_model()
-                            iter = model.get_iter_first()
-                            nr = 0
-                            while iter:
-                                value = model.get(iter,0)[0]
-                                if value == option_dict[name]:
-                                    widget.set_active(nr)
-                                    break
-                                iter = model.iter_next(iter)
-                                nr += 1
+                        model = widget.get_model()
+                        iter = model.get_iter_first()
+                        nr = 0
+                        while iter:
+                            value = model.get(iter,1)[0]
+                            if unicode (value) == unicode (option_dict[name]):
+                                break
+                            iter = model.iter_next(iter)
+                            nr += 1
 
-                            if not iter:
-                                widget.set_active (0)
-                        else: # use optionvalues
-                            nr = optionvalues.index(
-                                option_dict[name])
-                            widget.set_active(nr+1) # compensate "Default"
+                        if iter:
+                            widget.set_active(nr)
+                        else:
+                            widget.set_active (0)
                     else:
                         widget.set_active(0)
 
@@ -3068,19 +3068,15 @@ class NewPrinterGUI(GtkGUI):
                     device += "/" + printer
         elif type == "serial": # Serial
             options = []
-            for widget, name, optionvalues in (
-                (self.cmbNPTSerialBaud, "baud", None),
-                (self.cmbNPTSerialBits, "bits", None),
-                (self.cmbNPTSerialParity, "parity",
-                 ("none", "odd", "even")),
-                (self.cmbNPTSerialFlow, "flow",
-                 ("none", "soft", "hard", "hard"))):
-                nr = widget.get_active()
-                if nr:
-                    if optionvalues is not None:
-                        option = optionvalues[nr-1]
-                    else:
-                        option = widget.get_active_text()
+            for widget, name in (
+                (self.cmbNPTSerialBaud, "baud"),
+                (self.cmbNPTSerialBits, "bits"),
+                (self.cmbNPTSerialParity, "parity"),
+                (self.cmbNPTSerialFlow, "flow")):
+                model = widget.get_model ()
+                iter = widget.get_active_iter()
+                option = model.get_value (iter, 1)
+                if option != "":
                     options.append(name + "=" + option)
             options = "+".join(options)
             device =  self.device.uri.split("?")[0] #"serial:/dev/ttyS%s"

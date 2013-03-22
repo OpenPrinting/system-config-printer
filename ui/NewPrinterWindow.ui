@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <requires lib="gtk+" version="2.16"/>
+  <requires lib="gtk+" version="2.20"/>
+  <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkWindow" id="NewPrinterWindow">
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">New Printer</property>
-    <property name="modal">False</property>
     <property name="window_position">center-on-parent</property>
     <property name="default_width">600</property>
     <property name="default_height">420</property>
@@ -79,6 +79,10 @@
                                   <object class="GtkEntry" id="entNPName">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
+                                    <property name="primary_icon_activatable">False</property>
+                                    <property name="secondary_icon_activatable">False</property>
+                                    <property name="primary_icon_sensitive">True</property>
+                                    <property name="secondary_icon_sensitive">True</property>
                                     <signal name="changed" handler="on_entNPName_changed" swapped="no"/>
                                   </object>
                                   <packing>
@@ -140,6 +144,10 @@
                                   <object class="GtkEntry" id="entNPDescription">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
+                                    <property name="primary_icon_activatable">False</property>
+                                    <property name="secondary_icon_activatable">False</property>
+                                    <property name="primary_icon_sensitive">True</property>
+                                    <property name="secondary_icon_sensitive">True</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -200,6 +208,10 @@
                                   <object class="GtkEntry" id="entNPLocation">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
+                                    <property name="primary_icon_activatable">False</property>
+                                    <property name="secondary_icon_activatable">False</property>
+                                    <property name="primary_icon_sensitive">True</property>
+                                    <property name="secondary_icon_sensitive">True</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -283,9 +295,6 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <signal name="cursor-changed" handler="on_tvNPDevices_cursor_changed" swapped="no"/>
-                            <child internal-child="selection">
-                              <object class="GtkTreeSelection" id="treeview-selection1"/>
-                            </child>
                           </object>
                         </child>
                       </object>
@@ -382,6 +391,10 @@
                                           <object class="GtkEntry" id="entNPTDevice">
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
+                                            <property name="primary_icon_activatable">False</property>
+                                            <property name="secondary_icon_activatable">False</property>
+                                            <property name="primary_icon_sensitive">True</property>
+                                            <property name="secondary_icon_sensitive">True</property>
                                             <signal name="changed" handler="on_entNPTDevice_changed" swapped="no"/>
                                           </object>
                                         </child>
@@ -462,7 +475,7 @@ ipp://printer.mydomain/ipp</property>
                                           </object>
                                           <packing>
                                             <property name="x_options">GTK_FILL</property>
-                                            <property name="y_options"></property>
+                                            <property name="y_options"/>
                                           </packing>
                                         </child>
                                         <child>
@@ -479,13 +492,17 @@ ipp://printer.mydomain/ipp</property>
                                             <property name="top_attach">1</property>
                                             <property name="bottom_attach">2</property>
                                             <property name="x_options">GTK_FILL</property>
-                                            <property name="y_options"></property>
+                                            <property name="y_options"/>
                                           </packing>
                                         </child>
                                         <child>
                                           <object class="GtkEntry" id="entNPTJetDirectPort">
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
+                                            <property name="primary_icon_activatable">False</property>
+                                            <property name="secondary_icon_activatable">False</property>
+                                            <property name="primary_icon_sensitive">True</property>
+                                            <property name="secondary_icon_sensitive">True</property>
                                             <accessibility>
                                               <relation type="labelled-by" target="label203"/>
                                             </accessibility>
@@ -496,13 +513,17 @@ ipp://printer.mydomain/ipp</property>
                                             <property name="right_attach">2</property>
                                             <property name="top_attach">1</property>
                                             <property name="bottom_attach">2</property>
-                                            <property name="y_options"></property>
+                                            <property name="y_options"/>
                                           </packing>
                                         </child>
                                         <child>
                                           <object class="GtkEntry" id="entNPTJetDirectHostname">
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
+                                            <property name="primary_icon_activatable">False</property>
+                                            <property name="secondary_icon_activatable">False</property>
+                                            <property name="primary_icon_sensitive">True</property>
+                                            <property name="secondary_icon_sensitive">True</property>
                                             <accessibility>
                                               <relation type="labelled-by" target="label202"/>
                                             </accessibility>
@@ -511,7 +532,7 @@ ipp://printer.mydomain/ipp</property>
                                           <packing>
                                             <property name="left_attach">1</property>
                                             <property name="right_attach">2</property>
-                                            <property name="y_options"></property>
+                                            <property name="y_options"/>
                                           </packing>
                                         </child>
                                       </object>
@@ -572,7 +593,7 @@ ipp://printer.mydomain/ipp</property>
                                           </object>
                                           <packing>
                                             <property name="x_options">GTK_FILL</property>
-                                            <property name="y_options"></property>
+                                            <property name="y_options"/>
                                           </packing>
                                         </child>
                                         <child>
@@ -586,7 +607,7 @@ ipp://printer.mydomain/ipp</property>
                                             <property name="top_attach">1</property>
                                             <property name="bottom_attach">2</property>
                                             <property name="x_options">GTK_FILL</property>
-                                            <property name="y_options"></property>
+                                            <property name="y_options"/>
                                           </packing>
                                         </child>
                                         <child>
@@ -594,7 +615,6 @@ ipp://printer.mydomain/ipp</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">False</property>
-                                            <property name="use_action_appearance">False</property>
                                             <signal name="clicked" handler="on_btnNPTLpdProbe_clicked" swapped="no"/>
                                             <child>
                                               <object class="GtkAlignment" id="alignment16">
@@ -641,7 +661,7 @@ ipp://printer.mydomain/ipp</property>
                                             <property name="left_attach">2</property>
                                             <property name="right_attach">3</property>
                                             <property name="x_options">GTK_FILL</property>
-                                            <property name="y_options"></property>
+                                            <property name="y_options"/>
                                           </packing>
                                         </child>
                                         <child>
@@ -649,12 +669,16 @@ ipp://printer.mydomain/ipp</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="invisible_char">●</property>
+                                            <property name="primary_icon_activatable">False</property>
+                                            <property name="secondary_icon_activatable">False</property>
+                                            <property name="primary_icon_sensitive">True</property>
+                                            <property name="secondary_icon_sensitive">True</property>
                                             <signal name="changed" handler="on_entNPTLpdHost_changed" swapped="no"/>
                                           </object>
                                           <packing>
                                             <property name="left_attach">1</property>
                                             <property name="right_attach">2</property>
-                                            <property name="y_options"></property>
+                                            <property name="y_options"/>
                                           </packing>
                                         </child>
                                         <child>
@@ -662,6 +686,10 @@ ipp://printer.mydomain/ipp</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="invisible_char">●</property>
+                                            <property name="primary_icon_activatable">False</property>
+                                            <property name="secondary_icon_activatable">False</property>
+                                            <property name="primary_icon_sensitive">True</property>
+                                            <property name="secondary_icon_sensitive">True</property>
                                             <signal name="changed" handler="on_entNPTLpdQueue_changed" swapped="no"/>
                                           </object>
                                           <packing>
@@ -669,7 +697,7 @@ ipp://printer.mydomain/ipp</property>
                                             <property name="right_attach">3</property>
                                             <property name="top_attach">1</property>
                                             <property name="bottom_attach">2</property>
-                                            <property name="y_options"></property>
+                                            <property name="y_options"/>
                                           </packing>
                                         </child>
                                       </object>
@@ -758,13 +786,10 @@ ipp://printer.mydomain/ipp</property>
                                             <property name="can_focus">False</property>
                                             <property name="xalign">0</property>
                                             <property name="label" translatable="yes">Baud Rate</property>
-                                            <accessibility>
-                                              <relation type="label-for" target="cmbNPTSerialBaud"/>
-                                            </accessibility>
                                           </object>
                                           <packing>
                                             <property name="x_options">GTK_FILL</property>
-                                            <property name="y_options"></property>
+                                            <property name="y_options"/>
                                           </packing>
                                         </child>
                                         <child>
@@ -773,15 +798,12 @@ ipp://printer.mydomain/ipp</property>
                                             <property name="can_focus">False</property>
                                             <property name="xalign">0</property>
                                             <property name="label" translatable="yes">Parity</property>
-                                            <accessibility>
-                                              <relation type="label-for" target="cmbNPTSerialParity"/>
-                                            </accessibility>
                                           </object>
                                           <packing>
                                             <property name="top_attach">1</property>
                                             <property name="bottom_attach">2</property>
                                             <property name="x_options">GTK_FILL</property>
-                                            <property name="y_options"></property>
+                                            <property name="y_options"/>
                                           </packing>
                                         </child>
                                         <child>
@@ -790,15 +812,12 @@ ipp://printer.mydomain/ipp</property>
                                             <property name="can_focus">False</property>
                                             <property name="xalign">0</property>
                                             <property name="label" translatable="yes">Data Bits</property>
-                                            <accessibility>
-                                              <relation type="label-for" target="cmbNPTSerialBits"/>
-                                            </accessibility>
                                           </object>
                                           <packing>
                                             <property name="top_attach">2</property>
                                             <property name="bottom_attach">3</property>
                                             <property name="x_options">GTK_FILL</property>
-                                            <property name="y_options"></property>
+                                            <property name="y_options"/>
                                           </packing>
                                         </child>
                                         <child>
@@ -807,81 +826,62 @@ ipp://printer.mydomain/ipp</property>
                                             <property name="can_focus">False</property>
                                             <property name="xalign">0</property>
                                             <property name="label" translatable="yes">Flow Control</property>
-                                            <accessibility>
-                                              <relation type="label-for" target="cmbNPTSerialFlow"/>
-                                            </accessibility>
                                           </object>
                                           <packing>
                                             <property name="top_attach">3</property>
                                             <property name="bottom_attach">4</property>
                                             <property name="x_options">GTK_FILL</property>
-                                            <property name="y_options"></property>
+                                            <property name="y_options"/>
                                           </packing>
                                         </child>
                                         <child>
-                                          <object class="GtkComboBoxText" id="cmbNPTSerialBaud">
+                                          <object class="GtkComboBox" id="cmbNPTSerialBaud">
                                             <property name="visible">True</property>
                                             <property name="can_focus">False</property>
-                                            <accessibility>
-                                              <relation type="labelled-by" target="label43"/>
-                                            </accessibility>
                                           </object>
                                           <packing>
                                             <property name="left_attach">1</property>
                                             <property name="right_attach">2</property>
-                                            <property name="x_options">GTK_FILL</property>
                                             <property name="y_options">GTK_FILL</property>
                                           </packing>
                                         </child>
                                         <child>
-                                          <object class="GtkComboBoxText" id="cmbNPTSerialParity">
+                                          <object class="GtkComboBox" id="cmbNPTSerialParity">
                                             <property name="visible">True</property>
                                             <property name="can_focus">False</property>
-                                            <accessibility>
-                                              <relation type="labelled-by" target="label44"/>
-                                            </accessibility>
                                           </object>
                                           <packing>
                                             <property name="left_attach">1</property>
                                             <property name="right_attach">2</property>
                                             <property name="top_attach">1</property>
                                             <property name="bottom_attach">2</property>
-                                            <property name="x_options">GTK_FILL</property>
-                                            <property name="y_options">GTK_FILL</property>
+                                            <property name="y_options"/>
                                           </packing>
                                         </child>
                                         <child>
-                                          <object class="GtkComboBoxText" id="cmbNPTSerialBits">
+                                          <object class="GtkComboBox" id="cmbNPTSerialBits">
                                             <property name="visible">True</property>
                                             <property name="can_focus">False</property>
-                                            <accessibility>
-                                              <relation type="labelled-by" target="label45"/>
-                                            </accessibility>
                                           </object>
                                           <packing>
                                             <property name="left_attach">1</property>
                                             <property name="right_attach">2</property>
                                             <property name="top_attach">2</property>
                                             <property name="bottom_attach">3</property>
-                                            <property name="x_options">GTK_FILL</property>
-                                            <property name="y_options">GTK_FILL</property>
+                                            <property name="y_options"/>
                                           </packing>
                                         </child>
                                         <child>
-                                          <object class="GtkComboBoxText" id="cmbNPTSerialFlow">
+                                          <object class="GtkComboBox" id="cmbNPTSerialFlow">
                                             <property name="visible">True</property>
                                             <property name="can_focus">False</property>
-                                            <accessibility>
-                                              <relation type="labelled-by" target="label46"/>
-                                            </accessibility>
                                           </object>
                                           <packing>
                                             <property name="left_attach">1</property>
                                             <property name="right_attach">2</property>
                                             <property name="top_attach">3</property>
                                             <property name="bottom_attach">4</property>
-                                            <property name="x_options">GTK_FILL</property>
-                                            <property name="y_options">GTK_FILL</property>
+                                            <property name="y_options"/>
                                           </packing>
                                         </child>
                                       </object>
@@ -965,6 +965,10 @@ ipp://printer.mydomain/ipp</property>
                                                       <object class="GtkEntry" id="entSMBURI">
                                                         <property name="visible">True</property>
                                                         <property name="can_focus">True</property>
+                                                        <property name="primary_icon_activatable">False</property>
+                                                        <property name="secondary_icon_activatable">False</property>
+                                                        <property name="primary_icon_sensitive">True</property>
+                                                        <property name="secondary_icon_sensitive">True</property>
                                                         <accessibility>
                                                           <relation type="labelled-by" target="label129"/>
                                                         </accessibility>
@@ -982,7 +986,6 @@ ipp://printer.mydomain/ipp</property>
                                                         <property name="visible">True</property>
                                                         <property name="can_focus">True</property>
                                                         <property name="receives_default">False</property>
-                                                        <property name="use_action_appearance">False</property>
                                                         <property name="use_underline">True</property>
                                                         <signal name="clicked" handler="on_btnSMBBrowse_clicked" swapped="no"/>
                                                       </object>
@@ -1060,7 +1063,6 @@ ipp://printer.mydomain/ipp</property>
                                                         <property name="visible">True</property>
                                                         <property name="can_focus">True</property>
                                                         <property name="receives_default">False</property>
-                                                        <property name="use_action_appearance">False</property>
                                                         <property name="use_underline">True</property>
                                                         <property name="active">True</property>
                                                         <property name="draw_indicator">True</property>
@@ -1081,7 +1083,6 @@ ipp://printer.mydomain/ipp</property>
                                                             <property name="visible">True</property>
                                                             <property name="can_focus">True</property>
                                                             <property name="receives_default">False</property>
-                                                            <property name="use_action_appearance">False</property>
                                                             <property name="use_underline">True</property>
                                                             <property name="draw_indicator">True</property>
                                                             <property name="group">rbtnSMBAuthPrompt</property>
@@ -1122,7 +1123,7 @@ ipp://printer.mydomain/ipp</property>
                                                             <property name="top_attach">1</property>
                                                             <property name="bottom_attach">2</property>
                                                             <property name="x_options">GTK_FILL</property>
-                                                            <property name="y_options"></property>
+                                                            <property name="y_options"/>
                                                             </packing>
                                                             </child>
                                                             <child>
@@ -1137,7 +1138,7 @@ ipp://printer.mydomain/ipp</property>
                                                             </object>
                                                             <packing>
                                                             <property name="x_options">GTK_FILL</property>
-                                                            <property name="y_options"></property>
+                                                            <property name="y_options"/>
                                                             </packing>
                                                             </child>
                                                             <child>
@@ -1145,6 +1146,10 @@ ipp://printer.mydomain/ipp</property>
                                                             <property name="visible">True</property>
                                                             <property name="can_focus">True</property>
                                                             <property name="visibility">False</property>
+                                                            <property name="primary_icon_activatable">False</property>
+                                                            <property name="secondary_icon_activatable">False</property>
+                                                            <property name="primary_icon_sensitive">True</property>
+                                                            <property name="secondary_icon_sensitive">True</property>
                                                             <accessibility>
                                                             <relation type="labelled-by" target="label133"/>
                                                             </accessibility>
@@ -1154,13 +1159,17 @@ ipp://printer.mydomain/ipp</property>
                                                             <property name="right_attach">2</property>
                                                             <property name="top_attach">1</property>
                                                             <property name="bottom_attach">2</property>
-                                                            <property name="y_options"></property>
+                                                            <property name="y_options"/>
                                                             </packing>
                                                             </child>
                                                             <child>
                                                             <object class="GtkEntry" id="entSMBUsername">
                                                             <property name="visible">True</property>
                                                             <property name="can_focus">True</property>
+                                                            <property name="primary_icon_activatable">False</property>
+                                                            <property name="secondary_icon_activatable">False</property>
+                                                            <property name="primary_icon_sensitive">True</property>
+                                                            <property name="secondary_icon_sensitive">True</property>
                                                             <accessibility>
                                                             <relation type="labelled-by" target="label132"/>
                                                             </accessibility>
@@ -1168,7 +1177,7 @@ ipp://printer.mydomain/ipp</property>
                                                             <packing>
                                                             <property name="left_attach">1</property>
                                                             <property name="right_attach">2</property>
-                                                            <property name="y_options"></property>
+                                                            <property name="y_options"/>
                                                             </packing>
                                                             </child>
                                                             </object>
@@ -1222,7 +1231,6 @@ ipp://printer.mydomain/ipp</property>
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">True</property>
                                                 <property name="receives_default">False</property>
-                                                <property name="use_action_appearance">False</property>
                                                 <signal name="clicked" handler="on_btnSMBVerify_clicked" swapped="no"/>
                                                 <child>
                                                   <object class="GtkAlignment" id="alignment51">
@@ -1313,19 +1321,23 @@ ipp://printer.mydomain/ipp</property>
                                                   </object>
                                                   <packing>
                                                     <property name="x_options">GTK_FILL</property>
-                                                    <property name="y_options"></property>
+                                                    <property name="y_options"/>
                                                   </packing>
                                                 </child>
                                                 <child>
                                                   <object class="GtkEntry" id="entNPTNetworkHostname">
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
+                                                    <property name="primary_icon_activatable">False</property>
+                                                    <property name="secondary_icon_activatable">False</property>
+                                                    <property name="primary_icon_sensitive">True</property>
+                                                    <property name="secondary_icon_sensitive">True</property>
                                                     <signal name="changed" handler="on_entNPTNetworkHostname_changed" swapped="no"/>
                                                   </object>
                                                   <packing>
                                                     <property name="left_attach">1</property>
                                                     <property name="right_attach">2</property>
-                                                    <property name="y_options"></property>
+                                                    <property name="y_options"/>
                                                   </packing>
                                                 </child>
                                                 <child>
@@ -1335,7 +1347,6 @@ ipp://printer.mydomain/ipp</property>
                                                     <property name="sensitive">False</property>
                                                     <property name="can_focus">True</property>
                                                     <property name="receives_default">False</property>
-                                                    <property name="use_action_appearance">False</property>
                                                     <property name="use_stock">True</property>
                                                     <accelerator key="Return" signal="activate"/>
                                                     <signal name="clicked" handler="on_btnNetworkFind_clicked" swapped="no"/>
@@ -1344,7 +1355,7 @@ ipp://printer.mydomain/ipp</property>
                                                     <property name="left_attach">2</property>
                                                     <property name="right_attach">3</property>
                                                     <property name="x_options">GTK_FILL</property>
-                                                    <property name="y_options"></property>
+                                                    <property name="y_options"/>
                                                   </packing>
                                                 </child>
                                               </object>
@@ -1443,9 +1454,6 @@ ipp://printer.mydomain/ipp</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <signal name="cursor-changed" handler="on_tvNPDeviceURIs_cursor_changed" swapped="no"/>
-                                    <child internal-child="selection">
-                                      <object class="GtkTreeSelection" id="treeview-selection2"/>
-                                    </child>
                                   </object>
                                 </child>
                               </object>
@@ -1528,7 +1536,6 @@ ipp://printer.mydomain/ipp</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="active">True</property>
                         <property name="draw_indicator">True</property>
@@ -1546,7 +1553,6 @@ ipp://printer.mydomain/ipp</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="draw_indicator">True</property>
                         <property name="group">rbtnNPFoomatic</property>
@@ -1563,7 +1569,6 @@ ipp://printer.mydomain/ipp</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="draw_indicator">True</property>
                         <property name="group">rbtnNPFoomatic</property>
@@ -1621,9 +1626,6 @@ ipp://printer.mydomain/ipp</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <signal name="cursor-changed" handler="on_tvNPMakes_cursor_changed" swapped="no"/>
-                                    <child internal-child="selection">
-                                      <object class="GtkTreeSelection" id="treeview-selection3"/>
-                                    </child>
                                   </object>
                                 </child>
                               </object>
@@ -1722,7 +1724,7 @@ ipp://printer.mydomain/ipp</property>
                               </object>
                               <packing>
                                 <property name="x_options">GTK_FILL</property>
-                                <property name="y_options"></property>
+                                <property name="y_options"/>
                               </packing>
                             </child>
                             <child>
@@ -1734,6 +1736,10 @@ ipp://printer.mydomain/ipp</property>
                                   <object class="GtkEntry" id="entNPDownloadableDriverSearch">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
+                                    <property name="primary_icon_activatable">False</property>
+                                    <property name="secondary_icon_activatable">False</property>
+                                    <property name="primary_icon_sensitive">True</property>
+                                    <property name="secondary_icon_sensitive">True</property>
                                     <accelerator key="Return" signal="activate"/>
                                     <signal name="activate" handler="on_btnNPDownloadableDriverSearch_clicked" object="btnNPDownloadableDriverSearch" swapped="yes"/>
                                   </object>
@@ -1748,7 +1754,6 @@ ipp://printer.mydomain/ipp</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">False</property>
-                                    <property name="use_action_appearance">False</property>
                                     <signal name="clicked" handler="on_btnNPDownloadableDriverSearch_clicked" swapped="no"/>
                                     <child>
                                       <object class="GtkAlignment" id="alignment89">
@@ -1815,7 +1820,7 @@ ipp://printer.mydomain/ipp</property>
                                 <property name="top_attach">1</property>
                                 <property name="bottom_attach">2</property>
                                 <property name="x_options">GTK_FILL</property>
-                                <property name="y_options"></property>
+                                <property name="y_options"/>
                               </packing>
                             </child>
                             <child>
@@ -1916,9 +1921,6 @@ ipp://printer.mydomain/ipp</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <signal name="cursor-changed" handler="on_tvNPModels_cursor_changed" swapped="no"/>
-                            <child internal-child="selection">
-                              <object class="GtkTreeSelection" id="treeview-selection4"/>
-                            </child>
                           </object>
                         </child>
                       </object>
@@ -1944,9 +1946,6 @@ ipp://printer.mydomain/ipp</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <signal name="cursor-changed" handler="on_tvNPDrivers_cursor_changed" swapped="no"/>
-                                <child internal-child="selection">
-                                  <object class="GtkTreeSelection" id="treeview-selection5"/>
-                                </child>
                               </object>
                             </child>
                           </object>
@@ -1967,7 +1966,6 @@ ipp://printer.mydomain/ipp</property>
                                 <property name="can_focus">True</property>
                                 <property name="can_default">True</property>
                                 <property name="receives_default">False</property>
-                                <property name="use_action_appearance">False</property>
                                 <property name="use_underline">True</property>
                               </object>
                               <packing>
@@ -2049,9 +2047,6 @@ ipp://printer.mydomain/ipp</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <signal name="cursor-changed" handler="on_tvNCMembers_cursor_changed" swapped="no"/>
-                            <child internal-child="selection">
-                              <object class="GtkTreeSelection" id="treeview-selection6"/>
-                            </child>
                           </object>
                         </child>
                       </object>
@@ -2079,7 +2074,6 @@ ipp://printer.mydomain/ipp</property>
                                 <property name="can_focus">True</property>
                                 <property name="can_default">True</property>
                                 <property name="receives_default">False</property>
-                                <property name="use_action_appearance">False</property>
                                 <child internal-child="accessible">
                                   <object class="AtkObject" id="btnNCAddMember-atkobject">
                                     <property name="AtkObject::accessible-description" translatable="yes">move left</property>
@@ -2139,7 +2133,6 @@ ipp://printer.mydomain/ipp</property>
                                 <property name="can_focus">True</property>
                                 <property name="can_default">True</property>
                                 <property name="receives_default">False</property>
-                                <property name="use_action_appearance">False</property>
                                 <child internal-child="accessible">
                                   <object class="AtkObject" id="btnNCDelMember-atkobject">
                                     <property name="AtkObject::accessible-description" translatable="yes">move right</property>
@@ -2179,9 +2172,6 @@ ipp://printer.mydomain/ipp</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <signal name="cursor-changed" handler="on_tvNCNotMembers_cursor_changed" swapped="no"/>
-                            <child internal-child="selection">
-                              <object class="GtkTreeSelection" id="treeview-selection7"/>
-                            </child>
                           </object>
                         </child>
                       </object>
@@ -2260,7 +2250,6 @@ ipp://printer.mydomain/ipp</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="active">True</property>
                         <property name="draw_indicator">True</property>
@@ -2296,7 +2285,6 @@ ipp://printer.mydomain/ipp</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
-                            <property name="use_action_appearance">False</property>
                             <property name="use_underline">True</property>
                             <property name="draw_indicator">True</property>
                             <property name="group">rbtnChangePPDasIs</property>
@@ -2593,9 +2581,6 @@ ipp://printer.mydomain/ipp</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <signal name="cursor-changed" handler="on_tvNPDownloadableDrivers_cursor_changed" swapped="no"/>
-                                    <child internal-child="selection">
-                                      <object class="GtkTreeSelection" id="treeview-selection8"/>
-                                    </child>
                                   </object>
                                 </child>
                               </object>
@@ -2729,7 +2714,7 @@ ipp://printer.mydomain/ipp</property>
                                         <property name="top_attach">2</property>
                                         <property name="bottom_attach">3</property>
                                         <property name="x_options">GTK_FILL</property>
-                                        <property name="y_options"></property>
+                                        <property name="y_options"/>
                                       </packing>
                                     </child>
                                     <child>
@@ -2738,7 +2723,6 @@ ipp://printer.mydomain/ipp</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
-                                        <property name="use_action_appearance">False</property>
                                         <property name="use_underline">True</property>
                                         <property name="draw_indicator">True</property>
                                       </object>
@@ -2746,7 +2730,7 @@ ipp://printer.mydomain/ipp</property>
                                         <property name="left_attach">3</property>
                                         <property name="right_attach">4</property>
                                         <property name="x_options">GTK_FILL</property>
-                                        <property name="y_options"></property>
+                                        <property name="y_options"/>
                                       </packing>
                                     </child>
                                     <child>
@@ -2772,7 +2756,6 @@ ipp://printer.mydomain/ipp</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
-                                        <property name="use_action_appearance">False</property>
                                         <property name="use_underline">True</property>
                                         <property name="draw_indicator">True</property>
                                       </object>
@@ -2782,7 +2765,7 @@ ipp://printer.mydomain/ipp</property>
                                         <property name="top_attach">1</property>
                                         <property name="bottom_attach">2</property>
                                         <property name="x_options">GTK_FILL</property>
-                                        <property name="y_options"></property>
+                                        <property name="y_options"/>
                                       </packing>
                                     </child>
                                     <child>
@@ -2791,7 +2774,6 @@ ipp://printer.mydomain/ipp</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
-                                        <property name="use_action_appearance">False</property>
                                         <property name="use_underline">True</property>
                                         <property name="draw_indicator">True</property>
                                       </object>
@@ -2801,7 +2783,7 @@ ipp://printer.mydomain/ipp</property>
                                         <property name="top_attach">1</property>
                                         <property name="bottom_attach">2</property>
                                         <property name="x_options">GTK_FILL</property>
-                                        <property name="y_options"></property>
+                                        <property name="y_options"/>
                                       </packing>
                                     </child>
                                     <child>
@@ -2877,7 +2859,7 @@ ipp://printer.mydomain/ipp</property>
                                                   </object>
                                                   <packing>
                                                     <property name="x_options">GTK_FILL</property>
-                                                    <property name="y_options"></property>
+                                                    <property name="y_options"/>
                                                   </packing>
                                                 </child>
                                                 <child>
@@ -2891,7 +2873,7 @@ ipp://printer.mydomain/ipp</property>
                                                     <property name="top_attach">1</property>
                                                     <property name="bottom_attach">2</property>
                                                     <property name="x_options">GTK_FILL</property>
-                                                    <property name="y_options"></property>
+                                                    <property name="y_options"/>
                                                   </packing>
                                                 </child>
                                                 <child>
@@ -2995,7 +2977,7 @@ ipp://printer.mydomain/ipp</property>
                                                     <property name="top_attach">1</property>
                                                     <property name="bottom_attach">2</property>
                                                     <property name="x_options">GTK_FILL</property>
-                                                    <property name="y_options"></property>
+                                                    <property name="y_options"/>
                                                   </packing>
                                                 </child>
                                                 <child>
@@ -3045,7 +3027,7 @@ ipp://printer.mydomain/ipp</property>
                                                   </object>
                                                   <packing>
                                                     <property name="x_options">GTK_FILL</property>
-                                                    <property name="y_options"></property>
+                                                    <property name="y_options"/>
                                                   </packing>
                                                 </child>
                                                 <child>
@@ -3157,7 +3139,6 @@ ipp://printer.mydomain/ipp</property>
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
                                                     <property name="receives_default">False</property>
-                                                    <property name="use_action_appearance">False</property>
                                                     <property name="use_underline">True</property>
                                                     <property name="draw_indicator">True</property>
                                                     <signal name="toggled" handler="on_rbtnNPDownloadLicense_toggled" swapped="no"/>
@@ -3174,7 +3155,6 @@ ipp://printer.mydomain/ipp</property>
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
                                                     <property name="receives_default">False</property>
-                                                    <property name="use_action_appearance">False</property>
                                                     <property name="use_underline">True</property>
                                                     <property name="draw_indicator">True</property>
                                                     <property name="group">rbtnNPDownloadLicenseYes</property>
@@ -3299,7 +3279,6 @@ ipp://printer.mydomain/ipp</property>
                     <property name="can_focus">True</property>
                     <property name="can_default">True</property>
                     <property name="receives_default">False</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="use_stock">True</property>
                     <signal name="clicked" handler="on_btnNPBack_clicked" swapped="no"/>
                   </object>
@@ -3316,7 +3295,6 @@ ipp://printer.mydomain/ipp</property>
                     <property name="can_focus">True</property>
                     <property name="can_default">True</property>
                     <property name="receives_default">False</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="use_stock">True</property>
                     <signal name="clicked" handler="on_NPCancel" swapped="no"/>
                   </object>
@@ -3333,7 +3311,6 @@ ipp://printer.mydomain/ipp</property>
                     <property name="can_focus">True</property>
                     <property name="can_default">True</property>
                     <property name="receives_default">False</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="use_stock">True</property>
                     <signal name="clicked" handler="on_btnNPApply_clicked" swapped="no"/>
                   </object>
@@ -3350,7 +3327,6 @@ ipp://printer.mydomain/ipp</property>
                     <property name="can_focus">True</property>
                     <property name="can_default">True</property>
                     <property name="receives_default">False</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="use_stock">True</property>
                     <signal name="clicked" handler="on_btnNPForward_clicked" swapped="no"/>
                   </object>
