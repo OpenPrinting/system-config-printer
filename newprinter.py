@@ -63,7 +63,6 @@ import urllib
 from smburi import SMBURI
 from errordialogs import *
 from PhysicalDevice import PhysicalDevice
-import gtkspinner
 import firewallsettings
 import asyncconn
 import ppdsloader
@@ -263,7 +262,7 @@ class NewPrinterGUI(GtkGUI):
                               "btnNPBack",
                               "btnNPForward",
                               "btnNPApply",
-                              "imgProcessWorking",
+                              "spinner",
                               "entNPName",
                               "entNPDescription",
                               "entNPLocation",
@@ -420,7 +419,6 @@ class NewPrinterGUI(GtkGUI):
         self.ntbkNPType.set_show_tabs(False)
         self.ntbkNPDownloadableDriverProperties.set_show_tabs(False)
 
-        self.spinner = gtkspinner.Spinner (self.imgProcessWorking)
         self.spinner_count = 0
 
         # Set up OpenPrinting widgets.
@@ -542,7 +540,7 @@ class NewPrinterGUI(GtkGUI):
 
     def inc_spinner_task (self):
         if self.spinner_count == 0:
-            self.imgProcessWorking.show ()
+            self.spinner.show ()
             self.spinner.start ()
 
         self.spinner_count += 1
@@ -550,7 +548,7 @@ class NewPrinterGUI(GtkGUI):
     def dec_spinner_task (self):
         self.spinner_count -= 1
         if self.spinner_count == 0:
-            self.imgProcessWorking.hide ()
+            self.spinner.hide ()
             self.spinner.stop ()
 
     def show_IPP_Error (self, exception, message):

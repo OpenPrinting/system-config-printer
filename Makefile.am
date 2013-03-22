@@ -106,7 +106,6 @@ nobase_pkgdata_DATA=					\
 	firewallsettings.py					\
 	gui.py						\
 	gtkinklevel.py					\
-	gtkspinner.py					\
 	installpackage.py				\
 	jobviewer.py					\
 	monitor.py					\
