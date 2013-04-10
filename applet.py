@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-## Copyright (C) 2007, 2008, 2009, 2010, 2011, 2012 Red Hat, Inc.
+## Copyright (C) 2007, 2008, 2009, 2010, 2011, 2012, 2013 Red Hat, Inc.
 ## Author: Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
@@ -41,12 +41,7 @@ except locale.Error, e:
     os.environ['LC_ALL'] = 'C'
     locale.setlocale (locale.LC_ALL, "")
 
-try:
-    from gi.repository import Notify
-except RuntimeError, e:
-    print "%s:" % DOMAIN, e
-    print "This is a graphical application and requires DISPLAY to be set."
-    sys.exit (1)
+from gi.repository import Notify
 
 APPDIR="/usr/share/system-config-printer"
 ICON="printer"

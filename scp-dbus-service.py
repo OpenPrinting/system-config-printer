@@ -2,7 +2,7 @@
 
 ## system-config-printer
 
-## Copyright (C) 2010, 2011, 2012 Red Hat, Inc.
+## Copyright (C) 2010, 2011, 2012, 2013 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 
@@ -531,6 +531,7 @@ if __name__ == '__main__':
         _client_demo ()
         sys.exit (0)
 
+    Gtk.init (sys.argv)
     debugprint ("Service running...")
     loop = GObject.MainLoop ()
     g_killtimer = KillTimer (killfunc=loop.quit)

@@ -31,6 +31,7 @@ from gi.repository import GdkPixbuf
 try:
     from gi.repository import Gdk
     from gi.repository import Gtk
+    Gtk.init (sys.argv)
 except RuntimeError, e:
     print "system-config-printer:", e
     print "This is a graphical application and requires DISPLAY to be set."
