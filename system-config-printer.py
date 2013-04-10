@@ -460,7 +460,7 @@ class GUI(GtkGUI):
         model = self.dests_iconview.get_model ()
         iter = model.get_iter_first ()
         while iter != None:
-            name = unicode (model.get_value (iter, 2))
+            name = model.get_value (iter, 2).decode ('utf-8')
             if name == queue:
                 path = model.get_path (iter)
                 self.dests_iconview.scroll_to_path (path, True, 0.5, 0.5)
@@ -499,7 +499,7 @@ class GUI(GtkGUI):
     def dests_iconview_item_activated (self, iconview, path):
         model = iconview.get_model ()
         iter = model.get_iter (path)
-        name = unicode (model.get_value (iter, 2))
+        name = model.get_value (iter, 2).decode ('utf-8')
         object = model.get_value (iter, 0)
 
         self.desensitise_main_window_widgets ()
@@ -538,7 +538,7 @@ class GUI(GtkGUI):
         for path in paths:
             iter = model.get_iter (path)
             object = model.get_value (iter, 0)
-            name = unicode (model.get_value (iter, 2))
+            name = model.get_value (iter, 2).decode ('utf-8')
             if object.discovered:
                 any_discovered = True
             if object.enabled:
@@ -958,7 +958,7 @@ class GUI(GtkGUI):
         # Restore selection of printers.
         model = self.dests_iconview.get_model ()
         def maybe_select (model, path, iter, UNUSED):
-            name = unicode (model.get_value (iter, 2))
+            name = model.get_value (iter, 2).decode ('utf-8')
             if name in selected_printers:
                 self.dests_iconview.select_path (path)
         model.foreach (maybe_select, None)
@@ -1286,7 +1286,7 @@ class GUI(GtkGUI):
 
         model = self.dests_iconview.get_model ()
         iter = model.get_iter (path)
-        name = unicode (model.get_value (iter, 2))
+        name = model.get_value (iter, 2).decode ('utf-8')
         if not self.is_rename_possible (name):
             return
         if not self.rename_confirmed_by_user (name):
@@ -1320,7 +1320,7 @@ class GUI(GtkGUI):
     def printer_name_edited (self, cell, path, newname):
         model = self.dests_iconview.get_model ()
         iter = model.get_iter (path)
-        name = unicode (model.get_value (iter, 2))
+        name = model.get_value (iter, 2).decode ('utf-8')
         debugprint ("edited: %s -> %s" % (name, newname))
         try:
             self.rename_printer (name, newname)
@@ -1439,7 +1439,7 @@ class GUI(GtkGUI):
 
         # ..and select the new printer.
         def select_new_printer (model, path, iter):
-            name = unicode (model.get_value (iter, 2))
+            name = model.get_value (iter, 2).decode ('utf-8')
             if name == new_name:
                 self.dests_iconview.select_path (path)
         self.populateList ()
@@ -1463,7 +1463,7 @@ class GUI(GtkGUI):
         paths = iconview.get_selected_items ()
         model = self.dests_iconview.get_model ()
         iter = model.get_iter (paths[0])
-        name = unicode (model.get_value (iter, 2))
+        name = model.get_value (iter, 2).decode ('utf-8')
         self.entDuplicateName.set_text(name)
         self.NewPrinterName.set_transient_for (self.PrintersWindow)
         result = self.NewPrinterName.run()
@@ -1513,7 +1513,7 @@ class GUI(GtkGUI):
         if n == 1:
             itr = model.get_iter (paths[0])
             obj = model.get_value (itr, 0)
-            name = unicode (model.get_value (itr, 2), 'utf-8')
+            name = model.get_value (itr, 2).decode ('utf-8')
             if obj.is_class:
                 message_format = _("Really delete class '%s'?") % name
             else:
@@ -1524,7 +1524,7 @@ class GUI(GtkGUI):
             message_format = _("Really delete selected destinations?")
             for path in paths:
                 itr = model.get_iter (path)
-                name = unicode (model.get_value (itr, 2), 'utf-8')
+                name = model.get_value (itr, 2).decode ('utf-8')
                 to_delete.append (name)
 
         dialog = Gtk.MessageDialog(self.PrintersWindow,
@@ -1652,7 +1652,7 @@ class GUI(GtkGUI):
         paths = iconview.get_selected_items ()
         model = iconview.get_model ()
         iter = model.get_iter (paths[0])
-        name = unicode (model.get_value (iter, 2))
+        name = model.get_value (iter, 2).decode ('utf-8')
         self.set_system_or_user_default_printer (name)
 
     def on_edit_activate (self, *UNUSED):
@@ -1665,7 +1665,7 @@ class GUI(GtkGUI):
         model = self.dests_iconview.get_model ()
         for path in paths:
             iter = model.get_iter (path)
-            name = unicode (model.get_value (iter, 2), 'utf-8')
+            name = model.get_value (iter, 2).decode ('utf-8')
             class_members.append (name)
         if not self.newPrinterGUI.init ("class",
                                         host=self.connect_server,
@@ -1692,7 +1692,7 @@ class GUI(GtkGUI):
             model = self.dests_iconview.get_model ()
             for path in paths:
                 iter = model.get_iter (path)
-                name = unicode (model.get_value (iter, 2), 'utf-8')
+                name = model.get_value (iter, 2).decode ('utf-8')
                 specific_dests.append (name)
             viewer = jobviewer.JobViewer (None, None, my_jobs=False,
                                           specific_dests=specific_dests,
@@ -1822,7 +1822,7 @@ class GUI(GtkGUI):
         model = self.dests_iconview.get_model ()
         iter = model.get_iter_first ()
         while iter != None:
-            queue = unicode (model.get_value (iter, 2))
+            queue = model.get_value (iter, 2).decode ('utf-8')
             if queue == name:
                 path = model.get_path (iter)
                 self.dests_iconview.scroll_to_path (path, True, 0.5, 0.5)
