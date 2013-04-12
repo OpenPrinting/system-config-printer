@@ -1230,11 +1230,11 @@ class GUI(GtkGUI):
         while len (self.jobviewers) > 0:
             # this will call on_jobviewer_exit
             self.jobviewers[0].on_delete_event ()
-        del self.mainlist
-        del self.printers
         self.propertiesDlg.destroy ()
         self.newPrinterGUI.destroy ()
         Gtk.main_quit()
+        del self.mainlist
+        del self.printers
 
     # Rename
     def is_rename_possible (self, name):
