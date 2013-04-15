@@ -531,7 +531,6 @@ if __name__ == '__main__':
         _client_demo ()
         sys.exit (0)
 
-    Gtk.init (sys.argv)
     debugprint ("Service running...")
     loop = GObject.MainLoop ()
     g_killtimer = KillTimer (killfunc=loop.quit)
