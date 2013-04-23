@@ -516,7 +516,7 @@ class JobViewer (GtkGUI):
             except GObject.GError:
                 debugprint ("No %s icon available" % icon)
                 # Just create an empty pixbuf.
-                pixbuf = GdkPixbuf.Pixbuf (Gdk.COLORSPACE_RGB,
+                pixbuf = GdkPixbuf.Pixbuf.new (GdkPixbuf.Colorspace.RGB,
                                          True, 8, ICON_SIZE, ICON_SIZE)
                 pixbuf.fill (0)
             return pixbuf

@@ -876,7 +876,7 @@ class GUI(GtkGUI):
                             pixbuf = theme.load_icon ('printer', w, 0)
                         except:
                             # Just create an empty pixbuf.
-                            pixbuf = GdkPixbuf.Pixbuf (Gdk.COLORSPACE_RGB,
+                            pixbuf = GdkPixbuf.Pixbuf.new (GdkPixbuf.Colorspace.RGB,
                                                      True, 8, w, h)
                             pixbuf.fill (0)
 
