@@ -19,7 +19,7 @@
     <refentry id="system-config-printer">
       <refentryinfo>
 	<productname>system-config-printer</productname>
-	<date>28 Nov 2008</date>
+	<date>25 Apr 2013</date>
       </refentryinfo>
 
       <refmeta>
@@ -36,8 +36,9 @@
 	<cmdsynopsis>
 	  <command>system-config-printer</command>
 	  <group>
-	    <arg choice="opt">--print-test-page=<replaceable>printer</replaceable></arg>
+	    <arg choice="opt">--show-jobs <replaceable>printer</replaceable></arg>
 	    <arg choice="opt">--debug</arg>
+	    <arg choice="opt">--help</arg>
 	  </group>
 	</cmdsynopsis>
       </refsynopsisdiv>
@@ -64,10 +65,9 @@
 	  </varlistentry>
 
 	  <varlistentry>
-	    <term><option>--print-test-page=<replaceable>printer</replaceable></option></term>
+	    <term><option>--show-jobs <replaceable>printer</replaceable></option></term>
 	    <listitem>
-	      <para>Show the named printer on start-up and print a
-	      test page to it.</para>
+	      <para>Show the named print queue.</para>
 	    </listitem>
 	  </varlistentry>
 

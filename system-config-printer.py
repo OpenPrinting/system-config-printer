@@ -42,7 +42,8 @@ def show_help():
            "a CUPS server configuration program.\n\n"
            "Options:\n\n"
            "  --debug                 Enable debugging output.\n"
-           "  --show-jobs <printer>   Show the print queue for <printer>\n")
+           "  --show-jobs <printer>   Show the print queue for <printer>\n"
+           "  --help                  Show this message.\n")
 
 if len(sys.argv)>1 and sys.argv[1] == '--help':
     show_help ()
