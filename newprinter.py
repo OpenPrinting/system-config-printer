@@ -3923,7 +3923,8 @@ class NewPrinterGUI(GtkGUI):
             busy (self.NewPrinterWindow)
             while Gtk.events_pending ():
                 Gtk.main_iteration ()
-            self.cups._begin_operation (_("adding printer %s") % name)
+            self.cups._begin_operation (_("adding printer %s") %
+                                        name.encode ('utf-8'))
             try:
                 if isinstance(ppd, str) or isinstance(ppd, unicode):
                     self.cups.addPrinter(name, ppdname=ppd,
@@ -3950,7 +3951,8 @@ class NewPrinterGUI(GtkGUI):
             self.cups._end_operation()
             ready (self.NewPrinterWindow)
         if self.dialog_mode in ("class", "printer", "printer_with_uri"):
-            self.cups._begin_operation (_("modifying printer %s") % name)
+            self.cups._begin_operation (_("modifying printer %s") %
+                                        name.encode ('utf-8'))
             try:
                 cupshelpers.activateNewPrinter (self.cups, name)
                 self.cups.setPrinterLocation(name, location)
@@ -3961,7 +3963,8 @@ class NewPrinterGUI(GtkGUI):
                 return
             self.cups._end_operation ()
         elif self.dialog_mode == "device":
-            self.cups._begin_operation (_("modifying printer %s") % name)
+            self.cups._begin_operation (_("modifying printer %s") %
+                                        name.encode ('utf-8'))
             try:
                 uri = self.getDeviceURI()
                 self.cups.addPrinter(name, device=uri)
@@ -3978,7 +3981,8 @@ class NewPrinterGUI(GtkGUI):
                     self.nextNPTab(-1)
                     return
 
-            self.cups._begin_operation (_("modifying printer %s") % name)
+            self.cups._begin_operation (_("modifying printer %s") %
+                                        name.encode ('utf-8'))
             # set ppd on server and retrieve it
             # cups doesn't offer a way to just download a ppd ;(=
             raw = False

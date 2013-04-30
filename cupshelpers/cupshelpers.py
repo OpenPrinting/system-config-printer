@@ -1,6 +1,6 @@
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2012 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013 Red Hat, Inc.
 ## Authors:
 ##  Florian Festi <ffesti@redhat.com>
 ##  Tim Waugh <twaugh@redhat.com>
@@ -610,7 +610,8 @@ class Device:
                 return -1
         result = cmp(bool(self.id), bool(other.id))
         if not result:
-            result = cmp(self.info, other.info)
+            result = cmp(self.info.encode ('utf-8'),
+                         other.info.encode ('utf-8'))
         
         return result
 

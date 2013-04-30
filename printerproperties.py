@@ -2,7 +2,7 @@
 
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2012 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 ##  Florian Festi <ffesti@redhat.com>
@@ -592,7 +592,7 @@ class PrinterPropertiesDialog(GtkGUI):
         treeview.set_cursor (Gtk.TreePath(), None, False)
         host = CUPS_server_hostname ()
         self.dialog.set_title (_("Printer Properties - "
-                                 "'%s' on %s") % (name, host))
+                                 "'%s' on %s") % (name.encode ('utf-8'), host))
         self.dialog.show ()
 
     def printer_properties_response (self, dialog, response):
@@ -990,9 +990,11 @@ class PrinterPropertiesDialog(GtkGUI):
         name = printer.name
 
         if printer.is_class:
-            self.cups._begin_operation (_("modifying class %s") % name)
+            self.cups._begin_operation (_("modifying class %s") %
+                                        name.encode ('utf-8'))
         else:
-            self.cups._begin_operation (_("modifying printer %s") % name)
+            self.cups._begin_operation (_("modifying printer %s") %
+                                        name.encode ('utf-8'))
 
         try:
             if not printer.is_class and self.ppd:
@@ -1422,7 +1424,8 @@ class PrinterPropertiesDialog(GtkGUI):
                     show_error_dialog (_("Error"),
                                        _("Option '%s' has value '%s' "
                                          "and cannot be edited.") %
-                                       (option.name, value),
+                                       (option.name.encode ('utf-8'),
+                                        value.encode ('utf-8')),
                                        self.parent)
             option.widget.set_sensitive (option_editable)
             if not editable:

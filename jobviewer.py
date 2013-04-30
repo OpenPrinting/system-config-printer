@@ -1,5 +1,5 @@
 
-## Copyright (C) 2007, 2008, 2009, 2010, 2011, 2012 Red Hat, Inc.
+## Copyright (C) 2007, 2008, 2009, 2010, 2011, 2012, 2013 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 ##  Jiri Popelka <jpopelka@redhat.com>
@@ -497,7 +497,7 @@ class JobViewer (GtkGUI):
 
         if my_jobs:
             if specific_dests:
-                title = _("my jobs on %s") % the_dests
+                title = _("my jobs on %s") % the_dests.encode ('utf-8')
             else:
                 title = _("my jobs")
         else:
@@ -1020,7 +1020,8 @@ class JobViewer (GtkGUI):
 
         dialog.set_prompt (_("Authentication required for "
                              "printing document `%s' (job %d)") %
-                           (data.get('job-name', _("Unknown")), job))
+                           (data.get('job-name', _("Unknown")).encode ('utf-8'),
+                            job))
         self.auth_info_dialogs[job] = dialog
         dialog.connect ('response', self.auth_info_dialog_response)
         dialog.connect ('delete-event', self.auth_info_dialog_delete)
@@ -1784,7 +1785,8 @@ class JobViewer (GtkGUI):
         notification = Notify.Notification (_("Document printed"),
                                               _("Document `%s' has been sent "
                                                 "to `%s' for printing.") %
-                                              (document, printer),
+                                              (document.encode ('utf-8'),
+                                               printer.encode ('utf-8')),
                                               'printer')
         notification.set_urgency (Notify.URGENCY_LOW)
         notification.connect ('closed',
@@ -1943,19 +1945,23 @@ class JobViewer (GtkGUI):
                 notify_text = event['notify-text']
                 document = jobdata['job-name']
                 if notify_text.find ("backend errors") != -1:
-                    message = _("There was a problem sending document `%s' "
-                                "(job %d) to the printer.") % (document, jobid)
+                    message = (_("There was a problem sending document `%s' "
+                                 "(job %d) to the printer.") %
+                               (document.encode ('utf-8', jobid)))
                 elif notify_text.find ("filter errors") != -1:
                     message = _("There was a problem processing document `%s' "
-                                "(job %d).") % (document, jobid)
+                                "(job %d).") % (document.encode ('utf-8'),
+                                                jobid)
                 elif (notify_text.find ("being paused") != -1 or
                       jstate != cups.IPP_JOB_STOPPED):
                     may_be_problem = False
                 else:
                     # Give up and use the provided message untranslated.
-                    message = _("There was a problem printing document `%s' "
-                                "(job %d): `%s'.") % (document, jobid,
-                                                      notify_text)
+                    message = (_("There was a problem printing document `%s' "
+                                 "(job %d): `%s'.") %
+                               (document.encode ('utf-8'),
+                                jobid,
+                                notify_text.encode ('utf-8')))
 
             if may_be_problem:
                 debugprint ("Problem detected")
@@ -1983,7 +1989,7 @@ class JobViewer (GtkGUI):
                         name = event['printer-name']
                         markup += ' '
                         markup += (_("The printer called `%s' has "
-                                     "been disabled.") % name)
+                                     "been disabled.") % name.encode ('utf-8'))
                 except KeyError:
                     pass
 

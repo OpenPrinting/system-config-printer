@@ -1516,9 +1516,11 @@ class GUI(GtkGUI):
             obj = model.get_value (itr, 0)
             name = model.get_value (itr, 2).decode ('utf-8')
             if obj.is_class:
-                message_format = _("Really delete class '%s'?") % name
+                message_format = (_("Really delete class '%s'?") %
+                                  name.encode ('utf-8'))
             else:
-                message_format = _("Really delete printer '%s'?") % name
+                message_format = (_("Really delete printer '%s'?") %
+                                  name.encode ('utf-8'))
 
             to_delete.append (name)
         else:
@@ -1545,7 +1547,8 @@ class GUI(GtkGUI):
 
         try:
             for name in to_delete:
-                self.cups._begin_operation (_("deleting printer %s") % name)
+                self.cups._begin_operation (_("deleting printer %s") %
+                                            name.encode ('utf-8'))
                 self.cups.deletePrinter (name)
                 self.cups._end_operation ()
         except cups.IPPError, (e, msg):
@@ -1571,7 +1574,7 @@ class GUI(GtkGUI):
         for printer in printers:
             print repr (printer.name)
             self.cups._begin_operation (_("modifying printer %s") %
-                                        unicode (printer.name))
+                                        printer.name.encode ('utf-8'))
             try:
                 printer.setEnabled (enable)
             except cups.IPPError, (e, m):
@@ -1601,7 +1604,7 @@ class GUI(GtkGUI):
         success = False
         for printer in printers:
             self.cups._begin_operation (_("modifying printer %s") %
-                                        unicode (printer.name))
+                                        printer.name.encode ('utf-8'))
             try:
                 printer.setShared (share)
                 success = True
@@ -1945,7 +1948,7 @@ class GUI(GtkGUI):
                                 _('Install driver') + '</span>\n\n' +
                                 _("Printer '%s' requires the %s package but "
                                   "it is not currently installed.") %
-                                (name, pkg))
+                                (name.encode ('utf-8'), pkg))
                 dialog = self.InstallDialog
                 self.lblInstall.set_markup(install_text)
                 dialog.set_transient_for (parent)
@@ -1962,7 +1965,8 @@ class GUI(GtkGUI):
                                    _("Printer '%s' requires the '%s' program "
                                      "but it is not currently installed.  "
                                      "Please install it before using this "
-                                     "printer.") % (name, (exes + pkgs)[0]),
+                                     "printer.") % (name.encode ('utf-8'),
+                                                    (exes + pkgs)[0]),
                                    parent)
 
     def on_printer_modified (self, obj, name, ppd_has_changed):
