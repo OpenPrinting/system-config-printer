@@ -349,7 +349,8 @@ class PrinterPropertiesDialog(GtkGUI):
                  options.OptionAlwaysShown ("number-up", int, 1,
                                             self.cmbJONumberUp,
                                             self.btnJOResetNumberUp,
-                                            combobox_map=[1, 2, 4, 6, 9, 16]),
+                                            combobox_map=[1, 2, 4, 6, 9, 16],
+                                            use_supported = True),
 
                  options.OptionAlwaysShown ("number-up-layout", str, "lrtb",
                                             self.cmbJONumberUpLayout,
@@ -399,7 +400,8 @@ class PrinterPropertiesDialog(GtkGUI):
                                             combobox_map =
                                             [ "one-sided",
                                               "two-sided-long-edge",
-                                              "two-sided-short-edge" ]),
+                                              "two-sided-short-edge" ],
+                                            use_supported = True),
 
                  options.OptionAlwaysShown ("job-hold-until", str,
                                             "no-hold",
@@ -418,7 +420,8 @@ class PrinterPropertiesDialog(GtkGUI):
                  options.OptionAlwaysShown ("print-quality", int, 3,
                                             self.cmbJOPrintQuality,
                                             self.btnJOResetPrintQuality,
-                                            combobox_map = [ 3, 4, 5 ]),
+                                            combobox_map = [ 3, 4, 5 ],
+                                            use_supported = True),
 
                  options.OptionAlwaysShown ("printer-resolution",
                                             options.IPPResolution,
