@@ -56,7 +56,7 @@ class FirewallD:
                 self._zone = None
             self.running = True
             debugprint ("Using /org/fedoraproject/FirewallD1")
-        except (ImportError, dbus.DBusException):
+        except (ImportError, dbus.exceptions.DBusException):
             self._fw = None
             self._zone = None
             self.running = False
@@ -94,7 +94,7 @@ class FirewallD:
                 debugprint ("Firewall data obtained")
                 if reply_handler:
                     reply_handler (self._fw_data) 
-            except (dbus.DBusException, AttributeError, ValueError), e:
+            except (dbus.exceptions.DBusException, AttributeError, ValueError), e:
                 self._fw_data = None
                 debugprint ("Exception examining firewall")
                 if error_handler:
@@ -110,9 +110,12 @@ class FirewallD:
             self._get_fw_data ()
 
     def write (self):
-        if self._zone:
-            self._zone.update (self._fw_data)
-        self._fw.reload ()
+        try:
+            if self._zone:
+                self._zone.update (self._fw_data)
+            self._fw.reload ()
+        except dbus.exceptions.DBusException:
+            nonfatalException ()
 
     def add_service (self, service):
         if not self._get_fw_data ():
@@ -160,7 +163,7 @@ class SystemConfigFirewall:
             obj = bus.get_object (self.DBUS_INTERFACE, self.DBUS_PATH)
             self._fw = dbus.Interface (obj, self.DBUS_INTERFACE)
             debugprint ("Using system-config-firewall")
-        except (dbus.DBusException), e:
+        except (dbus.exceptions.DBusException), e:
             debugprint ("No firewall ")
             self._fw = None
             self._fw_data = (None, None)
@@ -184,7 +187,7 @@ class SystemConfigFirewall:
 
                 p = self._fw.read ()
                 self._fw_data = json.loads (p.encode ('utf-8'))
-            except (dbus.DBusException, AttributeError, ValueError), e:
+            except (dbus.exceptions.DBusException, AttributeError, ValueError), e:
                 self._fw_data = (None, None)
                 if error_handler:
                     debugprint ("Exception examining firewall")
