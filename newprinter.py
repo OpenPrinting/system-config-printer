@@ -1632,7 +1632,7 @@ class NewPrinterGUI(GtkGUI):
 
     def on_entNPName_changed(self, widget):
         # restrict
-        text = unicode (widget.get_text())
+        text = unicode (widget.get_text(), locale.getpreferredencoding ())
         new_text = text
         new_text = new_text.replace("/", "")
         new_text = new_text.replace("#", "")
@@ -2516,7 +2516,7 @@ class NewPrinterGUI(GtkGUI):
             allowed_chars = unicode (allowed_chars, locale.getpreferredencoding())
         except UnicodeDecodeError:
             allowed_chars = unicode (allowed_chars)
-        origtext = unicode (entry.get_text())
+        origtext = unicode (entry.get_text(). locale.getpreferredencoding ())
         new_text = origtext
         for char in origtext:
             if char not in allowed_chars:
@@ -3881,9 +3881,10 @@ class NewPrinterGUI(GtkGUI):
             self.dec_spinner_task ()
 
         if self.dialog_mode in ("class", "printer", "printer_with_uri"):
-            name = unicode (self.entNPName.get_text())
-            location = unicode (self.entNPLocation.get_text())
-            info = unicode (self.entNPDescription.get_text())
+            enc = locale.getpreferredencoding ()
+            name = unicode (self.entNPName.get_text(), enc)
+            location = unicode (self.entNPLocation.get_text(), enc)
+            info = unicode (self.entNPDescription.get_text(), enc)
         else:
             name = self._name
 
