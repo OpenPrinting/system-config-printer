@@ -354,7 +354,7 @@ class _IPPAuthOperation:
             self._reconnect = False
             self._reconnected = True
             debugprint ("%s (_error_handler): reconnecting (as %s)..." %
-                        (self, self_user))
+                        (self, self._user))
             conn.reconnect (self._user,
                             reply_handler=self._reconnect_reply,
                             error_handler=self._reconnect_error)
