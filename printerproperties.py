@@ -65,10 +65,14 @@ class PrinterPropertiesDialog(GtkGUI):
         'dialog-closed': ( GObject.SIGNAL_RUN_LAST, None, ()),
         }
 
-    printer_states = { cups.IPP_PRINTER_IDLE: _("Idle"),
-                       cups.IPP_PRINTER_PROCESSING: _("Processing"),
-                       cups.IPP_PRINTER_BUSY: _("Busy"),
-                       cups.IPP_PRINTER_STOPPED: _("Stopped") }
+    printer_states = { cups.IPP_PRINTER_IDLE:
+                           _("Idle").decode ('utf-8'),
+                       cups.IPP_PRINTER_PROCESSING:
+                           _("Processing").decode ('utf-8'),
+                       cups.IPP_PRINTER_BUSY:
+                           _("Busy").decode ('utf-8'),
+                       cups.IPP_PRINTER_STOPPED:
+                           _("Stopped").decode ('utf-8') }
 
     def __init__(self):
         GObject.GObject.__init__ (self)
@@ -1631,7 +1635,8 @@ class PrinterPropertiesDialog(GtkGUI):
         debugprint ("update printer properties")
         printer = self.printer
         self.entPMakeModel.set_text(printer.make_and_model)
-        state = self.printer_states.get (printer.state, _("Unknown"))
+        state = self.printer_states.get (printer.state,
+                                         _("Unknown").decode ('utf-8'))
         reason = printer.other_attributes.get ('printer-state-message', '')
         if len (reason) > 0:
             state += ' - ' + reason
