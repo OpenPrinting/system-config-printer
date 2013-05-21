@@ -526,6 +526,11 @@ class Device:
         self.id = kw.get('device-id', '')
         self.location = kw.get('device-location', '')
 
+        if type (self.info) == unicode:
+            # Convert unicode objects to UTF-8 encoding so they can be
+            # compared with other UTF-8 encoded strings (bug #957444).
+            self.info = self.info.encode ('utf-8')
+
         uri_pieces = uri.split(":")
         self.type =  uri_pieces[0]
         self.is_class = len(uri_pieces)==1
@@ -610,8 +615,7 @@ class Device:
                 return -1
         result = cmp(bool(self.id), bool(other.id))
         if not result:
-            result = cmp(self.info.encode ('utf-8'),
-                         other.info.encode ('utf-8'))
+            result = cmp(self.info, other.info)
         
         return result
 
