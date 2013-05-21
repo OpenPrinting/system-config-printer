@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-## Copyright (C) 2007, 2008, 2009, 2010, 2012 Red Hat, Inc.
+## Copyright (C) 2007, 2008, 2009, 2010, 2012, 2013 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 ##  Jiri Popelka <jpopelka@redhat.com>
@@ -121,7 +121,7 @@ class StateReason:
         try:
             (title, text) = messages[self.get_reason ()]
             try:
-                text = text % self.get_printer ()
+                text = text.decode ('utf-8') % self.get_printer ()
             except TypeError:
                 # Probably an incorrect translation, missing a '%s'.
                 pass
@@ -148,7 +148,8 @@ class StateReason:
                 except RuntimeError:
                     pass
 
-            text = _("Printer '%s': '%s'.") % (self.get_printer (), reason)
+            text = (_("Printer '%s': '%s'.").decode ('utf-8') %
+                    (self.get_printer (), reason))
         return (title, text)
 
     def get_tuple (self):
