@@ -439,7 +439,7 @@ class PK1Connection:
         result_str = dict()
         for key, value in dbusdict.iteritems ():
             if type (key) == dbus.String:
-                result_str[str (key)] = str (value)
+                result_str[unicode (key)] = unicode (value)
             else:
                 result_str[key] = value
 
