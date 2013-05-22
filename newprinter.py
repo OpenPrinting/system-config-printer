@@ -2516,7 +2516,7 @@ class NewPrinterGUI(GtkGUI):
             allowed_chars = unicode (allowed_chars, locale.getpreferredencoding())
         except UnicodeDecodeError:
             allowed_chars = unicode (allowed_chars)
-        origtext = unicode (entry.get_text(). locale.getpreferredencoding ())
+        origtext = unicode (entry.get_text(), locale.getpreferredencoding ())
         new_text = origtext
         for char in origtext:
             if char not in allowed_chars:
