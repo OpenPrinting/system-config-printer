@@ -75,6 +75,11 @@ class PhysicalDevice:
 
         if hostport:
             (host, port) = urllib.splitport (hostport)
+
+        if type (host) == unicode:
+            host = host.encode ('utf-8')
+        if type (dnssdhost) == unicode:
+            dnssdhost = dnssdhost.encode ('utf-8')
         return host, dnssdhost
 
     def add_device (self, device):
