@@ -868,7 +868,7 @@ class NewPrinterGUI(GtkGUI):
 
         if self.ppdsloader:
             self.ppdsloader.destroy ()
-            self.ppds_loader = None
+            self.ppdsloader = None
 
         if self.printer_finder:
             self.printer_finder.cancel ()
@@ -3414,7 +3414,7 @@ class NewPrinterGUI(GtkGUI):
 
     def on_tvNPMakes_cursor_changed(self, tvNPMakes):
         path, column = tvNPMakes.get_cursor()
-        if path != None:
+        if path != None and self.ppds != None:
             model = tvNPMakes.get_model ()
             iter = model.get_iter (path)
             self.NPMake = model.get(iter, 1)[0]
