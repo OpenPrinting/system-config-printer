@@ -3377,7 +3377,7 @@ class NewPrinterGUI(GtkGUI):
             recommended = (auto_make_norm and
                            cupshelpers.ppds.normalize (make) == auto_make_norm)
             if self.device and self.device.make_and_model and recommended:
-                text = make + _(" (recommended)")
+                text = make + _(" (recommended)").decode ('utf-8')
             else:
                 text = make
 
@@ -3440,7 +3440,7 @@ class NewPrinterGUI(GtkGUI):
                            cupshelpers.ppds.normalize (pmodel) ==
                            auto_model_norm)
             if self.device and self.device.make_and_model and recommended:
-                text = pmodel + _(" (recommended)")
+                text = pmodel + _(" (recommended)").decode ('utf-8')
             else:
                 text = pmodel
 
@@ -3528,7 +3528,8 @@ class NewPrinterGUI(GtkGUI):
                 driverlist.append (driver)
                 NPDrivers.append (ppdname)
                 i += 1
-                iter = model.append ((driver + _(" (Current)"),))
+                iter = model.append ((driver +
+                                      _(" (Current)").decode ('utf-8'),))
                 path = model.get_path (iter)
                 self.tvNPDrivers.get_selection().select_path(path)
                 self.tvNPDrivers.scroll_to_cell(path, None, True, 0.5, 0.0)
@@ -3536,7 +3537,8 @@ class NewPrinterGUI(GtkGUI):
                 driverlist.append (driver)
                 NPDrivers.append (ppdname)
                 i += 1
-                iter = model.append ((driver + _(" (recommended)"),))
+                iter = model.append ((driver +
+                                      _(" (recommended)").decode ('utf-8'),))
                 path = model.get_path (iter)
                 self.tvNPDrivers.get_selection().select_path(path)
                 self.tvNPDrivers.scroll_to_cell(path, None, True, 0.5, 0.0)
