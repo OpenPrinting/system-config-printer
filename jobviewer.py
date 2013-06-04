@@ -1724,9 +1724,9 @@ class JobViewer (GtkGUI):
         level = reason.get_level ()
         if (level == StateReason.ERROR or
             reason.get_reason () == "connecting-to-device"):
-            urgency = Notify.URGENCY_NORMAL
+            urgency = Notify.Urgency.NORMAL
         else:
-            urgency = Notify.URGENCY_LOW
+            urgency = Notify.Urgency.LOW
 
         (title, text) = reason.get_description ()
         notification = Notify.Notification (title, text, 'printer')
@@ -1788,7 +1788,7 @@ class JobViewer (GtkGUI):
                                               (document.encode ('utf-8'),
                                                printer.encode ('utf-8')),
                                               'printer')
-        notification.set_urgency (Notify.URGENCY_LOW)
+        notification.set_urgency (Notify.Urgency.LOW)
         notification.connect ('closed',
                               self.on_completed_job_notification_closed)
         notification.jobid = jobid

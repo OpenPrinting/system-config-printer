@@ -122,7 +122,7 @@ class NewPrinterNotification(dbus.service.Object):
                 text = _("No driver for this printer.")
             n = Notify.Notification (title, text, 'printer')
             if "actions" in Notify.get_server_caps():
-                n.set_urgency (Notify.URGENCY_CRITICAL)
+                n.set_urgency (Notify.Urgency.CRITICAL)
                 n.set_timeout (Notify.EXPIRES_NEVER)
                 n.add_action ("setup-printer", _("Search"),
                               lambda x, y:
@@ -194,7 +194,7 @@ class NewPrinterNotification(dbus.service.Object):
                 text = _("`%s' is ready for printing.") % name
                 n = Notify.Notification (title, text)
                 if "actions" in Notify.get_server_caps():
-                    n.set_urgency (Notify.URGENCY_NORMAL)
+                    n.set_urgency (Notify.Urgency.NORMAL)
                     n.add_action ("test-page", _("Print test page"),
                                   lambda x, y:
                                       self.print_test_page (x, y, name))
@@ -206,7 +206,7 @@ class NewPrinterNotification(dbus.service.Object):
                         (name, driver))
                 n = Notify.Notification (title, text, 'printer')
                 if "actions" in Notify.get_server_caps():
-                    n.set_urgency (Notify.URGENCY_CRITICAL)
+                    n.set_urgency (Notify.Urgency.CRITICAL)
                     n.add_action ("test-page", _("Print test page"),
                                   lambda x, y:
                                       self.print_test_page (x, y, name, devid))
