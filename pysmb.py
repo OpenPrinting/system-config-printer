@@ -3,7 +3,7 @@
 ## system-config-printer
 ## CUPS backend
  
-## Copyright (C) 2002, 2003, 2006, 2007, 2008, 2010, 2012 Red Hat, Inc.
+## Copyright (C) 2002, 2003, 2006, 2007, 2008, 2010, 2012, 2013 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
  
@@ -23,7 +23,6 @@
 
 import errno
 from gettext import gettext as _
-from gi.repository import Gdk
 from gi.repository import Gtk
 import os
 import pwd
@@ -145,11 +144,7 @@ class AuthContext:
         domain_entry.set_text (self.use_workgroup)
 
         d.set_keep_above (True)
-        Gdk.pointer_grab (d.get_window(), True)
-        Gdk.keyboard_grab (d.get_window(), True)
         response = d.run ()
-        Gdk.keyboard_ungrab ()
-        Gdk.pointer_ungrab ()
 
         if response == Gtk.ResponseType.CANCEL:
             self.cancel = True
