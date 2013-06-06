@@ -1632,7 +1632,7 @@ class NewPrinterGUI(GtkGUI):
 
     def on_entNPName_changed(self, widget):
         # restrict
-        text = unicode (widget.get_text(), locale.getpreferredencoding ())
+        text = unicode (widget.get_text(), 'utf-8')
         new_text = text
         new_text = new_text.replace("/", "")
         new_text = new_text.replace("#", "")
@@ -2513,10 +2513,10 @@ class NewPrinterGUI(GtkGUI):
     def entry_changed(self, entry, allowed_chars):
         "Remove all chars from entry's text that are not in allowed_chars."
         try:
-            allowed_chars = unicode (allowed_chars, locale.getpreferredencoding())
+            allowed_chars = unicode (allowed_chars, 'utf-8')
         except UnicodeDecodeError:
             allowed_chars = unicode (allowed_chars)
-        origtext = unicode (entry.get_text(), locale.getpreferredencoding ())
+        origtext = unicode (entry.get_text(), 'utf-8')
         new_text = origtext
         for char in origtext:
             if char not in allowed_chars:
@@ -3883,10 +3883,9 @@ class NewPrinterGUI(GtkGUI):
             self.dec_spinner_task ()
 
         if self.dialog_mode in ("class", "printer", "printer_with_uri"):
-            enc = locale.getpreferredencoding ()
-            name = unicode (self.entNPName.get_text(), enc)
-            location = unicode (self.entNPLocation.get_text(), enc)
-            info = unicode (self.entNPDescription.get_text(), enc)
+            name = unicode (self.entNPName.get_text(), 'utf-8')
+            location = unicode (self.entNPLocation.get_text(), 'utf-8')
+            info = unicode (self.entNPDescription.get_text(), 'utf-8')
         else:
             name = self._name
 

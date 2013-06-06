@@ -688,7 +688,7 @@ class PrinterPropertiesDialog(GtkGUI):
         old_value = old_values[widget]
 
         if type (old_value) == unicode:
-            old_value = old_value.encode (locale.getpreferredencoding ())
+            old_value = old_value.encode ('utf-8')
 
         if old_value == value:
             self.changed.discard(widget)
@@ -1041,10 +1041,9 @@ class PrinterPropertiesDialog(GtkGUI):
                 for member in old_members:
                     self.cups.deletePrinterFromClass(member, name)
 
-            enc = locale.getpreferredencoding ()
-            location = self.entPLocation.get_text().decode (enc)
-            info = self.entPDescription.get_text().decode (enc)
-            device_uri = self.entPDevice.get_text().decode (enc)
+            location = self.entPLocation.get_text().decode ('utf-8')
+            info = self.entPDescription.get_text().decode ('utf-8')
+            device_uri = self.entPDevice.get_text().decode ('utf-8')
 
             enabled = self.chkPEnabled.get_active()
             accepting = self.chkPAccepting.get_active()
