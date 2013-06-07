@@ -701,7 +701,8 @@ def copyPPDOptions(ppd1, ppd2):
             for choice in new_option.choices:
                 if choice["choice"]==value:
                     ppd2.markOption(new_option.keyword, value)
-                    _debugprint ("set %s = %s" % (new_option.keyword, value))
+                    _debugprint ("set %s = %s" % (repr (new_option.keyword),
+                                                  repr (value)))
                     
 def setPPDPageSize(ppd, language):
     """
@@ -722,9 +723,9 @@ def setPPDPageSize(ppd, language):
             size = 'Letter'
     try:
         ppd.markOption ('PageSize', size)
-        _debugprint ("set PageSize = %s" % size)
+        _debugprint ("set PageSize = %s" % repr (size))
     except:
-        _debugprint ("Failed to set PageSize (%s not available?)" % size)
+        _debugprint ("Failed to set PageSize (%s not available?)" % repr (size))
 
 def missingExecutables(ppd):
     """
@@ -750,10 +751,10 @@ def missingExecutables(ppd):
             return "true"
         if name[0] == '/':
             if os.access (name, os.X_OK):
-                _debugprint ("%s: found" % name)
+                _debugprint ("%s: found" % repr (name))
                 return name
             else:
-                _debugprint ("%s: NOT found" % name)
+                _debugprint ("%s: NOT found" % repr (name))
                 return None
         if name.find ("=") != -1:
             return "builtin"
@@ -768,9 +769,9 @@ def missingExecutables(ppd):
         for component in path.split (':'):
             file = component.rstrip (os.path.sep) + os.path.sep + name
             if os.access (file, os.X_OK):
-                _debugprint ("%s: found" % file)
+                _debugprint ("%s: found" % repr (file))
                 return file
-        _debugprint ("%s: NOT found in %s" % (name,path))
+        _debugprint ("%s: NOT found in %s" % (repr (name), repr (path)))
         return None
 
     exes_to_install = []

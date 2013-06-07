@@ -84,7 +84,7 @@ class _PK1AsyncMethodCall:
                         error_handler=self._pk_error_handler,
                         timeout=3600)
         except TypeError, e:
-            debugprint ("Type error in PK call: %s" % e)
+            debugprint ("Type error in PK call: %s" % repr (e))
             self.call_fallback_fn ()
 
     def _destroy (self):
@@ -120,7 +120,7 @@ class _PK1AsyncMethodCall:
             self._destroy ()
             return
 
-        debugprint ("PolicyKit method failed with: %s" % repr (str (error)))
+        debugprint ("PolicyKit method failed with: %s" % repr (error))
         self.call_fallback_fn ()
 
     def _pk_error_handler (self, exc):
@@ -144,7 +144,7 @@ class _PK1AsyncMethodCall:
             return
 
         debugprint ("PolicyKit call to %s did not work: %s" %
-                    (self._pk_method_name, exc))
+                    (self._pk_method_name, repr (exc)))
         self.call_fallback_fn ()
 
     def call_fallback_fn (self):
@@ -270,7 +270,7 @@ class PK1Connection:
                     break
 
             except Exception, e:
-                debugprint ("Exception assessing DevicesGet API: %s" % e)
+                debugprint ("Exception assessing DevicesGet API: %s" % repr (e))
 
         methodtype = type (self._conn.getPrinters)
         bindings = []

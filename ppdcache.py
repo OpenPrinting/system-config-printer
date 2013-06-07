@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-## Copyright (C) 2010, 2011, 2012 Red Hat, Inc.
+## Copyright (C) 2010, 2011, 2012, 2013 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 
@@ -73,7 +73,7 @@ class PPDCache:
 
                 return
 
-            debugprint ("%s: fetch PPD for %s" % (self, name))
+            debugprint ("%s: fetch PPD for %s" % (self, repr (name)))
             self._cups.getPPD3 (name,
                                 reply_handler=lambda c, r:
                                     self._got_ppd3 (c, name, r, callback),
@@ -188,8 +188,8 @@ if __name__ == "__main__":
 
     def signal (name, result, exc):
         debugprint ("**** %s" % name)
-        debugprint (result)
-        debugprint (exc)
+        debugprint (repr (result))
+        debugprint (repr (exc))
 
     c = cups.Connection ()
     printers = c.getPrinters ()

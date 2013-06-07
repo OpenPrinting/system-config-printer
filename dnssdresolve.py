@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-## Copyright (C) 2010, 2011, 2012 Red Hat, Inc.
+## Copyright (C) 2010, 2011, 2012, 2013 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 
@@ -75,7 +75,7 @@ class DNSSDHostNamesResolver:
                 server = dbus.Interface (obj,
                                          "org.freedesktop.Avahi.Server")
                 self._device_uri_by_name[(name, stype, domain)] = uri
-                debugprint ("Resolving address for %s" % hostname)
+                debugprint ("Resolving address for %s" % repr (hostname))
                 server.ResolveService (-1, -1,
                                         name, stype, domain,
                                         -1, 0,
@@ -83,7 +83,7 @@ class DNSSDHostNamesResolver:
                                         error_handler=lambda e:
                                             self._error (uri, e))
             except dbus.DBusException, e:
-                debugprint ("Failed to resolve address: %s" % e)
+                debugprint ("Failed to resolve address: %s" % repr (e))
                 self._resolved ()
 
     def _resolved (self):
@@ -107,7 +107,7 @@ class DNSSDHostNamesResolver:
         self._resolved ()
 
     def _error (self, uri, error):
-        debugprint ("Error resolving %s: %s" % (uri, error))
+        debugprint ("Error resolving %s: %s" % (uri, repr (error)))
         self._resolved ()
 
 if __name__ == '__main__':

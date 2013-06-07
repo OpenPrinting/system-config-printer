@@ -186,7 +186,7 @@ def download_gpg_fingerprint(url):
     try:
         c.perform()
     except pycurl.error as e:
-        debugprint('Cannot retrieve %s: %s' % (url, str(e)))
+        debugprint('Cannot retrieve %s: %s' % (url, repr (e)))
         return None
 
     keyid_re = re.compile(' ((?:(?:[0-9A-F]{4})(?:\s+|$)){2})$', re.M)
@@ -898,7 +898,7 @@ class NewPrinterGUI(GtkGUI):
             debugprint('No packages for driver')
             return False
         if len(arches) > 1:
-            debugprint('Returned more than one matching architecture, please report this as a bug: %s', str(arches))
+            debugprint('Returned more than one matching architecture, please report this as a bug: %s', repr (arches))
             return False
 
         pkgs = pkgs[arches[0]]
@@ -933,14 +933,18 @@ class NewPrinterGUI(GtkGUI):
 
         repo = pkgs[pkg].get('repositories', {}).get(self.packageinstaller)
         if not repo:
-            debugprint('Local package system %s not found in %s',
-                          self.packageinstaller, pkgs[pkg].get('repositories', {}))
+            debugprint('Local package system %s not found in %s' %
+                       (self.packageinstaller,
+                        repr (pkgs[pkg].get('repositories', {}))))
             return False
 
         if onlycheckpresence:
             return True
 
-        debugprint('Installing driver: "%s"; Repo: "%s"; Key ID: "%s"' % (name, repo, keyid))
+        debugprint('Installing driver: %s; Repo: %s; Key ID: %s' %
+                   (repr (name),
+                    repr (repo),
+                    repr (keyid)))
 
         fmt = _("Installing driver %s" % name)
         self._installdialog = Gtk.MessageDialog (parent=self.NewPrinterWindow,
@@ -2521,7 +2525,7 @@ class NewPrinterGUI(GtkGUI):
         for char in origtext:
             if char not in allowed_chars:
                 new_text = new_text.replace(char, "")
-                debugprint ("removed disallowed character %s" % char)
+                debugprint ("removed disallowed character %s" % repr (char))
         if origtext!=new_text:
             entry.set_text(new_text)
 
@@ -2958,7 +2962,7 @@ class NewPrinterGUI(GtkGUI):
         if text.find (":") != -1:
             # The user is typing in a URI.  In that case, switch to URI entry.
             ent.set_text ('')
-            debugprint ("URI detected (%s) -> Enter URI" % text)
+            debugprint ("URI detected (%s) -> Enter URI" % repr (text))
             self.entNPTDevice.set_text (text)
             model = self.tvNPDevices.get_model ()
             path = model.get_path (self.devices_uri_iter)
@@ -3146,7 +3150,7 @@ class NewPrinterGUI(GtkGUI):
         label = self.btnNPDownloadableDriverSearch_label
         label.set_text (_("Searching"))
         searchterm = self.entNPDownloadableDriverSearch.get_text ()
-        debugprint ('Searching for "%s"' % searchterm)
+        debugprint ('Searching for "%s"' % repr (searchterm))
         self.drivers_lock.acquire ()
         self.openprinting_query_handle = \
             self.openprinting.searchPrinters (searchterm,
@@ -3742,7 +3746,7 @@ class NewPrinterGUI(GtkGUI):
                             os.unlink(ppdname)
 
         except RuntimeError, e:
-            debugprint ("RuntimeError: " + str(e))
+            debugprint ("RuntimeError: " + repr (e))
             if self.rbtnNPFoomatic.get_active():
                 # Foomatic database problem of some sort.
                 err_title = _('Database error')

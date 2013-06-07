@@ -575,7 +575,7 @@ class _IPPAuthOperation:
         d.set_default_response (Gtk.ResponseType.OK)
         d.connect ("response", self._on_retry_server_error_response)
         debugprint ("%s (_reconnect_error): presenting error dialog (%s; %s)" %
-                    (self, msg, message))
+                    (self, repr (msg), repr (message)))
         d.show ()
 
     def _on_retry_server_error_response (self, dialog, response):
@@ -688,11 +688,11 @@ if __name__ == "__main__":
                                            error_handler=self.connect_failed)
 
         def connected (self, conn, result):
-            debugprint ("Success: %s" % result)
+            debugprint ("Success: %s" % repr (result))
             self.get_devices_button.set_sensitive (True)
 
         def connect_failed (self, conn, exc):
-            debugprint ("Exc %s" % exc)
+            debugprint ("Exc %s" % repr (exc))
             self.get_devices_button.set_sensitive (False)
             self.conn.destroy ()
 
@@ -707,7 +707,7 @@ if __name__ == "__main__":
                 debugprint ("Ignoring stale reply")
                 return
 
-            debugprint ("Got devices: %s" % result)
+            debugprint ("Got devices: %s" % repr (result))
             self.get_devices_button.set_sensitive (True)
 
         def get_devices_error (self, conn, exc):
@@ -715,7 +715,7 @@ if __name__ == "__main__":
                 debugprint ("Ignoring stale error")
                 return
 
-            debugprint ("Error getting devices: %s" % exc)
+            debugprint ("Error getting devices: %s" % repr (exc))
             self.get_devices_button.set_sensitive (True)
 
     UI ()

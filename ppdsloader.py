@@ -222,7 +222,7 @@ class PPDsLoader(GObject.GObject):
                                          error_handler=self._packagekit_error,
                                          timeout=3600)
         except Exception, e:
-            debugprint ("Failed to talk to PackageKit: %s" % e)
+            debugprint ("Failed to talk to PackageKit: %s" % repr (e))
             if self._dialog:
                 self._dialog.show_all ()
                 self._query_cups ()
@@ -235,7 +235,7 @@ class PPDsLoader(GObject.GObject):
             self._query_cups ()
 
     def _packagekit_error (self, exc):
-        debugprint ("Got PackageKit error: %s" % exc)
+        debugprint ("Got PackageKit error: %s" % repr (exc))
         if self._dialog:
             self._dialog.show_all ()
             self._query_cups ()
@@ -262,7 +262,7 @@ class PPDsLoader(GObject.GObject):
         self._query_cups ()
 
     def _jockey_error (self, exc):
-        debugprint ("Got Jockey error: %s" % exc)
+        debugprint ("Got Jockey error: %s" % repr (exc))
         if self._need_requery_cups:
             self._query_cups ()
         else:

@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-## Copyright (C) 2007, 2008, 2009, 2010, 2011 Red Hat, Inc.
+## Copyright (C) 2007, 2008, 2009, 2010, 2011, 2013 Red Hat, Inc.
 ## Author: Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
@@ -271,7 +271,7 @@ class Connection:
                     if self._cancel and not self._cannot_auth:
                         raise cups.IPPError (0, _("Operation canceled"))
 
-                    debugprint ("%s: %s" % (e, m))
+                    debugprint ("%s: %s" % (e, repr (m)))
                     raise
             except cups.HTTPError, (s,):
                 if not self._cancel:

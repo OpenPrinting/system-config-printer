@@ -957,7 +957,8 @@ class JobViewer (GtkGUI):
                         ind = auth_info_required.index ('password')
                         auth_info[ind] = items[0].secret
                     else:
-                        debugprint ("gnomekeyring: look-up result %s" % result)
+                        debugprint ("gnomekeyring: look-up result %s" %
+                                    repr (result))
 
                 if try_keyring and c == None:
                     try:
@@ -1092,7 +1093,8 @@ class JobViewer (GtkGUI):
                                                                    val)
                     id = gnomekeyring.item_create_sync (keyring, type, name,
                                                         attrs, secret, True)
-                    debugprint ("keyring: created id %d for %s" % (id, name))
+                    debugprint ("keyring: created id %d for %s" % (repr (id),
+                                                                   repr (name)))
             except:
                 nonfatalException ()
 
@@ -1833,7 +1835,8 @@ class JobViewer (GtkGUI):
             for attr, value in jobdata.iteritems ():
                 if not self.jobs[jobid].has_key (attr):
                     self.jobs[jobid][attr] = value
-                    debugprint ("Add %s=%s (my job)" % (attr, value))
+                    debugprint ("Add %s=%s (my job)" % (repr (attr),
+                                                        repr (value)))
 
         # If we failed to get required attributes for the job, bail.
         if not self.jobiters.has_key (jobid):

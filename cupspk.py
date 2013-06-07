@@ -1,6 +1,6 @@
 # vim: set ts=4 sw=4 et: coding=UTF-8
 #
-# Copyright (C) 2008 Novell, Inc.
+# Copyright (C) 2008, 2013 Novell, Inc.
 # Copyright (C) 2008, 2009, 2010, 2012 Red Hat, Inc.
 # Copyright (C) 2008, 2009, 2010, 2012 Tim Waugh <twaugh@redhat.com>
 #
@@ -141,7 +141,7 @@ class Connection:
         # exception that wasn't handled, or an error in the mechanism itself)
         if pk_retval != '':
             debugprint ('PolicyKit call to %s did not work: %s' %
-                        (pk_function_name, pk_retval))
+                        (pk_function_name, repr (pk_retval)))
             return fallback_function(*args, **kwds)
 
 
