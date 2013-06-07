@@ -1296,18 +1296,27 @@ class GUI(GtkGUI):
         ids = []
         ids.append (cell.connect ('editing-started',
                                  self.printer_name_edit_start))
-        ids.append (cell.connect ('edited', self.printer_name_edited))
         ids.append (cell.connect ('editing-canceled',
                                  self.printer_name_edit_cancel))
         self.rename_sigids = ids
-        self.rename_entry_sigid = None
+        self.rename_entry_sigids = []
         self.dests_iconview.set_cursor (path, cell, True)
 
     def printer_name_edit_start (self, cell, editable, path):
-        debugprint ("editing-started")
+        debugprint ("editing-started with cell=%s, editable=%s" %
+                    (repr (cell),
+                     repr (editable)))
         if isinstance(editable, Gtk.Entry):
             id = editable.connect('changed', self.printer_name_editing)
-            self.rename_entry_sigid = editable, id
+            self.rename_entry_sigids.append ((editable, id))
+
+            model = self.dests_iconview.get_model ()
+            iter = model.get_iter (path)
+            name = model.get_value (iter, 2).decode ('utf-8')
+            id = editable.connect('editing-done',
+                                  self.printer_name_editing_done,
+                                  cell, name)
+            self.rename_entry_sigids.append ((editable, id))
 
     def printer_name_editing (self, entry):
         newname = origname = unicode (entry.get_text())
@@ -1318,11 +1327,10 @@ class GUI(GtkGUI):
             debugprint ("removed disallowed character %s" % origname[-1])
             entry.set_text(newname)
 
-    def printer_name_edited (self, cell, path, newname):
-        model = self.dests_iconview.get_model ()
-        iter = model.get_iter (path)
-        name = model.get_value (iter, 2).decode ('utf-8')
-        debugprint ("edited: %s -> %s" % (name, newname))
+    def printer_name_editing_done (self, entry, cell, name):
+        debugprint (repr (cell))
+        newname = entry.get_text ().decode ('utf-8')
+        debugprint ("edited: %s -> %s" % (repr (name), repr (newname)))
         try:
             self.rename_printer (name, newname)
         finally:
@@ -1330,18 +1338,17 @@ class GUI(GtkGUI):
             cell.set_property ('editable', False)
             for id in self.rename_sigids:
                 cell.disconnect (id)
-            if self.rename_entry_sigid != None:
-                self.rename_entry_sigid[0].disconnect(self.rename_entry_sigid[1])
+            for obj, id in self.rename_entry_sigids:
+                obj.disconnect (id)
 
     def printer_name_edit_cancel (self, cell):
-        debugprint ("editing-canceled")
+        debugprint ("editing-canceled (%s)" % repr (cell))
         cell.stop_editing (True)
         cell.set_property ('editable', False)
         for id in self.rename_sigids:
             cell.disconnect (id)
-        if self.rename_entry_sigid != None:
-            self.rename_entry_sigid[0].disconnect(self.rename_entry_sigid[1])
-
+        for obj, id in self.rename_entry_sigids:
+            obj.disconnect (id)
 
     def rename_printer (self, old_name, new_name):
         if old_name.lower() == new_name.lower():
