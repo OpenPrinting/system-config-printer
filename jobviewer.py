@@ -267,7 +267,7 @@ class CancelJobsOperation(GObject.GObject):
         else:
             operation = _("canceling job")
 
-        self.connection._begin_operation (operation)
+        self.connection._begin_operation (operation.decode ('utf-8'))
         self.connection.cancelJob (self.jobids[0], self.purge_job,
                                    reply_handler=self.cancelJob_finish,
                                    error_handler=self.cancelJob_error)
@@ -502,7 +502,7 @@ class JobViewer (GtkGUI):
                 title = _("my jobs")
         else:
             if specific_dests:
-                title = "%s" % the_dests
+                title = "%s" % the_dests.encode ('utf-8')
             else:
                 title = _("all jobs")
         self.JobsWindow.set_title (_("Document Print Status (%s)") % title)
@@ -971,7 +971,7 @@ class JobViewer (GtkGUI):
 
                 if try_keyring and auth_info != None:
                     try:
-                        c._begin_operation (_("authenticating job"))
+                        c._begin_operation (_("authenticating job").decode ('utf-8'))
                         c.authenticateJob (job, auth_info)
                         c._end_operation ()
                         self.update_monitor ()
@@ -1053,7 +1053,7 @@ class JobViewer (GtkGUI):
             return
 
         remember = False
-        c._begin_operation (_("authenticating job"))
+        c._begin_operation (_("authenticating job").decode ('utf-8'))
         try:
             c.authenticateJob (jobid, auth_info)
             remember = dialog.get_remember_password ()
@@ -1313,7 +1313,7 @@ class JobViewer (GtkGUI):
             return
 
         for jobid in self.jobids:
-            c._begin_operation (_("holding job"))
+            c._begin_operation (_("holding job").decode ('utf-8'))
             try:
                 c.setJobHoldUntil (jobid, "indefinite")
             except cups.IPPError, (e, m):
@@ -1338,7 +1338,7 @@ class JobViewer (GtkGUI):
             return
 
         for jobid in self.jobids:
-            c._begin_operation (_("releasing job"))
+            c._begin_operation (_("releasing job").decode ('utf-8'))
             try:
                 c.setJobHoldUntil (jobid, "no-hold")
             except cups.IPPError, (e, m):
@@ -2246,7 +2246,8 @@ class JobViewer (GtkGUI):
                             os.environ["TZ"] = old_tz
 
                         local = time.localtime (simpletime)
-                        state = _("Held until %s") % time.strftime ("%X", local)
+                        state = (_("Held until %s") %
+                                 time.strftime ("%X", local).encode ('utf-8'))
                 except ValueError:
                     pass
             if until == "day-time":

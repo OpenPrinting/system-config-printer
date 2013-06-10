@@ -117,7 +117,7 @@ class NewPrinterNotification(dbus.service.Object):
                     device = "%s %s" % (mfg, mdl)
                 else:
                     device = des
-                text = _("No printer driver for %s.") % device
+                text = _("No printer driver for %s.").decode ('utf-8') % device
             else:
                 text = _("No driver for this printer.")
             n = Notify.Notification (title, text, 'printer')
@@ -168,7 +168,8 @@ class NewPrinterNotification(dbus.service.Object):
             if len (missing_pkgs) > 0:
                 pkgs = reduce (lambda x,y: x + ", " + y, missing_pkgs)
                 title = _("Install printer driver")
-                text = _("`%s' requires driver installation: %s.") % (name, pkgs)
+                text = (_("`%s' requires driver installation: %s.").decode ('utf-8') %
+                        (name, pkgs))
                 n = Notify.Notification (title, text)
                 import installpackage
                 if "actions" in Notify.get_server_caps():
@@ -191,7 +192,7 @@ class NewPrinterNotification(dbus.service.Object):
 
             elif status == self.STATUS_SUCCESS:
                 devid = "MFG:%s;MDL:%s;DES:%s;CMD:%s;" % (mfg, mdl, des, cmd)
-                text = _("`%s' is ready for printing.") % name
+                text = _("`%s' is ready for printing.").decode ('utf-8') % name
                 n = Notify.Notification (title, text)
                 if "actions" in Notify.get_server_caps():
                     n.set_urgency (Notify.Urgency.NORMAL)
@@ -202,7 +203,7 @@ class NewPrinterNotification(dbus.service.Object):
                                   lambda x, y: self.configure (x, y, name))
             else: # Model mismatch
                 devid = "MFG:%s;MDL:%s;DES:%s;CMD:%s;" % (mfg, mdl, des, cmd)
-                text = (_("`%s' has been added, using the `%s' driver.") %
+                text = (_("`%s' has been added, using the `%s' driver.").decode ('utf-8') %
                         (name, driver))
                 n = Notify.Notification (title, text, 'printer')
                 if "actions" in Notify.get_server_caps():

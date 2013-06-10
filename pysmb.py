@@ -109,7 +109,8 @@ class AuthContext:
         hbox.pack_start (image, False, False, 0)
         vbox = Gtk.VBox (False, 12)
         label = Gtk.Label(label='<span weight="bold" size="larger">' +
-                           _("You must log in to access %s.") % self.for_server +
+                           _("You must log in to access %s.").decode ('utf-8')
+                          % self.for_server +
                            '</span>')
         label.set_use_markup (True)
         label.set_alignment (0, 0)

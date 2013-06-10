@@ -2,7 +2,7 @@
 
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008, 2010 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2010, 2013 Red Hat, Inc.
 ## Authors:
 ##  Florian Festi <ffesti@redhat.com>
 ##  Tim Waugh <twaugh@redhat.com>
@@ -52,7 +52,7 @@ def show_IPP_Error(exception, message, parent=None):
     else:
         title = _("CUPS server error")
         text = (_("There was an error during the CUPS "
-                  "operation: '%s'.")) % message
+                  "operation: '%s'.").decode ('utf-8')) % message
 
     show_error_dialog (title, text, parent)
 
@@ -78,8 +78,8 @@ def show_HTTP_Error(status, parent=None):
         elif status == -1:
             msg = _("Not connected")
         else:
-            msg = _("status %s") % status
+            msg = _("status %s").decode ('utf-8') % status
 
-        text = _("There was an HTTP error: %s.") % msg
+        text = _("There was an HTTP error: %s.").decode ('utf-8') % msg
 
     show_error_dialog (title, text, parent)

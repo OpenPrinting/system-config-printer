@@ -286,7 +286,8 @@ class Connection:
             Gdk.threads_enter ()
 
         try:
-            msg = _("CUPS server error (%s)") % self._operation_stack[0]
+            msg = (_("CUPS server error (%s)").decode ('utf-8') %
+                   self._operation_stack[0])
         except IndexError:
             msg = _("CUPS server error")
 
@@ -461,7 +462,8 @@ class Connection:
         # Prompt.
         if len (self._operation_stack) > 0:
             try:
-                title = _("Authentication (%s)") % self._operation_stack[0]
+                title = (_("Authentication (%s)").decode ('utf-8') %
+                         self._operation_stack[0])
             except IndexError:
                 title = _("Authentication")
 

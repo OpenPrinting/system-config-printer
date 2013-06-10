@@ -474,7 +474,7 @@ class _IPPAuthOperation:
         if op == None:
             d = authconn.AuthDialog (parent=conn.parent)
         else:
-            title = _("Authentication (%s)") % op
+            title = _("Authentication (%s)").decode ('utf-8') % op
             d = authconn.AuthDialog (title=title,
                                      parent=conn.parent)
 
@@ -551,7 +551,7 @@ class _IPPAuthOperation:
         if op == None:
             msg = _("CUPS server error")
         else:
-            msg = _("CUPS server error (%s)") % op
+            msg = _("CUPS server error (%s)").decode ('utf-8') % op
 
         d = Gtk.MessageDialog (self._conn.parent,
                                Gtk.DialogFlags.MODAL |

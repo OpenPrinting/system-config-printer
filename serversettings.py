@@ -2,7 +2,7 @@
 
 ## system-config-printer
 
-## Copyright (C) 2008, 2009, 2010, 2011, 2012 Red Hat, Inc.
+## Copyright (C) 2008, 2009, 2010, 2011, 2012, 2013 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 
@@ -194,7 +194,7 @@ class ServerSettings(GtkGUI):
 
     def _fillBasic(self):
         self.changed = set()
-        self.cupsconn._begin_operation (_("fetching server settings"))
+        self.cupsconn._begin_operation (_("fetching server settings").decode ('utf-8'))
         try:
             self.server_settings = self.cupsconn.adminGetServerSettings()
         except cups.IPPError, (e, m):
@@ -511,7 +511,7 @@ class ServerSettings(GtkGUI):
             (self.chkServerLogDebug, cups.CUPS_SERVER_DEBUG_LOGGING),]:
             if not self.server_settings.has_key(setting): continue
             setting_dict[setting] = str(int(widget.get_active()))
-        self.cupsconn._begin_operation (_("modifying server settings"))
+        self.cupsconn._begin_operation (_("modifying server settings").decode ('utf-8'))
         try:
             self.cupsconn.adminSetServerSettings(setting_dict)
         except cups.IPPError, (e, m):

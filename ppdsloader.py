@@ -151,7 +151,7 @@ class PPDsLoader(GObject.GObject):
             self._cups_connect_reply(self._conn, None)
 
     def _cups_connect_reply (self, conn, UNUSED):
-        conn._begin_operation (_("fetching PPDs"))
+        conn._begin_operation (_("fetching PPDs").decode ('utf-8'))
         conn.getPPDs2 (reply_handler=self._cups_reply,
                        error_handler=self._cups_error)
 

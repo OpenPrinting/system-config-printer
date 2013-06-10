@@ -1000,11 +1000,11 @@ class PrinterPropertiesDialog(GtkGUI):
         name = printer.name
 
         if printer.is_class:
-            self.cups._begin_operation (_("modifying class %s") %
-                                        name.encode ('utf-8'))
+            self.cups._begin_operation (_("modifying class %s").decode ('utf-8')
+                                        % name)
         else:
-            self.cups._begin_operation (_("modifying printer %s") %
-                                        name.encode ('utf-8'))
+            self.cups._begin_operation (_("modifying printer %s").decode ('utf-8')
+                                        % name)
 
         try:
             if not printer.is_class and self.ppd:
@@ -1112,7 +1112,7 @@ class PrinterPropertiesDialog(GtkGUI):
             # but we have never fetched the server settings to see whether
             # the server is publishing shared printers.  Fetch the settings
             # now so that we can update the "not published" label if necessary.
-            self.cups._begin_operation (_("fetching server settings"))
+            self.cups._begin_operation (_("fetching server settings").decode ('utf-8'))
             try:
                 self.server_settings = self.cups.adminGetServerSettings()
             except:
@@ -1195,7 +1195,7 @@ class PrinterPropertiesDialog(GtkGUI):
             return
 
         job_id = None
-        c._begin_operation (_("printing test page"))
+        c._begin_operation (_("printing test page").decode ('utf-8'))
         try:
             if custom_testpage and os.path.exists(custom_testpage):
                 debugprint ('Printing custom test page ' + custom_testpage)
@@ -1234,7 +1234,7 @@ class PrinterPropertiesDialog(GtkGUI):
         (tmpfd, tmpfname) = tempfile.mkstemp ()
         os.write (tmpfd, "#CUPS-COMMAND\n%s\n" % command)
         os.close (tmpfd)
-        self.cups._begin_operation (_("sending maintenance command"))
+        self.cups._begin_operation (_("sending maintenance command").decode ('utf-8'))
         try:
             format = "application/vnd.cups-command"
             job_id = self.cups.printTestPage (printer.name,
@@ -1432,10 +1432,10 @@ class PrinterPropertiesDialog(GtkGUI):
                     nonfatalException()
                     option_editable = False
                     show_error_dialog (_("Error"),
-                                       _("Option '%s' has value '%s' "
-                                         "and cannot be edited.") %
-                                       (option.name.encode ('utf-8'),
-                                        value.encode ('utf-8')),
+                                       _("Option '%s' has value '%s' and "
+                                         "cannot be edited.").decode ('utf-8') %
+                                       (option.name,
+                                        value),
                                        self.parent)
             option.widget.set_sensitive (option_editable)
             if not editable:

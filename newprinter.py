@@ -716,8 +716,7 @@ class NewPrinterGUI(GtkGUI):
                 if scheme in ["socket", "lpd", "ipp"]:
                     schemes.extend (["snmp", "dnssd"])
                 self.fetchDevices_conn = asyncconn.Connection ()
-                self.fetchDevices_conn._begin_operation (_("fetching device "
-                                                           "list"))
+                self.fetchDevices_conn._begin_operation (_("fetching device list").decode ('utf-8'))
                 self.inc_spinner_task ()
                 cupshelpers.getDevices (self.fetchDevices_conn,
                                         include_schemes=schemes,
@@ -946,7 +945,7 @@ class NewPrinterGUI(GtkGUI):
                     repr (repo),
                     repr (keyid)))
 
-        fmt = _("Installing driver %s" % name)
+        fmt = _("Installing driver %s").decode ('utf-8') % name
         self._installdialog = Gtk.MessageDialog (parent=self.NewPrinterWindow,
                                                  flags=Gtk.DialogFlags.MODAL |
                                                  Gtk.DialogFlags.DESTROY_WITH_PARENT,
@@ -1986,7 +1985,7 @@ class NewPrinterGUI(GtkGUI):
 
     def start_fetching_devices (self):
         self.fetchDevices_conn = asyncconn.Connection ()
-        self.fetchDevices_conn._begin_operation (_("fetching device list"))
+        self.fetchDevices_conn._begin_operation (_("fetching device list").decode ('utf-8'))
         self.fetchDevices (network=False, current_uri=self.current_uri)
         del self.current_uri
 
@@ -2625,7 +2624,8 @@ class NewPrinterGUI(GtkGUI):
                     if queue[0] == '/':
                         queue = queue[1:]
 
-                    device.menuentry = _("LPD/LPR queue '%s'") % queue
+                    device.menuentry = (_("LPD/LPR queue '%s'").decode ('utf-8')
+                                        % queue)
                 else:
                     device.menuentry = _("LPD/LPR queue")
 
@@ -2641,7 +2641,8 @@ class NewPrinterGUI(GtkGUI):
                     if queue.startswith("printers/"):
                         queue = queue[9:]
                 if queue != '':
-                    device.menuentry = _("IPP") + " (%s)" % queue
+                    device.menuentry = (_("IPP").decode ('utf-8') +
+                                        " (%s)" % queue)
                 else:
                     device.menuentry = _("IPP")
             elif device.type == "http" or device.type == "https":
@@ -2665,8 +2666,8 @@ class NewPrinterGUI(GtkGUI):
                     elif name.find("._pdl-datastream") != -1:
                         protocol = "AppSocket/JetDirect"
                     if protocol != None:
-                        device.menuentry = \
-                            _("%s network printer via DNS-SD") % protocol
+                        device.menuentry = (_("%s network printer via DNS-SD").decode ('utf-8')
+                                            % protocol)
                     else:
                         device.menuentry = \
                             _("Network printer via DNS-SD")
@@ -3751,7 +3752,7 @@ class NewPrinterGUI(GtkGUI):
                 # Foomatic database problem of some sort.
                 err_title = _('Database error')
                 err_text = _("The '%s' driver cannot be "
-                             "used with printer '%s %s'.")
+                             "used with printer '%s %s'.").decode ('utf-8')
                 model, iter = (self.tvNPDrivers.get_selection().
                                get_selected())
                 nr = model.get_path(iter)[0]
@@ -3761,7 +3762,7 @@ class NewPrinterGUI(GtkGUI):
                     # installed by default.  Point the user at the
                     # package they need to install.
                     err = _("You will need to install the '%s' package "
-                            "in order to use this driver.") % \
+                            "in order to use this driver.").decode ('utf-8') % \
                             "gutenprint-foomatic"
                 else:
                     err = err_text % (driver, self.NPMake, self.NPModel)
@@ -3796,7 +3797,7 @@ class NewPrinterGUI(GtkGUI):
         debugprint("ppd: " + repr(ppd))
 
         if isinstance(ppd, str) or isinstance(ppd, unicode):
-            self.cups._begin_operation (_("fetching PPD"))
+            self.cups._begin_operation (_("fetching PPD").decode ('utf-8'))
             try:
                 if ppd != "raw":
                     f = self.cups.getServerPPD(ppd)
@@ -3929,8 +3930,8 @@ class NewPrinterGUI(GtkGUI):
             busy (self.NewPrinterWindow)
             while Gtk.events_pending ():
                 Gtk.main_iteration ()
-            self.cups._begin_operation (_("adding printer %s") %
-                                        name.encode ('utf-8'))
+            self.cups._begin_operation (_("adding printer %s").decode ('utf-8')
+                                        % name)
             try:
                 if isinstance(ppd, str) or isinstance(ppd, unicode):
                     self.cups.addPrinter(name, ppdname=ppd,
@@ -3957,8 +3958,8 @@ class NewPrinterGUI(GtkGUI):
             self.cups._end_operation()
             ready (self.NewPrinterWindow)
         if self.dialog_mode in ("class", "printer", "printer_with_uri"):
-            self.cups._begin_operation (_("modifying printer %s") %
-                                        name.encode ('utf-8'))
+            self.cups._begin_operation (_("modifying printer %s").decode ('utf-8')
+                                        % name)
             try:
                 cupshelpers.activateNewPrinter (self.cups, name)
                 self.cups.setPrinterLocation(name, location)
@@ -3969,8 +3970,8 @@ class NewPrinterGUI(GtkGUI):
                 return
             self.cups._end_operation ()
         elif self.dialog_mode == "device":
-            self.cups._begin_operation (_("modifying printer %s") %
-                                        name.encode ('utf-8'))
+            self.cups._begin_operation (_("modifying printer %s").decode ('utf-8')
+                                        % name)
             try:
                 uri = self.getDeviceURI()
                 self.cups.addPrinter(name, device=uri)
@@ -3987,8 +3988,8 @@ class NewPrinterGUI(GtkGUI):
                     self.nextNPTab(-1)
                     return
 
-            self.cups._begin_operation (_("modifying printer %s") %
-                                        name.encode ('utf-8'))
+            self.cups._begin_operation (_("modifying printer %s").decode ('utf-8')
+                                        % name)
             # set ppd on server and retrieve it
             # cups doesn't offer a way to just download a ppd ;(=
             raw = False
