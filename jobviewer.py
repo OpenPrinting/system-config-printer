@@ -1734,7 +1734,7 @@ class JobViewer (GtkGUI):
             urgency = Notify.Urgency.LOW
 
         (title, text) = reason.get_description ()
-        notification = Notify.Notification (title, text, 'printer')
+        notification = Notify.Notification.new (title, text, 'printer')
         reason.user_notified = True
         notification.set_urgency (urgency)
         if self.notify_has_actions:
@@ -1787,7 +1787,7 @@ class JobViewer (GtkGUI):
                     return
 
         printer = job.get ('job-printer-name', _("Unknown"))
-        notification = Notify.Notification (_("Document printed"),
+        notification = Notify.Notification.new (_("Document printed"),
                                               _("Document `%s' has been sent "
                                                 "to `%s' for printing.") %
                                               (document.encode ('utf-8'),

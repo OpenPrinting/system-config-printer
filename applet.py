@@ -80,9 +80,9 @@ class NewPrinterNotification(dbus.service.Object):
     def GetReady (self):
         TIMEOUT=1200000
         if self.getting_ready == 0:
-            n = Notify.Notification (_("Configuring new printer"),
-                                     _("Please wait..."),
-                                     'printer')
+            n = Notify.Notification.new (_("Configuring new printer"),
+                                         _("Please wait..."),
+                                        'printer')
             n.set_timeout (TIMEOUT + 5000)
             n.closed = False
             n.connect ('closed', self.on_notification_closed)
@@ -120,7 +120,7 @@ class NewPrinterNotification(dbus.service.Object):
                 text = _("No printer driver for %s.").decode ('utf-8') % device
             else:
                 text = _("No driver for this printer.")
-            n = Notify.Notification (title, text, 'printer')
+            n = Notify.Notification.new (title, text, 'printer')
             if "actions" in Notify.get_server_caps():
                 n.set_urgency (Notify.Urgency.CRITICAL)
                 n.set_timeout (Notify.EXPIRES_NEVER)
@@ -170,7 +170,7 @@ class NewPrinterNotification(dbus.service.Object):
                 title = _("Install printer driver")
                 text = (_("`%s' requires driver installation: %s.").decode ('utf-8') %
                         (name, pkgs))
-                n = Notify.Notification (title, text)
+                n = Notify.Notification.new (title, text, 'printer')
                 import installpackage
                 if "actions" in Notify.get_server_caps():
                     try:
@@ -193,7 +193,7 @@ class NewPrinterNotification(dbus.service.Object):
             elif status == self.STATUS_SUCCESS:
                 devid = "MFG:%s;MDL:%s;DES:%s;CMD:%s;" % (mfg, mdl, des, cmd)
                 text = _("`%s' is ready for printing.").decode ('utf-8') % name
-                n = Notify.Notification (title, text)
+                n = Notify.Notification.new (title, text, 'printer')
                 if "actions" in Notify.get_server_caps():
                     n.set_urgency (Notify.Urgency.NORMAL)
                     n.add_action ("test-page", _("Print test page"),
@@ -205,7 +205,7 @@ class NewPrinterNotification(dbus.service.Object):
                 devid = "MFG:%s;MDL:%s;DES:%s;CMD:%s;" % (mfg, mdl, des, cmd)
                 text = (_("`%s' has been added, using the `%s' driver.").decode ('utf-8') %
                         (name, driver))
-                n = Notify.Notification (title, text, 'printer')
+                n = Notify.Notification.new (title, text, 'printer')
                 if "actions" in Notify.get_server_caps():
                     n.set_urgency (Notify.Urgency.CRITICAL)
                     n.add_action ("test-page", _("Print test page"),
