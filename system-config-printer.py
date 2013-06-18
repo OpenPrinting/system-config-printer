@@ -1846,20 +1846,19 @@ class GUI(GtkGUI):
 
             iter = model.iter_next (iter)
 
-        # Finally, suggest printing a test page.
+        # Any missing drivers?
         self.propertiesDlg.load (name)
-        if self.propertiesDlg.ppd or \
-           ((self.propertiesDlg.printer.remote or \
-             ((self.propertiesDlg.printer.device_uri.startswith('dnssd:') or \
-               self.propertiesDlg.printer.device_uri.startswith('mdns:')) and \
-              self.propertiesDlg.printer.device_uri.endswith('/cups'))) and not\
-            self.propertiesDlg.printer.discovered):
+        if (self.propertiesDlg.ppd and
+            not (self.propertiesDlg.printer.discovered or
+                 self.propertiesDlg.printer.remote)):
             try:
                 self.checkDriverExists (self.PrintersWindow, name,
                                         ppd=self.propertiesDlg.ppd)
             except:
                 nonfatalException()
 
+        # Finally, suggest printing a test page.
+        if self.propertiesDlg.ppd:
             q = Gtk.MessageDialog (self.PrintersWindow,
                                    Gtk.DialogFlags.DESTROY_WITH_PARENT |
                                    Gtk.DialogFlags.MODAL,

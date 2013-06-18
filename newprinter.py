@@ -3894,9 +3894,6 @@ class NewPrinterGUI(GtkGUI):
         else:
             name = self._name
 
-        # Whether to check for missing drivers.
-        check = False
-        checkppd = None
         ppd = self.ppd
 
         if self.dialog_mode == "class":
@@ -3936,7 +3933,6 @@ class NewPrinterGUI(GtkGUI):
                 if isinstance(ppd, str) or isinstance(ppd, unicode):
                     self.cups.addPrinter(name, ppdname=ppd,
                          device=uri, info=info, location=location)
-                    check = True
                 elif ppd is None: # raw queue
                     self.cups.addPrinter(name, device=uri,
                                          info=info, location=location)
@@ -3944,8 +3940,6 @@ class NewPrinterGUI(GtkGUI):
                     cupshelpers.setPPDPageSize(ppd, self.language[0])
                     self.cups.addPrinter(name, ppd=ppd, device=uri,
                                          info=info, location=location)
-                    check = True
-                    checkppd = ppd
             except cups.IPPError, (e, msg):
                 ready (self.NewPrinterWindow)
                 self.show_IPP_Error(e, msg)
@@ -4040,10 +4034,6 @@ class NewPrinterGUI(GtkGUI):
                     return
 
             self.cups._end_operation ()
-
-            if not raw:
-                check = True
-                checkppd = ppd
 
         self.NewPrinterWindow.hide()
         if self.dialog_mode in ["printer", "printer_with_uri", "class"]:
