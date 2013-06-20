@@ -1447,13 +1447,13 @@ class GUI(GtkGUI):
         self.cups._end_operation ()
 
         # ..and select the new printer.
-        def select_new_printer (model, path, iter):
+        def select_new_printer (model, path, iter, UNUSED):
             name = model.get_value (iter, 2).decode ('utf-8')
             if name == new_name:
                 self.dests_iconview.select_path (path)
         self.populateList ()
         model = self.dests_iconview.get_model ()
-        model.foreach (select_new_printer)
+        model.foreach (select_new_printer, None)
 
     # Duplicate
 
