@@ -1278,6 +1278,10 @@ class GUI(GtkGUI):
             return
 
         (res, path, cell) = tuple
+        if path == None:
+            # Printer removed?
+            return
+
         if type (cell) != Gtk.CellRendererText:
             cells = self.dests_iconview.get_cells ()
             for cell in cells:
