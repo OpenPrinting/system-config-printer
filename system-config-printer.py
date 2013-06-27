@@ -1324,7 +1324,7 @@ class GUI(GtkGUI):
             self.rename_entry_sigids.append ((editable, id))
 
     def printer_name_editing (self, entry):
-        newname = origname = unicode (entry.get_text())
+        newname = origname = entry.get_text().decode ('utf-8')
         newname = newname.replace("/", "")
         newname = newname.replace("#", "")
         newname = newname.replace(" ", "")
