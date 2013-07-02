@@ -1953,7 +1953,7 @@ class JobViewer (GtkGUI):
                 if notify_text.find ("backend errors") != -1:
                     message = (_("There was a problem sending document `%s' "
                                  "(job %d) to the printer.") %
-                               (document.encode ('utf-8', jobid)))
+                               (document.encode ('utf-8'), jobid))
                 elif notify_text.find ("filter errors") != -1:
                     message = _("There was a problem processing document `%s' "
                                 "(job %d).") % (document.encode ('utf-8'),
