@@ -1027,7 +1027,23 @@ class NewPrinterGUI(GtkGUI):
 
                 uri = self.device.uri
                 if uri and uri.startswith ("smb://"):
+                    # User has selected an smb device
                     uri = SMBURI (uri=uri[6:]).sanitize_uri ()
+
+                    # Does the backend need to be installed?
+                    if ((self._host == 'localhost' or
+                         self._host[0] == '/') and
+                        not os.access ("/usr/lib/cups/backend/smb", os.F_OK)):
+                        p = subprocess.Popen (["gpk-install-package-name",
+                                               "samba-client"],
+                                              close_fds=True,
+                                              stdin=file("/dev/null"),
+                                              stdout=file("/dev/null"),
+                                              stderr=file("/dev/null"))
+                        while p.poll () == None:
+                            while Gtk.events_pending ():
+                                Gtk.main_iteration ()
+                                time.sleep (0.1)
 
                 if page_nr == 1 or page_nr == 2:
                     self.auto_make, self.auto_model = "", ""
