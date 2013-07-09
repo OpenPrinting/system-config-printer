@@ -998,6 +998,8 @@ class PrinterPropertiesDialog(GtkGUI):
             parent = self.dialog
         class_deleted = False
         name = printer.name
+        if isinstance (name, str):
+            name = name.decode ('utf-8')
 
         if printer.is_class:
             self.cups._begin_operation (_("modifying class %s").decode ('utf-8')

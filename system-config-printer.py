@@ -713,7 +713,7 @@ class GUI(GtkGUI):
         model = self.dests_iconview.get_model ()
         for path in paths:
             iter = model.get_iter (path)
-            name = unicode (model.get_value (iter, 2))
+            name = model.get_value (iter, 2).decode ('utf-8')
             selected_printers.add (name)
 
         if self.cups:
@@ -1027,7 +1027,7 @@ class GUI(GtkGUI):
             cups.setEncryption(cups.HTTP_ENCRYPT_IF_REQUESTED)
         self.connect_encrypt = cups.getEncryption ()
 
-        servername = self.cmbServername.get_child().get_text()
+        servername = self.cmbServername.get_child().get_text().decode ('utf-8')
 
         self.lblConnecting.set_markup(_("<i>Opening connection to %s</i>")
                                       .decode ('utf-8') % servername)
@@ -1498,12 +1498,12 @@ class GUI(GtkGUI):
             self.populateList ()
             return
 
-        self.duplicate_printer (self.entDuplicateName.get_text ())
+        self.duplicate_printer (self.entDuplicateName.get_text ().decode ('utf-8'))
         self.monitor.update ()
 
     def on_entDuplicateName_changed(self, widget):
         # restrict
-        text = unicode (widget.get_text())
+        text = widget.get_text().decode ('utf-8')
         new_text = text
         new_text = new_text.replace("/", "")
         new_text = new_text.replace("#", "")

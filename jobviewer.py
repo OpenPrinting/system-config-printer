@@ -146,7 +146,7 @@ class PrinterURIIndex:
                 attrs = connection.getPrinterAttributes (uri=uri,
                                                          requested_attributes=r)
             else:
-                attrs = connection.getPrinterAttributes (name,
+                attrs = connection.getPrinterAttributes (name.decode ('utf-8'),
                                                          requested_attributes=r)
         except RuntimeError:
             # cups.Connection() failed
