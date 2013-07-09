@@ -60,9 +60,7 @@ except locale.Error:
     os.environ['LC_ALL'] = 'C'
     locale.setlocale (locale.LC_ALL, "")
 import gettext
-from gettext import gettext as _
-gettext.textdomain (config.PACKAGE)
-gettext.bindtextdomain (config.PACKAGE, config.localedir)
+gettext.install(domain=config.PACKAGE, localedir=config.localedir, unicode=True)
 
 import cupshelpers
 from gi.repository import GObject
@@ -664,11 +662,10 @@ class GUI(GtkGUI):
         connected = bool(self.cups)
 
         host = CUPS_server_hostname ()
-        self.PrintersWindow.set_title(_("Print Settings - %s")
-                                      .decode ('utf-8') % host)
+        self.PrintersWindow.set_title(_("Print Settings - %s") % host)
 
         if connected:
-            status_msg = _("Connected to %s").decode ('utf-8') % host
+            status_msg = _("Connected to %s") % host
         else:
             status_msg = _("Not connected")
         self.statusbarMain.push(self.status_context_id, status_msg)
@@ -719,7 +716,7 @@ class GUI(GtkGUI):
         if self.cups:
             kill_connection = False
             self.cups._set_prompt_allowed (prompt_allowed)
-            self.cups._begin_operation (_("obtaining queue details").decode ('utf-8'))
+            self.cups._begin_operation (_("obtaining queue details"))
             try:
                 # get Printers
                 self.printers = cupshelpers.getPrinters(self.cups)
@@ -1030,7 +1027,7 @@ class GUI(GtkGUI):
         servername = self.cmbServername.get_child().get_text().decode ('utf-8')
 
         self.lblConnecting.set_markup(_("<i>Opening connection to %s</i>")
-                                      .decode ('utf-8') % servername)
+                                       % servername)
         self.ConnectingDialog.set_transient_for(self.PrintersWindow)
         self.ConnectingDialog.show()
         GLib.timeout_add (40, self.update_connecting_pbar)
@@ -1196,7 +1193,7 @@ class GUI(GtkGUI):
     def set_default_printer (self, name):
         printer = self.printers[name]
         reload = False
-        self.cups._begin_operation (_("setting default printer").decode ('utf-8'))
+        self.cups._begin_operation (_("setting default printer"))
         try:
             reload = printer.setAsDefault ()
         except cups.HTTPError, (s,):
@@ -1375,7 +1372,7 @@ class GUI(GtkGUI):
         if not self.is_rename_possible (old_name):
             return
 
-        self.cups._begin_operation (_("renaming printer").decode ('utf-8'))
+        self.cups._begin_operation (_("renaming printer"))
         rejecting = self.propertiesDlg.printer.rejecting
         if not rejecting:
             try:
@@ -1528,11 +1525,9 @@ class GUI(GtkGUI):
             obj = model.get_value (itr, 0)
             name = model.get_value (itr, 2).decode ('utf-8')
             if obj.is_class:
-                message_format = (_("Really delete class '%s'?").decode ('utf-8')
-                                  % name)
+                message_format = (_("Really delete class '%s'?") % name)
             else:
-                message_format = (_("Really delete printer '%s'?").decode ('utf-8')
-                                  % name)
+                message_format = (_("Really delete printer '%s'?") % name)
 
             to_delete.append (name)
         else:
@@ -1559,8 +1554,7 @@ class GUI(GtkGUI):
 
         try:
             for name in to_delete:
-                self.cups._begin_operation (_("deleting printer %s").decode ('utf-8')
-                                            % name)
+                self.cups._begin_operation (_("deleting printer %s") % name)
                 self.cups.deletePrinter (name)
                 self.cups._end_operation ()
         except cups.IPPError, (e, msg):
@@ -1584,9 +1578,10 @@ class GUI(GtkGUI):
             printers.append (printer)
 
         for printer in printers:
-            print repr (printer.name)
-            self.cups._begin_operation (_("modifying printer %s").decode ('utf-8')
-                                        % printer.name)
+            printer_name = printer.name
+            if isinstance(printer_name, str):
+                printer_name = printer_name.decode ('utf-8')
+            self.cups._begin_operation (_("modifying printer %s") % printer.name)
             try:
                 printer.setEnabled (enable)
             except cups.IPPError, (e, m):
@@ -1615,8 +1610,11 @@ class GUI(GtkGUI):
 
         success = False
         for printer in printers:
-            self.cups._begin_operation (_("modifying printer %s").decode ('utf-8')
-                                        % printer.name)
+            printer_name = printer.name
+            if isinstance(printer_name, str):
+                printer_name = printer_name.decode ('utf-8')
+            self.cups._begin_operation (_("modifying printer %s")
+                                        % printer_name)
             try:
                 printer.setShared (share)
                 success = True
@@ -1959,7 +1957,7 @@ class GUI(GtkGUI):
                                 _('Install driver') + '</span>\n\n' +
                                 _("Printer '%s' requires the %s package but "
                                   "it is not currently installed.")
-                                .decode ('utf-8') % (name, pkg))
+                                % (name, pkg))
                 dialog = self.InstallDialog
                 self.lblInstall.set_markup(install_text)
                 dialog.set_transient_for (parent)
@@ -1976,7 +1974,7 @@ class GUI(GtkGUI):
                                    _("Printer '%s' requires the '%s' program "
                                      "but it is not currently installed.  "
                                      "Please install it before using this "
-                                     "printer.").decode ('utf-8') %
+                                     "printer.") %
                                    (name,
                                     (exes + pkgs)[0]),
                                    parent)

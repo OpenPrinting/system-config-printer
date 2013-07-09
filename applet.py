@@ -29,11 +29,11 @@ from gi.repository import GObject
 from gi.repository import GLib
 import time
 import locale
-import gettext
 import cupshelpers.installdriver
-from gettext import gettext as _
+
 DOMAIN="system-config-printer"
-gettext.textdomain (DOMAIN)
+import gettext
+gettext.install(domain=DOMAIN, unicode=True)
 try:
     locale.setlocale (locale.LC_ALL, "")
 except locale.Error, e:
@@ -117,7 +117,7 @@ class NewPrinterNotification(dbus.service.Object):
                     device = "%s %s" % (mfg, mdl)
                 else:
                     device = des
-                text = _("No printer driver for %s.").decode ('utf-8') % device
+                text = _("No printer driver for %s.") % device
             else:
                 text = _("No driver for this printer.")
             n = Notify.Notification.new (title, text, 'printer')
@@ -168,7 +168,7 @@ class NewPrinterNotification(dbus.service.Object):
             if len (missing_pkgs) > 0:
                 pkgs = reduce (lambda x,y: x + ", " + y, missing_pkgs)
                 title = _("Install printer driver")
-                text = (_("`%s' requires driver installation: %s.").decode ('utf-8') %
+                text = (_("`%s' requires driver installation: %s.") %
                         (name, pkgs))
                 n = Notify.Notification.new (title, text, 'printer')
                 import installpackage
@@ -192,7 +192,7 @@ class NewPrinterNotification(dbus.service.Object):
 
             elif status == self.STATUS_SUCCESS:
                 devid = "MFG:%s;MDL:%s;DES:%s;CMD:%s;" % (mfg, mdl, des, cmd)
-                text = _("`%s' is ready for printing.").decode ('utf-8') % name
+                text = _("`%s' is ready for printing.") % name
                 n = Notify.Notification.new (title, text, 'printer')
                 if "actions" in Notify.get_server_caps():
                     n.set_urgency (Notify.Urgency.NORMAL)
@@ -203,7 +203,7 @@ class NewPrinterNotification(dbus.service.Object):
                                   lambda x, y: self.configure (x, y, name))
             else: # Model mismatch
                 devid = "MFG:%s;MDL:%s;DES:%s;CMD:%s;" % (mfg, mdl, des, cmd)
-                text = (_("`%s' has been added, using the `%s' driver.").decode ('utf-8') %
+                text = (_("`%s' has been added, using the `%s' driver.") %
                         (name, driver))
                 n = Notify.Notification.new (title, text, 'printer')
                 if "actions" in Notify.get_server_caps():

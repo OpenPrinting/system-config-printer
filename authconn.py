@@ -18,6 +18,7 @@
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 import threading
+import config
 import cups
 import cupspk
 from gi.repository import GLib
@@ -26,7 +27,8 @@ from gi.repository import Gtk
 import os
 from errordialogs import *
 from debug import *
-from gettext import gettext as _
+import gettext
+gettext.install(domain=config.PACKAGE, localedir=config.localedir, unicode=True)
 N_ = lambda x: x
 
 cups.require("1.9.60")
@@ -170,7 +172,7 @@ class Connection:
         self._connect ()
 
     def _begin_operation (self, operation):
-        debugprint ("%s: Operation += %s" % (self, repr (operation)))
+        debugprint ("%s: Operation += %s" % (self, operation))
         self._operation_stack.append (operation)
 
     def _end_operation (self):
@@ -286,8 +288,7 @@ class Connection:
             Gdk.threads_enter ()
 
         try:
-            msg = (_("CUPS server error (%s)").decode ('utf-8') %
-                   self._operation_stack[0])
+            msg = (_("CUPS server error (%s)") % self._operation_stack[0])
         except IndexError:
             msg = _("CUPS server error")
 
@@ -462,8 +463,7 @@ class Connection:
         # Prompt.
         if len (self._operation_stack) > 0:
             try:
-                title = (_("Authentication (%s)").decode ('utf-8') %
-                         self._operation_stack[0])
+                title = (_("Authentication (%s)") % self._operation_stack[0])
             except IndexError:
                 title = _("Authentication")
 

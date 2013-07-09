@@ -21,9 +21,11 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+import config
 import cups
 from gi.repository import Gtk
-from gettext import gettext as _
+import gettext
+gettext.install(domain=config.PACKAGE, localedir=config.localedir, unicode=True)
 
 def show_dialog (title, text, type, parent=None):
     dialog = Gtk.MessageDialog (parent,
@@ -51,8 +53,8 @@ def show_IPP_Error(exception, message, parent=None):
         return
     else:
         title = _("CUPS server error")
-        text = (_("There was an error during the CUPS "
-                  "operation: '%s'.").decode ('utf-8')) % message
+        text = _("There was an error during the CUPS "
+                 "operation: '%s'.") % message
 
     show_error_dialog (title, text, parent)
 
@@ -78,8 +80,8 @@ def show_HTTP_Error(status, parent=None):
         elif status == -1:
             msg = _("Not connected")
         else:
-            msg = _("status %s").decode ('utf-8') % status
+            msg = _("status %s") % status
 
-        text = _("There was an HTTP error: %s.").decode ('utf-8') % msg
+        text = _("There was an HTTP error: %s.") % msg
 
     show_error_dialog (title, text, parent)

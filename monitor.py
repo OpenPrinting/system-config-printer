@@ -17,6 +17,7 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+import config
 import cups
 cups.require("1.9.50")
 import dbus
@@ -26,7 +27,8 @@ from gi.repository import GLib
 import time
 from debug import *
 import pprint
-from gettext import gettext as _
+import gettext
+gettext.install(domain=config.PACKAGE, localedir=config.localedir, unicode=True)
 import ppdcache
 import statereason
 from statereason import StateReason

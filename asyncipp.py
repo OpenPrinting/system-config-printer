@@ -32,7 +32,9 @@ cups.require ("1.9.60")
 import authconn
 from debug import *
 import debug
-from gettext import gettext as _
+import gettext
+gettext.install(domain=config.PACKAGE, localedir=config.localedir, unicode=True)
+
 
 ######
 ###### An asynchronous libcups API using IPP with a separate worker
@@ -474,7 +476,7 @@ class _IPPAuthOperation:
         if op == None:
             d = authconn.AuthDialog (parent=conn.parent)
         else:
-            title = _("Authentication (%s)").decode ('utf-8') % op
+            title = _("Authentication (%s)") % op
             d = authconn.AuthDialog (title=title,
                                      parent=conn.parent)
 
@@ -551,7 +553,7 @@ class _IPPAuthOperation:
         if op == None:
             msg = _("CUPS server error")
         else:
-            msg = _("CUPS server error (%s)").decode ('utf-8') % op
+            msg = _("CUPS server error (%s)") % op
 
         d = Gtk.MessageDialog (self._conn.parent,
                                Gtk.DialogFlags.MODAL |

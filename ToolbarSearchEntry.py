@@ -30,7 +30,9 @@ from gi.repository import GLib
 from gi.repository import Gdk
 from gi.repository import Gtk
 import HIG
-from gettext import gettext as _
+import config
+import gettext
+gettext.install(domain=config.PACKAGE, localedir=config.localedir, unicode=True)
 
 class ToolbarSearchEntry (Gtk.HBox):
     __gproperties__ = {

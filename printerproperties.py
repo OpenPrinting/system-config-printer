@@ -28,7 +28,8 @@ import os, tempfile
 from gi.repository import Gtk
 import cups
 import locale
-from gettext import gettext as _
+import gettext
+gettext.install(domain=config.PACKAGE, localedir=config.localedir, unicode=True)
 
 import cupshelpers, options
 from gi.repository import GObject
@@ -66,13 +67,13 @@ class PrinterPropertiesDialog(GtkGUI):
         }
 
     printer_states = { cups.IPP_PRINTER_IDLE:
-                           _("Idle").decode ('utf-8'),
+                           _("Idle"),
                        cups.IPP_PRINTER_PROCESSING:
-                           _("Processing").decode ('utf-8'),
+                           _("Processing"),
                        cups.IPP_PRINTER_BUSY:
-                           _("Busy").decode ('utf-8'),
+                           _("Busy"),
                        cups.IPP_PRINTER_STOPPED:
-                           _("Stopped").decode ('utf-8') }
+                           _("Stopped") }
 
     def __init__(self):
         GObject.GObject.__init__ (self)
@@ -599,7 +600,7 @@ class PrinterPropertiesDialog(GtkGUI):
         treeview.set_cursor (Gtk.TreePath(), None, False)
         host = CUPS_server_hostname ()
         self.dialog.set_title (_("Printer Properties - "
-                                 "'%s' on %s") % (name.encode ('utf-8'), host))
+                                 "'%s' on %s") % (name, host))
         self.dialog.show ()
 
     def printer_properties_response (self, dialog, response):
@@ -1002,11 +1003,9 @@ class PrinterPropertiesDialog(GtkGUI):
             name = name.decode ('utf-8')
 
         if printer.is_class:
-            self.cups._begin_operation (_("modifying class %s").decode ('utf-8')
-                                        % name)
+            self.cups._begin_operation (_("modifying class %s") % name)
         else:
-            self.cups._begin_operation (_("modifying printer %s").decode ('utf-8')
-                                        % name)
+            self.cups._begin_operation (_("modifying printer %s") % name)
 
         try:
             if not printer.is_class and self.ppd:
@@ -1114,7 +1113,7 @@ class PrinterPropertiesDialog(GtkGUI):
             # but we have never fetched the server settings to see whether
             # the server is publishing shared printers.  Fetch the settings
             # now so that we can update the "not published" label if necessary.
-            self.cups._begin_operation (_("fetching server settings").decode ('utf-8'))
+            self.cups._begin_operation (_("fetching server settings"))
             try:
                 self.server_settings = self.cups.adminGetServerSettings()
             except:
@@ -1197,7 +1196,7 @@ class PrinterPropertiesDialog(GtkGUI):
             return
 
         job_id = None
-        c._begin_operation (_("printing test page").decode ('utf-8'))
+        c._begin_operation (_("printing test page"))
         try:
             if custom_testpage and os.path.exists(custom_testpage):
                 debugprint ('Printing custom test page ' + custom_testpage)
@@ -1236,7 +1235,7 @@ class PrinterPropertiesDialog(GtkGUI):
         (tmpfd, tmpfname) = tempfile.mkstemp ()
         os.write (tmpfd, "#CUPS-COMMAND\n%s\n" % command)
         os.close (tmpfd)
-        self.cups._begin_operation (_("sending maintenance command").decode ('utf-8'))
+        self.cups._begin_operation (_("sending maintenance command"))
         try:
             format = "application/vnd.cups-command"
             job_id = self.cups.printTestPage (printer.name,
@@ -1435,7 +1434,7 @@ class PrinterPropertiesDialog(GtkGUI):
                     option_editable = False
                     show_error_dialog (_("Error"),
                                        _("Option '%s' has value '%s' and "
-                                         "cannot be edited.").decode ('utf-8') %
+                                         "cannot be edited.") %
                                        (option.name,
                                         value),
                                        self.parent)
@@ -1641,7 +1640,7 @@ class PrinterPropertiesDialog(GtkGUI):
         printer = self.printer
         self.entPMakeModel.set_text(printer.make_and_model)
         state = self.printer_states.get (printer.state,
-                                         _("Unknown").decode ('utf-8'))
+                                         _("Unknown"))
         reason = printer.other_attributes.get ('printer-state-message', '')
         if len (reason) > 0:
             state += ' - ' + reason

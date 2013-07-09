@@ -21,7 +21,8 @@
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 import config
-from gettext import gettext as _
+import gettext
+gettext.install(domain=config.PACKAGE, localedir=config.localedir, unicode=True)
 import cups
 import dbus
 from gi.repository import GObject
@@ -194,7 +195,7 @@ class ServerSettings(GtkGUI):
 
     def _fillBasic(self):
         self.changed = set()
-        self.cupsconn._begin_operation (_("fetching server settings").decode ('utf-8'))
+        self.cupsconn._begin_operation (_("fetching server settings"))
         try:
             self.server_settings = self.cupsconn.adminGetServerSettings()
         except cups.IPPError, (e, m):
@@ -511,7 +512,7 @@ class ServerSettings(GtkGUI):
             (self.chkServerLogDebug, cups.CUPS_SERVER_DEBUG_LOGGING),]:
             if not self.server_settings.has_key(setting): continue
             setting_dict[setting] = str(int(widget.get_active()))
-        self.cupsconn._begin_operation (_("modifying server settings").decode ('utf-8'))
+        self.cupsconn._begin_operation (_("modifying server settings"))
         try:
             self.cupsconn.adminSetServerSettings(setting_dict)
         except cups.IPPError, (e, m):

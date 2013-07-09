@@ -21,7 +21,9 @@
 
 import cups
 import os
-from gettext import gettext as _
+import config
+import gettext
+gettext.install(domain=config.PACKAGE, localedir=config.localedir, unicode=True)
 
 class StateReason:
     REPORT=1
@@ -121,7 +123,7 @@ class StateReason:
         try:
             (title, text) = messages[self.get_reason ()]
             try:
-                text = text.decode ('utf-8') % self.get_printer ()
+                text = text % self.get_printer ()
             except TypeError:
                 # Probably an incorrect translation, missing a '%s'.
                 pass
@@ -148,8 +150,7 @@ class StateReason:
                 except RuntimeError:
                     pass
 
-            text = (_("Printer '%s': '%s'.").decode ('utf-8') %
-                    (self.get_printer (), reason))
+            text = (_("Printer '%s': '%s'.") % (self.get_printer (), reason))
         return (title, text)
 
     def get_tuple (self):

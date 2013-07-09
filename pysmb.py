@@ -22,7 +22,9 @@
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 import errno
-from gettext import gettext as _
+import config
+import gettext
+gettext.install(domain=config.PACKAGE, localedir=config.localedir, unicode=True)
 from gi.repository import Gtk
 import os
 import pwd
@@ -109,7 +111,7 @@ class AuthContext:
         hbox.pack_start (image, False, False, 0)
         vbox = Gtk.VBox (False, 12)
         label = Gtk.Label(label='<span weight="bold" size="larger">' +
-                           _("You must log in to access %s.").decode ('utf-8')
+                           _("You must log in to access %s.")
                           % self.for_server +
                            '</span>')
         label.set_use_markup (True)

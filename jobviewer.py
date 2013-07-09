@@ -25,7 +25,6 @@ import dbus
 import dbus.glib
 import dbus.service
 from gi.repository import Notify
-import gettext
 from gi.repository import GLib
 from gi.repository import GObject
 from gi.repository import Gdk
@@ -56,7 +55,9 @@ try:
 except ImportError:
     USE_KEYRING=False
 
-from gettext import gettext as _
+import gettext
+gettext.install(domain=config.PACKAGE, localedir=config.localedir, unicode=True)
+
 from statereason import StateReason
 
 pkgdata = config.pkgdatadir
@@ -140,13 +141,15 @@ class PrinterURIIndex:
         try:
             if connection == None:
                 connection = cups.Connection ()
+            if isinstance(name, str):
+                name = name.decode ('utf-8')
 
             r = ['printer-name', 'printer-uri-supported', 'printer-more-info']
             if uri != None:
                 attrs = connection.getPrinterAttributes (uri=uri,
                                                          requested_attributes=r)
             else:
-                attrs = connection.getPrinterAttributes (name.decode ('utf-8'),
+                attrs = connection.getPrinterAttributes (name,
                                                          requested_attributes=r)
         except RuntimeError:
             # cups.Connection() failed
@@ -267,7 +270,7 @@ class CancelJobsOperation(GObject.GObject):
         else:
             operation = _("canceling job")
 
-        self.connection._begin_operation (operation.decode ('utf-8'))
+        self.connection._begin_operation (operation)
         self.connection.cancelJob (self.jobids[0], self.purge_job,
                                    reply_handler=self.cancelJob_finish,
                                    error_handler=self.cancelJob_error)
@@ -497,12 +500,12 @@ class JobViewer (GtkGUI):
 
         if my_jobs:
             if specific_dests:
-                title = _("my jobs on %s") % the_dests.encode ('utf-8')
+                title = _("my jobs on %s") % the_dests
             else:
                 title = _("my jobs")
         else:
             if specific_dests:
-                title = "%s" % the_dests.encode ('utf-8')
+                title = "%s" % the_dests
             else:
                 title = _("all jobs")
         self.JobsWindow.set_title (_("Document Print Status (%s)") % title)
@@ -974,7 +977,7 @@ class JobViewer (GtkGUI):
 
                 if try_keyring and auth_info != None:
                     try:
-                        c._begin_operation (_("authenticating job").decode ('utf-8'))
+                        c._begin_operation (_("authenticating job"))
                         c.authenticateJob (job, auth_info)
                         c._end_operation ()
                         self.update_monitor ()
@@ -1024,7 +1027,7 @@ class JobViewer (GtkGUI):
 
         dialog.set_prompt (_("Authentication required for "
                              "printing document `%s' (job %d)") %
-                           (data.get('job-name', _("Unknown")).encode ('utf-8'),
+                           (data.get('job-name', _("Unknown")),
                             job))
         self.auth_info_dialogs[job] = dialog
         dialog.connect ('response', self.auth_info_dialog_response)
@@ -1056,7 +1059,7 @@ class JobViewer (GtkGUI):
             return
 
         remember = False
-        c._begin_operation (_("authenticating job").decode ('utf-8'))
+        c._begin_operation (_("authenticating job"))
         try:
             c.authenticateJob (jobid, auth_info)
             remember = dialog.get_remember_password ()
@@ -1316,7 +1319,7 @@ class JobViewer (GtkGUI):
             return
 
         for jobid in self.jobids:
-            c._begin_operation (_("holding job").decode ('utf-8'))
+            c._begin_operation (_("holding job"))
             try:
                 c.setJobHoldUntil (jobid, "indefinite")
             except cups.IPPError, (e, m):
@@ -1341,7 +1344,7 @@ class JobViewer (GtkGUI):
             return
 
         for jobid in self.jobids:
-            c._begin_operation (_("releasing job").decode ('utf-8'))
+            c._begin_operation (_("releasing job"))
             try:
                 c.setJobHoldUntil (jobid, "no-hold")
             except cups.IPPError, (e, m):
@@ -1790,8 +1793,8 @@ class JobViewer (GtkGUI):
         notification = Notify.Notification.new (_("Document printed"),
                                               _("Document `%s' has been sent "
                                                 "to `%s' for printing.") %
-                                              (document.encode ('utf-8'),
-                                               printer.encode ('utf-8')),
+                                              (document,
+                                               printer),
                                               'printer')
         notification.set_urgency (Notify.Urgency.LOW)
         notification.connect ('closed',
@@ -1953,11 +1956,10 @@ class JobViewer (GtkGUI):
                 if notify_text.find ("backend errors") != -1:
                     message = (_("There was a problem sending document `%s' "
                                  "(job %d) to the printer.") %
-                               (document.encode ('utf-8'), jobid))
+                               (document, jobid))
                 elif notify_text.find ("filter errors") != -1:
                     message = _("There was a problem processing document `%s' "
-                                "(job %d).") % (document.encode ('utf-8'),
-                                                jobid)
+                                "(job %d).") % (document, jobid)
                 elif (notify_text.find ("being paused") != -1 or
                       jstate != cups.IPP_JOB_STOPPED):
                     may_be_problem = False
@@ -1965,9 +1967,7 @@ class JobViewer (GtkGUI):
                     # Give up and use the provided message untranslated.
                     message = (_("There was a problem printing document `%s' "
                                  "(job %d): `%s'.") %
-                               (document.encode ('utf-8'),
-                                jobid,
-                                notify_text.encode ('utf-8')))
+                               (document, jobid, notify_text))
 
             if may_be_problem:
                 debugprint ("Problem detected")
@@ -1995,7 +1995,7 @@ class JobViewer (GtkGUI):
                         name = event['printer-name']
                         markup += ' '
                         markup += (_("The printer called `%s' has "
-                                     "been disabled.") % name.encode ('utf-8'))
+                                     "been disabled.") % name)
                 except KeyError:
                     pass
 
@@ -2250,7 +2250,7 @@ class JobViewer (GtkGUI):
 
                         local = time.localtime (simpletime)
                         state = (_("Held until %s") %
-                                 time.strftime ("%X", local).encode ('utf-8'))
+                                 time.strftime ("%X", local))
                 except ValueError:
                     pass
             if until == "day-time":

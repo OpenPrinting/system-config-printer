@@ -18,9 +18,11 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+import config
 from gi.repository import Gtk
 import cups
-from gettext import gettext as _
+import gettext
+gettext.install(domain=config.PACKAGE, localedir=config.localedir, unicode=True)
 import ppdippstr
 
 def OptionWidget(option, ppd, gui, tab_label=None):

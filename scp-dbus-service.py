@@ -505,15 +505,16 @@ def _client_demo ():
 
 if __name__ == '__main__':
     import ppdippstr
+    import config
     import gettext
+    gettext.install(domain=config.PACKAGE, localedir=config.localedir, unicode=True)
+
     import locale
     try:
         locale.setlocale (locale.LC_ALL, "")
     except:
         pass
 
-    gettext.textdomain (config.PACKAGE)
-    gettext.bindtextdomain (config.PACKAGE, config.localedir)
     ppdippstr.init ()
     Gdk.threads_init ()
     from dbus.glib import DBusGMainLoop
