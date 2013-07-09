@@ -722,7 +722,7 @@ class GUI(GtkGUI):
                 self.printers = cupshelpers.getPrinters(self.cups)
 
                 # Get default printer.
-                self.default_printer = self.cups.getDefault ()
+                self.default_printer = self.cups.getDefault ().decode ('utf-8')
             except cups.IPPError, (e, m):
                 show_IPP_Error(e, m, self.PrintersWindow)
                 self.printers = {}

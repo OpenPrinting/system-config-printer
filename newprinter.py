@@ -104,7 +104,7 @@ def getCurrentClassMembers(treeview):
     iter = model.get_iter_first()
     result = []
     while iter:
-        result.append(model.get(iter, 0)[0])
+        result.append(model.get(iter, 0)[0].decode ('utf-8'))
         iter = model.iter_next(iter)
     result.sort()
     return result
