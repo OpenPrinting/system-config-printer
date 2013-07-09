@@ -1100,7 +1100,7 @@ class JobViewer (GtkGUI):
                     id = gnomekeyring.item_create_sync (keyring, type, name,
                                                         attrs, secret, True)
                     debugprint ("keyring: created id %d for %s" % (repr (id),
-                                                                   repr (name)))
+                                                                   name))
             except:
                 nonfatalException ()
 
@@ -1841,8 +1841,7 @@ class JobViewer (GtkGUI):
             for attr, value in jobdata.iteritems ():
                 if not self.jobs[jobid].has_key (attr):
                     self.jobs[jobid][attr] = value
-                    debugprint ("Add %s=%s (my job)" % (repr (attr),
-                                                        repr (value)))
+                    debugprint ("Add %s=%s (my job)" % (attr, value))
 
         # If we failed to get required attributes for the job, bail.
         if not self.jobiters.has_key (jobid):

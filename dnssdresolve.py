@@ -75,7 +75,7 @@ class DNSSDHostNamesResolver:
                 server = dbus.Interface (obj,
                                          "org.freedesktop.Avahi.Server")
                 self._device_uri_by_name[(name, stype, domain)] = uri
-                debugprint ("Resolving address for %s" % repr (hostname))
+                debugprint ("Resolving address for %s" % hostname)
                 server.ResolveService (-1, -1,
                                         name, stype, domain,
                                         -1, 0,

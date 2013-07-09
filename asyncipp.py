@@ -577,7 +577,7 @@ class _IPPAuthOperation:
         d.set_default_response (Gtk.ResponseType.OK)
         d.connect ("response", self._on_retry_server_error_response)
         debugprint ("%s (_reconnect_error): presenting error dialog (%s; %s)" %
-                    (self, repr (msg), repr (message)))
+                    (self, msg, message))
         d.show ()
 
     def _on_retry_server_error_response (self, dialog, response):

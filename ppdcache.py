@@ -73,7 +73,7 @@ class PPDCache:
 
                 return
 
-            debugprint ("%s: fetch PPD for %s" % (self, repr (name)))
+            debugprint ("%s: fetch PPD for %s" % (self, name))
             self._cups.getPPD3 (name,
                                 reply_handler=lambda c, r:
                                     self._got_ppd3 (c, name, r, callback),

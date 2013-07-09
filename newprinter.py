@@ -555,7 +555,7 @@ class NewPrinterGUI(GtkGUI):
 
     def show_IPP_Error (self, exception, message):
         debugprint ("%s: IPP error dialog (%s, %s)" % (self, repr (exception),
-                                                       repr (message)))
+                                                       message))
         return show_IPP_Error (exception, message, parent=self.NewPrinterWindow)
 
     def option_changed(self, option):
@@ -2980,7 +2980,7 @@ class NewPrinterGUI(GtkGUI):
         if text.find (":") != -1:
             # The user is typing in a URI.  In that case, switch to URI entry.
             ent.set_text ('')
-            debugprint ("URI detected (%s) -> Enter URI" % repr (text))
+            debugprint ("URI detected (%s) -> Enter URI" % text)
             self.entNPTDevice.set_text (text)
             model = self.tvNPDevices.get_model ()
             path = model.get_path (self.devices_uri_iter)

@@ -1332,7 +1332,7 @@ class GUI(GtkGUI):
     def printer_name_editing_done (self, entry, cell, name):
         debugprint (repr (cell))
         newname = entry.get_text ().decode ('utf-8')
-        debugprint ("edited: %s -> %s" % (repr (name), repr (newname)))
+        debugprint ("edited: %s -> %s" % (name, newname))
         try:
             self.rename_printer (name, newname)
         finally:
