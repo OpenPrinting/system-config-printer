@@ -1581,7 +1581,7 @@ class GUI(GtkGUI):
 
         for printer in printers:
             printer_name = printer.name
-            if isinstance(printer_name, str):
+            if isinstance(printer_name, bytes):
                 printer_name = printer_name.decode ('utf-8')
             self.cups._begin_operation (_("modifying printer %s") % printer.name)
             try:
@@ -1613,7 +1613,7 @@ class GUI(GtkGUI):
         success = False
         for printer in printers:
             printer_name = printer.name
-            if isinstance(printer_name, str):
+            if isinstance(printer_name, bytes):
                 printer_name = printer_name.decode ('utf-8')
             self.cups._begin_operation (_("modifying printer %s")
                                         % printer_name)
