@@ -2353,7 +2353,7 @@ class NewPrinterGUI(GtkGUI):
             ready (self.SMBBrowseDialog)
 
     def on_entSMBURI_changed (self, ent):
-        allowed_chars = string.letters+string.digits+'_-./:@%'
+        allowed_chars = string.ascii_letters+string.digits+'_-./:@%'
         self.entry_changed(ent, allowed_chars)
         uri = ent.get_text ()
         (group, host, share, user, password) = SMBURI (uri=uri).separate ()
@@ -2547,12 +2547,12 @@ class NewPrinterGUI(GtkGUI):
             entry.set_text(new_text)
 
     def on_entNPTDevice_changed(self, ent):
-        allowed_chars = string.letters+string.digits+'_-./:%()@?=&'
+        allowed_chars = string.ascii_letters+string.digits+'_-./:%()@?=&'
         self.entry_changed(ent, allowed_chars)
         self.setNPButtons()
 
     def on_entNPTJetDirectHostname_changed(self, ent):
-        allowed_chars = string.letters+string.digits+'_-.'
+        allowed_chars = string.ascii_letters+string.digits+'_-.'
         self.entry_changed(ent, allowed_chars)
         self.setNPButtons()
 
@@ -2990,7 +2990,7 @@ class NewPrinterGUI(GtkGUI):
             self.entNPTDevice.set_position (-1)
             return
 
-        allowed_chars = string.letters+string.digits+'_-.'
+        allowed_chars = string.ascii_letters+string.digits+'_-.'
         self.entry_changed(ent, allowed_chars)
         s = ent.get_text ()
         self.btnNetworkFind.set_sensitive (len (s) > 0)
