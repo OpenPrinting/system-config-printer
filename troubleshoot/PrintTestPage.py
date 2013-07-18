@@ -417,7 +417,8 @@ class PrintTestPage(Question):
             except RuntimeError:
                 self.persistent_answers['test_page_submit_failure'] = 'connect'
                 break
-            except cups.IPPError, (e, s):
+            except cups.IPPError as e:
+                (e, s) = e.args
                 if (e == cups.IPP_DOCUMENT_FORMAT and
                     mimetypes.index (mimetype) < (len (mimetypes) - 1)):
                     # Try next format.
@@ -444,7 +445,8 @@ class PrintTestPage(Question):
             for jobid in jobids:
                 try:
                     c.cancelJob (jobid)
-                except cups.IPPError, (e, s):
+                except cups.IPPError as e:
+                    (e, s) = e.args
                     if e != cups.IPP_NOT_POSSIBLE:
                         self.persistent_answers['test_page_cancel_failure'] = (e, s)
 

@@ -223,7 +223,7 @@ class PPDsLoader(GObject.GObject):
                                          reply_handler=self._packagekit_reply,
                                          error_handler=self._packagekit_error,
                                          timeout=3600)
-        except Exception, e:
+        except Exception as e:
             debugprint ("Failed to talk to PackageKit: %s" % repr (e))
             if self._dialog:
                 self._dialog.show_all ()
@@ -251,7 +251,7 @@ class PPDsLoader(GObject.GObject):
                                       reply_handler=self._jockey_reply,
                                       error_handler=self._jockey_error,
                                       timeout=3600)
-        except Exception, e:
+        except Exception as e:
             self._jockey_error (e)
 
     def _jockey_reply (self, conn, result):

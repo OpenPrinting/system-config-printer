@@ -1101,7 +1101,8 @@ class PrinterPropertiesDialog(GtkGUI):
                                                  option.get_current_value()))
                     printer.setOption(option.name, option.get_current_value())
 
-        except cups.IPPError, (e, s):
+        except cups.IPPError as e:
+            (e, s) = e.args
             show_IPP_Error(e, s, parent)
             self.cups._end_operation ()
             return True
@@ -1191,8 +1192,8 @@ class PrinterPropertiesDialog(GtkGUI):
             c = authconn.Connection (self.parent, try_as_root=False,
                                      host=self._host,
                                      encryption=self._encryption)
-        except RuntimeError, s:
-            show_IPP_Error (None, s, self.parent)
+        except RuntimeError as e:
+            show_IPP_Error (None, e, self.parent)
             return
 
         job_id = None
@@ -1205,7 +1206,8 @@ class PrinterPropertiesDialog(GtkGUI):
             else:
                 debugprint ('Printing default test page')
                 job_id = c.printTestPage(printer.name)
-        except cups.IPPError, (e, msg):
+        except cups.IPPError as e:
+            (e, msg) = e.args
             if (e == cups.IPP_NOT_AUTHORIZED and
                 self._host != 'localhost' and
                 self._host[0] != '/'):
@@ -1246,7 +1248,8 @@ class PrinterPropertiesDialog(GtkGUI):
                               _("Maintenance command submitted as "
                                 "job %d") % job_id,
                               parent=self.parent)
-        except cups.IPPError, (e, msg):
+        except cups.IPPError as e:
+            (e, msg) = e.args
             if (e == cups.IPP_NOT_AUTHORIZED and
                 self.printer.name != 'localhost'):
                 show_error_dialog (_("Not possible"),
@@ -1316,7 +1319,8 @@ class PrinterPropertiesDialog(GtkGUI):
             self.ppd_local = printer.getPPD()
             if self.ppd_local != False:
                 self.ppd_local.localize()
-        except cups.IPPError, (e, m):
+        except cups.IPPError as e:
+            (e, m) = e.args
             # We might get IPP_INTERNAL_ERROR if this is a memberless
             # class.
             if e != cups.IPP_INTERNAL_ERROR:
@@ -1325,7 +1329,7 @@ class PrinterPropertiesDialog(GtkGUI):
 
             # Treat it as a raw queue.
             self.ppd = False
-        except RuntimeError, e:
+        except RuntimeError as e:
             # Either the underlying cupsGetPPD2() function returned
             # NULL without setting an IPP error (so it'll be something
             # like a failed connection), or the PPD could not be parsed.
@@ -1519,7 +1523,7 @@ class PrinterPropertiesDialog(GtkGUI):
                 try:
                     # Can the value be coerced into the right type?
                     typ (val[0])
-                except TypeError, s:
+                except TypeError as s:
                     debugprint ("%s value not coercible to %s: %s" %
                                 (attr, typ, s))
                     val = map (lambda x: 0.0, val)
@@ -1629,7 +1633,7 @@ class PrinterPropertiesDialog(GtkGUI):
         try:
             pixbuf = theme.load_icon (icon, 22, 0)
             cell.set_property ("pixbuf", pixbuf)
-        except GLib.GError, exc:
+        except GLib.GError:
             pass # Couldn't load icon
 
     def set_printer_state_reason_text (self, column, cell, model, iter, *data):

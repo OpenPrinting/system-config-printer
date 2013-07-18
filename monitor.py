@@ -353,7 +353,8 @@ class Monitor(GObject.GObject):
                                                         [self.sub_seq + 1])
                 except AttributeError:
                     notifications = c.getNotifications ([self.sub_id])
-            except cups.IPPError, (e, m):
+            except cups.IPPError as e:
+                (e, m) = e.args
                 cups.setUser (user)
                 if e == cups.IPP_NOT_FOUND:
                     # Subscription lease has expired.
@@ -449,7 +450,8 @@ class Monitor(GObject.GObject):
                     jobs[jobid] = attrs
                 except KeyError:
                     jobs[jobid] = {'job-k-octets': 0}
-                except cups.IPPError, (e, m):
+                except cups.IPPError as e:
+                    (e, m) = e.args
                     self.emit ('cups-ipp-error', e, m)
                     jobs[jobid] = {'job-k-octets': 0}
 
@@ -518,7 +520,8 @@ class Monitor(GObject.GObject):
         if self.sub_id != -1:
             try:
                 c.cancelSubscription (self.sub_id)
-            except cups.IPPError, (e, m):
+            except cups.IPPError as e:
+                (e, m) = e.args
                 GLib.idle_add (lambda (e, m):
                                    self.emit ('cups-ipp-error', e, m),
                                (e, m))
@@ -547,7 +550,8 @@ class Monitor(GObject.GObject):
             self.sub_id = c.createSubscription ("/", events=events)
             debugprint ("Created subscription %d, events=%s" % (self.sub_id,
                                                                 repr (events)))
-        except cups.IPPError, (e, m):
+        except cups.IPPError as e:
+            (e, m) = e.args
             GLib.idle_add (lambda (e, m):
                                self.emit ('cups-ipp-error', e, m),
                            (e, m))
@@ -585,7 +589,8 @@ class Monitor(GObject.GObject):
             self.printer_state_reasons = r
             dests = c.getPrinters ()
             self.printers = set(dests.keys ())
-        except cups.IPPError, (e, m):
+        except cups.IPPError as e:
+            (e, m) = e.args
             GLib.idle_add (lambda (e, m):
                                self.emit ('cups-ipp-error', e, m),
                            (e, m))
@@ -645,7 +650,8 @@ class Monitor(GObject.GObject):
                                  first_job_id=self.fetch_first_job_id,
                                  limit=limit,
                                  requested_attributes=r)
-        except cups.IPPError, (e, m):
+        except cups.IPPError as e:
+            (e, m) = e.args
             self.emit ('cups-ipp-error', e, m)
             self.fetch_jobs_timer = None
             cups.setUser (user)

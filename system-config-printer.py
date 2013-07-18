@@ -32,7 +32,7 @@ try:
     from gi.repository import Gdk
     from gi.repository import Gtk
     Gtk.init (sys.argv)
-except RuntimeError, e:
+except RuntimeError as e:
     print "system-config-printer:", e
     print "This is a graphical application and requires DISPLAY to be set."
     sys.exit (1)
@@ -443,7 +443,8 @@ class GUI(GtkGUI):
 
         try:
             self.populateList()
-        except cups.HTTPError, (s,):
+        except cups.HTTPError as e:
+            (s,) = e.args
             self.cups = None
             self.populateList()
             show_HTTP_Error(s, self.PrintersWindow)
@@ -506,7 +507,8 @@ class GUI(GtkGUI):
             self.propertiesDlg.show (name, host=self.connect_server,
                                      encryption=self.connect_encrypt,
                                      parent=self.PrintersWindow)
-        except cups.IPPError, (e, m):
+        except cups.IPPError as e:
+            (e, m) = e.args
             self.sensitise_main_window_widgets ()
             show_IPP_Error (e, m, self.PrintersWindow)
             if e == cups.IPP_SERVICE_UNAVAILABLE:
@@ -725,7 +727,8 @@ class GUI(GtkGUI):
                 self.default_printer = self.cups.getDefault ()
                 if self.default_printer:
                     self.default_printer = self.default_printer.decode ('utf-8')
-            except cups.IPPError, (e, m):
+            except cups.IPPError as e:
+                (e, m) = e.args
                 show_IPP_Error(e, m, self.PrintersWindow)
                 self.printers = {}
                 self.default_printer = None
@@ -1094,7 +1097,7 @@ class GUI(GtkGUI):
             connection = authconn.Connection(parent,
                                              host=self.connect_server,
                                              encryption=self.connect_encrypt)
-        except RuntimeError, s:
+        except RuntimeError as s:
             if self.connect_thread != thread.get_ident(): return
             Gdk.threads_enter()
             self.ConnectingDialog.hide()
@@ -1104,7 +1107,8 @@ class GUI(GtkGUI):
             show_IPP_Error(None, s, parent)
             Gdk.threads_leave()
             return
-        except cups.IPPError, (e, s):
+        except cups.IPPError as e:
+            (e, s) = e.args
             if self.connect_thread != thread.get_ident(): return
             Gdk.threads_enter()
             self.ConnectingDialog.hide()
@@ -1125,7 +1129,8 @@ class GUI(GtkGUI):
             self.cups = connection
             self.setConnected()
             self.populateList()
-	except cups.HTTPError, (s,):
+        except cups.HTTPError as e:
+            (s,) = e.args
             self.cups = None
             self.setConnected()
             self.populateList()
@@ -1198,11 +1203,13 @@ class GUI(GtkGUI):
         self.cups._begin_operation (_("setting default printer"))
         try:
             reload = printer.setAsDefault ()
-        except cups.HTTPError, (s,):
+        except cups.HTTPError as e:
+            (s,) = e.args
             show_HTTP_Error (s, self.PrintersWindow)
             self.cups._end_operation ()
             return
-        except cups.IPPError, (e, msg):
+        except cups.IPPError as e:
+            (e, msg) = e.args
             show_IPP_Error(e, msg, self.PrintersWindow)
             self.cups._end_operation ()
             return
@@ -1216,7 +1223,8 @@ class GUI(GtkGUI):
 
         try:
             self.populateList()
-        except cups.HTTPError, (s,):
+        except cups.HTTPError as e:
+            (s,) = e.args
             self.cups = None
             self.setConnected()
             self.populateList()
@@ -1366,7 +1374,8 @@ class GUI(GtkGUI):
         except RuntimeError:
             # Perhaps cupsGetPPD2 failed for a browsed printer
             pass
-        except cups.IPPError, (e, m):
+        except cups.IPPError as e:
+            (e, m) = e.args
             show_IPP_Error (e, m, self.PrintersWindow)
             self.populateList ()
             return
@@ -1383,7 +1392,8 @@ class GUI(GtkGUI):
                     self.propertiesDlg.printer.setAccepting (True)
                     self.cups._end_operation ()
                     return
-            except cups.IPPError, (e, msg):
+            except cups.IPPError as e:
+                (e, msg) = e.args
                 show_IPP_Error (e, msg, self.PrintersWindow)
                 self.cups._end_operation ()
                 return
@@ -1397,9 +1407,11 @@ class GUI(GtkGUI):
                 try:
                     self.propertiesDlg.printer.name = old_name
                     self.propertiesDlg.printer.setAccepting (True)
-                except cups.HTTPError, (s,):
+                except cups.HTTPError as e:
+                    (s,) = e.args
                     show_HTTP_Error (s, self.PrintersWindow)
-                except cups.IPPError, (e, msg):
+                except cups.IPPError as e:
+                    (e, msg) = e.args
                     show_IPP_Error (e, msg, self.PrintersWindow)
 
             self.cups._end_operation ()
@@ -1415,10 +1427,12 @@ class GUI(GtkGUI):
         if not rejecting:
             try:
                 self.propertiesDlg.printer.setAccepting (True)
-            except cups.HTTPError, (s,):
+            except cups.HTTPError as e:
+                (s,) = e.args
                 show_HTTP_Error (s, self.PrintersWindow)
                 # Not fatal.
-            except cups.IPPError, (e, msg):
+            except cups.IPPError as e:
+                (e, msg) = e.args
                 show_IPP_Error (e, msg, self.PrintersWindow)
                 # Not fatal.
 
@@ -1427,10 +1441,12 @@ class GUI(GtkGUI):
             reload = False
             try:
                 reload = self.propertiesDlg.printer.setAsDefault ()
-            except cups.HTTPError, (s,):
+            except cups.HTTPError as e:
+                (s,) = e.args
                 show_HTTP_Error (s, self.PrintersWindow)
                 # Not fatal.
-            except cups.IPPError, (e, msg):
+            except cups.IPPError as e:
+                (e, msg) = e.args
                 show_IPP_Error (e, msg, self.PrintersWindow)
                 # Not fatal.
 
@@ -1440,10 +1456,12 @@ class GUI(GtkGUI):
         # Finally, delete the old printer.
         try:
             self.cups.deletePrinter (old_name)
-        except cups.HTTPError, (s,):
+        except cups.HTTPError as e:
+            (s,) = e.args
             show_HTTP_Error (s, self.PrintersWindow)
             # Not fatal
-        except cups.IPPError, (e, msg):
+        except cups.IPPError as e:
+            (e, msg) = e.args
             show_IPP_Error (e, msg, self.PrintersWindow)
             # Not fatal.
 
@@ -1492,7 +1510,8 @@ class GUI(GtkGUI):
         except RuntimeError:
             # Perhaps cupsGetPPD2 failed for a browsed printer
             pass
-        except cups.IPPError, (e, m):
+        except cups.IPPError as e:
+            (e, m) = e.args
             show_IPP_Error (e, m, self.PrintersWindow)
             self.populateList ()
             return
@@ -1559,7 +1578,8 @@ class GUI(GtkGUI):
                 self.cups._begin_operation (_("deleting printer %s") % name)
                 self.cups.deletePrinter (name)
                 self.cups._end_operation ()
-        except cups.IPPError, (e, msg):
+        except cups.IPPError as e:
+            (e, msg) = e.args
             self.cups._end_operation ()
             show_IPP_Error(e, msg, self.PrintersWindow)
 
@@ -1586,7 +1606,8 @@ class GUI(GtkGUI):
             self.cups._begin_operation (_("modifying printer %s") % printer.name)
             try:
                 printer.setEnabled (enable)
-            except cups.IPPError, (e, m):
+            except cups.IPPError as e:
+                (e, m) = e.args
                 errordialogs.show_IPP_Error (e, m, self.PrintersWindow)
                 # Give up on this operation.
                 self.cups._end_operation ()
@@ -1620,7 +1641,8 @@ class GUI(GtkGUI):
             try:
                 printer.setShared (share)
                 success = True
-            except cups.IPPError, (e, m):
+            except cups.IPPError as e:
+                (e, m) = e.args
                 show_IPP_Error(e, m, self.PrintersWindow)
                 self.cups._end_operation ()
                 # Give up on this operation.
@@ -1931,7 +1953,8 @@ class GUI(GtkGUI):
         if not ppd:
             try:
                 filename = self.cups.getPPD(name)
-            except cups.IPPError, (e, msg):
+            except cups.IPPError as e:
+                (e, msg) = e.args
                 if e == cups.IPP_NOT_FOUND:
                     # This is a raw queue.  Nothing to check.
                     return

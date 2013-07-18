@@ -350,7 +350,7 @@ class PPDs:
                 xmldriverprefs.PreferredDrivers (xmlfile)
             self.drivertypes.load (drivertypes)
             self.preforder.load (preferenceorder)
-        except Exception, e:
+        except Exception as e:
             print "Error loading %s: %s" % (xmlfile, e)
             self.drivertypes = None
             self.preforder = None

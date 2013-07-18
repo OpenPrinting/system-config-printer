@@ -167,10 +167,10 @@ for name in list:
     except KeyboardInterrupt:
         print "Keyboard interrupt\n"
         break
-    except TimedOut, e:
+    except TimedOut as e:
         bad.append ((name, e))
         print "Timed out fetching %s" % name
-    except Exception, e:
+    except Exception as e:
         bad.append ((name, e))
         print "Exception fetching %s: %s" % (name, e)
 

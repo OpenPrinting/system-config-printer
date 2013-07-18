@@ -899,7 +899,7 @@ class JobViewer (GtkGUI):
             pass
         except RuntimeError:
             pass
-        except cups.IPPError, (e, m):
+        except cups.IPPError:
             pass
 
         # Invalidate the cached status description and redraw the treeview.
@@ -984,7 +984,7 @@ class JobViewer (GtkGUI):
                         debugprint ("Automatically authenticated job %d" % job)
                         self.authenticated_jobs.add (job)
                         return
-                    except cups.IPPError, (e, m):
+                    except cups.IPPError:
                         c._end_operation ()
                         nonfatalException ()
                         return
@@ -1065,7 +1065,8 @@ class JobViewer (GtkGUI):
             remember = dialog.get_remember_password ()
             self.authenticated_jobs.add (jobid)
             self.update_monitor ()
-        except cups.IPPError, (e, m):
+        except cups.IPPError as e:
+            (e, m) = e.args
             self.show_IPP_Error (e, m)
 
         c._end_operation ()
@@ -1322,7 +1323,8 @@ class JobViewer (GtkGUI):
             c._begin_operation (_("holding job"))
             try:
                 c.setJobHoldUntil (jobid, "indefinite")
-            except cups.IPPError, (e, m):
+            except cups.IPPError as e:
+                (e, m) = e.args
                 if (e != cups.IPP_NOT_POSSIBLE and
                     e != cups.IPP_NOT_FOUND):
                     self.show_IPP_Error (e, m)
@@ -1347,7 +1349,8 @@ class JobViewer (GtkGUI):
             c._begin_operation (_("releasing job"))
             try:
                 c.setJobHoldUntil (jobid, "no-hold")
-            except cups.IPPError, (e, m):
+            except cups.IPPError as e:
+                (e, m) = e.args
                 if (e != cups.IPP_NOT_POSSIBLE and
                     e != cups.IPP_NOT_FOUND):
                     self.show_IPP_Error (e, m)
@@ -1368,7 +1371,8 @@ class JobViewer (GtkGUI):
             for jobid in self.jobids:
                 c.restartJob (jobid)
             del c
-        except cups.IPPError, (e, m):
+        except cups.IPPError as e:
+            (e, m) = e.args
             self.show_IPP_Error (e, m)
             self.update_monitor ()
             return
@@ -1433,7 +1437,8 @@ class JobViewer (GtkGUI):
                         debugprint("Unable to retrieve file from job file")
                         return
 
-            except cups.IPPError, (e, m):
+            except cups.IPPError as e:
+                (e, m) = e.args
                 self.show_IPP_Error (e, m)
                 self.update_monitor ()
                 return
@@ -1450,7 +1455,8 @@ class JobViewer (GtkGUI):
             for jobid in self.jobids:
                 c.moveJob (job_id=jobid, job_printer_uri=job_printer_uri)
             del c
-        except cups.IPPError, (e, m):
+        except cups.IPPError as e:
+            (e, m) = e.args
             self.show_IPP_Error (e, m)
             self.update_monitor ()
             return

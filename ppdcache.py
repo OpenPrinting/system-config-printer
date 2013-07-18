@@ -62,7 +62,7 @@ class PPDCache:
 
         try:
             f = self._cache[name]
-        except RuntimeError, e:
+        except RuntimeError as e:
             self._schedule_callback (callback, name, None, e)
             return
         except KeyError:
@@ -94,7 +94,7 @@ class PPDCache:
             ppd = cups.PPD (tmpfname)
             os.unlink (tmpfname)
             self._schedule_callback (callback, name, ppd, None)
-        except Exception, e:
+        except Exception as e:
             os.unlink (tmpfname)
             self._schedule_callback (callback, name, None, e)
 

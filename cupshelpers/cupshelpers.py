@@ -427,7 +427,8 @@ class Printer:
         try:
             resource = "/admin/conf/lpoptions"
             self.connection.getFile(resource, fd=tmpfd)
-        except cups.HTTPError, (s,):
+        except cups.HTTPError as e:
+            (s,) = e.args
             if s == cups.HTTP_NOT_FOUND:
                 return False
 
@@ -455,7 +456,7 @@ class Printer:
             os.lseek (tmpfd, 0, os.SEEK_SET)
             try:
                 self.connection.putFile (resource, fd=tmpfd)
-            except cups.HTTPError, (s,):
+            except cups.HTTPError:
                 return False
 
         return changed

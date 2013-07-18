@@ -109,12 +109,12 @@ def open_socket(hostname, port):
         try:
             s = socket.socket(af, socktype, proto)
             s.settimeout(0.5)
-        except socket.error, msg:
+        except socket.error:
             s = None
             continue
         try:
             s.connect(sa)
-        except socket.error, msg:
+        except socket.error:
             s.close()
             s = None
             continue
@@ -137,7 +137,7 @@ class LpdServer:
             s.send('\2%s\n' % name) # cmd send job to queue
             data = s.recv(1024) # receive status
             print repr(data)
-        except socket.error, msg:
+        except socket.error as msg:
             print msg
             try:
                 s.close ()
@@ -253,7 +253,7 @@ class PrinterFinder:
 
             try:
                 fn ()
-            except Exception, e:
+            except Exception:
                 nonfatalException ()
 
         # Signal that we've finished.
@@ -281,7 +281,7 @@ class PrinterFinder:
                                   stdin=null,
                                   stdout=subprocess.PIPE,
                                   stderr=null)
-        except OSError, e:
+        except OSError as e:
             debugprint ("snmp: no good")
             if e == errno.ENOENT:
                 return
@@ -365,7 +365,7 @@ class PrinterFinder:
                                   stdin=null,
                                   stdout=subprocess.PIPE,
                                   stderr=null)
-        except OSError, e:
+        except OSError as e:
             if e == errno.ENOENT:
                 return
 
@@ -408,9 +408,10 @@ class PrinterFinder:
 
                 try:
                     entries = ctx.opendir (uri).getdents ()
-                except Exception, e:
+                except Exception as e:
                     smbc_auth.failed (e)
-        except RuntimeError, (e, s):
+        except RuntimeError as e:
+            (e, s) = e.args
             if e not in [errno.ENOENT, errno.EACCES, errno.EPERM]:
                 debugprint ("Runtime error: %s" % repr ((e, s)))
         except:

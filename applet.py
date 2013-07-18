@@ -36,7 +36,7 @@ import gettext
 gettext.install(domain=DOMAIN, unicode=True)
 try:
     locale.setlocale (locale.LC_ALL, "")
-except locale.Error, e:
+except locale.Error as e:
     import os
     os.environ['LC_ALL'] = 'C'
     locale.setlocale (locale.LC_ALL, "")
@@ -357,7 +357,7 @@ class RunLoop:
                 iface = dbus.Interface (obj, PRINTING_IFACE)
                 path = iface.JobApplet ()
                 debugprint ("Job applet is %s" % path)
-            except dbus.DBusException, e:
+            except dbus.DBusException as e:
                 try:
                     print e
                 except:
@@ -429,7 +429,7 @@ if __name__ == '__main__':
     try:
         cupshelpers.installdriver.set_debugprint_fn (debugprint)
         cupshelpers.installdriver.PrinterDriversInstaller(system_bus)
-    except Exception, e:
+    except Exception as e:
         try:
             print >> sys.stderr, ("%s: failed to start "
                                   "PrinterDriversInstaller service: "

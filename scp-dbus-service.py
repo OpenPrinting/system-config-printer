@@ -187,7 +187,7 @@ class GetBestDriversRequest:
 
             g_killtimer.remove_hold ()
             self.reply_handler (map (lambda x: (x, fit[x]), ppdnamelist))
-        except Exception, e:
+        except Exception as e:
             try:
                 g_killtimer.remove_hold ()
             except:
@@ -217,7 +217,7 @@ class GroupPhysicalDevicesRequest:
                 resolver.resolve (reply_handler=self._group)
             else:
                 self._group ()
-        except Exception, e:
+        except Exception as e:
             g_killtimer.remove_hold ()
             self.error_handler (e)
 
@@ -245,7 +245,7 @@ class GroupPhysicalDevicesRequest:
 
             g_killtimer.remove_hold ()
             self.reply_handler (uris_by_phys)
-        except Exception, e:
+        except Exception as e:
             g_killtimer.remove_hold ()
             self.error_handler (e)
 

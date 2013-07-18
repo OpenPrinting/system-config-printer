@@ -245,7 +245,8 @@ class Connection:
                         # Authentication failed, but we aren't told that.
                         raise cups.IPPError (cups.IPP_NOT_AUTHORIZED, '')
                 break
-            except cups.IPPError, (e, m):
+            except cups.IPPError as e:
+                (e, m) = e.args
                 if self._use_pk and m == 'pkcancel':
                     raise cups.IPPError (0, _("Operation canceled"))
 
@@ -275,7 +276,8 @@ class Connection:
 
                     debugprint ("%s: %s" % (e, repr (m)))
                     raise
-            except cups.HTTPError, (s,):
+            except cups.HTTPError as e:
+                (s,) = e.args
                 if not self._cancel:
                     self._failed (s == cups.HTTP_FORBIDDEN)
                 else:

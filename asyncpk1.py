@@ -83,7 +83,7 @@ class _PK1AsyncMethodCall:
                         reply_handler=self._pk_reply_handler,
                         error_handler=self._pk_error_handler,
                         timeout=3600)
-        except TypeError, e:
+        except TypeError as e:
             debugprint ("Type error in PK call: %s" % repr (e))
             self.call_fallback_fn ()
 
@@ -269,7 +269,7 @@ class PK1Connection:
 
                     break
 
-            except Exception, e:
+            except Exception as e:
                 debugprint ("Exception assessing DevicesGet API: %s" % repr (e))
 
         methodtype = type (self._conn.getPrinters)
@@ -341,7 +341,7 @@ class PK1Connection:
                 # ignored.  Skip to the next one.
                 argindex += 1
                 continue
-            except TypeError, e:
+            except TypeError as e:
                 debugprint ("Error converting %s to %s" %
                             (repr (arg), types[argindex]))
                 return result
@@ -353,7 +353,7 @@ class PK1Connection:
             if leftover_kwds.has_key (kw):
                 try:
                     val = self._coerce (types[argindex], leftover_kwds[kw])
-                except TypeError, e:
+                except TypeError as e:
                     debugprint ("Error converting %s to %s" %
                                 (repr (leftover_kwds[kw]), types[argindex]))
                     return result
@@ -388,7 +388,7 @@ class PK1Connection:
             try:
                 debugprint ("Calling PK method %s" % pk_method_name)
                 asyncmethodcall.call ()
-            except dbus.DBusException, e:
+            except dbus.DBusException as e:
                 debugprint ("D-Bus call failed: %s" % repr (e))
                 use_pycups = True
 

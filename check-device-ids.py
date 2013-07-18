@@ -52,7 +52,8 @@ elif len (sys.argv) == 2:
         # This is a queue name.  Work out the URI from that.
         try:
             attrs = c.getPrinterAttributes (sys.argv[1])
-        except cups.IPPError, (e, m):
+        except cups.IPPError as e:
+            (e, m) = e.args
             print "Error getting printer attibutes: %s" % m
             sys.exit (1)
 
@@ -73,7 +74,8 @@ if devices == None:
             devices = c.getDevices (include_schemes=[scheme])
         else:
             devices = c.getDevices (exclude_schemes=["dnssd", "hal", "hpfax"])
-    except cups.IPPError, (e, m):
+    except cups.IPPError as e:
+        (e, m) = e.args
         if e == cups.IPP_FORBIDDEN:
             print "Run this as root to examine IDs from attached devices."
             sys.exit (1)
@@ -140,7 +142,7 @@ for device, attrs in devices.iteritems ():
                         attrs.update ({'device-make-and-model':
                                            dev.make_and_model})
 
-        except Exception, e:
+        except Exception as e:
             print "Exception: %s" % repr (e)
 
     if not (make_and_model and device_id):
@@ -166,7 +168,7 @@ try:
         proxy = dbus.Interface (obj, "org.freedesktop.PackageKit.Modify")
         proxy.InstallPrinterDrivers (0, device_ids,
                                      "hide-finished", timeout=3600)
-    except dbus.exceptions.DBusException, e:
+    except dbus.exceptions.DBusException as e:
         print "Ignoring exception: %s" % e
 except dbus.exceptions.DBusException:
     try:
@@ -182,7 +184,7 @@ except dbus.exceptions.DBusException:
                 id_dict = cupshelpers.parseDeviceID (device_id)
                 proxy.InstallDrivers (id_dict['MFG'], id_dict['MDL'], '',
                                       timeout=3600)
-        except dbus.exceptions.DBusException, e:
+        except dbus.exceptions.DBusException as e:
             print "Ignoring exception: %s" % e
     except dbus.exceptions.DBusException:
         print "D-Bus not available so skipping package installation"
@@ -308,7 +310,7 @@ for device, attrs in devices.iteritems ():
     for each in missing:
         try:
             ppd_device_id = ppds.getInfoFromPPDName (each).get ('ppd-device-id')
-        except Exception, e:
+        except Exception as e:
             print e
             ppd_device_id = None
 

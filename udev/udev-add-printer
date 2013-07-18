@@ -79,7 +79,7 @@ def create_queue (c, printers, name, device_uri, ppdname, info, installer):
                 syslog (LOG_ERROR, "Deleting non-functional queue")
                 c.deletePrinter (name)
                 name = None
-        except cups.IPPError, (e, m):
+        except cups.IPPError:
             pass
         except RuntimeError:
             pass
@@ -115,7 +115,7 @@ def add_queue (device_id, device_uris, fax_basename=False):
             notification = dbus.Interface (obj,
                                            "com.redhat.NewPrinterNotification")
             notification.GetReady ()
-        except dbus.DBusException, e:
+        except dbus.DBusException as e:
             syslog (LOG_DEBUG, "D-Bus method call failed: %s" % e)
             notification = None
 
@@ -124,7 +124,7 @@ def add_queue (device_id, device_uris, fax_basename=False):
                                   "/com/redhat/PrinterDriversInstaller")
             installer = dbus.Interface (obj,
                                         "com.redhat.PrinterDriversInstaller")
-        except dbus.DBusException, e:
+        except dbus.DBusException as e:
             #syslog (LOG_DEBUG, "Failed to get D-Bus object for "
             #        "PrinterDriversInstaller: %s" % e)
             pass
@@ -140,7 +140,7 @@ def add_queue (device_id, device_uris, fax_basename=False):
         try:
             installer.InstallDrivers (id_dict["MFG"], id_dict["MDL"], cmd,
                                       timeout=3600)
-        except dbus.DBusException, e:
+        except dbus.DBusException as e:
             syslog (LOG_DEBUG, "Failed to install drivers: %s" % repr (e))
 
     c = cups.Connection ()
@@ -219,7 +219,7 @@ def add_queue (device_id, device_uris, fax_basename=False):
 
             notification.NewPrinter (status, uniquename, id_dict["MFG"],
                                      id_dict["MDL"], id_dict["DES"], cmd)
-        except dbus.DBusException, e:
+        except dbus.DBusException as e:
             syslog (LOG_DEBUG, "D-Bus method call failed: %s" % e)
 
 if len (sys.argv) < 3:
@@ -229,7 +229,7 @@ if len (sys.argv) < 3:
 openlog ("udev-add-printer", 0, LOG_LPR)
 try:
     add_queue (sys.argv[1], sys.argv[2:])
-except SystemExit, e:
+except SystemExit as e:
     sys.exit (e)
 except:
     (type, value, tb) = sys.exc_info ()

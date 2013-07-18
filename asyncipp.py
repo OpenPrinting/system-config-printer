@@ -90,7 +90,7 @@ class _IPPConnectionThread(threading.Thread):
                                     port=self.port,
                                     encryption=self._encryption)
             self._reply (None)
-        except RuntimeError, e:
+        except RuntimeError as e:
             conn = None
             self._error (e)
 
@@ -129,7 +129,7 @@ class _IPPConnectionThread(threading.Thread):
 
                     self._queue.task_done ()
                     self._reply (None)
-                except RuntimeError, e:
+                except RuntimeError as e:
                     debugprint ("...failed")
                     self._queue.task_done ()
                     self._error (e)
@@ -148,7 +148,7 @@ class _IPPConnectionThread(threading.Thread):
 
                 debugprint ("...success")
                 self._reply (result)
-            except Exception, e:
+            except Exception as e:
                 debugprint ("...failure (%s)" % repr (e))
                 self._error (e)
 

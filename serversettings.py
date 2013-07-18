@@ -134,7 +134,8 @@ class ServerSettings(GtkGUI):
         f = tempfile.TemporaryFile ()
         try:
             self.cupsconn.getFile (self.RESOURCE, file=f)
-        except cups.HTTPError, (s,):
+        except cups.HTTPError as e:
+            (s,) = e.args
             show_HTTP_Error (s, self._parent)
             raise
 
@@ -198,7 +199,8 @@ class ServerSettings(GtkGUI):
         self.cupsconn._begin_operation (_("fetching server settings"))
         try:
             self.server_settings = self.cupsconn.adminGetServerSettings()
-        except cups.IPPError, (e, m):
+        except cups.IPPError as e:
+            (e, m) = e.args
             show_IPP_Error(e, m, self._parent)
             self.cupsconn._end_operation ()
             raise
@@ -408,7 +410,8 @@ class ServerSettings(GtkGUI):
         f = tempfile.TemporaryFile ()
         try:
             self.cupsconn.getFile (self.RESOURCE, file=f)
-        except cups.HTTPError, (s,):
+        except cups.HTTPError as e:
+            (s,) = e.args
             show_HTTP_Error (s, self.dialog)
             return
 
@@ -487,7 +490,8 @@ class ServerSettings(GtkGUI):
         os.lseek (fd, 0, os.SEEK_SET)
         try:
             self.cupsconn.putFile ("/admin/conf/cupsd.conf", fd=fd)
-        except cups.HTTPError, (s,):
+        except cups.HTTPError as e:
+            (s,) = e.args
             show_HTTP_Error (s, self.dialog)
             return
 
@@ -515,11 +519,12 @@ class ServerSettings(GtkGUI):
         self.cupsconn._begin_operation (_("modifying server settings"))
         try:
             self.cupsconn.adminSetServerSettings(setting_dict)
-        except cups.IPPError, (e, m):
+        except cups.IPPError as e:
+            (e, m) = e.args
             show_IPP_Error(e, m, self.dialog)
             self.cupsconn._end_operation ()
             return True
-        except RuntimeError, s:
+        except RuntimeError as s:
             show_IPP_Error(None, s, self.dialog)
             self.cupsconn._end_operation ()
             return True

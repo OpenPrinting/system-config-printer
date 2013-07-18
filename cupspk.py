@@ -131,7 +131,7 @@ class Connection:
                         else:
                             return retval
                 break
-            except dbus.exceptions.DBusException, e:
+            except dbus.exceptions.DBusException as e:
                 if e.get_dbus_name() == CUPS_PK_NEED_AUTH:
                     raise cups.IPPError(cups.IPP_NOT_AUTHORIZED, 'pkcancel')
 

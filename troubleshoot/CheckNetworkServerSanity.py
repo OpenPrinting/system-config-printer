@@ -158,7 +158,8 @@ class CheckNetworkServerSanity(Question):
             except NameError:
                 # No smbc support
                 pass
-            except RuntimeError, (e, s):
+            except RuntimeError as e:
+                (e, s) = e.args
                 self.answers['remote_server_smb_shares'] = (e, s)
 
             if context != None and answers.has_key ('cups_printer_dict'):
@@ -175,7 +176,8 @@ class CheckNetworkServerSanity(Question):
                                               parent=parent)
                     f  = self.op.run ()
                     accessible = True
-                except RuntimeError, (e, s):
+                except RuntimeError as e:
+                    (e, s) = e.args
                     accessible = (e, s)
 
                 self.answers['remote_server_smb_share_anon_access'] = accessible

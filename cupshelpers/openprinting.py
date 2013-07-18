@@ -96,7 +96,7 @@ class OpenPrinting:
             import locale
             try:
                 language = locale.getlocale(locale.LC_MESSAGES)
-            except locale.Error, e:
+            except locale.Error:
                 language = 'C'
         self.language = language
 

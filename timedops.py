@@ -152,7 +152,7 @@ class OperationThread(threading.Thread):
             debugprint ("Calling %s" % self.target)
             self.result = self.target (*self.args, **self.kwargs)
             debugprint ("Done")
-        except Exception, e:
+        except Exception as e:
             debugprint ("Caught exception %s" % e)
             self.exception = e
 

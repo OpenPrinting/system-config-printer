@@ -163,7 +163,7 @@ class UserDefaultPrompt:
         else:
             try:
                 self.userdef.set (self.name)
-            except Exception, e:
+            except Exception as e:
                 print "Error setting default: %s" % repr (e)
 
             self.refresh_fn ()

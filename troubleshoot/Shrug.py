@@ -87,7 +87,7 @@ class Shrug(Question):
                 f.write (self.buffer.get_text (start=self.buffer.get_start_iter (),
                                                end=self.buffer.get_end_iter (),
                                                include_hidden_chars=False))
-            except IOError, e:
+            except IOError as e:
                 err = Gtk.MessageDialog (parent,
                                          Gtk.DialogFlags.MODAL |
                                          Gtk.DialogFlags.DESTROY_WITH_PARENT,

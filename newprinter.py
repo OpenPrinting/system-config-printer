@@ -623,19 +623,21 @@ class NewPrinterGUI(GtkGUI):
             self.cups = authconn.Connection (parent=self.NewPrinterWindow,
                                              host=self._host,
                                              encryption=self._encryption)
-        except cups.HTTPError, (s,):
+        except cups.HTTPError as e:
+            (s,) = e.args
             show_HTTP_Error (s, self.parent)
             return False
         except RuntimeError:
             show_HTTP_Error (-1, self.parent)
             return False
-        except Exception, e:
+        except Exception as e:
             nonfatalException (e)
             return False
 
         try:
             self.printers = cupshelpers.getPrinters (self.cups)
-        except cups.IPPError, (e, m):
+        except cups.IPPError as e:
+            (e, m) = e.args
             show_IPP_Error (e, m, parent=self.parent)
             return False
 
@@ -799,7 +801,8 @@ class NewPrinterGUI(GtkGUI):
             ppdsloader.destroy ()
             try:
                 raise exc
-            except cups.IPPError, (e, m):
+            except cups.IPPError as e:
+                (e, m) = e.args
                 self.show_IPP_Error (e, m)
                 return
 
@@ -2177,9 +2180,10 @@ class NewPrinterGUI(GtkGUI):
             while smbc_auth.perform_authentication () > 0:
                 try:
                     entries = ctx.opendir ("smb://").getdents ()
-                except Exception, e:
+                except Exception as e:
                     smbc_auth.failed (e)
-        except RuntimeError, (e, s):
+        except RuntimeError as e:
+            (e, s) = e.args
             if e != errno.ENOENT:
                 debugprint ("Runtime error: %s" % repr ((e, s)))
         except:
@@ -2287,9 +2291,10 @@ class NewPrinterGUI(GtkGUI):
                 while smbc_auth.perform_authentication () > 0:
                     try:
                         entries = ctx.opendir (uri).getdents ()
-                    except Exception, e:
+                    except Exception as e:
                         smbc_auth.failed (e)
-            except RuntimeError, (e, s):
+            except RuntimeError as e:
+                (e, s) = e.args
                 if e != errno.ENOENT:
                     debugprint ("Runtime error: %s" % repr ((e, s)))
             except:
@@ -2331,9 +2336,10 @@ class NewPrinterGUI(GtkGUI):
                 while smbc_auth.perform_authentication () > 0:
                     try:
                         shares = ctx.opendir (uri).getdents ()
-                    except Exception, e:
+                    except Exception as e:
                         smbc_auth.failed (e)
-            except RuntimeError, (e, s):
+            except RuntimeError as e:
+                (e, s) = e.args
                 if e != errno.EACCES and e != errno.EPERM:
                     debugprint ("Runtime error: %s" % repr ((e, s)))
             except:
@@ -2506,12 +2512,13 @@ class NewPrinterGUI(GtkGUI):
                         f = ctx.open ("smb://%s/%s" % (host, share),
                                       os.O_RDWR, 0777)
                         accessible = True
-                    except Exception, e:
+                    except Exception as e:
                         smbc_auth.failed (e)
 
                 if not accessible:
                     canceled = True
-        except RuntimeError, (e, s):
+        except RuntimeError as e:
+            (e, s) = e.args
             debugprint ("Error accessing share: %s" % repr ((e, s)))
             reason = s
         except:
@@ -3763,7 +3770,7 @@ class NewPrinterGUI(GtkGUI):
                             ppd = cups.PPD(ppdname)
                             os.unlink(ppdname)
 
-        except RuntimeError, e:
+        except RuntimeError as e:
             debugprint ("RuntimeError: " + repr (e))
             if self.rbtnNPFoomatic.get_active():
                 # Foomatic database problem of some sort.
@@ -3922,7 +3929,8 @@ class NewPrinterGUI(GtkGUI):
                     except RuntimeError:
                         # Printer already in class?
                         continue
-            except cups.IPPError, (e, msg):
+            except cups.IPPError as e:
+                (e, msg) = e.args
                 self.show_IPP_Error(e, msg)
                 return
         elif self.dialog_mode == "printer" or \
@@ -3956,7 +3964,8 @@ class NewPrinterGUI(GtkGUI):
                     cupshelpers.setPPDPageSize(ppd, self.language[0])
                     self.cups.addPrinter(name, ppd=ppd, device=uri,
                                          info=info, location=location)
-            except cups.IPPError, (e, msg):
+            except cups.IPPError as e:
+                (e, msg) = e.args
                 ready (self.NewPrinterWindow)
                 self.show_IPP_Error(e, msg)
                 self.cups._end_operation()
@@ -3973,7 +3982,8 @@ class NewPrinterGUI(GtkGUI):
                 cupshelpers.activateNewPrinter (self.cups, name)
                 self.cups.setPrinterLocation(name, location)
                 self.cups.setPrinterInfo(name, info)
-            except cups.IPPError, (e, msg):
+            except cups.IPPError as e:
+                (e, msg) = e.args
                 self.show_IPP_Error(e, msg)
                 self.cups._end_operation ()
                 return
@@ -3983,7 +3993,8 @@ class NewPrinterGUI(GtkGUI):
             try:
                 uri = self.getDeviceURI()
                 self.cups.addPrinter(name, device=uri)
-            except cups.IPPError, (e, msg):
+            except cups.IPPError as e:
+                (e, msg) = e.args
                 self.show_IPP_Error(e, msg)
                 self.cups._end_operation ()
                 return
@@ -4007,11 +4018,13 @@ class NewPrinterGUI(GtkGUI):
                     # raw queue (no PPD) first.
                     try:
                         self.cups.addPrinter(name, ppdname='raw')
-                    except cups.IPPError, (e, msg):
+                    except cups.IPPError as e:
+                        (e, msg) = e.args
                         self.show_IPP_Error(e, msg)
                 try:
                     self.cups.addPrinter(name, ppdname=ppd)
-                except cups.IPPError, (e, msg):
+                except cups.IPPError as e:
+                    (e, msg) = e.args
                     self.show_IPP_Error(e, msg)
                     self.cups._end_operation ()
                     return
@@ -4020,7 +4033,8 @@ class NewPrinterGUI(GtkGUI):
                     filename = self.cups.getPPD(name)
                     ppd = cups.PPD(filename)
                     os.unlink(filename)
-                except cups.IPPError, (e, msg):
+                except cups.IPPError as e:
+                    (e, msg) = e.args
                     if e == cups.IPP_NOT_FOUND:
                         raw = True
                     else:
@@ -4041,7 +4055,8 @@ class NewPrinterGUI(GtkGUI):
 
                 try:
                     self.cups.addPrinter(name, ppd=ppd)
-                except cups.IPPError, (e, msg):
+                except cups.IPPError as e:
+                    (e, msg) = e.args
                     self.show_IPP_Error(e, msg)
                     self.cups._end_operation ()
                     return

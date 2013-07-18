@@ -94,7 +94,7 @@ class FirewallD:
                 debugprint ("Firewall data obtained")
                 if reply_handler:
                     reply_handler (self._fw_data) 
-            except (dbus.exceptions.DBusException, AttributeError, ValueError), e:
+            except (dbus.exceptions.DBusException, AttributeError, ValueError) as e:
                 self._fw_data = None
                 debugprint ("Exception examining firewall")
                 if error_handler:
@@ -163,7 +163,7 @@ class SystemConfigFirewall:
             obj = bus.get_object (self.DBUS_INTERFACE, self.DBUS_PATH)
             self._fw = dbus.Interface (obj, self.DBUS_INTERFACE)
             debugprint ("Using system-config-firewall")
-        except (dbus.exceptions.DBusException), e:
+        except dbus.exceptions.DBusException:
             debugprint ("No firewall ")
             self._fw = None
             self._fw_data = (None, None)
@@ -187,7 +187,7 @@ class SystemConfigFirewall:
 
                 p = self._fw.read ()
                 self._fw_data = json.loads (p.encode ('utf-8'))
-            except (dbus.exceptions.DBusException, AttributeError, ValueError), e:
+            except (dbus.exceptions.DBusException, AttributeError, ValueError) as e:
                 self._fw_data = (None, None)
                 if error_handler:
                     debugprint ("Exception examining firewall")
@@ -207,7 +207,7 @@ class SystemConfigFirewall:
     def reply_handler (self, result):
         try:
             self._fw_data = json.loads (result.encode ('utf-8'))
-        except ValueError, e:
+        except ValueError as e:
             self.error_handler (e)
             return
 

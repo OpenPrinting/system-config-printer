@@ -125,7 +125,7 @@ class PPDDriver(Driver):
     def examine_file (self, path):
         try:
             ppd = cups.PPD (path)
-        except RuntimeError, e:
+        except RuntimeError:
             # Not a PPD file.  Perhaps it's a drv file.
             drv = DrvDriver (path)
             self.ids += drv.list ()

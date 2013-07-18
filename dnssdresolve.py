@@ -82,7 +82,7 @@ class DNSSDHostNamesResolver:
                                         reply_handler=self._reply,
                                         error_handler=lambda e:
                                             self._error (uri, e))
-            except dbus.DBusException, e:
+            except dbus.DBusException as e:
                 debugprint ("Failed to resolve address: %s" % repr (e))
                 self._resolved ()
 
