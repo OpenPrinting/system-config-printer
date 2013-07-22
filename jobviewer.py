@@ -939,9 +939,16 @@ class JobViewer (GtkGUI):
                         keyring_attrs["domain"] = str (group)
                     else:
                         (serverport, rest) = urllib.splithost (rest)
-                        (server, port) = urllib.splitnport (serverport)
-                    keyring_attrs.update ({ "server": str (server.lower ()),
-                                            "protocol": str (scheme)})
+                        if serverport == None:
+                            server = None
+                        else:
+                            (server, port) = urllib.splitnport (serverport)
+
+                    if scheme == None or server == None:
+                        try_keyring = False
+                    else:
+                        keyring_attrs.update ({ "server": str (server.lower ()),
+                                                "protocol": str (scheme)})
 
                 if job in self.authenticated_jobs:
                     # We've already tried to authenticate this job before.
