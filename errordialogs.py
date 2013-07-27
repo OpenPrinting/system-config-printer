@@ -52,6 +52,9 @@ def show_IPP_Error(exception, message, parent=None):
         # In this case, the user has canceled a retry dialog.
         return
     else:
+        # cups.IPPError message is utf-8 encoded
+        if isinstance(message, bytes):
+            message = message.decode ('utf-8')
         title = _("CUPS server error")
         text = _("There was an error during the CUPS "
                  "operation: '%s'.") % message
