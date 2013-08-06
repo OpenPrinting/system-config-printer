@@ -692,10 +692,6 @@ class JobViewer (GtkGUI):
                     w.set_skip_taskbar_hint (True)
                     if aw != None:
                         aw.set_skip_taskbar_hint (True)
-                    w.property_change ("_NET_WM_ICON_GEOMETRY",
-                                       "CARDINAL", 32,
-                                       Gdk.PROP_MODE_REPLACE,
-                                       list (area))
                     self.JobsWindow.iconify ()
                 else:
                     self.JobsWindow.set_visible (False)
