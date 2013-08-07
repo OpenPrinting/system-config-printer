@@ -27,7 +27,9 @@ class GtkInkLevel (Gtk.DrawingArea):
         Gtk.DrawingArea.__init__ (self)
         self.connect ('draw', self.draw)
         self._level = level
-        self._color = Gdk.color_parse (color)
+        self._color = None
+        if color:
+            self._color = Gdk.color_parse (color)
         if not self._color:
             self._color = Gdk.color_parse ('#cccccc')
 
