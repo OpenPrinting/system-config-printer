@@ -2,7 +2,7 @@
 
 ## check-device-ids
 
-## Copyright (C) 2010, 2011, 2012 Red Hat, Inc.
+## Copyright (C) 2010, 2011, 2012, 2013 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 
@@ -40,7 +40,7 @@ if len (sys.argv) > 1 and sys.argv[1] == '--help':
 SPECIFIC_URI = None
 if len (sys.argv) == 3:
     id_dict = cupshelpers.parseDeviceID (sys.argv[2])
-    if id_dict.has_key ("MFG") and id_dict.has_key ("MDL"):
+    if id_dict.get ("MFG") and id_dict.get ("MDL"):
         devices = { 'user-specified:':
                         { 'device-make-and-model': sys.argv[1],
                           'device-id': sys.argv[2] }
@@ -315,9 +315,13 @@ for device, attrs in devices.iteritems ():
             ppd_device_id = None
 
         if ppd_device_id:
+            ppd_id_fields = cupshelpers.parseDeviceID (ppd_device_id)
+        else:
+            ppd_id_fields = {}
+
+        if ppd_id_fields.get ("MFG") and ppd_id_fields.get ("MDL"):
             print "%s       WRONG    %s [%s]" % (more, each,
                                                  driver_uri_to_pkg (each))
-            ppd_id_fields = cupshelpers.parseDeviceID (ppd_device_id)
             for field in ["MFG", "MDL"]:
                 value = id_fields[field]
                 ppd_value = ppd_id_fields[field]
