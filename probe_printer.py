@@ -96,12 +96,12 @@ def open_socket(hostname, port):
         host, port = hostname.split(":", 1)
     except ValueError:
         host = hostname
-        
+
     s = None
     try:
         ai = socket.getaddrinfo(host, port, socket.AF_UNSPEC,
                                 socket.SOCK_STREAM)
-    except socket.gaierror:
+    except (socket.gaierror, socket.error):
         ai = []
 
     for res in ai:
