@@ -2314,7 +2314,7 @@ class JobViewer (GtkGUI):
                                   GdkPixbuf.InterpType.NEAREST, 255)
                 icon = copy
             except GObject.GError:
-                debugprint ("No %s icon available" % gtk.STOCK_MEDIA_PAUSE)
+                debugprint ("No %s icon available" % Gtk.STOCK_MEDIA_PAUSE)
         else:
             # Check state reasons.
             printer = data['job-printer-name']
