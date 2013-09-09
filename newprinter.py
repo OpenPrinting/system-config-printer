@@ -2226,7 +2226,7 @@ class NewPrinterGUI(GtkGUI):
                                 "configuration."),
                               parent=self.NewPrinterWindow)
 
-    def smb_select_function (self, model, path, path_selected, data):
+    def smb_select_function (self, selection, model, path, path_selected, data):
         """Don't allow this path to be selected unless it is a leaf."""
         iter = self.smb_store.get_iter (path)
         return not self.smb_store.iter_has_child (iter)
