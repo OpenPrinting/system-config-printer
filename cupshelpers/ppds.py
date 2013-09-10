@@ -482,9 +482,12 @@ class PPDs:
             orderedtypes = self.preforder.get_ordered_types (self.drivertypes,
                                                              make_and_model,
                                                              devid)
+            _debugprint("Valid driver types for this printer in priority order: %s" % repr(orderedtypes))
             orderedppds = self.drivertypes.get_ordered_ppdnames (orderedtypes,
                                                                  ppds, fit)
+            _debugprint("PPDs with assigned driver types in priority order: %s" % repr(orderedppds))
             ppdnamelist = map (lambda (typ, name): name, orderedppds)
+            _debugprint("Resulting PPD list in priority order: %s" % repr(ppdnamelist))
 
         # Special handling for files we've downloaded.  First collect
         # their basenames.

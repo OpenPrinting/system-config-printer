@@ -1212,10 +1212,12 @@ class NewPrinterGUI(GtkGUI):
                                                      id_dict["CMD"],
                                                      self.device.uri,
                                                      self.device.make_and_model)
+                        debugprint ("Suitable PPDs found: %s" % repr(fit))
                         ppdnamelist = self.ppds.\
                             orderPPDNamesByPreference (fit.keys (),
                                                        self.installed_driver_files,
                                                        devid=id_dict, fit=fit)
+                        debugprint ("PPDs in priority order: %s" % repr(ppdnamelist))
                         self.id_matched_ppdnames = ppdnamelist
                         ppdname = ppdnamelist[0]
                         status = fit[ppdname]
