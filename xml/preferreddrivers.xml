@@ -171,15 +171,15 @@
       <ppdname match=".*/(Ricoh|Lanier|Gestetner|InfoPrint|Infotech|Savin|NRG)/PXL/"/>
     </drivertype>
 
+    <drivertype name="pdf">
+      <attribute name="ppd-make-and-model"
+		 match=".*\bpdf\b"/>
+    </drivertype>
+
     <drivertype name="manufacturer-cmd">
       <fit>
 	exact-cmd
       </fit>
-    </drivertype>
-
-    <drivertype name="pdf">
-      <attribute name="ppd-make-and-model"
-		 match=".*\bpdf\b"/>
     </drivertype>
 
     <!-- Catch-all -->
