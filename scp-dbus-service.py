@@ -125,16 +125,20 @@ class GetBestDriversRequest:
         self.device_id = device_id
         self.device_make_and_model = device_make_and_model
         self.device_uri = device_uri
+        self.cupsconn = cupsconn
+        self.language = language
         self.reply_handler = reply_handler
         self.error_handler = error_handler
         self._signals = []
+        self.installed_files = []
+        self.download_tried = False
         debugprint ("+%s" % self)
 
         g_killtimer.add_hold ()
         global g_ppds
         if g_ppds == None:
             debugprint ("GetBestDrivers request: need to fetch PPDs")
-            g_ppds = FetchedPPDs (cupsconn, language)
+            g_ppds = FetchedPPDs (self.cupsconn, self.language)
             self._signals.append (g_ppds.connect ('ready', self._ppds_ready))
             self._signals.append (g_ppds.connect ('error', self._ppds_error))
             g_ppds.run ()
@@ -175,6 +179,7 @@ class GetBestDriversRequest:
                 id_dict["MDL"] = mdl
                 id_dict["DES"] = ""
                 id_dict["CMD"] = []
+                self.device_id = "MFG:%s;MDL:%s;" % (mfg, mdl)
 
             fit = ppds.getPPDNamesFromDeviceID (id_dict["MFG"],
                                                 id_dict["MDL"],
@@ -183,8 +188,40 @@ class GetBestDriversRequest:
                                                 self.device_uri,
                                                 self.device_make_and_model)
 
-            ppdnamelist = ppds.orderPPDNamesByPreference (fit.keys ())
+            ppdnamelist = ppds.orderPPDNamesByPreference (fit.keys (),
+                                                          self.installed_files,
+                                                          devid=id_dict,
+                                                          fit=fit)
+            ppdname = ppdnamelist[0]
+            status = fit[ppdname]
 
+            try:
+                if status != "exact" and not self.download_tried:
+                    self.download_tried = True
+                    self.loop = GObject.MainLoop ()
+                    self.dialog = newprinter.NewPrinterGUI()
+                    self.dialog.NewPrinterWindow.set_modal (False)
+                    self.handles = \
+                        [self.dialog.connect ('dialog-canceled',
+                                              self.on_dialog_canceled),
+                         self.dialog.connect ('driver-download-checked',
+                                              self.on_driver_download_checked)]
+                    if self.dialog.init ('download_driver',
+                                         devid=self.device_id):
+                        self.loop.run()
+                    for handle in self.handles:
+                        self.dialog.disconnect (handle)
+                    if len(self.installed_files) > 0:
+                        debugprint ("GetBestDrivers request: Re-fetch PPDs after driver download")
+                        g_ppds = FetchedPPDs (self.cupsconn, self.language)
+                        self._signals.append (g_ppds.connect ('ready', self._ppds_ready))
+                        self._signals.append (g_ppds.connect ('error', self._ppds_error))
+                        g_ppds.run ()
+                        return
+            except:
+                # Ignore driver download if packages needed for the GUI are not
+                # installed or if no windows can be opened
+                pass
             g_killtimer.remove_hold ()
             self.reply_handler (map (lambda x: (x, fit[x]), ppdnamelist))
         except Exception as e:
@@ -194,6 +231,14 @@ class GetBestDriversRequest:
                 pass
 
             self.error_handler (e)
+
+    def on_driver_download_checked(self, obj, installed_files):
+        self.installed_files = installed_files
+        self.loop.quit ()
+
+    def on_dialog_canceled(self, obj):
+        self.installed_files = []
+        self.loop.quit ()
 
 class GroupPhysicalDevicesRequest:
     def __init__ (self, devices, reply_handler, error_handler):
@@ -260,7 +305,9 @@ class ConfigPrintingNewPrinterDialog(dbus.service.Object):
                         self.dialog.connect ('printer-added',
                                              self.on_printer_added),
                         self.dialog.connect ('printer-modified',
-                                             self.on_printer_modified)]
+                                             self.on_printer_modified),
+                        self.dialog.connect ('driver-download-checked',
+                                             self.on_driver_download_checked)]
         self._ppdcache = ppdcache.PPDCache ()
         self._cupsconn = cupsconn
         debugprint ("+%s" % self)
@@ -274,6 +321,12 @@ class ConfigPrintingNewPrinterDialog(dbus.service.Object):
         g_killtimer.add_hold ()
         self.dialog.init ('printer_with_uri', device_uri=device_uri,
                           devid=device_id, xid=xid)
+
+    @dbus.service.method(dbus_interface=CONFIG_NEWPRINTERDIALOG_IFACE,
+                         in_signature='us', out_signature='')
+    def DownloadDriverForDeviceID(self, xid, device_id):
+        g_killtimer.add_hold ()
+        self.dialog.init ('download_driver', devid=device_id, xid=xid)
 
     @dbus.service.method(dbus_interface=CONFIG_NEWPRINTERDIALOG_IFACE,
                          in_signature='uss', out_signature='')
@@ -313,6 +366,11 @@ class ConfigPrintingNewPrinterDialog(dbus.service.Object):
     def PrinterModified(self, name, ppd_has_changed):
         pass
 
+    @dbus.service.signal(dbus_interface=CONFIG_NEWPRINTERDIALOG_IFACE,
+                         signature='a{s}')
+    def DriverDownloadChecked(self, installed_files):
+        pass
+
     def on_dialog_canceled(self, obj):
         g_killtimer.remove_hold ()
         self.DialogCanceled ()
@@ -328,6 +386,12 @@ class ConfigPrintingNewPrinterDialog(dbus.service.Object):
     def on_printer_modified(self, obj, name, ppd_has_changed):
         g_killtimer.remove_hold ()
         self.PrinterModifed (name, ppd_has_changed)
+        self.remove_handles ()
+        self.remove_from_connection ()
+
+    def on_driver_download_checked(self, obj, installed_files):
+        g_killtimer.remove_hold ()
+        self.DriverDownloadChecked (installed_files)
         self.remove_handles ()
         self.remove_from_connection ()
 

@@ -267,6 +267,36 @@
       </arg>
     </method>
 
+    <method name="DownloadDriverForDeviceID">
+      <doc:doc>
+	<doc:description>
+	  <doc:para>
+	    Search for downloadable drivers on OpenPrinting and present them for installation.
+	  </doc:para>
+	</doc:description>
+      </doc:doc>
+
+      <arg name="xid" type="u" direction="in">
+	<doc:doc>
+	  <doc:summary>
+	    <doc:para>
+	      The window X ID of the parent.
+	    </doc:para>
+	  </doc:summary>
+	</doc:doc>
+      </arg>
+
+      <arg name="device_id" type="s" direction="in">
+	<doc:doc>
+	  <doc:summary>
+	    <doc:para>
+	      The IEEE 1284 Device ID of the device.
+	    </doc:para>
+	  </doc:summary>
+	</doc:doc>
+      </arg>
+    </method>
+
     <method name="ChangePPD">
       <doc:doc>
 	<doc:description>
@@ -337,6 +367,18 @@
 	  <doc:summary>
 	    <doc:para>
 	      Whether the printer is now using a different PPD.
+	    </doc:para>
+	  </doc:summary>
+	</doc:doc>
+      </arg>
+    </signal>
+
+    <signal name="DriverDownloadChecked">
+      <arg name="name" type="s">
+	<doc:doc>
+	  <doc:summary>
+	    <doc:para>
+	      List of newly installed files, separated by "|".
 	    </doc:para>
 	  </doc:summary>
 	</doc:doc>
