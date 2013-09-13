@@ -31,6 +31,7 @@ class PhysicalDevice:
         self.devices = None
         self._network_host = None
         self.dnssd_hostname = None
+        self._cupsserver = False
         self.add_device (device)
         self._user_data = {}
         self._ppdippstr = ppdippstr.backends
@@ -131,6 +132,16 @@ class PhysicalDevice:
         if device.type == "socket":
             # Remove default port to more easily find duplicate URIs
             device.uri = device.uri.replace (":9100", "")
+        if (device.uri.startswith('ipp:') and \
+            device.uri.find('/printers/') != -1) or \
+           ((device.uri.startswith('dnssd:') or \
+             device.uri.startswith('mdns:')) and \
+            device.uri.endswith('/cups')):
+            # CUPS server
+            self._cupsserver = True
+        elif self._cupsserver:
+            # Non-CUPS queue on a CUPS server, drop this one
+            return
         for d in self.devices:
             if d.uri == device.uri:
                 return
