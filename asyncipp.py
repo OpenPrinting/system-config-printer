@@ -480,11 +480,11 @@ class _IPPAuthOperation:
             d = authconn.AuthDialog (title=title,
                                      parent=conn.parent)
 
-        d.set_prompt (prompt)
+        d.set_prompt ('')
         if self._user == None:
             self._user = cups.getUser()
-        d.set_auth_info ([self._user, ''])
-        d.field_grab_focus ('password')
+        d.set_auth_info (['', ''])
+        d.field_grab_focus ('username')
         d.set_keep_above (True)
         d.show_all ()
         d.connect ("response", self._on_auth_dialog_response)

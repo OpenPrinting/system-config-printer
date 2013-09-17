@@ -474,9 +474,9 @@ class Connection:
         else:
             d = AuthDialog (parent=self._parent)
 
-        d.set_prompt (self._prompt)
-        d.set_auth_info ([self._use_user, ''])
-        d.field_grab_focus ('password')
+        d.set_prompt ('')
+        d.set_auth_info (['', ''])
+        d.field_grab_focus ('username')
         d.set_keep_above (True)
         d.show_all ()
         d.show_now ()
