@@ -2103,7 +2103,7 @@ if __name__ == "__main__":
     for opt, optarg in opts:
         if opt == '--debug':
             set_debugging (True)
-            cupshelpers.ppds.set_debugprint_fn (debugprint)
+            cupshelpers.set_debugprint_fn (debugprint)
         elif opt == '--show-jobs':
             show_jobs = optarg
 

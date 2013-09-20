@@ -4153,6 +4153,7 @@ if __name__ == '__main__':
     ppdippstr.init ()
     GObject.threads_init ()
     set_debugging (True)
+    cupshelpers.set_debugprint_fn (debugprint)
 
     n = NewPrinterGUI ()
     def on_signal (*args):
