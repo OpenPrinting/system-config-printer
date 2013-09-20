@@ -23,6 +23,7 @@ import pycurl, urllib, platform, threading, tempfile, traceback
 import os, sys
 from xml.etree.ElementTree import XML
 from . import Device
+from . import _debugprint
 
 __all__ = ['OpenPrinting']
 
@@ -107,6 +108,7 @@ class OpenPrinting:
         # config file
         self.onlyfree = 1
         self.onlymanufacturer = 0
+        _debugprint ("OpenPrinting: Init %s %s %s" % (self.language, self.onlyfree, self.onlymanufacturer))
 
     def cancelOperation(self, handle):
         """
@@ -176,6 +178,7 @@ class OpenPrinting:
                 status = 1
                 printers = sys.exc_info ()
 
+            _debugprint ("searchPrinters/parse_result: OpenPrinting entries: %s" % repr(printers))
             try:
                 callback (status, user_data, printers)
             except:
@@ -192,6 +195,7 @@ class OpenPrinting:
         params = { 'type': 'printers',
                    'printer': searchterm,
                    'format': 'xml' }
+        _debugprint ("searchPrinters: Querying OpenPrinting: %s" % repr(params))
         return self.webQuery(params, parse_result, (callback, user_data))
 
     def listDrivers(self, model, callback, user_data=None, extra_options=None):
@@ -355,6 +359,7 @@ class OpenPrinting:
                         dict['ppds'] = ppds
 
                     drivers[id] = dict
+                    _debugprint ("listDrivers/parse_result: OpenPrinting entries: %s" % repr(drivers))
                 callback (0, user_data, drivers)
             except:
                 callback (1, user_data, sys.exc_info ())
@@ -374,6 +379,7 @@ class OpenPrinting:
                    'format': 'xml'}
         if extra_options:
             params.update(extra_options)
+        _debugprint ("listDrivers: Querying OpenPrinting: %s" % repr(params))
         return self.webQuery(params, parse_result, (callback, user_data))
 
 def _simple_gui ():
