@@ -88,6 +88,7 @@ class PrinterPropertiesDialog(GtkGUI):
             self.language = locale.getlocale(locale.LC_MESSAGES)
             self.encoding = locale.getlocale(locale.LC_CTYPE)
 
+        self.parent = None
         self.printer = self.ppd = None
         self.conflicts = set() # of options
         self.changed = set() # of options
