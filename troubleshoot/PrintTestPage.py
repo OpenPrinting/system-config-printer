@@ -419,6 +419,8 @@ class PrintTestPage(Question):
                 break
             except cups.IPPError as e:
                 (e, s) = e.args
+                if isinstance(s, bytes):
+                    s = s.decode('utf-8', 'replace')
                 if (e == cups.IPP_DOCUMENT_FORMAT and
                     mimetypes.index (mimetype) < (len (mimetypes) - 1)):
                     # Try next format.
@@ -447,6 +449,8 @@ class PrintTestPage(Question):
                     c.cancelJob (jobid)
                 except cups.IPPError as e:
                     (e, s) = e.args
+                    if isinstance(s, bytes):
+                        s = s.decode('utf-8', 'replace')
                     if e != cups.IPP_NOT_POSSIBLE:
                         self.persistent_answers['test_page_cancel_failure'] = (e, s)
 

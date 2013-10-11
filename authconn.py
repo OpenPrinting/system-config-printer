@@ -247,6 +247,8 @@ class Connection:
                 break
             except cups.IPPError as e:
                 (e, m) = e.args
+                if isinstance(m, bytes):
+                    m = m.decode('utf-8', 'replace')
                 if self._use_pk and m == 'pkcancel':
                     raise cups.IPPError (0, _("Operation canceled"))
 

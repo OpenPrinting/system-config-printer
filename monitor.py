@@ -821,6 +821,9 @@ if __name__ == '__main__':
             print "*%s: cups connection error" % obj
 
         def on_cups_ipp_error (self, obj, err, errstring):
+            # cups.IPPError message is (utf-8) encoded
+            if isinstance(errstring, bytes):
+                    errstring = errstring.decode('utf-8', 'replace')
             print "*%s: IPP error (%d): %s" % (obj, err, errstring)
 
     set_debugging (True)
