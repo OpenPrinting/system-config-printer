@@ -1898,9 +1898,9 @@ class NewPrinterGUI(GtkGUI):
 
             if stdout != None:
                 line = stdout.strip ()
+                if isinstance(line, bytes):
+                    line = line.decode('utf-8', 'replace')
                 words = probe_printer.wordsep (line)
-                words = [ w.decode('utf-8') if isinstance(w, bytes) \
-                                            else w for w in words ]
                 n = len (words)
                 if n < 4:
                     words.extend (['','','',''])
