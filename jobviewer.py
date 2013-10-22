@@ -1102,7 +1102,7 @@ class JobViewer (GtkGUI):
                         GnomeKeyring.Attribute.list_append_string (attrs,
                                                                    key,
                                                                    val)
-                    id = gnomekeyring.item_create_sync (keyring, type, name,
+                    id = GnomeKeyring.item_create_sync (keyring, type, name,
                                                         attrs, secret, True)
                     debugprint ("keyring: created id %d for %s" % (repr (id),
                                                                    name))
