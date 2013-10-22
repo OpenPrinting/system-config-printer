@@ -995,7 +995,7 @@ class JobViewer (GtkGUI):
                         c._end_operation ()
                         nonfatalException ()
 
-                if data.has_key ('auth_info_required'):
+                if data.has_key ('auth-info-required'):
                     username = pwd.getpwuid (os.getuid ())[0]
                     keyring_attrs["user"] = str (username)
                     self.display_auth_info_dialog (job, keyring_attrs)
