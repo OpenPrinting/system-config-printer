@@ -965,12 +965,12 @@ class JobViewer (GtkGUI):
 
                         for attr in GnomeKeyring.attribute_list_to_glist (
                                 items[0].attributes):
-                            # It might be save to assume here that the
+                            # It might be safe to assume here that the
                             # user element is always the second item in a
                             # NETWORK_PASSWORD element but lets make sure.
                             if attr.name == 'user':
                                 auth_info[ind] = attr.get_string()
-                                break;
+                                break
                         else:
                             debugprint ("Did not find username keyring "
                                         "attributes.")
