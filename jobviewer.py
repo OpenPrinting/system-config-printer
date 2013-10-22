@@ -962,7 +962,19 @@ class JobViewer (GtkGUI):
                     if result == GnomeKeyring.Result.OK:
                         auth_info = map (lambda x: '', auth_info_required)
                         ind = auth_info_required.index ('username')
-                        auth_info[ind] = items[0].attributes.get ('user', '')
+
+                        for attr in GnomeKeyring.attribute_list_to_glist (
+                                items[0].attributes):
+                            # It might be save to assume here that the
+                            # user element is always the second item in a
+                            # NETWORK_PASSWORD element but lets make sure.
+                            if attr.name == 'user':
+                                auth_info[ind] = attr.get_string()
+                                break;
+                        else:
+                            debugprint ("Did not find username keyring "
+                                        "attributes.")
+
                         ind = auth_info_required.index ('password')
                         auth_info[ind] = items[0].secret
                     else:
@@ -1077,7 +1089,7 @@ class JobViewer (GtkGUI):
 
         if remember:
             try:
-                keyring = GnomeKeyring.get_default_keyring_sync ()
+                (result, keyring) = GnomeKeyring.get_default_keyring_sync ()
                 type = GnomeKeyring.ItemType.NETWORK_PASSWORD
                 keyring_attrs = getattr (dialog,
                                          "keyring_attrs",
@@ -1102,10 +1114,13 @@ class JobViewer (GtkGUI):
                         GnomeKeyring.Attribute.list_append_string (attrs,
                                                                    key,
                                                                    val)
-                    id = GnomeKeyring.item_create_sync (keyring, type, name,
-                                                        attrs, secret, True)
-                    debugprint ("keyring: created id %d for %s" % (repr (id),
-                                                                   name))
+                    (result, id) = GnomeKeyring.item_create_sync (keyring,
+                                                                  type,
+                                                                  name,
+                                                                  attrs,
+                                                                  secret,
+                                                                  True)
+                    debugprint ("keyring: created id %d for %s" % (id, name))
             except:
                 nonfatalException ()
 
