@@ -2413,7 +2413,7 @@ class NewPrinterGUI(GtkGUI):
         elif self.entSMBUsername.get_text () == '':
             self.rbtnSMBAuthPrompt.set_active(True)
 
-        self.btnSMBVerify.set_sensitive(bool(uri))
+        self.btnSMBVerify.set_sensitive(PYSMB_AVAILABLE and bool(uri))
         self.setNPButtons ()
 
     def on_tvSMBBrowser_cursor_changed(self, widget):
