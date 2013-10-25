@@ -367,7 +367,7 @@ class ConfigPrintingNewPrinterDialog(dbus.service.Object):
         pass
 
     @dbus.service.signal(dbus_interface=CONFIG_NEWPRINTERDIALOG_IFACE,
-                         signature='a{s}')
+                         signature='a(s)')
     def DriverDownloadChecked(self, installed_files):
         pass
 
