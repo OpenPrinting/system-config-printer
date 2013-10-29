@@ -451,8 +451,13 @@ class GUI(GtkGUI):
 
         self.setConnected()
 
-        if len (self.printers) > 3:
-            self.PrintersWindow.set_default_size (550, 400)
+        if len (self.printers) > 4:
+            self.PrintersWindow.set_default_size (720, 330)
+        elif len (self.printers) > 2:
+            self.PrintersWindow.set_default_size (500, 330)
+        elif len (self.printers) > 1:
+            self.PrintersWindow.set_default_size (500, 165)
+
 
         self.PrintersWindow.show()
 
