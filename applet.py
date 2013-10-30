@@ -117,7 +117,7 @@ class NewPrinterNotification(dbus.service.Object):
                     device = "%s %s" % (mfg, mdl)
                 else:
                     device = des
-                text = _("No printer driver for %s.") % device
+                text = _("No printer driver for %s.").decode ('utf-8') % device
             else:
                 text = _("No driver for this printer.")
             n = Notify.Notification.new (title, text, 'printer')
