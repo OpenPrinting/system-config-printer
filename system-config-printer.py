@@ -730,7 +730,7 @@ class GUI(GtkGUI):
 
                 # Get default printer.
                 self.default_printer = self.cups.getDefault ()
-                if self.default_printer:
+                if self.default_printer and isinstance (self.default_printer, bytes):
                     self.default_printer = self.default_printer.decode ('utf-8')
             except cups.IPPError as e:
                 (e, m) = e.args

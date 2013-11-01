@@ -138,7 +138,9 @@ class ChoosePrinter(Question):
                 def each (self, model, path, iter, user_data):
                     dest = model.get_value (iter, 3)
                     if dest != NotListed:
-                        self.dests.append ((dest.name.decode ('utf-8'),
+                        self.dests.append ((dest.name.decode ('utf-8') if
+                                             isinstance(dest.name, bytes) else
+                                             dest.name,
                                             dest.instance))
 
             return { 'cups_queue_listed': False,
@@ -146,7 +148,9 @@ class ChoosePrinter(Question):
         else:
             return { 'cups_queue_listed': True,
                      'cups_dest': dest,
-                     'cups_queue': dest.name.decode ('utf-8'),
+                     'cups_queue': dest.name.decode ('utf-8') if
+                                    isinstance(dest.name, bytes) else
+                                    dest.name,
                      'cups_instance': dest.instance }
 
     def cancel_operation (self):
