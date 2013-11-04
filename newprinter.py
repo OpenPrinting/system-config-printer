@@ -2414,6 +2414,10 @@ class NewPrinterGUI(GtkGUI):
             self.rbtnSMBAuthPrompt.set_active(True)
 
         self.btnSMBVerify.set_sensitive(PYSMB_AVAILABLE and bool(uri))
+        if not PYSMB_AVAILABLE:
+            self.btnSMBVerify.set_tooltip_text (_("Verification requires the "
+                                                  "%s module") % "pysmbc")
+
         self.setNPButtons ()
 
     def on_tvSMBBrowser_cursor_changed(self, widget):
