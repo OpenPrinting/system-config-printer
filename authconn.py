@@ -304,7 +304,7 @@ class Connection:
                                msg)
                                
         d.format_secondary_text (_("There was an error during the "
-                                   "CUPS operation: '%s'." % message))
+                                   "CUPS operation: '%s'.") % message)
         d.add_buttons (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
                        _("Retry"), Gtk.ResponseType.OK)
         d.set_default_response (Gtk.ResponseType.OK)
