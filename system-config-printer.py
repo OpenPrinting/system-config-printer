@@ -25,7 +25,7 @@
 import config
 
 import sys, os, time, re
-import thread
+import _thread
 import dbus
 from gi.repository import GdkPixbuf
 try:
@@ -33,8 +33,8 @@ try:
     from gi.repository import Gtk
     Gtk.init (sys.argv)
 except RuntimeError as e:
-    print "system-config-printer:", e
-    print "This is a graphical application and requires DISPLAY to be set."
+    print ("system-config-printer:", e)
+    print ("This is a graphical application and requires DISPLAY to be set.")
     sys.exit (1)
 
 def show_help():
@@ -60,7 +60,7 @@ except locale.Error:
     os.environ['LC_ALL'] = 'C'
     locale.setlocale (locale.LC_ALL, "")
 import gettext
-gettext.install(domain=config.PACKAGE, localedir=config.localedir, unicode=True)
+gettext.install(domain=config.PACKAGE, localedir=config.localedir)
 
 import cupshelpers
 from gi.repository import GObject
@@ -597,7 +597,7 @@ class GUI(GtkGUI):
 
     def dests_iconview_popup_menu (self, iconview):
         self.printer_context_menu.popup_for_device (None, None, None, None,
-                                            None, 0, 0L)
+                                            None, 0, 0)
 
     def dests_iconview_button_press_event (self, iconview, event):
         if event.button > 1:
