@@ -22,7 +22,7 @@
 
 import cups
 from .cupshelpers import parseDeviceID
-import xmldriverprefs
+from . import xmldriverprefs
 import itertools
 import string
 import time
@@ -351,7 +351,7 @@ class PPDs:
             self.drivertypes.load (drivertypes)
             self.preforder.load (preferenceorder)
         except Exception as e:
-            print "Error loading %s: %s" % (xmlfile, e)
+            print("Error loading %s: %s" % (xmlfile, e))
             self.drivertypes = None
             self.preforder = None
 
@@ -486,7 +486,7 @@ class PPDs:
             orderedppds = self.drivertypes.get_ordered_ppdnames (orderedtypes,
                                                                  ppds, fit)
             _debugprint("PPDs with assigned driver types in priority order: %s" % repr(orderedppds))
-            ppdnamelist = map (lambda (typ, name): name, orderedppds)
+            ppdnamelist = [typ_name[1] for typ_name in orderedppds]
             _debugprint("Resulting PPD list in priority order: %s" % repr(ppdnamelist))
 
         # Special handling for files we've downloaded.  First collect
@@ -564,8 +564,8 @@ class PPDs:
                     fit[each] = self.FIT_EXACT
                 print ("**** Incorrect IEEE 1284 Device ID: %s" %
                        self.ids["hp"][mdll])
-                print "**** Actual ID is MFG:%s;MDL:%s;" % (mfg, mdl)
-                print "**** Please report a bug against the HPLIP component"
+                print ("**** Actual ID is MFG:%s;MDL:%s;" % (mfg, mdl))
+                print ("**** Please report a bug against the HPLIP component")
                 id_matched = True
             except KeyError:
                 pass
@@ -751,8 +751,8 @@ class PPDs:
             if description:
                 id += "DES:%s;" % description
 
-            print "No ID match for device %s:" % sanitised_uri
-            print id
+            print ("No ID match for device %s:" % sanitised_uri)
+            print (id)
 
         return fit
 
@@ -812,7 +812,7 @@ class PPDs:
         _debugprint ("Found PPDs: %s" % str (ppdnamelist))
 
         status = self.getStatusFromFit (fit[ppdnamelist[0]])
-        print "Using %s (status: %d)" % (ppdnamelist[0], status)
+        print ("Using %s (status: %d)" % (ppdnamelist[0], status))
         return (status, ppdnamelist[0])
 
     def _findBestMatchPPDs (self, mdls, mdl):
@@ -1116,7 +1116,7 @@ class PPDs:
         self.ids = ids
 
 def _show_help():
-    print "usage: ppds.py [--deviceid] [--list-models] [--list-ids] [--debug]"
+    print ("usage: ppds.py [--deviceid] [--list-models] [--list-ids] [--debug]")
 
 def _self_test(argv):
     import sys, getopt
@@ -1148,7 +1148,7 @@ def _self_test(argv):
         elif opt == "--debug":
             def _dprint(x):
                 try:
-                    print x
+                    print (x)
                 except:
                     pass
 
@@ -1164,11 +1164,11 @@ def _self_test(argv):
         c = cups.Connection ()
         try:
             cupsppds = c.getPPDs2 ()
-            print "Using getPPDs2()"
+            print ("Using getPPDs2()")
         except AttributeError:
             # Need pycups >= 1.9.52 for getPPDs2
             cupsppds = c.getPPDs ()
-            print "Using getPPDs()"
+            print ("Using getPPDs()")
 
         pickle.dump (cupsppds, f)
 
@@ -1183,10 +1183,10 @@ def _self_test(argv):
         models = ppds.getModels (make)
         models_count += len (models)
         if list_models:
-            print make
+            print (make)
             for model in models:
-                print "  " + model
-    print "%d makes, %d models" % (len (makes), models_count)
+                print ("  " + model)
+    print ("%d makes, %d models" % (len (makes), models_count))
     ppds.getPPDNameFromDeviceID ("HP", "PSC 2200 Series")
     makes = ppds.ids.keys ()
     models_count = 0
@@ -1194,14 +1194,14 @@ def _self_test(argv):
         models = ppds.ids[make]
         models_count += len (models)
         if list_ids:
-            print make
+            print (make)
             for model in models:
-                print "  %s (%d)" % (model, len (ppds.ids[make][model]))
+                print ("  %s (%d)" % (model, len (ppds.ids[make][model])))
                 for driver in ppds.ids[make][model]:
-                    print "    " + driver
-    print "%d ID makes, %d ID models" % (len (makes), models_count)
+                    print ("    " + driver)
+    print ("%d ID makes, %d ID models" % (len (makes), models_count))
 
-    print "\nID matching tests\n"
+    print ("\nID matching tests\n")
 
     MASK_STATUS = (1 << 2) - 1
     FLAG_INVERT = (1 << 2)
@@ -1298,8 +1298,8 @@ def _self_test(argv):
         else:
             result = "*** FAIL ***"
 
-        print "%s: %s %s (%s)" % (result, id_dict["MFG"], id_dict["MDL"],
-                                  _singleton (ppddict['ppd-make-and-model']))
+        print ("%s: %s %s (%s)" % (result, id_dict["MFG"], id_dict["MDL"],
+                                  _singleton (ppddict['ppd-make-and-model'])))
         all_passed = all_passed and success
 
     if not all_passed:
