@@ -203,7 +203,8 @@ class Printer:
             try:
                 self._ppd = self.connection.getPPD(self.name)
                 result = cups.PPD (self._ppd)
-            except cups.IPPError, (e, m):
+            except cups.IPPError as emargs:
+                (e, m) = emargs.args
                 if e == cups.IPP_NOT_FOUND:
                     result = False
                 else:
@@ -683,7 +684,7 @@ def copyPPDOptions(ppd1, ppd2):
     @type ppd2: cups.PPD object
     """
     def getPPDGroupOptions(group):
-    	options = group.options[:]
+        options = group.options[:]
         for g in group.subgroups:
             options.extend(getPPDGroupOptions(g))
         return options
@@ -875,7 +876,7 @@ def _main():
     c = cups.Connection()
     #printers = getPrinters(c)
     for device in getDevices(c).itervalues():
-        print device.uri, device.id_dict
+        print (device.uri, device.id_dict)
 
 if __name__=="__main__":
     _main()
