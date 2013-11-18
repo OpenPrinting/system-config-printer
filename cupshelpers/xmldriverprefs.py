@@ -24,7 +24,6 @@ import fnmatch
 import re
 import xml.etree.ElementTree
 from .cupshelpers import parseDeviceID
-import ppds
 
 def PreferredDrivers (filename):
     preferreddrivers = xml.etree.ElementTree.XML (file (filename).read ())
@@ -517,7 +516,7 @@ def test (xml_path=None, attached=False, deviceid=None, debug=False):
 
     if debug:
         def debugprint (x):
-            print x
+            print (x)
 
         ppds.set_debugprint_fn (debugprint)
             
@@ -539,7 +538,7 @@ def test (xml_path=None, attached=False, deviceid=None, debug=False):
     preforder.load (xmlpreferenceorder)
     loadtime = time () - loadstart
     if debug:
-        print "Time to load %s: %.3fs" % (xml_path, loadtime)
+        print ("Time to load %s: %.3fs" % (xml_path, loadtime))
 
     c = cups.Connection ()
     try:
@@ -575,7 +574,7 @@ def test (xml_path=None, attached=False, deviceid=None, debug=False):
                 continue
 
             if not uri.startswith ("xxx:"):
-                print uri
+                print (uri)
 
             id_dict = parseDeviceID (devid)
             fit = ppdfinder.getPPDNamesFromDeviceID (id_dict["MFG"],
@@ -597,7 +596,7 @@ def test (xml_path=None, attached=False, deviceid=None, debug=False):
                                                             fit)
             i = 1
             for t, ppd in orderedppds:
-                print "%d  %s\n    (%s, %s)" % (i, ppd, t, fit[ppd])
+                print ("%d  %s\n    (%s, %s)" % (i, ppd, t, fit[ppd]))
                 i += 1
     else:
         for make in ppdfinder.getMakes ():
@@ -613,10 +612,10 @@ def test (xml_path=None, attached=False, deviceid=None, debug=False):
 
                 orderedppds = drivertypes.get_ordered_ppdnames (orderedtypes,
                                                                 ppdsdict, fit)
-                print mm.encode (encoding) + ":"
+                print (mm.encode (encoding) + ":")
                 i = 1
                 for t, ppd in orderedppds:
-                    print "%d  %s\n    (%s)" % (i, ppd, t)
+                    print ("%d  %s\n    (%s)" % (i, ppd, t))
                     i += 1
 
                 print
