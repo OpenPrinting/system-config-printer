@@ -906,112 +906,113 @@ class JobViewer (GtkGUI):
         self.treeview.queue_draw ()
 
         # Check whether authentication is required.
-        if self.applet:
-            job_requires_auth = (s == cups.IPP_JOB_HELD and
-                                 data.get ('job-hold-until', 'none') ==
-                                 'auth-info-required')
+        job_requires_auth = (s == cups.IPP_JOB_HELD and
+                             data.get ('job-hold-until', 'none') ==
+                             'auth-info-required')
+        if self.applet and job_requires_auth:
+            self.get_authentication (job, data.get ('device-uri'),
+                                     data.get ('auth-info-required', []))
+        self.update_sensitivity ()
 
-            if (job_requires_auth and
-                not self.auth_info_dialogs.has_key (job)):
+    def get_authentication (self, job, device_uri, auth_info_required):
+        # Check if we have requested authentication for this job already
+        if not self.auth_info_dialogs.has_key (job):
+            try:
+                cups.require ("1.9.37")
+            except:
+                debugprint ("Authentication required but "
+                            "authenticateJob() not available")
+                return
+
+            # Find out which auth-info is required.
+            try_keyring = USE_KEYRING
+            keyring_attrs = dict()
+            auth_info = None
+            if try_keyring and 'password' in auth_info_required:
+                (scheme, rest) = urllib.splittype (device_uri)
+                if scheme == 'smb':
+                    uri = smburi.SMBURI (uri=device_uri)
+                    (group, server, share,
+                     user, password) = uri.separate ()
+                    keyring_attrs["domain"] = str (group)
+                else:
+                    (serverport, rest) = urllib.splithost (rest)
+                    if serverport == None:
+                        server = None
+                    else:
+                        (server, port) = urllib.splitnport (serverport)
+
+                if scheme == None or server == None:
+                    try_keyring = False
+                else:
+                    keyring_attrs.update ({ "server": str (server.lower ()),
+                                            "protocol": str (scheme)})
+
+            if job in self.authenticated_jobs:
+                # We've already tried to authenticate this job before.
+                try_keyring = False
+
+            if try_keyring and 'password' in auth_info_required:
+                type = GnomeKeyring.ItemType.NETWORK_PASSWORD
+                attrs = GnomeKeyring.Attribute.list_new ()
+                for key, val in keyring_attrs.iteritems ():
+                    GnomeKeyring.Attribute.list_append_string (attrs,
+                                                               key,
+                                                               val)
+                (result, items) = GnomeKeyring.find_items_sync (type,
+                                                                attrs)
+                if result == GnomeKeyring.Result.OK:
+                    auth_info = map (lambda x: '', auth_info_required)
+                    ind = auth_info_required.index ('username')
+
+                    for attr in GnomeKeyring.attribute_list_to_glist (
+                            items[0].attributes):
+                        # It might be safe to assume here that the
+                        # user element is always the second item in a
+                        # NETWORK_PASSWORD element but lets make sure.
+                        if attr.name == 'user':
+                            auth_info[ind] = attr.get_string()
+                            break
+                    else:
+                        debugprint ("Did not find username keyring "
+                                    "attributes.")
+
+                    ind = auth_info_required.index ('password')
+                    auth_info[ind] = items[0].secret
+                else:
+                    debugprint ("gnomekeyring: look-up result %s" %
+                                repr (result))
+
+            if try_keyring:
                 try:
-                    cups.require ("1.9.37")
-                except:
-                    debugprint ("Authentication required but "
-                                "authenticateJob() not available")
-                    return
-
-                # Find out which auth-info is required.
-                try_keyring = USE_KEYRING
-                keyring_attrs = dict()
-                auth_info = None
-                if try_keyring and 'password' in auth_info_required:
-                    auth_info_required = data.get ('auth-info-required', [])
-                    device_uri = data.get ("device-uri")
-                    (scheme, rest) = urllib.splittype (device_uri)
-                    if scheme == 'smb':
-                        uri = smburi.SMBURI (uri=device_uri)
-                        (group, server, share,
-                         user, password) = uri.separate ()
-                        keyring_attrs["domain"] = str (group)
-                    else:
-                        (serverport, rest) = urllib.splithost (rest)
-                        if serverport == None:
-                            server = None
-                        else:
-                            (server, port) = urllib.splitnport (serverport)
-
-                    if scheme == None or server == None:
-                        try_keyring = False
-                    else:
-                        keyring_attrs.update ({ "server": str (server.lower ()),
-                                                "protocol": str (scheme)})
-
-                if job in self.authenticated_jobs:
-                    # We've already tried to authenticate this job before.
+                    c = authconn.Connection (self.JobsWindow,
+                                             host=self.host,
+                                             port=self.port,
+                                             encryption=self.encryption)
+                except RuntimeError:
                     try_keyring = False
 
-                if try_keyring and 'password' in auth_info_required:
-                    type = GnomeKeyring.ItemType.NETWORK_PASSWORD
-                    attrs = GnomeKeyring.Attribute.list_new ()
-                    for key, val in keyring_attrs.iteritems ():
-                        GnomeKeyring.Attribute.list_append_string (attrs,
-                                                                   key,
-                                                                   val)
-                    (result, items) = GnomeKeyring.find_items_sync (type,
-                                                                    attrs)
-                    if result == GnomeKeyring.Result.OK:
-                        auth_info = map (lambda x: '', auth_info_required)
-                        ind = auth_info_required.index ('username')
+            if try_keyring and auth_info != None:
+                try:
+                    c._begin_operation (_("authenticating job"))
+                    c.authenticateJob (job, auth_info)
+                    c._end_operation ()
+                    self.update_monitor ()
+                    debugprint ("Automatically authenticated job %d" % job)
+                    self.authenticated_jobs.add (job)
+                    return
+                except cups.IPPError:
+                    c._end_operation ()
+                    nonfatalException ()
+                    return
+                except:
+                    c._end_operation ()
+                    nonfatalException ()
 
-                        for attr in GnomeKeyring.attribute_list_to_glist (
-                                items[0].attributes):
-                            # It might be safe to assume here that the
-                            # user element is always the second item in a
-                            # NETWORK_PASSWORD element but lets make sure.
-                            if attr.name == 'user':
-                                auth_info[ind] = attr.get_string()
-                                break
-                        else:
-                            debugprint ("Did not find username keyring "
-                                        "attributes.")
-
-                        ind = auth_info_required.index ('password')
-                        auth_info[ind] = items[0].secret
-                    else:
-                        debugprint ("gnomekeyring: look-up result %s" %
-                                    repr (result))
-
-                if try_keyring and c == None:
-                    try:
-                        c = authconn.Connection (self.JobsWindow,
-                                                 host=self.host,
-                                                 port=self.port,
-                                                 encryption=self.encryption)
-                    except RuntimeError:
-                        try_keyring = False
-
-                if try_keyring and auth_info != None:
-                    try:
-                        c._begin_operation (_("authenticating job"))
-                        c.authenticateJob (job, auth_info)
-                        c._end_operation ()
-                        self.update_monitor ()
-                        debugprint ("Automatically authenticated job %d" % job)
-                        self.authenticated_jobs.add (job)
-                        return
-                    except cups.IPPError:
-                        c._end_operation ()
-                        nonfatalException ()
-                        return
-                    except:
-                        c._end_operation ()
-                        nonfatalException ()
-
-                if data.has_key ('auth-info-required'):
-                    username = pwd.getpwuid (os.getuid ())[0]
-                    keyring_attrs["user"] = str (username)
-                    self.display_auth_info_dialog (job, keyring_attrs)
-        self.update_sensitivity ()
+            if auth_info_required:
+                username = pwd.getpwuid (os.getuid ())[0]
+                keyring_attrs["user"] = str (username)
+                self.display_auth_info_dialog (job, keyring_attrs)
 
     def display_auth_info_dialog (self, job, keyring_attrs=None):
         data = self.jobs[job]
