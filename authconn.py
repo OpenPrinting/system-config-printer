@@ -28,7 +28,7 @@ import os
 from errordialogs import *
 from debug import *
 import gettext
-gettext.install(domain=config.PACKAGE, localedir=config.localedir, unicode=True)
+gettext.install(domain=config.PACKAGE, localedir=config.localedir, str=True)
 N_ = lambda x: x
 
 cups.require("1.9.60")
@@ -102,7 +102,7 @@ class AuthDialog(Gtk.Dialog):
             self.field_entry[i].set_text (auth_info[i])
 
     def get_auth_info (self):
-        return map (lambda x: x.get_text (), self.field_entry)
+        return [x.get_text () for x in self.field_entry]
 
     def get_remember_password (self):
         try:
@@ -515,6 +515,6 @@ if __name__ == '__main__':
     c = TimedOperation (Connection, args=(None,)).run ()
     debugprint ("Connected")
     c._set_lock (True)
-    print TimedOperation (c.getFile,
+    print(TimedOperation (c.getFile,
                           args=('/admin/conf/cupsd.conf',
-                                '/dev/stdout')).run ()
+                                '/dev/stdout')).run ())
