@@ -482,7 +482,7 @@ class PrinterFinder:
             debugprint ("ipp: done")
             return
 
-        for name, queue in list(printers.items ()):
+        for name, queue in printers.items ():
             uri = queue['printer-uri-supported']
             info = queue['printer-info']
             location = queue['printer-location']

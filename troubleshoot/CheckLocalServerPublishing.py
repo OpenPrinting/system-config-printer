@@ -47,7 +47,7 @@ class CheckLocalServerPublishing(Question):
             if len (printers) == 0:
                 return False
 
-            for name, printer in list(printers.items ()):
+            for name, printer in printers.items ():
                 if printer.get ('printer-is-shared', False):
                     break
 

@@ -748,7 +748,7 @@ class GUI(GtkGUI):
             self.printers = {}
             self.default_printer = None
 
-        for name, printer in list(self.printers.items()):
+        for name, printer in self.printers.items():
             self.servers.add(printer.getServer())
 
         userdef = userdefault.UserDefaultPrinter ().get ()
@@ -768,19 +768,19 @@ class GUI(GtkGUI):
             pattern = re.compile (self.current_filter_text, re.I) # ignore case
 
             if self.current_filter_mode == "filter-name":
-                for name in list(printers_set.keys ()):
+                for name in printers_set.keys ():
                     if pattern.search (name) != None:
                         printers_subset[name] = printers_set[name]
             elif self.current_filter_mode == "filter-description":
-                for name, printer in list(printers_set.items ()):
+                for name, printer in printers_set.items ():
                     if pattern.search (printer.info) != None:
                         printers_subset[name] = printers_set[name]
             elif self.current_filter_mode == "filter-location":
-                for name, printer in list(printers_set.items ()):
+                for name, printer in printers_set.items ():
                     if pattern.search (printer.location) != None:
                         printers_subset[name] = printers_set[name]
             elif self.current_filter_mode == "filter-manufacturer":
-                for name, printer in list(printers_set.items ()):
+                for name, printer in printers_set.items ():
                     if pattern.search (printer.make_and_model) != None:
                         printers_subset[name] = printers_set[name]
             else:
@@ -790,7 +790,7 @@ class GUI(GtkGUI):
 
         if not self.view_discovered_printers.get_active ():
             printers_subset = {}
-            for name, printer in list(printers_set.items ()):
+            for name, printer in printers_set.items ():
                 if not printer.discovered:
                     printers_subset[name] = printer
 

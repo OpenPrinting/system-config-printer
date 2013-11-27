@@ -429,7 +429,7 @@ def _simple_gui ():
                 raise printers[1]
 
             text = ""
-            for printer in list(printers.values ()):
+            for printer in printers.values ():
                 text += printer + "\n"
             Gdk.threads_enter ()
             self.tv.get_buffer ().set_text (text)

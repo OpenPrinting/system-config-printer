@@ -170,7 +170,7 @@ class Troubleshooter:
         n = 1
         for i in range (self.current_page):
             answers = self.question_answers[i].copy ()
-            for hidden in [x for x in list(answers.keys()) if x.startswith ("_")]:
+            for hidden in [x for x in answers.keys() if x.startswith ("_")]:
                 del answers[hidden]
             if len (list(answers.keys ())) == 0:
                 continue

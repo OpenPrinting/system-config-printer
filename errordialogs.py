@@ -25,7 +25,7 @@ import config
 import cups
 from gi.repository import Gtk
 import gettext
-gettext.install(domain=config.PACKAGE, localedir=config.localedir, unicode=True)
+gettext.install(domain=config.PACKAGE, localedir=config.localedir)
 
 def show_dialog (title, text, type, parent=None):
     dialog = Gtk.MessageDialog (parent,

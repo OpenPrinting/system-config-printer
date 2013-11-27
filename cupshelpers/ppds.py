@@ -234,7 +234,7 @@ def ppdMakeModelSplit (ppd_make_and_model):
         modell = model.lower ()
 
     if makel == "hp":
-        for (name, fullname) in list(_HP_MODEL_BY_NAME.items ()):
+        for name, fullname in _HP_MODEL_BY_NAME.items ():
             if modell.startswith (name):
                 model = fullname + model[len (name):]
                 modell = model.lower ()
@@ -368,7 +368,7 @@ class PPDs:
             short_language = language
 
         to_remove = []
-        for ppdname, ppddict in list(self.ppds.items ()):
+        for ppdname, ppddict in self.ppds.items ():
             try:
                 natural_language = _singleton (ppddict['ppd-natural-language'])
             except KeyError:
@@ -612,7 +612,7 @@ class PPDs:
 
             if mdll in self.lmodels[mfgl]:
                 model = mdlsl[mdll]
-                for each in list(mdls[model].keys ()):
+                for each in mdls[model].keys ():
                     fit[each] = self.FIT_EXACT
                     _debugprint ("%s: %s" % (fit[each], each))
             else:
@@ -670,7 +670,7 @@ class PPDs:
         if id_matched and len (commandsets) > 0:
             failed = set()
             exact_cmd = set()
-            for ppdname in list(fit.keys ()):
+            for ppdname in fit.keys ():
                 ppd_cmd_field = None
                 ppd = self.ppds[ppdname]
                 ppd_device_id = _singleton (ppd.get ('ppd-device-id'))
@@ -723,7 +723,7 @@ class PPDs:
             for fallback in fallbacks:
                 _debugprint ("'%s' fallback" % fallback)
                 fallbackgz = fallback + ".gz"
-                for ppdpath in list(self.ppds.keys ()):
+                for ppdpath in self.ppds.keys ():
                     if (ppdpath.endswith (fallback) or
                         ppdpath.endswith (fallbackgz)):
                         fit[ppdpath] = self.FIT_NONE
@@ -982,7 +982,7 @@ class PPDs:
         lmakes = {}
         lmodels = {}
         aliases = {} # Generic model name: set(specific model names)
-        for ppdname, ppddict in list(self.ppds.items ()):
+        for ppdname, ppddict in self.ppds.items ():
             # One entry for ppd-make-and-model
             ppd_make_and_model = _singleton (ppddict['ppd-make-and-model'])
             ppd_mm_split = ppdMakeModelSplit (ppd_make_and_model)
@@ -1062,10 +1062,10 @@ class PPDs:
 
         # Now, for each set of model aliases, add all drivers from the
         # "main" (generic) model name to each of the specific models.
-        for make, models in list(aliases.items ()):
+        for make, models in aliases.items ():
             lmake = normalize (make)
             main_make = lmakes[lmake]
-            for model, modelnames in list(models.items ()):
+            for model, modelnames in models.items ():
                 main_model = lmodels[lmake].get (normalize (model))
                 if not main_model:
                     continue
@@ -1087,7 +1087,7 @@ class PPDs:
             return
 
         ids = {}
-        for ppdname, ppddict in list(self.ppds.items ()):
+        for ppdname, ppddict in self.ppds.items ():
             id = _singleton (ppddict.get ('ppd-device-id'))
             if not id:
                 continue
@@ -1262,7 +1262,7 @@ def _self_test(argv):
         ]
 
     if stdin_deviceid:
-        idlist = [(eval(input ('Device ID: ')), 2, '')]
+        idlist = [(input ('Device ID: '), 2, '')]
 
     all_passed = True
     for id, max_status_code, modelre in idlist:

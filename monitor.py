@@ -28,7 +28,7 @@ import time
 from debug import *
 import pprint
 import gettext
-gettext.install(domain=config.PACKAGE, localedir=config.localedir, str=True)
+gettext.install(domain=config.PACKAGE, localedir=config.localedir)
 import ppdcache
 import statereason
 from statereason import StateReason
@@ -52,7 +52,7 @@ def collect_printer_state_reasons (connection, ppdcache):
     except cups.IPPError:
         return result
 
-    for name, printer in list(printers.items ()):
+    for name, printer in printers.items ():
         reasons = printer["printer-state-reasons"]
         for reason in reasons:
             if reason == "none":
@@ -218,13 +218,12 @@ class Monitor(GObject.GObject):
         time_now = time.time ()
         connecting_to_device = {}
         trouble = False
-        for printer, reasons in list(self.printer_state_reasons.items ()):
+        for printer, reasons in self.printer_state_reasons.items ():
             connected = True
             for reason in reasons:
                 if reason.get_reason () == "connecting-to-device":
                     have_processing_job = False
-                    for job, data in \
-                            list(printer_jobs.get (printer, {}).items ()):
+                    for job, data in printer_jobs.get (printer, {}).items ():
                         state = data.get ('job-state',
                                           cups.IPP_JOB_CANCELED)
                         if state == cups.IPP_JOB_PROCESSING:
@@ -279,7 +278,7 @@ class Monitor(GObject.GObject):
         # Look for any new reasons since we last checked.
         old_reasons_seen_keys = list(self.reasons_seen.keys ())
         reasons_now = set()
-        for printer, reasons in list(self.printer_state_reasons.items ()):
+        for printer, reasons in self.printer_state_reasons.items ():
             for reason in reasons:
                 tuple = reason.get_tuple ()
                 printer = reason.get_printer ()
@@ -296,8 +295,7 @@ class Monitor(GObject.GObject):
                     # First time we've seen this.
 
                     have_processing_job = False
-                    for job, data in \
-                            list(printer_jobs.get (printer, {}).items ()):
+                    for job, data in printer_jobs.get (printer, {}).items ():
                         state = data.get ('job-state',
                                           cups.IPP_JOB_CANCELED)
                         if state == cups.IPP_JOB_PROCESSING:
@@ -522,9 +520,8 @@ class Monitor(GObject.GObject):
                 c.cancelSubscription (self.sub_id)
             except cups.IPPError as e:
                 (e, m) = e.args
-                GLib.idle_add (lambda e_m1:
-                                   self.emit ('cups-ipp-error', e_m1[0], e_m1[1]),
-                               (e, m))
+                GLib.idle_add (lambda e, m: self.emit ('cups-ipp-error', e, m),
+                               e, m)
 
             if self.update_timer:
                 GLib.source_remove (self.update_timer)
@@ -552,9 +549,8 @@ class Monitor(GObject.GObject):
                                                                 repr (events)))
         except cups.IPPError as e:
             (e, m) = e.args
-            GLib.idle_add (lambda e_m:
-                               self.emit ('cups-ipp-error', e_m[0], e_m[1]),
-                           (e, m))
+            GLib.idle_add (lambda e, m: self.emit ('cups-ipp-error', e, m),
+                           e, m)
 
         cups.setUser (user)
 
@@ -570,7 +566,7 @@ class Monitor(GObject.GObject):
             if self.which_jobs not in ['all', 'completed']:
                 # Filter out completed jobs.
                 filtered = {}
-                for jobid, job in list(jobs.items ()):
+                for jobid, job in jobs.items ():
                     if job.get ('job-state',
                                 cups.IPP_JOB_CANCELED) < cups.IPP_JOB_CANCELED:
                         filtered[jobid] = job
@@ -591,16 +587,15 @@ class Monitor(GObject.GObject):
             self.printers = set(dests.keys ())
         except cups.IPPError as e:
             (e, m) = e.args
-            GLib.idle_add (lambda e_m2:
-                               self.emit ('cups-ipp-error', e_m2[0], e_m2[1]),
-                           (e, m))
+            GLib.idle_add (lambda e, m: self.emit ('cups-ipp-error', e, m),
+                           e, m)
             return
         except RuntimeError:
             GLib.idle_add (self.emit, 'cups-connection-error')
             return
 
         if self.specific_dests != None:
-            for jobid in list(jobs.keys ()):
+            for jobid in jobs.keys ():
                 uri = jobs[jobid].get('job-printer-uri', '/')
                 i = uri.rfind ('/')
                 printer = uri[i + 1:]
@@ -610,10 +605,10 @@ class Monitor(GObject.GObject):
         self.set_process_pending (False)
         for printer in self.printers:
             GLib.idle_add (lambda x: self.emit ('printer-added', x), printer)
-        for jobid, job in list(jobs.items ()):
-            GLib.idle_add (lambda jobid_job:
-                               self.emit ('job-added', jobid_job[0], '', {}, jobid_job[1]),
-                           (jobid, job))
+        for jobid, job in jobs.items ():
+            GLib.idle_add (lambda jobid, job:
+                                  self.emit ('job-added', jobid, '', {}, job),
+                           jobid, job)
         self.update_jobs (jobs)
         self.jobs = jobs
         self.set_process_pending (True)
@@ -731,7 +726,7 @@ class Monitor(GObject.GObject):
 
         my_printers = set()
         printer_jobs = {}
-        for job, data in list(jobs.items ()):
+        for job, data in jobs.items ():
             state = data.get ('job-state', cups.IPP_JOB_CANCELED)
             if state >= cups.IPP_JOB_CANCELED:
                 continue

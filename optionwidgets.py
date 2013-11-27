@@ -22,7 +22,7 @@ import config
 from gi.repository import Gtk
 import cups
 import gettext
-gettext.install(domain=config.PACKAGE, localedir=config.localedir, unicode=True)
+gettext.install(domain=config.PACKAGE, localedir=config.localedir)
 import ppdippstr
 
 def OptionWidget(option, ppd, gui, tab_label=None):

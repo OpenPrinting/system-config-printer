@@ -77,7 +77,7 @@ class ChoosePrinter(Question):
             dests = self.timedop (c.getDests, parent=parent).run ()
             printers = None
             dests_list = []
-            for (name, instance), dest in list(dests.items ()):
+            for (name, instance), dest in dests.items ():
                 if name == None:
                     continue
 

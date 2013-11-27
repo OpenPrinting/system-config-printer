@@ -28,7 +28,7 @@ import os
 from errordialogs import *
 from debug import *
 import gettext
-gettext.install(domain=config.PACKAGE, localedir=config.localedir, str=True)
+gettext.install(domain=config.PACKAGE, localedir=config.localedir)
 N_ = lambda x: x
 
 cups.require("1.9.60")

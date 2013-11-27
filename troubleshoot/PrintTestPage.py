@@ -134,8 +134,8 @@ class PrintTestPage(Question):
         self.authconn = answers['_authenticated_connection']
         mediatype = None
         defaults = answers.get ('cups_printer_ppd_defaults', {})
-        for opts in list(defaults.values ()):
-            for opt, value in list(opts.items ()):
+        for opts in defaults.values ():
+            for opt, value in opts.items ():
                 if opt == "MediaType":
                     mediatype = value
                     break
@@ -188,8 +188,9 @@ class PrintTestPage(Question):
         # We want to display the jobs in the queue for this printer...
         try:
             queue_uri_ending = "/" + self.troubleshooter.answers['cups_queue']
-            jobs_on_this_printer = [x for x in list(jobs_dict.keys ()) if jobs_dict[x]['job-printer-uri'].\
-                                               endswith (queue_uri_ending)]
+            jobs_on_this_printer = [x for x in jobs_dict.keys () if \
+                                            jobs_dict[x]['job-printer-uri']. \
+                                            endswith (queue_uri_ending)]
         except:
             jobs_on_this_printer = []
 
@@ -437,7 +438,7 @@ class PrintTestPage(Question):
     def cancel_clicked (self, widget):
         self.persistent_answers['test_page_jobs_cancelled'] = True
         jobids = []
-        for jobid, iter in list(self.job_to_iter.items ()):
+        for jobid, iter in self.job_to_iter.items ():
             jobids.append (jobid)
 
         def cancel_jobs (jobids):

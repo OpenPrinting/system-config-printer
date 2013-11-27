@@ -89,7 +89,7 @@ class Locale(Question):
         printer_page_size = None
         try:
             ppd_defs = self.troubleshooter.answers['cups_printer_ppd_defaults']
-            for group, options in list(ppd_defs.items ()):
+            for group, options in ppd_defs.items ():
                 if "PageSize" in options:
                     printer_page_size = options["PageSize"]
                     break

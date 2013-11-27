@@ -27,7 +27,7 @@ import subprocess
 import threading
 import config
 import gettext
-gettext.install(domain=config.PACKAGE, localedir=config.localedir, unicode=True)
+gettext.install(domain=config.PACKAGE, localedir=config.localedir)
 from debug import *
 
 # Initialise threading for D-Bus.  This is needed as long as it is

@@ -34,7 +34,7 @@ import cupshelpers.installdriver
 
 DOMAIN="system-config-printer"
 import gettext
-gettext.install(domain=DOMAIN, str=True)
+gettext.install(domain=DOMAIN)
 try:
     locale.setlocale (locale.LC_ALL, "")
 except locale.Error as e:

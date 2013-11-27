@@ -89,7 +89,7 @@ class DeviceListed(Question):
                                           parent=parent)
                 devices = self.op.run ()
                 devices_list = []
-                for uri, device in list(devices.items ()):
+                for uri, device in devices.items ():
                     if uri.find (':') == -1:
                         continue
 

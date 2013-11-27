@@ -32,7 +32,7 @@ from gi.repository import Gtk
 import HIG
 import config
 import gettext
-gettext.install(domain=config.PACKAGE, localedir=config.localedir, unicode=True)
+gettext.install(domain=config.PACKAGE, localedir=config.localedir)
 
 class ToolbarSearchEntry (Gtk.HBox):
     __gproperties__ = {

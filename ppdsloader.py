@@ -31,7 +31,7 @@ import asyncconn
 from debug import debugprint
 import config
 import gettext
-gettext.install(domain=config.PACKAGE, localedir=config.localedir, unicode=True)
+gettext.install(domain=config.PACKAGE, localedir=config.localedir)
 
 class PPDsLoader(GObject.GObject):
     """

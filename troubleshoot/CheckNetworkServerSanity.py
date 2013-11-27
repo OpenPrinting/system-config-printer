@@ -58,7 +58,8 @@ class CheckNetworkServerSanity(Question):
             # Try resolving the hostname.
             try:
                 ai = socket.getaddrinfo (server_name, server_port)
-                resolves = [family_socktype_proto_canonname_sockaddr[4][0] for family_socktype_proto_canonname_sockaddr in ai]
+                resolves = [family_socktype_proto_canonname_sockaddr[4][0] for
+                             family_socktype_proto_canonname_sockaddr in ai]
                 try_connect = True
             except socket.gaierror:
                 resolves = False
@@ -83,7 +84,8 @@ class CheckNetworkServerSanity(Question):
             # Validate it.
             try:
                 ai = socket.getaddrinfo (server_name, server_port)
-                resolves = [family_socktype_proto_canonname_sockaddr1[4][0] for family_socktype_proto_canonname_sockaddr1 in ai]
+                resolves = [family_socktype_proto_canonname_sockaddr1[4][0] for
+                             family_socktype_proto_canonname_sockaddr1 in ai]
             except socket.gaierror:
                 resolves = False
 

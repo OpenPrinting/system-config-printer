@@ -438,7 +438,7 @@ class PK1Connection:
 
     def _unpack_getDevices_reply (self, dbusdict):
         result_str = dict()
-        for key, value in list(dbusdict.items ()):
+        for key, value in dbusdict.items ():
             if type (key) == dbus.String:
                 result_str[str (key)] = str (value)
             else:
@@ -450,7 +450,7 @@ class PK1Connection:
         devices = dict()
         n = 0
         affix = ':' + str (n)
-        device_keys = [x for x in list(result_str.keys ()) if x.endswith (affix)]
+        device_keys = [x for x in result_str.keys () if x.endswith (affix)]
         while len (device_keys) > 0:
             device_uri = None
             device_dict = dict()
@@ -466,7 +466,7 @@ class PK1Connection:
 
             n += 1
             affix = ':' + str (n)
-            device_keys = [x for x in list(result_str.keys ()) if x.endswith (affix)]
+            device_keys = [x for x in result_str.keys () if x.endswith (affix)]
 
         return devices
 
@@ -517,7 +517,7 @@ class PK1Connection:
             if ((len (args) == 0 and 'resource' in kwds) or
                 (len (args) == 1)):
                 can_use_tempfile = True
-                for each in list(kwds.keys ()):
+                for each in kwds.keys ():
                     if each not in ['resource', 'fd', 'file',
                                     'reply_handler', 'error_handler']:
                         can_use_tempfile = False

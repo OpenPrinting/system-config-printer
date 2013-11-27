@@ -56,7 +56,7 @@ except ImportError:
     USE_KEYRING=False
 
 import gettext
-gettext.install(domain=config.PACKAGE, localedir=config.localedir, unicode=True)
+gettext.install(domain=config.PACKAGE, localedir=config.localedir)
 
 from statereason import StateReason
 

@@ -29,7 +29,7 @@ from gi.repository import Gtk
 import cups
 import locale
 import gettext
-gettext.install(domain=config.PACKAGE, localedir=config.localedir, str=True)
+gettext.install(domain=config.PACKAGE, localedir=config.localedir)
 
 import cupshelpers, options
 from gi.repository import GObject
@@ -689,9 +689,6 @@ class PrinterPropertiesDialog(GtkGUI):
 
         old_value = old_values[widget]
 
-        if type (old_value) == str:
-            old_value = old_value.encode ('utf-8')
-
         if old_value == value:
             self.changed.discard(widget)
         else:
@@ -1094,7 +1091,7 @@ class PrinterPropertiesDialog(GtkGUI):
             for option in printer.attributes:
                 if option not in self.server_side_options:
                     printer.unsetOption(option)
-            for option in list(self.server_side_options.values()):
+            for option in self.server_side_options.values():
                 if (option.is_changed() or
                     (saveall and
                      option.get_current_value () != option.get_default())):
@@ -1136,7 +1133,7 @@ class PrinterPropertiesDialog(GtkGUI):
 
     def getPrinterSettings(self):
         #self.ppd.markDefaults()
-        for option in list(self.options.values()):
+        for option in self.options.values():
             option.writeback()
 
     ### Printer Properties tree view signal handlers
@@ -1404,7 +1401,7 @@ class PrinterPropertiesDialog(GtkGUI):
 
         # Server side options (Job options)
         self.server_side_options = {}
-        for option in list(self.job_options_widgets.values ()):
+        for option in self.job_options_widgets.values ():
             if option.name == "media" and self.ppd:
                 # Slightly special case because the 'system default'
                 # (i.e. what you get when you press Reset) depends
@@ -1448,7 +1445,7 @@ class PrinterPropertiesDialog(GtkGUI):
                 option.button.set_sensitive (False)
         self.other_job_options = []
         self.draw_other_job_options (editable=editable)
-        for option in list(self.printer.attributes.keys ()):
+        for option in self.printer.attributes.keys ():
             if option in self.server_side_options:
                 continue
             if option == "output-mode":
@@ -1790,7 +1787,7 @@ class PrinterPropertiesDialog(GtkGUI):
                 self.ntbkPrinter.remove_page(tab_nr)
 
         # check for conflicts
-        for option in list(self.options.values()):
+        for option in self.options.values():
             conflicts = option.checkConflicts()
             if conflicts:
                 self.conflicts.add(option)

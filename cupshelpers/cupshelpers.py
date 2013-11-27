@@ -125,7 +125,7 @@ class Printer:
                                      'double', 'double-thick']),
             }
 
-        for key, value in list(attrs.items()):
+        for key, value in attrs.items():
             if key.endswith("-default"):
                 name = key[:-len("-default")]
                 if name in ["job-sheets", "printer-error-policy",
@@ -355,7 +355,7 @@ class Printer:
         except cups.IPPError:
             return ret
 
-        for id, attrs in list(jobs.items()):
+        for id, attrs in jobs.items():
             try:
                 uri = attrs['job-printer-uri']
                 uri = uri[uri.rindex ('/') + 1:]
@@ -391,7 +391,7 @@ class Printer:
         except cups.IPPError:
             return ret
 
-        for id, attrs in list(jobs.items()):
+        for id, attrs in jobs.items():
             try:
                 uri = attrs['job-printer-uri']
                 uri = uri[uri.rindex ('/') + 1:]
@@ -473,7 +473,7 @@ def getPrinters(connection):
     """
     printers = connection.getPrinters()
     classes = connection.getClasses()
-    for name, printer in list(printers.items()):
+    for name, printer in printers.items():
         printer = Printer(name, connection, **printer)
         printers[name] = printer
         if name in classes:
@@ -528,11 +528,6 @@ class Device:
         self.make_and_model = kw.get('device-make-and-model', '')
         self.id = kw.get('device-id', '')
         self.location = kw.get('device-location', '')
-
-        if type (self.info) == str:
-            # Convert unicode objects to UTF-8 encoding so they can be
-            # compared with other UTF-8 encoded strings (bug #957444).
-            self.info = self.info.encode ('utf-8')
 
         uri_pieces = uri.split(":")
         self.type =  uri_pieces[0]
@@ -634,7 +629,7 @@ class _GetDevicesCall(object):
         return self._reply_handler (connection, result)
 
     def _reply_handler (self, connection, devices):
-        for uri, data in list(devices.items()):
+        for uri, data in devices.items():
             device = Device(uri, **data)
             devices[uri] = device
             if device.info != '' and device.make_and_model == '':
@@ -876,7 +871,7 @@ def missingPackagesAndExecutables(ppd):
 def _main():
     c = cups.Connection()
     #printers = getPrinters(c)
-    for device in list(getDevices(c).values()):
+    for device in getDevices(c).values():
         print (device.uri, device.id_dict)
 
 if __name__=="__main__":

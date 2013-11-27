@@ -33,7 +33,7 @@ class GtkGUI(GObject.GObject):
         ui_dir = os.environ.get ("SYSTEM_CONFIG_PRINTER_UI",
                                  os.path.join (pkgdata, "ui"))
         self._bld = []
-        for xmlfile, names in list(widgets.items ()):
+        for xmlfile, names in widgets.items ():
             bld = Gtk.Builder ()
             self._bld.append (bld)
 
@@ -58,4 +58,5 @@ class GtkGUI(GObject.GObject):
                 widget.show()
 
     def connect_signals (self):
-        list([x.connect_signals (self) for x in self._bld])
+        for bld in self._bld:
+            bld.connect_signals (self)

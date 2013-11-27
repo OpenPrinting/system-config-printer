@@ -33,7 +33,7 @@ import authconn
 from debug import *
 import debug
 import gettext
-gettext.install(domain=config.PACKAGE, localedir=config.localedir, unicode=True)
+gettext.install(domain=config.PACKAGE, localedir=config.localedir)
 
 
 ######

@@ -135,8 +135,8 @@ class CheckUSBPermissions(Question):
         paths = []
         if not scheme.startswith ('hp'):
             paths.extend (glob.glob ("/dev/usb/lp?"))
-        for mfr_id, mdls in list(dev_by_id.items ()):
-            for mdl_id, devs in list(mdls.items ()):
+        for mfr_id, mdls in dev_by_id.items ():
+            for mdl_id, devs in mdls.items ():
                 for dev in devs:
                     path = "/dev/bus/usb/%s/%s" % (dev['bus'], dev['dev'])
                     paths.append (path)

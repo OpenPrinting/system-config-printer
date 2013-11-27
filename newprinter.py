@@ -69,7 +69,7 @@ import ppdsloader
 import dnssdresolve
 
 import gettext
-gettext.install(domain=config.PACKAGE, localedir=config.localedir, unicode=True)
+gettext.install(domain=config.PACKAGE, localedir=config.localedir)
 
 
 TEXT_adjust_firewall = _("The firewall may need adjusting in order to "
