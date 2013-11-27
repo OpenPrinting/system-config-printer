@@ -28,7 +28,7 @@ import time
 from debug import *
 import pprint
 import gettext
-gettext.install(domain=config.PACKAGE, localedir=config.localedir, unicode=True)
+gettext.install(domain=config.PACKAGE, localedir=config.localedir, str=True)
 import ppdcache
 import statereason
 from statereason import StateReason
@@ -52,14 +52,14 @@ def collect_printer_state_reasons (connection, ppdcache):
     except cups.IPPError:
         return result
 
-    for name, printer in printers.iteritems ():
+    for name, printer in list(printers.items ()):
         reasons = printer["printer-state-reasons"]
         for reason in reasons:
             if reason == "none":
                 break
             if state_reason_is_harmless (reason):
                 continue
-            if not result.has_key (name):
+            if name not in result:
                 result[name] = []
             result[name].append (StateReason (name, reason, ppdcache))
     return result
@@ -182,7 +182,7 @@ class Monitor(GObject.GObject):
                                              path=self.DBUS_PATH,
                                              dbus_interface=self.DBUS_IFACE)
 
-        timers = self.connecting_timers.values ()
+        timers = list(self.connecting_timers.values ())
         for timer in [self.update_timer, self.fetch_jobs_timer]:
             if timer:
                 timers.append (timer)
@@ -203,7 +203,7 @@ class Monitor(GObject.GObject):
             self.connecting_timers[printer] = timer
             return False
 
-        if self.connecting_timers.has_key (printer):
+        if printer in self.connecting_timers:
             del self.connecting_timers[printer]
 
         debugprint ("Still-connecting timer fired for `%s'" % printer)
@@ -218,13 +218,13 @@ class Monitor(GObject.GObject):
         time_now = time.time ()
         connecting_to_device = {}
         trouble = False
-        for printer, reasons in self.printer_state_reasons.iteritems ():
+        for printer, reasons in list(self.printer_state_reasons.items ()):
             connected = True
             for reason in reasons:
                 if reason.get_reason () == "connecting-to-device":
                     have_processing_job = False
                     for job, data in \
-                            printer_jobs.get (printer, {}).iteritems ():
+                            list(printer_jobs.get (printer, {}).items ()):
                         state = data.get ('job-state',
                                           cups.IPP_JOB_CANCELED)
                         if state == cups.IPP_JOB_PROCESSING:
@@ -246,7 +246,7 @@ class Monitor(GObject.GObject):
                             if printer not in self.still_connecting:
                                 self.still_connecting.add (printer)
                                 self.emit ('still-connecting', reason)
-                            if self.connecting_timers.has_key (printer):
+                            if printer in self.connecting_timers:
                                 GLib.source_remove (self.connecting_timers
                                                     [printer])
                                 del self.connecting_timers[printer]
@@ -256,7 +256,7 @@ class Monitor(GObject.GObject):
                     connected = False
                     break
 
-            if connected and self.connecting_timers.has_key (printer):
+            if connected and printer in self.connecting_timers:
                 GLib.source_remove (self.connecting_timers[printer])
                 del self.connecting_timers[printer]
                 debugprint ("Stopped connecting timer for `%s'" % printer)
@@ -264,10 +264,10 @@ class Monitor(GObject.GObject):
         # Clear any previously-notified errors that are now fine.
         remove = set()
         for printer in self.still_connecting:
-            if not connecting_to_device.has_key (printer):
+            if printer not in connecting_to_device:
                 remove.add (printer)
                 self.emit ('now-connected', printer)
-                if self.connecting_timers.has_key (printer):
+                if printer in self.connecting_timers:
                     GLib.source_remove (self.connecting_timers[printer])
                     del self.connecting_timers[printer]
                     debugprint ("Stopped connecting timer for `%s'" % printer)
@@ -277,14 +277,14 @@ class Monitor(GObject.GObject):
 
     def check_state_reasons(self, my_printers=set(), printer_jobs={}):
         # Look for any new reasons since we last checked.
-        old_reasons_seen_keys = self.reasons_seen.keys ()
+        old_reasons_seen_keys = list(self.reasons_seen.keys ())
         reasons_now = set()
-        for printer, reasons in self.printer_state_reasons.iteritems ():
+        for printer, reasons in list(self.printer_state_reasons.items ()):
             for reason in reasons:
                 tuple = reason.get_tuple ()
                 printer = reason.get_printer ()
                 reasons_now.add (tuple)
-                if not self.reasons_seen.has_key (tuple):
+                if tuple not in self.reasons_seen:
                     # New reason.
                     GLib.idle_add (lambda x:
                                        self.emit ('state-reason-added', x),
@@ -292,12 +292,12 @@ class Monitor(GObject.GObject):
                     self.reasons_seen[tuple] = reason
 
                 if (reason.get_reason () == "connecting-to-device" and
-                    not self.connecting_to_device.has_key (printer)):
+                    printer not in self.connecting_to_device):
                     # First time we've seen this.
 
                     have_processing_job = False
                     for job, data in \
-                            printer_jobs.get (printer, {}).iteritems ():
+                            list(printer_jobs.get (printer, {}).items ()):
                         state = data.get ('job-state',
                                           cups.IPP_JOB_CANCELED)
                         if state == cups.IPP_JOB_PROCESSING:
@@ -319,7 +319,7 @@ class Monitor(GObject.GObject):
                             debugprint (pprint.pformat (printer_jobs))
 
         self.update_connecting_devices (printer_jobs)
-        items = self.reasons_seen.keys ()
+        items = list(self.reasons_seen.keys ())
         for tuple in items:
             if not tuple in reasons_now:
                 # Reason no longer present.
@@ -399,14 +399,14 @@ class Monitor(GObject.GObject):
 
                 elif nse == 'printer-deleted' and name in self.printers:
                     self.printers.remove (name)
-                    items = self.reasons_seen.keys ()
+                    items = list(self.reasons_seen.keys ())
                     for tuple in items:
                         if tuple[1] == name:
                             reason = self.reasons_seen[tuple]
                             del self.reasons_seen[tuple]
                             self.emit ('state-reason-removed', reason)
                             
-                    if self.printer_state_reasons.has_key (name):
+                    if name in self.printer_state_reasons:
                         del self.printer_state_reasons[name]
 
                     self.emit ('printer-removed', name)
@@ -435,7 +435,7 @@ class Monitor(GObject.GObject):
             jobid = event['notify-job-id']
             if (nse == 'job-created' or
                 (nse == 'job-state-changed' and
-                 not jobs.has_key (jobid) and
+                 jobid not in jobs and
                  event['job-state'] == cups.IPP_JOB_PROCESSING)):
                 if (self.specific_dests != None and
                     event['printer-name'] not in self.specific_dests):
@@ -475,7 +475,7 @@ class Monitor(GObject.GObject):
             for attribute in ['job-state',
                               'job-name']:
                 job[attribute] = event[attribute]
-            if event.has_key ('notify-printer-uri'):
+            if 'notify-printer-uri' in event:
                 job['job-printer-uri'] = event['notify-printer-uri']
 
             self.emit ('job-event', jobid, nse, event, job.copy ())
@@ -522,8 +522,8 @@ class Monitor(GObject.GObject):
                 c.cancelSubscription (self.sub_id)
             except cups.IPPError as e:
                 (e, m) = e.args
-                GLib.idle_add (lambda (e, m):
-                                   self.emit ('cups-ipp-error', e, m),
+                GLib.idle_add (lambda e_m1:
+                                   self.emit ('cups-ipp-error', e_m1[0], e_m1[1]),
                                (e, m))
 
             if self.update_timer:
@@ -552,8 +552,8 @@ class Monitor(GObject.GObject):
                                                                 repr (events)))
         except cups.IPPError as e:
             (e, m) = e.args
-            GLib.idle_add (lambda (e, m):
-                               self.emit ('cups-ipp-error', e, m),
+            GLib.idle_add (lambda e_m:
+                               self.emit ('cups-ipp-error', e_m[0], e_m[1]),
                            (e, m))
 
         cups.setUser (user)
@@ -570,7 +570,7 @@ class Monitor(GObject.GObject):
             if self.which_jobs not in ['all', 'completed']:
                 # Filter out completed jobs.
                 filtered = {}
-                for jobid, job in jobs.iteritems ():
+                for jobid, job in list(jobs.items ()):
                     if job.get ('job-state',
                                 cups.IPP_JOB_CANCELED) < cups.IPP_JOB_CANCELED:
                         filtered[jobid] = job
@@ -591,8 +591,8 @@ class Monitor(GObject.GObject):
             self.printers = set(dests.keys ())
         except cups.IPPError as e:
             (e, m) = e.args
-            GLib.idle_add (lambda (e, m):
-                               self.emit ('cups-ipp-error', e, m),
+            GLib.idle_add (lambda e_m2:
+                               self.emit ('cups-ipp-error', e_m2[0], e_m2[1]),
                            (e, m))
             return
         except RuntimeError:
@@ -600,7 +600,7 @@ class Monitor(GObject.GObject):
             return
 
         if self.specific_dests != None:
-            for jobid in jobs.keys ():
+            for jobid in list(jobs.keys ()):
                 uri = jobs[jobid].get('job-printer-uri', '/')
                 i = uri.rfind ('/')
                 printer = uri[i + 1:]
@@ -610,9 +610,9 @@ class Monitor(GObject.GObject):
         self.set_process_pending (False)
         for printer in self.printers:
             GLib.idle_add (lambda x: self.emit ('printer-added', x), printer)
-        for jobid, job in jobs.iteritems ():
-            GLib.idle_add (lambda (jobid, job):
-                               self.emit ('job-added', jobid, '', {}, job),
+        for jobid, job in list(jobs.items ()):
+            GLib.idle_add (lambda jobid_job:
+                               self.emit ('job-added', jobid_job[0], '', {}, jobid_job[1]),
                            (jobid, job))
         self.update_jobs (jobs)
         self.jobs = jobs
@@ -662,7 +662,7 @@ class Monitor(GObject.GObject):
         debugprint ("Got %s jobs, asked for %s" % (got, limit))
 
         jobs = self.jobs.copy ()
-        jobids = fetched.keys ()
+        jobids = list(fetched.keys ())
         jobids.sort ()
         if got > 0:
             last_jobid = jobids[got - 1]
@@ -672,7 +672,7 @@ class Monitor(GObject.GObject):
                 debugprint ("That's not what we asked for!")
         else:
             last_jobid = self.fetch_first_job_id + limit - 1
-        for jobid in xrange (self.fetch_first_job_id, last_jobid + 1):
+        for jobid in range (self.fetch_first_job_id, last_jobid + 1):
             try:
                 job = fetched[jobid]
                 if self.specific_dests != None:
@@ -682,7 +682,7 @@ class Monitor(GObject.GObject):
                     if printer not in self.specific_dests:
                         raise KeyError
 
-                if jobs.has_key (jobid):
+                if jobid in jobs:
                     n = 'job-event'
                 else:
                     n = 'job-added'
@@ -691,11 +691,11 @@ class Monitor(GObject.GObject):
                 self.emit (n, jobid, '', {}, job.copy ())
             except KeyError:
                 # No job by that ID.
-                if jobs.has_key (jobid):
+                if jobid in jobs:
                     del jobs[jobid]
                     self.emit ('job-removed', jobid, '', {})
 
-        jobids = jobs.keys ()
+        jobids = list(jobs.keys ())
         jobids.sort ()
         if got < limit:
             trim = False
@@ -719,7 +719,7 @@ class Monitor(GObject.GObject):
         # Remember where we got up to and run this timer again.
         next = jobid + 1
 
-        while not refresh_all and self.jobs.has_key (next):
+        while not refresh_all and next in self.jobs:
             next += 1
 
         self.fetch_first_job_id = next
@@ -731,7 +731,7 @@ class Monitor(GObject.GObject):
 
         my_printers = set()
         printer_jobs = {}
-        for job, data in jobs.iteritems ():
+        for job, data in list(jobs.items ()):
             state = data.get ('job-state', cups.IPP_JOB_CANCELED)
             if state >= cups.IPP_JOB_CANCELED:
                 continue
@@ -741,7 +741,7 @@ class Monitor(GObject.GObject):
                 continue
             printer = uri[i + 1:]
             my_printers.add (printer)
-            if not printer_jobs.has_key (printer):
+            if printer not in printer_jobs:
                 printer_jobs[printer] = {}
             printer_jobs[printer][job] = data
 
@@ -785,46 +785,46 @@ if __name__ == '__main__':
             monitor.connect ('cups-ipp-error', self.on_cups_ipp_error)
 
         def on_monitor_exited (self, obj):
-            print "*%s: monitor exited" % obj
+            print("*%s: monitor exited" % obj)
 
         def on_state_reason_added (self, obj, reason):
-            print "*%s: +%s" % (obj, reason)
+            print("*%s: +%s" % (obj, reason))
 
         def on_state_reason_removed (self, obj, reason):
-            print "*%s: -%s" % (obj, reason)
+            print("*%s: -%s" % (obj, reason))
 
         def on_still_connecting (self, obj, reason):
-            print "*%s: still connecting: %s" % (obj, reason)
+            print("*%s: still connecting: %s" % (obj, reason))
 
         def on_now_connected (self, obj, printer):
-            print "*%s: now connected: %s" % (obj, printer)
+            print("*%s: now connected: %s" % (obj, printer))
 
         def on_job_added (self, obj, jobid, eventname, event, jobdata):
-            print "*%s: job %d added" % (obj, jobid)
+            print("*%s: job %d added" % (obj, jobid))
 
         def on_job_event (self, obj, jobid, eventname, event, jobdata):
-            print "*%s: job %d event: %s" % (obj, jobid, event)
+            print("*%s: job %d event: %s" % (obj, jobid, event))
 
         def on_job_removed (self, obj, jobid, eventname, event):
-            print "*%s: job %d removed (%s)"% (obj, jobid, eventname)
+            print("*%s: job %d removed (%s)"% (obj, jobid, eventname))
 
         def on_printer_added (self, obj, name):
-            print "*%s: printer added: %s" % (obj, name)
+            print("*%s: printer added: %s" % (obj, name))
 
         def on_printer_event (self, obj, name, eventname, event):
-            print "*%s: printer event: %s: %s" % (obj, name, eventname)
+            print("*%s: printer event: %s: %s" % (obj, name, eventname))
 
         def on_printer_removed (self, obj, name):
-            print "*%s: printer %s removed" % (obj, name)
+            print("*%s: printer %s removed" % (obj, name))
 
         def on_cups_connection_error (self, obj):
-            print "*%s: cups connection error" % obj
+            print("*%s: cups connection error" % obj)
 
         def on_cups_ipp_error (self, obj, err, errstring):
             # cups.IPPError message is (utf-8) encoded
             if isinstance(errstring, bytes):
                     errstring = errstring.decode('utf-8', 'replace')
-            print "*%s: IPP error (%d): %s" % (obj, err, errstring)
+            print("*%s: IPP error (%d): %s" % (obj, err, errstring))
 
     set_debugging (True)
     m = Monitor ()
