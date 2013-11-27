@@ -59,7 +59,6 @@ class DNSSDHostNamesResolver:
             else:
                 hostname = uri[8:8+p]
 
-            hostname = hostname.encode('utf-8')
             hostname = re.sub("%(?i)[\dabcdef]{2}", expandhex, hostname)
 
             elements = hostname.rsplit (".", 3)
@@ -96,7 +95,7 @@ class DNSSDHostNamesResolver:
 
     def _reply (self, interface, protocol, name, stype, domain,
                 host, aprotocol, address, port, txt, flags):
-        uri = self._device_uri_by_name[(name.encode ('utf-8'), stype, domain)]
+        uri = self._device_uri_by_name[(name, stype, domain)]
         self._devices[uri].address = address
         hostname = host
         p = hostname.find(".")

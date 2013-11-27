@@ -158,10 +158,7 @@ class Connection:
 
         for i in range(len(types)):
             if type(args[i]) != types[i]:
-                if types[i] == str and type(args[i]) == unicode:
-                    # we accept a mix between unicode and str
-                    pass
-                elif types[i] == str and type(args[i]) == int:
+                if types[i] == str and type(args[i]) == int:
                     # we accept a mix between int and str
                     retval.append(str(args[i]))
                     continue

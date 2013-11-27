@@ -104,14 +104,14 @@ def getCurrentClassMembers(treeview):
     iter = model.get_iter_first()
     result = []
     while iter:
-        result.append(model.get(iter, 0)[0].decode ('utf-8'))
+        result.append(model.get(iter, 0)[0])
         iter = model.iter_next(iter)
     result.sort()
     return result
 
 def checkNPName(printers, name):
     if not name: return False
-    name = unicode (name.lower())
+    name = name.lower()
     for printer in printers.values():
         if not printer.discovered and printer.name.lower()==name:
             return False
@@ -1693,7 +1693,7 @@ class NewPrinterGUI(GtkGUI):
 
     def on_entNPName_changed(self, widget):
         # restrict
-        text = unicode (widget.get_text(), 'utf-8')
+        text = widget.get_text()
         new_text = text
         new_text = new_text.replace("/", "")
         new_text = new_text.replace("#", "")
@@ -1898,8 +1898,6 @@ class NewPrinterGUI(GtkGUI):
 
             if stdout != None:
                 line = stdout.strip ()
-                if isinstance(line, bytes):
-                    line = line.decode('utf-8', 'replace')
                 words = probe_printer.wordsep (line)
                 n = len (words)
                 if n < 4:
@@ -2583,11 +2581,7 @@ class NewPrinterGUI(GtkGUI):
 
     def entry_changed(self, entry, allowed_chars):
         "Remove all chars from entry's text that are not in allowed_chars."
-        try:
-            allowed_chars = unicode (allowed_chars, 'utf-8')
-        except UnicodeDecodeError:
-            allowed_chars = unicode (allowed_chars)
-        origtext = unicode (entry.get_text(), 'utf-8')
+        origtext = entry.get_text()
         new_text = origtext
         for char in origtext:
             if char not in allowed_chars:
@@ -2924,7 +2918,7 @@ class NewPrinterGUI(GtkGUI):
                         nr = 0
                         while iter:
                             value = model.get(iter,1)[0]
-                            if unicode (value) == unicode (option_dict[name]):
+                            if str (value) == str (option_dict[name]):
                                 break
                             iter = model.iter_next(iter)
                             nr += 1
@@ -3864,7 +3858,7 @@ class NewPrinterGUI(GtkGUI):
 
         debugprint("ppd: " + repr(ppd))
 
-        if isinstance(ppd, str) or isinstance(ppd, unicode):
+        if isinstance(ppd, str):
             self.cups._begin_operation (_("fetching PPD"))
             try:
                 if ppd != "raw":
@@ -3956,9 +3950,9 @@ class NewPrinterGUI(GtkGUI):
             self.dec_spinner_task ()
 
         if self.dialog_mode in ("class", "printer", "printer_with_uri"):
-            name = unicode (self.entNPName.get_text(), 'utf-8')
-            location = unicode (self.entNPLocation.get_text(), 'utf-8')
-            info = unicode (self.entNPDescription.get_text(), 'utf-8')
+            name = self.entNPName.get_text()
+            location = self.entNPLocation.get_text()
+            info = self.entNPDescription.get_text()
         else:
             name = self._name
 
@@ -3998,7 +3992,7 @@ class NewPrinterGUI(GtkGUI):
                 Gtk.main_iteration ()
             self.cups._begin_operation (_("adding printer %s") % name)
             try:
-                if isinstance(ppd, str) or isinstance(ppd, unicode):
+                if isinstance(ppd, str):
                     self.cups.addPrinter(name, ppdname=ppd,
                          device=uri, info=info, location=location)
                 elif ppd is None: # raw queue
@@ -4055,7 +4049,7 @@ class NewPrinterGUI(GtkGUI):
             # set ppd on server and retrieve it
             # cups doesn't offer a way to just download a ppd ;(=
             raw = False
-            if isinstance(ppd, str) or isinstance(ppd, unicode):
+            if isinstance(ppd, str):
                 if self.rbtnChangePPDasIs.get_active():
                     # To use the PPD as-is we need to prevent CUPS copying
                     # the old options over.  Do this by setting it to a

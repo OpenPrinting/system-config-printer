@@ -37,7 +37,6 @@ class SMBURI:
             if group or host or share or user or password:
                 raise RuntimeError
 
-            uri = uri.encode ('utf-8')
             if uri.startswith ("smb://"):
                 uri = uri[6:]
 

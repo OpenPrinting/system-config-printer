@@ -186,7 +186,7 @@ class SystemConfigFirewall:
                     return
 
                 p = self._fw.read ()
-                self._fw_data = json.loads (p.encode ('utf-8'))
+                self._fw_data = json.loads (p)
             except (dbus.exceptions.DBusException, AttributeError, ValueError) as e:
                 self._fw_data = (None, None)
                 if error_handler:
@@ -206,7 +206,7 @@ class SystemConfigFirewall:
 
     def reply_handler (self, result):
         try:
-            self._fw_data = json.loads (result.encode ('utf-8'))
+            self._fw_data = json.loads (result)
         except ValueError as e:
             self.error_handler (e)
             return

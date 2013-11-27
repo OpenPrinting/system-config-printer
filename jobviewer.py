@@ -141,8 +141,6 @@ class PrinterURIIndex:
         try:
             if connection == None:
                 connection = cups.Connection ()
-            if isinstance(name, bytes):
-                name = name.decode ('utf-8')
 
             r = ['printer-name', 'printer-uri-supported', 'printer-more-info']
             if uri != None:

@@ -54,8 +54,6 @@ elif len (sys.argv) == 2:
             attrs = c.getPrinterAttributes (sys.argv[1])
         except cups.IPPError as e:
             (e, m) = e.args
-            if isinstance(m, bytes):
-                m = m.decode('utf-8', 'replace')
             print "Error getting printer attibutes: %s" % m
             sys.exit (1)
 

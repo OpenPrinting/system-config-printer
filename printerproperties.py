@@ -997,8 +997,6 @@ class PrinterPropertiesDialog(GtkGUI):
             parent = self.dialog
         class_deleted = False
         name = printer.name
-        if isinstance (name, bytes):
-            name = name.decode ('utf-8')
 
         if printer.is_class:
             self.cups._begin_operation (_("modifying class %s") % name)
@@ -1040,9 +1038,9 @@ class PrinterPropertiesDialog(GtkGUI):
                 for member in old_members:
                     self.cups.deletePrinterFromClass(member, name)
 
-            location = self.entPLocation.get_text().decode ('utf-8')
-            info = self.entPDescription.get_text().decode ('utf-8')
-            device_uri = self.entPDevice.get_text().decode ('utf-8')
+            location = self.entPLocation.get_text()
+            info = self.entPDescription.get_text()
+            device_uri = self.entPDevice.get_text()
 
             enabled = self.chkPEnabled.get_active()
             accepting = self.chkPAccepting.get_active()
