@@ -30,6 +30,7 @@ import locale
 import os.path
 import re
 from . import _debugprint, set_debugprint_fn
+from functools import reduce
 
 __all__ = ['ppdMakeModelSplit',
            'PPDs']
@@ -233,7 +234,7 @@ def ppdMakeModelSplit (ppd_make_and_model):
         modell = model.lower ()
 
     if makel == "hp":
-        for (name, fullname) in _HP_MODEL_BY_NAME.iteritems ():
+        for (name, fullname) in list(_HP_MODEL_BY_NAME.items ()):
             if modell.startswith (name):
                 model = fullname + model[len (name):]
                 modell = model.lower ()
@@ -341,7 +342,7 @@ class PPDs:
         if xml_dir == None:
             xml_dir = os.environ.get ("CUPSHELPERS_XMLDIR")
             if xml_dir == None:
-                import config
+                from . import config
                 xml_dir = os.path.join (config.sysconfdir, "cupshelpers")
 
         try:
@@ -367,7 +368,7 @@ class PPDs:
             short_language = language
 
         to_remove = []
-        for ppdname, ppddict in self.ppds.iteritems ():
+        for ppdname, ppddict in list(self.ppds.items ()):
             try:
                 natural_language = _singleton (ppddict['ppd-natural-language'])
             except KeyError:
@@ -392,7 +393,7 @@ class PPDs:
         # CUPS sets the 'raw' model's ppd-make-and-model to 'Raw Queue'
         # which unfortunately then appears as manufacturer Raw and
         # model Queue.  Use 'Generic' for this model.
-        if self.ppds.has_key ('raw'):
+        if 'raw' in self.ppds:
             makemodel = _singleton (self.ppds['raw']['ppd-make-and-model'])
             if not makemodel.startswith ("Generic "):
                 self.ppds['raw']['ppd-make-and-model'] = "Generic " + makemodel
@@ -403,7 +404,7 @@ class PPDs:
         to the current locale
 	"""
         self._init_makes ()
-        makes_list = self.makes.keys ()
+        makes_list = list(self.makes.keys ())
         makes_list.sort (locale.strcoll)
         try:
             # "Generic" should be listed first.
@@ -420,7 +421,7 @@ class PPDs:
 	"""
         self._init_makes ()
         try:
-            models_list = self.makes[make].keys ()
+            models_list = list(self.makes[make].keys ())
         except KeyError:
             return []
         models_list.sort (key=lambda x: x.lower(), cmp=cups.modelSort)
@@ -585,12 +586,12 @@ class PPDs:
         mfgrepl = {"hewlett-packard": "hp",
                    "lexmark international": "lexmark",
                    "kyocera": "kyocera mita"}
-        if self.lmakes.has_key (mfgl):
+        if mfgl in self.lmakes:
             # Found manufacturer.
             make = self.lmakes[mfgl]
-        elif mfgrepl.has_key (mfgl):
+        elif mfgl in mfgrepl:
             rmfg = mfgrepl[mfgl]
-            if self.lmakes.has_key (rmfg):
+            if rmfg in self.lmakes:
                 mfg = rmfg
                 mfgl = mfg
                 # Found manufacturer (after mapping to canonical name)
@@ -609,9 +610,9 @@ class PPDs:
                     mdll = normalize (mdl)
                     _debugprint ("unprefixed mdll: %s" % mdll)
 
-            if self.lmodels[mfgl].has_key (mdll):
+            if mdll in self.lmodels[mfgl]:
                 model = mdlsl[mdll]
-                for each in mdls[model].keys ():
+                for each in list(mdls[model].keys ()):
                     fit[each] = self.FIT_EXACT
                     _debugprint ("%s: %s" % (fit[each], each))
             else:
@@ -620,9 +621,9 @@ class PPDs:
                 (mfg2, mdl2) = ppdMakeModelSplit (mfg + " " + mdl)
                 mdl2l = normalize (mdl2)
                 _debugprint ("re-split mdll: %s" % mdl2l)
-                if self.lmodels[mfgl].has_key (mdl2l):
+                if mdl2l in self.lmodels[mfgl]:
                     model = mdlsl[mdl2l]
-                    for each in mdls[model].keys ():
+                    for each in list(mdls[model].keys ()):
                         fit[each] = self.FIT_EXACT
                         _debugprint ("%s: %s" % (fit[each], each))
       
@@ -669,7 +670,7 @@ class PPDs:
         if id_matched and len (commandsets) > 0:
             failed = set()
             exact_cmd = set()
-            for ppdname in fit.keys ():
+            for ppdname in list(fit.keys ()):
                 ppd_cmd_field = None
                 ppd = self.ppds[ppdname]
                 ppd_device_id = _singleton (ppd.get ('ppd-device-id'))
@@ -722,7 +723,7 @@ class PPDs:
             for fallback in fallbacks:
                 _debugprint ("'%s' fallback" % fallback)
                 fallbackgz = fallback + ".gz"
-                for ppdpath in self.ppds.keys ():
+                for ppdpath in list(self.ppds.keys ()):
                     if (ppdpath.endswith (fallback) or
                         ppdpath.endswith (fallbackgz)):
                         fit[ppdpath] = self.FIT_NONE
@@ -736,7 +737,7 @@ class PPDs:
 
             if not found:
                 _debugprint ("No fallback available; choosing any")
-                fit[self.ppds.keys ()[0]] = self.FIT_NONE
+                fit[list(self.ppds.keys ())[0]] = self.FIT_NONE
 
         if not id_matched:
             sanitised_uri = re.sub (pattern="//[^@]*@/?", repl="//",
@@ -805,7 +806,7 @@ class PPDs:
         devid = { "MFG": mfg, "MDL": mdl,
                   "DES": description,
                   "CMD": commandsets }
-        ppdnamelist = self.orderPPDNamesByPreference (fit.keys (),
+        ppdnamelist = self.orderPPDNamesByPreference (list(fit.keys ()),
                                                       downloadedfiles,
                                                       make_and_model,
                                                       devid, fit)
@@ -829,10 +830,10 @@ class PPDs:
             mdl = mdl[:-7]
         best_mdl = None
         best_matchlen = 0
-        mdlnames = mdls.keys ()
+        mdlnames = list(mdls.keys ())
 
         # Perform a case-insensitive model sort on the names.
-        mdlnamesl = map (lambda x: (x, x.lower()), mdlnames)
+        mdlnamesl = [(x, x.lower()) for x in mdlnames]
         mdlnamesl.append ((mdl, mdll))
         mdlnamesl.sort (lambda x, y: cups.modelSort(x[1], y[1]))
         i = mdlnamesl.index ((mdl, mdll))
@@ -849,7 +850,7 @@ class PPDs:
         for (candidate, candidatel) in candidates:
             prefix = os.path.commonprefix ([candidatel, mdll])
             if len (prefix) > best_matchlen:
-                best_mdl = mdls[candidate].keys ()
+                best_mdl = list(mdls[candidate].keys ())
                 best_matchlen = len (prefix)
                 _debugprint ("%s: match length %d" % (candidate, best_matchlen))
 
@@ -869,7 +870,7 @@ class PPDs:
             # there are digits, try lowering the number of
             # significant figures.
             mdlnames.sort (cups.modelSort)
-            mdlitems = map (lambda x: (x.lower (), mdls[x]), mdlnames)
+            mdlitems = [(x.lower (), mdls[x]) for x in mdlnames]
             modelid = None
             for word in mdll.split (' '):
                 if modelid == None:
@@ -920,7 +921,7 @@ class PPDs:
                                 break
 
                         if found:
-                            best_mdl = ppds.keys ()
+                            best_mdl = list(ppds.keys ())
                             break
 
                     if found:
@@ -952,7 +953,7 @@ class PPDs:
                     return ppds
             return None
 
-        cmdsets = map (lambda x: x.lower (), commandsets)
+        cmdsets = [x.lower () for x in commandsets]
         if (("postscript" in cmdsets) or ("postscript2" in cmdsets) or
             ("postscript level 2 emulation" in cmdsets)):
             return get ("PostScript")
@@ -981,7 +982,7 @@ class PPDs:
         lmakes = {}
         lmodels = {}
         aliases = {} # Generic model name: set(specific model names)
-        for ppdname, ppddict in self.ppds.iteritems ():
+        for ppdname, ppddict in list(self.ppds.items ()):
             # One entry for ppd-make-and-model
             ppd_make_and_model = _singleton (ppddict['ppd-make-and-model'])
             ppd_mm_split = ppdMakeModelSplit (ppd_make_and_model)
@@ -998,8 +999,7 @@ class PPDs:
             ppd_products = ppddict.get ('ppd-product', [])
             if not isinstance (ppd_products, list):
                 ppd_products = [ppd_products]
-            ppd_products = set (filter (lambda x: x.startswith ("("),
-                                        ppd_products))
+            ppd_products = set ([x for x in ppd_products if x.startswith ("(")])
             if ppd_products:
                 # If there is only one ppd-product value it is
                 # unlikely to be useful.
@@ -1030,14 +1030,14 @@ class PPDs:
             for make, model in ppd_makes_and_models:
                 lmake = normalize (make)
                 lmodel = normalize (model)
-                if not lmakes.has_key (lmake):
+                if lmake not in lmakes:
                     lmakes[lmake] = make
                     lmodels[lmake] = {}
                     makes[make] = {}
                 else:
                     make = lmakes[lmake]
 
-                if not lmodels[lmake].has_key (lmodel):
+                if lmodel not in lmodels[lmake]:
                     lmodels[lmake][lmodel] = model
                     makes[make][model] = {}
                 else:
@@ -1051,22 +1051,21 @@ class PPDs:
 
             if ppd_makes_and_models:
                 (make, model) = ppd_mm_split
-                if aliases.has_key (make):
+                if make in aliases:
                     models = aliases[make].get (model, set())
                 else:
                     aliases[make] = {}
                     models = set()
 
-                models = models.union (map (lambda x: x[1],
-                                            ppd_makes_and_models))
+                models = models.union ([x[1] for x in ppd_makes_and_models])
                 aliases[make][model] = models
 
         # Now, for each set of model aliases, add all drivers from the
         # "main" (generic) model name to each of the specific models.
-        for make, models in aliases.iteritems ():
+        for make, models in list(aliases.items ()):
             lmake = normalize (make)
             main_make = lmakes[lmake]
-            for model, modelnames in models.iteritems ():
+            for model, modelnames in list(models.items ()):
                 main_model = lmodels[lmake].get (normalize (model))
                 if not main_model:
                     continue
@@ -1088,7 +1087,7 @@ class PPDs:
             return
 
         ids = {}
-        for ppdname, ppddict in self.ppds.iteritems ():
+        for ppdname, ppddict in list(self.ppds.items ()):
             id = _singleton (ppddict.get ('ppd-device-id'))
             if not id:
                 continue
@@ -1105,10 +1104,10 @@ class PPDs:
             if bad:
                 continue
 
-            if not ids.has_key (lmfg):
+            if lmfg not in ids:
                 ids[lmfg] = {}
 
-            if not ids[lmfg].has_key (lmdl):
+            if lmdl not in ids[lmfg]:
                 ids[lmfg][lmdl] = []
 
             ids[lmfg][lmdl].append (ppdname)
@@ -1188,7 +1187,7 @@ def _self_test(argv):
                 print ("  " + model)
     print ("%d makes, %d models" % (len (makes), models_count))
     ppds.getPPDNameFromDeviceID ("HP", "PSC 2200 Series")
-    makes = ppds.ids.keys ()
+    makes = list(ppds.ids.keys ())
     models_count = 0
     for make in makes:
         models = ppds.ids[make]
@@ -1263,7 +1262,7 @@ def _self_test(argv):
         ]
 
     if stdin_deviceid:
-        idlist = [(raw_input ('Device ID: '), 2, '')]
+        idlist = [(eval(input ('Device ID: ')), 2, '')]
 
     all_passed = True
     for id, max_status_code, modelre in idlist:
