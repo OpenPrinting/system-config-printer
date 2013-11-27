@@ -29,7 +29,7 @@ NotListed = NoPrinter()
 import cups
 from gi.repository import GObject
 from timedops import TimedOperation
-from base import *
+from .base import *
 class ChoosePrinter(Question):
     def __init__ (self, troubleshooter):
         # First question: which printer? (page 1)
@@ -77,7 +77,7 @@ class ChoosePrinter(Question):
             dests = self.timedop (c.getDests, parent=parent).run ()
             printers = None
             dests_list = []
-            for (name, instance), dest in dests.iteritems ():
+            for (name, instance), dest in list(dests.items ()):
                 if name == None:
                     continue
 
@@ -90,7 +90,7 @@ class ChoosePrinter(Question):
                     printers = self.timedop (c.getPrinters,
                                              parent=parent).run ()
 
-                if not printers.has_key (name):
+                if name not in printers:
                     info = _("Unknown")
                     location = _("Unknown")
                 else:

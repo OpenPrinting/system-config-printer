@@ -19,7 +19,7 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-from base import *
+from .base import *
 class LocalOrRemote(Multichoice):
     def __init__ (self, troubleshooter):
         Multichoice.__init__ (self, troubleshooter, "printer_is_remote",

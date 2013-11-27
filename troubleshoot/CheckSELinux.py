@@ -22,7 +22,7 @@
 from gi.repository import Gtk
 
 import subprocess
-from base import *
+from .base import *
 import os
 import shlex
 from timedops import TimedSubprocess

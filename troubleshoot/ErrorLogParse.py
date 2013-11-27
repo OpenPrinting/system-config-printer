@@ -21,7 +21,8 @@
 
 from gi.repository import Gtk
 
-from base import *
+from .base import *
+from functools import reduce
 class ErrorLogParse(Question):
 
     ## This could be a LOT smarter.

@@ -29,7 +29,7 @@ NotListed = NoDevice()
 import cups
 from gi.repository import GObject
 from timedops import TimedOperation
-from base import *
+from .base import *
 class DeviceListed(Question):
     def __init__ (self, troubleshooter):
         # Is the device listed?
@@ -89,7 +89,7 @@ class DeviceListed(Question):
                                           parent=parent)
                 devices = self.op.run ()
                 devices_list = []
-                for uri, device in devices.iteritems ():
+                for uri, device in list(devices.items ()):
                     if uri.find (':') == -1:
                         continue
 

@@ -21,7 +21,7 @@
 
 import cups
 from timedops import TimedOperation
-from base import *
+from .base import *
 class NetworkCUPSPrinterShared(Question):
     def __init__ (self, troubleshooter):
         Question.__init__ (self, troubleshooter, "Queue not shared?")
@@ -33,14 +33,14 @@ class NetworkCUPSPrinterShared(Question):
     def display (self):
         self.answers = {}
         answers = self.troubleshooter.answers
-        if (answers.has_key ('remote_cups_queue_listed') and
+        if ('remote_cups_queue_listed' in answers and
             answers['remote_cups_queue_listed'] == False):
             return False
 
         parent = self.troubleshooter.get_window ()
-        if not answers.has_key ('remote_cups_queue_attributes'):
-            if not (answers.has_key ('remote_server_try_connect') and
-                    answers.has_key ('remote_cups_queue')):
+        if 'remote_cups_queue_attributes' not in answers:
+            if not ('remote_server_try_connect' in answers and
+                    'remote_cups_queue' in answers):
                 return False
 
             try:
@@ -62,7 +62,7 @@ class NetworkCUPSPrinterShared(Question):
         else:
             attr = answers['remote_cups_queue_attributes']
 
-        if attr.has_key ('printer-is-shared'):
+        if 'printer-is-shared' in attr:
             # CUPS >= 1.2
             if not attr['printer-is-shared']:
                 return True

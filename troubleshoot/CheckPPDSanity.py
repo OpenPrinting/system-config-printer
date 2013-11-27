@@ -28,7 +28,8 @@ import installpackage
 import os
 import subprocess
 from timedops import TimedOperation, TimedSubprocess
-from base import *
+from .base import *
+from functools import reduce
 
 class CheckPPDSanity(Question):
     def __init__ (self, troubleshooter):

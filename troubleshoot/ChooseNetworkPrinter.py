@@ -24,7 +24,7 @@ from gi.repository import Gtk
 import cups
 from gi.repository import GObject
 from timedops import TimedOperation
-from base import *
+from .base import *
 class ChooseNetworkPrinter(Question):
     def __init__ (self, troubleshooter):
         Question.__init__ (self, troubleshooter, "Choose network printer")
@@ -85,7 +85,7 @@ class ChooseNetworkPrinter(Question):
             dests = self.op.run ()
             printers = None
             dests_list = []
-            for (name, instance), dest in dests.iteritems ():
+            for (name, instance), dest in list(dests.items ()):
                 if name == None:
                     continue
 
@@ -98,7 +98,7 @@ class ChooseNetworkPrinter(Question):
                     self.op = TimedOperation (c.getPrinters)
                     printers = self.op.run ()
 
-                if not printers.has_key (name):
+                if name not in printers:
                     info = _("Unknown")
                     location = _("Unknown")
                 else:

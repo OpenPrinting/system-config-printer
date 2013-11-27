@@ -23,7 +23,7 @@ import locale
 
 from gi.repository import Gtk
 
-from base import *
+from .base import *
 
 class Locale(Question):
     def __init__ (self, troubleshooter):
@@ -89,8 +89,8 @@ class Locale(Question):
         printer_page_size = None
         try:
             ppd_defs = self.troubleshooter.answers['cups_printer_ppd_defaults']
-            for group, options in ppd_defs.iteritems ():
-                if options.has_key ("PageSize"):
+            for group, options in list(ppd_defs.items ()):
+                if "PageSize" in options:
                     printer_page_size = options["PageSize"]
                     break
 
@@ -111,7 +111,7 @@ class Locale(Question):
             job_page_size = None
             for (test, jobid, printer, doc, status, attrs) in job_status:
                 if test:
-                    if attrs.has_key ("PageSize"):
+                    if "PageSize" in attrs:
                         job_page_size = attrs["PageSize"]
                         self.answers['job_page_size'] = job_page_size
                         if job_page_size != printer_page_size:

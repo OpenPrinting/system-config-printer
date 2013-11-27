@@ -32,7 +32,7 @@ import tempfile
 import time
 from timedops import TimedOperation, OperationCanceled
 
-from base import *
+from .base import *
 
 import errordialogs
 from errordialogs import *
@@ -127,15 +127,15 @@ class PrintTestPage(Question):
 
     def display (self):
         answers = self.troubleshooter.answers
-        if not answers.has_key ('cups_queue'):
+        if 'cups_queue' not in answers:
             return False
 
         parent = self.troubleshooter.get_window ()
         self.authconn = answers['_authenticated_connection']
         mediatype = None
         defaults = answers.get ('cups_printer_ppd_defaults', {})
-        for opts in defaults.values ():
-            for opt, value in opts.iteritems ():
+        for opts in list(defaults.values ()):
+            for opt, value in list(opts.items ()):
                 if opt == "MediaType":
                     mediatype = value
                     break
@@ -188,10 +188,8 @@ class PrintTestPage(Question):
         # We want to display the jobs in the queue for this printer...
         try:
             queue_uri_ending = "/" + self.troubleshooter.answers['cups_queue']
-            jobs_on_this_printer = filter (lambda x:
-                                               jobs_dict[x]['job-printer-uri'].\
-                                               endswith (queue_uri_ending),
-                                           jobs_dict.keys ())
+            jobs_on_this_printer = [x for x in list(jobs_dict.keys ()) if jobs_dict[x]['job-printer-uri'].\
+                                               endswith (queue_uri_ending)]
         except:
             jobs_on_this_printer = []
 
@@ -439,7 +437,7 @@ class PrintTestPage(Question):
     def cancel_clicked (self, widget):
         self.persistent_answers['test_page_jobs_cancelled'] = True
         jobids = []
-        for jobid, iter in self.job_to_iter.iteritems ():
+        for jobid, iter in list(self.job_to_iter.items ()):
             jobids.append (jobid)
 
         def cancel_jobs (jobids):
@@ -518,7 +516,7 @@ class PrintTestPage(Question):
                     model.set_value (iter, 1, job)
                 else:
                     continue
-            elif not self.job_to_iter.has_key (job):
+            elif job not in self.job_to_iter:
                 continue
 
             if (job in test_jobs and

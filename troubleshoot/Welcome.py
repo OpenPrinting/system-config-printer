@@ -21,7 +21,7 @@
 
 from gi.repository import Gtk
 
-from base import *
+from .base import *
 from timedops import TimedOperation
 import authconn
 

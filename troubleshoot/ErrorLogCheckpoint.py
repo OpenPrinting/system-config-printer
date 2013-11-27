@@ -26,7 +26,7 @@ import os
 import tempfile
 import time
 from timedops import TimedOperation, OperationCanceled
-from base import *
+from .base import *
 class ErrorLogCheckpoint(Question):
     def __init__ (self, troubleshooter):
         Question.__init__ (self, troubleshooter, "Error log checkpoint")
@@ -57,7 +57,7 @@ class ErrorLogCheckpoint(Question):
         c = self.troubleshooter.answers['_authenticated_connection']
         c._set_lock (False)
         settings = c.adminGetServerSettings ()
-        if len (settings.keys ()) == 0:
+        if len (list(settings.keys ())) == 0:
             return
 
         settings[cups.CUPS_SERVER_DEBUG_LOGGING] = '0'
@@ -92,7 +92,7 @@ class ErrorLogCheckpoint(Question):
 
         self.forward_allowed = False
         self.label.set_text ('')
-        if len (settings.keys ()) == 0:
+        if len (list(settings.keys ())) == 0:
             # Requires root
             return True
         else:
@@ -123,7 +123,7 @@ class ErrorLogCheckpoint(Question):
 
         parent = self.troubleshooter.get_window ()
         self.answers.update (self.persistent_answers)
-        if self.answers.has_key ('error_log_checkpoint'):
+        if 'error_log_checkpoint' in self.answers:
             return self.answers
 
         (tmpfd, tmpfname) = tempfile.mkstemp ()
