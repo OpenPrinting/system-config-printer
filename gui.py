@@ -33,7 +33,7 @@ class GtkGUI(GObject.GObject):
         ui_dir = os.environ.get ("SYSTEM_CONFIG_PRINTER_UI",
                                  os.path.join (pkgdata, "ui"))
         self._bld = []
-        for xmlfile, names in widgets.iteritems ():
+        for xmlfile, names in list(widgets.items ()):
             bld = Gtk.Builder ()
             self._bld.append (bld)
 
@@ -44,7 +44,7 @@ class GtkGUI(GObject.GObject):
             for name in names:
                 widget = bld.get_object(name)
                 if widget is None:
-                    raise ValueError, "Widget '%s' not found" % name
+                    raise ValueError("Widget '%s' not found" % name)
                 setattr(self, name, widget)
 
             try:
@@ -58,4 +58,4 @@ class GtkGUI(GObject.GObject):
                 widget.show()
 
     def connect_signals (self):
-        map (lambda x: x.connect_signals (self), self._bld)
+        list([x.connect_signals (self) for x in self._bld])
