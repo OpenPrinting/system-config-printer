@@ -20,6 +20,7 @@
 
 import cups
 import dbus
+from functools import reduce
 try:
     from gi.repository import Gdk
     from gi.repository import Gtk
@@ -201,7 +202,7 @@ class _WriteToTmpFile:
     def reply_handler (self, conn, none):
         tmpfd = os.open (self._filename, os.O_RDONLY)
         tmpfile = os.fdopen (tmpfd, 'r')
-        if self._kwds.has_key ("fd"):
+        if "fd" in self._kwds:
             fd = self._kwds["fd"]
             os.lseek (fd, 0, os.SEEK_SET)
             line = tmpfile.readline ()
@@ -315,11 +316,11 @@ class PK1Connection:
         leftover_kwds = kwds.copy ()
         reply_handler = leftover_kwds.get ("reply_handler")
         error_handler = leftover_kwds.get ("error_handler")
-        if leftover_kwds.has_key ("reply_handler"):
+        if "reply_handler" in leftover_kwds:
             del leftover_kwds["reply_handler"]
-        if leftover_kwds.has_key ("error_handler"):
+        if "error_handler" in leftover_kwds:
             del leftover_kwds["error_handler"]
-        if leftover_kwds.has_key ("auth_handler"):
+        if "auth_handler" in leftover_kwds:
             del leftover_kwds["auth_handler"]
 
         result = [True, reply_handler, error_handler, ()]
@@ -350,7 +351,7 @@ class PK1Connection:
             argindex += 1
 
         for kw, default in params[argindex:]:
-            if leftover_kwds.has_key (kw):
+            if kw in leftover_kwds:
                 try:
                     val = self._coerce (types[argindex], leftover_kwds[kw])
                 except TypeError as e:
@@ -366,7 +367,7 @@ class PK1Connection:
             argindex += 1
 
         if leftover_kwds:
-            debugprint ("Leftover keywords: %s" % repr (leftover_kwds.keys ()))
+            debugprint ("Leftover keywords: %s" % repr (list(leftover_kwds.keys ())))
             return result
 
         result[0] = False
@@ -437,9 +438,9 @@ class PK1Connection:
 
     def _unpack_getDevices_reply (self, dbusdict):
         result_str = dict()
-        for key, value in dbusdict.iteritems ():
+        for key, value in list(dbusdict.items ()):
             if type (key) == dbus.String:
-                result_str[unicode (key)] = unicode (value)
+                result_str[str (key)] = str (value)
             else:
                 result_str[key] = value
 
@@ -449,7 +450,7 @@ class PK1Connection:
         devices = dict()
         n = 0
         affix = ':' + str (n)
-        device_keys = [x for x in result_str.keys () if x.endswith (affix)]
+        device_keys = [x for x in list(result_str.keys ()) if x.endswith (affix)]
         while len (device_keys) > 0:
             device_uri = None
             device_dict = dict()
@@ -465,7 +466,7 @@ class PK1Connection:
 
             n += 1
             affix = ':' + str (n)
-            device_keys = [x for x in result_str.keys () if x.endswith (affix)]
+            device_keys = [x for x in list(result_str.keys ()) if x.endswith (affix)]
 
         return devices
 
@@ -513,10 +514,10 @@ class PK1Connection:
 
         # getFile(resource, filename=None, fd=-1, file=None) -> None
         if use_pycups:
-            if ((len (args) == 0 and kwds.has_key ('resource')) or
+            if ((len (args) == 0 and 'resource' in kwds) or
                 (len (args) == 1)):
                 can_use_tempfile = True
-                for each in kwds.keys ():
+                for each in list(kwds.keys ()):
                     if each not in ['resource', 'fd', 'file',
                                     'reply_handler', 'error_handler']:
                         can_use_tempfile = False
@@ -633,14 +634,14 @@ if __name__ == '__main__':
                                        error_handler=self.connection_error)
 
         def connected (self, conn, result):
-            print "Connected"
+            print("Connected")
             self.fetch_button.set_sensitive (True)
             self.cancel_button.set_sensitive (True)
             self.get_file_button.set_sensitive (True)
             self.harmless_button.set_sensitive (True)
 
         def connection_error (self, conn, error):
-            print "Failed to connect"
+            print("Failed to connect")
             raise error
 
         def fetch_clicked (self, button):
@@ -650,37 +651,37 @@ if __name__ == '__main__':
 
         def got_devices (self, conn, devices):
             if conn != self.conn:
-                print "Ignoring stale reply"
+                print("Ignoring stale reply")
                 return
 
-            print "got devices: %s" % devices
+            print("got devices: %s" % devices)
 
         def get_devices_error (self, conn, exc):
             if conn != self.conn:
-                print "Ignoring stale error"
+                print("Ignoring stale error")
                 return
 
-            print "devices error: %s" % repr (exc)
+            print("devices error: %s" % repr (exc))
 
         def cancel_clicked (self, button):
-            print "Cancel job..."
+            print("Cancel job...")
             self.conn.cancelJob (1,
                                  reply_handler=self.job_canceled,
                                  error_handler=self.cancel_job_error)
 
         def job_canceled (self, conn, none):
             if conn != self.conn:
-                print "Ignoring stale reply for %s" % conn
+                print("Ignoring stale reply for %s" % conn)
                 return
 
-            print "Job canceled"
+            print("Job canceled")
 
         def cancel_job_error (self, conn, exc):
             if conn != self.conn:
-                print "Ignoring stale error for %s" % conn
+                print("Ignoring stale error for %s" % conn)
                 return
 
-            print "cancel error: %s" % repr (exc)
+            print("cancel error: %s" % repr (exc))
 
         def get_file_clicked (self, button):
             self.my_file = file ("cupsd.conf", "w")
@@ -690,17 +691,17 @@ if __name__ == '__main__':
 
         def got_file (self, conn, none):
             if conn != self.conn:
-                print "Ignoring stale reply for %s" % conn
+                print("Ignoring stale reply for %s" % conn)
                 return
 
-            print "Got file"
+            print("Got file")
 
         def get_file_error (self, conn, exc):
             if conn != self.conn:
-                print "Ignoring stale error"
+                print("Ignoring stale error")
                 return
 
-            print "get file error: %s" % repr (exc)
+            print("get file error: %s" % repr (exc))
 
         def harmless_clicked (self, button):
             self.conn.getJobs (reply_handler=self.got_jobs,
@@ -708,12 +709,12 @@ if __name__ == '__main__':
 
         def got_jobs (self, conn, result):
             if conn != self.conn:
-                print "Ignoring stale reply from %s" % repr (conn)
+                print("Ignoring stale reply from %s" % repr (conn))
                 return
-            print result
+            print(result)
 
         def get_jobs_error (self, exc):
-            print "get jobs error: %s" % repr (exc)
+            print("get jobs error: %s" % repr (exc))
 
     UI ()
     from dbus.mainloop.glib import DBusGMainLoop
