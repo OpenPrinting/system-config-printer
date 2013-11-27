@@ -29,7 +29,7 @@ from gi.repository import Gtk
 import cups
 import locale
 import gettext
-gettext.install(domain=config.PACKAGE, localedir=config.localedir, unicode=True)
+gettext.install(domain=config.PACKAGE, localedir=config.localedir, str=True)
 
 import cupshelpers, options
 from gi.repository import GObject
@@ -518,10 +518,10 @@ class PrinterPropertiesDialog(GtkGUI):
         if collection:
             collection = [collection]
         else:
-            collection = self.signal_ids.keys ()
+            collection = list(self.signal_ids.keys ())
 
         for coll in collection:
-            if self.signal_ids.has_key (coll):
+            if coll in self.signal_ids:
                 for (obj, signal_id) in self.signal_ids[coll]:
                     obj.disconnect (signal_id)
 
@@ -670,7 +670,7 @@ class PrinterPropertiesDialog(GtkGUI):
             iter = widget.get_active_iter()
             value = model.get_value (iter, 1)
         else:
-            raise ValueError, "Widget type not supported (yet)"
+            raise ValueError("Widget type not supported (yet)")
 
         p = self.printer
         old_values = {
@@ -689,7 +689,7 @@ class PrinterPropertiesDialog(GtkGUI):
 
         old_value = old_values[widget]
 
-        if type (old_value) == unicode:
+        if type (old_value) == str:
             old_value = old_value.encode ('utf-8')
 
         if old_value == value:
@@ -783,7 +783,7 @@ class PrinterPropertiesDialog(GtkGUI):
         option = self.job_options_buttons[button]
         option.reset ()
         # Remember to set this option for removal in the IPP request.
-        if self.server_side_options.has_key (option.name):
+        if option.name in self.server_side_options:
             del self.server_side_options[option.name]
         if option.is_changed ():
             self.changed.add(option)
@@ -800,7 +800,7 @@ class PrinterPropertiesDialog(GtkGUI):
             self.server_side_options[option.name] = option
             self.changed.add(option)
         else:
-            if self.server_side_options.has_key (option.name):
+            if option.name in self.server_side_options:
                 del self.server_side_options[option.name]
             self.changed.discard(option)
         self.setDataButtonState()
@@ -1094,7 +1094,7 @@ class PrinterPropertiesDialog(GtkGUI):
             for option in printer.attributes:
                 if option not in self.server_side_options:
                     printer.unsetOption(option)
-            for option in self.server_side_options.itervalues():
+            for option in list(self.server_side_options.values()):
                 if (option.is_changed() or
                     (saveall and
                      option.get_current_value () != option.get_default())):
@@ -1110,7 +1110,7 @@ class PrinterPropertiesDialog(GtkGUI):
         self.cups._end_operation ()
         self.changed = set() # of options
 
-        if not self.cups._use_pk and not self.__dict__.has_key ("server_settings"):
+        if not self.cups._use_pk and "server_settings" not in self.__dict__:
             # We can authenticate with the server correctly at this point,
             # but we have never fetched the server settings to see whether
             # the server is publishing shared printers.  Fetch the settings
@@ -1136,7 +1136,7 @@ class PrinterPropertiesDialog(GtkGUI):
 
     def getPrinterSettings(self):
         #self.ppd.markDefaults()
-        for option in self.options.itervalues():
+        for option in list(self.options.values()):
             option.writeback()
 
     ### Printer Properties tree view signal handlers
@@ -1404,7 +1404,7 @@ class PrinterPropertiesDialog(GtkGUI):
 
         # Server side options (Job options)
         self.server_side_options = {}
-        for option in self.job_options_widgets.values ():
+        for option in list(self.job_options_widgets.values ()):
             if option.name == "media" and self.ppd:
                 # Slightly special case because the 'system default'
                 # (i.e. what you get when you press Reset) depends
@@ -1420,7 +1420,7 @@ class PrinterPropertiesDialog(GtkGUI):
                 option.reinit (None)
             else:
                 try:
-                    if self.printer.possible_attributes.has_key (option.name):
+                    if option.name in self.printer.possible_attributes:
                         supported = self.printer.\
                                     possible_attributes[option.name][1]
                         # Set the option widget.
@@ -1448,14 +1448,14 @@ class PrinterPropertiesDialog(GtkGUI):
                 option.button.set_sensitive (False)
         self.other_job_options = []
         self.draw_other_job_options (editable=editable)
-        for option in self.printer.attributes.keys ():
-            if self.server_side_options.has_key (option):
+        for option in list(self.printer.attributes.keys ()):
+            if option in self.server_side_options:
                 continue
             if option == "output-mode":
                 # Not settable
                 continue
             value = self.printer.attributes[option]
-            if self.printer.possible_attributes.has_key (option):
+            if option in self.printer.possible_attributes:
                 supported = self.printer.possible_attributes[option][1]
             else:
                 if isinstance (value, bool):
@@ -1527,7 +1527,7 @@ class PrinterPropertiesDialog(GtkGUI):
                 except TypeError as s:
                     debugprint ("%s value not coercible to %s: %s" %
                                 (attr, typ, s))
-                    val = map (lambda x: 0.0, val)
+                    val = [0.0 for x in val]
 
             marker_info[attr] = val
             if num_markers == 0 or len (val) < num_markers:
@@ -1540,12 +1540,12 @@ class PrinterPropertiesDialog(GtkGUI):
                             (marker_info[attr][num_markers:], attr))
                 del marker_info[attr][num_markers:]
 
-        markers = map (lambda color, name, type, level:
+        markers = list(map (lambda color, name, type, level:
                            (color, name, type, level),
                        marker_info['marker-colors'],
                        marker_info['marker-names'],
                        marker_info['marker-types'],
-                       marker_info['marker-levels'])
+                       marker_info['marker-levels']))
         debugprint (markers)
 
         can_refresh = (printer.type & cups.CUPS_PRINTER_COMMANDS) != 0
@@ -1790,7 +1790,7 @@ class PrinterPropertiesDialog(GtkGUI):
                 self.ntbkPrinter.remove_page(tab_nr)
 
         # check for conflicts
-        for option in self.options.itervalues():
+        for option in list(self.options.values()):
             conflicts = option.checkConflicts()
             if conflicts:
                 self.conflicts.add(option)
@@ -1943,7 +1943,7 @@ if __name__ == '__main__':
     import sys
 
     if len (sys.argv) < 2:
-        print "Specify queue name"
+        print("Specify queue name")
         sys.exit (1)
 
     set_debugging (True)
