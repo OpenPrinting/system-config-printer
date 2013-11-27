@@ -22,7 +22,7 @@
 
 import config
 import gettext
-gettext.install(domain=config.PACKAGE, localedir=config.localedir, unicode=True)
+gettext.install(domain=config.PACKAGE, localedir=config.localedir, str=True)
 
 printer_error_policy = dict()
 printer_op_policy = dict()
