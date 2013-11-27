@@ -23,6 +23,7 @@ import cups, pprint, os, tempfile, re, string
 import locale
 from . import _debugprint
 from . import config
+from functools import reduce
 
 class Printer:
     _flags_blacklist = ["options", "local"]
@@ -124,7 +125,7 @@ class Printer:
                                      'double', 'double-thick']),
             }
 
-        for key, value in attrs.iteritems():
+        for key, value in list(attrs.items()):
             if key.endswith("-default"):
                 name = key[:-len("-default")]
                 if name in ["job-sheets", "printer-error-policy",
@@ -146,7 +147,7 @@ class Printer:
 
                 self.attributes[name] = value
                     
-                if attrs.has_key(name+"-supported"):
+                if name+"-supported" in attrs:
                     supported = attrs[name+"-supported"]
                     self.possible_attributes[name] = (value, supported)
             elif (not key.endswith ("-supported") and
@@ -168,10 +169,10 @@ class Printer:
 
         self.default_allow = True
         self.except_users = []
-        if attrs.has_key('requesting-user-name-allowed'):
+        if 'requesting-user-name-allowed' in attrs:
             self.except_users = attrs['requesting-user-name-allowed']
             self.default_allow = False
-        elif attrs.has_key('requesting-user-name-denied'):
+        elif 'requesting-user-name-denied' in attrs:
             self.except_users = attrs['requesting-user-name-denied']
         self.except_users_string = ', '.join(self.except_users)
         self.update (**attrs)
@@ -328,7 +329,7 @@ class Printer:
             for u in users:
                 except_users.extend(u)
             except_users = [u.strip() for u in except_users]
-            except_users = filter(None, except_users)
+            except_users = [_f for _f in except_users if _f]
             
         if allow:
             self.connection.setPrinterUsersDenied(self.name, except_users)
@@ -354,7 +355,7 @@ class Printer:
         except cups.IPPError:
             return ret
 
-        for id, attrs in jobs.iteritems():
+        for id, attrs in list(jobs.items()):
             try:
                 uri = attrs['job-printer-uri']
                 uri = uri[uri.rindex ('/') + 1:]
@@ -364,7 +365,7 @@ class Printer:
                 continue
 
             if (not only_tests or
-                (attrs.has_key ('job-name') and
+                ('job-name' in attrs and
                  attrs['job-name'] == 'Test Page')):
                 ret.append (id)
 
@@ -390,7 +391,7 @@ class Printer:
         except cups.IPPError:
             return ret
 
-        for id, attrs in jobs.iteritems():
+        for id, attrs in list(jobs.items()):
             try:
                 uri = attrs['job-printer-uri']
                 uri = uri[uri.rindex ('/') + 1:]
@@ -472,10 +473,10 @@ def getPrinters(connection):
     """
     printers = connection.getPrinters()
     classes = connection.getClasses()
-    for name, printer in printers.iteritems():
+    for name, printer in list(printers.items()):
         printer = Printer(name, connection, **printer)
         printers[name] = printer
-        if classes.has_key(name):
+        if name in classes:
             printer.class_members = classes[name]
             printer.class_members.sort()
     return printers
@@ -495,11 +496,11 @@ def parseDeviceID (id):
             continue
         name, value = piece.split(":",1)
         id_dict[name.strip ()] = value.strip()
-    if id_dict.has_key ("MANUFACTURER"):
+    if "MANUFACTURER" in id_dict:
         id_dict.setdefault("MFG", id_dict["MANUFACTURER"])
-    if id_dict.has_key ("MODEL"):
+    if "MODEL" in id_dict:
         id_dict.setdefault("MDL", id_dict["MODEL"])
-    if id_dict.has_key ("COMMAND SET"):
+    if "COMMAND SET" in id_dict:
         id_dict.setdefault("CMD", id_dict["COMMAND SET"])
     for name in ["MFG", "MDL", "CMD", "CLS", "DES", "SN", "S", "P", "J"]:
         id_dict.setdefault(name, "")
@@ -528,7 +529,7 @@ class Device:
         self.id = kw.get('device-id', '')
         self.location = kw.get('device-location', '')
 
-        if type (self.info) == unicode:
+        if type (self.info) == str:
             # Convert unicode objects to UTF-8 encoding so they can be
             # compared with other UTF-8 encoded strings (bug #957444).
             self.info = self.info.encode ('utf-8')
@@ -623,7 +624,7 @@ class Device:
 
 class _GetDevicesCall(object):
     def call (self, connection, kwds):
-        if kwds.has_key ("reply_handler"):
+        if "reply_handler" in kwds:
             self._client_reply_handler = kwds.get ("reply_handler")
             kwds["reply_handler"] = self._reply_handler
             return connection.getDevices (**kwds)
@@ -633,7 +634,7 @@ class _GetDevicesCall(object):
         return self._reply_handler (connection, result)
 
     def _reply_handler (self, connection, devices):
-        for uri, data in devices.iteritems():
+        for uri, data in list(devices.items()):
             device = Device(uri, **data)
             devices[uri] = device
             if device.info != '' and device.make_and_model == '':
@@ -875,7 +876,7 @@ def missingPackagesAndExecutables(ppd):
 def _main():
     c = cups.Connection()
     #printers = getPrinters(c)
-    for device in getDevices(c).itervalues():
+    for device in list(getDevices(c).values()):
         print (device.uri, device.id_dict)
 
 if __name__=="__main__":
