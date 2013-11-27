@@ -131,14 +131,14 @@ class LpdServer:
         s = open_socket(self.hostname, 515)
         if not s:
             return None
-        print name
+        print(name)
         
         try:
             s.send('\2%s\n' % name) # cmd send job to queue
             data = s.recv(1024) # receive status
-            print repr(data)
+            print(repr(data))
         except socket.error as msg:
-            print msg
+            print(msg)
             try:
                 s.close ()
             except:
@@ -482,7 +482,7 @@ class PrinterFinder:
             debugprint ("ipp: done")
             return
 
-        for name, queue in printers.iteritems ():
+        for name, queue in list(printers.items ()):
             uri = queue['printer-uri-supported']
             info = queue['printer-info']
             location = queue['printer-location']
@@ -493,7 +493,7 @@ class PrinterFinder:
 if __name__ == '__main__':
     import sys
     if len (sys.argv) < 2:
-        print "Need printer address"
+        print("Need printer address")
         sys.exit (1)
 
     set_debugging (True)
