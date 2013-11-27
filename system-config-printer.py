@@ -67,7 +67,7 @@ from gi.repository import GObject
 from gi.repository import GLib
 from gui import GtkGUI
 from debug import *
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import troubleshoot
 import installpackage
 import jobviewer
@@ -748,7 +748,7 @@ class GUI(GtkGUI):
             self.printers = {}
             self.default_printer = None
 
-        for name, printer in self.printers.iteritems():
+        for name, printer in list(self.printers.items()):
             self.servers.add(printer.getServer())
 
         userdef = userdefault.UserDefaultPrinter ().get ()
@@ -768,19 +768,19 @@ class GUI(GtkGUI):
             pattern = re.compile (self.current_filter_text, re.I) # ignore case
 
             if self.current_filter_mode == "filter-name":
-                for name in printers_set.keys ():
+                for name in list(printers_set.keys ()):
                     if pattern.search (name) != None:
                         printers_subset[name] = printers_set[name]
             elif self.current_filter_mode == "filter-description":
-                for name, printer in printers_set.iteritems ():
+                for name, printer in list(printers_set.items ()):
                     if pattern.search (printer.info) != None:
                         printers_subset[name] = printers_set[name]
             elif self.current_filter_mode == "filter-location":
-                for name, printer in printers_set.iteritems ():
+                for name, printer in list(printers_set.items ()):
                     if pattern.search (printer.location) != None:
                         printers_subset[name] = printers_set[name]
             elif self.current_filter_mode == "filter-manufacturer":
-                for name, printer in printers_set.iteritems ():
+                for name, printer in list(printers_set.items ()):
                     if pattern.search (printer.make_and_model) != None:
                         printers_subset[name] = printers_set[name]
             else:
@@ -790,13 +790,13 @@ class GUI(GtkGUI):
 
         if not self.view_discovered_printers.get_active ():
             printers_subset = {}
-            for name, printer in printers_set.iteritems ():
+            for name, printer in list(printers_set.items ()):
                 if not printer.discovered:
                     printers_subset[name] = printer
 
             printers_set = printers_subset
 
-        for name, printer in printers_set.iteritems():
+        for name, printer in list(printers_set.items()):
             if printer.remote:
                 if printer.is_class: remote_classes.append(name)
                 else: remote_printers.append(name)
@@ -855,7 +855,7 @@ class GUI(GtkGUI):
                 elif object.is_class:
                     type = 'local-class'
                 else:
-                    (scheme, rest) = urllib.splittype (object.device_uri)
+                    (scheme, rest) = urllib.parse.splittype (object.device_uri)
                     if scheme == 'ipp':
                         type = 'ipp-printer'
                     elif scheme == 'smb':
@@ -1761,7 +1761,7 @@ class GUI(GtkGUI):
         self.populateList ()
 
     def on_troubleshoot_activate(self, widget):
-        if not self.__dict__.has_key ('troubleshooter'):
+        if 'troubleshooter' not in self.__dict__:
             self.troubleshooter = troubleshoot.run (self.on_troubleshoot_quit)
 
     def on_troubleshoot_quit(self, troubleshooter):
@@ -1807,7 +1807,7 @@ class GUI(GtkGUI):
 
     ### The "Problems?" clickable label
     def on_problems_button_clicked (self, serversettings):
-        if not self.__dict__.has_key ('troubleshooter'):
+        if 'troubleshooter' not in self.__dict__:
             self.troubleshooter = troubleshoot.run (self.on_troubleshoot_quit,
                                                     parent=serversettings.get_dialog ())
 
@@ -1855,7 +1855,7 @@ class GUI(GtkGUI):
         self.sensitise_new_printer_widgets ()
         self.populateList ()
 
-        if not self.printers.has_key (name):
+        if name not in self.printers:
             # At this stage the printer has disappeared even though we
             # only added it moments ago.
             debugprint ("New printer disappeared")
@@ -2059,7 +2059,7 @@ class GUI(GtkGUI):
         self.printer_added_or_removed ()
 
     def printer_event (self, mon, printer, eventname, event):
-        if self.printers.has_key (printer):
+        if printer in self.printers:
             self.printers[printer].update (**event)
             self.dests_iconview_selection_changed (self.dests_iconview)
             self.printer_added_or_removed ()
