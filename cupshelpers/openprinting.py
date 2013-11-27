@@ -61,7 +61,7 @@ class _QueryThread (threading.Thread):
         headers = {"Content-type": "application/x-www-form-urlencoded",
                    "Accept": "text/plain"}
         params = ("%s&uilanguage=%s&locale=%s" %
-                  (urllib.urlencode (self.parameters),
+                  (urllib.parse.urlencode (self.parameters),
                    self.parent.language[0],
                    self.parent.language[0]))
         self.url = "https://%s%s?%s" % (self.parent.base_url, query_command, params)
@@ -310,7 +310,7 @@ class OpenPrinting:
                     if supportcontacts:
                         dict['supportcontacts'] = supportcontacts
 
-                    if not dict.has_key ('name') or not dict.has_key ('url'):
+                    if 'name' not in dict or 'url' not in dict:
                         continue
 
                     container = driver.find ('functionality')
@@ -429,7 +429,7 @@ def _simple_gui ():
                 raise printers[1]
 
             text = ""
-            for printer in printers.values ():
+            for printer in list(printers.values ()):
                 text += printer + "\n"
             Gdk.threads_enter ()
             self.tv.get_buffer ().set_text (text)
