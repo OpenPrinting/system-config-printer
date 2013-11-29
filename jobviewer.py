@@ -909,12 +909,17 @@ class JobViewer (GtkGUI):
         job_requires_auth = (s == cups.IPP_JOB_HELD and
                              data.get ('job-hold-until', 'none') ==
                              'auth-info-required')
-        if self.applet and job_requires_auth:
+        if job_requires_auth:
+            # Try to get the authentication information. If we are not
+            # running as an applet just try to get the information silently
+            # and not prompt the user.
             self.get_authentication (job, data.get ('device-uri'),
-                                     data.get ('auth-info-required', []))
+                                     data.get ('auth-info-required', []),
+                                     self.applet)
         self.update_sensitivity ()
 
-    def get_authentication (self, job, device_uri, auth_info_required):
+    def get_authentication (self, job, device_uri, auth_info_required,
+                            show_dialog):
         # Check if we have requested authentication for this job already
         if not self.auth_info_dialogs.has_key (job):
             try:
@@ -1009,7 +1014,7 @@ class JobViewer (GtkGUI):
                     c._end_operation ()
                     nonfatalException ()
 
-            if auth_info_required:
+            if auth_info_required and show_dialog:
                 username = pwd.getpwuid (os.getuid ())[0]
                 keyring_attrs["user"] = str (username)
                 self.display_auth_info_dialog (job, keyring_attrs)
