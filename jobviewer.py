@@ -1491,8 +1491,32 @@ class JobViewer (GtkGUI):
         self.update_monitor ()
 
     def on_job_authenticate_activate(self, menuitem):
+        try:
+            c = cups.Connection (host=self.host,
+                                 port=self.port,
+                                 encryption=self.encryption)
+        except RuntimeError:
+            return False
+
+        jattrs_req = ['job-printer-uri']
+        pattrs_req = ['auth-info-required', 'device-uri']
+
         for jobid in self.jobids:
-            self.display_auth_info_dialog (jobid)
+            # Get the requried attributes for this job
+            jattrs = c.getJobAttributes (jobid,
+                                         requested_attributes=jattrs_req)
+            uri = jattrs.get ('job-printer-uri')
+            pattrs = c.getPrinterAttributes (uri = uri,
+                                             requested_attributes=pattrs_req)
+            try:
+                auth_info_required = pattrs['auth-info-required']
+            except KeyError:
+                debugprint ("No auth-info-required attribute; "
+                            "guessing instead")
+                auth_info_required = ['username', 'password']
+
+            self.get_authentication (jobid, pattrs.get ('device-uri'),
+                                     auth_info_required, True)
 
     def on_refresh_clicked(self, toolbutton):
         self.monitor.refresh ()
