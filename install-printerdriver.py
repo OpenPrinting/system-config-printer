@@ -130,4 +130,4 @@ except GLib.GError:
 files = res.get_files_array()
 if files:
     for f in files[0].get_property('files'):
-        print f
+        print(f)
