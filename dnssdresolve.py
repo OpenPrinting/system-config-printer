@@ -46,7 +46,7 @@ class DNSSDHostNamesResolver:
             del self._reply_handler
             return
 
-        for uri, device in self._devices.iteritems ():
+        for uri, device in self._devices.items ():
             if not uri.startswith ("dnssd://"):
                 self._unresolved -= 1
                 continue
@@ -133,7 +133,7 @@ if __name__ == '__main__':
             return False
 
         def reply (self, *args):
-            print args
+            print(args)
             self._loop.quit ()
 
     from gi.repository import GObject
