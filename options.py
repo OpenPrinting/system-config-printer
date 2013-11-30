@@ -34,7 +34,7 @@ class IPPResolution(tuple):
         cls.UNITS_DEFAULT = cups.IPP_RES_PER_INCH
 
         cls.UNITS_BY_STR = {}
-        for v, s in cls.UNITS_BY_VAL.iteritems ():
+        for v, s in cls.UNITS_BY_VAL.items ():
             cls.UNITS_BY_STR[s] = v
 
         if isinstance (values, str):
@@ -68,7 +68,7 @@ def OptionWidget(name, v, s, on_change):
             for vv in v + s:
                 if not isinstance(vv, str): raise ValueError
             return OptionSelectMany(name, v, s, on_change)
-        print v, s
+        print(v, s)
         raise NotImplementedError
     else:
         if (isinstance(s, int) or
@@ -140,7 +140,7 @@ class OptionAlwaysShown(OptionInterface):
 
         if (type(self.widget) == Gtk.ComboBox and
             self.widget.get_model () == None):
-            print "No ComboBox model for %s" % self.name
+            print("No ComboBox model for %s" % self.name)
             model = Gtk.ListStore (str)
             self.widget.set_model (model)
 
@@ -257,7 +257,7 @@ class OptionAlwaysShown(OptionInterface):
         elif t == Gtk.CheckButton:
             return self.widget.set_active (ipp_value)
         else:
-            raise NotImplementedError, (t, self.name)
+            raise NotImplementedError(t, self.name)
 
     def get_widget_value(self):
         t = type(self.widget)
@@ -290,7 +290,7 @@ class OptionAlwaysShown(OptionInterface):
         elif t == Gtk.CheckButton:
             return self.ipp_type (self.widget.get_active ())
 
-        print t, self.widget, self.ipp_type
+        print(t, self.widget, self.ipp_type)
         raise NotImplementedError
 
     def get_current_value(self):
@@ -419,10 +419,10 @@ class OptionSelectOne(Option):
         if selected is not None:
             self.selector.set_active(selected)
         else:
-            print "Unknown value for %s: %s" % (name, value)
-            print "Choices:", supported
+            print("Unknown value for %s: %s" % (name, value))
+            print("Choices:", supported)
             if len(supported) > 0:
-                print "Selecting from choices:", supported[0]
+                print("Selecting from choices:", supported[0])
                 self.selector.set_active(0)
         self.selector.connect("changed", self.changed)
 
@@ -437,11 +437,11 @@ class OptionSelectOneResolution(OptionSelectOne):
                               cups.IPP_RES_PER_CM: "dpc" }
         self.UNITS_DEFAULT = cups.IPP_RES_PER_INCH
         self.UNITS_BY_STR = {}
-        for v, s in self.UNITS_BY_VAL.iteritems ():
+        for v, s in self.UNITS_BY_VAL.items ():
             self.UNITS_BY_STR[s] = v
 
         value = self.string (value)
-        supported = map (self.string, supported)
+        supported = list(map (self.string, supported))
         OptionSelectOne.__init__ (self, name, value, supported, on_change)
 
     def string(self, value):
