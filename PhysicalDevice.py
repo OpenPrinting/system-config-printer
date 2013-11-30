@@ -22,7 +22,7 @@ import config
 import gettext
 gettext.install(domain=config.PACKAGE, localedir=config.localedir)
 import cupshelpers
-import urllib
+import urllib.parse
 
 import ppdippstr
 
@@ -54,10 +54,10 @@ class PhysicalDevice:
         hostport = None
         host = None
         dnssdhost = None
-        (scheme, rest) = urllib.splittype (uri)
+        (scheme, rest) = urllib.parse.splittype (uri)
         if scheme == 'hp' or scheme == 'hpfax':
             if rest.startswith ("/net/"):
-                (rest, ipparam) = urllib.splitquery (rest[5:])
+                (rest, ipparam) = urllib.parse.splitquery (rest[5:])
                 if ipparam != None and ipparam.startswith("ip="):
                     hostport = ipparam[3:]
                 else:
@@ -72,12 +72,12 @@ class PhysicalDevice:
             # name of the printer
             return None, None
         else:
-            (hostport, rest) = urllib.splithost (rest)
+            (hostport, rest) = urllib.parse.splithost (rest)
             if hostport == None:
                 return None, None
 
         if hostport:
-            (host, port) = urllib.splitport (hostport)
+            (host, port) = urllib.parse.splitport (hostport)
 
         return host, dnssdhost
 
@@ -110,7 +110,7 @@ class PhysicalDevice:
                     def count_lower (s):
                         l = s.lower ()
                         n = 0
-                        for i in xrange (len (s)):
+                        for i in range (len (s)):
                             if l[i] != s[i]:
                                 n += 1
                         return n
@@ -230,7 +230,7 @@ class PhysicalDevice:
 
         devs = other.get_devices()
         if devs:
-            uris = map (lambda x: x.uri, self.devices)
+            uris = [x.uri for x in self.devices]
             for dev in devs:
                 if dev.uri in uris:
                     # URI match
@@ -288,7 +288,7 @@ if __name__ == '__main__':
 
     physicaldevices.sort ()
     for physicaldevice in physicaldevices:
-        print physicaldevice.get_info ()
+        print(physicaldevice.get_info ())
         devices = physicaldevice.get_devices ()
         for device in devices:
-            print " ", device
+            print(" ", device)
