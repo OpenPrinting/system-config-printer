@@ -25,7 +25,7 @@ from gi.repository import GObject
 from gi.repository import GLib
 from gi.repository import Gdk
 from gi.repository import Gtk
-import Queue
+import queue
 
 cups.require ("1.9.60")
 
@@ -59,7 +59,7 @@ class _IPPConnectionThread(threading.Thread):
         self._reply_handler = reply_handler
         self._error_handler = error_handler
         self._auth_handler = auth_handler
-        self._auth_queue = Queue.Queue (1)
+        self._auth_queue = queue.Queue (1)
         self.user = user
         self._destroyed = False
         debugprint ("+%s" % self)
@@ -231,7 +231,7 @@ class IPPConnection:
                   encryption=None, parent=None):
         debugprint ("New IPPConnection")
         self._parent = parent
-        self.queue = Queue.Queue ()
+        self.queue = queue.Queue ()
         self.thread = _IPPConnectionThread (self.queue, self,
                                             reply_handler=reply_handler,
                                             error_handler=error_handler,
@@ -289,13 +289,13 @@ class IPPConnection:
 
     def _call_function (self, fn, *args, **kwds):
         reply_handler = error_handler = auth_handler = False
-        if kwds.has_key ("reply_handler"):
+        if "reply_handler" in kwds:
             reply_handler = kwds["reply_handler"]
             del kwds["reply_handler"]
-        if kwds.has_key ("error_handler"):
+        if "error_handler" in kwds:
             error_handler = kwds["error_handler"]
             del kwds["error_handler"]
-        if kwds.has_key ("auth_handler"):
+        if "auth_handler" in kwds:
             auth_handler = kwds["auth_handler"]
             del kwds["auth_handler"]
 
@@ -636,13 +636,13 @@ class IPPAuthConnection(IPPConnection):
 
     def _call_function (self, fn, *args, **kwds):
         reply_handler = error_handler = auth_handler = False
-        if kwds.has_key ("reply_handler"):
+        if "reply_handler" in kwds:
             reply_handler = kwds["reply_handler"]
             del kwds["reply_handler"]
-        if kwds.has_key ("error_handler"):
+        if "error_handler" in kwds:
             error_handler = kwds["error_handler"]
             del kwds["error_handler"]
-        if kwds.has_key ("auth_handler"):
+        if "auth_handler" in kwds:
             auth_handler = kwds["auth_handler"]
             del kwds["auth_handler"]
 
