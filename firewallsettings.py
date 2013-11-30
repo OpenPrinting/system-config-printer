@@ -62,7 +62,7 @@ class FirewallD:
             self.running = False
 
     def _get_active_zone (self):
-        zones = self._fw.getActiveZones().keys()
+        zones = list(self._fw.getActiveZones().keys())
         # remove immutable zones
         zones = [z for z in zones if not self._fw.isImmutable(z)]
 
