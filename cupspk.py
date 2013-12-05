@@ -36,6 +36,7 @@ import dbus
 from debug import debugprint
 
 from dbus.mainloop.glib import DBusGMainLoop
+from functools import reduce
 DBusGMainLoop(set_as_default=True)
 
 CUPS_PK_NAME  = 'org.opensuse.CupsPkHelper.Mechanism'
@@ -195,7 +196,7 @@ class Connection:
         ret = []
 
         for name in names:
-            if kwds.has_key(name):
+            if name in kwds:
                 ret.append(kwds[name])
             else:
                 ret.append('')
@@ -222,16 +223,16 @@ class Connection:
         if len(args) == 4:
             (use_pycups, limit, include_schemes, exclude_schemes, timeout) = self._args_to_tuple([int, str, str, int], *args)
         else:
-            if kwds.has_key('timeout'):
+            if 'timeout' in kwds:
                 timeout = kwds['timeout']
 
-            if kwds.has_key('limit'):
+            if 'limit' in kwds:
                 limit = kwds['limit']
 
-            if kwds.has_key('include_schemes'):
+            if 'include_schemes' in kwds:
                 include_schemes = kwds['include_schemes']
 
-            if kwds.has_key('exclude_schemes'):
+            if 'exclude_schemes' in kwds:
                 exclude_schemes = kwds['exclude_schemes']
 
         pk_args = (timeout, limit, include_schemes, exclude_schemes)
@@ -243,7 +244,7 @@ class Connection:
                                                      *args, **kwds)
         except TypeError:
             debugprint ("DevicesGet API exception; using old signature")
-            if kwds.has_key ('timeout'):
+            if 'timeout' in kwds:
                 use_pycups = True
 
             # Convert from list to string
@@ -266,7 +267,7 @@ class Connection:
                                                      *args, **kwds)
 
         # return 'result' if fallback was called
-        if len (result.keys()) > 0 and type (result[result.keys()[0]]) == dict:
+        if len (result.keys()) > 0 and type (result[list(result.keys())[0]]) == dict:
              return result
 
         result_str = {}
@@ -368,11 +369,11 @@ class Connection:
             (use_pycups, resource, filename) = self._args_to_tuple([str, str], *args)
         else:
             (use_pycups, resource) = self._args_to_tuple([str], *args)
-            if kwds.has_key('filename'):
+            if 'filename' in kwds:
                 filename = kwds['filename']
-            elif kwds.has_key('fd'):
+            elif 'fd' in kwds:
                 fd = kwds['fd']
-            elif kwds.has_key('file'):
+            elif 'file' in kwds:
                 file_object = kwds['file']
             else:
                 if not use_pycups:
@@ -425,11 +426,11 @@ class Connection:
             (use_pycups, resource, filename) = self._args_to_tuple([str, str], *args)
         else:
             (use_pycups, resource) = self._args_to_tuple([str], *args)
-            if kwds.has_key('filename'):
+            if 'filename' in kwds:
                 filename = kwds['filename']
-            elif kwds.has_key('fd'):
+            elif 'fd' in kwds:
                 fd = kwds['fd']
-            elif kwds.has_key('file'):
+            elif 'file' in kwds:
                 file_object = kwds['file']
             else:
                 if not use_pycups:
