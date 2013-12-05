@@ -32,7 +32,7 @@ def OptionWidget(option, ppd, gui, tab_label=None):
         len (option.choices) != 2):
         # This option is advertised as a Boolean but in fact has more
         # than two choices.
-        print "Treating Boolean option %s as PickOne" % option.keyword
+        print("Treating Boolean option %s as PickOne" % option.keyword)
         ui = cups.PPD_UI_PICKONE
 
     if ui == cups.PPD_UI_BOOLEAN:
@@ -184,8 +184,8 @@ class OptionBool(Option):
     def __init__(self, option, ppd, gui, tab_label=None):
         self.selector = Gtk.CheckButton(ppdippstr.ppd.get (option.text))
         self.label = None
-        self.false = u"False" # hack to allow "None" instead of "False"
-        self.true = u"True"
+        self.false = "False" # hack to allow "None" instead of "False"
+        self.true = "True"
         for c in option.choices:
             if c["choice"] in ("None", "False", "Off"):
                 self.false = c["choice"]
@@ -222,7 +222,7 @@ class OptionPickOne(Option):
         if selected is not None:
             self.selector.set_active(selected)
         else:
-            print option.text, "unknown value:", option.defchoice
+            print(option.text, "unknown value:", option.defchoice)
         self.selector.connect("changed", self.on_change)
 
         Option.__init__(self, option, ppd, gui, tab_label=tab_label)
