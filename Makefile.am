@@ -281,8 +281,10 @@ EXTRA_DIST=\
 @INTLTOOL_DESKTOP_RULE@
 
 # The man pages are generated from DocBook XML.
-$(man_MANS): $(top_srcdir)/man/system-config-printer.xml
+.stamp-man-pages-built: $(top_srcdir)/man/system-config-printer.xml
 	xmlto man -o man $<
+
+$(man_MANS): .stamp-man-pages-built
 
 html:	$(EXPORT_MODULES) $(EXPORT_MODULES_GEN)
 	rm -rf html
