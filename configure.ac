@@ -44,13 +44,22 @@ AC_ARG_WITH(udev-rules,
 	    [with_udev_rules=no])
 AM_CONDITIONAL([UDEV_RULES], [test x$with_udev_rules != xno])
 
-if test x$with_udev_rules != xno; then
+AC_ARG_WITH([udevdir],
+	AS_HELP_STRING([--with-udevdir=DIR], [Directory for udev helper programs]),
+	[], [with_udevdir=$($PKG_CONFIG --variable=udevdir udev)])
+if test "x$with_udevdir" != xno; then
+	AC_SUBST([udevdir], [$with_udevdir])
+	AC_SUBST([udevrulesdir], [$with_udevdir/rules.d])
+fi
+
+if test "x$with_udev_rules" != xno -a "x$with_udevdir" != xno; then
    PKG_CHECK_MODULES(libudev, [libudev >= 172], has_libudev=yes, has_libudev=no)
    PKG_CHECK_MODULES(libusb, libusb-1.0, has_libusb=yes, has_libusb=no)
    if test x$has_glib == xno -o \
+           x$has_udev == xno -o \
            x$has_libudev == xno -o \
-           x$has_libusb == xno; then
-      AC_MSG_ERROR([Missing libraries])
+           x$has_libusb == xno ; then
+      AC_MSG_ERROR([Missing packages])
    fi
 
    AM_PROG_CC_C_O
@@ -73,5 +82,6 @@ system-config-printer
 system-config-printer-applet
 install-printerdriver
 dbus/scp-dbus-service
+udev/configure-printer@.service
 ])
 AC_OUTPUT

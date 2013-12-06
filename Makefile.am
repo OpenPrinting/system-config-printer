@@ -180,21 +180,17 @@ bin_SCRIPTS=					\
 	dbus/scp-dbus-service
 
 if UDEV_RULES
-udevrulesdir=$(sysconfdir)/udev/rules.d
 udevrules_DATA=udev/70-printers.rules
 udev_udev_configure_printer_SOURCES=\
 	udev/udev-configure-printer.c
 udev_udev_configure_printer_LDADD= -lcups -ludev $(libusb_LIBS) $(GLIB_LIBS)
 udev_udev_configure_printer_CFLAGS= $(AM_CFLAGS) $(libusb_CFLAGS) $(GLIB_CFLAGS)
-udevhelperdir=$(sysconfdir)/udev
-udevhelper_PROGRAMS=\
+udev_PROGRAMS=\
 	udev/udev-configure-printer
-udevhelper_SCRIPTS=\
+udev_SCRIPTS=\
 	udev/udev-add-printer
 
 if HAVE_SYSTEMD
-%.service: %.service.in
-	$(AM_V_GEN)sed -e 's,@udevhelperdir\@,$(udevhelperdir),g' $< > $@
 systemdsystemunit_DATA = \
 	udev/configure-printer@.service
 CLEANFILES = \
