@@ -299,7 +299,7 @@ update-po: missing-languages
 
 missing-languages:
 	bash -c '\
-	eval $$(grep ALL_LINGUAS configure.in); \
+	eval $$(grep ALL_LINGUAS configure.ac); \
 	diff -u <(echo $$ALL_LINGUAS | xargs -rn1 echo) \
 		<(cd po; ls -1 *.po | sed -e "s,\.po$$,,")'
 
