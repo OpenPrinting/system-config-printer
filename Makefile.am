@@ -283,6 +283,7 @@ EXTRA_DIST=\
 # The man pages are generated from DocBook XML.
 .stamp-man-pages-built: $(top_srcdir)/man/system-config-printer.xml
 	xmlto man -o man $<
+	touch .stamp-man-pages-built
 
 $(man_MANS): .stamp-man-pages-built
 
