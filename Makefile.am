@@ -82,6 +82,7 @@ clean-local:
 		done;						\
 	fi
 	rm -f .stamp-distutils-in-builddir
+	rm -f .stamp-man-pages-built
 
 nobase_pkgdata_SCRIPTS=				\
 	check-device-ids.py			\
