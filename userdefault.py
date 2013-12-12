@@ -41,7 +41,8 @@ class UserDefaultPrinter:
             return
 
         try:
-            opts = file (self.lpoptions).readlines ()
+            opt_file = open(self.lpoptions)
+            opts = opt_file.readlines ()
         except IOError:
             return
 
@@ -55,7 +56,8 @@ class UserDefaultPrinter:
             return None
 
         try:
-            opts = file (self.lpoptions).readlines ()
+            opt_file = open(self.lpoptions)
+            opts = opt_file.readlines ()
         except IOError:
             return None
 

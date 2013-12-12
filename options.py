@@ -54,7 +54,7 @@ class IPPResolution(tuple):
         return self
 
     def __init__ (self, values):
-        return tuple.__init__ (self, (self.xres, self.yres, self.units))
+        return tuple.__init__ ((self.xres, self.yres, self.units))
 
     def __str__ (self):
         return "%sx%s%s" % (self.xres, self.yres,
