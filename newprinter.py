@@ -1685,7 +1685,8 @@ class NewPrinterGUI(GtkGUI):
                 model, iter = treeview.get_selection ().get_selected ()
                 if not iter:
                     path, column = treeview.get_cursor()
-                    iter = model.get_iter (path)
+                    if path:
+                        iter = model.get_iter (path)
                     #driver = model.get_value (iter, 1)
                 accepted = (iter != None)
 
