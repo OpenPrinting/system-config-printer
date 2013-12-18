@@ -1045,7 +1045,7 @@ class GUI(GtkGUI):
         cups.setUser('')
         self.connect_user = cups.getUser()
         # Now start a new thread for connection.
-        self.connect_thread = thread.start_new_thread(self.connect,
+        self.connect_thread = _thread.start_new_thread(self.connect,
                                                       (self.PrintersWindow,))
 
     def update_connecting_pbar (self):
@@ -1101,7 +1101,7 @@ class GUI(GtkGUI):
                                              host=self.connect_server,
                                              encryption=self.connect_encrypt)
         except RuntimeError as s:
-            if self.connect_thread != thread.get_ident(): return
+            if self.connect_thread != _thread.get_ident(): return
             Gdk.threads_enter()
             self.ConnectingDialog.hide()
             self.cups = None
@@ -1112,7 +1112,7 @@ class GUI(GtkGUI):
             return
         except cups.IPPError as e:
             (e, s) = e.args
-            if self.connect_thread != thread.get_ident(): return
+            if self.connect_thread != _thread.get_ident(): return
             Gdk.threads_enter()
             self.ConnectingDialog.hide()
             self.cups = None
@@ -1124,7 +1124,7 @@ class GUI(GtkGUI):
         except:
             nonfatalException ()
 
-        if self.connect_thread != thread.get_ident(): return
+        if self.connect_thread != _thread.get_ident(): return
         Gdk.threads_enter()
 
         try:

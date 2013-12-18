@@ -447,7 +447,7 @@ def _simple_gui ():
         def query_callback (self, status, user_data, result):
             Gdk.threads_enter ()
             self.tv.get_buffer ().set_text (str (result))
-            file ("result.xml", "w").write (str (result))
+            open ("result.xml", "w").write (str (result))
             Gdk.threads_leave ()
 
     q = QueryApp()

@@ -66,7 +66,7 @@ class Locale(Question):
             conf = None
             for conffile in ["/etc/locale.conf", "/etc/sysconfig/i18n"]:
                 try:
-                    conf = file (conffile).readlines ()
+                    conf = open (conffile).readlines ()
                 except IOError:
                     continue
 

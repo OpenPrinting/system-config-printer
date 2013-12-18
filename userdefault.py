@@ -49,7 +49,7 @@ class UserDefaultPrinter:
         for i in range (len (opts)):
             if opts[i].startswith ("Default "):
                 opts[i] = "Dest " + opts[i][8:]
-        file (self.lpoptions, "w").writelines (opts)
+        open (self.lpoptions, "w").writelines (opts)
 
     def get (self):
         if not self.lpoptions:
@@ -75,8 +75,8 @@ class UserDefaultPrinter:
     def set (self, default):
         p = subprocess.Popen ([ "lpoptions", "-d", default ],
                               close_fds=True,
-                              stdin=file ("/dev/null"),
-                              stdout=file ("/dev/null", "w"),
+                              stdin=open ("/dev/null"),
+                              stdout=open ("/dev/null", "w"),
                               stderr=subprocess.PIPE)
         (stdout, stderr) = p.communicate ()
         exitcode = p.wait ()

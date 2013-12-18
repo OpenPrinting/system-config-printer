@@ -45,7 +45,7 @@ class VerifyPackages(Question):
                     "hpijs",
                     "hplip",
                     "system-config-printer"]
-        null = file ("/dev/null", "r+")
+        null = open ("/dev/null", "r+")
         parent = self.troubleshooter.get_window ()
 
         new_environ = os.environ.copy()

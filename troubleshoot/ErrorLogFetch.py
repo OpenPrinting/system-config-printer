@@ -110,7 +110,7 @@ class ErrorLogFetch(Question):
                                       parent=parent)
             tmpfname = self.op.run ()
             if tmpfname != None:
-                f = file (tmpfname)
+                f = open (tmpfname)
                 f.seek (checkpoint)
                 lines = f.readlines ()
                 os.remove (tmpfname)

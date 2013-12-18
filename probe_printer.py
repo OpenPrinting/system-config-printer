@@ -272,7 +272,7 @@ class PrinterFinder:
 
     def _probe_snmp (self):
         # Run the CUPS SNMP backend, pointing it at the host.
-        null = file ("/dev/null", "r+")
+        null = open ("/dev/null", "r+")
         try:
             debugprint ("snmp: trying")
             p = subprocess.Popen (args=["/usr/lib/cups/backend/snmp",
@@ -357,7 +357,7 @@ class PrinterFinder:
         debugprint ("lpd: done")
 
     def _probe_hplip (self):
-        null = file ("/dev/null", "r+")
+        null = open ("/dev/null", "r+")
         try:
             debugprint ("hplip: trying")
             p = subprocess.Popen (args=["hp-makeuri", "-c", self.hostname],

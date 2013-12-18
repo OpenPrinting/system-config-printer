@@ -34,7 +34,7 @@ class Validator:
     def validate (self):
         filename = self._filename
         print ("Validating %s" % filename)
-        preferreddrivers = xml.etree.ElementTree.XML (file (filename).read ())
+        preferreddrivers = xml.etree.ElementTree.XML (open (filename).read ())
         (drivertypes, preferenceorder) = preferreddrivers.getchildren ()
         validates = True
 

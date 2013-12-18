@@ -26,7 +26,7 @@ import xml.etree.ElementTree
 from .cupshelpers import parseDeviceID
 
 def PreferredDrivers (filename):
-    preferreddrivers = xml.etree.ElementTree.XML (file (filename).read ())
+    preferreddrivers = xml.etree.ElementTree.XML (open (filename).read ())
     return preferreddrivers.getchildren()
 
 class DeviceIDMatch:

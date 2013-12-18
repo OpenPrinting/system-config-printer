@@ -156,11 +156,11 @@ class StateReason:
     def get_tuple (self):
         return (self.get_level (), self.get_printer (), self.get_reason ())
 
-    def __cmp__(self, other):
+    def __lt__(self, other):
         if other == None:
             return 1
         if other.get_level () != self.get_level ():
-            return cmp (self.get_level (), other.get_level ())
+            return lt (self.get_level (), other.get_level ())
         if other.get_printer () != self.get_printer ():
-            return cmp (other.get_printer (), self.get_printer ())
-        return cmp (other.get_reason (), self.get_reason ())
+            return lt (other.get_printer (), self.get_printer ())
+        return lt (other.get_reason (), self.get_reason ())

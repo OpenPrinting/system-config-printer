@@ -45,13 +45,13 @@ gettext.install(domain=config.PACKAGE, localedir=config.localedir)
 ### This is the worker thread.
 ###
 class _IPPConnectionThread(threading.Thread):
-    def __init__ (self, queue, conn, reply_handler=None, error_handler=None,
+    def __init__ (self, myqueue, conn, reply_handler=None, error_handler=None,
                   auth_handler=None, user=None, host=None, port=None,
                   encryption=None):
                   
         threading.Thread.__init__ (self)
         self.setDaemon (True)
-        self._queue = queue
+        self._queue = myqueue
         self._conn = conn
         self.host = host
         self.port = port
@@ -59,7 +59,7 @@ class _IPPConnectionThread(threading.Thread):
         self._reply_handler = reply_handler
         self._error_handler = error_handler
         self._auth_handler = auth_handler
-        self._auth_queue = queue.Queue (1)
+        self._auth_queue = queue.Queue(1)
         self.user = user
         self._destroyed = False
         debugprint ("+%s" % self)

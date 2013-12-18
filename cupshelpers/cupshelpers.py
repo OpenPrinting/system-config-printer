@@ -544,76 +544,76 @@ class Device:
     def __repr__ (self):
         return "<cupshelpers.Device \"%s\">" % self.uri
 
-    def __cmp__(self, other):
+    def __lt__(self, other):
         """
         Compare devices by order of preference.
         """
         if other == None:
-            return -1
+            return 1
 
         if self.is_class != other.is_class:
             if other.is_class:
-                return -1
-            return 1
+                return 1
+            return -1
         if not self.is_class and (self.type != other.type):
             # "hp"/"hpfax" before "usb" before * before "parallel" before
             # "serial"
             if other.type == "serial":
-                return -1
+                return 1
             if self.type == "serial":
-                return 1
+                return -1
             if other.type == "parallel":
-                return -1
+                return 1
             if self.type == "parallel":
-                return 1
+                return -1
             if other.type == "hp":
-                return 1
+                return -1
             if self.type == "hp":
-                return -1
+                return 1
             if other.type == "hpfax":
-                return 1
+                return -1
             if self.type == "hpfax":
-                return -1
+                return 1
             if other.type == "dnssd":
-                return 1
+                return -1
             if self.type == "dnssd":
-                return -1
+                return 1
             if other.type == "socket":
-                return 1
+                return -1
             if self.type == "socket":
-                return -1
+                return 1
             if other.type == "lpd":
-                return 1
+                return -1
             if self.type == "lpd":
-                return -1
+                return 1
             if other.type == "ipps":
-                return 1
+                return -1
             if self.type == "ipps":
-                return -1
+                return 1
             if other.type == "ipp":
-                return 1
+                return -1
             if self.type == "ipp":
-                return -1
-            if other.type == "usb":
                 return 1
-            if self.type == "usb":
+            if other.type == "usb":
                 return -1
+            if self.type == "usb":
+                return 1
         if self.type == "dnssd" and other.type == "dnssd":
             if other.uri.find("._pdl-datastream") != -1: # Socket
-                return 1
+                return -1
             if self.uri.find("._pdl-datastream") != -1:
-                return -1
+                return 1
             if other.uri.find("._printer") != -1: # LPD
-                return 1
+                return -1
             if self.uri.find("._printer") != -1:
-                return -1
-            if other.uri.find("._ipp") != -1: # IPP
                 return 1
-            if self.uri.find("._ipp") != -1:
+            if other.uri.find("._ipp") != -1: # IPP
                 return -1
-        result = cmp(bool(self.id), bool(other.id))
+            if self.uri.find("._ipp") != -1:
+                return 1
+        result = bool(self.id) < bool(other.id)
         if not result:
-            result = cmp(self.info, other.info)
+            result = self.info < other.info
         
         return result
 

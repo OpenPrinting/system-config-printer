@@ -220,13 +220,13 @@ class PhysicalDevice:
                                                                self.mdl,
                                                                self.sn)
 
-    def __cmp__(self, other):
+    def __lt__(self, other):
         if other == None or type (other) != type (self):
-            return 1
+            return -1
 
         if (self._network_host != None or
             other._network_host != None):
-            return cmp (self._network_host, other._network_host)
+            return self._network_host < other._network_host
 
         devs = other.get_devices()
         if devs:
@@ -241,11 +241,11 @@ class PhysicalDevice:
             # One or other is just a backend, not a real physical device.
             if other.mfg == '' and other.mdl == '' and \
                self.mfg == '' and self.mdl == '':
-                return cmp (self.devices[0], other.devices[0])
+                return  self.devices[0] > other.devices[0]
 
             if other.mfg == '' and other.mdl == '':
-                return -1
-            return 1
+                return 1
+            return -1
 
         if self.mfg == '' or self.mdl.lower ().startswith (self.mfg.lower ()):
             our_make_and_model = self.mdl
@@ -262,15 +262,15 @@ class PhysicalDevice:
         (other_mfg, other_mdl) = \
             cupshelpers.ppds.ppdMakeModelSplit (other_make_and_model)
 
-        mfgcmp = cmp (our_mfg.lower (), other_mfg.lower ())
+        mfgcmp = lt (our_mfg.lower (), other_mfg.lower ())
         if mfgcmp != 0:
             return mfgcmp
-        mdlcmp = cmp (our_mdl.lower (), other_mdl.lower ())
+        mdlcmp = lt (our_mdl.lower (), other_mdl.lower ())
         if mdlcmp != 0:
             return mdlcmp
         if self.sn == '' or other.sn == '':
             return 0
-        return cmp (self.sn, other.sn)
+        return self.sn < other.sn
 
 if __name__ == '__main__':
     import authconn

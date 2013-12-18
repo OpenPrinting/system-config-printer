@@ -83,7 +83,7 @@ class Shrug(Question):
                 return
 
             try:
-                f = file (dialog.get_filename (), "w")
+                f = open (dialog.get_filename (), "w")
                 f.write (self.buffer.get_text (start=self.buffer.get_start_iter (),
                                                end=self.buffer.get_end_iter (),
                                                include_hidden_chars=False))

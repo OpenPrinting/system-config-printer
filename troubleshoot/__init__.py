@@ -357,7 +357,7 @@ def run (quitfn=None, parent=None):
     for module in QUESTIONS:
         try:
             if not module in modules_imported:
-                exec ("from %s import %s" % (module, module))
+                exec ("from .%s import %s" % (module, module))
                 modules_imported.append (module)
 
             exec ("%s (troubleshooter)" % module)
