@@ -1003,6 +1003,8 @@ class NewPrinterGUI(GtkGUI):
             while self.p.poll() == None:
                 line = stderr.readline ().strip()
                 if (len(line) > 0):
+                    if line == "done":
+                        break
                     try:
                         percentage = float(line)
                         if percentage > 0:
@@ -3682,7 +3684,10 @@ class NewPrinterGUI(GtkGUI):
         model, iter = selection.get_selected ()
         if not iter:
             path, column = widget.get_cursor()
-            iter = model.get_iter (path)
+            if iter:
+                iter = model.get_iter (path)
+            else:
+                return
         driver = model.get_value (iter, 1)
         if driver == 0:
             self.ntbkNPDownloadableDriverProperties.set_current_page(0)
