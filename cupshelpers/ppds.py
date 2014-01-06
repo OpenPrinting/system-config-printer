@@ -171,6 +171,9 @@ def ppdMakeModelSplit (ppd_make_and_model):
     elif l.startswith ("kyocera "):
         make = "Kyocera Mita"
         model = ppd_make_and_model[8:]
+    elif l.startswith ("fuji xerox "):
+        make = "Fuji Xerox"
+        model = ppd_make_and_model[11:]
 
     # Finally, take the first word as the name of the manufacturer.
     else:
