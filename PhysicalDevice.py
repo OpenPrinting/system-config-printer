@@ -224,9 +224,13 @@ class PhysicalDevice:
         if other == None or type (other) != type (self):
             return -1
 
-        if (self._network_host != None or
+        if (self._network_host != None and
             other._network_host != None):
             return self._network_host < other._network_host
+
+        if (self._network_host == None and
+           other._network_host != None):
+           return True
 
         devs = other.get_devices()
         if devs:
