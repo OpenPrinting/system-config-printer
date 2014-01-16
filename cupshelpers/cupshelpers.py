@@ -64,8 +64,7 @@ class Printer:
     def _expand_flags(self):
 
         def _ascii_lower(str):
-            return str.translate(string.maketrans(string.ascii_uppercase,
-                                                  string.ascii_lowercase));
+            return str.lower();
 
         prefix = "CUPS_PRINTER_"
         prefix_length = len(prefix)
