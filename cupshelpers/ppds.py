@@ -2,7 +2,7 @@
 
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2014 Red Hat, Inc.
 ## Copyright (C) 2006 Florian Festi <ffesti@redhat.com>
 ## Copyright (C) 2006, 2007, 2008, 2009 Tim Waugh <twaugh@redhat.com>
 
@@ -426,7 +426,7 @@ class PPDs:
             models_list = self.makes[make].keys ()
         except KeyError:
             return []
-        models_list.sort (key=lambda x: x.lower(), cmp=cups.modelSort)
+        models_list.sort (key=lambda x: normalize (x), cmp=cups.modelSort)
         return models_list
 
     def getInfoFromModel (self, make, model):
