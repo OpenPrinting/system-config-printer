@@ -82,7 +82,7 @@ if devices == None:
             print "Run this as root to examine IDs from attached devices."
             sys.exit (1)
 
-        if e == cups.IPP_NOT_AUTHORIZED:
+        if e in (cups.IPP_NOT_AUTHORIZED, cups.IPP_AUTHENTICATION_CANCELED):
             print "Not authorized."
             sys.exit (1)
 
