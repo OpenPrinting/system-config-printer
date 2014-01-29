@@ -407,7 +407,7 @@ class Connection:
                 file_object.seek (0)
                 line = tmpfile.readline()
                 while line != '':
-                    file_object.write (line)
+                    file_object.write (line.encode('utf-8'))
                     line = tmpfile.readline()
 
             tmpfile.close ()

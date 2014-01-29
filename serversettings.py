@@ -159,22 +159,22 @@ class ServerSettings(GtkGUI):
         f.seek (0)
         for line in f.readlines ():
             l = line.lower ().strip ()
-            if l.startswith ("preservejobhistory "):
+            if l.startswith (b"preservejobhistory "):
                 try:
                     preserve_job_history = parse_yesno (l)
                 except:
                     pass
-            elif l.startswith ("preservejobfiles "):
+            elif l.startswith (b"preservejobfiles "):
                 try:
                     preserve_job_files = parse_yesno (l)
                 except:
                     pass
-            elif l.startswith ("browsing "):
+            elif l.startswith (b"browsing "):
                 try:
                     browsing = parse_yesno (l)
                 except:
                     pass
-            elif l.startswith ("browsepoll "):
+            elif l.startswith (b"browsepoll "):
                 self.browse_poll.append (line[len ("browsepoll "):].strip ())
 
         self.frameBrowseServers.set_sensitive (browsing)

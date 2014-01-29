@@ -95,7 +95,7 @@ class TimedSubprocess(Timed):
     def watcher (self, source, condition):
         if condition & GLib.IO_IN:
             buffer = self.output.get (source, '')
-            buffer += source.read ()
+            buffer += (source.read ()).decode("utf-8")
             self.output[source] = buffer
 
         if condition & GLib.IO_HUP:

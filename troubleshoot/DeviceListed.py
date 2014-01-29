@@ -100,7 +100,9 @@ class DeviceListed(Question):
                     info = device.get('device-make-and-model', _("Unknown"))
                     devices_list.append ((name, info, uri, device))
 
-                devices_list.sort (lambda x, y: cmp (x[0], y[0]))
+                def keyfunction(item)
+                    return item[0]
+                device_list.sort (key=keyfunction)
                 for name, info, uri, device in devices_list:
                     iter = model.append (None)
                     model.set (iter, 0, name, 1, info, 2, uri, 3, device)
