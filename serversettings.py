@@ -131,7 +131,7 @@ class ServerSettings(GtkGUI):
 
     def _fillAdvanced(self):
         # Fetch cupsd.conf
-        f = tempfile.TemporaryFile ()
+        f = tempfile.TemporaryFile () # mode='w+b'
         try:
             self.cupsconn.getFile (self.RESOURCE, file=f)
         except cups.HTTPError as e:
@@ -157,24 +157,25 @@ class ServerSettings(GtkGUI):
         browsing = True
         self.browse_poll = []
         f.seek (0)
-        for line in f.readlines ():
+        for line in f:
+            line = line.decode ('UTF-8')
             l = line.lower ().strip ()
-            if l.startswith (b"preservejobhistory "):
+            if l.startswith ("preservejobhistory "):
                 try:
                     preserve_job_history = parse_yesno (l)
                 except:
                     pass
-            elif l.startswith (b"preservejobfiles "):
+            elif l.startswith ("preservejobfiles "):
                 try:
                     preserve_job_files = parse_yesno (l)
                 except:
                     pass
-            elif l.startswith (b"browsing "):
+            elif l.startswith ("browsing "):
                 try:
                     browsing = parse_yesno (l)
                 except:
                     pass
-            elif l.startswith (b"browsepoll "):
+            elif l.startswith ("browsepoll "):
                 self.browse_poll.append (line[len ("browsepoll "):].strip ())
 
         self.frameBrowseServers.set_sensitive (browsing)
@@ -406,7 +407,7 @@ class ServerSettings(GtkGUI):
             return
 
         # Fetch cupsd.conf afresh
-        f = tempfile.TemporaryFile ()
+        f = tempfile.TemporaryFile () # mode='w+b'
         try:
             self.cupsconn.getFile (self.RESOURCE, file=f)
         except cups.HTTPError as e:
@@ -428,18 +429,19 @@ class ServerSettings(GtkGUI):
             browsepoll_lines += "BrowsePoll %s\n" % server
 
         f.seek (0)
-        conf = tempfile.TemporaryFile ()
+        conf = tempfile.TemporaryFile () # mode='w+b'
         wrote_preserve_history = wrote_preserve_files = False
         wrote_browsepoll = False
         has_browsepoll = False
-        lines = f.readlines ()
-        for line in lines:
+        for line in f:
+            line = line.decode('UTF-8')
             l = line.lower ().strip ()
             if l.startswith ("browsepoll "):
                 has_browsepoll = True
                 break
 
-        for line in lines:
+        for line in f:
+            line = line.decode('UTF-8')
             l = line.lower ().strip ()
             if l.startswith ("preservejobhistory "):
                 if wrote_preserve_history:
@@ -461,7 +463,7 @@ class ServerSettings(GtkGUI):
                     # Ignore extra BrowsePoll lines.
                     continue
                 # Write new BrowsePoll section.
-                conf.write (browsepoll_lines)
+                conf.write (browsepoll_lines.encode('UTF-8'))
                 wrote_browsepoll = True
                 # Don't write out the original BrowsePoll line.
                 continue
@@ -469,20 +471,20 @@ class ServerSettings(GtkGUI):
                   l.startswith ("browsing ")):
                 if not wrote_browsepoll:
                     # Write original Browsing line.
-                    conf.write (line)
+                    conf.write (line.encode('UTF-8'))
                     # Write new BrowsePoll section.
-                    conf.write (browsepoll_lines)
+                    conf.write (browsepoll_lines.encode('UTF-8'))
                     wrote_browsepoll = True
                     continue
 
-            conf.write (line)
+            conf.write (line.encode('UTF-8'))
 
         if not wrote_preserve_history:
-            conf.write (job_history_line)
+            conf.write (job_history_line.encode('UTF-8'))
         if not wrote_preserve_files:
-            conf.write (job_files_line)
+            conf.write (job_files_line.encode('UTF-8'))
         if not wrote_browsepoll:
-            conf.write (browsepoll_lines)
+            conf.write (browsepoll_lines.encode('UTF-8'))
 
         conf.flush ()
         fd = conf.fileno ()

@@ -435,9 +435,9 @@ class Printer:
 
             raise cups.HTTPError (s)
 
-        f = os.fdopen (tmpfd, 'r+')
+        f = os.fdopen (tmpfd, 'r+b')
         f.seek (0)
-        lines = f.readlines ()
+        lines = [ line.decode('UTF-8') for line in f.readlines () ]
         changed = False
         i = 0
         for line in lines:
@@ -452,7 +452,7 @@ class Printer:
 
         if changed:
             f.seek (0)
-            f.writelines (lines)
+            f.writelines ([ line.encode('UTF-8') for line in lines ])
             f.truncate ()
             os.lseek (tmpfd, 0, os.SEEK_SET)
             try:

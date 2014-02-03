@@ -394,20 +394,20 @@ class Connection:
                                             *args, **kwds)
 
             tmpfd = os.open (tmpfname, os.O_RDONLY)
-            tmpfile = os.fdopen (tmpfd, 'r')
+            tmpfile = os.fdopen (tmpfd, 'rt')
             tmpfile.seek (0)
 
             if fd != None:
                 os.lseek (fd, 0, os.SEEK_SET)
                 line = tmpfile.readline()
                 while line != '':
-                    os.write (fd, line)
+                    os.write (fd, line.encode('UTF-8'))
                     line = tmpfile.readline()
             else:
                 file_object.seek (0)
                 line = tmpfile.readline()
                 while line != '':
-                    file_object.write (line.encode('utf-8'))
+                    file_object.write (line.encode('UTF-8'))
                     line = tmpfile.readline()
 
             tmpfile.close ()
