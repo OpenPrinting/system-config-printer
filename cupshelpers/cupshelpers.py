@@ -833,13 +833,13 @@ def missingExecutables(ppd):
     if exepath or not exe:
         # Look for '*cupsFilter' lines in the PPD and check that
         # the filters are installed.
-        (tmpfd, tmpfname) = tempfile.mkstemp ()
+        (tmpfd, tmpfname) = tempfile.mkstemp (text=True)
         os.unlink (tmpfname)
         ppd.writeFd (tmpfd)
         os.lseek (tmpfd, 0, os.SEEK_SET)
-        f = os.fdopen (tmpfd, "r")
+        f = os.fdopen (tmpfd, "rt")
         search = "*cupsFilter:"
-        for line in f.readlines ():
+        for line in f:
             if line.startswith (search):
                 line = line[len (search):].strip ().strip ('"')
                 try:

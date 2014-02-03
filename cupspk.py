@@ -481,7 +481,7 @@ class Connection:
 
         need_unlink = False
         if not ppdname and not filename and ppd:
-            (fd, filename) = tempfile.mkstemp ()
+            (fd, filename) = tempfile.mkstemp (text=True)
             ppd.writeFd(fd)
             os.close(fd)
             need_unlink = True
