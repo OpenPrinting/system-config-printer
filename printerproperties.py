@@ -1230,15 +1230,14 @@ class PrinterPropertiesDialog(GtkGUI):
             # Printer has been deleted meanwhile
             return
 
-        (tmpfd, tmpfname) = tempfile.mkstemp ()
-        os.write (tmpfd, "#CUPS-COMMAND\n%s\n" % command)
-        os.close (tmpfd)
+        tmpfile = tempfile.NamedTemporaryFile(mode='wt')
+        tmpfile.write ("#CUPS-COMMAND\n%s\n" % command)
         self.cups._begin_operation (_("sending maintenance command"))
         try:
             format = "application/vnd.cups-command"
             job_id = self.cups.printTestPage (printer.name,
                                               format=format,
-                                              file=tmpfname,
+                                              file=tmpfile.name,
                                               user=cups.getUser ())
             show_info_dialog (_("Submitted"),
                               _("Maintenance command submitted as "
@@ -1258,8 +1257,6 @@ class PrinterPropertiesDialog(GtkGUI):
                 show_IPP_Error(e, msg, self.parent)
 
         self.cups._end_operation ()
-
-        os.unlink (tmpfname)
 
     def on_btnSelfTest_clicked(self, button):
         self.maintenance_command ("PrintSelfTestPage")
