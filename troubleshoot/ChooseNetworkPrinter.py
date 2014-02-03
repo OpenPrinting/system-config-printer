@@ -108,7 +108,7 @@ class ChooseNetworkPrinter(Question):
 
                 dests_list.append ((queue, location, info, dest))
 
-            dests_list.sort (lambda x, y: cmp (x[0], y[0]))
+            dests_list.sort (key=lambda x: x[0])
             for queue, location, info, dest in dests_list:
                 iter = model.append (None)
                 model.set (iter, 0, queue, 1, location, 2, info, 3, dest)
