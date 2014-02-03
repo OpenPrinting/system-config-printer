@@ -391,7 +391,7 @@ class PrintTestPage(Question):
                     jobid = self.op.run ()
                 elif mimetype == 'text/plain':
                     (tmpfd, tmpfname) = tempfile.mkstemp ()
-                    os.write (tmpfd, "This is a test page.\n")
+                    os.write (tmpfd, b"This is a test page.\n")
                     os.close (tmpfd)
                     self.op = TimedOperation (print_test_page,
                                               (answers['cups_queue'],),
