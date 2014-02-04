@@ -3799,7 +3799,7 @@ class NewPrinterGUI(GtkGUI):
                             ppdurlobj.close()
                             (tmpfd, ppdname) = tempfile.mkstemp()
                             debugprint(ppdname)
-                            ppdfile = os.fdopen(tmpfd, 'w')
+                            ppdfile = os.fdopen(tmpfd, 'wb')
                             ppdfile.write(ppdcontent)
                             ppdfile.close()
                             ppd = cups.PPD(ppdname)
