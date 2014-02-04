@@ -201,20 +201,20 @@ class _WriteToTmpFile:
 
     def reply_handler (self, conn, none):
         tmpfd = os.open (self._filename, os.O_RDONLY)
-        tmpfile = os.fdopen (tmpfd, 'r')
+        tmpfile = os.fdopen (tmpfd, 'rt')
         if "fd" in self._kwds:
             fd = self._kwds["fd"]
             os.lseek (fd, 0, os.SEEK_SET)
             line = tmpfile.readline ()
             while line != '':
-                os.write (fd, line)
+                os.write (fd, line.encode('UTF-8'))
                 line = tempfile.readline ()
         else:
             file_object = self._kwds["file"]
             file_object.seek (0)
             line = tmpfile.readline ()
             while line != '':
-                file_object.write (line)
+                file_object.write (line.encode('UTF-8'))
                 line = tmpfile.readline ()
 
         tmpfile.close ()
