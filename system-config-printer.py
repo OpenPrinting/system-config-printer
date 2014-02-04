@@ -2,7 +2,7 @@
 
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 ##  Florian Festi <ffesti@redhat.com>
@@ -1053,12 +1053,14 @@ class GUI(GtkGUI):
     def update_connecting_pbar (self):
         ret = True
         Gdk.threads_enter ()
-        if not self.ConnectingDialog.get_property ("visible"):
-            ret = False # stop animation
-        else:
-            self.pbarConnecting.pulse ()
+        try:
+            if not self.ConnectingDialog.get_property ("visible"):
+                ret = False # stop animation
+            else:
+                self.pbarConnecting.pulse ()
+        finally:
+            Gdk.threads_leave ()
 
-        Gdk.threads_leave ()
         return ret
 
     def on_connectingdialog_delete (self, widget, event):
@@ -1105,23 +1107,27 @@ class GUI(GtkGUI):
         except RuntimeError as s:
             if self.connect_thread != thread.get_ident(): return
             Gdk.threads_enter()
-            self.ConnectingDialog.hide()
-            self.cups = None
-            self.setConnected()
-            self.populateList()
-            show_IPP_Error(None, s, parent)
-            Gdk.threads_leave()
+            try:
+                self.ConnectingDialog.hide()
+                self.cups = None
+                self.setConnected()
+                self.populateList()
+                show_IPP_Error(None, s, parent)
+            finally:
+                Gdk.threads_leave()
             return
         except cups.IPPError as e:
             (e, s) = e.args
             if self.connect_thread != thread.get_ident(): return
             Gdk.threads_enter()
-            self.ConnectingDialog.hide()
-            self.cups = None
-            self.setConnected()
-            self.populateList()
-            show_IPP_Error(e, s, parent)
-            Gdk.threads_leave()
+            try:
+                self.ConnectingDialog.hide()
+                self.cups = None
+                self.setConnected()
+                self.populateList()
+                show_IPP_Error(e, s, parent)
+            finally:
+                Gdk.threads_leave()
             return
         except:
             nonfatalException ()
@@ -1675,8 +1681,10 @@ class GUI(GtkGUI):
         # update.  We have to defer this to prevent signal problems.
         def deferred_refresh ():
             Gdk.threads_enter ()
-            self.populateList ()
-            Gdk.threads_leave ()
+            try:
+                self.populateList ()
+            finally:
+                Gdk.threads_leave ()
             return False
         GLib.idle_add (deferred_refresh)
 
@@ -1926,17 +1934,22 @@ class GUI(GtkGUI):
 
     def service_started_try (self):
         Gdk.threads_enter ()
-        self.on_btnRefresh_clicked (None)
-        Gdk.threads_leave ()
+        try:
+            self.on_btnRefresh_clicked (None)
+        finally:
+            Gdk.threads_leave ()
+
         GLib.timeout_add_seconds (1, self.service_started_retry)
         return False
 
     def service_started_retry (self):
         if not self.cups:
             Gdk.threads_enter ()
-            self.on_btnRefresh_clicked (None)
-            self.btnStartService.set_sensitive (True)
-            Gdk.threads_leave ()
+            try:
+                self.on_btnRefresh_clicked (None)
+                self.btnStartService.set_sensitive (True)
+            finally:
+                Gdk.threads_leave ()
 
         return False
 
@@ -2044,8 +2057,10 @@ class GUI(GtkGUI):
         # Just fetch the list of printers again.  This is too simplistic.
         def deferred_refresh ():
             Gdk.threads_enter ()
-            self.populateList (prompt_allowed=False)
-            Gdk.threads_leave ()
+            try:
+                self.populateList (prompt_allowed=False)
+            finally:
+                Gdk.threads_leave ()
             return False
 
         if self.populateList_timer:
@@ -2091,8 +2106,10 @@ def main(show_jobs):
         mainwindow = GUI()
 
     Gdk.threads_enter ()
-    Gtk.main()
-    Gdk.threads_leave ()
+    try:
+        Gtk.main()
+    finally:
+        Gdk.threads_leave ()
 
 if __name__ == "__main__":
     import getopt
