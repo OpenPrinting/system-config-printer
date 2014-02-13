@@ -48,8 +48,8 @@ class DeviceIDMatch:
         pattern is considered to match.
         """
 
-        for field, match in self._re.iteritems ():
-            if not deviceid.has_key (field):
+        for field, match in self._re.items ():
+            if field not in deviceid:
                 return False
 
             if field == "CMD":
@@ -167,7 +167,7 @@ class DriverType:
 
         if matches:
             for name, match in self.attributes:
-                if not attributes.has_key (name):
+                if name not in attributes:
                     matches = False
                     break
 
@@ -187,7 +187,7 @@ class DriverType:
                     break
 
         if matches:
-            if self.deviceid and not attributes.has_key ("ppd-device-id"):
+            if self.deviceid and "ppd-device-id" not in attributes:
                 matches = False
             elif self.deviceid:
                 # This is a match if any of the ppd-device-id values
@@ -269,8 +269,7 @@ class DriverTypes:
         pattern.
         """
 
-        return fnmatch.filter (map (lambda x: x.get_name (),
-                                    self.drivertypes),
+        return fnmatch.filter ([x.get_name () for x in self.drivertypes],
                                pattern)
 
     def get_ordered_ppdnames (self, drivertypes, ppdsdict, fit):
@@ -292,7 +291,7 @@ class DriverTypes:
         # First find out what driver types we have
         ppdtypes = {}
         fit_default = DriverType.FIT_CLOSE
-        for ppd_name, ppd_dict in ppdsdict.iteritems ():
+        for ppd_name, ppd_dict in ppdsdict.items ():
             drivertype = self.match (ppd_name, ppd_dict, fit.get (ppd_name,
                                                                   fit_default))
             if drivertype:
@@ -509,7 +508,7 @@ class PreferenceOrder:
 def test (xml_path=None, attached=False, deviceid=None, debug=False):
     import cups
     import locale
-    import ppds
+    from . import ppds
     from pprint import pprint
     from time import time
     import os.path
@@ -538,7 +537,7 @@ def test (xml_path=None, attached=False, deviceid=None, debug=False):
     preforder.load (xmlpreferenceorder)
     loadtime = time () - loadstart
     if debug:
-        print ("Time to load %s: %.3fs" % (xml_path, loadtime))
+        print("Time to load %s: %.3fs" % (xml_path, loadtime))
 
     c = cups.Connection ()
     try:
@@ -562,7 +561,7 @@ def test (xml_path=None, attached=False, deviceid=None, debug=False):
                               }
                         }
 
-        for uri, device in devices.iteritems ():
+        for uri, device in devices.items ():
             if uri.find (":") == -1:
                 continue
 
@@ -596,7 +595,7 @@ def test (xml_path=None, attached=False, deviceid=None, debug=False):
                                                             fit)
             i = 1
             for t, ppd in orderedppds:
-                print ("%d  %s\n    (%s, %s)" % (i, ppd, t, fit[ppd]))
+                print("%d  %s\n    (%s, %s)" % (i, ppd, t, fit[ppd]))
                 i += 1
     else:
         for make in ppdfinder.getMakes ():
@@ -612,10 +611,10 @@ def test (xml_path=None, attached=False, deviceid=None, debug=False):
 
                 orderedppds = drivertypes.get_ordered_ppdnames (orderedtypes,
                                                                 ppdsdict, fit)
-                print (mm.encode (encoding) + ":")
+                print((mm.encode (encoding) + ":"))
                 i = 1
                 for t, ppd in orderedppds:
-                    print ("%d  %s\n    (%s)" % (i, ppd, t))
+                    print("%d  %s\n    (%s)" % (i, ppd, t))
                     i += 1
 
-                print
+                print()

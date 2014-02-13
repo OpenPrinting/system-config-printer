@@ -28,6 +28,7 @@ import string
 import time
 import locale
 import os.path
+import functools
 import re
 from . import _debugprint, set_debugprint_fn
 from functools import reduce
@@ -405,7 +406,7 @@ class PPDs:
 	"""
         self._init_makes ()
         makes_list = list(self.makes.keys ())
-        makes_list.sort (locale.strcoll)
+        makes_list.sort (key=locale.strxfrm)
         try:
             # "Generic" should be listed first.
             makes_list.remove ("Generic")
@@ -424,7 +425,13 @@ class PPDs:
             models_list = list(self.makes[make].keys ())
         except KeyError:
             return []
-        models_list.sort (key=lambda x: x.lower(), cmp=cups.modelSort)
+
+        def compare_models(a,b):
+            first = a.lower()
+            second = b.lower()
+            return cups.modelSort(first, second)
+
+        models_list.sort(key=functools.cmp_to_key(compare_models))
         return models_list
 
     def getInfoFromModel (self, make, model):

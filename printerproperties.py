@@ -1558,7 +1558,7 @@ class PrinterPropertiesDialog(GtkGUI):
             rows = 1 + (cols - 1) / 4
             if cols > 4:
                 cols = 4
-            table = Gtk.Table (rows=rows,
+            table = Gtk.Table (rows=round(rows),
                                columns=cols,
                                homogeneous=True)
             table.set_col_spacings (6)
