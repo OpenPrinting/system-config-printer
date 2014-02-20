@@ -38,6 +38,7 @@ import dbus
 from gi.repository import Gdk
 from gi.repository import Gtk
 import pycurl
+import functools
 # prefer Python 2 module here, as in Python 2 io.StringIO is broken
 try:
     from io import StringIO
@@ -3329,7 +3330,7 @@ class NewPrinterGUI(GtkGUI):
             for printer_id, printer_name in self.downloadable_printers:
                 sorted_list.append ((printer_id, printer_name))
 
-            sorted_list.sort (lambda x, y: cups.modelSort (x[1], y[1]))
+            sorted_list.sort (key=functools.cmp_to_key(lambda x, y: cups.modelSort (x[1], y[1])))
             sought = self.entNPDownloadableDriverSearch.get_text ().lower ()
             select_index = 0
             for id, name in sorted_list:

@@ -43,7 +43,7 @@ class _QueryThread (threading.Thread):
         self.parameters = parameters
         self.callback = callback
         self.user_data = user_data
-        self.result = ""
+        self.result = b''
 
         self.setDaemon (True)
 
@@ -67,7 +67,7 @@ class _QueryThread (threading.Thread):
         self.url = "https://%s%s?%s" % (self.parent.base_url, query_command, params)
         # Send request
         result = None
-        self.result = ""
+        self.result = b''
         status = 1
         try:
             curl = pycurl.Curl()

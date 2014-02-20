@@ -842,7 +842,7 @@ class PPDs:
         # Perform a case-insensitive model sort on the names.
         mdlnamesl = [(x, x.lower()) for x in mdlnames]
         mdlnamesl.append ((mdl, mdll))
-        mdlnamesl.sort (lambda x, y: cups.modelSort(x[1], y[1]))
+        mdlnamesl.sort (key=functools.cmp_to_key(lambda x, y: cups.modelSort(x[1], y[1])))
         i = mdlnamesl.index ((mdl, mdll))
         candidates = [mdlnamesl[i - 1]]
         if i + 1 < len (mdlnamesl):
@@ -876,7 +876,7 @@ class PPDs:
             # field and look for a match based solely on that.  If
             # there are digits, try lowering the number of
             # significant figures.
-            mdlnames.sort (cups.modelSort)
+            mdlnames.sort (key=functools.cmp_to_key(cups.modelSort))
             mdlitems = [(x.lower (), mdls[x]) for x in mdlnames]
             modelid = None
             for word in mdll.split (' '):
