@@ -20,7 +20,7 @@
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 import os
-import glib
+from gi.repository import GLib
 
 class PackageKit:
     def __init__ (self):
@@ -33,4 +33,4 @@ class PackageKit:
         raise RuntimeError, "No gpk-install-package-name program available"
 
     def InstallPackageName (self, xid, timestamp, name):
-        glib.spawn_async ([self.gpk_install_package_name, name])
+        GLib.spawn_async ([self.gpk_install_package_name, name])
