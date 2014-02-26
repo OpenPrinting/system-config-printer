@@ -297,7 +297,7 @@ class PrinterFinder:
             debugprint ("snmp: no good")
             return
 
-        for line in stdout.split ('\n'):
+        for line in stdout.decode('utf-8').split ('\n'):
             words = wordsep (line)
             n = len (words)
             if n == 6:
