@@ -1230,33 +1230,32 @@ class PrinterPropertiesDialog(GtkGUI):
             # Printer has been deleted meanwhile
             return
 
-        tmpfile = tempfile.NamedTemporaryFile(mode='wt')
-        tmpfile.write ("#CUPS-COMMAND\n%s\n" % command)
-        self.cups._begin_operation (_("sending maintenance command"))
-        try:
-            format = "application/vnd.cups-command"
-            job_id = self.cups.printTestPage (printer.name,
-                                              format=format,
-                                              file=tmpfile.name,
-                                              user=cups.getUser ())
-            show_info_dialog (_("Submitted"),
-                              _("Maintenance command submitted as "
-                                "job %d") % job_id,
-                              parent=self.parent)
-        except cups.IPPError as e:
-            (e, msg) = e.args
-            if (e == cups.IPP_NOT_AUTHORIZED and
-                self.printer.name != 'localhost'):
-                show_error_dialog (_("Not possible"),
-                                   _("The remote server did not accept "
-                                     "the print job, most likely "
-                                     "because the printer is not "
-                                     "shared."),
-                                   self.parent)
-            else:
-                show_IPP_Error(e, msg, self.parent)
-
-        self.cups._end_operation ()
+        with tempfile.NamedTemporaryFile(mode='wt') as tmpfile:
+            tmpfile.write ("#CUPS-COMMAND\n%s\n" % command)
+            self.cups._begin_operation (_("sending maintenance command"))
+            try:
+                format = "application/vnd.cups-command"
+                job_id = self.cups.printTestPage (printer.name,
+                                                  format=format,
+                                                  file=tmpfile.name,
+                                                  user=cups.getUser ())
+                show_info_dialog (_("Submitted"),
+                                  _("Maintenance command submitted as "
+                                    "job %d") % job_id,
+                                  parent=self.parent)
+            except cups.IPPError as e:
+                (e, msg) = e.args
+                if (e == cups.IPP_NOT_AUTHORIZED and
+                    self.printer.name != 'localhost'):
+                    show_error_dialog (_("Not possible"),
+                                       _("The remote server did not accept "
+                                         "the print job, most likely "
+                                         "because the printer is not "
+                                         "shared."),
+                                       self.parent)
+                else:
+                    show_IPP_Error(e, msg, self.parent)
+            self.cups._end_operation ()
 
     def on_btnSelfTest_clicked(self, button):
         self.maintenance_command ("PrintSelfTestPage")
