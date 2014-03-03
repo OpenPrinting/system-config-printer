@@ -2,7 +2,7 @@
 
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 ##  Florian Festi <ffesti@redhat.com>
@@ -4011,6 +4011,10 @@ class NewPrinterGUI(GtkGUI):
                     self.cups.addPrinter(name, device=uri,
                                          info=info, location=location)
                 else:
+                    # Note: LC_MESSAGES is used here to determine the
+                    # page size instead of LC_PAPER. This is not
+                    # really correct, but it's what CUPS does so to
+                    # avoid confusion we'll follow that method.
                     cupshelpers.setPPDPageSize(ppd, self.language[0])
                     self.cups.addPrinter(name, ppd=ppd, device=uri,
                                          info=info, location=location)
