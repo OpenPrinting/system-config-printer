@@ -1586,6 +1586,8 @@ class JobViewer (GtkGUI):
             for name, value in attrs.iteritems():
                 if name in ['job-id', 'job-printer-up-time']:
                     continue
+                if isinstance(value, unicode): # TODO: remove this after merging python3 branch
+                    value.encode('utf-8')
                 attr_store.append([name, str(value)])
 
     def job_is_active (self, jobdata):
