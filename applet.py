@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-## Copyright (C) 2007, 2008, 2009, 2010, 2011, 2012, 2013 Red Hat, Inc.
+## Copyright (C) 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014 Red Hat, Inc.
 ## Author: Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
@@ -319,15 +319,30 @@ class RunLoop:
         self.session_bus = session_bus
         self.loop = loop
         self.timer = None
-        system_bus.add_signal_receiver (self.handle_dbus_signal,
-                                        path=self.DBUS_PATH,
-                                        dbus_interface=self.DBUS_IFACE)
+        try:
+            system_bus.add_signal_receiver (self.handle_dbus_signal,
+                                            path=self.DBUS_PATH,
+                                            dbus_interface=self.DBUS_IFACE)
+        except DBusException, e:
+            try:
+                print >> sys.stderr, ("%s: failed to add D-Bus "
+                                      "signal receiver: %s" % (PROGRAM_NAME, e))
+            finally:
+                sys.exit (1)
+
         self.check_for_jobs ()
 
     def remove_signal_receiver (self):
-        self.system_bus.remove_signal_receiver (self.handle_dbus_signal,
-                                                path=self.DBUS_PATH,
-                                                dbus_interface=self.DBUS_IFACE)
+        try:
+            self.system_bus.remove_signal_receiver (self.handle_dbus_signal,
+                                                    path=self.DBUS_PATH,
+                                                    dbus_interface=self.DBUS_IFACE)
+        except DBusException, e:
+            try:
+                print >> sys.stderr, ("%s: failed to remove D-Bus "
+                                      "signal receiver: %s" % (PROGRAM_NAME, e))
+            except:
+                pass
 
     def run (self):
         self.loop.run ()
