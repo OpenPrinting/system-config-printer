@@ -1000,10 +1000,12 @@ class NewPrinterGUI(GtkGUI):
             # Keep the UI refreshed while we wait for
             # the drivers query to complete.
             (stdout, stderr) = (self.p.stdout, self.p.stderr)
+            done = False
             while self.p.poll() == None:
                 line = stderr.readline ().strip()
                 if (len(line) > 0):
                     if line == "done":
+                        done = True
                         break
                     try:
                         percentage = float(line)
@@ -1015,7 +1017,7 @@ class NewPrinterGUI(GtkGUI):
                     Gtk.main_iteration ()
                 if not line:
                     time.sleep (0.1)
-            if self.p.returncode != 0:
+            if self.p.returncode != 0 and not done:
                 ret = False
         except:
             # Problem executing command.
