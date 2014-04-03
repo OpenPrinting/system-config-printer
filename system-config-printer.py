@@ -202,7 +202,7 @@ class GUI(GtkGUI):
 
         # Printer Actions
         printer_manager_action_group = \
-            Gtk.ActionGroup ("PrinterManagerActionGroup")
+            Gtk.ActionGroup (name="PrinterManagerActionGroup")
         printer_manager_action_group.add_actions ([
                 ("connect-to-server", Gtk.STOCK_CONNECT, _("_Connect..."),
                  None, _("Choose a different CUPS server"),
@@ -1274,12 +1274,12 @@ class GUI(GtkGUI):
         """
         preserved_jobs = self.printers[name].jobsPreserved(limit=1)
         if len (preserved_jobs) > 0:
-            dialog = Gtk.MessageDialog (self.PrintersWindow,
-                                        Gtk.DialogFlags.MODAL |
-                                        Gtk.DialogFlags.DESTROY_WITH_PARENT,
-                                        Gtk.MessageType.WARNING,
-                                        Gtk.ButtonsType.OK_CANCEL,
-                                        _("Renaming will lose history"))
+            dialog = Gtk.MessageDialog (parent=self.PrintersWindow,
+                                        flags=Gtk.DialogFlags.MODAL |
+                                              Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                                        message_type=Gtk.MessageType.WARNING,
+                                        buttons=Gtk.ButtonsType.OK_CANCEL,
+                                        message_format=_("Renaming will lose history"))
 
             dialog.format_secondary_text (_("Completed jobs will no longer "
                                             "be available for re-printing."))
@@ -1568,13 +1568,12 @@ class GUI(GtkGUI):
                 itr = model.get_iter (path)
                 name = model.get_value (itr, 2).decode ('utf-8')
                 to_delete.append (name)
-
-        dialog = Gtk.MessageDialog(self.PrintersWindow,
-                                   Gtk.DialogFlags.DESTROY_WITH_PARENT |
-                                   Gtk.DialogFlags.MODAL,
-                                   Gtk.MessageType.WARNING,
-                                   Gtk.ButtonsType.NONE,
-                                   message_format)
+        dialog = Gtk.MessageDialog(parent=self.PrintersWindow,
+                                   flags=Gtk.DialogFlags.DESTROY_WITH_PARENT |
+                                         Gtk.DialogFlags.MODAL,
+                                   message_type=Gtk.MessageType.WARNING,
+                                   buttons=Gtk.ButtonsType.NONE,
+                                   message_format=message_format)
         dialog.add_buttons (Gtk.STOCK_CANCEL, Gtk.ResponseType.REJECT,
                             Gtk.STOCK_DELETE, Gtk.ResponseType.ACCEPT)
         dialog.set_default_response (Gtk.ResponseType.REJECT)
@@ -1898,12 +1897,12 @@ class GUI(GtkGUI):
 
         # Finally, suggest printing a test page.
         if self.propertiesDlg.ppd:
-            q = Gtk.MessageDialog (self.PrintersWindow,
-                                   Gtk.DialogFlags.DESTROY_WITH_PARENT |
-                                   Gtk.DialogFlags.MODAL,
-                                   Gtk.MessageType.QUESTION,
-                                   Gtk.ButtonsType.NONE,
-                                   _("Would you like to print a test page?"))
+            q = Gtk.MessageDialog (parent=self.PrintersWindow,
+                                   flags=Gtk.DialogFlags.DESTROY_WITH_PARENT |
+                                         Gtk.DialogFlags.MODAL,
+                                   message_type=Gtk.MessageType.QUESTION,
+                                   buttons=Gtk.ButtonsType.NONE,
+                                   message_format=_("Would you like to print a test page?"))
             q.add_buttons (Gtk.STOCK_CANCEL, Gtk.ResponseType.NO,
                            _("Print Test Page"), Gtk.ResponseType.YES)
             response = q.run ()

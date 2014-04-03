@@ -459,12 +459,12 @@ class _IPPAuthOperation:
 
         # If we've previously prompted, explain why we're prompting again.
         if self._dialog_shown:
-            d = Gtk.MessageDialog (self._conn.parent,
-                                   Gtk.DialogFlags.MODAL |
-                                   Gtk.DialogFlags.DESTROY_WITH_PARENT,
-                                   Gtk.MessageType.ERROR,
-                                   Gtk.ButtonsType.CLOSE,
-                                   _("Not authorized"))
+            d = Gtk.MessageDialog (parent=self._conn.parent,
+                                   flags=Gtk.DialogFlags.MODAL |
+                                         Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                                   message_type=Gtk.MessageType.ERROR,
+                                   buttons=Gtk.ButtonsType.CLOSE,
+                                   message_format=_("Not authorized"))
             d.format_secondary_text (_("The password may be incorrect."))
             d.run ()
             d.destroy ()
@@ -555,12 +555,12 @@ class _IPPAuthOperation:
         else:
             msg = _("CUPS server error (%s)") % op
 
-        d = Gtk.MessageDialog (self._conn.parent,
-                               Gtk.DialogFlags.MODAL |
-                               Gtk.DialogFlags.DESTROY_WITH_PARENT,
-                               Gtk.MessageType.ERROR,
-                               Gtk.ButtonsType.NONE,
-                               msg)
+        d = Gtk.MessageDialog (parent=self._conn.parent,
+                               flags=Gtk.DialogFlags.MODAL |
+                                     Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                               message_type=Gtk.MessageType.ERROR,
+                               buttons=Gtk.ButtonsType.NONE,
+                               message_format=msg)
 
         if self._client_fn == None and type (exc) == RuntimeError:
             # This was a connection failure.

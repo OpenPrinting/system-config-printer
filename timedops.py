@@ -107,12 +107,12 @@ class TimedSubprocess(Timed):
 
     def show_wait_window (self):
         Gdk.threads_enter ()
-        wait = Gtk.MessageDialog (self.parent,
-                                  Gtk.DialogFlags.MODAL |
-                                  Gtk.DialogFlags.DESTROY_WITH_PARENT,
-                                  Gtk.MessageType.INFO,
-                                  Gtk.ButtonsType.CANCEL,
-                                  _("Please wait"))
+        wait = Gtk.MessageDialog (parent=self.parent,
+                                  flags=Gtk.DialogFlags.MODAL |
+                                        Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                                  message_type=Gtk.MessageType.INFO,
+                                  buttons=Gtk.ButtonsType.CANCEL,
+                                  message_format=_("Please wait"))
         wait.connect ("delete_event", lambda *args: False)
         wait.connect ("response", self.wait_window_response)
         if self.parent:
@@ -187,12 +187,12 @@ class TimedOperation(Timed):
             raise RuntimeError
 
         if self.show_dialog:
-            wait = Gtk.MessageDialog (self.parent,
-                                      Gtk.DialogFlags.MODAL |
-                                      Gtk.DialogFlags.DESTROY_WITH_PARENT,
-                                      Gtk.MessageType.INFO,
-                                      Gtk.ButtonsType.CANCEL,
-                                      _("Please wait"))
+            wait = Gtk.MessageDialog (parent=self.parent,
+                                      flags=Gtk.DialogFlags.MODAL |
+                                            Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                                      message_type=Gtk.MessageType.INFO,
+                                      buttons=Gtk.ButtonsType.CANCEL,
+                                      message_format=_("Please wait"))
             wait.connect ("delete_event", lambda *args: False)
             wait.connect ("response", self._wait_window_response)
             if self.parent:

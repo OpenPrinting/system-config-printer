@@ -86,8 +86,8 @@ class PPDsLoader(GObject.GObject):
         fmt = _("Searching")
         self._dialog = Gtk.MessageDialog (parent=parent,
                                           flags=Gtk.DialogFlags.MODAL |
-                                          Gtk.DialogFlags.DESTROY_WITH_PARENT,
-                                          type=Gtk.MessageType.INFO,
+                                                Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                                          message_type=Gtk.MessageType.INFO,
                                           buttons=Gtk.ButtonsType.CANCEL,
                                           message_format=fmt)
 

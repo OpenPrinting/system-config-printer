@@ -296,13 +296,13 @@ class Connection:
         except IndexError:
             msg = _("CUPS server error")
 
-        d = Gtk.MessageDialog (self._parent,
-                               Gtk.DialogFlags.MODAL |
-                               Gtk.DialogFlags.DESTROY_WITH_PARENT,
-                               Gtk.MessageType.ERROR,
-                               Gtk.ButtonsType.NONE,
-                               msg)
-                               
+        d = Gtk.MessageDialog (parent=self._parent,
+                               flags=Gtk.DialogFlags.MODAL |
+                                     Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                               message_type=Gtk.MessageType.ERROR,
+                               buttons=Gtk.ButtonsType.NONE,
+                               message_format=msg)
+
         d.format_secondary_text (_("There was an error during the "
                                    "CUPS operation: '%s'.") % message)
         d.add_buttons (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
@@ -438,11 +438,11 @@ class Connection:
     def _show_not_authorized_dialog (self):
         if self._lock:
             Gdk.threads_enter ()
-        d = Gtk.MessageDialog (self._parent,
-                               Gtk.DialogFlags.MODAL |
-                               Gtk.DialogFlags.DESTROY_WITH_PARENT,
-                               Gtk.MessageType.ERROR,
-                               Gtk.ButtonsType.CLOSE)
+        d = Gtk.MessageDialog (parent=self._parent,
+                               flags=Gtk.DialogFlags.MODAL |
+                                     Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                               message_type=Gtk.MessageType.ERROR,
+                               buttons=Gtk.ButtonsType.CLOSE)
         d.set_title (_("Not authorized"))
         d.set_markup ('<span weight="bold" size="larger">' +
                       _("Not authorized") + '</span>\n\n' +

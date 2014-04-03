@@ -968,7 +968,7 @@ class NewPrinterGUI(GtkGUI):
         fmt = _("Installing driver %s") % name
         self._installdialog = Gtk.MessageDialog (parent=self.NewPrinterWindow,
                                                  flags=Gtk.DialogFlags.MODAL |
-                                                 Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                                                       Gtk.DialogFlags.DESTROY_WITH_PARENT,
                                                  type=Gtk.MessageType.INFO,
                                                  buttons=Gtk.ButtonsType.CANCEL,
                                                  message_format=fmt)
@@ -1336,7 +1336,7 @@ class NewPrinterGUI(GtkGUI):
                                     fmt = _("Searching")
                                     self._searchdialog = Gtk.MessageDialog (parent=self.NewPrinterWindow,
                                                                             flags=Gtk.DialogFlags.MODAL |
-                                                                            Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                                                                                  Gtk.DialogFlags.DESTROY_WITH_PARENT,
                                                                             type=Gtk.MessageType.INFO,
                                                                             buttons=Gtk.ButtonsType.CANCEL,
                                                                             message_format=fmt)
@@ -2021,12 +2021,12 @@ class NewPrinterGUI(GtkGUI):
             if not allowed:
                 debugprint ("Asking for permission to adjust firewall:\n%s" %
                             secondary_text)
-                dialog = Gtk.MessageDialog (self.NewPrinterWindow,
-                                            Gtk.DialogFlags.MODAL |
-                                            Gtk.DialogFlags.DESTROY_WITH_PARENT,
-                                            Gtk.MessageType.QUESTION,
-                                            Gtk.ButtonsType.NONE,
-                                            _("Adjust Firewall"))
+                dialog = Gtk.MessageDialog (parent=self.NewPrinterWindow,
+                                            flags=Gtk.DialogFlags.MODAL |
+                                                  Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                                            message_type=Gtk.MessageType.QUESTION,
+                                            buttons=Gtk.ButtonsType.NONE,
+                                            message_format= _("Adjust Firewall"))
                 dialog.format_secondary_markup (secondary_text)
                 dialog.add_buttons (_("Do It Later"), Gtk.ResponseType.NO,
                                     _("Adjust Firewall"), Gtk.ResponseType.YES)
@@ -2451,12 +2451,12 @@ class NewPrinterGUI(GtkGUI):
             allowed = f.check_samba_client_allowed ()
             secondary_text = TEXT_adjust_firewall + "\n\n"
             if not allowed:
-                dialog = Gtk.MessageDialog (self.NewPrinterWindow,
-                                            Gtk.DialogFlags.MODAL |
-                                            Gtk.DialogFlags.DESTROY_WITH_PARENT,
-                                            Gtk.MessageType.QUESTION,
-                                            Gtk.ButtonsType.NONE,
-                                            _("Adjust Firewall"))
+                dialog = Gtk.MessageDialog (parent=self.NewPrinterWindow,
+                                            flags=Gtk.DialogFlags.MODAL |
+                                                  Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                                            message_type=Gtk.MessageType.QUESTION,
+                                            buttons=Gtk.ButtonsType.NONE,
+                                            message_format=_("Adjust Firewall"))
                 secondary_text += ("- " +
                                    _("Allow all incoming SMB/CIFS "
                                      "browse packets"))

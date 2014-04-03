@@ -28,12 +28,12 @@ import gettext
 gettext.install(domain=config.PACKAGE, localedir=config.localedir, unicode=True)
 
 def show_dialog (title, text, type, parent=None):
-    dialog = Gtk.MessageDialog (parent,
-                                Gtk.DialogFlags.MODAL |
-                                Gtk.DialogFlags.DESTROY_WITH_PARENT,
-                                type,
-                                Gtk.ButtonsType.OK,
-                                title)
+    dialog = Gtk.MessageDialog (parent=parent,
+                                flags=Gtk.DialogFlags.MODAL |
+                                      Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                                message_type=type,
+                                buttons=Gtk.ButtonsType.OK,
+                                message_format=title)
     dialog.format_secondary_text (text)
     dialog.run ()
     dialog.destroy ()

@@ -363,7 +363,7 @@ class JobViewer (GtkGUI):
 
                          domain=config.PACKAGE)
 
-        job_action_group = Gtk.ActionGroup ("JobActionGroup")
+        job_action_group = Gtk.ActionGroup (name="JobActionGroup")
         job_action_group.add_actions ([
                 ("cancel-job", Gtk.STOCK_CANCEL, _("_Cancel"), None,
                  _("Cancel selected jobs"), self.on_job_cancel_activate),
@@ -589,7 +589,7 @@ class JobViewer (GtkGUI):
         self.JobsAttributesWindow.connect("delete_event",
                                           self.job_attributes_on_delete_event)
         self.JobsAttributesWindow.add_accel_group (self.job_ui_manager.get_accel_group ())
-        attrs_action_group = Gtk.ActionGroup ("AttrsActionGroup")
+        attrs_action_group = Gtk.ActionGroup (name="AttrsActionGroup")
         attrs_action_group.add_actions ([
                 ("close", Gtk.STOCK_CLOSE, None, "<ctrl>w",
                  _("Close this window"), self.job_attributes_on_delete_event)

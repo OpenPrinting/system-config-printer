@@ -83,11 +83,11 @@ class AuthContext:
         self.auth_called = False
 
         if self.dialog_shown:
-            d = Gtk.MessageDialog (self.parent,
-                                   Gtk.DialogFlags.MODAL |
-                                   Gtk.DialogFlags.DESTROY_WITH_PARENT,
-                                   Gtk.MessageType.ERROR,
-                                   Gtk.ButtonsType.CLOSE)
+            d = Gtk.MessageDialog (parent=self.parent,
+                                   flags=Gtk.DialogFlags.MODAL |
+                                         Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                                   message_type=Gtk.MessageType.ERROR,
+                                   buttons=Gtk.ButtonsType.CLOSE)
             d.set_title (_("Not authorized"))
             d.set_markup ('<span weight="bold" size="larger">' +
                           _("Not authorized") + '</span>\n\n' +

@@ -167,13 +167,12 @@ class Option:
         parent = self.btnConflict
         while parent != None and not isinstance (parent, Gtk.Window):
             parent = parent.get_parent ()
-
-        dialog = Gtk.MessageDialog (parent,
-                                    Gtk.DialogFlags.DESTROY_WITH_PARENT |
-                                    Gtk.DialogFlags.MODAL,
-                                    Gtk.MessageType.WARNING,
-                                    Gtk.ButtonsType.CLOSE,
-                                    self.conflict_message)
+        dialog = Gtk.MessageDialog (parent=parent,
+                                    flags=Gtk.DialogFlags.DESTROY_WITH_PARENT |
+                                          Gtk.DialogFlags.MODAL,
+                                    message_type=Gtk.MessageType.WARNING,
+                                    buttons=Gtk.ButtonsType.CLOSE,
+                                    message_format=self.conflict_message)
         dialog.run()
         dialog.destroy()
         

@@ -551,12 +551,12 @@ class ServerSettings(GtkGUI):
                     allowed = True
 
                 if not allowed:
-                    dialog = Gtk.MessageDialog (self.ServerSettingsDialog,
-                                                Gtk.DialogFlags.MODAL |
-                                                Gtk.DialogFlags.DESTROY_WITH_PARENT,
-                                                Gtk.MessageType.QUESTION,
-                                                Gtk.ButtonsType.NONE,
-                                                _("Adjust Firewall"))
+                    dialog = Gtk.MessageDialog (parent=self.ServerSettingsDialog,
+                                                flags=Gtk.DialogFlags.MODAL |
+                                                      Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                                                message_type=Gtk.MessageType.QUESTION,
+                                                buttons=Gtk.ButtonsType.NONE,
+                                                message_format=_("Adjust Firewall"))
                     dialog.format_secondary_text (_("Adjust the firewall now "
                                                     "to allow all incoming IPP "
                                                     "connections?"))
