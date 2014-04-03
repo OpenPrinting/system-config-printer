@@ -4169,7 +4169,6 @@ if __name__ == '__main__':
     import locale
     locale.setlocale (locale.LC_ALL, "")
     ppdippstr.init ()
-    GObject.threads_init ()
     set_debugging (True)
     cupshelpers.set_debugprint_fn (debugprint)
 

@@ -235,7 +235,6 @@ if __name__ == "__main__":
     # Demo
     from gi.repository import GObject
     set_debugging (True)
-    GObject.threads_init ()
 
     class Test:
         def __init__ (self, quit):

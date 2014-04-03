@@ -657,7 +657,6 @@ class IPPAuthConnection(IPPConnection):
 if __name__ == "__main__":
     # Demo
     set_debugging (True)
-    GObject.threads_init ()
     class UI:
         def __init__ (self):
             w = Gtk.Window ()

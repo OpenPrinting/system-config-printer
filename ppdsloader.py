@@ -308,6 +308,5 @@ if __name__ == "__main__":
 
     from debug import set_debugging
     set_debugging (True)
-    GObject.threads_init ()
     Foo ()
     Gtk.main ()

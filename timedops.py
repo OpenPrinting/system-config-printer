@@ -33,7 +33,6 @@ from debug import *
 # Initialise threading for D-Bus.  This is needed as long as it is
 # used from two separate threads.  We only do this in a few places
 # now, but in particular the troubleshooter does this (bug #662047).
-GObject.threads_init ()
 Gdk.threads_init ()
 dbus.mainloop.glib.threads_init ()
 

@@ -576,7 +576,6 @@ class PK1Connection:
 
 if __name__ == '__main__':
     from gi.repository import GObject
-    GObject.threads_init ()
     from debug import set_debugging
     set_debugging (True)
     class UI:
