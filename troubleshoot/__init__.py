@@ -70,20 +70,20 @@ class Troubleshooter:
         box.set_spacing (3)
         box.set_layout (Gtk.ButtonBoxStyle.END)
 
-        back = Gtk.Button (stock=Gtk.STOCK_GO_BACK)
+        back = Gtk.Button.new_from_stock (Gtk.STOCK_GO_BACK)
         back.connect ('clicked', self._on_back_clicked)
         back.set_sensitive (False)
         self.back = back
 
-        close = Gtk.Button (stock=Gtk.STOCK_CLOSE)
+        close = Gtk.Button.new_from_stock (Gtk.STOCK_CLOSE)
         close.connect ('clicked', self.quit)
         self.close = close
 
-        cancel = Gtk.Button (stock=Gtk.STOCK_CANCEL)
+        cancel = Gtk.Button.new_from_stock (Gtk.STOCK_CANCEL)
         cancel.connect ('clicked', self.quit)
         self.cancel = cancel
 
-        forward = Gtk.Button (stock=Gtk.STOCK_GO_FORWARD)
+        forward = Gtk.Button.new_from_stock (Gtk.STOCK_GO_FORWARD)
         forward.connect ('clicked', self._on_forward_clicked)
         self.forward = forward
 

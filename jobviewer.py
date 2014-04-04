@@ -196,11 +196,10 @@ class CancelJobsOperation(GObject.GObject):
                 dialog_title = _("Cancel Job")
                 dialog_label = _("Do you really want to cancel this job?")
 
-        dialog = Gtk.Dialog (dialog_title, parent,
-                             Gtk.DialogFlags.MODAL |
-                             Gtk.DialogFlags.DESTROY_WITH_PARENT,
-                             (_("Keep Printing"), Gtk.ResponseType.NO,
-                              dialog_title, Gtk.ResponseType.YES))
+        dialog = Gtk.Dialog (title=dialog_title, transient_for=parent,
+                             modal=True, destroy_with_parent=True)
+        dialog.add_buttons (_("Keep Printing"), Gtk.ResponseType.NO,
+                            dialog_title, Gtk.ResponseType.YES)
         dialog.set_default_response (Gtk.ResponseType.NO)
         dialog.set_border_width (6)
         dialog.set_resizable (False)
@@ -1439,11 +1438,12 @@ class JobViewer (GtkGUI):
                             name = name + format.replace('application/', '.')
 
                     if tempfile != None:
-                        dialog = Gtk.FileChooserDialog (_("Save File"),
-                                                        self.JobsWindow,
-                                                  Gtk.FileChooserAction.SAVE,
-                                        (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
-                                         Gtk.STOCK_SAVE, Gtk.ResponseType.OK))
+                        dialog = Gtk.FileChooserDialog (title=_("Save File"),
+                                            transient_for=self.JobsWindow,
+                                            action=Gtk.FileChooserAction.SAVE)
+                        dialog.add_buttons (
+                                    Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
+                                    Gtk.STOCK_SAVE, Gtk.ResponseType.OK)
                         dialog.set_current_name(name)
                         dialog.set_do_overwrite_confirmation(True)
 
@@ -2028,9 +2028,10 @@ class JobViewer (GtkGUI):
             if may_be_problem:
                 debugprint ("Problem detected")
                 self.toggle_window_display (None, force_show=True)
-                dialog = Gtk.Dialog (_("Print Error"), self.JobsWindow, 0,
-                                     (_("_Diagnose"), Gtk.ResponseType.NO,
-                                        Gtk.STOCK_OK, Gtk.ResponseType.OK))
+                dialog = Gtk.Dialog (title=_("Print Error"),
+                                     transient_for=self.JobsWindow)
+                dialog.add_buttons (_("_Diagnose"), Gtk.ResponseType.NO,
+                                    Gtk.STOCK_OK, Gtk.ResponseType.OK)
                 dialog.set_default_response (Gtk.ResponseType.OK)
                 dialog.set_border_width (6)
                 dialog.set_resizable (False)

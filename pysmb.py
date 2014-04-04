@@ -96,10 +96,11 @@ class AuthContext:
             d.destroy ()
 
         # After that, prompt
-        d = Gtk.Dialog (_("Authentication"), self.parent,
-                        Gtk.DialogFlags.MODAL,
-                        (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
-                         Gtk.STOCK_OK, Gtk.ResponseType.OK))
+        d = Gtk.Dialog (title=_("Authentication"),
+                        transient_for=self.parent,
+                        modal=True)
+        d.add_buttons (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
+                         Gtk.STOCK_OK, Gtk.ResponseType.OK)
         d.set_default_response (Gtk.ResponseType.OK)
         d.set_border_width (6)
         d.set_resizable (False)
@@ -119,7 +120,7 @@ class AuthContext:
         label.set_line_wrap (True)
         vbox.pack_start (label, False, False, 0)
 
-        table = Gtk.Table (3, 2)
+        table = Gtk.Table (n_rows=3, n_columns=2)
         table.set_row_spacings (6)
         table.set_col_spacings (6)
         table.attach (Gtk.Label(label=_("Username:")), 0, 1, 0, 1, 0, 0)

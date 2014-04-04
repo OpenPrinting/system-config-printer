@@ -44,7 +44,7 @@ class CheckPPDSanity(Question):
 
         box = Gtk.HButtonBox ()
         box.set_layout (Gtk.ButtonBoxStyle.START)
-        self.install_button = Gtk.Button (_("Install"))
+        self.install_button = Gtk.Button.new_with_label (_("Install"))
         box.add (self.install_button)
         # Although we want this hidden initially,
         # troubleshooter.new_page will call show_all() on the widget

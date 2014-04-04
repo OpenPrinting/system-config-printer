@@ -473,7 +473,7 @@ class OptionSelectMany(Option):
         vbox = Gtk.VBox()
 
         for s in supported:
-            checkbox = Gtk.CheckButton(label=s)
+            checkbox = Gtk.CheckButton.new_with_label(s)
             checkbox.set_active(s in value)
             vbox.add(checkbox)
             checkbox.connect("toggled", self.changed)

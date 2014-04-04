@@ -390,12 +390,11 @@ def _simple_gui ():
     class QueryApp:
         def __init__(self):
             self.openprinting = OpenPrinting()
-            self.main = Gtk.Dialog ("OpenPrinting query application",
-                                    None,
-                                    Gtk.DialogFlags.MODAL,
-                                    (Gtk.STOCK_CLOSE, Gtk.ResponseType.CLOSE,
-                                     "Search", 10,
-                                     "List", 20))
+            self.main = Gtk.Dialog (title="OpenPrinting query application",
+                                    transient_for=None, modal=True)
+            self.main.add_buttons (Gtk.STOCK_CLOSE, Gtk.ResponseType.CLOSE,
+                                   "Search", 10,
+                                   "List", 20)
             self.main.set_border_width (6)
             self.main.vbox.set_spacing (2)
             vbox = Gtk.VBox.new (False, 6)

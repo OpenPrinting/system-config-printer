@@ -71,10 +71,10 @@ class PrintTestPage(Question):
         hbox.set_border_width (0)
         hbox.set_spacing (3)
         hbox.set_layout (Gtk.ButtonBoxStyle.START)
-        self.print_button = Gtk.Button (_("Print Test Page"))
+        self.print_button = Gtk.Button.new_with_label (_("Print Test Page"))
         hbox.pack_start (self.print_button, False, False, 0)
 
-        self.cancel_button = Gtk.Button (_("Cancel All Jobs"))
+        self.cancel_button = Gtk.Button.new_with_label (_("Cancel All Jobs"))
         hbox.pack_start (self.cancel_button, False, False, 0)
         page.pack_start (hbox, False, False, 0)
 

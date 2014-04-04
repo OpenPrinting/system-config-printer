@@ -62,14 +62,14 @@ class AuthDialog(Gtk.Dialog):
         vbox.pack_start (self.prompt_label, False, False, 0)
 
         num_fields = len (auth_info_required)
-        table = Gtk.Table (num_fields, 2)
+        table = Gtk.Table (n_rows=num_fields, n_columns=2)
         table.set_row_spacings (6)
         table.set_col_spacings (6)
 
         self.field_entry = []
         for i in range (num_fields):
             field = auth_info_required[i]
-            label = Gtk.Label (_(self.AUTH_FIELD.get (field, field)))
+            label = Gtk.Label (label=_(self.AUTH_FIELD.get (field, field)))
             label.set_alignment (0, 0.5)
             table.attach (label, 0, 1, i, i + 1)
             entry = Gtk.Entry ()
@@ -83,7 +83,7 @@ class AuthDialog(Gtk.Dialog):
         self.vbox.pack_start (hbox, False, False, 0)
 
         if allow_remember:
-            cb = Gtk.CheckButton (_("Remember password"))
+            cb = Gtk.CheckButton.new_with_label (_("Remember password"))
             cb.set_active (False)
             vbox.pack_start (cb, False, False, 0)
             self.remember_checkbox = cb

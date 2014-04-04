@@ -99,12 +99,12 @@ class UserDefaultPrompt:
         self.set_default_fn = set_default_fn
         self.refresh_fn = refresh_fn
         self.name = name
-        dialog = Gtk.Dialog (title,
-                             parent,
-                             Gtk.DialogFlags.MODAL |
-                             Gtk.DialogFlags.DESTROY_WITH_PARENT,
-                             (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
-                              Gtk.STOCK_OK, Gtk.ResponseType.OK))
+        dialog = Gtk.Dialog (title=title,
+                             transient_for=parent,
+                             modal=True,
+                             destroy_with_parent=True)
+        dialog.add_buttons (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
+                              Gtk.STOCK_OK, Gtk.ResponseType.OK)
         dialog.set_default_response (Gtk.ResponseType.OK)
         dialog.set_border_width (6)
         dialog.set_resizable (False)

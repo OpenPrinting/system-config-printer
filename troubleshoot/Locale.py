@@ -33,8 +33,7 @@ class Locale(Question):
                                     "not the printer's default page size.  "
                                     "If this is not intentional it may cause "
                                     "alignment problems."))
-
-        table = Gtk.Table (2, 2)
+        table = Gtk.Table (n_rows=2, n_columns=2)
         table.set_row_spacings (6)
         table.set_col_spacings (6)
         page.pack_start (table, False, False, 0)

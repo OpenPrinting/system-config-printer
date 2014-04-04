@@ -3913,8 +3913,7 @@ class NewPrinterGUI(GtkGUI):
             if group.name != "InstallableOptions":
                 continue
             self.installable_options = True
-
-            table = Gtk.Table(1, 3, False)
+            table = Gtk.Table(n_rows=1, n_columns=3, homogeneous=False)
             table.set_col_spacings(6)
             table.set_row_spacings(6)
             container.add(table)

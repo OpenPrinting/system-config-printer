@@ -29,7 +29,7 @@ class RemoteAddress(Question):
                                   _("Please enter as many details as you "
                                     "can about the network address of this "
                                     "printer."))
-        table = Gtk.Table (2, 2)
+        table = Gtk.Table (n_rows=2, n_columns=2)
         table.set_row_spacings (6)
         table.set_col_spacings (6)
         page.pack_start (table, False, False, 0)

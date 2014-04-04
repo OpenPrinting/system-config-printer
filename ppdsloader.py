@@ -282,7 +282,7 @@ if __name__ == "__main__":
     class Foo:
         def __init__ (self):
             w = Gtk.Window ()
-            b = Gtk.Button ("Go")
+            b = Gtk.Button.new_with_label ("Go")
             w.add (b)
             b.connect ('clicked', self.go)
             w.connect ('delete-event', Gtk.main_quit)

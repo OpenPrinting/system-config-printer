@@ -181,7 +181,8 @@ class Option:
 class OptionBool(Option):
 
     def __init__(self, option, ppd, gui, tab_label=None):
-        self.selector = Gtk.CheckButton(ppdippstr.ppd.get (option.text))
+        self.selector = Gtk.CheckButton.new_with_label(
+                                            ppdippstr.ppd.get (option.text))
         self.label = None
         self.false = u"False" # hack to allow "None" instead of "False"
         self.true = u"True"

@@ -828,7 +828,7 @@ class PrinterPropertiesDialog(GtkGUI):
                                     yoptions=0)
             opt.selector.set_sensitive (editable)
 
-            btn = Gtk.Button(stock=Gtk.STOCK_REMOVE)
+            btn = Gtk.Button.new_from_stock(Gtk.STOCK_REMOVE)
             btn.connect("clicked", self.on_btnJOOtherRemove_clicked)
             btn.pyobject = opt
             btn.set_sensitive (editable)
@@ -1566,8 +1566,8 @@ class PrinterPropertiesDialog(GtkGUI):
             rows = 1 + (cols - 1) / 4
             if cols > 4:
                 cols = 4
-            table = Gtk.Table (rows=rows,
-                               columns=cols,
+            table = Gtk.Table (n_rows=rows,
+                               n_columns=cols,
                                homogeneous=True)
             table.set_col_spacings (6)
             table.set_row_spacings (12)
@@ -1744,7 +1744,7 @@ class PrinterPropertiesDialog(GtkGUI):
                 frame.add (container)
                 tab_label = self.lblPOptions
 
-            table = Gtk.Table(1, 3, False)
+            table = Gtk.Table(n_rows=1, n_columns=3, homogeneous=False)
             table.set_col_spacings(6)
             table.set_row_spacings(6)
             container.add(table)
