@@ -913,12 +913,13 @@ class JobViewer (GtkGUI):
             # running as an applet just try to get the information silently
             # and not prompt the user.
             self.get_authentication (job, data.get ('device-uri'),
+                                     data.get ('job-printer-uri'),
                                      data.get ('auth-info-required', []),
                                      self.applet)
         self.update_sensitivity ()
 
-    def get_authentication (self, job, device_uri, auth_info_required,
-                            show_dialog):
+    def get_authentication (self, job, device_uri, printer_uri,
+                            auth_info_required, show_dialog):
         # Check if we have requested authentication for this job already
         if not self.auth_info_dialogs.has_key (job):
             try:
@@ -930,7 +931,7 @@ class JobViewer (GtkGUI):
 
             # Find out which auth-info is required.
             try_keyring = USE_KEYRING
-            keyring_attrs = dict()
+            informational_attrs = dict()
             auth_info = None
             if try_keyring and 'password' in auth_info_required:
                 (scheme, rest) = urllib.splittype (device_uri)
@@ -938,7 +939,7 @@ class JobViewer (GtkGUI):
                     uri = smburi.SMBURI (uri=device_uri)
                     (group, server, share,
                      user, password) = uri.separate ()
-                    keyring_attrs["domain"] = str (group)
+                    informational_attrs["domain"] = str (group)
                 else:
                     (serverport, rest) = urllib.splithost (rest)
                     if serverport == None:
@@ -949,43 +950,53 @@ class JobViewer (GtkGUI):
                 if scheme == None or server == None:
                     try_keyring = False
                 else:
-                    keyring_attrs.update ({ "server": str (server.lower ()),
-                                            "protocol": str (scheme)})
+                    informational_attrs.update ({ "server": str (server.lower ()),
+                                                 "protocol": str (scheme)})
 
             if job in self.authenticated_jobs:
                 # We've already tried to authenticate this job before.
                 try_keyring = False
 
+            # To increase compatibility and resolve problems with
+            # multiple printers on one host we use the printers URI
+            # as the identifying attribute. Versions <= 1.4.4 used
+            # a combination of domain / server / protocol instead.
+            # The old attributes are still used as a fallback for identifying
+            # the secret but are otherwise only informational.
+            identifying_attrs = { "uri": str (printer_uri) }
+
             if try_keyring and 'password' in auth_info_required:
                 type = GnomeKeyring.ItemType.NETWORK_PASSWORD
-                attrs = GnomeKeyring.Attribute.list_new ()
-                for key, val in keyring_attrs.iteritems ():
-                    GnomeKeyring.Attribute.list_append_string (attrs,
-                                                               key,
-                                                               val)
-                (result, items) = GnomeKeyring.find_items_sync (type,
-                                                                attrs)
-                if result == GnomeKeyring.Result.OK:
-                    auth_info = map (lambda x: '', auth_info_required)
-                    ind = auth_info_required.index ('username')
 
-                    for attr in GnomeKeyring.attribute_list_to_glist (
-                            items[0].attributes):
-                        # It might be safe to assume here that the
-                        # user element is always the second item in a
-                        # NETWORK_PASSWORD element but lets make sure.
-                        if attr.name == 'user':
-                            auth_info[ind] = attr.get_string()
-                            break
-                    else:
-                        debugprint ("Did not find username keyring "
-                                    "attributes.")
+                for keyring_attrs in [identifying_attrs, informational_attrs]:
+                    attrs = GnomeKeyring.Attribute.list_new ()
+                    for key, val in keyring_attrs.iteritems ():
+                        GnomeKeyring.Attribute.list_append_string (attrs,
+                                                                   key,
+                                                                   val)
+                    (result, items) = GnomeKeyring.find_items_sync (type,
+                                                                    attrs)
+                    if result == GnomeKeyring.Result.OK:
+                        auth_info = map (lambda x: '', auth_info_required)
+                        ind = auth_info_required.index ('username')
 
-                    ind = auth_info_required.index ('password')
-                    auth_info[ind] = items[0].secret
+                        for attr in GnomeKeyring.attribute_list_to_glist (
+                                items[0].attributes):
+                            # It might be safe to assume here that the
+                            # user element is always the second item in a
+                            # NETWORK_PASSWORD element but lets make sure.
+                            if attr.name == 'user':
+                                auth_info[ind] = attr.get_string()
+                                break
+                        else:
+                            debugprint ("Did not find username keyring "
+                                        "attributes.")
+
+                        ind = auth_info_required.index ('password')
+                        auth_info[ind] = items[0].secret
+                        break
                 else:
-                    debugprint ("gnomekeyring: look-up result %s" %
-                                repr (result))
+                    debugprint ("Failed to find secret in keyring.")
 
             if try_keyring:
                 try:
@@ -1015,6 +1026,8 @@ class JobViewer (GtkGUI):
 
             if auth_info_required and show_dialog:
                 username = pwd.getpwuid (os.getuid ())[0]
+                keyring_attrs = informational_attrs.copy()
+                keyring_attrs.update(identifying_attrs)
                 keyring_attrs["user"] = str (username)
                 self.display_auth_info_dialog (job, keyring_attrs)
 
@@ -1516,7 +1529,7 @@ class JobViewer (GtkGUI):
                 auth_info_required = ['username', 'password']
 
             self.get_authentication (jobid, pattrs.get ('device-uri'),
-                                     auth_info_required, True)
+                                     uri, auth_info_required, True)
 
     def on_refresh_clicked(self, toolbutton):
         self.monitor.refresh ()
