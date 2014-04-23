@@ -2,7 +2,7 @@
 
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 ##  Florian Festi <ffesti@redhat.com>
@@ -1529,7 +1529,7 @@ class PrinterPropertiesDialog(GtkGUI):
                                 (attr, typ, s))
                     val = map (lambda x: 0.0, val)
 
-            marker_info[attr] = val
+            marker_info[attr] = map (lambda x: x if x >= 0 else 0, val)
             if num_markers == 0 or len (val) < num_markers:
                 num_markers = len (val)
 
