@@ -2793,7 +2793,11 @@ class NewPrinterGUI(GtkGUI):
                         device_dict['device-id'] = device.id
                         device_dict['device-location'] = device.location
 
-            if not hp_drivable and is_network and not remotecups:
+            if not hp_drivable and is_network and not remotecups and \
+               (not device.make_and_model or \
+                device.make_and_model == "Unknown" or \
+                device.make_and_model.lower ().startswith ("hp") or \
+                device.make_and_model.lower ().startswith ("hewlett")):
                 if (hasattr (physicaldevice, "dnssd_hostname") and \
                     physicaldevice.dnssd_hostname):
                     hpliphost = physicaldevice.dnssd_hostname
