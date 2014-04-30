@@ -1356,6 +1356,8 @@ class NewPrinterGUI(GtkGUI):
                                     self._searchdialog.hide ()
                                     self._searchdialog.destroy ()
                                     self._searchdialog = None
+                                    while Gtk.events_pending ():
+                                        Gtk.main_iteration ()
 
                                 if self._searchdialog_canceled:
                                     # Cancel clicked
