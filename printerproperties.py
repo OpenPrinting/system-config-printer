@@ -1520,7 +1520,8 @@ class PrinterPropertiesDialog(GtkGUI):
                                 (attr, typ, s))
                     val = [0.0 for x in val]
 
-            marker_info[attr] = map (lambda x: 0.0 if (typ != str and x < 0) else x, val)
+            marker_info[attr] = [0.0 if (typ != str and x < 0) \
+	                             else x for x in val]
             if num_markers == 0 or len (val) < num_markers:
                 num_markers = len (val)
 

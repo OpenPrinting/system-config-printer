@@ -223,7 +223,7 @@ class GetBestDriversRequest:
                 # installed or if no windows can be opened
                 pass
             g_killtimer.remove_hold ()
-            self.reply_handler (map (lambda x: (x, fit[x]), ppdnamelist))
+            self.reply_handler ([(x, fit[x]) for x in ppdnamelist])
         except Exception as e:
             try:
                 g_killtimer.remove_hold ()
@@ -251,7 +251,7 @@ class GroupPhysicalDevicesRequest:
             g_killtimer.add_hold ()
             need_resolving = {}
             self.deviceobjs = {}
-            for device_uri, device_dict in self.devices.iteritems ():
+            for device_uri, device_dict in self.devices.items ():
                 deviceobj = cupshelpers.Device (device_uri, **device_dict)
                 self.deviceobjs[device_uri] = deviceobj
                 if device_uri.startswith ("dnssd://"):
@@ -285,8 +285,7 @@ class GroupPhysicalDevicesRequest:
 
             uris_by_phys = []
             for physdev in self.physdevs:
-                uris_by_phys.append (map (lambda x: x.uri,
-                                          physdev.get_devices ()))
+                uris_by_phys.append ([x.uri for x in physdev.get_devices ()])
 
             g_killtimer.remove_hold ()
             self.reply_handler (uris_by_phys)
@@ -538,7 +537,7 @@ def _client_demo ():
             sys.argv[3] == '--devid'):
             device_id = sys.argv[4]
     else:
-        print "Device URI required"
+        print ("Device URI required")
         return
 
     from gi.repository import Gtk
@@ -552,11 +551,11 @@ def _client_demo ():
     iface = dbus.Interface (obj, CONFIG_NEWPRINTERDIALOG_IFACE)
     loop = GObject.MainLoop ()
     def on_canceled(path=None):
-        print "%s: Dialog canceled" % path
+        print ("%s: Dialog canceled" % path)
         loop.quit ()
 
     def on_added(name, path=None):
-        print "%s: Printer '%s' added" % (path, name)
+        print ("%s: Printer '%s' added" % (path, name))
         loop.quit ()
 
     iface.connect_to_signal ("DialogCanceled", on_canceled,

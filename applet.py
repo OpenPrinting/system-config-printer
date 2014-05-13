@@ -326,8 +326,8 @@ class RunLoop:
                                             dbus_interface=self.DBUS_IFACE)
         except DBusException, e:
             try:
-                print >> sys.stderr, ("%s: failed to add D-Bus "
-                                      "signal receiver: %s" % (PROGRAM_NAME, e))
+                print ("%s: failed to add D-Bus signal receiver: %s" \
+                        % (PROGRAM_NAME, e), file=sys.stderr)
             finally:
                 sys.exit (1)
 
@@ -340,8 +340,8 @@ class RunLoop:
                                                     dbus_interface=self.DBUS_IFACE)
         except DBusException, e:
             try:
-                print >> sys.stderr, ("%s: failed to remove D-Bus "
-                                      "signal receiver: %s" % (PROGRAM_NAME, e))
+                print ("%s: failed to remove D-Bus signal receiver: %s" \
+                        % (PROGRAM_NAME, e), file=sys.stderr)
             except:
                 pass
 

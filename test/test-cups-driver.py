@@ -70,7 +70,7 @@ class Driver:
             raise
 
 	if stderr:
-		print >> sys.stderr, stderr
+		print(stderr, file=sys.stderr)
 
 	ppds = []
 	lines = stdout.split ('\n')
@@ -99,7 +99,7 @@ class Driver:
                 raise
 
             if stderr:
-                print >> sys.stderr, stderr
+                print(stderr, file=sys.stderr)
 
             self.files[name] = stdout
             return stdout
@@ -122,7 +122,7 @@ list = d.list ()
 
 if match:
     exp = re.compile (match)
-    list = filter (lambda x: exp.match (x), list)
+    list = [x for x in list if exp.match (x)]
 
 n = len (list)
 i = 0
@@ -165,25 +165,25 @@ for name in list:
         sys.stderr.write ("%3d%%\r" % (100 * i / n))
         sys.stderr.flush ()
     except KeyboardInterrupt:
-        print "Keyboard interrupt\n"
+        print ("Keyboard interrupt\n")
         break
     except TimedOut as e:
         bad.append ((name, e))
-        print "Timed out fetching %s" % name
+        print ("Timed out fetching %s" % name)
     except Exception as e:
         bad.append ((name, e))
-        print "Exception fetching %s: %s" % (name, e)
+        print ("Exception fetching %s: %s" % (name, e))
 
     sys.stdout.flush ()
 
 if len (bad) > 0:
-    print "Bad PPDs:"
+    print ("Bad PPDs:")
     for each in bad:
-        print "  %s (%s)" % each
+        print ("  %s (%s)" % each)
     print
 
 if len (ids) > 0:
-    print "IEEE 1284 Device IDs:"
+    print ("IEEE 1284 Device IDs:")
     for each in ids:
-        print "  %s" % each
+        print ("  %s" % each)
     print
