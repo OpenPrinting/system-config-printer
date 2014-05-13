@@ -31,7 +31,7 @@ import asyncconn
 from debug import debugprint
 import config
 import gettext
-gettext.install(domain=config.PACKAGE, localedir=config.localedir, unicode=True)
+gettext.install(domain=config.PACKAGE, localedir=config.localedir)
 
 class PPDsLoader(GObject.GObject):
     """
@@ -171,7 +171,7 @@ class PPDsLoader(GObject.GObject):
                                          self._device_make_and_model)
 
             ppdnamelist = ppds.\
-                orderPPDNamesByPreference (fit.keys (),
+                orderPPDNamesByPreference (list(fit.keys ()),
                                            self._installed_files,
                                            devid=self._devid_dict,
                                            fit=fit)
@@ -299,10 +299,10 @@ if __name__ == "__main__":
             self._window.destroy ()
             Gtk.main_quit ()
             exc = ppdsloader.get_error ()
-            print exc
+            print(exc)
             ppds = ppdsloader.get_ppds ()
             if ppds != None:
-                print len (ppds)
+                print(len (ppds))
 
             ppdsloader.destroy ()
 

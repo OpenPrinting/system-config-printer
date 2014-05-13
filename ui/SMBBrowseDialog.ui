@@ -1,40 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.16.1 -->
 <interface>
-  <requires lib="gtk+" version="2.16"/>
-  <!-- interface-naming-policy toplevel-contextual -->
+  <requires lib="gtk+" version="3.0"/>
   <object class="GtkWindow" id="SMBBrowseDialog">
+    <property name="can_focus">False</property>
     <property name="title" translatable="yes">SMB Browser</property>
     <property name="modal">True</property>
     <property name="window_position">center-on-parent</property>
     <child>
       <object class="GtkVBox" id="vbox57">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <child>
           <object class="GtkScrolledWindow" id="scrolledwindow21">
             <property name="height_request">200</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="border_width">6</property>
-            <property name="hscrollbar_policy">automatic</property>
-            <property name="vscrollbar_policy">automatic</property>
             <property name="shadow_type">in</property>
             <child>
               <object class="GtkTreeView" id="tvSMBBrowser">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <signal name="row-expanded" handler="on_tvSMBBrowser_row_expanded" swapped="no"/>
                 <signal name="cursor-changed" handler="on_tvSMBBrowser_cursor_changed" swapped="no"/>
                 <signal name="row-activated" handler="on_tvSMBBrowser_row_activated" swapped="no"/>
+                <signal name="row-expanded" handler="on_tvSMBBrowser_row_expanded" swapped="no"/>
+                <child internal-child="selection">
+                  <object class="GtkTreeSelection" id="treeview-selection1"/>
+                </child>
               </object>
             </child>
           </object>
           <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
             <property name="position">0</property>
           </packing>
         </child>
         <child>
           <object class="GtkHSeparator" id="hseparator3">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -45,12 +51,14 @@
         <child>
           <object class="GtkAlignment" id="alignment77">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="border_width">6</property>
             <property name="xalign">1</property>
             <property name="xscale">0</property>
             <child>
               <object class="GtkHBox" id="hbox67">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="spacing">6</property>
                 <property name="homogeneous">True</property>
                 <child>
@@ -65,6 +73,7 @@
                   </object>
                   <packing>
                     <property name="expand">False</property>
+                    <property name="fill">True</property>
                     <property name="position">0</property>
                   </packing>
                 </child>
@@ -80,6 +89,7 @@
                   </object>
                   <packing>
                     <property name="expand">False</property>
+                    <property name="fill">True</property>
                     <property name="position">1</property>
                   </packing>
                 </child>
@@ -95,6 +105,7 @@
                   </object>
                   <packing>
                     <property name="expand">False</property>
+                    <property name="fill">True</property>
                     <property name="position">2</property>
                   </packing>
                 </child>

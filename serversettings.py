@@ -22,7 +22,7 @@
 
 import config
 import gettext
-gettext.install(domain=config.PACKAGE, localedir=config.localedir, unicode=True)
+gettext.install(domain=config.PACKAGE, localedir=config.localedir)
 import cups
 import dbus
 from gi.repository import GObject
@@ -131,7 +131,7 @@ class ServerSettings(GtkGUI):
 
     def _fillAdvanced(self):
         # Fetch cupsd.conf
-        f = tempfile.TemporaryFile ()
+        f = tempfile.TemporaryFile () # mode='w+b'
         try:
             self.cupsconn.getFile (self.RESOURCE, file=f)
         except cups.HTTPError as e:
@@ -157,7 +157,8 @@ class ServerSettings(GtkGUI):
         browsing = True
         self.browse_poll = []
         f.seek (0)
-        for line in f.readlines ():
+        for line in f:
+            line = line.decode ('UTF-8')
             l = line.lower ().strip ()
             if l.startswith ("preservejobhistory "):
                 try:
@@ -215,7 +216,7 @@ class ServerSettings(GtkGUI):
             (self.chkServerAllowCancelAll, cups.CUPS_SERVER_USER_CANCEL_ANY),
             (self.chkServerLogDebug, cups.CUPS_SERVER_DEBUG_LOGGING),]:
             widget.setting = setting
-            if self.server_settings.has_key(setting):
+            if setting in self.server_settings:
                 widget.set_active(int(self.server_settings[setting]))
                 widget.set_sensitive(True)
                 widget.show()
@@ -224,7 +225,7 @@ class ServerSettings(GtkGUI):
                 widget.set_sensitive(False)
                 widget.hide()
 
-        if self.server_settings.has_key(cups.CUPS_SERVER_REMOTE_PRINTERS):
+        if cups.CUPS_SERVER_REMOTE_PRINTERS in self.server_settings:
             self.frameBrowseServers.show()
         else:
             self.frameBrowseServers.hide()
@@ -242,7 +243,7 @@ class ServerSettings(GtkGUI):
     def on_server_changed(self, widget):
         debugprint ("on_server_changed: %s" % widget)
         setting = widget.setting
-        if self.server_settings.has_key (setting):
+        if setting in self.server_settings:
             if str(int(widget.get_active())) == self.server_settings[setting]:
                 self.changed.discard(widget)
             else:
@@ -250,16 +251,16 @@ class ServerSettings(GtkGUI):
 
         sharing = self.chkServerShare.get_active ()
         self.chkServerShareAny.set_sensitive (
-            sharing and self.server_settings.has_key(try_CUPS_SERVER_REMOTE_ANY))
+            sharing and try_CUPS_SERVER_REMOTE_ANY in self.server_settings)
 
     def _connect (self, widget, signal, handler, reason=None):
         id = widget.connect (signal, handler)
-        if not self.handler_ids.has_key (reason):
+        if reason not in self.handler_ids:
             self.handler_ids[reason] = []
         self.handler_ids[reason].append ((widget, id))
 
     def _disconnect (self, reason=None):
-        if self.handler_ids.has_key (reason):
+        if reason in self.handler_ids:
             for (widget, id) in self.handler_ids[reason]:
                 widget.disconnect (id)
             del self.handler_ids[reason]
@@ -349,8 +350,7 @@ class ServerSettings(GtkGUI):
         model = self.browse_treeview.get_model ()
         selection = self.browse_treeview.get_selection ()
         rows = selection.get_selected_rows ()
-        refs = map (lambda path: Gtk.TreeRowReference.new (model, path),
-                    rows[1])
+        refs = [Gtk.TreeRowReference.new (model, path) for path in rows[1]]
         for ref in refs:
             path = ref.get_path ()
             iter = model.get_iter (path)
@@ -407,7 +407,7 @@ class ServerSettings(GtkGUI):
             return
 
         # Fetch cupsd.conf afresh
-        f = tempfile.TemporaryFile ()
+        f = tempfile.TemporaryFile () # mode='w+b'
         try:
             self.cupsconn.getFile (self.RESOURCE, file=f)
         except cups.HTTPError as e:
@@ -429,18 +429,19 @@ class ServerSettings(GtkGUI):
             browsepoll_lines += "BrowsePoll %s\n" % server
 
         f.seek (0)
-        conf = tempfile.TemporaryFile ()
+        conf = tempfile.TemporaryFile () # mode='w+b'
         wrote_preserve_history = wrote_preserve_files = False
         wrote_browsepoll = False
         has_browsepoll = False
-        lines = f.readlines ()
-        for line in lines:
+        for line in f:
+            line = line.decode('UTF-8')
             l = line.lower ().strip ()
             if l.startswith ("browsepoll "):
                 has_browsepoll = True
                 break
 
-        for line in lines:
+        for line in f:
+            line = line.decode('UTF-8')
             l = line.lower ().strip ()
             if l.startswith ("preservejobhistory "):
                 if wrote_preserve_history:
@@ -462,7 +463,7 @@ class ServerSettings(GtkGUI):
                     # Ignore extra BrowsePoll lines.
                     continue
                 # Write new BrowsePoll section.
-                conf.write (browsepoll_lines)
+                conf.write (browsepoll_lines.encode('UTF-8'))
                 wrote_browsepoll = True
                 # Don't write out the original BrowsePoll line.
                 continue
@@ -470,20 +471,20 @@ class ServerSettings(GtkGUI):
                   l.startswith ("browsing ")):
                 if not wrote_browsepoll:
                     # Write original Browsing line.
-                    conf.write (line)
+                    conf.write (line.encode('UTF-8'))
                     # Write new BrowsePoll section.
-                    conf.write (browsepoll_lines)
+                    conf.write (browsepoll_lines.encode('UTF-8'))
                     wrote_browsepoll = True
                     continue
 
-            conf.write (line)
+            conf.write (line.encode('UTF-8'))
 
         if not wrote_preserve_history:
-            conf.write (job_history_line)
+            conf.write (job_history_line.encode('UTF-8'))
         if not wrote_preserve_files:
-            conf.write (job_files_line)
+            conf.write (job_files_line.encode('UTF-8'))
         if not wrote_browsepoll:
-            conf.write (browsepoll_lines)
+            conf.write (browsepoll_lines.encode('UTF-8'))
 
         conf.flush ()
         fd = conf.fileno ()
@@ -514,7 +515,7 @@ class ServerSettings(GtkGUI):
             (self.chkServerRemoteAdmin, cups.CUPS_SERVER_REMOTE_ADMIN),
             (self.chkServerAllowCancelAll, cups.CUPS_SERVER_USER_CANCEL_ANY),
             (self.chkServerLogDebug, cups.CUPS_SERVER_DEBUG_LOGGING),]:
-            if not self.server_settings.has_key(setting): continue
+            if setting not in self.server_settings: continue
             setting_dict[setting] = str(int(widget.get_active()))
         self.cupsconn._begin_operation (_("modifying server settings"))
         try:
@@ -584,7 +585,7 @@ if __name__ == '__main__':
         loop.quit ()
 
     def problems (obj):
-        print "%s: problems" % obj
+        print("%s: problems" % obj)
 
     set_debugging (True)
     s = ServerSettings ()

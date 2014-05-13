@@ -22,7 +22,7 @@
 from gi.repository import Gtk
 
 import subprocess
-from base import *
+from .base import *
 import os
 import shlex
 from timedops import TimedSubprocess
@@ -48,7 +48,7 @@ class CheckSELinux(Question):
             return False
 
         paths = ["/etc/cups/", "/usr/lib/cups/", "/usr/share/cups/"]
-        null = file ("/dev/null", "r+")
+        null = open ("/dev/null", "r+")
         parent = self.troubleshooter.get_window ()
         contexts = {}
         new_environ = os.environ.copy()

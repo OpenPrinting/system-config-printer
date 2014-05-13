@@ -28,7 +28,7 @@ import smburi
 import socket
 import subprocess
 from timedops import TimedSubprocess, TimedOperation
-from base import *
+from .base import *
 
 try:
     import smbc
@@ -45,8 +45,8 @@ class CheckNetworkServerSanity(Question):
 
         self.answers = {}
         answers = self.troubleshooter.answers
-        if (not answers.has_key ('remote_server_name') and
-            not answers.has_key ('remote_server_ip_address')):
+        if ('remote_server_name' not in answers and
+            'remote_server_ip_address' not in answers):
             return False
 
         parent = self.troubleshooter.get_window ()
@@ -58,9 +58,8 @@ class CheckNetworkServerSanity(Question):
             # Try resolving the hostname.
             try:
                 ai = socket.getaddrinfo (server_name, server_port)
-                resolves = map (lambda (family, socktype,
-                                        proto, canonname, sockaddr):
-                                    sockaddr[0], ai)
+                resolves = [family_socktype_proto_canonname_sockaddr[4][0] for
+                             family_socktype_proto_canonname_sockaddr in ai]
                 try_connect = True
             except socket.gaierror:
                 resolves = False
@@ -85,9 +84,8 @@ class CheckNetworkServerSanity(Question):
             # Validate it.
             try:
                 ai = socket.getaddrinfo (server_name, server_port)
-                resolves = map (lambda (family, socktype,
-                                        proto, canonname, sockaddr):
-                                    sockaddr[0], ai)
+                resolves = [family_socktype_proto_canonname_sockaddr1[4][0] for
+                             family_socktype_proto_canonname_sockaddr1 in ai]
             except socket.gaierror:
                 resolves = False
 
@@ -162,7 +160,7 @@ class CheckNetworkServerSanity(Question):
                 (e, s) = e.args
                 self.answers['remote_server_smb_shares'] = (e, s)
 
-            if context != None and answers.has_key ('cups_printer_dict'):
+            if context != None and 'cups_printer_dict' in answers:
                 uri = answers['cups_printer_dict'].get ('device-uri', '')
                 u = smburi.SMBURI (uri)
                 (group, host, share, user, password) = u.separate ()
@@ -172,7 +170,7 @@ class CheckNetworkServerSanity(Question):
                                               args=("smb://%s/%s" % (host,
                                                                      share),
                                                     os.O_RDWR,
-                                                    0777),
+                                                    0o777),
                                               parent=parent)
                     f  = self.op.run ()
                     accessible = True
@@ -184,7 +182,7 @@ class CheckNetworkServerSanity(Question):
 
         # Try traceroute if we haven't already.
         if (try_connect and
-            not answers.has_key ('remote_server_traceroute')):
+            'remote_server_traceroute' not in answers):
             try:
                 self.op = TimedSubprocess (parent=parent, close_fds=True,
                                            args=['traceroute', '-w', '1',

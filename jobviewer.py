@@ -39,13 +39,14 @@ import smburi
 import subprocess
 import sys
 import time
-import urllib
+import urllib.parse
 from xml.sax import saxutils
 
 from debug import *
 import config
 import statereason
 import errordialogs
+from functools import reduce
 
 cups.require("1.9.47")
 
@@ -56,7 +57,7 @@ except ImportError:
     USE_KEYRING=False
 
 import gettext
-gettext.install(domain=config.PACKAGE, localedir=config.localedir, unicode=True)
+gettext.install(domain=config.PACKAGE, localedir=config.localedir)
 
 from statereason import StateReason
 
@@ -97,14 +98,14 @@ class PrinterURIIndex:
 
     def update_from_attrs (self, printer, attrs):
         uris = []
-        if attrs.has_key ('printer-uri-supported'):
+        if 'printer-uri-supported' in attrs:
             uri_supported = attrs['printer-uri-supported']
             if type (uri_supported) != list:
                 uri_supported = [uri_supported]
             uris.extend (uri_supported)
-        if attrs.has_key ('notify-printer-uri'):
+        if 'notify-printer-uri' in attrs:
             uris.append (attrs['notify-printer-uri'])
-        if attrs.has_key ('printer-more-info'):
+        if 'printer-more-info' in attrs:
             uris.append (attrs['printer-more-info'])
 
         for uri in uris:
@@ -113,7 +114,7 @@ class PrinterURIIndex:
     def remove_printer (self, printer):
         # Remove references to this printer in the URI map.
         self._collect_names ()
-        uris = self.printer.keys ()
+        uris = list(self.printer.keys ())
         for uri in uris:
             if self.printer[uri] == printer:
                 del self.printer[uri]
@@ -131,7 +132,7 @@ class PrinterURIIndex:
 
     def lookup_cached_by_name (self, name):
         self._collect_names ()
-        for uri, printer in self.printer.iteritems ():
+        for uri, printer in self.printer.items ():
             if printer == name:
                 return uri
 
@@ -141,8 +142,6 @@ class PrinterURIIndex:
         try:
             if connection == None:
                 connection = cups.Connection ()
-            if isinstance(name, bytes):
-                name = name.decode ('utf-8')
 
             r = ['printer-name', 'printer-uri-supported', 'printer-more-info']
             if uri != None:
@@ -715,9 +714,9 @@ class JobViewer (GtkGUI):
     def update_job_creation_times(self):
         now = time.time ()
         need_update = False
-        for job, data in self.jobs.iteritems():
+        for job, data in self.jobs.items():
             t = _("Unknown")
-            if data.has_key ('time-at-creation'):
+            if 'time-at-creation' in data:
                 created = data['time-at-creation']
                 ago = now - created
                 need_update = True
@@ -748,7 +747,7 @@ class JobViewer (GtkGUI):
                     need_update = False
                     t = time.strftime ("%B %Y", time.localtime (created))
 
-            if self.jobiters.has_key (job):
+            if job in self.jobiters:
                 iter = self.jobiters[job]
                 self.store.set_value (iter, 1, t)
 
@@ -776,7 +775,7 @@ class JobViewer (GtkGUI):
         self.stopped_job_prompts.remove (jobid)
         if response == Gtk.ResponseType.NO:
             # Diagnose
-            if not self.__dict__.has_key ('troubleshooter'):
+            if 'troubleshooter' not in self.__dict__:
                 import troubleshoot
                 troubleshooter = troubleshoot.run (self.on_troubleshoot_quit)
                 self.troubleshooter = troubleshooter
@@ -789,7 +788,7 @@ class JobViewer (GtkGUI):
 
         # There may have been an error fetching additional attributes,
         # in which case we need to give up.
-        if not self.jobs.has_key (job):
+        if job not in self.jobs:
             return
 
         store = self.store
@@ -921,7 +920,7 @@ class JobViewer (GtkGUI):
     def get_authentication (self, job, device_uri, printer_uri,
                             auth_info_required, show_dialog):
         # Check if we have requested authentication for this job already
-        if not self.auth_info_dialogs.has_key (job):
+        if job not in self.auth_info_dialogs:
             try:
                 cups.require ("1.9.37")
             except:
@@ -934,18 +933,18 @@ class JobViewer (GtkGUI):
             informational_attrs = dict()
             auth_info = None
             if try_keyring and 'password' in auth_info_required:
-                (scheme, rest) = urllib.splittype (device_uri)
+                (scheme, rest) = urllib.parse.splittype (device_uri)
                 if scheme == 'smb':
                     uri = smburi.SMBURI (uri=device_uri)
                     (group, server, share,
                      user, password) = uri.separate ()
                     informational_attrs["domain"] = str (group)
                 else:
-                    (serverport, rest) = urllib.splithost (rest)
+                    (serverport, rest) = urllib.parse.splithost (rest)
                     if serverport == None:
                         server = None
                     else:
-                        (server, port) = urllib.splitnport (serverport)
+                        (server, port) = urllib.parse.splitnport (serverport)
 
                 if scheme == None or server == None:
                     try_keyring = False
@@ -970,14 +969,14 @@ class JobViewer (GtkGUI):
 
                 for keyring_attrs in [identifying_attrs, informational_attrs]:
                     attrs = GnomeKeyring.Attribute.list_new ()
-                    for key, val in keyring_attrs.iteritems ():
+                    for key, val in keyring_attrs.items ():
                         GnomeKeyring.Attribute.list_append_string (attrs,
                                                                    key,
                                                                    val)
                     (result, items) = GnomeKeyring.find_items_sync (type,
                                                                     attrs)
                     if result == GnomeKeyring.Result.OK:
-                        auth_info = map (lambda x: '', auth_info_required)
+                        auth_info = ['' for x in auth_info_required]
                         ind = auth_info_required.index ('username')
 
                         for attr in GnomeKeyring.attribute_list_to_glist (
@@ -1041,7 +1040,7 @@ class JobViewer (GtkGUI):
         dialog.set_position (Gtk.WindowPosition.CENTER)
 
         # Pre-fill 'username' field.
-        auth_info = map (lambda x: '', auth_info_required)
+        auth_info = ['' for x in auth_info_required]
         username = pwd.getpwuid (os.getuid ())[0]
         if 'username' in auth_info_required:
             try:
@@ -1128,7 +1127,7 @@ class JobViewer (GtkGUI):
                     ind = auth_info_required.index ('password')
                     secret = auth_info[ind]
                     attrs = GnomeKeyring.Attribute.list_new ()
-                    for key, val in keyring_attrs.iteritems ():
+                    for key, val in keyring_attrs.items ():
                         GnomeKeyring.Attribute.list_append_string (attrs,
                                                                    key,
                                                                    val)
@@ -1156,7 +1155,7 @@ class JobViewer (GtkGUI):
 
         open_notifications = len (self.new_printer_notifications.keys ())
         open_notifications += len (self.completed_job_notifications.keys ())
-        for reason, notification in self.state_reason_notifications.iteritems():
+        for reason, notification in self.state_reason_notifications.items():
             if getattr (notification, 'closed', None) != True:
                 open_notifications += 1
         num_jobs = len (self.active_jobs)
@@ -1223,7 +1222,7 @@ class JobViewer (GtkGUI):
             self.jobids.append(jobid)
             job = self.jobs[jobid]
 
-            if job.has_key ('job-state'):
+            if 'job-state' in job:
                 s = job['job-state']
                 if s >= cups.IPP_JOB_CANCELED:
                     cancel_sensitive = False
@@ -1249,7 +1248,7 @@ class JobViewer (GtkGUI):
 
         if len (job_printers.keys ()) == 1:
             try:
-                other_printers.remove (job_printers.keys ()[0])
+                other_printers.remove (list(job_printers.keys ())[0])
             except KeyError:
                 pass
 
@@ -1298,7 +1297,7 @@ class JobViewer (GtkGUI):
 
     def on_icon_configure_printers_activate(self, menuitem):
         env = {}
-        for name, value in os.environ.iteritems ():
+        for name, value in os.environ.items ():
             if name == "SYSTEM_CONFIG_PRINTER_UI":
                 continue
             env[name] = value
@@ -1596,7 +1595,7 @@ class JobViewer (GtkGUI):
                 return
 
             attr_store.clear()                          # remove old attributes
-            for name, value in attrs.iteritems():
+            for name, value in attrs.items():
                 if name in ['job-id', 'job-printer-up-time']:
                     continue
                 if isinstance(value, unicode): # TODO: remove this after merging python3 branch
@@ -1663,7 +1662,7 @@ class JobViewer (GtkGUI):
 
         if have_jobs:
             pixbuf = self.icon_jobs
-            for jobid, jobdata in self.jobs.iteritems ():
+            for jobid, jobdata in self.jobs.items ():
                 jstate = jobdata.get ('job-state', cups.IPP_JOB_PENDING)
                 if jstate == cups.IPP_JOB_PROCESSING:
                     pixbuf = self.icon_jobs_processing
@@ -1696,7 +1695,7 @@ class JobViewer (GtkGUI):
     def update_status (self, have_jobs=None):
         # Found out which printer state reasons apply to our active jobs.
         upset_printers = set()
-        for printer, reasons in self.printer_state_reasons.iteritems ():
+        for printer, reasons in self.printer_state_reasons.items ():
             if len (reasons) > 0:
                 upset_printers.add (printer)
         debugprint ("Upset printers: %s" % upset_printers)
@@ -1795,7 +1794,7 @@ class JobViewer (GtkGUI):
 
     def notify_printer_state_reason (self, reason):
         tuple = reason.get_tuple ()
-        if self.state_reason_notifications.has_key (tuple):
+        if tuple in self.state_reason_notifications:
             debugprint ("Already sent notification for %s" % repr (reason))
             return
 
@@ -1855,7 +1854,7 @@ class JobViewer (GtkGUI):
                 device_uri = attrs.get ('device-uri')
 
             if device_uri != None:
-                (scheme, rest) = urllib.splittype (device_uri)
+                (scheme, rest) = urllib.parse.splittype (device_uri)
                 if scheme not in ['socket', 'ipp', 'http', 'smb']:
                     return
 
@@ -1904,17 +1903,17 @@ class JobViewer (GtkGUI):
 
         # We may be showing this job already, perhaps because we are showing
         # completed jobs and one was reprinted.
-        if not self.jobiters.has_key (jobid):
+        if jobid not in self.jobiters:
             self.add_job (jobid, jobdata)
         elif mon == self.my_monitor:
             # Copy over any missing attributes such as user and title.
-            for attr, value in jobdata.iteritems ():
-                if not self.jobs[jobid].has_key (attr):
+            for attr, value in jobdata.items ():
+                if attr not in self.jobs[jobid]:
                     self.jobs[jobid][attr] = value
                     debugprint ("Add %s=%s (my job)" % (attr, value))
 
         # If we failed to get required attributes for the job, bail.
-        if not self.jobiters.has_key (jobid):
+        if jobid not in self.jobiters:
             return
 
         if self.job_is_active (jobdata):
@@ -1956,7 +1955,7 @@ class JobViewer (GtkGUI):
         # that should probably be deferred to the idle handler, but
         # for the moment just deal with the fact that the job might
         # have gone (bug #640904).
-        if not self.jobs.has_key (jobid):
+        if jobid not in self.jobs:
             return
 
         jobdata = self.jobs[jobid]
@@ -2100,7 +2099,7 @@ class JobViewer (GtkGUI):
             if not canceled:
                 self.notify_completed_job (jobid)
 
-        if self.jobiters.has_key (jobid):
+        if jobid in self.jobiters:
             self.store.remove (self.jobiters[jobid])
             del self.jobiters[jobid]
             del self.jobs[jobid]
@@ -2108,7 +2107,7 @@ class JobViewer (GtkGUI):
         if jobid in self.active_jobs:
             self.active_jobs.remove (jobid)
 
-        if self.jobs_attrs.has_key (jobid):
+        if jobid in self.jobs_attrs:
             del self.jobs_attrs[jobid]
 
         self.update_status ()
@@ -2132,7 +2131,7 @@ class JobViewer (GtkGUI):
             return
 
         # Find out if the user has jobs queued for that printer.
-        for job, data in self.jobs.iteritems ():
+        for job, data in self.jobs.items ():
             if not self.job_is_active (data):
                 continue
             if data['job-printer-name'] == printer:
@@ -2268,7 +2267,7 @@ class JobViewer (GtkGUI):
         jobid = model.get_value (iter, 0)
         job = self.jobs[jobid]
         size = _("Unknown")
-        if job.has_key ('job-k-octets'):
+        if 'job-k-octets' in job:
             size = str (job['job-k-octets']) + 'k'
         cell.set_property("text", size)
 

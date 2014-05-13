@@ -21,7 +21,7 @@
 
 import cups
 from timedops import TimedOperation
-from base import *
+from .base import *
 class SchedulerNotRunning(Question):
     def __init__ (self, troubleshooter):
         Question.__init__ (self, troubleshooter, "Scheduler not running?")

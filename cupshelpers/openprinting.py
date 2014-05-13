@@ -19,7 +19,7 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-import pycurl, urllib, platform, threading, tempfile, traceback
+import pycurl, urllib.request, urllib.parse, urllib.error, platform, threading, tempfile, traceback
 import os, sys
 from xml.etree.ElementTree import XML
 from . import Device
@@ -43,7 +43,7 @@ class _QueryThread (threading.Thread):
         self.parameters = parameters
         self.callback = callback
         self.user_data = user_data
-        self.result = ""
+        self.result = b''
 
         self.setDaemon (True)
 
@@ -61,13 +61,13 @@ class _QueryThread (threading.Thread):
         headers = {"Content-type": "application/x-www-form-urlencoded",
                    "Accept": "text/plain"}
         params = ("%s&uilanguage=%s&locale=%s" %
-                  (urllib.urlencode (self.parameters),
+                  (urllib.parse.urlencode (self.parameters),
                    self.parent.language[0],
                    self.parent.language[0]))
         self.url = "https://%s%s?%s" % (self.parent.base_url, query_command, params)
         # Send request
         result = None
-        self.result = ""
+        self.result = b''
         status = 1
         try:
             curl = pycurl.Curl()
@@ -310,7 +310,7 @@ class OpenPrinting:
                     if supportcontacts:
                         dict['supportcontacts'] = supportcontacts
 
-                    if not dict.has_key ('name') or not dict.has_key ('url'):
+                    if 'name' not in dict or 'url' not in dict:
                         continue
 
                     container = driver.find ('functionality')
@@ -446,7 +446,7 @@ def _simple_gui ():
         def query_callback (self, status, user_data, result):
             Gdk.threads_enter ()
             self.tv.get_buffer ().set_text (str (result))
-            file ("result.xml", "w").write (str (result))
+            open ("result.xml", "w").write (str (result))
             Gdk.threads_leave ()
 
     q = QueryApp()

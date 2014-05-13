@@ -131,14 +131,14 @@ class LpdServer:
         s = open_socket(self.hostname, 515)
         if not s:
             return None
-        print name
+        print(name)
         
         try:
             s.send('\2%s\n' % name) # cmd send job to queue
             data = s.recv(1024) # receive status
-            print repr(data)
+            print(repr(data))
         except socket.error as msg:
-            print msg
+            print(msg)
             try:
                 s.close ()
             except:
@@ -272,7 +272,7 @@ class PrinterFinder:
 
     def _probe_snmp (self):
         # Run the CUPS SNMP backend, pointing it at the host.
-        null = file ("/dev/null", "r+")
+        null = open ("/dev/null", "r+")
         try:
             debugprint ("snmp: trying")
             p = subprocess.Popen (args=["/usr/lib/cups/backend/snmp",
@@ -297,7 +297,7 @@ class PrinterFinder:
             debugprint ("snmp: no good")
             return
 
-        for line in stdout.split ('\n'):
+        for line in stdout.decode('utf-8').split ('\n'):
             words = wordsep (line)
             n = len (words)
             if n == 6:
@@ -357,7 +357,7 @@ class PrinterFinder:
         debugprint ("lpd: done")
 
     def _probe_hplip (self):
-        if (self._cached_attributes.has_key ('device-make-and-model') and \
+        if ('device-make-and-model' in self._cached_attributes and \
             self._cached_attributes['device-make-and-model'] != "Unknown" and \
             not self._cached_attributes['device-make-and-model'].lower ().startswith ("hp") and \
             not self._cached_attributes['device-make-and-model'].lower ().startswith ("hewlett")):
@@ -365,7 +365,7 @@ class PrinterFinder:
                         self._cached_attributes['device-make-and-model'])
             return
 
-        null = file ("/dev/null", "r+")
+        null = open ("/dev/null", "r+")
         try:
             debugprint ("hplip: trying")
             p = subprocess.Popen (args=["hp-makeuri", "-c", self.hostname],
@@ -490,7 +490,7 @@ class PrinterFinder:
             debugprint ("ipp: done")
             return
 
-        for name, queue in printers.iteritems ():
+        for name, queue in printers.items ():
             uri = queue['printer-uri-supported']
             info = queue['printer-info']
             location = queue['printer-location']
@@ -501,7 +501,7 @@ class PrinterFinder:
 if __name__ == '__main__':
     import sys
     if len (sys.argv) < 2:
-        print "Need printer address"
+        print("Need printer address")
         sys.exit (1)
 
     set_debugging (True)

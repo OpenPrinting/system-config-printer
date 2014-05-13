@@ -33,8 +33,8 @@ class Validator:
 
     def validate (self):
         filename = self._filename
-        print "Validating %s" % filename
-        preferreddrivers = xml.etree.ElementTree.XML (file (filename).read ())
+        print ("Validating %s" % filename)
+        preferreddrivers = xml.etree.ElementTree.XML (open (filename).read ())
         (drivertypes, preferenceorder) = preferreddrivers.getchildren ()
         validates = True
 
@@ -60,8 +60,8 @@ class Validator:
 
         for name in names:
             validates = False
-            print >>sys.stderr, ("*** Driver type \"%s\" is never used" %
-                                 name)
+            print(("*** Driver type \"%s\" is never used" %
+                                 name), file=sys.stderr)
 
         return validates
 

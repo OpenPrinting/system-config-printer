@@ -41,21 +41,23 @@ class UserDefaultPrinter:
             return
 
         try:
-            opts = file (self.lpoptions).readlines ()
+            opt_file = open(self.lpoptions)
+            opts = opt_file.readlines ()
         except IOError:
             return
 
         for i in range (len (opts)):
             if opts[i].startswith ("Default "):
                 opts[i] = "Dest " + opts[i][8:]
-        file (self.lpoptions, "w").writelines (opts)
+        open (self.lpoptions, "w").writelines (opts)
 
     def get (self):
         if not self.lpoptions:
             return None
 
         try:
-            opts = file (self.lpoptions).readlines ()
+            opt_file = open(self.lpoptions)
+            opts = opt_file.readlines ()
         except IOError:
             return None
 
@@ -73,8 +75,8 @@ class UserDefaultPrinter:
     def set (self, default):
         p = subprocess.Popen ([ "lpoptions", "-d", default ],
                               close_fds=True,
-                              stdin=file ("/dev/null"),
-                              stdout=file ("/dev/null", "w"),
+                              stdin=open ("/dev/null"),
+                              stdout=open ("/dev/null", "w"),
                               stderr=subprocess.PIPE)
         (stdout, stderr) = p.communicate ()
         exitcode = p.wait ()
@@ -164,7 +166,7 @@ class UserDefaultPrompt:
             try:
                 self.userdef.set (self.name)
             except Exception as e:
-                print "Error setting default: %s" % repr (e)
+                print("Error setting default: %s" % repr (e))
 
             self.refresh_fn ()
 

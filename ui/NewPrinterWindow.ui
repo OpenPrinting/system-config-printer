@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.16.1 -->
 <interface>
-  <requires lib="gtk+" version="2.20"/>
-  <!-- interface-naming-policy toplevel-contextual -->
+  <requires lib="gtk+" version="3.0"/>
   <object class="GtkWindow" id="NewPrinterWindow">
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">New Printer</property>
@@ -81,8 +81,6 @@
                                     <property name="can_focus">True</property>
                                     <property name="primary_icon_activatable">False</property>
                                     <property name="secondary_icon_activatable">False</property>
-                                    <property name="primary_icon_sensitive">True</property>
-                                    <property name="secondary_icon_sensitive">True</property>
                                     <signal name="changed" handler="on_entNPName_changed" swapped="no"/>
                                   </object>
                                   <packing>
@@ -146,8 +144,6 @@
                                     <property name="can_focus">True</property>
                                     <property name="primary_icon_activatable">False</property>
                                     <property name="secondary_icon_activatable">False</property>
-                                    <property name="primary_icon_sensitive">True</property>
-                                    <property name="secondary_icon_sensitive">True</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -210,8 +206,6 @@
                                     <property name="can_focus">True</property>
                                     <property name="primary_icon_activatable">False</property>
                                     <property name="secondary_icon_activatable">False</property>
-                                    <property name="primary_icon_sensitive">True</property>
-                                    <property name="secondary_icon_sensitive">True</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -295,6 +289,9 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <signal name="cursor-changed" handler="on_tvNPDevices_cursor_changed" swapped="no"/>
+                            <child internal-child="selection">
+                              <object class="GtkTreeSelection" id="treeview-selection1"/>
+                            </child>
                           </object>
                         </child>
                       </object>
@@ -393,8 +390,6 @@
                                             <property name="can_focus">True</property>
                                             <property name="primary_icon_activatable">False</property>
                                             <property name="secondary_icon_activatable">False</property>
-                                            <property name="primary_icon_sensitive">True</property>
-                                            <property name="secondary_icon_sensitive">True</property>
                                             <signal name="changed" handler="on_entNPTDevice_changed" swapped="no"/>
                                           </object>
                                         </child>
@@ -501,12 +496,10 @@ ipp://printer.mydomain/ipp</property>
                                             <property name="can_focus">True</property>
                                             <property name="primary_icon_activatable">False</property>
                                             <property name="secondary_icon_activatable">False</property>
-                                            <property name="primary_icon_sensitive">True</property>
-                                            <property name="secondary_icon_sensitive">True</property>
+                                            <signal name="changed" handler="on_entNPTJetDirectPort_changed" swapped="no"/>
                                             <accessibility>
                                               <relation type="labelled-by" target="label203"/>
                                             </accessibility>
-                                            <signal name="changed" handler="on_entNPTJetDirectPort_changed" swapped="no"/>
                                           </object>
                                           <packing>
                                             <property name="left_attach">1</property>
@@ -522,12 +515,10 @@ ipp://printer.mydomain/ipp</property>
                                             <property name="can_focus">True</property>
                                             <property name="primary_icon_activatable">False</property>
                                             <property name="secondary_icon_activatable">False</property>
-                                            <property name="primary_icon_sensitive">True</property>
-                                            <property name="secondary_icon_sensitive">True</property>
+                                            <signal name="changed" handler="on_entNPTJetDirectHostname_changed" swapped="no"/>
                                             <accessibility>
                                               <relation type="labelled-by" target="label202"/>
                                             </accessibility>
-                                            <signal name="changed" handler="on_entNPTJetDirectHostname_changed" swapped="no"/>
                                           </object>
                                           <packing>
                                             <property name="left_attach">1</property>
@@ -671,8 +662,6 @@ ipp://printer.mydomain/ipp</property>
                                             <property name="invisible_char">●</property>
                                             <property name="primary_icon_activatable">False</property>
                                             <property name="secondary_icon_activatable">False</property>
-                                            <property name="primary_icon_sensitive">True</property>
-                                            <property name="secondary_icon_sensitive">True</property>
                                             <signal name="changed" handler="on_entNPTLpdHost_changed" swapped="no"/>
                                           </object>
                                           <packing>
@@ -688,8 +677,6 @@ ipp://printer.mydomain/ipp</property>
                                             <property name="invisible_char">●</property>
                                             <property name="primary_icon_activatable">False</property>
                                             <property name="secondary_icon_activatable">False</property>
-                                            <property name="primary_icon_sensitive">True</property>
-                                            <property name="secondary_icon_sensitive">True</property>
                                             <signal name="changed" handler="on_entNPTLpdQueue_changed" swapped="no"/>
                                           </object>
                                           <packing>
@@ -967,12 +954,10 @@ ipp://printer.mydomain/ipp</property>
                                                         <property name="can_focus">True</property>
                                                         <property name="primary_icon_activatable">False</property>
                                                         <property name="secondary_icon_activatable">False</property>
-                                                        <property name="primary_icon_sensitive">True</property>
-                                                        <property name="secondary_icon_sensitive">True</property>
+                                                        <signal name="changed" handler="on_entSMBURI_changed" swapped="no"/>
                                                         <accessibility>
                                                           <relation type="labelled-by" target="label129"/>
                                                         </accessibility>
-                                                        <signal name="changed" handler="on_entSMBURI_changed" swapped="no"/>
                                                       </object>
                                                       <packing>
                                                         <property name="expand">True</property>
@@ -1064,6 +1049,7 @@ ipp://printer.mydomain/ipp</property>
                                                         <property name="can_focus">True</property>
                                                         <property name="receives_default">False</property>
                                                         <property name="use_underline">True</property>
+                                                        <property name="xalign">0.5</property>
                                                         <property name="active">True</property>
                                                         <property name="draw_indicator">True</property>
                                                       </object>
@@ -1084,6 +1070,7 @@ ipp://printer.mydomain/ipp</property>
                                                             <property name="can_focus">True</property>
                                                             <property name="receives_default">False</property>
                                                             <property name="use_underline">True</property>
+                                                            <property name="xalign">0.5</property>
                                                             <property name="draw_indicator">True</property>
                                                             <property name="group">rbtnSMBAuthPrompt</property>
                                                             <signal name="toggled" handler="on_rbtnSMBAuthSet_toggled" swapped="no"/>
@@ -1148,8 +1135,6 @@ ipp://printer.mydomain/ipp</property>
                                                             <property name="visibility">False</property>
                                                             <property name="primary_icon_activatable">False</property>
                                                             <property name="secondary_icon_activatable">False</property>
-                                                            <property name="primary_icon_sensitive">True</property>
-                                                            <property name="secondary_icon_sensitive">True</property>
                                                             <accessibility>
                                                             <relation type="labelled-by" target="label133"/>
                                                             </accessibility>
@@ -1168,8 +1153,6 @@ ipp://printer.mydomain/ipp</property>
                                                             <property name="can_focus">True</property>
                                                             <property name="primary_icon_activatable">False</property>
                                                             <property name="secondary_icon_activatable">False</property>
-                                                            <property name="primary_icon_sensitive">True</property>
-                                                            <property name="secondary_icon_sensitive">True</property>
                                                             <accessibility>
                                                             <relation type="labelled-by" target="label132"/>
                                                             </accessibility>
@@ -1330,8 +1313,6 @@ ipp://printer.mydomain/ipp</property>
                                                     <property name="can_focus">True</property>
                                                     <property name="primary_icon_activatable">False</property>
                                                     <property name="secondary_icon_activatable">False</property>
-                                                    <property name="primary_icon_sensitive">True</property>
-                                                    <property name="secondary_icon_sensitive">True</property>
                                                     <signal name="changed" handler="on_entNPTNetworkHostname_changed" swapped="no"/>
                                                   </object>
                                                   <packing>
@@ -1348,8 +1329,8 @@ ipp://printer.mydomain/ipp</property>
                                                     <property name="can_focus">True</property>
                                                     <property name="receives_default">False</property>
                                                     <property name="use_stock">True</property>
-                                                    <accelerator key="Return" signal="activate"/>
                                                     <signal name="clicked" handler="on_btnNetworkFind_clicked" swapped="no"/>
+                                                    <accelerator key="Return" signal="activate"/>
                                                   </object>
                                                   <packing>
                                                     <property name="left_attach">2</property>
@@ -1454,6 +1435,9 @@ ipp://printer.mydomain/ipp</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <signal name="cursor-changed" handler="on_tvNPDeviceURIs_cursor_changed" swapped="no"/>
+                                    <child internal-child="selection">
+                                      <object class="GtkTreeSelection" id="treeview-selection2"/>
+                                    </child>
                                   </object>
                                 </child>
                               </object>
@@ -1537,6 +1521,7 @@ ipp://printer.mydomain/ipp</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
                         <property name="use_underline">True</property>
+                        <property name="xalign">0.5</property>
                         <property name="active">True</property>
                         <property name="draw_indicator">True</property>
                         <signal name="toggled" handler="on_rbtnNPFoomatic_toggled" swapped="no"/>
@@ -1554,6 +1539,7 @@ ipp://printer.mydomain/ipp</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
                         <property name="use_underline">True</property>
+                        <property name="xalign">0.5</property>
                         <property name="draw_indicator">True</property>
                         <property name="group">rbtnNPFoomatic</property>
                       </object>
@@ -1570,6 +1556,7 @@ ipp://printer.mydomain/ipp</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
                         <property name="use_underline">True</property>
+                        <property name="xalign">0.5</property>
                         <property name="draw_indicator">True</property>
                         <property name="group">rbtnNPFoomatic</property>
                         <signal name="toggled" handler="on_rbtnNPFoomatic_toggled" swapped="no"/>
@@ -1626,6 +1613,9 @@ ipp://printer.mydomain/ipp</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <signal name="cursor-changed" handler="on_tvNPMakes_cursor_changed" swapped="no"/>
+                                    <child internal-child="selection">
+                                      <object class="GtkTreeSelection" id="treeview-selection3"/>
+                                    </child>
                                   </object>
                                 </child>
                               </object>
@@ -1738,10 +1728,8 @@ ipp://printer.mydomain/ipp</property>
                                     <property name="can_focus">True</property>
                                     <property name="primary_icon_activatable">False</property>
                                     <property name="secondary_icon_activatable">False</property>
-                                    <property name="primary_icon_sensitive">True</property>
-                                    <property name="secondary_icon_sensitive">True</property>
-                                    <accelerator key="Return" signal="activate"/>
                                     <signal name="activate" handler="on_btnNPDownloadableDriverSearch_clicked" object="btnNPDownloadableDriverSearch" swapped="yes"/>
+                                    <accelerator key="Return" signal="activate"/>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -1921,6 +1909,9 @@ ipp://printer.mydomain/ipp</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <signal name="cursor-changed" handler="on_tvNPModels_cursor_changed" swapped="no"/>
+                            <child internal-child="selection">
+                              <object class="GtkTreeSelection" id="treeview-selection4"/>
+                            </child>
                           </object>
                         </child>
                       </object>
@@ -1946,6 +1937,9 @@ ipp://printer.mydomain/ipp</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <signal name="cursor-changed" handler="on_tvNPDrivers_cursor_changed" swapped="no"/>
+                                <child internal-child="selection">
+                                  <object class="GtkTreeSelection" id="treeview-selection5"/>
+                                </child>
                               </object>
                             </child>
                           </object>
@@ -2047,6 +2041,9 @@ ipp://printer.mydomain/ipp</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <signal name="cursor-changed" handler="on_tvNCMembers_cursor_changed" swapped="no"/>
+                            <child internal-child="selection">
+                              <object class="GtkTreeSelection" id="treeview-selection6"/>
+                            </child>
                           </object>
                         </child>
                       </object>
@@ -2074,11 +2071,6 @@ ipp://printer.mydomain/ipp</property>
                                 <property name="can_focus">True</property>
                                 <property name="can_default">True</property>
                                 <property name="receives_default">False</property>
-                                <child internal-child="accessible">
-                                  <object class="AtkObject" id="btnNCAddMember-atkobject">
-                                    <property name="AtkObject::accessible-description" translatable="yes">move left</property>
-                                  </object>
-                                </child>
                                 <signal name="clicked" handler="on_btnNCAddMember_clicked" swapped="no"/>
                                 <child>
                                   <object class="GtkAlignment" id="alignment33">
@@ -2119,6 +2111,11 @@ ipp://printer.mydomain/ipp</property>
                                     </child>
                                   </object>
                                 </child>
+                                <child internal-child="accessible">
+                                  <object class="AtkObject" id="btnNCAddMember-atkobject">
+                                    <property name="AtkObject::accessible-description" translatable="yes">move left</property>
+                                  </object>
+                                </child>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -2133,17 +2130,17 @@ ipp://printer.mydomain/ipp</property>
                                 <property name="can_focus">True</property>
                                 <property name="can_default">True</property>
                                 <property name="receives_default">False</property>
-                                <child internal-child="accessible">
-                                  <object class="AtkObject" id="btnNCDelMember-atkobject">
-                                    <property name="AtkObject::accessible-description" translatable="yes">move right</property>
-                                  </object>
-                                </child>
                                 <signal name="clicked" handler="on_btnNCDelMember_clicked" swapped="no"/>
                                 <child>
                                   <object class="GtkImage" id="image15">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="stock">gtk-go-forward</property>
+                                  </object>
+                                </child>
+                                <child internal-child="accessible">
+                                  <object class="AtkObject" id="btnNCDelMember-atkobject">
+                                    <property name="AtkObject::accessible-description" translatable="yes">move right</property>
                                   </object>
                                 </child>
                               </object>
@@ -2172,6 +2169,9 @@ ipp://printer.mydomain/ipp</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <signal name="cursor-changed" handler="on_tvNCNotMembers_cursor_changed" swapped="no"/>
+                            <child internal-child="selection">
+                              <object class="GtkTreeSelection" id="treeview-selection7"/>
+                            </child>
                           </object>
                         </child>
                       </object>
@@ -2251,6 +2251,7 @@ ipp://printer.mydomain/ipp</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
                         <property name="use_underline">True</property>
+                        <property name="xalign">0.5</property>
                         <property name="active">True</property>
                         <property name="draw_indicator">True</property>
                       </object>
@@ -2286,6 +2287,7 @@ ipp://printer.mydomain/ipp</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
                             <property name="use_underline">True</property>
+                            <property name="xalign">0.5</property>
                             <property name="draw_indicator">True</property>
                             <property name="group">rbtnChangePPDasIs</property>
                           </object>
@@ -2581,6 +2583,9 @@ ipp://printer.mydomain/ipp</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <signal name="cursor-changed" handler="on_tvNPDownloadableDrivers_cursor_changed" swapped="no"/>
+                                    <child internal-child="selection">
+                                      <object class="GtkTreeSelection" id="treeview-selection8"/>
+                                    </child>
                                   </object>
                                 </child>
                               </object>
@@ -2724,6 +2729,7 @@ ipp://printer.mydomain/ipp</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
                                         <property name="use_underline">True</property>
+                                        <property name="xalign">0.5</property>
                                         <property name="draw_indicator">True</property>
                                       </object>
                                       <packing>
@@ -2757,6 +2763,7 @@ ipp://printer.mydomain/ipp</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
                                         <property name="use_underline">True</property>
+                                        <property name="xalign">0.5</property>
                                         <property name="draw_indicator">True</property>
                                       </object>
                                       <packing>
@@ -2775,6 +2782,7 @@ ipp://printer.mydomain/ipp</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
                                         <property name="use_underline">True</property>
+                                        <property name="xalign">0.5</property>
                                         <property name="draw_indicator">True</property>
                                       </object>
                                       <packing>
@@ -3140,6 +3148,7 @@ ipp://printer.mydomain/ipp</property>
                                                     <property name="can_focus">True</property>
                                                     <property name="receives_default">False</property>
                                                     <property name="use_underline">True</property>
+                                                    <property name="xalign">0.5</property>
                                                     <property name="draw_indicator">True</property>
                                                     <signal name="toggled" handler="on_rbtnNPDownloadLicense_toggled" swapped="no"/>
                                                   </object>
@@ -3156,6 +3165,7 @@ ipp://printer.mydomain/ipp</property>
                                                     <property name="can_focus">True</property>
                                                     <property name="receives_default">False</property>
                                                     <property name="use_underline">True</property>
+                                                    <property name="xalign">0.5</property>
                                                     <property name="draw_indicator">True</property>
                                                     <property name="group">rbtnNPDownloadLicenseYes</property>
                                                   </object>

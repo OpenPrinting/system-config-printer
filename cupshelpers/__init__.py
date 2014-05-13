@@ -44,7 +44,7 @@ def set_debugprint_fn (debugprint):
     global _debugprint_fn
     _debugprint_fn = debugprint
 
-from cupshelpers import				\
+from .cupshelpers import				\
     Device,					\
     Printer,					\
     activateNewPrinter,				\
@@ -56,5 +56,5 @@ from cupshelpers import				\
     parseDeviceID,				\
     setPPDPageSize
 
-import ppds
-import openprinting
+from . import ppds
+from . import openprinting

@@ -29,7 +29,7 @@ NotListed = NoPrinter()
 import cups
 from gi.repository import GObject
 from timedops import TimedOperation
-from base import *
+from .base import *
 class ChoosePrinter(Question):
     def __init__ (self, troubleshooter):
         # First question: which printer? (page 1)
@@ -77,7 +77,7 @@ class ChoosePrinter(Question):
             dests = self.timedop (c.getDests, parent=parent).run ()
             printers = None
             dests_list = []
-            for (name, instance), dest in dests.iteritems ():
+            for (name, instance), dest in dests.items ():
                 if name == None:
                     continue
 
@@ -90,7 +90,7 @@ class ChoosePrinter(Question):
                     printers = self.timedop (c.getPrinters,
                                              parent=parent).run ()
 
-                if not printers.has_key (name):
+                if name not in printers:
                     info = _("Unknown")
                     location = _("Unknown")
                 else:
@@ -100,7 +100,7 @@ class ChoosePrinter(Question):
 
                 dests_list.append ((queue, location, info, dest))
 
-            dests_list.sort (lambda x, y: cmp (x[0], y[0]))
+            dests_list.sort (key=lambda x: x[0])
             for queue, location, info, dest in dests_list:
                 iter = model.append (None)
                 model.set (iter, 0, queue, 1, location, 2, info, 3, dest)
@@ -138,9 +138,7 @@ class ChoosePrinter(Question):
                 def each (self, model, path, iter, user_data):
                     dest = model.get_value (iter, 3)
                     if dest != NotListed:
-                        self.dests.append ((dest.name.decode ('utf-8') if
-                                             isinstance(dest.name, bytes) else
-                                             dest.name,
+                        self.dests.append ((dest.name,
                                             dest.instance))
 
             return { 'cups_queue_listed': False,
@@ -148,9 +146,7 @@ class ChoosePrinter(Question):
         else:
             return { 'cups_queue_listed': True,
                      'cups_dest': dest,
-                     'cups_queue': dest.name.decode ('utf-8') if
-                                    isinstance(dest.name, bytes) else
-                                    dest.name,
+                     'cups_queue': dest.name,
                      'cups_instance': dest.instance }
 
     def cancel_operation (self):

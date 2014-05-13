@@ -21,7 +21,7 @@
 
 from gi.repository import Gtk
 
-from base import *
+from .base import *
 class ServerFirewalled(Question):
     def __init__ (self, troubleshooter):
         Question.__init__ (self, troubleshooter, "Server firewalled")
@@ -39,7 +39,7 @@ class ServerFirewalled(Question):
         if not answers['cups_queue_listed']:
             return False
 
-        if (answers.has_key ('remote_server_connect_ipp') and
+        if ('remote_server_connect_ipp' in answers and
             answers['remote_server_connect_ipp'] == False):
             self.label.set_text (_("Please check to see if a firewall or "
                                    "router configuration is blocking TCP "

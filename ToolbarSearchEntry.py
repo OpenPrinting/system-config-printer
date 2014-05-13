@@ -32,7 +32,7 @@ from gi.repository import Gtk
 import HIG
 import config
 import gettext
-gettext.install(domain=config.PACKAGE, localedir=config.localedir, unicode=True)
+gettext.install(domain=config.PACKAGE, localedir=config.localedir)
 
 class ToolbarSearchEntry (Gtk.HBox):
     __gproperties__ = {
@@ -75,7 +75,7 @@ class ToolbarSearchEntry (Gtk.HBox):
         self.pack_start (label, False, True, 0)
 
         self.entry = Gtk.Entry()
-        if Gtk.EntryIconPosition.__dict__.has_key ('PRIMARY'):
+        if 'PRIMARY' in Gtk.EntryIconPosition.__dict__:
             # We have primary/secondary icon support.
             self.entry.set_icon_from_stock (Gtk.EntryIconPosition.PRIMARY,
                                             Gtk.STOCK_FIND)
@@ -98,13 +98,13 @@ class ToolbarSearchEntry (Gtk.HBox):
         if property.name == 'search_timeout':
             return self.search_timeout
         else:
-            raise AttributeError, 'unknown property %s' % property.name
+            raise AttributeError('unknown property %s' % property.name)
 
     def do_set_property (self, property, value):
         if property.name == 'search_timeout':
             self.search_timeout = value
         else:
-            raise AttributeError, 'unknown property %s' % property.name
+            raise AttributeError('unknown property %s' % property.name)
 
     def clear (self):
         if self.timeout != 0:
@@ -151,7 +151,7 @@ class ToolbarSearchEntry (Gtk.HBox):
         else:
             self.on_search_timeout ()
 
-        if Gtk.EntryIconPosition.__dict__.has_key ('PRIMARY'):
+        if 'PRIMARY' in Gtk.EntryIconPosition.__dict__:
             self.entry.set_icon_sensitive (Gtk.EntryIconPosition.SECONDARY, has_text)
             self.entry.set_icon_activatable (Gtk.EntryIconPosition.SECONDARY, has_text)
 
@@ -182,7 +182,7 @@ class ToolbarSearchEntry (Gtk.HBox):
         self.entry.grab_focus ()
 
     def set_drop_down_menu (self, menu):
-        if not Gtk.EntryIconPosition.__dict__.has_key ('PRIMARY'):
+        if 'PRIMARY' not in Gtk.EntryIconPosition.__dict__:
             return
 
         if menu:

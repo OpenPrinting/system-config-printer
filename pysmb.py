@@ -24,7 +24,7 @@
 import errno
 import config
 import gettext
-gettext.install(domain=config.PACKAGE, localedir=config.localedir, unicode=True)
+gettext.install(domain=config.PACKAGE, localedir=config.localedir)
 from gi.repository import Gtk
 import os
 import pwd

@@ -25,16 +25,17 @@ import cups
 import cupshelpers
 from cupshelpers.ppds import PPDs, ppdMakeModelSplit
 import sys
+from functools import reduce
 
 cups.setUser ('root')
 c = cups.Connection ()
 
 devices = None
 if len (sys.argv) > 1 and sys.argv[1] == '--help':
-    print "Syntax: check-device-ids <device-make-and-model> <device-id>"
-    print "    or: check-device-ids <device-uri>"
-    print "    or: check-device-ids <queue-name>"
-    print "    or: check-device-ids"
+    print("Syntax: check-device-ids <device-make-and-model> <device-id>")
+    print("    or: check-device-ids <device-uri>")
+    print("    or: check-device-ids <queue-name>")
+    print("    or: check-device-ids")
     sys.exit (1)
 
 SPECIFIC_URI = None
@@ -54,13 +55,11 @@ elif len (sys.argv) == 2:
             attrs = c.getPrinterAttributes (sys.argv[1])
         except cups.IPPError as e:
             (e, m) = e.args
-            if isinstance(m, bytes):
-                m = m.decode('utf-8', 'replace')
-            print "Error getting printer attibutes: %s" % m
+            print("Error getting printer attibutes: %s" % m)
             sys.exit (1)
 
         SPECIFIC_URI = attrs['device-uri']
-        print "URI for queue %s is %s" % (sys.argv[1], SPECIFIC_URI)
+        print("URI for queue %s is %s" % (sys.argv[1], SPECIFIC_URI))
 else:
     print ("\nIf you have not already done so, you may get more results\n"
            "by temporarily disabling your firewall (or by allowing\n"
@@ -68,7 +67,7 @@ else:
 
 if devices == None:
     if not SPECIFIC_URI:
-        print "Examining connected devices"
+        print("Examining connected devices")
 
     try:
         if SPECIFIC_URI:
@@ -79,11 +78,10 @@ if devices == None:
     except cups.IPPError as e:
         (e, m) = e.args
         if e == cups.IPP_FORBIDDEN:
-            print "Run this as root to examine IDs from attached devices."
+            print("Run this as root to examine IDs from attached devices.")
             sys.exit (1)
-
         if e in (cups.IPP_NOT_AUTHORIZED, cups.IPP_AUTHENTICATION_CANCELED):
-            print "Not authorized."
+            print("Not authorized.")
             sys.exit (1)
 
 if SPECIFIC_URI:
@@ -92,12 +90,12 @@ if SPECIFIC_URI:
                         { 'device-make-and-model': '',
                           'device-id': ''} }
 if len (devices) == 0:
-    print "No attached devices."
+    print("No attached devices.")
     sys.exit (0)
 
 n = 0
 device_ids = []
-for device, attrs in devices.iteritems ():
+for device, attrs in devices.items ():
     if device.find (":") == -1:
         continue
 
@@ -131,7 +129,7 @@ for device, attrs in devices.iteritems ():
                 pf.hostname = hostname
                 pf.callback_fn = got_device
                 pf._cached_attributes = dict()
-                print "Sending SNMP request to %s for device-id" % hostname
+                print("Sending SNMP request to %s for device-id" % hostname)
                 pf._probe_snmp ()
 
                 for dev in devs:
@@ -145,10 +143,10 @@ for device, attrs in devices.iteritems ():
                                            dev.make_and_model})
 
         except Exception as e:
-            print "Exception: %s" % repr (e)
+            print("Exception: %s" % repr (e))
 
     if not (make_and_model and device_id):
-        print "Skipping %s, insufficient data" % device
+        print("Skipping %s, insufficient data" % device)
         continue
 
     id_fields = cupshelpers.parseDeviceID (device_id)
@@ -157,13 +155,13 @@ for device, attrs in devices.iteritems ():
     n += 1
 
 if not device_ids:
-    print "No Device IDs available."
+    print("No Device IDs available.")
     sys.exit (0)
 
 try:
     bus = dbus.SessionBus ()
 
-    print "Installing relevant drivers using session service"
+    print("Installing relevant drivers using session service")
     try:
         obj = bus.get_object ("org.freedesktop.PackageKit",
                               "/org/freedesktop/PackageKit")
@@ -171,12 +169,12 @@ try:
         proxy.InstallPrinterDrivers (0, device_ids,
                                      "hide-finished", timeout=3600)
     except dbus.exceptions.DBusException as e:
-        print "Ignoring exception: %s" % e
+        print("Ignoring exception: %s" % e)
 except dbus.exceptions.DBusException:
     try:
         bus = dbus.SystemBus ()
 
-        print "Installing relevant drivers using system service"
+        print("Installing relevant drivers using system service")
         try:
             obj = bus.get_object ("com.redhat.PrinterDriversInstaller",
                                   "/com/redhat/PrinterDriversInstaller")
@@ -187,12 +185,12 @@ except dbus.exceptions.DBusException:
                 proxy.InstallDrivers (id_dict['MFG'], id_dict['MDL'], '',
                                       timeout=3600)
         except dbus.exceptions.DBusException as e:
-            print "Ignoring exception: %s" % e
+            print("Ignoring exception: %s" % e)
     except dbus.exceptions.DBusException:
-        print "D-Bus not available so skipping package installation"
+        print("D-Bus not available so skipping package installation")
 
 
-print "Fetching driver list"
+print("Fetching driver list")
 ppds = PPDs (c.getPPDs ())
 ppds._init_ids ()
 makes = ppds.getMakes ()
@@ -235,13 +233,13 @@ def driver_uri_to_pkg (uri):
 
 i = 1
 if sys.stdout.encoding == 'UTF-8':
-    item = unichr (0x251c) + unichr (0x2500) + unichr (0x2500)
-    last = unichr (0x2514) + unichr (0x2500) + unichr (0x2500)
+    item = chr (0x251c) + chr (0x2500) + chr (0x2500)
+    last = chr (0x2514) + chr (0x2500) + chr (0x2500)
 else:
     item = "|--"
     last = "`--"
 
-for device, attrs in devices.iteritems ():
+for device, attrs in devices.items ():
     make_and_model = attrs.get ('device-make-and-model')
     device_id = attrs.get ('device-id')
     if device.find (":") == -1:
@@ -263,11 +261,11 @@ for device, attrs in devices.iteritems ():
         cmd = ""
 
     scheme = device.split (":", 1)[0]
-    print "%s %s (%s): MFG:%s;MDL:%s;%s" % (line, make_and_model,
+    print("%s %s (%s): MFG:%s;MDL:%s;%s" % (line, make_and_model,
                                             scheme,
                                             id_fields['MFG'],
                                             id_fields['MDL'],
-                                            cmd)
+                                            cmd))
     
     try:
         drivers = ppds.ids[id_fields['MFG'].lower ()][id_fields['MDL'].lower ()]
@@ -275,7 +273,7 @@ for device, attrs in devices.iteritems ():
         drivers = []
 
     if i < n:
-        more = unichr (0x2502)
+        more = chr (0x2502)
     else:
         more = " "
 
@@ -285,15 +283,15 @@ for device, attrs in devices.iteritems ():
         j = 1
         for driver in drivers:
             if j < n_drivers:
-                print "%s   %s %s [%s]" % (more, item, driver,
-                                           driver_uri_to_pkg (driver))
+                print("%s   %s %s [%s]" % (more, item, driver,
+                                           driver_uri_to_pkg (driver)))
             else:
-                print "%s   %s %s [%s]" % (more, last, driver,
-                                           driver_uri_to_pkg (driver))
+                print("%s   %s %s [%s]" % (more, last, driver,
+                                           driver_uri_to_pkg (driver)))
 
             j += 1
     else:
-        print "%s   (No drivers)" % more
+        print("%s   (No drivers)" % more)
 
     (mfr, mdl) = ppdMakeModelSplit (make_and_model)
     matches = set (ppds.getInfoFromModel (mfr, mdl))
@@ -313,7 +311,7 @@ for device, attrs in devices.iteritems ():
         try:
             ppd_device_id = ppds.getInfoFromPPDName (each).get ('ppd-device-id')
         except Exception as e:
-            print e
+            print(e)
             ppd_device_id = None
 
         if ppd_device_id:
@@ -322,16 +320,16 @@ for device, attrs in devices.iteritems ():
             ppd_id_fields = {}
 
         if ppd_id_fields.get ("MFG") and ppd_id_fields.get ("MDL"):
-            print "%s       WRONG    %s [%s]" % (more, each,
-                                                 driver_uri_to_pkg (each))
+            print("%s       WRONG    %s [%s]" % (more, each,
+                                                 driver_uri_to_pkg (each)))
             for field in ["MFG", "MDL"]:
                 value = id_fields[field]
                 ppd_value = ppd_id_fields[field]
                 if value.lower () != ppd_value.lower ():
-                    print "%s                      %s:%s;" % (more, field, ppd_value)
-                    print "%s                should be:%s;" % (more, value)
+                    print("%s                      %s:%s;" % (more, field, ppd_value))
+                    print("%s                should be:%s;" % (more, value))
         else:
-            print "%s       MISSING  %s [%s]" % (more, each,
-                                                 driver_uri_to_pkg (each))
+            print("%s       MISSING  %s [%s]" % (more, each,
+                                                 driver_uri_to_pkg (each)))
 
     i += 1

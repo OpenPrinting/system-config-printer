@@ -27,7 +27,7 @@ import os
 import tempfile
 import time
 from timedops import TimedOperation
-from base import *
+from .base import *
 class ErrorLogFetch(Question):
     def __init__ (self, troubleshooter):
         Question.__init__ (self, troubleshooter, "Error log fetch")
@@ -43,7 +43,7 @@ class ErrorLogFetch(Question):
         except KeyError:
             checkpoint = None
 
-        if self.persistent_answers.has_key ('error_log'):
+        if 'error_log' in self.persistent_answers:
             checkpoint = None
 
         def fetch_log (c):
@@ -68,7 +68,7 @@ class ErrorLogFetch(Question):
             return None
 
         self.authconn = self.troubleshooter.answers['_authenticated_connection']
-        if answers.has_key ('error_log_debug_logging_set'):
+        if 'error_log_debug_logging_set' in answers:
             try:
                 self.op = TimedOperation (self.authconn.adminGetServerSettings,
                                           parent=parent)
@@ -110,12 +110,11 @@ class ErrorLogFetch(Question):
                                       parent=parent)
             tmpfname = self.op.run ()
             if tmpfname != None:
-                f = file (tmpfname)
+                f = open (tmpfname)
                 f.seek (checkpoint)
                 lines = f.readlines ()
                 os.remove (tmpfname)
-                self.answers = { 'error_log': map (lambda x: x.strip (),
-                                                   lines) }
+                self.answers = { 'error_log': [x.strip () for x in lines] }
 
         return False
 

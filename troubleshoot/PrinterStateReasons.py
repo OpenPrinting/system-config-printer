@@ -26,7 +26,8 @@ import cups
 import ppdcache
 import statereason
 from timedops import TimedOperation
-from base import *
+from .base import *
+from functools import reduce
 class PrinterStateReasons(Question):
     def __init__ (self, troubleshooter):
         Question.__init__ (self, troubleshooter, "Printer state reasons")
@@ -65,7 +66,7 @@ class PrinterStateReasons(Question):
             text += '\n\n'
 
         state_reasons_list = dict['printer-state-reasons']
-        if type (state_reasons_list) == unicode:
+        if type (state_reasons_list) == str:
             state_reasons_list = [state_reasons_list]
 
         self.state_message = state_message
@@ -102,7 +103,7 @@ class PrinterStateReasons(Question):
 
         # If this screen has been show before, don't show it again if
         # nothing changed.
-        if troubleshooter.answers.has_key ('printer-state-message'):
+        if 'printer-state-message' in troubleshooter.answers:
             if (troubleshooter.answers['printer-state-message'] ==
                 self.state_message and
                 troubleshooter.answers['printer-state-reasons'] ==

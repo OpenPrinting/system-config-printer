@@ -32,7 +32,7 @@ import tempfile
 import time
 from timedops import TimedOperation, OperationCanceled
 
-from base import *
+from .base import *
 
 import errordialogs
 from errordialogs import *
@@ -127,7 +127,7 @@ class PrintTestPage(Question):
 
     def display (self):
         answers = self.troubleshooter.answers
-        if not answers.has_key ('cups_queue'):
+        if 'cups_queue' not in answers:
             return False
 
         parent = self.troubleshooter.get_window ()
@@ -135,7 +135,7 @@ class PrintTestPage(Question):
         mediatype = None
         defaults = answers.get ('cups_printer_ppd_defaults', {})
         for opts in defaults.values ():
-            for opt, value in opts.iteritems ():
+            for opt, value in opts.items ():
                 if opt == "MediaType":
                     mediatype = value
                     break
@@ -188,10 +188,9 @@ class PrintTestPage(Question):
         # We want to display the jobs in the queue for this printer...
         try:
             queue_uri_ending = "/" + self.troubleshooter.answers['cups_queue']
-            jobs_on_this_printer = filter (lambda x:
-                                               jobs_dict[x]['job-printer-uri'].\
-                                               endswith (queue_uri_ending),
-                                           jobs_dict.keys ())
+            jobs_on_this_printer = [x for x in jobs_dict.keys () if \
+                                            jobs_dict[x]['job-printer-uri']. \
+                                            endswith (queue_uri_ending)]
         except:
             jobs_on_this_printer = []
 
@@ -392,7 +391,7 @@ class PrintTestPage(Question):
                     jobid = self.op.run ()
                 elif mimetype == 'text/plain':
                     (tmpfd, tmpfname) = tempfile.mkstemp ()
-                    os.write (tmpfd, "This is a test page.\n")
+                    os.write (tmpfd, b"This is a test page.\n")
                     os.close (tmpfd)
                     self.op = TimedOperation (print_test_page,
                                               (answers['cups_queue'],),
@@ -419,8 +418,6 @@ class PrintTestPage(Question):
                 break
             except cups.IPPError as e:
                 (e, s) = e.args
-                if isinstance(s, bytes):
-                    s = s.decode('utf-8', 'replace')
                 if (e == cups.IPP_DOCUMENT_FORMAT and
                     mimetypes.index (mimetype) < (len (mimetypes) - 1)):
                     # Try next format.
@@ -439,7 +436,7 @@ class PrintTestPage(Question):
     def cancel_clicked (self, widget):
         self.persistent_answers['test_page_jobs_cancelled'] = True
         jobids = []
-        for jobid, iter in self.job_to_iter.iteritems ():
+        for jobid, iter in self.job_to_iter.items ():
             jobids.append (jobid)
 
         def cancel_jobs (jobids):
@@ -449,8 +446,6 @@ class PrintTestPage(Question):
                     c.cancelJob (jobid)
                 except cups.IPPError as e:
                     (e, s) = e.args
-                    if isinstance(s, bytes):
-                        s = s.decode('utf-8', 'replace')
                     if e != cups.IPP_NOT_POSSIBLE:
                         self.persistent_answers['test_page_cancel_failure'] = (e, s)
 
@@ -518,7 +513,7 @@ class PrintTestPage(Question):
                     model.set_value (iter, 1, job)
                 else:
                     continue
-            elif not self.job_to_iter.has_key (job):
+            elif job not in self.job_to_iter:
                 continue
 
             if (job in test_jobs and

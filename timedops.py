@@ -27,7 +27,7 @@ import subprocess
 import threading
 import config
 import gettext
-gettext.install(domain=config.PACKAGE, localedir=config.localedir, unicode=True)
+gettext.install(domain=config.PACKAGE, localedir=config.localedir)
 from debug import *
 
 # Initialise threading for D-Bus.  This is needed as long as it is
@@ -94,7 +94,7 @@ class TimedSubprocess(Timed):
     def watcher (self, source, condition):
         if condition & GLib.IO_IN:
             buffer = self.output.get (source, '')
-            buffer += source.read ()
+            buffer += (source.read ()).decode("utf-8")
             self.output[source] = buffer
 
         if condition & GLib.IO_HUP:

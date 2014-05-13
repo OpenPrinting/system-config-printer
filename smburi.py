@@ -20,10 +20,10 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-import urllib
+import urllib.parse
 
 def urlquote (x):
-    q = urllib.quote (x)
+    q = urllib.parse.quote (x)
     for c in ["/", "@", ":"]:
         q = q.replace (c, "%%%02X" % ord (c))
 
@@ -37,7 +37,6 @@ class SMBURI:
             if group or host or share or user or password:
                 raise RuntimeError
 
-            uri = uri.encode ('utf-8')
             if uri.startswith ("smb://"):
                 uri = uri[6:]
 
@@ -98,6 +97,6 @@ class SMBURI:
             if p != -1:
                 host = host[:p]
         share = uri
-        return (urllib.unquote (group), urllib.unquote (host),
-                urllib.unquote (share),
-                urllib.unquote (user), urllib.unquote (password))
+        return (urllib.parse.unquote (group), urllib.parse.unquote (host),
+                urllib.parse.unquote (share),
+                urllib.parse.unquote (user), urllib.parse.unquote (password))

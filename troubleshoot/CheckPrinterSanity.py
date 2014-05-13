@@ -27,8 +27,8 @@ import os
 import smburi
 import subprocess
 from timedops import TimedOperation, TimedSubprocess
-import urllib
-from base import *
+import urllib.parse
+from .base import *
 class CheckPrinterSanity(Question):
     def __init__ (self, troubleshooter):
         Question.__init__ (self, troubleshooter, "Check printer sanity")
@@ -53,7 +53,7 @@ class CheckPrinterSanity(Question):
             cups.setServer ('')
             c = TimedOperation (cups.Connection, parent=parent).run ()
             printers = TimedOperation (c.getPrinters, parent=parent).run ()
-            if printers.has_key (name):
+            if name in printers:
                 self.answers['is_cups_class'] = False
                 queue = printers[name]
                 self.answers['cups_printer_dict'] = queue
@@ -69,14 +69,14 @@ class CheckPrinterSanity(Question):
         except:
             pass
 
-        if self.answers.has_key ('cups_printer_dict'):
+        if 'cups_printer_dict' in self.answers:
             cups_printer_dict = self.answers['cups_printer_dict']
             uri = cups_printer_dict['device-uri']
-            (scheme, rest) = urllib.splittype (uri)
+            (scheme, rest) = urllib.parse.splittype (uri)
             self.answers['cups_device_uri_scheme'] = scheme
             if scheme in ["ipp", "http", "https"]:
-                (hostport, rest) = urllib.splithost (rest)
-                (host, port) = urllib.splitnport (hostport, defport=631)
+                (hostport, rest) = urllib.parse.splithost (rest)
+                (host, port) = urllib.parse.splitnport (hostport, defport=631)
                 self.answers['remote_server_name'] = host
                 self.answers['remote_server_port'] = port
             elif scheme == "smb":

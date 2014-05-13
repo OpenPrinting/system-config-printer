@@ -30,7 +30,7 @@ class PackageKit:
                 self.gpk_install_package_name = path
                 return
 
-        raise RuntimeError, "No gpk-install-package-name program available"
+        raise RuntimeError("No gpk-install-package-name program available")
 
     def InstallPackageName (self, xid, timestamp, name):
         GLib.spawn_async ([self.gpk_install_package_name, name])
