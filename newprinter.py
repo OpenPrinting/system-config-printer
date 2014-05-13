@@ -3856,8 +3856,7 @@ class NewPrinterGUI(GtkGUI):
                                           stdout=subprocess.PIPE,
                                           stderr=subprocess.PIPE)
                     (stdout, stderr) = p.communicate ()
-                    # TODO: remove the decode() after merging python3 branch
-                    err += stdout.decode ('utf-8', 'replace')
+                    err += stdout
                 except:
                     # Problem executing command.
                     raise
