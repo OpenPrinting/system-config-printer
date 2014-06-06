@@ -2,7 +2,7 @@
 
 ## Printing troubleshooter
 
-## Copyright (C) 2008, 2010 Red Hat, Inc.
+## Copyright (C) 2008, 2010, 2014 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 
@@ -28,6 +28,12 @@ import tempfile
 import time
 from timedops import TimedOperation
 from .base import *
+
+try:
+    from systemd import journal
+except:
+    journal = False
+
 class ErrorLogFetch(Question):
     def __init__ (self, troubleshooter):
         Question.__init__ (self, troubleshooter, "Error log fetch")
@@ -38,13 +44,13 @@ class ErrorLogFetch(Question):
         answers = self.troubleshooter.answers
         parent = self.troubleshooter.get_window ()
         self.answers = {}
-        try:
-            checkpoint = answers['error_log_checkpoint']
-        except KeyError:
-            checkpoint = None
+        checkpoint = answers.get ('error_log_checkpoint')
+        cursor = answers.get ('error_log_cursor')
 
-        if 'error_log' in self.persistent_answers:
+        if ('error_log' in self.persistent_answers or
+            'journal' in self.persistent_answers):
             checkpoint = None
+            cursor = None
 
         def fetch_log (c):
             prompt = c._get_prompt_allowed ()
@@ -103,6 +109,23 @@ class ErrorLogFetch(Question):
                 self.persistent_answers['error_log_debug_logging_unset'] = True
             except cups.IPPError:
                 pass
+
+        self.answers = {}
+        if journal and cursor != None:
+            def journal_format (x):
+                try:
+                    priority = "XACEWNIDd"[x['PRIORITY']]
+                except (IndexError, TypeError):
+                    priority = " "
+
+                return (priority + " " +
+                        x['__REALTIME_TIMESTAMP'].strftime("[%m/%b/%Y:%T]") +
+                        " " + x['MESSAGE'])
+
+            r = journal.Reader ()
+            r.seek_cursor (cursor)
+            r.add_match (_COMM="cupsd")
+            self.answers['journal'] = map (journal_format, r)
 
         if checkpoint != None:
             self.op = TimedOperation (fetch_log,
