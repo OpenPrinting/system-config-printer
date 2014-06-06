@@ -2,7 +2,7 @@
 
 ## Printing troubleshooter
 
-## Copyright (C) 2008, 2012 Red Hat, Inc.
+## Copyright (C) 2008, 2012, 2014 Red Hat, Inc.
 ## Copyright (C) 2008 Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
@@ -41,18 +41,26 @@ class ErrorLogParse(Question):
     def display (self):
         answers = self.troubleshooter.answers
         try:
-            error_log = answers['error_log']
+            journal = answers.get ('journal')
+            error_log = answers.get ('error_log')
         except KeyError:
             return False
 
         display = False
-        for line in error_log:
-            if line[0] == 'E':
-                display = True
-                break
+        if error_log:
+            for line in error_log:
+                if line[0] == 'E':
+                    display = error_log
+                    break
+
+        if journal and not display:
+            for line in journal:
+                if line[0] == 'E':
+                    display = journal
+                    break
 
         if display:
             self.buffer.set_text (reduce (lambda x, y: x + '\n' + y, 
-                                          error_log))
+                                          display))
 
-        return display
+        return display != False
