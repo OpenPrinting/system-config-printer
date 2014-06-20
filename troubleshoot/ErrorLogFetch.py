@@ -125,7 +125,7 @@ class ErrorLogFetch(Question):
             r = journal.Reader ()
             r.seek_cursor (cursor)
             r.add_match (_COMM="cupsd")
-            self.answers['journal'] = map (journal_format, r)
+            self.answers['journal'] = [journal_format (x) for x in r]
 
         if checkpoint != None:
             self.op = TimedOperation (fetch_log,
