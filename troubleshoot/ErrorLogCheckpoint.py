@@ -145,7 +145,7 @@ class ErrorLogCheckpoint(Question):
                 os.remove (tmpfname)
             except OSError:
                 pass
-        except cups.HTTPError, e:
+        except cups.HTTPError as e:
             try:
                 os.remove (tmpfname)
             except OSError:
