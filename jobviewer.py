@@ -1181,7 +1181,7 @@ class JobViewer (GtkGUI):
             Gtk.main_iteration ()
 
     def on_treeview_popup_menu (self, treeview):
-        event = Gdk.Event (Gdk.NOTHING)
+        event = Gdk.Event (Gdk.EventType.NOTHING)
         self.show_treeview_popup_menu (treeview, event, 0)
 
     def on_treeview_button_release_event(self, treeview, event):
