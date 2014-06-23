@@ -194,34 +194,6 @@ class GetBestDriversRequest:
                                                           fit=fit)
             ppdname = ppdnamelist[0]
             status = fit[ppdname]
-
-            try:
-                if status != "exact" and not self.download_tried:
-                    self.download_tried = True
-                    self.loop = GObject.MainLoop ()
-                    self.dialog = newprinter.NewPrinterGUI()
-                    self.dialog.NewPrinterWindow.set_modal (False)
-                    self.handles = \
-                        [self.dialog.connect ('dialog-canceled',
-                                              self.on_dialog_canceled),
-                         self.dialog.connect ('driver-download-checked',
-                                              self.on_driver_download_checked)]
-                    if self.dialog.init ('download_driver',
-                                         devid=self.device_id):
-                        self.loop.run()
-                    for handle in self.handles:
-                        self.dialog.disconnect (handle)
-                    if len(self.installed_files) > 0:
-                        debugprint ("GetBestDrivers request: Re-fetch PPDs after driver download")
-                        g_ppds = FetchedPPDs (self.cupsconn, self.language)
-                        self._signals.append (g_ppds.connect ('ready', self._ppds_ready))
-                        self._signals.append (g_ppds.connect ('error', self._ppds_error))
-                        g_ppds.run ()
-                        return
-            except:
-                # Ignore driver download if packages needed for the GUI are not
-                # installed or if no windows can be opened
-                pass
             g_killtimer.remove_hold ()
             self.reply_handler ([(x, fit[x]) for x in ppdnamelist])
         except Exception as e:

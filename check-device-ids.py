@@ -27,7 +27,6 @@ from cupshelpers.ppds import PPDs, ppdMakeModelSplit
 import sys
 from functools import reduce
 
-cups.setUser ('root')
 c = cups.Connection ()
 
 devices = None
@@ -68,6 +67,9 @@ else:
 if devices == None:
     if not SPECIFIC_URI:
         print("Examining connected devices")
+
+    cups.setUser ('root')
+    c = cups.Connection ()
 
     try:
         if SPECIFIC_URI:
