@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-## Copyright (C) 2008, 2009, 2010, 2012 Red Hat, Inc.
+## Copyright (C) 2008, 2009, 2010, 2012, 2014 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 
@@ -158,11 +158,17 @@ class PhysicalDevice:
                 self.dnssd_hostname = dnssdhost;
 
         if (hasattr (device, 'address') and self._network_host == None):
-            if device.address:
-                self._network_host = device.address
+            address = device.address
+            if address:
+                if type (address) == unicode:
+                    address = address.encode ('utf-8')
+                self._network_host = address
         if (hasattr (device, 'hostname') and self.dnssd_hostname == None):
-            if device.hostname:
-                self.dnssd_hostname = device.hostname
+            hostname = device.hostname
+            if hostname:
+                if type (hostname) == unicode:
+                    hostname = hostname.encode ('utf-8')
+                self.dnssd_hostname = hostname
 
     def get_devices (self):
         return self.devices
