@@ -27,6 +27,7 @@ import config
 import sys, os, time, re
 import thread
 import dbus
+from gi.repository import Polkit
 from gi.repository import GdkPixbuf
 try:
     from gi.repository import Gdk
@@ -159,6 +160,7 @@ class GUI(GtkGUI):
         self.updating_widgets = False
         self.getWidgets({"PrintersWindow":
                              ["PrintersWindow",
+                              "hboxMenuBar",
                               "view_area_vbox",
                               "view_area_scrolledwindow",
                               "dests_notebook",
@@ -199,6 +201,12 @@ class GUI(GtkGUI):
                                        self.on_connectingdialog_delete)
 
         Gtk.Window.set_default_icon_name ('printer')
+
+        edit_action = 'org.opensuse.cupspkhelper.mechanism.all-edit'
+        self.edit_permission = Polkit.Permission.new_sync (edit_action,
+                                                           None, None)
+        self.unlock_button = Gtk.LockButton ()
+        self.hboxMenuBar.pack_start (self.unlock_button, False, False, 12)
 
         # Printer Actions
         printer_manager_action_group = \
@@ -452,11 +460,11 @@ class GUI(GtkGUI):
         self.setConnected()
 
         if len (self.printers) > 4:
-            self.PrintersWindow.set_default_size (720, 330)
+            self.PrintersWindow.set_default_size (720, 345)
         elif len (self.printers) > 2:
-            self.PrintersWindow.set_default_size (500, 330)
+            self.PrintersWindow.set_default_size (500, 345)
         elif len (self.printers) > 1:
-            self.PrintersWindow.set_default_size (500, 165)
+            self.PrintersWindow.set_default_size (500, 180)
 
 
         self.PrintersWindow.show()
@@ -672,8 +680,14 @@ class GUI(GtkGUI):
         self.PrintersWindow.set_title(_("Print Settings - %s") % host)
 
         if connected:
+            if self.cups._using_polkit ():
+                self.unlock_button.set_permission (self.edit_permission)
+            else:
+                self.unlock_button.set_permission (None)
+
             status_msg = _("Connected to %s") % host
         else:
+            self.unlock_button.set_permission (None)
             status_msg = _("Not connected")
         self.statusbarMain.push(self.status_context_id, status_msg)
 
