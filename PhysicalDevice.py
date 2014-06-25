@@ -156,14 +156,10 @@ class PhysicalDevice:
         if (hasattr (device, 'address') and self._network_host == None):
             address = device.address
             if address:
-                if type (address) == unicode:
-                    address = address.encode ('utf-8')
                 self._network_host = address
         if (hasattr (device, 'hostname') and self.dnssd_hostname == None):
             hostname = device.hostname
             if hostname:
-                if type (hostname) == unicode:
-                    hostname = hostname.encode ('utf-8')
                 self.dnssd_hostname = hostname
 
     def get_devices (self):
