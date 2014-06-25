@@ -701,7 +701,7 @@ class GUI(GtkGUI):
                                   self.cups_connection_error)
             self.monitor.connect ('cups-connection-recovered',
                                   self.cups_connection_recovered)
-            self.monitor.refresh ()
+            GObject.idle_add (self.monitor.refresh)
             self.propertiesDlg.set_monitor (self.monitor)
 
     def getServers(self):
