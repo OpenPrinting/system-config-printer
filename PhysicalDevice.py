@@ -226,17 +226,12 @@ class PhysicalDevice:
                                                                self.mdl,
                                                                self.sn)
 
-    def __lt__(self, other):
-        if other == None or type (other) != type (self):
-            return -1
+    def __eq__(self, other):
+        if type (other) != type (self):
+            return False
 
-        if (self._network_host != None and
-            other._network_host != None):
-            return self._network_host < other._network_host
-
-        if (self._network_host == None and
-           other._network_host != None):
-           return True
+        if self._network_host != other._network_host:
+            return False
 
         devs = other.get_devices()
         if devs:
@@ -244,42 +239,84 @@ class PhysicalDevice:
             for dev in devs:
                 if dev.uri in uris:
                     # URI match
-                    return 0
+                    return True
 
-        if (other.mfg == '' and other.mdl == '') or \
-           (self.mfg == '' and self.mdl == ''):
+        if ((other.mfg == '' and other.mdl == '') or
+            (self.mfg == ''  and self.mdl == '')):
+            if other.mfg == '' and self.mfg == '':
+                # Both just a backend, not a real physical device.
+                return self.devices[0] == other.devices[0]
+
             # One or other is just a backend, not a real physical device.
-            if other.mfg == '' and other.mdl == '' and \
-               self.mfg == '' and self.mdl == '':
-                return  self.devices[0] > other.devices[0]
+            return False
 
-            if other.mfg == '' and other.mdl == '':
-                return 1
-            return -1
+        def split_make_and_model (dev):
+            if dev.mfg == '' or dev.mdl.lower ().startswith (dev.mfg.lower ()):
+                make_and_model = dev.mdl
+            else:
+                make_and_model = "%s %s" % (dev.mfg, dev.mdl)
+            return cupshelpers.ppds.ppdMakeModelSplit (make_and_model)
 
-        if self.mfg == '' or self.mdl.lower ().startswith (self.mfg.lower ()):
-            our_make_and_model = self.mdl
-        else:
-            our_make_and_model = "%s %s" % (self.mfg, self.mdl)
-        (our_mfg, our_mdl) = \
-            cupshelpers.ppds.ppdMakeModelSplit (our_make_and_model)
+        (our_mfg, our_mdl) = split_make_and_model (self)
+        (other_mfg, other_mdl) = split_make_and_model (other)
 
-        if other.mfg == '' or \
-                other.mdl.lower ().startswith (other.mfg.lower ()):
-            other_make_and_model = other.mdl
-        else:
-            other_make_and_model = "%s %s" % (other.mfg, other.mdl)
-        (other_mfg, other_mdl) = \
-            cupshelpers.ppds.ppdMakeModelSplit (other_make_and_model)
+        if our_mfg != other_mfg or our_mdl != other_mdl:
+            return False
 
-        mfgcmp = lt (our_mfg.lower (), other_mfg.lower ())
-        if mfgcmp != 0:
-            return mfgcmp
-        mdlcmp = lt (our_mdl.lower (), other_mdl.lower ())
-        if mdlcmp != 0:
-            return mdlcmp
         if self.sn == '' or other.sn == '':
-            return 0
+            return True
+
+        return self.sn == other.sn
+
+    def __lt__(self, other):
+        if type (other) != type (self):
+            return False
+
+        if self._network_host != other._network_host:
+            if self._network_host == None:
+                return True
+
+            if other._network_host == None:
+                return False
+
+            return self._network_host < other._network_host
+
+        devs = other.get_devices()
+        if devs:
+            uris = [x.uri for x in self.devices]
+            for dev in devs:
+                if dev.uri in uris:
+                    # URI match, so compare equal. Not less than.
+                    return False
+
+        if ((other.mfg == '' and other.mdl == '') or
+            (self.mfg == ''  and self.mdl == '')):
+            if other.mfg == '' and self.mfg == '':
+                # Both just a backend, not a real physical device.
+                return self.devices[0] < other.devices[0]
+
+            # One or other is just a backend, not a real physical device.
+            return other.mfg == '' and other.mdl == ''
+
+        def split_make_and_model (dev):
+            if dev.mfg == '' or dev.mdl.lower ().startswith (dev.mfg.lower ()):
+                make_and_model = dev.mdl
+            else:
+                make_and_model = "%s %s" % (dev.mfg, dev.mdl)
+            return cupshelpers.ppds.ppdMakeModelSplit (make_and_model)
+
+        (our_mfg, our_mdl) = split_make_and_model (self)
+        (other_mfg, other_mdl) = split_make_and_model (other)
+
+        if our_mfg != other_mfg:
+            return our_mfg < other_mfg
+
+        if our_mdl != other_mdl:
+            return our_mdl < other_mdl
+
+        if self.sn == '' or other.sn == '':
+            return False
+
         return self.sn < other.sn
 
 if __name__ == '__main__':
