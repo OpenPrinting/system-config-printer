@@ -1,5 +1,5 @@
 
-## Copyright (C) 2007, 2008, 2009, 2010, 2011, 2012, 2013 Red Hat, Inc.
+## Copyright (C) 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 ##  Jiri Popelka <jpopelka@redhat.com>
@@ -2246,18 +2246,30 @@ class JobViewer (GtkGUI):
 
     def _set_job_user_text (self, column, cell, model, iter, *data):
         jobid = model.get_value (iter, 0)
-        job = self.jobs[jobid]
+        try:
+            job = self.jobs[jobid]
+        except KeyError:
+            return
+
         cell.set_property("text", job.get ('job-originating-user-name',
                                            _("Unknown")))
 
     def _set_job_document_text (self, column, cell, model, iter, *data):
         jobid = model.get_value (iter, 0)
-        job = self.jobs[jobid]
+        try:
+            job = self.jobs[jobid]
+        except KeyError:
+            return
+
         cell.set_property("text", job.get('job-name', _("Unknown")))
 
     def _set_job_printer_text (self, column, cell, model, iter, *data):
         jobid = model.get_value (iter, 0)
-        reasons = self.jobs[jobid].get('job-state-reasons')
+        try:
+            reasons = self.jobs[jobid].get('job-state-reasons')
+        except KeyError:
+            return
+
         if reasons == 'printer-stopped':
             reason = ' - ' + _("disabled")
         else:
@@ -2266,14 +2278,22 @@ class JobViewer (GtkGUI):
 
     def _set_job_size_text (self, column, cell, model, iter, *data):
         jobid = model.get_value (iter, 0)
-        job = self.jobs[jobid]
+        try:
+            job = self.jobs[jobid]
+        except KeyError:
+            return
+
         size = _("Unknown")
         if job.has_key ('job-k-octets'):
             size = str (job['job-k-octets']) + 'k'
         cell.set_property("text", size)
 
     def _find_job_state_text (self, job):
-        data = self.jobs[job]
+        try:
+            data = self.jobs[job]
+        except KeyError:
+            return
+
         jstate = data.get ('job-state', cups.IPP_JOB_PROCESSING)
         s = int (jstate)
         job_requires_auth = (s == cups.IPP_JOB_HELD and
@@ -2353,7 +2373,11 @@ class JobViewer (GtkGUI):
 
     def _set_job_status_icon (self, column, cell, model, iter, *data):
         jobid = model.get_value (iter, 0)
-        data = self.jobs[jobid]
+        try:
+            data = self.jobs[jobid]
+        except KeyError:
+            return
+
         jstate = data.get ('job-state', cups.IPP_JOB_PROCESSING)
         s = int (jstate)
         if s == cups.IPP_JOB_PROCESSING:
@@ -2385,7 +2409,11 @@ class JobViewer (GtkGUI):
 
     def _set_job_status_text (self, column, cell, model, iter, *data):
         jobid = model.get_value (iter, 0)
-        data = self.jobs[jobid]
+        try:
+            data = self.jobs[jobid]
+        except KeyError:
+            return
+
         try:
             text = data['_status_text']
         except KeyError:
