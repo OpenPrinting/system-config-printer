@@ -3810,7 +3810,7 @@ class NewPrinterGUI(GtkGUI):
                 treeview = self.tvNPDownloadableDrivers
                 model, iter = treeview.get_selection ().get_selected ()
                 driver = model.get_value (iter, 1)
-                if driver != None and driver.has_key ('ppds'):
+                if driver != 0 and driver.has_key ('ppds'):
                     # Only need to download a PPD.
                     if (len(driver['ppds']) > 0):
                         file_to_download = driver['ppds'][0]
