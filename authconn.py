@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-## Copyright (C) 2007, 2008, 2009, 2010, 2011, 2013 Red Hat, Inc.
+## Copyright (C) 2007, 2008, 2009, 2010, 2011, 2013, 2014 Red Hat, Inc.
 ## Author: Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
@@ -217,6 +217,9 @@ class Connection:
             if not type (fn) in [methodtype_lambda, methodtype_real]:
                 continue
             setattr (self, fname, self._make_binding (fname, fn))
+
+    def _using_polkit (self):
+        return isinstance (self._connection, cupspk.Connection)
 
     def _make_binding (self, fname, fn):
         return lambda *args, **kwds: self._authloop (fname, fn, *args, **kwds)

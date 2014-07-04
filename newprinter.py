@@ -470,6 +470,7 @@ class NewPrinterGUI(GtkGUI):
         slct.set_select_function (self.device_select_function, None)
         self.tvNPDevices.set_row_separator_func (self.device_row_separator_fn, None)
         self.tvNPDevices.connect ("row-activated", self.device_row_activated)
+        self.tvNPDevices.connect ("row-expanded", self.device_row_expanded)
 
         # Devices expander
         self.expNPDeviceURIs.connect ("notify::expanded",
@@ -1759,7 +1760,6 @@ class NewPrinterGUI(GtkGUI):
         self.add_devices (result, current_uri)
 
     def network_devices_reply (self, conn, result, current_uri):
-        self.dec_spinner_task ()
         self.fetchDevices_conn._end_operation ()
         self.fetchDevices_conn.destroy ()
         self.fetchDevices_conn = None
@@ -1779,12 +1779,16 @@ class NewPrinterGUI(GtkGUI):
 
         if len (need_resolving) > 0:
             resolver = dnssdresolve.DNSSDHostNamesResolver (need_resolving)
+            self.inc_spinner_task ()
             resolver.resolve (reply_handler=lambda devices:
                                   self.dnssd_resolve_reply (current_uri,
                                                             devices))
 
+        self.dec_spinner_task ()
+
     def dnssd_resolve_reply (self, current_uri, devices):
         self.add_devices (devices, current_uri, no_more=True)
+        self.dec_spinner_task ()
 
     def get_hpfax_device_id(self, faxuri):
         new_environ = os.environ.copy()
@@ -1975,30 +1979,10 @@ class NewPrinterGUI(GtkGUI):
         column = self.tvNPDevices.get_column (0)
         self.tvNPDevices.set_cursor (Gtk.TreePath(), column, False)
 
-        allowed = True
         self.current_uri = current_uri
-        try:
-            if (self._host == 'localhost' or
-                self._host[0] == '/'):
-                self.firewall = firewallsettings.FirewallD ()
-                if not self.firewall.running:
-                    self.firewall = firewallsettings.SystemConfigFirewall ()
-
-                debugprint ("Examining firewall")
-                self.firewall.read (reply_handler=self.on_firewall_read,
-                                    error_handler=lambda x:
-                                    self.start_fetching_devices())
-                allowed = False
-            else:
-                # This is a remote server.  Nothing we can do about
-                # the firewall there.
-                allowed = True
-        except (dbus.DBusException, Exception):
-            nonfatalException ()
-
-        if allowed:
-            debugprint ("Fetching devices (no firewall service")
-            self.start_fetching_devices ()
+        self.firewall = None
+        debugprint ("Fetching devices")
+        self.start_fetching_devices ()
 
     def on_firewall_read (self, data):
         f = self.firewall
@@ -2037,8 +2021,7 @@ class NewPrinterGUI(GtkGUI):
             nonfatalException ()
 
         if allowed:
-            debugprint ("Firewall all OK; fetching devices")
-            self.start_fetching_devices ()
+            debugprint ("Firewall all OK, no changes needed")
 
     def adjust_firewall_response (self, dialog, response):
         dialog.destroy ()
@@ -2046,8 +2029,10 @@ class NewPrinterGUI(GtkGUI):
             self.firewall.add_service (firewallsettings.IPP_SERVER_SERVICE)
             self.firewall.write ()
 
-        debugprint ("Fetching devices after firewall dialog response")
-        self.start_fetching_devices ()
+        debugprint ("Fetching network devices after firewall dialog response")
+        self.fetchDevices_conn = asyncconn.Connection ()
+        self.fetchDevices_conn._begin_operation (_("fetching device list"))
+        self.fetchDevices (network=True)
 
     def start_fetching_devices (self):
         self.fetchDevices_conn = asyncconn.Connection ()
@@ -2635,6 +2620,40 @@ class NewPrinterGUI(GtkGUI):
             view.collapse_row (path)
         else:
             view.expand_row (path, False)
+
+    def device_row_expanded (self, view, iter, path):
+        model = view.get_model ()
+        if not model or not iter:
+            return
+
+        network_path = model.get_path (self.devices_network_iter)
+        if path == network_path and self.firewall == None:
+            # Still discovering devices?
+            if self.spinner_count > 0:
+                debugprint ("Skipping firewall adjustment: "
+                            "discovery in progress")
+                return
+
+            # Any network printers found?
+            for physdev in self.devices:
+                for device in physdev.get_devices ():
+                    if device.device_class == 'network':
+                        debugprint ("Skipping firewall adjustment: "
+                                    "network printers found")
+                        return
+
+            # If not, ask about the firewall
+            try:
+                if (self._host == 'localhost' or
+                    self._host[0] == '/'):
+                    self.firewall = firewallsettings.FirewallD ()
+                    if not self.firewall.running:
+                        self.firewall = firewallsettings.SystemConfigFirewall ()
+
+                    debugprint ("Examining firewall")
+                    self.firewall.read (reply_handler=self.on_firewall_read)
+            except (dbus.DBusException, Exception):
+                nonfatalException ()
 
     def device_select_function (self, selection, model, path, *UNUSED):
         """
@@ -3802,7 +3821,7 @@ class NewPrinterGUI(GtkGUI):
                 treeview = self.tvNPDownloadableDrivers
                 model, iter = treeview.get_selection ().get_selected ()
                 driver = model.get_value (iter, 1)
-                if driver != None and 'ppds' in driver:
+                if driver != 0 and 'ppds' in driver:
                     # Only need to download a PPD.
                     if (len(driver['ppds']) > 0):
                         file_to_download = driver['ppds'][0]
