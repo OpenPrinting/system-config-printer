@@ -206,6 +206,10 @@ class GUI(GtkGUI):
         self.edit_permission = Polkit.Permission.new_sync (edit_action,
                                                            None, None)
         self.unlock_button = Gtk.LockButton ()
+        self.edit_permission.connect ("notify::allowed",
+                                      self.polkit_permission_changed)
+        self.unlock_button.connect ("notify::permission",
+                                    self.polkit_permission_changed)
         self.hboxMenuBar.pack_start (self.unlock_button, False, False, 12)
 
         # Printer Actions
@@ -601,6 +605,7 @@ class GUI(GtkGUI):
 
         self.ui_manager.get_action ("/create-class").set_sensitive (n > 1)
 
+        self.polkit_permission_changed (None, None)
         self.updating_widgets = False
 
     def dests_iconview_popup_menu (self, iconview):
@@ -680,14 +685,8 @@ class GUI(GtkGUI):
         self.PrintersWindow.set_title(_("Print Settings - %s") % host)
 
         if connected:
-            if self.cups._using_polkit ():
-                self.unlock_button.set_permission (self.edit_permission)
-            else:
-                self.unlock_button.set_permission (None)
-
             status_msg = _("Connected to %s") % host
         else:
-            self.unlock_button.set_permission (None)
             status_msg = _("Not connected")
         self.statusbarMain.push(self.status_context_id, status_msg)
 
@@ -717,6 +716,37 @@ class GUI(GtkGUI):
                                   self.cups_connection_recovered)
             GObject.idle_add (self.monitor.refresh)
             self.propertiesDlg.set_monitor (self.monitor)
+
+        if connected:
+            if self.cups._using_polkit ():
+                self.unlock_button.set_permission (self.edit_permission)
+            else:
+                self.unlock_button.set_permission (None)
+
+        else:
+            self.unlock_button.set_permission (None)
+
+    def polkit_permission_changed (self, widget, UNUSED):
+        permission = self.unlock_button.get_permission ()
+        if permission:
+            can_edit = permission.get_allowed ()
+        else:
+            can_edit = True
+
+        self.btnNew.set_sensitive (can_edit)
+        self.btnAddFirstPrinter.set_sensitive (can_edit)
+        for action in ["/server-settings",
+                       "/new-printer",
+                       "/new-class",
+                       "/rename-printer",
+                       "/duplicate-printer",
+                       "/delete-printer",
+                       "/edit-printer",
+                       "/create-class",
+                       "/enable-printer",
+                       "/share-printer"]:
+            act = self.ui_manager.get_action (action)
+            act.set_sensitive (can_edit)
 
     def getServers(self):
         self.servers.discard(None)
@@ -1813,6 +1843,8 @@ class GUI(GtkGUI):
                        "/filter-manufacturer"]:
             self.ui_manager.get_action (action).set_sensitive (sensitive)
 
+        self.polkit_permission_changed (None, None)
+
     def desensitise_main_window_widgets (self):
         self.sensitise_main_window_widgets (False)
 
@@ -1841,6 +1873,7 @@ class GUI(GtkGUI):
         self.btnAddFirstPrinter.set_sensitive (sensitive)
         self.ui_manager.get_action ("/new-printer").set_sensitive (sensitive)
         self.ui_manager.get_action ("/new-class").set_sensitive (sensitive)
+        self.polkit_permission_changed (None, None)
 
     def desensitise_new_printer_widgets(self):
         self.sensitise_new_printer_widgets (False)
