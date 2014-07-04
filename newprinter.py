@@ -2643,7 +2643,8 @@ class NewPrinterGUI(GtkGUI):
             # Any network printers found?
             for physdev in self.devices:
                 for device in physdev.get_devices ():
-                    if device.device_class == 'network':
+                    if (device.device_class == 'network' and
+                        device.uri != device.type):
                         debugprint ("Skipping firewall adjustment: "
                                     "network printers found")
                         return
