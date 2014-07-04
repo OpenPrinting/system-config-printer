@@ -27,7 +27,11 @@ import config
 import sys, os, time, re
 import _thread
 import dbus
-from gi.repository import Polkit
+try:
+    from gi.repository import Polkit
+except:
+    Polkit = False
+
 from gi.repository import GdkPixbuf
 try:
     from gi.repository import Gdk
@@ -203,11 +207,17 @@ class GUI(GtkGUI):
         Gtk.Window.set_default_icon_name ('printer')
 
         edit_action = 'org.opensuse.cupspkhelper.mechanism.all-edit'
-        self.edit_permission = Polkit.Permission.new_sync (edit_action,
-                                                           None, None)
+        if Polkit:
+            self.edit_permission = Polkit.Permission.new_sync (edit_action,
+                                                               None, None)
+        else:
+            self.edit_permission = None
+
         self.unlock_button = Gtk.LockButton ()
-        self.edit_permission.connect ("notify::allowed",
-                                      self.polkit_permission_changed)
+        if self.edit_permission != None:
+            self.edit_permission.connect ("notify::allowed",
+                                          self.polkit_permission_changed)
+
         self.unlock_button.connect ("notify::permission",
                                     self.polkit_permission_changed)
         self.hboxMenuBar.pack_start (self.unlock_button, False, False, 12)
