@@ -24,6 +24,7 @@ import dbus.service
 from gi.repository import GObject
 from gi.repository import GLib
 from gi.repository import Gdk
+from gi.repository import Gtk
 import sys
 
 from debug import *
@@ -408,6 +409,7 @@ class ConfigPrintingJobApplet(dbus.service.Object):
         Gdk.threads_enter ()
         self.jobapplet = jobviewer.JobViewer(bus=dbus.SystemBus (),
                                              applet=True, my_jobs=True)
+        self.jobapplet.set_process_pending (False)
         Gdk.threads_leave ()
         handle = self.jobapplet.connect ('finished', self.on_jobapplet_finished)
         self.finished_handle = handle
@@ -569,8 +571,7 @@ if __name__ == '__main__':
         sys.exit (0)
 
     debugprint ("Service running...")
-    loop = GObject.MainLoop ()
-    g_killtimer = KillTimer (killfunc=loop.quit)
+    g_killtimer = KillTimer (killfunc=Gtk.main_quit)
     cp = ConfigPrinting ()
-    loop.run ()
+    Gtk.main ()
     cp.destroy ()
