@@ -212,7 +212,7 @@ class GUI(GtkGUI):
             try:
                 self.edit_permission = Polkit.Permission.new_sync (edit_action,
                                                                    None, None)
-            except GLib.GError as e:
+            except GLib.GError:
                 pass # Maybe cups-pk-helper isn't installed.
 
         self.unlock_button = Gtk.LockButton ()
