@@ -326,7 +326,7 @@ run-dbus-service:	config.py cupshelpers/config.py
 	$(PYTHON) $(top_srcdir)/scp-dbus-service.py --debug
 
 test-xmldriverprefs:	cupshelpers/xmldriverprefs.py xml/preferreddrivers.xml
-	python -c 'from cupshelpers.xmldriverprefs import test; test()' \
+	$(PYTHON) -c 'from cupshelpers.xmldriverprefs import test; test()' \
 		2>&1 | less
 
 help:
@@ -354,7 +354,7 @@ test-xml-validity.sh:	FORCE
 	echo "xmllint --relaxng \\" >> "$@"
 	echo "    $(top_srcdir)/xml/preferreddrivers.rng \\" >> "$@"
 	echo "    $(top_srcdir)/xml/preferreddrivers.xml >/dev/null" >> "$@"
-	echo "python $(top_srcdir)/xml/validate.py \\" >> "$@"
+	echo "$(PYTHON) $(top_srcdir)/xml/validate.py \\" >> "$@"
 	echo "    $(top_srcdir)/xml/preferreddrivers.xml" >> "$@"
 	chmod 755 "$@"
 
