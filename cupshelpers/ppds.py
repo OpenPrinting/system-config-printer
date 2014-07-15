@@ -1165,20 +1165,20 @@ def _self_test(argv):
     picklefile="pickled-ppds"
     import pickle
     try:
-        f = open (picklefile, "r")
-        cupsppds = pickle.load (f)
+        with open (picklefile, "rb") as f:
+            cupsppds = pickle.load (f)
     except IOError:
-        f = open (picklefile, "w")
-        c = cups.Connection ()
-        try:
-            cupsppds = c.getPPDs2 ()
-            print ("Using getPPDs2()")
-        except AttributeError:
-            # Need pycups >= 1.9.52 for getPPDs2
-            cupsppds = c.getPPDs ()
-            print ("Using getPPDs()")
+        with open (picklefile, "wb") as f:
+            c = cups.Connection ()
+            try:
+                cupsppds = c.getPPDs2 ()
+                print ("Using getPPDs2()")
+            except AttributeError:
+                # Need pycups >= 1.9.52 for getPPDs2
+                cupsppds = c.getPPDs ()
+                print ("Using getPPDs()")
 
-        pickle.dump (cupsppds, f)
+            pickle.dump (cupsppds, f)
 
     xml_dir = os.environ.get ("top_srcdir")
     if xml_dir:
