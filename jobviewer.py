@@ -1430,7 +1430,11 @@ class JobViewer (GtkGUI):
             try:
                 attrs=c.getJobAttributes(jobid)
                 printer_uri=attrs['job-printer-uri']
-                document_count=attrs.get ('document-count', 0)
+                try:
+                    document_count = attrs['number-of-documents']
+                except KeyError:
+                    document_count = attrs.get ('document-count', 0)
+
                 for document_number in range(1, document_count+1):
                     document=c.getDocument(printer_uri, jobid, document_number)
                     tempfile = document.get('file')

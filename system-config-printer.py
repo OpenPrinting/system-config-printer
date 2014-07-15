@@ -207,11 +207,13 @@ class GUI(GtkGUI):
         Gtk.Window.set_default_icon_name ('printer')
 
         edit_action = 'org.opensuse.cupspkhelper.mechanism.all-edit'
+        self.edit_permission = None
         if Polkit:
-            self.edit_permission = Polkit.Permission.new_sync (edit_action,
-                                                               None, None)
-        else:
-            self.edit_permission = None
+            try:
+                self.edit_permission = Polkit.Permission.new_sync (edit_action,
+                                                                   None, None)
+            except GLib.GError:
+                pass # Maybe cups-pk-helper isn't installed.
 
         self.unlock_button = Gtk.LockButton ()
         if self.edit_permission != None:
