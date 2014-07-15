@@ -1424,8 +1424,7 @@ class JobViewer (GtkGUI):
                                      host=self.host,
                                      port=self.port,
                                      encryption=self.encryption)
-        except RuntimeError as e:
-            print e
+        except RuntimeError:
             return
 
         for jobid in self.jobids:
