@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 ## Copyright (C) 2010, 2011, 2012, 2013 Red Hat, Inc.
 ## Authors:

@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- python -*-
 
 ## Copyright (C) 2008 Red Hat, Inc.
