@@ -50,7 +50,12 @@ class DNSSDHostNamesResolver:
 
             # We need to resolve the DNS-SD hostname in order to
             # compare with other network devices.
-            result = urlparse.urlparse (uri)
+            try:
+                uri = str (uri)
+            except:
+                pass
+
+            result = urlparse.urlparse (str (uri))
             hostname = result.netloc
             elements = hostname.rsplit (".", 3)
             if len (elements) != 4:
