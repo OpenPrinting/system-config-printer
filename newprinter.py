@@ -111,7 +111,9 @@ def getCurrentClassMembers(treeview):
 
 def checkNPName(printers, name):
     if not name: return False
-    name = unicode (name.lower())
+    name = name.lower()
+    if type (name) != unicode:
+        name = name.decode ('utf-8')
     for printer in printers.values():
         if not printer.discovered and printer.name.lower()==name:
             return False
