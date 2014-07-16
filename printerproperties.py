@@ -1651,6 +1651,7 @@ class PrinterPropertiesDialog(GtkGUI):
     def updatePrinterProperties(self):
         debugprint ("update printer properties")
         printer = self.printer
+        self.entPDevice.set_text(printer.device_uri)
         self.entPMakeModel.set_text(printer.make_and_model)
         state = self.printer_states.get (printer.state,
                                          _("Unknown"))
