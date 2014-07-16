@@ -1545,7 +1545,7 @@ class NewPrinterGUI(GtkGUI):
             name = self.makeNameUnique (name)
             self.entNPName.set_text (name)
 
-            if self.entNPDescription.get_text () == '' and descr:
+            if descr:
                 self.entNPDescription.set_text (descr)
 
         self.ntbkNewPrinter.set_current_page(next_page_nr)
