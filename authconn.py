@@ -260,6 +260,8 @@ class Connection:
                                          e == cups.IPP_AUTHENTICATION_CANCELED):
                     self._failed (e == cups.IPP_FORBIDDEN)
                 elif not self._cancel and e == cups.IPP_SERVICE_UNAVAILABLE:
+                    debugprint ("Got IPP_SERVICE_UNAVAILABLE")
+                    debugprint (m)
                     if self._lock:
                         self._gui_event.clear ()
                         GLib.timeout_add (1, self._ask_retry_server_error, m)
