@@ -2753,7 +2753,12 @@ class NewPrinterGUI(GtkGUI):
                 if cupsqueue == 'cups':
                     device.menuentry = _("Remote CUPS printer via DNS-SD")
                     if device.info != '':
-                         device.menuentry += " (%s)" % device.info
+                        u = device.menuentry.decode ('utf-8')
+                        info = device.info
+                        if type (info) != unicode:
+                            info = info.decode ('utf-8')
+                        u += u" (%s)" % info
+                        device.menuentry = u.encode ('utf-8')
                 else:
                     protocol = None
                     if name.find("._ipp") != -1:
