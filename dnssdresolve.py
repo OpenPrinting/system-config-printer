@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-## Copyright (C) 2010, 2011, 2012, 2013 Red Hat, Inc.
+## Copyright (C) 2010, 2011, 2012, 2013, 2014 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 
@@ -19,6 +19,7 @@
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 import dbus, re
+import urllib.parse
 from debug import *
 
 class DNSSDHostNamesResolver:
@@ -32,10 +33,6 @@ class DNSSDHostNamesResolver:
         debugprint ("-%s" % self)
 
     def resolve (self, reply_handler):
-
-        def expandhex (searchres):
-            expr = searchres.group(0)
-            return chr(int(expr[1:], 16))
 
         self._reply_handler = reply_handler
 
@@ -53,20 +50,15 @@ class DNSSDHostNamesResolver:
 
             # We need to resolve the DNS-SD hostname in order to
             # compare with other network devices.
-            p = uri[8:].find ("/")
-            if p == -1:
-                hostname = uri[8:]
-            else:
-                hostname = uri[8:8+p]
-
-            hostname = re.sub("%(?i)[\dabcdef]{2}", expandhex, hostname)
-
+            result = urllib.parse.urlparse (uri)
+            hostname = result.netloc
             elements = hostname.rsplit (".", 3)
             if len (elements) != 4:
                 self._resolved ()
                 continue
 
             name, stype, protocol, domain = elements
+            name = urllib.parse.unquote (name)
             stype += "." + protocol #  e.g. _printer._tcp
 
             try:

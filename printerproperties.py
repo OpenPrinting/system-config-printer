@@ -1319,6 +1319,14 @@ class PrinterPropertiesDialog(GtkGUI):
                 # Some IPP error other than IPP_NOT_FOUND.
                 show_IPP_Error(e, m, self.parent)
 
+            if e in [cups.IPP_SERVICE_UNAVAILABLE,
+                     cups.IPP_INTERNAL_ERROR]:
+                show_dialog(_("Raw Queue"),
+                            _("Unable to get queue details. Treating queue "
+                              "as raw."),
+                            Gtk.MessageType.ERROR,
+                            self.parent)
+
             # Treat it as a raw queue.
             self.ppd = False
         except RuntimeError as e:
@@ -1635,6 +1643,7 @@ class PrinterPropertiesDialog(GtkGUI):
     def updatePrinterProperties(self):
         debugprint ("update printer properties")
         printer = self.printer
+        self.entPDevice.set_text(printer.device_uri)
         self.entPMakeModel.set_text(printer.make_and_model)
         state = self.printer_states.get (printer.state,
                                          _("Unknown"))
