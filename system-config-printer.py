@@ -138,6 +138,8 @@ class GUI(GtkGUI):
 
     def __init__(self):
 
+        super (GtkGUI, self).__init__ ()
+
         try:
             self.language = locale.getlocale(locale.LC_MESSAGES)
             self.encoding = locale.getlocale(locale.LC_CTYPE)
