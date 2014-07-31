@@ -107,6 +107,7 @@ class FetchedPPDs(GObject.GObject):
 
     def run (self):
         debugprint ("FetchPPDs: running")
+        self._ppds = None
         self._cupsconn.getPPDs2 (reply_handler=self._cups_getppds_reply,
                                  error_handler=self._cups_error)
 
@@ -165,6 +166,10 @@ class GetBestDriversRequest:
         self.error_handler (exc)
 
     def _ppds_ready (self, fetchedppds):
+        if not fetchedppds.is_ready ():
+            # PPDs being reloaded. Wait for next 'ready' signal.
+            return
+
         self._disconnect_signals ()
         ppds = fetchedppds.get_ppds ()
 
