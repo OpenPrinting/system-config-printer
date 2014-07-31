@@ -140,12 +140,14 @@ class ErrorLogCheckpoint(Question):
                                       args=('/admin/log/error_log', tmpfname),
                                       parent=parent)
             self.op.run ()
-        except (RuntimeError, cups.IPPError):
+        except (RuntimeError, cups.IPPError), e:
+            self.answers['error_log_checkpoint_exc'] = e
             try:
                 os.remove (tmpfname)
             except OSError:
                 pass
         except cups.HTTPError, e:
+            self.answers['error_log_checkpoint_exc'] = e
             try:
                 os.remove (tmpfname)
             except OSError:
