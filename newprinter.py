@@ -1349,18 +1349,13 @@ class NewPrinterGUI(GtkGUI):
                                     self._searchdialog.connect ("response", self._searchdialog_response)
                                     self._searchdialog.show_all ()
 
-                                    # Keep the UI refreshed while we wait for
-                                    # the drivers query to complete.
+                                    # TODO: make this asynchronous
                                     while self.drivers_lock.locked ():
-                                        while Gtk.events_pending ():
-                                            Gtk.main_iteration ()
                                         time.sleep (0.1)
 
                                     self._searchdialog.hide ()
                                     self._searchdialog.destroy ()
                                     self._searchdialog = None
-                                    while Gtk.events_pending ():
-                                        Gtk.main_iteration ()
 
                                 if self._searchdialog_canceled:
                                     # Cancel clicked
