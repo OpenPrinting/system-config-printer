@@ -1702,7 +1702,7 @@ do_add (const char *cmd, const char *devaddr)
 static void
 remove_queue (const char *printer_uri)
 {
-  /* Disable it. */
+  /* Delete it. */
   http_t *cups = httpConnectEncrypt (cupsServer (), ippPort (),
 				     cupsEncryption ());
   ipp_t *request, *answer;
