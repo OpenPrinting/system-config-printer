@@ -1,6 +1,6 @@
 /* -*- Mode: C; c-file-style: "gnu" -*-
  * udev-configure-printer - a udev callout to configure print queues
- * Copyright (C) 2009, 2010, 2011, 2012 Red Hat, Inc.
+ * Copyright (C) 2009, 2010, 2011, 2012, 2014 Red Hat, Inc.
  * Author: Tim Waugh <twaugh@redhat.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -1683,12 +1683,14 @@ do_add (const char *cmd, const char *devaddr)
       argv[i + 2] = NULL;
 
       syslog (LOG_DEBUG, "About to add queue for %s", argv[2]);
-      strcpy (argv0, cmd);
+      strncpy (argv0, cmd, sizeof (argv0));
+      argv0[sizeof (argv0) - 1] = '\0';
       p = strrchr (argv0, '/');
       if (p++ == NULL)
 	p = argv0;
 
-      strcpy (p, "udev-add-printer");
+      strncpy (p, "udev-add-printer", sizeof (argv0) - (p - argv0));
+      argv0[sizeof (argv0) - 1] = '\0';
 
       execv (argv0, argv);
       syslog (LOG_ERR, "Failed to execute %s", argv0);
