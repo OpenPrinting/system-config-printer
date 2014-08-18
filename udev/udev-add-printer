@@ -26,6 +26,7 @@ import os
 import sys
 import traceback
 from syslog import *
+from functools import reduce
 
 MFG_BLACKLIST=[
     "graphtec",
@@ -33,12 +34,12 @@ MFG_BLACKLIST=[
 
 def create_queue (c, printers, name, device_uri, ppdname, info, installer):
     # Make sure the name is unique.
-    namel = unicode (name.lower ())
+    namel = str (name.lower ())
     unique = False
     suffix = 1
     while not unique:
         unique = True
-        for printer in printers.values ():
+        for printer in list(printers.values ()):
             if (not printer.discovered and
                 ((suffix == 1 and printer.name.lower () == namel) or
                  (suffix > 1 and
@@ -174,7 +175,7 @@ def add_queue (device_id, device_uris, fax_basename=False):
             # find one whose scheme ends in "fax", use that as a fax
             # queue.  Note that the HPLIP backends do follow this
             # pattern (hp and hpfax).
-            used_uris = map (lambda x: x.device_uri, printers.values ())
+            used_uris = [x.device_uri for x in list(printers.values ())]
             for uri in device_uris[1:]:
                 if uri.find (":") == -1:
                     continue
@@ -223,7 +224,7 @@ def add_queue (device_id, device_uris, fax_basename=False):
             syslog (LOG_DEBUG, "D-Bus method call failed: %s" % e)
 
 if len (sys.argv) < 3:
-   print "Syntax: %s {Device ID} {Device URI} [other device URIs...]"
+   print("Syntax: %s {Device ID} {Device URI} [other device URIs...]")
    sys.exit (1)
 
 openlog ("udev-add-printer", 0, LOG_LPR)
