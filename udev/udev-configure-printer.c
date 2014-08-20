@@ -1780,7 +1780,7 @@ do_remove (const char *devaddr)
       char *device_uri;
 
       device_uri = uri_from_bdaddr (devaddr);
-      remove_queue (devpath);
+      remove_queue (device_uri);
       g_free (device_uri);
       return 0;
     }
