@@ -138,6 +138,8 @@ class GUI(GtkGUI):
 
     def __init__(self):
 
+        super (GtkGUI, self).__init__ ()
+
         try:
             self.language = locale.getlocale(locale.LC_MESSAGES)
             self.encoding = locale.getlocale(locale.LC_CTYPE)
@@ -558,6 +560,15 @@ class GUI(GtkGUI):
 
     def dests_iconview_selection_changed (self, iconview):
         self.updating_widgets = True
+        permission = self.unlock_button.get_permission ()
+        if permission:
+            can_edit = permission.get_allowed ()
+        else:
+            can_edit = True
+
+        if not can_edit:
+            return
+
         paths = iconview.get_selected_items ()
         any_disabled = False
         any_enabled = False
@@ -617,7 +628,6 @@ class GUI(GtkGUI):
 
         self.ui_manager.get_action ("/create-class").set_sensitive (n > 1)
 
-        self.polkit_permission_changed (None, None)
         self.updating_widgets = False
 
     def dests_iconview_popup_menu (self, iconview):
@@ -747,18 +757,23 @@ class GUI(GtkGUI):
 
         self.btnNew.set_sensitive (can_edit)
         self.btnAddFirstPrinter.set_sensitive (can_edit)
-        for action in ["/server-settings",
-                       "/new-printer",
-                       "/new-class",
-                       "/rename-printer",
-                       "/duplicate-printer",
-                       "/delete-printer",
-                       "/edit-printer",
-                       "/create-class",
-                       "/enable-printer",
-                       "/share-printer"]:
+        for action in ["/new-printer",
+                       "/new-class"]:
             act = self.ui_manager.get_action (action)
             act.set_sensitive (can_edit)
+
+        if can_edit:
+            self.dests_iconview_selection_changed (self.dests_iconview)
+        else:
+            for action in ["/rename-printer",
+                           "/duplicate-printer",
+                           "/delete-printer",
+                           "/edit-printer",
+                           "/create-class",
+                           "/enable-printer",
+                           "/share-printer"]:
+                act = self.ui_manager.get_action (action)
+                act.set_sensitive (False)
 
     def getServers(self):
         self.servers.discard(None)
