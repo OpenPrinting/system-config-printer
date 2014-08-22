@@ -1062,12 +1062,13 @@ class NewPrinterGUI(GtkGUI):
                         if ((self._host == 'localhost' or
                              self._host[0] == '/') and
                             not os.access ("/usr/lib/cups/backend/smb", os.F_OK)):
+                            null = file("/dev/null", "r+")
                             p = subprocess.Popen (["gpk-install-package-name",
                                                    "samba-client"],
                                                   close_fds=True,
-                                                  stdin=file("/dev/null"),
-                                                  stdout=file("/dev/null"),
-                                                  stderr=file("/dev/null"))
+                                                  stdin=null,
+                                                  stdout=null,
+                                                  stderr=null)
                             while p.poll () == None:
                                 while Gtk.events_pending ():
                                     Gtk.main_iteration ()
