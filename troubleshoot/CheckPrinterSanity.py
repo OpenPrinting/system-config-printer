@@ -2,7 +2,7 @@
 
 ## Printing troubleshooter
 
-## Copyright (C) 2008, 2009, 2010, 2012 Red Hat, Inc.
+## Copyright (C) 2008, 2009, 2010, 2012, 2014 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 
@@ -94,7 +94,7 @@ class CheckPrinterSanity(Question):
                                          args=args,
                                          env=new_environ,
                                          close_fds=True,
-                                         stdin=file("/dev/null"),
+                                         stdin=subprocess.DEVNULL,
                                          stdout=subprocess.PIPE,
                                          stderr=subprocess.PIPE)
                     result = p.run ()
@@ -121,7 +121,7 @@ class CheckPrinterSanity(Question):
                                          args=["hp-info", "-d" + uri],
                                          close_fds=True,
                                          env=new_environ,
-                                         stdin=file("/dev/null"),
+                                         stdin=subprocess.DEVNULL,
                                          stdout=subprocess.PIPE,
                                          stderr=subprocess.PIPE)
                     self.answers['hplip_output'] = p.run ()

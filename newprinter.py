@@ -39,11 +39,7 @@ from gi.repository import Gdk
 from gi.repository import Gtk
 import pycurl
 import functools
-# prefer Python 2 module here, as in Python 2 io.StringIO is broken
-try:
-    from io import StringIO
-except ImportError:
-    from io import StringIO
+from io import StringIO
 
 import cups
 
@@ -996,9 +992,9 @@ class NewPrinterGUI(GtkGUI):
         ret = True
         try:
             self.p = subprocess.Popen (args, env=new_environ, close_fds=True,
-                                  stdin=file("/dev/null"),
-                                  stdout=subprocess.PIPE,
-                                  stderr=subprocess.PIPE)
+                                       stdin=subprocess.DEVNULL,
+                                       stdout=subprocess.PIPE,
+                                       stderr=subprocess.PIPE)
             # Keep the UI refreshed while we wait for
             # the drivers query to complete.
             (stdout, stderr) = (self.p.stdout, self.p.stderr)
@@ -1062,13 +1058,12 @@ class NewPrinterGUI(GtkGUI):
                         if ((self._host == 'localhost' or
                              self._host[0] == '/') and
                             not os.access ("/usr/lib/cups/backend/smb", os.F_OK)):
-                            null = file("/dev/null", "r+")
                             p = subprocess.Popen (["gpk-install-package-name",
                                                    "samba-client"],
                                                   close_fds=True,
-                                                  stdin=null,
-                                                  stdout=null,
-                                                  stderr=null)
+                                                  stdin=subprocess.DEVNULL,
+                                                  stdout=subprocess.DEVNULL,
+                                                  stderr=subprocess.DEVNULL)
                             while p.poll () == None:
                                 while Gtk.events_pending ():
                                     Gtk.main_iteration ()
@@ -1799,7 +1794,7 @@ class NewPrinterGUI(GtkGUI):
         debugprint (faxuri + ": " + repr(args))
         try:
             p = subprocess.Popen (args, env=new_environ, close_fds=True,
-                                  stdin=file("/dev/null"),
+                                  stdin=subprocess.DEVNULL,
                                   stdout=subprocess.PIPE,
                                   stderr=subprocess.PIPE)
             (stdout, stderr) = p.communicate ()
@@ -1829,7 +1824,7 @@ class NewPrinterGUI(GtkGUI):
         debugprint (uri + ": " + repr(args))
         try:
             p = subprocess.Popen (args, close_fds=True,
-                                  stdin=file("/dev/null"),
+                                  stdin=subprocess.DEVNULL,
                                   stdout=subprocess.PIPE,
                                   stderr=subprocess.PIPE)
             (stdout, stderr) = p.communicate ()
@@ -1859,7 +1854,7 @@ class NewPrinterGUI(GtkGUI):
         uri = None
         try:
             p = subprocess.Popen (args, close_fds=True,
-                                  stdin=file("/dev/null"),
+                                  stdin=subprocess.DEVNULL,
                                   stdout=subprocess.PIPE,
                                   stderr=subprocess.PIPE)
             (stdout, stderr) = p.communicate ()
@@ -1899,7 +1894,7 @@ class NewPrinterGUI(GtkGUI):
             stdout = None
             try:
                 p = subprocess.Popen (args, close_fds=True,
-                                      stdin=file("/dev/null"),
+                                      stdin=subprocess.DEVNULL,
                                       stdout=subprocess.PIPE,
                                       stderr=subprocess.PIPE)
                 (stdout, stderr) = p.communicate ()
@@ -3875,7 +3870,7 @@ class NewPrinterGUI(GtkGUI):
                     p = subprocess.Popen (['/usr/bin/cupstestppd',
                                            '-rvv', filename],
                                           close_fds=True,
-                                          stdin=file("/dev/null"),
+                                          stdin=subprocess.DEVNULL,
                                           stdout=subprocess.PIPE,
                                           stderr=subprocess.PIPE)
                     (stdout, stderr) = p.communicate ()

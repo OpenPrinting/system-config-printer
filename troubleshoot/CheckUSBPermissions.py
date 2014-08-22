@@ -2,7 +2,7 @@
 
 ## Printing troubleshooter
 
-## Copyright (C) 2008, 2009, 2010 Red Hat, Inc.
+## Copyright (C) 2008, 2009, 2010, 2014 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 
@@ -69,7 +69,7 @@ class CheckUSBPermissions(Question):
                                        args=[LSUSB, "-v"],
                                        close_fds=True,
                                        env=new_environ,
-                                       stdin=file("/dev/null"),
+                                       stdin=subprocess.DEVNULL,
                                        stdout=subprocess.PIPE,
                                        stderr=subprocess.PIPE)
             (lsusb_stdout, lsusb_stderr, result) = self.op.run ()
@@ -149,7 +149,7 @@ class CheckUSBPermissions(Question):
                                            args=[GETFACL, path],
                                            close_fds=True,
                                            env=new_environ,
-                                           stdin=file("/dev/null"),
+                                           stdin=subprocess.DEVNULL,
                                            stdout=subprocess.PIPE,
                                            stderr=subprocess.PIPE)
                 (getfacl_stdout, getfacl_stderr, result) = self.op.run ()

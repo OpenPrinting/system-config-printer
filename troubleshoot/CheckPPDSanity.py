@@ -2,7 +2,7 @@
 
 ## Printing troubleshooter
 
-## Copyright (C) 2008, 2009, 2010 Red Hat, Inc.
+## Copyright (C) 2008, 2009, 2010, 2014 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 
@@ -103,7 +103,7 @@ class CheckPPDSanity(Question):
                 self.op = TimedSubprocess (parent=parent,
                                            args=['cupstestppd', '-rvv', tmpf],
                                            close_fds=True,
-                                           stdin=file("/dev/null"),
+                                           stdin=subprocess.DEVNULL,
                                            stdout=subprocess.PIPE,
                                            stderr=subprocess.PIPE)
                 result = self.op.run ()

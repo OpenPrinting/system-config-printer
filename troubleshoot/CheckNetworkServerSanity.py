@@ -2,7 +2,7 @@
 
 ## Printing troubleshooter
 
-## Copyright (C) 2008, 2009, 2010, 2011 Red Hat, Inc.
+## Copyright (C) 2008, 2009, 2010, 2011, 2014 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 
@@ -187,7 +187,7 @@ class CheckNetworkServerSanity(Question):
                 self.op = TimedSubprocess (parent=parent, close_fds=True,
                                            args=['traceroute', '-w', '1',
                                                  server_name],
-                                           stdin=file("/dev/null"),
+                                           stdin=subprocess.DEVNULL,
                                            stdout=subprocess.PIPE,
                                            stderr=subprocess.PIPE)
                 self.answers['remote_server_traceroute'] = self.op.run ()
