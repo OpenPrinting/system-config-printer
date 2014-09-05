@@ -2,7 +2,7 @@
 
 ## system-config-printer
 
-## Copyright (C) 2010, 2011, 2012, 2013 Red Hat, Inc.
+## Copyright (C) 2010, 2011, 2012, 2013, 2014 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 
@@ -572,5 +572,7 @@ if __name__ == '__main__':
     debugprint ("Service running...")
     g_killtimer = KillTimer (killfunc=Gtk.main_quit)
     cp = ConfigPrinting ()
+    Gdk.threads_enter ()
     Gtk.main ()
+    Gdk.threads_leave ()
     cp.destroy ()
