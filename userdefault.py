@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-## Copyright (C) 2006, 2007, 2008, 2010, 2012 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2010, 2012, 2014 Red Hat, Inc.
 ## Author: Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
@@ -81,7 +81,7 @@ class UserDefaultPrinter:
         (stdout, stderr) = p.communicate ()
         exitcode = p.wait ()
         if exitcode != 0:
-            raise RuntimeError (exitcode, stderr.strip ())
+            raise RuntimeError (exitcode, stderr.decode ().strip ())
         return
 
     def __repr__ (self):

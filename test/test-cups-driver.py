@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- python -*-
 
-## Copyright (C) 2008 Red Hat, Inc.
+## Copyright (C) 2008, 2014 Red Hat, Inc.
 ## Copyright (C) 2008 Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
@@ -70,10 +70,10 @@ class Driver:
             raise
 
 	if stderr:
-		print(stderr, file=sys.stderr)
+		print(stderr.decode (), file=sys.stderr)
 
 	ppds = []
-	lines = stdout.split ('\n')
+	lines = stdout.decode ().split ('\n')
 	for line in lines:
 		l = shlex.split (line)
 		if len (l) < 1:
@@ -99,10 +99,10 @@ class Driver:
                 raise
 
             if stderr:
-                print(stderr, file=sys.stderr)
+                print(stderr.decode (), file=sys.stderr)
 
-            self.files[name] = stdout
-            return stdout
+            self.files[name] = stdout.decode ()
+            return self.files[name]
 
 opts, args = getopt (sys.argv[1:], "m:")
 if len (args) != 1:

@@ -1803,7 +1803,7 @@ class NewPrinterGUI(GtkGUI):
             return None
 
         faxtype = -1
-        for line in stdout.split ("\n"):
+        for line in stdout.decode ().split ("\n"):
             if line.find ("fax-type") == -1:
                 continue
             res = re.search ("(\d+)", line)
@@ -1834,7 +1834,7 @@ class NewPrinterGUI(GtkGUI):
             # Problem executing command.
             return None
 
-        scan_type = stdout.strip ()
+        scan_type = stdout.decode ().strip ()
         fields = scan_type.split ("=", 1)
         if len (fields) < 2:
             return None
@@ -1864,7 +1864,7 @@ class NewPrinterGUI(GtkGUI):
             # Problem executing command.
             return None
 
-        uri = stdout.strip ()
+        uri = stdout.decode ().strip ()
         return uri
 
     def getNetworkPrinterMakeModel(self, host=None, device=None):
@@ -1905,7 +1905,7 @@ class NewPrinterGUI(GtkGUI):
                 pass
 
             if stdout != None:
-                line = stdout.strip ()
+                line = stdout.decode ().strip ()
                 words = probe_printer.wordsep (line)
                 n = len (words)
                 if n < 4:
@@ -3874,7 +3874,7 @@ class NewPrinterGUI(GtkGUI):
                                           stdout=subprocess.PIPE,
                                           stderr=subprocess.PIPE)
                     (stdout, stderr) = p.communicate ()
-                    err += stdout
+                    err += stdout.decode ()
                 except:
                     # Problem executing command.
                     raise

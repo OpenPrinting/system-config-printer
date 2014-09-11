@@ -1,8 +1,8 @@
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2012 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2014 Red Hat, Inc.
 ## Copyright (C) 2006 Florian Festi <ffesti@redhat.com>
-## Copyright (C) 2007, 2008, 2009 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2007, 2008, 2009, 2014 Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -297,7 +297,7 @@ class PrinterFinder:
             debugprint ("snmp: no good")
             return
 
-        for line in stdout.decode('utf-8').split ('\n'):
+        for line in stdout.decode ().split ('\n'):
             words = wordsep (line)
             n = len (words)
             if n == 6:
@@ -388,7 +388,7 @@ class PrinterFinder:
             debugprint ("hplip: no good")
             return
 
-        uri = stdout.strip ()
+        uri = stdout.decode ().strip ()
         debugprint ("hplip: uri is %s" % uri)
         if uri.find (":") != -1:
             self._new_device(uri, uri)
