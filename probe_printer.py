@@ -272,15 +272,14 @@ class PrinterFinder:
 
     def _probe_snmp (self):
         # Run the CUPS SNMP backend, pointing it at the host.
-        null = open ("/dev/null", "r+")
         try:
             debugprint ("snmp: trying")
             p = subprocess.Popen (args=["/usr/lib/cups/backend/snmp",
                                         self.hostname],
                                   close_fds=True,
-                                  stdin=null,
+                                  stdin=subprocess.DEVNULL,
                                   stdout=subprocess.PIPE,
-                                  stderr=null)
+                                  stderr=subprocess.DEVNULL)
         except OSError as e:
             debugprint ("snmp: no good")
             if e == errno.ENOENT:
@@ -365,14 +364,13 @@ class PrinterFinder:
                         self._cached_attributes['device-make-and-model'])
             return
 
-        null = open ("/dev/null", "r+")
         try:
             debugprint ("hplip: trying")
             p = subprocess.Popen (args=["hp-makeuri", "-c", self.hostname],
                                   close_fds=True,
-                                  stdin=null,
+                                  stdin=subprocess.DEVNULL,
                                   stdout=subprocess.PIPE,
-                                  stderr=null)
+                                  stderr=subprocess.DEVNULL)
         except OSError as e:
             if e == errno.ENOENT:
                 return

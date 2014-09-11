@@ -75,8 +75,8 @@ class UserDefaultPrinter:
     def set (self, default):
         p = subprocess.Popen ([ "lpoptions", "-d", default ],
                               close_fds=True,
-                              stdin=open ("/dev/null"),
-                              stdout=open ("/dev/null", "w"),
+                              stdin=subprocess.DEVNULL,
+                              stdout=subprocess.DEVNULL,
                               stderr=subprocess.PIPE)
         (stdout, stderr) = p.communicate ()
         exitcode = p.wait ()

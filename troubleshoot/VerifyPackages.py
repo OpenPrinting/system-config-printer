@@ -2,7 +2,7 @@
 
 ## Printing troubleshooter
 
-## Copyright (C) 2010 Red Hat, Inc.
+## Copyright (C) 2010, 2014 Red Hat, Inc.
 ## Copyright (C) 2010 Jiri Popelka <jpopelka@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
@@ -45,7 +45,6 @@ class VerifyPackages(Question):
                     "hpijs",
                     "hplip",
                     "system-config-printer"]
-        null = open ("/dev/null", "r+")
         parent = self.troubleshooter.get_window ()
 
         new_environ = os.environ.copy()
@@ -58,9 +57,9 @@ class VerifyPackages(Question):
                                            args=verification_args,
                                            close_fds=True,
                                            env=new_environ,
-                                           stdin=null,
+                                           stdin=subprocess.DEVNULL,
                                            stdout=subprocess.PIPE,
-                                           stderr=null)
+                                           stderr=subprocess.DEVNULL)
                 (verif_stdout, verif_stderr, result) = self.op.run ()
             except:
                 # Problem executing command.
