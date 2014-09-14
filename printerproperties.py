@@ -1333,7 +1333,7 @@ class PrinterPropertiesDialog(GtkGUI):
             # Either the underlying cupsGetPPD2() function returned
             # NULL without setting an IPP error (so it'll be something
             # like a failed connection), or the PPD could not be parsed.
-            if e.message.startswith ("ppd"):
+            if str (e).startswith ("ppd")
                 show_error_dialog (_("Error"),
                                    _("The PPD file for this queue "
                                      "is damaged."),
