@@ -108,11 +108,10 @@ class TimedSubprocess(Timed):
     def show_wait_window (self):
         Gdk.threads_enter ()
         wait = Gtk.MessageDialog (parent=self.parent,
-                                  flags=Gtk.DialogFlags.MODAL |
-                                        Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                                  modal=True, destroy_with_parent=True,
                                   message_type=Gtk.MessageType.INFO,
                                   buttons=Gtk.ButtonsType.CANCEL,
-                                  message_format=_("Please wait"))
+                                  text=_("Please wait"))
         wait.connect ("delete_event", lambda *args: False)
         wait.connect ("response", self.wait_window_response)
         if self.parent:
@@ -188,11 +187,10 @@ class TimedOperation(Timed):
 
         if self.show_dialog:
             wait = Gtk.MessageDialog (parent=self.parent,
-                                      flags=Gtk.DialogFlags.MODAL |
-                                            Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                                      modal=True, destroy_with_parent=True,
                                       message_type=Gtk.MessageType.INFO,
                                       buttons=Gtk.ButtonsType.CANCEL,
-                                      message_format=_("Please wait"))
+                                      text=_("Please wait"))
             wait.connect ("delete_event", lambda *args: False)
             wait.connect ("response", self._wait_window_response)
             if self.parent:

@@ -87,11 +87,10 @@ class Shrug(Question):
                                                include_hidden_chars=False))
             except IOError as e:
                 err = Gtk.MessageDialog (parent=parent,
-                                         flags=Gtk.DialogFlags.MODAL |
-                                               Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                                         modal=True, destroy_with_parent=True,
                                          message_type=Gtk.MessageType.ERROR,
                                          buttons=Gtk.ButtonsType.CLOSE,
-                                         message_format=_("Error saving file"))
+                                         text=_("Error saving file"))
                 err.format_secondary_text (_("There was an error saving "
                                              "the file:") + "\n" +
                                            e.strerror)

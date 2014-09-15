@@ -499,8 +499,12 @@ class OptionNumeric(Option):
         if not isinstance(supported, tuple):
             supported = (0, supported)
         Option.__init__(self, name, value, supported, on_change)
-        adj = Gtk.Adjustment(value, supported[0], supported[1], 1.0, 5.0, 0.0)
-        self.selector = Gtk.SpinButton(adj, climb_rate=1.0, digits=digits)
+        adj = Gtk.Adjustment(value=value, lower=supported[0],
+                             upper=supported[1], step_increment=1.0,
+                             page_increment=5.0, page_size=0.0)
+        self.selector = Gtk.SpinButton()
+        self.selector.set_adjustment(adj)
+        self.selector.set_digits(digits)
         if not self.is_float:
             self.selector.set_numeric(True)
         self.selector.connect("changed", self.changed)

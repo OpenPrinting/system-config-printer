@@ -85,11 +85,10 @@ class PPDsLoader(GObject.GObject):
 
         fmt = _("Searching")
         self._dialog = Gtk.MessageDialog (parent=parent,
-                                          flags=Gtk.DialogFlags.MODAL |
-                                                Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                                          modal=True, destroy_with_parent=True,
                                           message_type=Gtk.MessageType.INFO,
                                           buttons=Gtk.ButtonsType.CANCEL,
-                                          message_format=fmt)
+                                          text=fmt)
 
         self._dialog.format_secondary_text (_("Searching for drivers"))
 
