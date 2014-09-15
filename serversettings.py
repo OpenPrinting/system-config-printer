@@ -556,11 +556,10 @@ class ServerSettings(GtkGUI):
 
                 if not allowed:
                     dialog = Gtk.MessageDialog (parent=self.ServerSettingsDialog,
-                                                flags=Gtk.DialogFlags.MODAL |
-                                                      Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                                                modal=True, destroy_with_parent=True,
                                                 message_type=Gtk.MessageType.QUESTION,
                                                 buttons=Gtk.ButtonsType.NONE,
-                                                message_format=_("Adjust Firewall"))
+                                                text=_("Adjust Firewall"))
                     dialog.format_secondary_text (_("Adjust the firewall now "
                                                     "to allow all incoming IPP "
                                                     "connections?"))

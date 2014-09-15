@@ -303,11 +303,10 @@ class Connection:
             msg = _("CUPS server error")
 
         d = Gtk.MessageDialog (parent=self._parent,
-                               flags=Gtk.DialogFlags.MODAL |
-                                     Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                               modal=True, destroy_with_parent=True,
                                message_type=Gtk.MessageType.ERROR,
                                buttons=Gtk.ButtonsType.NONE,
-                               message_format=msg)
+                               text=msg)
 
         d.format_secondary_text (_("There was an error during the "
                                    "CUPS operation: '%s'.") % message)
@@ -445,8 +444,7 @@ class Connection:
         if self._lock:
             Gdk.threads_enter ()
         d = Gtk.MessageDialog (parent=self._parent,
-                               flags=Gtk.DialogFlags.MODAL |
-                                     Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                               modal=True, destroy_with_parent=True,
                                message_type=Gtk.MessageType.ERROR,
                                buttons=Gtk.ButtonsType.CLOSE)
         d.set_title (_("Not authorized"))

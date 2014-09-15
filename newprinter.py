@@ -971,11 +971,10 @@ class NewPrinterGUI(GtkGUI):
 
         fmt = _("Installing driver %s") % name
         self._installdialog = Gtk.MessageDialog (parent=self.NewPrinterWindow,
-                                                 flags=Gtk.DialogFlags.MODAL |
-                                                       Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                                                 modal=True, destroy_with_parent=True,
                                                  type=Gtk.MessageType.INFO,
                                                  buttons=Gtk.ButtonsType.CANCEL,
-                                                 message_format=fmt)
+                                                 text=fmt)
 
         self._installdialog.format_secondary_text (_("Installing ..."))
         # Add a progress bar to the message box
@@ -2031,11 +2030,10 @@ class NewPrinterGUI(GtkGUI):
                 debugprint ("Asking for permission to adjust firewall:\n%s" %
                             secondary_text)
                 dialog = Gtk.MessageDialog (parent=self.NewPrinterWindow,
-                                            flags=Gtk.DialogFlags.MODAL |
-                                                  Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                                            modal=True, destroy_with_parent=True,
                                             message_type=Gtk.MessageType.QUESTION,
                                             buttons=Gtk.ButtonsType.NONE,
-                                            message_format= _("Adjust Firewall"))
+                                            text= _("Adjust Firewall"))
                 dialog.format_secondary_markup (secondary_text)
                 dialog.add_buttons (_("Do It Later"), Gtk.ResponseType.NO,
                                     _("Adjust Firewall"), Gtk.ResponseType.YES)
@@ -2464,11 +2462,10 @@ class NewPrinterGUI(GtkGUI):
             secondary_text = TEXT_adjust_firewall + "\n\n"
             if not allowed:
                 dialog = Gtk.MessageDialog (parent=self.NewPrinterWindow,
-                                            flags=Gtk.DialogFlags.MODAL |
-                                                  Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                                            modal=True, destroy_with_parent=True,
                                             message_type=Gtk.MessageType.QUESTION,
                                             buttons=Gtk.ButtonsType.NONE,
-                                            message_format=_("Adjust Firewall"))
+                                            text=_("Adjust Firewall"))
                 secondary_text += ("- " +
                                    _("Allow all incoming SMB/CIFS "
                                      "browse packets"))

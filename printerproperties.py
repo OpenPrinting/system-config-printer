@@ -617,11 +617,10 @@ class PrinterPropertiesDialog(GtkGUI):
             for option in self.conflicts:
                 message += option.option.text + "\n"
             dialog = Gtk.MessageDialog(parent=self.dialog,
-                                       flags=Gtk.DialogFlags.DESTROY_WITH_PARENT |
-                                             Gtk.DialogFlags.MODAL,
+                                       modal=True, destroy_with_parent=True,
                                        message_type=Gtk.MessageType.WARNING,
                                        buttons=Gtk.ButtonsType.CLOSE,
-                                       message_format=message)
+                                       text=message)
             dialog.run()
             dialog.destroy()
             return
@@ -1021,7 +1020,7 @@ class PrinterPropertiesDialog(GtkGUI):
                             flags=0,
                             message_type=Gtk.MessageType.WARNING,
                             buttons=Gtk.ButtonsType.NONE,
-                            message_format=_("This will delete this class!"))
+                            text=_("This will delete this class!"))
                     dialog.format_secondary_text(_("Proceed anyway?"))
                     dialog.add_buttons (Gtk.STOCK_CANCEL, Gtk.ResponseType.NO,
                                         Gtk.STOCK_DELETE, Gtk.ResponseType.YES)
