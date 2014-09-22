@@ -134,8 +134,8 @@ class LpdServer:
         print(name)
         
         try:
-            s.send('\2%s\n' % name) # cmd send job to queue
-            data = s.recv(1024) # receive status
+            s.send(('\2%s\n' % name).encode('UTF-8'))  # cmd send job to queue
+            data = s.recv(1024).decode('UTF-8')  # receive status
             print(repr(data))
         except socket.error as msg:
             print(msg)
@@ -148,7 +148,7 @@ class LpdServer:
 
         if len(data)>0 and ord(data[0])==0:
             try:
-                s.send('\1\n') # abort job again
+                s.send(b'\1\n')  # abort job again
                 s.close ()
             except:
                 pass
