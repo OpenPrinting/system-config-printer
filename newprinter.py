@@ -846,7 +846,8 @@ class NewPrinterGUI(GtkGUI):
             self.printers = {}
 
         for printer in self.printers.keys():
-            model.append((printer,))
+            if not self.printers[printer].type & cups.CUPS_PRINTER_CLASS:
+                model.append((printer,))
 
     def on_btnNCAddMember_clicked(self, button):
         moveClassMembers(self.tvNCNotMembers, self.tvNCMembers)

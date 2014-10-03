@@ -1826,7 +1826,7 @@ class PrinterPropertiesDialog(GtkGUI):
             if name != self.printer.name:
                 if name in self.printer.class_members:
                     model_members.append((name, ))
-                else:
+                elif not self.printer.type & cups.CUPS_PRINTER_CLASS:
                     model_not_members.append((name, ))
 
     def on_btnClassAddMember_clicked(self, button):
