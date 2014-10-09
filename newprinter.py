@@ -433,7 +433,7 @@ class NewPrinterGUI(GtkGUI):
         cell = Gtk.CellRendererText()
         combobox.pack_start (cell, True)
         combobox.add_attribute(cell, 'text', 0)
-        if self.DOWNLOADABLE_ONLYFREE:
+        if config.DOWNLOADABLE_ONLYFREE:
             for widget in [self.cbNPDownloadableDriverLicenseFree,
                            self.cbNPDownloadableDriverLicensePatents]:
                 widget.hide ()
@@ -447,7 +447,7 @@ class NewPrinterGUI(GtkGUI):
         else:
             # No known package system, so we only load single PPDs via
             # OpenPrinting
-            self.DOWNLOADABLE_ONLYPPD = True;
+            config.DOWNLOADABLE_ONLYPPD = True
 
         def protect_toggle (toggle_widget):
             active = getattr (toggle_widget, 'protect_active', None)
@@ -943,12 +943,12 @@ class NewPrinterGUI(GtkGUI):
         # independent packages are usually PPDs, which we trust enough
         keyid = None
         if 'fingerprint' not in pkgs[pkg]:
-            if self.DOWNLOADABLE_PKG_ONLYSIGNED and arches[0] not in ['all', 'noarch']:
+            if config.DOWNLOADABLE_PKG_ONLYSIGNED and arches[0] not in ['all', 'noarch']:
                 debugprint('Not installing driver as it does not have a GPG fingerprint URL')
                 return False
         else:
             keyid = download_gpg_fingerprint(pkgs[pkg]['fingerprint'])
-            if self.DOWNLOADABLE_PKG_ONLYSIGNED and arches[0] not in ['all', 'noarch'] and not keyid:
+            if config.DOWNLOADABLE_PKG_ONLYSIGNED and arches[0] not in ['all', 'noarch'] and not keyid:
                 debugprint('Not installing driver as it does not have a valid GPG fingerprint')
                 return False
 
@@ -3296,13 +3296,13 @@ class NewPrinterGUI(GtkGUI):
             debugprint ("All printer driver queries finished")
             return False
 
-        if self.DOWNLOADABLE_ONLYFREE:
+        if config.DOWNLOADABLE_ONLYFREE:
             self.openprinting.onlyfree = 1
         else:
             self.openprinting.onlyfree = 0
 
         extra_options = dict()
-        if self.DOWNLOADABLE_ONLYPPD:
+        if config.DOWNLOADABLE_ONLYPPD:
             extra_options['onlyppdfiles'] = '1'
         else:
             extra_options['onlydownload'] = '1'
@@ -3333,7 +3333,7 @@ class NewPrinterGUI(GtkGUI):
                 driver = drivers[driverkey]
                 if ((not driver.has_key ('ppds') or
                      len(driver['ppds']) <= 0) and
-                    (self.DOWNLOADABLE_ONLYPPD or
+                    (config.DOWNLOADABLE_ONLYPPD or
                      (not self.installdriverpackage (driver,
                                                      onlycheckpresence =
                                                      True)))):
