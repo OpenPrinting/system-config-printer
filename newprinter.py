@@ -26,13 +26,13 @@ import config
 
 import authconn
 import cupshelpers
+from OpenPrintingRequest import OpenPrintingRequest
 
 import errno
 import sys, os, tempfile, time, traceback, re, httplib
 import locale
 import string
 import subprocess
-import thread
 from timedops import *
 import dbus
 from gi.repository import Gdk
@@ -258,9 +258,6 @@ class NewPrinterGUI(GtkGUI):
         self._searchdialog = None
         self._installdialog = None
 
-        # Synchronisation objects.
-        self.drivers_lock = thread.allocate_lock()
-
         self.getWidgets({"NewPrinterWindow":
                              ["NewPrinterWindow",
                               "ntbkNewPrinter",
@@ -427,8 +424,8 @@ class NewPrinterGUI(GtkGUI):
         self.spinner_count = 0
 
         # Set up OpenPrinting widgets.
-        self.openprinting = cupshelpers.openprinting.OpenPrinting ()
-        self.openprinting_query_handle = None
+        self.opreq = None
+        self.opreq_handlers = None
         combobox = self.cmbNPDownloadableDriverFoundPrinters
         cell = Gtk.CellRendererText()
         combobox.pack_start (cell, True)
@@ -738,7 +735,7 @@ class NewPrinterGUI(GtkGUI):
 
             if self.dialog_mode == "download_driver":
                 self.ntbkNewPrinter.set_current_page(7)
-                self.nextnptab_rerun = True;
+                self.nextnptab_rerun = True
             else:
                 self.ntbkNewPrinter.set_current_page(2)
                 self.rbtnNPFoomatic.set_active (True)
@@ -752,11 +749,7 @@ class NewPrinterGUI(GtkGUI):
             if self.dialog_mode == "printer_with_uri" or\
                self.dialog_mode == "download_driver":
                 self.nextNPTab(step = 0)
-
-            if self.dialog_mode == "download_driver" and \
-               self.founddownloadabledrivers == False:
-                self.on_NPCancel(None)
-                return False
+                return True
 
         if xid == 0 and self.parent:
             self.NewPrinterWindow.set_transient_for (parent)
@@ -899,9 +892,13 @@ class NewPrinterGUI(GtkGUI):
             self.dec_spinner_task ()
 
         self.NewPrinterWindow.hide()
-        if self.openprinting_query_handle != None:
-            self.openprinting.cancelOperation (self.openprinting_query_handle)
-            self.openprinting_query_handle = None
+        if self.opreq != None:
+            for handler in self.opreq_handlers:
+                self.opreq.disconnect (handler)
+
+            self.opreq_handlers = None
+            self.opreq.cancel ()
+            self.opreq = None
 
         self.device = None
         self.printers = {}
@@ -1326,54 +1323,36 @@ class NewPrinterGUI(GtkGUI):
                                 debugprint ("nextNPTab: No exact driver match, querying OpenPrinting")
                                 debugprint ('nextNPTab: Searching for "%s"' % devid)
                                 self.searchedfordriverpackages = True
-                                self.drivers_lock.acquire ()
-                                self.openprinting_query_handle = \
-                                    self.openprinting.searchPrinters (devid,
-                                                                      self.openprinting_printers_found)
 
-                                # Wait for the search to finish, so we can react
-                                # on the result
-                                if self.drivers_lock.locked ():
-                                    # Still searching for drivers.
-                                    self._searchdialog_canceled = False
-                                    fmt = _("Searching")
-                                    self._searchdialog = Gtk.MessageDialog (parent=self.NewPrinterWindow,
-                                                                            flags=Gtk.DialogFlags.MODAL |
-                                                                                  Gtk.DialogFlags.DESTROY_WITH_PARENT,
-                                                                            type=Gtk.MessageType.INFO,
-                                                                            buttons=Gtk.ButtonsType.CANCEL,
-                                                                            message_format=fmt)
+                                self._searchdialog_canceled = False
+                                fmt = _("Searching")
+                                self._searchdialog = Gtk.MessageDialog (
+                                    parent=self.NewPrinterWindow,
+                                    flags=Gtk.DialogFlags.MODAL |
+                                    Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                                    type=Gtk.MessageType.INFO,
+                                    buttons=Gtk.ButtonsType.CANCEL,
+                                    message_format=fmt)
 
-                                    self._searchdialog.format_secondary_text (_("Searching for drivers"))
+                                self._searchdialog.format_secondary_text (
+                                    _("Searching for drivers"))
 
-                                    self._searchdialog.connect ("response", self._searchdialog_response)
-                                    self._searchdialog.show_all ()
+                                self.opreq = OpenPrintingRequest ()
+                                self._searchdialog.connect (
+                                    "response", self._searchdialog_response)
+                                self._searchdialog.show_all ()
 
-                                    # TODO: make this asynchronous
-                                    while self.drivers_lock.locked ():
-                                        time.sleep (0.1)
-
-                                    self._searchdialog.hide ()
-                                    self._searchdialog.destroy ()
-                                    self._searchdialog = None
-
-                                if self._searchdialog_canceled:
-                                    # Cancel clicked
-                                    self._searchdialog_canceled = False
-                                    self.installed_driver_files = []
-                                    self.searchedfordriverpackages = False
-                                    self.founddownloadabledrivers = False
-                                    self.founddownloadableppd = False
-                                    self.downloadable_printers = []
-                                    ready (self.NewPrinterWindow)
-                                    return
-
-                                # Check whether we have found something
-                                if len (self.downloadable_printers) > 0:
-                                    self.founddownloadabledrivers = True
-                                    if step == 0:
-                                        page_nr = 7;
-
+                                self.opreq_handlers = []
+                                self.opreq_handlers.append (
+                                    self.opreq.connect (
+                                        'finished',
+                                        self.opreq_id_search_done))
+                                self.opreq_handlers.append (
+                                    self.opreq.connect (
+                                        'error',
+                                        self.opreq_id_search_error))
+                                self.opreq.searchPrinters (devid)
+                                return
                 except:
                     nonfatalException ()
 
@@ -1485,27 +1464,7 @@ class NewPrinterGUI(GtkGUI):
             next_page_nr = order[order.index(next_page_nr)-1]
 
         if step >= 0 and next_page_nr == 7: # About to show downloadable drivers
-            if self.drivers_lock.locked ():
-                # Still searching for drivers.
-                self.lblWait.set_markup ('<span weight="bold" size="larger">' +
-                                         _('Searching') + '</span>\n\n' +
-                                         _('Searching for drivers'))
-                self.WaitWindow.set_transient_for (self.NewPrinterWindow)
-                self.WaitWindow.show ()
-                busy (self.WaitWindow)
-                busy (self.NewPrinterWindow)
-
-                # Keep the UI refreshed while we wait for the drivers
-                # query to complete.
-                while self.drivers_lock.locked ():
-                    while Gtk.events_pending ():
-                        Gtk.main_iteration ()
-                    time.sleep (0.1)
-
-                ready (self.NewPrinterWindow)
-                self.WaitWindow.hide ()
-
-            self.fillDownloadableDrivers()
+            self.fillDownloadableDrivers ()
 
         if step >= 0 and next_page_nr == 0: # About to choose a name.
             # Suggest an appropriate name.
@@ -1548,13 +1507,59 @@ class NewPrinterGUI(GtkGUI):
         self.setNPButtons()
 
     def _searchdialog_response (self, dialog, response):
-        if self.drivers_lock.locked ():
-            self.openprinting.cancelOperation (self.openprinting_query_handle)
-            self.openprinting_query_handle = None
-            self.btnNPDownloadableDriverSearch.set_sensitive (True)
-            self.btnNPDownloadableDriverSearch_label.set_text (_("Search"))
-            self.drivers_lock.release ()
-        self._searchdialog_canceled = True
+        # Cancel clicked while performing openprinting search
+
+        self.btnNPDownloadableDriverSearch.set_sensitive (True)
+        self.btnNPDownloadableDriverSearch_label.set_text (_("Search"))
+
+        self.installed_driver_files = []
+        self.searchedfordriverpackages = False
+        self.founddownloadabledrivers = False
+        self.founddownloadableppd = False
+
+        ready (self.NewPrinterWindow)
+
+        # Cancel the openprinting request.
+        self.opreq.cancel ()
+
+    def opreq_id_search_done (self, opreq, printers, drivers):
+        for handler in self.opreq_handlers:
+            opreq.disconnect (handler)
+
+        self.opreq_handlers = None
+        self.opreq = None
+        self._searchdialog.hide ()
+        self._searchdialog.destroy ()
+        self._searchdialog = None
+
+        # Check whether we have found something
+        if len (printers) < 1:
+            # No.
+            ready (self.NewPrinterWindow)
+
+            self.founddownloadabledrivers = False
+            if self.dialog_mode == "download_driver":
+                self.on_NPCancel(None)
+
+            return
+
+        self.downloadable_printers = printers
+        self.downloadable_drivers = drivers
+        self.founddownloadabledrivers = True
+        if step == 0:
+            page_nr = 7
+
+        try:
+            self.NewPrinterWindow.show()
+            self.setNPButtons()
+            self.fillDownloadableDrivers()
+        except:
+            nonfatalException ()
+
+    def opreq_id_search_error (self, opreq, status, err):
+        debugprint ("OpenPrinting request failed (%d): %s" % (status,
+                                                              repr (err)))
+        self.opreq_id_search_done (opreq, list(), dict())
 
     def setNPButtons(self):
         nr = self.ntbkNewPrinter.get_current_page()
@@ -3220,10 +3225,15 @@ class NewPrinterGUI(GtkGUI):
             page = 2
         self.ntbkPPDSource.set_current_page (page)
 
-        if not rbtn3 and self.openprinting_query_handle:
+        if not rbtn3 and self.opreq:
             # Need to cancel a search in progress.
-            self.openprinting.cancelOperation (self.openprinting_query_handle)
-            self.openprinting_query_handle = None
+            for handler in self.opreq_handlers:
+                self.opreq.disconnect (handler)
+
+            self.opreq_handlers = None
+            self.opreq.cancel ()
+            self.opreq = None
+
             self.btnNPDownloadableDriverSearch.set_sensitive (True)
             self.btnNPDownloadableDriverSearch_label.set_text (_("Search"))
             # Clear printer list.
@@ -3236,7 +3246,7 @@ class NewPrinterGUI(GtkGUI):
                        self.cmbNPDownloadableDriverFoundPrinters]:
             widget.set_sensitive(rbtn3)
         self.btnNPDownloadableDriverSearch.\
-            set_sensitive (rbtn3 and (self.openprinting_query_handle == None))
+            set_sensitive (rbtn3 and (self.opreq == None))
 
         self.setNPButtons()
 
@@ -3245,116 +3255,44 @@ class NewPrinterGUI(GtkGUI):
 
     def on_btnNPDownloadableDriverSearch_clicked(self, widget):
         self.searchedfordriverpackages = True
-        if self.openprinting_query_handle != None:
-            self.openprinting.cancelOperation (self.openprinting_query_handle)
-            self.openprinting_query_handle = None
+        if self.opreq != None:
+            for handler in self.opreq_handlers:
+                self.opreq.disconnect (handler)
+
+            self.opreq_handlers = None
+            self.opreq.cancel ()
+            self.opreq = None
 
         widget.set_sensitive (False)
         label = self.btnNPDownloadableDriverSearch_label
         label.set_text (_("Searching"))
         searchterm = self.entNPDownloadableDriverSearch.get_text ()
         debugprint ('Searching for "%s"' % repr (searchterm))
-        self.drivers_lock.acquire ()
-        self.openprinting_query_handle = \
-            self.openprinting.searchPrinters (searchterm,
-                                              self.openprinting_printers_found)
+        self.opreq = OpenPrintingRequest ()
+        self.opreq_handlers = []
+        self.opreq_handlers.append (
+            self.opreq.connect ('finished',
+                                self.opreq_user_search_done))
+        self.opreq_handlers.append (
+            self.opreq.connect ('error',
+                                self.opreq_user_search_error))
+        self.opreq.searchPrinters (searchterm)
         self.cmbNPDownloadableDriverFoundPrinters.set_sensitive (False)
 
-    def openprinting_printers_found (self, status, user_data, printers):
-        if status != 0:
-            # Should report error.
-            print "HTTP Status %d" % status
-            print printers
-            print traceback.extract_tb(printers[2], limit=None)
-            self.downloadable_printers = []
-            self.openprinting_drivers_found ()
-            return
+    def opreq_user_search_done (self, opreq, printers, drivers):
+        for handler in self.opreq_handlers:
+            opreq.disconnect (handler)
 
-        self.openprinting_query_handle = None
-        self.downloadable_printers_unchecked = map (lambda x:
-                                                        (x, printers[x]),
-                                                    printers)
-        self.downloadable_printers = []
-        self.downloadable_drivers = dict() # by printer id of dict
+        self.opreq_handlers = None
+        self.opreq = None
 
-        # Kick off a search for drivers for each model.
-        if not self.openprinting_query_next_printer ():
-            self.openprinting_drivers_found ()
+        self.founddownloadabledrivers = True
+        self.downloadable_printers = printers
+        self.downloadable_drivers = drivers
 
-    def openprinting_query_next_printer (self):
-        """
-        If there are more printers to query, kick off a query and
-        return True.
-
-        Otherwise return False.
-        """
-
-        try:
-            a = self.downloadable_printers_unchecked.pop ()
-            (printer_id, printer_name) = a
-        except IndexError:
-            debugprint ("All printer driver queries finished")
-            return False
-
-        if config.DOWNLOADABLE_ONLYFREE:
-            self.openprinting.onlyfree = 1
-        else:
-            self.openprinting.onlyfree = 0
-
-        extra_options = dict()
-        if config.DOWNLOADABLE_ONLYPPD:
-            extra_options['onlyppdfiles'] = '1'
-        else:
-            extra_options['onlydownload'] = '1'
-            extra_options['packagesystem'] = self.packagesystem
-
-        debugprint ("Querying drivers for %s" % printer_id)
-        self.openprinting_query_handle = \
-            self.openprinting.listDrivers (printer_id,
-                                           self.openprinting_printer_drivers_found,
-                                           user_data=(printer_id, printer_name),
-                                           extra_options=extra_options)
-
-        return True
-
-    def openprinting_printer_drivers_found (self, status, user_data, drivers):
-        self.openprinting_query_handle = None
-        if status != 0:
-            print "HTTP Status %d" % status
-            print drivers
-            print traceback.extract_tb(drivers[2], limit=None)
-            self.downloadable_printers = []
-            self.openprinting_drivers_found ()
-            return
-
-        if drivers:
-            debugprint (" - drivers found")
-            for driverkey in drivers.keys ():
-                driver = drivers[driverkey]
-                if ((not driver.has_key ('ppds') or
-                     len(driver['ppds']) <= 0) and
-                    (config.DOWNLOADABLE_ONLYPPD or
-                     (not self.installdriverpackage (driver,
-                                                     onlycheckpresence =
-                                                     True)))):
-                    # Driver entry without installable resources (Package or
-                    # PPD), remove it
-                    del drivers[driverkey]
-                    debugprint ("Removed invalid driver entry %s" %
-                                driverkey)
-            if len(drivers) > 0:
-                debugprint (" - drivers with installable resources found")
-                (printer_id, printer_name) = user_data
-                self.downloadable_drivers[printer_id] = drivers
-                self.downloadable_printers.append (user_data)
-
-        if not self.openprinting_query_next_printer ():
-            self.openprinting_drivers_found ()
-
-    def openprinting_drivers_found (self):
         button = self.btnNPDownloadableDriverSearch
         label = self.btnNPDownloadableDriverSearch_label
-        #Gdk.threads_enter ()
+        Gdk.threads_enter ()
         try:
             label.set_text (_("Search"))
             button.set_sensitive (True)
@@ -3390,22 +3328,25 @@ class NewPrinterGUI(GtkGUI):
         except:
             nonfatalException()
 
-        #Gdk.threads_leave ()
+        Gdk.threads_leave ()
 
-        # Lock may have been released when printer list was changed,
-        # or we may have caught an exception before that.
-        if (self.drivers_lock.locked ()):
-            self.drivers_lock.release ()
+    def opreq_user_search_error (self, opreq, status, err):
+        debugprint ("OpenPrinting request failed (%d): %s" % (status,
+                                                              repr (err)))
+        self.opreq_user_search_done (opreq, list(), dict())
 
     def on_cmbNPDownloadableDriverFoundPrinters_changed(self, widget):
         self.setNPButtons ()
 
-        if self.openprinting_query_handle != None:
-            self.openprinting.cancelOperation (self.openprinting_query_handle)
-            self.openprinting_query_handle = None
+        if self.opreq != None:
+            for handler in self.opreq_handlers:
+                self.opreq.disconnect (handler)
+
+            self.opreq_handlers = None
+            self.opreq.cancel ()
+            self.opreq = None
             self.btnNPDownloadableDriverSearch.set_sensitive (True)
             self.btnNPDownloadableDriverSearch_label.set_text (_("Search"))
-            self.drivers_lock.release()
 
     def fillDownloadableDrivers(self):
         self.downloadable_driver_for_printer = None
