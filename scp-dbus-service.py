@@ -614,6 +614,7 @@ if __name__ == '__main__':
         for opt in sys.argv[1:]:
             if opt == "--debug":
                 set_debugging (True)
+                cupshelpers.set_debugprint_fn (debugprint)
             elif opt == "--client":
                 client_demo = True
 
