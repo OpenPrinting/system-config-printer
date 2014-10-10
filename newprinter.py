@@ -1043,6 +1043,7 @@ class NewPrinterGUI(GtkGUI):
 
     def nextNPTab(self, step=1):
         page_nr = self.ntbkNewPrinter.get_current_page()
+        debugprint ("Next clicked on page %d" % page_nr)
 
         if self.dialog_mode == "class":
             order = [0, 4, 5]
@@ -1492,6 +1493,7 @@ class NewPrinterGUI(GtkGUI):
         if next_page_nr == 6 and not self.installable_options and step<0:
             next_page_nr = order[order.index(next_page_nr)-1]
 
+        debugprint ("Will advance to page %d" % next_page_nr)
         if step >= 0 and next_page_nr == 7: # About to show downloadable drivers
             if self.drivers_lock.locked ():
                 # Still searching for drivers.
@@ -3733,8 +3735,6 @@ class NewPrinterGUI(GtkGUI):
             self.ntbkNPDownloadableDriverProperties.set_current_page(0)
             self.setNPButtons()
             return
-        import pprint
-        pprint.pprint (driver)
         self.ntbkNPDownloadableDriverProperties.set_current_page(1)
         supplier = driver.get('supplier', _("OpenPrinting"))
         vendor = self.cbNPDownloadableDriverSupplierVendor
