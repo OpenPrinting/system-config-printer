@@ -109,6 +109,7 @@ nobase_pkgdata_DATA=					\
 	jobviewer.py					\
 	monitor.py					\
 	newprinter.py					\
+	OpenPrintingRequest.py				\
 	options.py					\
 	optionwidgets.py				\
 	PhysicalDevice.py				\

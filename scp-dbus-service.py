@@ -108,6 +108,7 @@ class FetchedPPDs(GObject.GObject):
 
     def run (self):
         debugprint ("FetchPPDs: running")
+        self._ppds = None
         self._cupsconn.getPPDs2 (reply_handler=self._cups_getppds_reply,
                                  error_handler=self._cups_error)
 
@@ -166,6 +167,10 @@ class GetBestDriversRequest:
         self.error_handler (exc)
 
     def _ppds_ready (self, fetchedppds):
+        if not fetchedppds.is_ready ():
+            # PPDs being reloaded. Wait for next 'ready' signal.
+            return
+
         self._disconnect_signals ()
         ppds = fetchedppds.get_ppds ()
 
@@ -195,6 +200,33 @@ class GetBestDriversRequest:
                                                           fit=fit)
             ppdname = ppdnamelist[0]
             status = fit[ppdname]
+
+            try:
+                if status != "exact" and not self.download_tried:
+                    self.download_tried = True
+                    self.dialog = newprinter.NewPrinterGUI()
+                    self.dialog.NewPrinterWindow.set_modal (False)
+                    self.handles = \
+                                   [self.dialog.connect ('dialog-canceled',
+                                                         self.on_dialog_canceled),
+                                    self.dialog.connect ('driver-download-checked',
+                                                         self.on_driver_download_checked)]
+
+                    self.reply_if_fail = [(x, fit[x]) for x in ppdnamelist]
+                    if not self.dialog.init ('download_driver',
+                                             devid=self.device_id):
+                        try:
+                            g_killtimer.remove_hold ()
+                        finally:
+                            e = RuntimeError ("Failed to launch dialog")
+                            self.error_handler (r)
+
+                    return
+            except:
+                # Ignore driver download if packages needed for the GUI are not
+                # installed or if no windows can be opened
+                pass
+
             g_killtimer.remove_hold ()
             self.reply_handler (map (lambda x: (x, fit[x]), ppdnamelist))
         except Exception as e:
@@ -205,13 +237,29 @@ class GetBestDriversRequest:
 
             self.error_handler (e)
 
+    def _destroy_dialog (self):
+        for handle in self.handles:
+            self.dialog.disconnect (handle)
+
+        self.dialog.destroy ()
+        del self.dialog
+
     def on_driver_download_checked(self, obj, installed_files):
-        self.installed_files = installed_files
-        self.loop.quit ()
+        if len (installed_files) > 0:
+            debugprint ("GetBestDrivers request: Re-fetch PPDs after driver download")
+            self._signals.append (g_ppds.connect ('ready', self._ppds_ready))
+            self._signals.append (g_ppds.connect ('error', self._ppds_error))
+            g_ppds.run ()
+            return
+
+        g_killtimer.remove_hold ()
+        self._destroy_dialog ()
+        self.reply_handler (self.reply_if_fail)
 
     def on_dialog_canceled(self, obj):
-        self.installed_files = []
-        self.loop.quit ()
+        g_killtimer.remove_hold ()
+        self._destroy_dialog ()
+        self.reply_handler (self.reply_if_fail)
 
 class GroupPhysicalDevicesRequest:
     def __init__ (self, devices, reply_handler, error_handler):
@@ -286,6 +334,7 @@ class ConfigPrintingNewPrinterDialog(dbus.service.Object):
         debugprint ("+%s" % self)
 
     def __del__ (self):
+        self.dialog.destroy ()
         debugprint ("-%s" % self)
 
     @dbus.service.method(dbus_interface=CONFIG_NEWPRINTERDIALOG_IFACE,
@@ -345,24 +394,28 @@ class ConfigPrintingNewPrinterDialog(dbus.service.Object):
         pass
 
     def on_dialog_canceled(self, obj):
+        debugprint ("%s: dialog canceled" % self)
         g_killtimer.remove_hold ()
         self.DialogCanceled ()
         self.remove_handles ()
         self.remove_from_connection ()
 
     def on_printer_added(self, obj, name):
+        debugprint ("%s: printer added" % self)
         g_killtimer.remove_hold ()
         self.PrinterAdded (name)
         self.remove_handles ()
         self.remove_from_connection ()
 
     def on_printer_modified(self, obj, name, ppd_has_changed):
+        debugprint ("%s: printer modified" % self)
         g_killtimer.remove_hold ()
         self.PrinterModifed (name, ppd_has_changed)
         self.remove_handles ()
         self.remove_from_connection ()
 
     def on_driver_download_checked(self, obj, installed_files):
+        debugprint ("%s: driver download checked" % self)
         g_killtimer.remove_hold ()
         self.DriverDownloadChecked (installed_files)
         self.remove_handles ()
@@ -563,6 +616,7 @@ if __name__ == '__main__':
         for opt in sys.argv[1:]:
             if opt == "--debug":
                 set_debugging (True)
+                cupshelpers.set_debugprint_fn (debugprint)
             elif opt == "--client":
                 client_demo = True
 
