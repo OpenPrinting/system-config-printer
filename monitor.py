@@ -556,6 +556,9 @@ class Monitor(GObject.GObject):
         cups.setUser (user)
 
         if self.sub_id != -1:
+            if self.update_timer:
+                GLib.source_remove (self.update_timer)
+
             self.update_timer = GLib.timeout_add_seconds (
                 MIN_REFRESH_INTERVAL,
                 self.get_notifications)

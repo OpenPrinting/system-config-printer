@@ -2,7 +2,7 @@
 
 ## system-config-printer
 
-## Copyright (C) 2008, 2011 Red Hat, Inc.
+## Copyright (C) 2008, 2011, 2014 Red Hat, Inc.
 ## Copyright (C) 2008 Till Kamppeter <till.kamppeter@gmail.com>
 
 ## This program is free software; you can redistribute it and/or modify
@@ -46,6 +46,10 @@ class _QueryThread (threading.Thread):
         self.result = b''
 
         self.setDaemon (True)
+        _debugprint ("+%s" % self)
+
+    def __del__ (self):
+        _debugprint ("-%s" % self)
 
     def run (self):
 
@@ -83,6 +87,7 @@ class _QueryThread (threading.Thread):
             self.result = sys.exc_info ()
             if status == None: status = 0
 
+        _debugprint ("%s: query complete" % self)
         if self.callback != None:
             self.callback (status, self.user_data, self.result)
 
@@ -109,6 +114,10 @@ class OpenPrinting:
         self.onlyfree = 1
         self.onlymanufacturer = 0
         _debugprint ("OpenPrinting: Init %s %s %s" % (self.language, self.onlyfree, self.onlymanufacturer))
+        _debugprint ("+%s" % self)
+
+    def __del__ (self):
+        _debugprint ("-%s" % self)
 
     def cancelOperation(self, handle):
         """
