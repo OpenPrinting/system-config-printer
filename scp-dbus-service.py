@@ -295,7 +295,7 @@ class GroupPhysicalDevicesRequest:
         # (in self.devices) have been modified.
         try:
             self.physdevs = []
-            for device_uri, deviceobj in self.deviceobjs.iteritems ():
+            for device_uri, deviceobj in self.deviceobjs.items ():
                 newphysicaldevice = PhysicalDevice.PhysicalDevice (deviceobj)
                 matched = False
                 try:
