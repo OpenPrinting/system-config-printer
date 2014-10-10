@@ -2,7 +2,7 @@
 
 ## system-config-printer
 
-## Copyright (C) 2010, 2011, 2012, 2013 Red Hat, Inc.
+## Copyright (C) 2010, 2011, 2012, 2013, 2014 Red Hat, Inc.
 ## Author: Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
@@ -100,7 +100,11 @@ class PPDsLoader(GObject.GObject):
         if self._device_id:
             self._devid_dict = cupshelpers.parseDeviceID (self._device_id)
 
-        if self._local_cups and self._device_id and self._bus:
+        if (self._local_cups and
+            self._device_id and
+            self._devid_dict["MFG"] and
+            self._devid_dict["MDL"] and
+            self._bus):
             self._gpk_device_id = "MFG:%s;MDL:%s;" % (self._devid_dict["MFG"],
                                                       self._devid_dict["MDL"])
             self._query_packagekit ()
@@ -180,6 +184,8 @@ class PPDsLoader(GObject.GObject):
             if (self._bus and
                 not fit[ppdname].startswith ("exact") and
                 not self._jockey_queried and
+                self._devid_dict["MFG"] and
+                self._devid_dict["MDL"] and
                 self._local_cups):
                 # Try to install packages using jockey if
                 # - there's no appropriate driver (PPD) locally available
