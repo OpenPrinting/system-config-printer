@@ -1384,9 +1384,10 @@ class NewPrinterGUI(GtkGUI):
                 except:
                     nonfatalException ()
 
-                if (self.dialog_mode != "download_driver" and \
-                    not self.remotecupsqueue) or \
-                    self.dialog_mode == "ppd":
+                if (self.dialog_mode == "ppd" or
+                    (self.dialog_mode != "download_driver" and
+                     not self.remotecupsqueue and
+                     page_nr != 7)):
                     self.fillMakeList()
             elif page_nr == 3: # Model has been selected
                 if not self.device.id:
