@@ -1640,7 +1640,7 @@ do_add (const char *cmd, const char *devaddr)
     } else {
       char *device_uri;
 
-      device_uri = uri_from_bdaddr (devpath);
+      device_uri = uri_from_bdaddr (devaddr);
       add_device_uri (&device_uris, device_uri);
       g_free (device_uri);
     }
