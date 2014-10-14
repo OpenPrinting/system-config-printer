@@ -443,7 +443,7 @@ free_usb_uri_map (struct usb_uri_map *map)
 }
 
 static void
-free_device_id (struct device_id *id)
+clear_device_id (struct device_id *id)
 {
   free (id->full_device_id);
   free (id->mfg);
@@ -749,8 +749,6 @@ device_id_from_devpath (struct udev *udev, const char *devpath,
   struct dirent **namelist;
   int num_names;
 
-  id->full_device_id = id->mfg = id->mdl = id->sern = NULL;
-
   syslen = strlen ("/sys");
   devpathlen = strlen (devpath);
   syspath = malloc (syslen + devpathlen + 1);
@@ -825,6 +823,7 @@ device_id_from_devpath (struct udev *udev, const char *devpath,
        * exit.
        */
       syslog (LOG_DEBUG, "Device already handled");
+      free (usb_device_devpath);
       return NULL;
     }
 
@@ -856,7 +855,6 @@ device_id_from_bluetooth (const char *bdaddr, struct device_id *id)
   char *device_id;
   gchar *argv[4];
 
-  id->full_device_id = id->mfg = id->mdl = id->sern = NULL;
   argv[0] = g_strdup ("/usr/lib/cups/backend/bluetooth");
   argv[1] = g_strdup ("--get-deviceid");
   argv[2] = g_strdup (bdaddr);
@@ -1600,6 +1598,7 @@ do_add (const char *cmd, const char *devaddr)
 
   is_bluetooth = bluetooth_verify_address (devaddr);
 
+  id.full_device_id = id.mfg = id.mdl = id.sern = NULL;
   map = read_usb_uri_map ();
   if (is_bluetooth) {
     usbserial[0] = '\0';
@@ -1625,7 +1624,10 @@ do_add (const char *cmd, const char *devaddr)
   }
 
   if (!id.mfg || !id.mdl)
-    return 1;
+    {
+      clear_device_id (&id);
+      return 1;
+    }
 
   syslog (LOG_DEBUG, "MFG:%s MDL:%s SERN:%s serial:%s", id.mfg, id.mdl,
 	  id.sern ? id.sern : "-", usbserial[0] ? usbserial : "-");
@@ -1638,7 +1640,7 @@ do_add (const char *cmd, const char *devaddr)
     } else {
       char *device_uri;
 
-      device_uri = uri_from_bdaddr (devpath);
+      device_uri = uri_from_bdaddr (devaddr);
       add_device_uri (&device_uris, device_uri);
       g_free (device_uri);
     }
@@ -1646,7 +1648,7 @@ do_add (const char *cmd, const char *devaddr)
   if (device_uris.n_uris == 0)
     {
       syslog (LOG_ERR, "no corresponding CUPS device found");
-      free_device_id (&id);
+      clear_device_id (&id);
       return 0;
     }
 
@@ -1694,9 +1696,11 @@ do_add (const char *cmd, const char *devaddr)
 
       execv (argv0, argv);
       syslog (LOG_ERR, "Failed to execute %s", argv0);
+      free (argv);
+      exit (1);
     }
 
-  free_device_id (&id);
+  clear_device_id (&id);
   free_device_uris (&device_uris);
   return 0;
 }

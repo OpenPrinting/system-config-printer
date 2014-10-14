@@ -2,7 +2,7 @@
 
 ## system-config-printer
 
-## Copyright (C) 2008, 2009 Red Hat, Inc.
+## Copyright (C) 2008, 2009, 2014 Red Hat, Inc.
 ## Copyright (C) 2008, 2009 Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
@@ -24,13 +24,7 @@ from gi.repository import GLib
 
 class PackageKit:
     def __init__ (self):
-        for dir in os.environ.get ("PATH", "").split (":"):
-            path = dir + os.path.sep + "gpk-install-package-name"
-            if os.access (path, os.X_OK):
-                self.gpk_install_package_name = path
-                return
-
-        raise RuntimeError("No gpk-install-package-name program available")
+        raise RuntimeError ("Package installation not implemented")
 
     def InstallPackageName (self, xid, timestamp, name):
-        GLib.spawn_async ([self.gpk_install_package_name, name])
+        raise RuntimeError ("Package installation not implemented")
