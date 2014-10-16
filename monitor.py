@@ -329,11 +329,12 @@ class Monitor(GObject.GObject):
                                reason)
 
     def get_notifications(self):
+        if self.update_timer:
+            GLib.source_remove (self.update_timer)
+
+        self.update_timer = None
         if not self.process_pending_events:
             # Defer the timer callback.
-            if self.update_timer:
-                GLib.source_remove (self.update_timer)
-
             self.update_timer = GLib.timeout_add (200,
                                                      self.get_notifications)
             debugprint ("Deferred get_notifications by 200ms")
@@ -488,9 +489,6 @@ class Monitor(GObject.GObject):
         # Update again when we're told to.  If we're getting CUPS
         # D-Bus signals, however, rely on those instead.
         if not self.received_any_dbus_signals:
-            if self.update_timer:
-                GLib.source_remove (self.update_timer)
-
             interval = notifications['notify-get-interval']
             t = GLib.timeout_add_seconds (interval,
                                           self.get_notifications)
