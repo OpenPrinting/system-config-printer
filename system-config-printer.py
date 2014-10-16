@@ -2123,6 +2123,7 @@ class GUI(GtkGUI):
                 self.populateList (prompt_allowed=False)
             finally:
                 Gdk.threads_leave ()
+            self.populateList_timer = None
             return False
 
         if self.populateList_timer:
