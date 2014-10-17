@@ -192,10 +192,14 @@ udev_SCRIPTS=\
 if HAVE_SYSTEMD
 systemdsystemunit_DATA = \
 	udev/configure-printer@.service
-CLEANFILES = \
+systemd_CLEANFILES = \
 	$(systemdsystemunit_DATA)
+else
+systemd_CLEANFILES=
 endif
 
+else
+systemd_CLEANFILES=
 endif
 
 man_MANS=					\
@@ -214,6 +218,8 @@ dbusinterfacesdir = $(datadir)/dbus-1/interfaces/
 dbusservices_DATA =				\
 	dbus/org.fedoraproject.Config.Printing.service
 dbusservicesdir = $(datadir)/dbus-1/services/
+
+@INTLTOOL_DESKTOP_RULE@
 
 desktop_DATA =\
 	system-config-printer.desktop \
@@ -248,6 +254,12 @@ uninstall-desktopDATA:
 
 desktop_in_files = $(desktop_DATA:.desktop=.desktop.in)
 
+@INTLTOOL_XML_RULE@
+
+appdatadir = $(datadir)/appdata
+appdata_in_files = system-config-printer.appdata.xml.in
+appdata_DATA = $(appdata_in_files:.xml.in=.xml)
+
 EXTRA_DIST=\
 	$(nobase_pkgdata_SCRIPTS) \
 	$(nobase_pkgdata_DATA) \
@@ -272,9 +284,8 @@ EXTRA_DIST=\
 	udev/udev-add-printer \
 	udev/70-printers.rules \
 	udev/configure-printer@.service.in \
-	xml/preferreddrivers.xml
-
-@INTLTOOL_DESKTOP_RULE@
+	xml/preferreddrivers.xml \
+	$(appdata_in_files)
 
 # The man pages are generated from DocBook XML.
 .stamp-man-pages-built: $(top_srcdir)/man/system-config-printer.xml
@@ -359,6 +370,10 @@ test-xml-validity.sh:	FORCE
 	chmod 755 "$@"
 
 TESTS = test-xml-validity.sh test-ppd-module.sh
+
+CLEANFILES=			\
+	$(systemd_CLEANFILES)	\
+	$(appdata_DATA)
 
 DISTCLEANFILES=*.pyc *.pyo *~ *.bak \
 	troubleshoot/*.pyc troubleshoot/*.pyo troubleshoot/*~ \
