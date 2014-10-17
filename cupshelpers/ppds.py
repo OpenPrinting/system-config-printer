@@ -72,9 +72,9 @@ _MFR_BY_RANGE = [
     ("KONICA MINOLTA", re.compile("magicolor"
                                   "|pageworks"
                                   "|pagepro")),
-    ("Kyocera Mita", re.compile("fs-"
-                                "|km-"
-                                "|taskalfa")),
+    ("Kyocera", re.compile("fs-"
+                           "|km-"
+                           "|taskalfa")),
     ("Ricoh", re.compile("aficio")),
     ("Oce", re.compile("varioprint")),
     ("Oki", re.compile("okipage|microline"))
@@ -168,10 +168,10 @@ def ppdMakeModelSplit (ppd_make_and_model):
         make = "Lexmark"
         model = ppd_make_and_model[22:]
     elif l.startswith ("kyocera mita "):
-        make = "Kyocera Mita"
+        make = "Kyocera"
         model = ppd_make_and_model[13:]
     elif l.startswith ("kyocera "):
-        make = "Kyocera Mita"
+        make = "Kyocera"
         model = ppd_make_and_model[8:]
     elif l.startswith ("fuji xerox "):
         make = "Fuji Xerox"
