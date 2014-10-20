@@ -2395,6 +2395,12 @@ class NewPrinterGUI(GtkGUI):
             del self.expanding_row
             ready (self.SMBBrowseDialog)
 
+    def set_btnSMBVerify_sensitivity (self, on):
+        self.btnSMBVerify.set_sensitive (PYSMB_AVAILABLE and on)
+        if not PYSMB_AVAILABLE or not on:
+            self.btnSMBVerify.set_tooltip_text (_("Verification requires the "
+                                                  "%s module") % "pysmbc")
+
     def on_entSMBURI_changed (self, ent):
         allowed_chars = string.ascii_letters+string.digits+'_-./:%[]@'
         self.entry_changed(ent, allowed_chars)
@@ -2411,11 +2417,7 @@ class NewPrinterGUI(GtkGUI):
         elif self.entSMBUsername.get_text () == '':
             self.rbtnSMBAuthPrompt.set_active(True)
 
-        self.btnSMBVerify.set_sensitive(PYSMB_AVAILABLE and bool(uri))
-        if not PYSMB_AVAILABLE:
-            self.btnSMBVerify.set_tooltip_text (_("Verification requires the "
-                                                  "%s module") % "pysmbc")
-
+        self.set_btnSMBVerify_sensitivity (bool(uri))
         self.setNPButtons ()
 
     def on_tvSMBBrowser_cursor_changed(self, widget):
@@ -3005,7 +3007,7 @@ class NewPrinterGUI(GtkGUI):
             self.entSMBUsername.set_text ('')
             self.entSMBPassword.set_text ('')
             self.entSMBURI.set_text(device.uri[6:])
-            self.btnSMBVerify.set_sensitive(True)
+            self.set_btnSMBVerify_sensitivity (True)
         else:
             if device.uri:
                 self.entNPTDevice.set_text(device.uri)
