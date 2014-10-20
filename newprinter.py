@@ -1512,48 +1512,53 @@ class NewPrinterGUI(GtkGUI):
         self.btnNPDownloadableDriverSearch_label.set_text (_("Search"))
 
         self.installed_driver_files = []
-        self.searchedfordriverpackages = False
+        self.searchedfordriverpackages = True
         self.founddownloadabledrivers = False
         self.founddownloadableppd = False
 
         ready (self.NewPrinterWindow)
 
         # Cancel the openprinting request.
-        self.opreq.cancel ()
+        GLib.idle_add (self.opreq.cancel)
 
     def opreq_id_search_done (self, opreq, printers, drivers):
         for handler in self.opreq_handlers:
             opreq.disconnect (handler)
 
-        self.opreq_handlers = None
-        self.opreq = None
-        self._searchdialog.hide ()
-        self._searchdialog.destroy ()
-        self._searchdialog = None
-
-        # Check whether we have found something
-        if len (printers) < 1:
-            # No.
-            ready (self.NewPrinterWindow)
-
-            self.founddownloadabledrivers = False
-            if self.dialog_mode == "download_driver":
-                self.on_NPCancel(None)
-
-            return
-
-        self.downloadable_printers = printers
-        self.downloadable_drivers = drivers
-        self.founddownloadabledrivers = True
-        if step == 0:
-            page_nr = 7
+        Gdk.threads_enter ()
 
         try:
-            self.NewPrinterWindow.show()
-            self.setNPButtons()
-            self.fillDownloadableDrivers()
-        except:
-            nonfatalException ()
+            self.opreq_handlers = None
+            self.opreq = None
+            self._searchdialog.hide ()
+            self._searchdialog.destroy ()
+            self._searchdialog = None
+
+            # Check whether we have found something
+            if len (printers) < 1:
+                # No.
+                ready (self.NewPrinterWindow)
+
+                self.founddownloadabledrivers = False
+                if self.dialog_mode == "download_driver":
+                    self.on_NPCancel(None)
+                else:
+                    self.nextNPTab ()
+            else:
+                self.downloadable_printers = printers
+                self.downloadable_drivers = drivers
+                self.founddownloadabledrivers = True
+
+                try:
+                    self.NewPrinterWindow.show()
+                    self.setNPButtons()
+                    self.fillDownloadableDrivers()
+                except:
+                    nonfatalException ()
+
+                self.nextNPTab ()
+        finally:
+            Gdk.threads_leave ()
 
     def opreq_id_search_error (self, opreq, status, err):
         debugprint ("OpenPrinting request failed (%d): %s" % (status,
