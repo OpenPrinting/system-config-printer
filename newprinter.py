@@ -1066,7 +1066,7 @@ class NewPrinterGUI(GtkGUI):
                                 pk = installpackage.PackageKit ()
                                 pk.InstallPackageName (0, 0, "samba-client")
                             except:
-                                pass
+                                nonfatalException ()
 
                 if page_nr == 1 or page_nr == 2:
                     self.auto_make, self.auto_model = "", ""
