@@ -2849,6 +2849,10 @@ class NewPrinterGUI(GtkGUI):
                     dev.menuentry = "HP Linux Imaging and Printing (HPLIP)"
                     physicaldevice.add_device (dev)
 
+                    # Can we scan using this device?
+                    if self.get_hplip_scan_type_for_uri (device.uri):
+                        hp_scannable = True
+
                     # Now check to see if we can also send faxes using
                     # this device.
                     faxuri = self.get_hplip_uri_for_network_printer (hpliphost,
@@ -2862,7 +2866,8 @@ class NewPrinterGUI(GtkGUI):
                             "HP Linux Imaging and Printing (HPLIP)"
                         physicaldevice.add_device (faxdev)
 
-            physicaldevice.hp_scannable = True
+            if hp_scannable:
+                physicaldevice.hp_scannable = True
             physicaldevice.checked_hplip = True
 
         device.hp_scannable = getattr (physicaldevice, 'hp_scannable', None)
