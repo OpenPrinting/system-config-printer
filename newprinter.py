@@ -67,6 +67,7 @@ import firewallsettings
 import asyncconn
 import ppdsloader
 import dnssdresolve
+import installpackage
 
 import gettext
 gettext.install(domain=config.PACKAGE, localedir=config.localedir, unicode=True)
