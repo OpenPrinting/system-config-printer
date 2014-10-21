@@ -20,11 +20,40 @@
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 import os
+import dbus
+import dbus.glib
 from gi.repository import GLib
+from debug import *
 
 class PackageKit:
+    DBUS_NAME="org.freedesktop.PackageKit"
+    DBUS_PATH="/org/freedesktop/PackageKit"
+    DBUS_IFACE="org.freedesktop.PackageKit.Modify"
+
     def __init__ (self):
-        raise RuntimeError, "Package installation not implemented"
+        try:
+            bus = dbus.SessionBus ()
+            remote_object = bus.get_object(self.DBUS_NAME, self.DBUS_PATH)
+            iface = dbus.Interface(remote_object, self.DBUS_IFACE)
+        except dbus.exceptions.DBusException:
+            # System bus not running.
+            iface = None
+        self.iface = iface
 
     def InstallPackageName (self, xid, timestamp, name):
-        raise RuntimeError, "Package installation not implemented"
+        try:
+            if self.iface != None:
+                self.iface.InstallPackageNames(xid, [name], \
+                                           "hide-finished,show-warnings", \
+                                           timeout = 999999)
+        except dbus.exceptions.DBusException:
+            pass
+
+    def InstallProvideFile (self, xid, timestamp, filename):
+        try:
+            if self.iface != None:
+                self.iface.InstallProvideFiles(xid, [filename], \
+                                               "hide-finished,show-warnings", \
+                                               timeout = 999999)
+        except dbus.exceptions.DBusException:
+            pass
