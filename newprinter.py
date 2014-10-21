@@ -1060,7 +1060,8 @@ class NewPrinterGUI(GtkGUI):
                         uri = SMBURI (uri=uri[6:]).sanitize_uri ()
 
                         # Does the backend need to be installed?
-                        if ((self._host == 'localhost' or
+                        if (self.nextnptab_rerun == False and
+                            (self._host == 'localhost' or
                              self._host[0] == '/') and
                             not os.access ("/usr/lib/cups/backend/smb", os.F_OK)):
                             try:
@@ -1188,7 +1189,8 @@ class NewPrinterGUI(GtkGUI):
                 self.nextnptab_rerun = False
 
                 if page_nr == 1 or page_nr == 2:
-                    if (hasattr (self.device, 'hp_scannable') and
+                    if (self.nextnptab_rerun == False and
+                        hasattr (self.device, 'hp_scannable') and
                         self.device.hp_scannable and
                         not os.access ("/etc/sane.d/dll.d/hpaio", os.R_OK) and
                         not os.access ("/etc/sane.d/dll.d/hplip", os.R_OK)):
