@@ -1190,7 +1190,8 @@ class NewPrinterGUI(GtkGUI):
                 if page_nr == 1 or page_nr == 2:
                     if (hasattr (self.device, 'hp_scannable') and
                         self.device.hp_scannable and
-                        not os.access ("/etc/sane.d/dll.d/hpaio", os.R_OK)):
+                        not os.access ("/etc/sane.d/dll.d/hpaio", os.R_OK) and
+                        not os.access ("/etc/sane.d/dll.d/hplip", os.R_OK)):
                         try:
                             pk = installpackage.PackageKit ()
                             pk.InstallPackageName (0, 0, "libsane-hpaio")
