@@ -64,6 +64,7 @@ import firewallsettings
 import asyncconn
 import ppdsloader
 import dnssdresolve
+import installpackage
 
 import gettext
 gettext.install(domain=config.PACKAGE, localedir=config.localedir)
@@ -1053,14 +1054,15 @@ class NewPrinterGUI(GtkGUI):
                         uri = SMBURI (uri=uri[6:]).sanitize_uri ()
 
                         # Does the backend need to be installed?
-                        if ((self._host == 'localhost' or
+                        if (self.nextnptab_rerun == False and
+                            (self._host == 'localhost' or
                              self._host[0] == '/') and
                             not os.access ("/usr/lib/cups/backend/smb", os.F_OK)):
                             try:
                                 pk = installpackage.PackageKit ()
                                 pk.InstallPackageName (0, 0, "samba-client")
                             except:
-                                pass
+                                nonfatalException ()
 
                 if page_nr == 1 or page_nr == 2:
                     self.auto_make, self.auto_model = "", ""
@@ -1181,9 +1183,11 @@ class NewPrinterGUI(GtkGUI):
                 self.nextnptab_rerun = False
 
                 if page_nr == 1 or page_nr == 2:
-                    if (hasattr (self.device, 'hp_scannable') and
+                    if (self.nextnptab_rerun == False and
+                        hasattr (self.device, 'hp_scannable') and
                         self.device.hp_scannable and
-                        not os.access ("/etc/sane.d/dll.d/hpaio", os.R_OK)):
+                        not os.access ("/etc/sane.d/dll.d/hpaio", os.R_OK) and
+                        not os.access ("/etc/sane.d/dll.d/hplip", os.R_OK)):
                         try:
                             pk = installpackage.PackageKit ()
                             pk.InstallPackageName (0, 0, "libsane-hpaio")
@@ -1506,48 +1510,53 @@ class NewPrinterGUI(GtkGUI):
         self.btnNPDownloadableDriverSearch_label.set_text (_("Search"))
 
         self.installed_driver_files = []
-        self.searchedfordriverpackages = False
+        self.searchedfordriverpackages = True
         self.founddownloadabledrivers = False
         self.founddownloadableppd = False
 
         ready (self.NewPrinterWindow)
 
         # Cancel the openprinting request.
-        self.opreq.cancel ()
+        GLib.idle_add (self.opreq.cancel)
 
     def opreq_id_search_done (self, opreq, printers, drivers):
         for handler in self.opreq_handlers:
             opreq.disconnect (handler)
 
-        self.opreq_handlers = None
-        self.opreq = None
-        self._searchdialog.hide ()
-        self._searchdialog.destroy ()
-        self._searchdialog = None
-
-        # Check whether we have found something
-        if len (printers) < 1:
-            # No.
-            ready (self.NewPrinterWindow)
-
-            self.founddownloadabledrivers = False
-            if self.dialog_mode == "download_driver":
-                self.on_NPCancel(None)
-
-            return
-
-        self.downloadable_printers = printers
-        self.downloadable_drivers = drivers
-        self.founddownloadabledrivers = True
-        if step == 0:
-            page_nr = 7
+        Gdk.threads_enter ()
 
         try:
-            self.NewPrinterWindow.show()
-            self.setNPButtons()
-            self.fillDownloadableDrivers()
-        except:
-            nonfatalException ()
+            self.opreq_handlers = None
+            self.opreq = None
+            self._searchdialog.hide ()
+            self._searchdialog.destroy ()
+            self._searchdialog = None
+
+            # Check whether we have found something
+            if len (printers) < 1:
+                # No.
+                ready (self.NewPrinterWindow)
+
+                self.founddownloadabledrivers = False
+                if self.dialog_mode == "download_driver":
+                    self.on_NPCancel(None)
+                else:
+                    self.nextNPTab ()
+            else:
+                self.downloadable_printers = printers
+                self.downloadable_drivers = drivers
+                self.founddownloadabledrivers = True
+
+                try:
+                    self.NewPrinterWindow.show()
+                    self.setNPButtons()
+                    self.fillDownloadableDrivers()
+                except:
+                    nonfatalException ()
+
+                self.nextNPTab ()
+        finally:
+            Gdk.threads_leave ()
 
     def opreq_id_search_error (self, opreq, status, err):
         debugprint ("OpenPrinting request failed (%d): %s" % (status,
@@ -2380,6 +2389,12 @@ class NewPrinterGUI(GtkGUI):
             del self.expanding_row
             ready (self.SMBBrowseDialog)
 
+    def set_btnSMBVerify_sensitivity (self, on):
+        self.btnSMBVerify.set_sensitive (PYSMB_AVAILABLE and on)
+        if not PYSMB_AVAILABLE or not on:
+            self.btnSMBVerify.set_tooltip_text (_("Verification requires the "
+                                                  "%s module") % "pysmbc")
+
     def on_entSMBURI_changed (self, ent):
         allowed_chars = string.ascii_letters+string.digits+'_-./:%[]@'
         self.entry_changed(ent, allowed_chars)
@@ -2396,11 +2411,7 @@ class NewPrinterGUI(GtkGUI):
         elif self.entSMBUsername.get_text () == '':
             self.rbtnSMBAuthPrompt.set_active(True)
 
-        self.btnSMBVerify.set_sensitive(PYSMB_AVAILABLE and bool(uri))
-        if not PYSMB_AVAILABLE:
-            self.btnSMBVerify.set_tooltip_text (_("Verification requires the "
-                                                  "%s module") % "pysmbc")
-
+        self.set_btnSMBVerify_sensitivity (bool(uri))
         self.setNPButtons ()
 
     def on_tvSMBBrowser_cursor_changed(self, widget):
@@ -2820,6 +2831,10 @@ class NewPrinterGUI(GtkGUI):
                     dev.menuentry = "HP Linux Imaging and Printing (HPLIP)"
                     physicaldevice.add_device (dev)
 
+                    # Can we scan using this device?
+                    if self.get_hplip_scan_type_for_uri (device.uri):
+                        hp_scannable = True
+
                     # Now check to see if we can also send faxes using
                     # this device.
                     faxuri = self.get_hplip_uri_for_network_printer (hpliphost,
@@ -2833,7 +2848,8 @@ class NewPrinterGUI(GtkGUI):
                             "HP Linux Imaging and Printing (HPLIP)"
                         physicaldevice.add_device (faxdev)
 
-            physicaldevice.hp_scannable = True
+            if hp_scannable:
+                physicaldevice.hp_scannable = True
             physicaldevice.checked_hplip = True
 
         device.hp_scannable = getattr (physicaldevice, 'hp_scannable', None)
@@ -2980,7 +2996,7 @@ class NewPrinterGUI(GtkGUI):
             self.entSMBUsername.set_text ('')
             self.entSMBPassword.set_text ('')
             self.entSMBURI.set_text(device.uri[6:])
-            self.btnSMBVerify.set_sensitive(True)
+            self.set_btnSMBVerify_sensitivity (True)
         else:
             if device.uri:
                 self.entNPTDevice.set_text(device.uri)

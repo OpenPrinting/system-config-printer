@@ -56,15 +56,19 @@ class PhysicalDevice:
         dnssdhost = None
         (scheme, rest) = urllib.parse.splittype (uri)
         if scheme == 'hp' or scheme == 'hpfax':
+            ipparam = None
             if rest.startswith ("/net/"):
                 (rest, ipparam) = urllib.parse.splitquery (rest[5:])
-                if ipparam != None and ipparam.startswith("ip="):
+
+            if ipparam != None:
+                if ipparam.startswith("ip="):
                     hostport = ipparam[3:]
+                elif ipparam.startswith ("hostname="):
+                    hostport = ipparam[9:]
+                elif ipparam.startswith("zc="):
+                    dnssdhost = ipparam[3:]
                 else:
-                    if ipparam != None and ipparam.startswith("zc="):
-                        dnssdhost = ipparam[3:]
-                    else:
-                        return None, None
+                    return None, None
             else:
                 return None, None
         elif scheme == 'dnssd' or scheme == 'mdns':
