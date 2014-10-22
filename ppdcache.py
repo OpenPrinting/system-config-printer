@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-## Copyright (C) 2010, 2011, 2012, 2013 Red Hat, Inc.
+## Copyright (C) 2010, 2011, 2012, 2013, 2014 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 
@@ -107,14 +107,20 @@ class PPDCache:
 
     def _got_ppd (self, connection, name, result, callback):
         if isinstance (result, Exception):
-            self._schedule_callback (callback, name, result, None)
+            self._schedule_callback (callback, name, none, result)
         else:
             # Store an open file object, then remove the actual file.
             # This way we don't leave temporary files around.
-            self._cache[name] = file (result)
-            debugprint ("%s: caching %s (fd %d)" % (self, result,
-                                                    self._cache[name].fileno()))
-            os.unlink (result)
+            try:
+                self._cache[name] = file (result)
+                debugprint ("%s: caching %s (fd %d)" %
+                            (self, result,
+                             self._cache[name].fileno()))
+                os.unlink (result)
+            except IOError as exc:
+                self._schedule_callback (callback, name, None, exc)
+                return
+
             self.fetch_ppd (name, callback)
 
     def _got_ppd3 (self, connection, name, result, callback):
@@ -144,10 +150,12 @@ class PPDCache:
                                                modtime, status))
                     os.unlink (filename)
                     self._modtimes[name] = modtime
-                except IOError:
+                except IOError as exc:
                     # File disappeared?
                     debugprint ("%s: file %s disappeared? Unable to cache it"
                                 % (self, filename))
+                    self._schedule_callback (callback, name, None, exc)
+                    return
 
             # Now fetch it from our own cache.
             self.fetch_ppd (name, callback, check_uptodate=False)
