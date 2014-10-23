@@ -16,7 +16,7 @@ fi
 if [ -x /usr/bin/tx ]; then
   rm -rf .tx
   tx init --host=https://www.transifex.com
-  tx set --execute --auto-local -r system-config-printer.default \
+  tx set --execute --auto-local -r system-config-printer.1-5-x \
     'po/<lang>.po' --source-lang en \
     --source-file po/system-config-printer.pot
 fi
