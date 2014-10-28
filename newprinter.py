@@ -1816,7 +1816,10 @@ class NewPrinterGUI(GtkGUI):
             res = re.search ("(\d+)", line)
             if res:
                 resg = res.groups()
-                faxtype = resg[0]
+                try:
+                    faxtype = int(resg[0])
+                except:
+                    faxtype = -1
             if faxtype >= 0:
                 break
         if faxtype <= 0:
