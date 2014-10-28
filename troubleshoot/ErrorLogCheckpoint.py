@@ -24,6 +24,7 @@ from gi.repository import Gtk
 import cups
 import os
 import tempfile
+import datetime
 import time
 from timedops import TimedOperation, OperationCanceled
 from base import *
@@ -174,6 +175,10 @@ class ErrorLogCheckpoint(Question):
             cursor = j.get_previous ()['__CURSOR']
             self.answers['error_log_cursor'] = cursor
             self.persistent_answers['error_log_cursor'] = cursor
+            now = datetime.datetime.fromtimestamp (time.time ())
+            timestamp = now.strftime ("%F %T")
+            self.answers['error_log_timestamp'] = timestamp
+            self.persistent_answers['error_log_timestamp'] = timestamp
 
         return self.answers
 
