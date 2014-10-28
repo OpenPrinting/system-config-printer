@@ -25,6 +25,7 @@ from gi.repository import Gtk
 import cups
 import os
 import tempfile
+import datetime
 import time
 from timedops import TimedOperation
 from .base import *
@@ -37,7 +38,15 @@ except:
 class ErrorLogFetch(Question):
     def __init__ (self, troubleshooter):
         Question.__init__ (self, troubleshooter, "Error log fetch")
-        troubleshooter.new_page (Gtk.Label (), self)
+        page = self.initial_vbox (_("Retrieve Journal Entries"),
+                                  _("No system journal entries were found. "
+                                    "This may be because you are not an "
+                                    "administrator. To fetch journal entries "
+                                    "please run this command:"))
+        self.entry = Gtk.Entry ()
+        self.entry.set_editable (False)
+        page.pack_start (self.entry, False, False, 0)
+        troubleshooter.new_page (page, self)
         self.persistent_answers = {}
 
     def display (self):
@@ -46,6 +55,7 @@ class ErrorLogFetch(Question):
         self.answers = {}
         checkpoint = answers.get ('error_log_checkpoint')
         cursor = answers.get ('error_log_cursor')
+        timestamp = answers.get ('error_log_timestamp')
 
         if ('error_log' in self.persistent_answers or
             'journal' in self.persistent_answers):
@@ -73,6 +83,7 @@ class ErrorLogFetch(Question):
                 return tmpfname
             return None
 
+        now = datetime.datetime.fromtimestamp (time.time ()).strftime ("%F %T")
         self.authconn = self.troubleshooter.answers['_authenticated_connection']
         if 'error_log_debug_logging_set' in answers:
             try:
@@ -138,6 +149,14 @@ class ErrorLogFetch(Question):
                 lines = f.readlines ()
                 os.remove (tmpfname)
                 self.answers = { 'error_log': [x.strip () for x in lines] }
+
+        if (len (self.answers.get ('journal', [])) +
+            len (self.answers.get ('error_log', []))) == 0:
+            cmd = ("su -c 'journalctl _COMM=cupsd "
+                   "--since=\"%s\" --until=\"%s\"' > troubleshoot-logs.txt" %
+                   (answers['error_log_timestamp'], now))
+            self.entry.set_text (cmd)
+            return True
 
         return False
 

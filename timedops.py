@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-## Copyright (C) 2008, 2009, 2010, 2012 Red Hat, Inc.
+## Copyright (C) 2008, 2009, 2010, 2012, 2014 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 
@@ -76,7 +76,8 @@ class TimedSubprocess(Timed):
         self.timeout_source = GLib.timeout_add (self.timeout,
                                                 self.do_timeout)
         Gtk.main ()
-        GLib.source_remove (self.timeout_source)
+        if self.timeout_source:
+            GLib.source_remove (self.timeout_source)
         if self.show_dialog:
             GLib.source_remove (self.wait_source)
         for source in self.io_source:
@@ -88,6 +89,7 @@ class TimedSubprocess(Timed):
                 self.subp.poll ())
 
     def do_timeout (self):
+        self.timeout_source = None
         Gtk.main_quit ()
         return False
 
@@ -101,7 +103,6 @@ class TimedSubprocess(Timed):
             self.watchers -= 1
             if self.watchers == 0:
                 Gtk.main_quit ()
-                return False
 
         return True
 
@@ -202,7 +203,8 @@ class TimedOperation(Timed):
 
         self.timeout_source = GLib.timeout_add (50, self._check_thread)
         Gtk.main ()
-        GLib.source_remove (self.timeout_source)
+        if self.timeout_source:
+            GLib.source_remove (self.timeout_source)
         if self.show_dialog:
             wait.destroy ()
 
@@ -214,6 +216,7 @@ class TimedOperation(Timed):
             return True
 
         # Thread has finished.  Stop the sub-loop or trigger callback.
+        self.timeout_source = False
         if self.use_callback:
             if self.callback != None:
                 if self.context != None:
