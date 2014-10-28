@@ -255,7 +255,9 @@ class PhysicalDevice:
                 make_and_model = dev.mdl
             else:
                 make_and_model = "%s %s" % (dev.mfg, dev.mdl)
-            return cupshelpers.ppds.ppdMakeModelSplit (make_and_model)
+            (mfg, mdl) = cupshelpers.ppds.ppdMakeModelSplit (make_and_model)
+            return (cupshelpers.ppds.normalize (mfg),
+                    cupshelpers.ppds.normalize (mdl))
 
         (our_mfg, our_mdl) = split_make_and_model (self)
         (other_mfg, other_mdl) = split_make_and_model (other)
