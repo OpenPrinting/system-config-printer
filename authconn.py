@@ -102,7 +102,8 @@ class AuthDialog(Gtk.Dialog):
             self.field_entry[i].set_text (auth_info[i])
 
     def get_auth_info (self):
-        return map (lambda x: x.get_text (), self.field_entry)
+        return map (lambda x: unicode (x.get_text (), 'utf-8'),
+                    self.field_entry)
 
     def get_remember_password (self):
         try:
