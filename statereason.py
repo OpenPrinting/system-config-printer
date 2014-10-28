@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-## Copyright (C) 2007, 2008, 2009, 2010, 2012, 2013 Red Hat, Inc.
+## Copyright (C) 2007, 2008, 2009, 2010, 2012, 2013, 2014 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 ##  Jiri Popelka <jpopelka@redhat.com>
@@ -56,7 +56,20 @@ class StateReason:
             return self.level
 
         if (self.reason.endswith ("-report") or
-            self.reason == "connecting-to-device"):
+            self.reason in ["connecting-to-device",
+                            "cups-ipp-missing-cancel-job",
+                            "cups-ipp-missing-get-job-attributes",
+                            "cups-ipp-missing-get-printer-attributes",
+                            "cups-ipp-missing-job-history",
+                            "cups-ipp-missing-job-id",
+                            "cups-ipp-missing-job-state",
+                            "cups-ipp-missing-operations-supported",
+                            "cups-ipp-missing-print-job",
+                            "cups-ipp-missing-printer-is-accepting-jobs",
+                            "cups-ipp-missing-printer-state-reasons",
+                            "cups-ipp-missing-send-document",
+                            "cups-ipp-missing-validate-job",
+                            "cups-ipp-wrong-http-version"]):
             self.level = self.REPORT
         elif self.reason.endswith ("-warning"):
             self.level = self.WARNING
