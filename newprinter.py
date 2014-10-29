@@ -1061,9 +1061,12 @@ class NewPrinterGUI(GtkGUI):
 
                         # Does the backend need to be installed?
                         if (self.nextnptab_rerun == False and
+                            not self.searchedfordriverpackages and
+
                             (self._host == 'localhost' or
                              self._host[0] == '/') and
                             not os.access ("/usr/lib/cups/backend/smb", os.F_OK)):
+                            debugprint ("No smb backend so attempting install")
                             try:
                                 pk = installpackage.PackageKit ()
                                 pk.InstallPackageName (0, 0, "samba-client")
@@ -1194,6 +1197,8 @@ class NewPrinterGUI(GtkGUI):
                         self.device.hp_scannable and
                         not os.access ("/etc/sane.d/dll.d/hpaio", os.R_OK) and
                         not os.access ("/etc/sane.d/dll.d/hplip", os.R_OK)):
+                        debugprint ("No HPLIP sane backend so "
+                                    "attempting install")
                         try:
                             pk = installpackage.PackageKit ()
                             pk.InstallPackageName (0, 0, "libsane-hpaio")
