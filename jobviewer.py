@@ -315,6 +315,7 @@ class JobViewer (GtkGUI):
                                    'job-printer-uri',
                                    'job-state',
                                    'time-at-creation',
+                                   'auth-info-required'
                                    'job-preserved'])
 
     __gsignals__ = {
