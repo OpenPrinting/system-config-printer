@@ -1315,6 +1315,10 @@ class GUI(GtkGUI):
     # Quit
 
     def on_quit_activate(self, widget, event=None):
+        if self.populateList_timer:
+            GLib.source_remove (self.populateList_timer)
+
+        self.populateList_timer = None
         if self.monitor:
             self.monitor.cleanup ()
 
@@ -1749,14 +1753,7 @@ class GUI(GtkGUI):
         # For some reason CUPS doesn't give us a notification about
         # printers changing 'shared' state, so refresh instead of
         # update.  We have to defer this to prevent signal problems.
-        def deferred_refresh ():
-            Gdk.threads_enter ()
-            try:
-                self.populateList ()
-            finally:
-                Gdk.threads_leave ()
-            return False
-        GLib.idle_add (deferred_refresh)
+        self.defer_refresh ()
 
     def advise_publish(self):
         if not self.server_is_publishing:
@@ -2125,16 +2122,14 @@ class GUI(GtkGUI):
             except:
                 nonfatalException()
 
-    ## Monitor signal helpers
-    def printer_added_or_removed (self):
-        # Just fetch the list of printers again.  This is too simplistic.
+    def defer_refresh (self):
         def deferred_refresh ():
+            self.populateList_timer = None
             Gdk.threads_enter ()
             try:
                 self.populateList (prompt_allowed=False)
             finally:
                 Gdk.threads_leave ()
-            self.populateList_timer = None
             return False
 
         if self.populateList_timer:
@@ -2142,6 +2137,11 @@ class GUI(GtkGUI):
 
         self.populateList_timer = GLib.timeout_add (200, deferred_refresh)
         debugprint ("Deferred populateList by 200ms")
+
+        ## Monitor signal helpers
+    def printer_added_or_removed (self):
+        # Just fetch the list of printers again.  This is too simplistic.
+        self.defer_refresh ()
 
     ## Monitor signal handlers
     def printer_added (self, mon, printer):
