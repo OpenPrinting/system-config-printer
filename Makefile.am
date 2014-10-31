@@ -258,7 +258,7 @@ desktop_in_files = $(desktop_DATA:.desktop=.desktop.in)
 @INTLTOOL_XML_RULE@
 
 appdatadir = $(datadir)/appdata
-appdata_in_files = data/system-config-printer.appdata.xml.in
+appdata_in_files = system-config-printer.appdata.xml.in
 appdata_DATA = $(appdata_in_files:.xml.in=.xml)
 
 EXTRA_DIST=\
