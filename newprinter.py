@@ -745,6 +745,8 @@ class NewPrinterGUI(GtkGUI):
             if self.dialog_mode == "printer_with_uri" or\
                self.dialog_mode == "download_driver":
                 self.nextNPTab(step = 0)
+
+            if self.dialog_mode == "download_driver":
                 return True
 
         if xid == 0 and self.parent:

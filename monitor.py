@@ -524,6 +524,7 @@ class Monitor(GObject.GObject):
             if self.update_timer:
                 GLib.source_remove (self.update_timer)
 
+            self.update_timer = None
             debugprint ("Canceled subscription %d" % self.sub_id)
 
         try:
