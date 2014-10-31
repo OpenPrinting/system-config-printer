@@ -1,6 +1,6 @@
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008, 2009 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2009, 2014 Red Hat, Inc.
 ## Copyright (C) 2006 Florian Festi <ffesti@redhat.com>
 ## Copyright (C) 2007, 2008, 2009 Tim Waugh <twaugh@redhat.com>
 
@@ -55,8 +55,8 @@ class Option:
         vbox = Gtk.VBox()
         
         self.btnConflict = Gtk.Button()
-        icon = Gtk.Image.new_from_stock(Gtk.STOCK_DIALOG_WARNING,
-                                        Gtk.IconSize.SMALL_TOOLBAR)
+        icon = Gtk.Image.new_from_icon_name(Gtk.STOCK_DIALOG_WARNING,
+                                            Gtk.IconSize.SMALL_TOOLBAR)
         self.btnConflict.add(icon)
         self.btnConflict.set_no_show_all(True) #avoid the button taking
                                                # over control again

@@ -824,7 +824,8 @@ class PrinterPropertiesDialog(GtkGUI):
                                     yoptions=0)
             opt.selector.set_sensitive (editable)
 
-            btn = Gtk.Button.new_from_stock(Gtk.STOCK_REMOVE)
+            btn = Gtk.Button.new_from_icon_name (Gtk.STOCK_REMOVE,
+                                                 Gtk.IconSize.BUTTON)
             btn.connect("clicked", self.on_btnJOOtherRemove_clicked)
             btn.pyobject = opt
             btn.set_sensitive (editable)

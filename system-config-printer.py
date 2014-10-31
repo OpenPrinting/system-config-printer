@@ -313,8 +313,10 @@ class GUI(GtkGUI):
         self.PrintersWindow.add_accel_group (self.ui_manager.get_accel_group ())
 
         # Toolbar
-        # Glade-2 doesn't have support for MenuToolButton, so we do that here.
-        self.btnNew = Gtk.MenuToolButton.new_from_stock(Gtk.STOCK_ADD)
+        # Glade-3 doesn't have support for MenuToolButton, so we do that here.
+        self.btnNew = Gtk.MenuToolButton ()
+        self.btnNew.set_label (_("Add"))
+        self.btnNew.set_icon_name (Gtk.STOCK_ADD)
         self.btnNew.set_is_important (True)
         newmenu = Gtk.Menu ()
         action = self.ui_manager.get_action ("/new-printer")
@@ -329,7 +331,9 @@ class GUI(GtkGUI):
         self.btnNew.connect ('clicked', self.on_new_printer_activate)
         self.toolbar.add (self.btnNew)
         self.toolbar.add (Gtk.SeparatorToolItem ())
-        self.refreshbutton = Gtk.ToolButton.new_from_stock(Gtk.STOCK_REFRESH)
+        self.refreshbutton = Gtk.ToolButton ()
+        self.refreshbutton.set_label (_("Refresh"))
+        self.refreshbutton.set_icon_name (Gtk.STOCK_REFRESH)
         self.refreshbutton.connect ('clicked', self.on_btnRefresh_clicked)
         self.toolbar.add (self.refreshbutton)
         self.toolbar.show_all ()
