@@ -17,33 +17,33 @@
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <child>
-	  <object class="GtkHBox" id="hboxMenuBar">
-	    <property name="visible">True</property>
-	    <property name="can_focus">False</property>
-	    <child>
+          <object class="GtkHBox" id="hboxMenuBar">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
               <object class="GtkMenuBar" id="menubar">
-		<property name="visible">True</property>
-		<property name="can_focus">False</property>
-		<child>
-		  <object class="GtkMenuItem" id="server_menubar_item">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="GtkMenuItem" id="server_menubar_item">
                     <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">_Server</property>
                     <property name="use_underline">True</property>
-		  </object>
-		</child>
-		<child>
-		  <object class="GtkMenuItem" id="printer_menubar_item">
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkMenuItem" id="printer_menubar_item">
                     <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">_Printer</property>
                     <property name="use_underline">True</property>
-		  </object>
-		</child>
-		<child>
-		  <object class="GtkMenuItem" id="view1">
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkMenuItem" id="view1">
                     <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
@@ -51,9 +51,9 @@
                     <property name="use_underline">True</property>
                     <child type="submenu">
                       <object class="GtkMenu" id="view1_menu">
-			<property name="can_focus">False</property>
-			<child>
-			  <object class="GtkCheckMenuItem" id="view_discovered_printers">
+                        <property name="can_focus">False</property>
+                        <child>
+                          <object class="GtkCheckMenuItem" id="view_discovered_printers">
                             <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
@@ -61,14 +61,14 @@
                             <property name="use_underline">True</property>
                             <property name="active">True</property>
                             <signal name="activate" handler="on_view_discovered_printers_activate" swapped="no"/>
-			  </object>
-			</child>
+                          </object>
+                        </child>
                       </object>
                     </child>
-		  </object>
-		</child>
-		<child>
-		  <object class="GtkMenuItem" id="menuitem7">
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkMenuItem" id="menuitem7">
                     <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
@@ -76,9 +76,9 @@
                     <property name="use_underline">True</property>
                     <child type="submenu">
                       <object class="GtkMenu" id="menuitem7_menu">
-			<property name="can_focus">False</property>
-			<child>
-			  <object class="GtkImageMenuItem" id="troubleshoot">
+                        <property name="can_focus">False</property>
+                        <child>
+                          <object class="GtkImageMenuItem" id="troubleshoot">
                             <property name="label" translatable="yes">_Troubleshoot</property>
                             <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
@@ -86,24 +86,24 @@
                             <property name="use_underline">True</property>
                             <signal name="activate" handler="on_troubleshoot_activate" swapped="no"/>
                             <accelerator key="F1" signal="activate"/>
-			  </object>
-			</child>
-			<child>
-			  <object class="GtkImageMenuItem" id="about">
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkImageMenuItem" id="about">
                             <property name="label" translatable="yes">About</property>
                             <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="use_underline">True</property>
                             <signal name="activate" handler="on_about_activate" swapped="no"/>
-			  </object>
-			</child>
+                          </object>
+                        </child>
                       </object>
                     </child>
-		  </object>
-		</child>
-	      </object>
-	    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
           </object>
           <packing>
             <property name="expand">False</property>
