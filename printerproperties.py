@@ -141,7 +141,6 @@ class PrinterPropertiesDialog(GtkGUI):
                               "swPOptions",
                               "lblPOptions",
                               "vbPOptions",
-                              "algnClassMembers",
                               "vbClassMembers",
                               "lblClassMembers",
                               "tvClassMembers",
@@ -1690,7 +1689,7 @@ class PrinterPropertiesDialog(GtkGUI):
 
     def fillPrinterOptions(self, name, editable):
         # remove Class membership tab
-        tab_nr = self.ntbkPrinter.page_num(self.algnClassMembers)
+        tab_nr = self.ntbkPrinter.page_num(self.vbClassMembers)
         if tab_nr != -1:
             self.ntbkPrinter.remove_page(tab_nr)
 
@@ -1811,9 +1810,9 @@ class PrinterPropertiesDialog(GtkGUI):
             self.ntbkPrinter.remove_page(tab_nr)
 
         # insert Member Tab
-        if self.ntbkPrinter.page_num(self.algnClassMembers) == -1:
+        if self.ntbkPrinter.page_num(self.vbClassMembers) == -1:
             self.ntbkPrinter.insert_page(
-                self.algnClassMembers, self.lblClassMembers,
+                self.vbClassMembers, self.lblClassMembers,
                 self.static_tabs)
 
         model_members = self.tvClassMembers.get_model()

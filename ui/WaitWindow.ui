@@ -16,44 +16,38 @@
         <property name="label_xalign">0</property>
         <property name="shadow_type">out</property>
         <child>
-          <object class="GtkAlignment" id="alignment71">
+          <object class="GtkHBox" id="hbox65">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="margin_start">12</property>
+            <property name="border_width">6</property>
+            <property name="spacing">12</property>
             <child>
-              <object class="GtkHBox" id="hbox65">
+              <object class="GtkImage" id="image27">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="margin_start">12</property>
-                <property name="border_width">6</property>
-                <property name="spacing">12</property>
-                <child>
-                  <object class="GtkImage" id="image27">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="icon_name">gtk-dialog-info</property>
-                    <property name="icon_size">6</property>
-                  </object>
-                  <packing>
-                    <property name="expand">True</property>
-                    <property name="fill">True</property>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkLabel" id="lblWait">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="label">label135</property>
-                    <property name="use_markup">True</property>
-                    <property name="wrap">True</property>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">False</property>
-                    <property name="position">1</property>
-                  </packing>
-                </child>
+                <property name="icon_name">gtk-dialog-info</property>
+                <property name="icon_size">6</property>
               </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="lblWait">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label">label135</property>
+                <property name="use_markup">True</property>
+                <property name="wrap">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">1</property>
+              </packing>
             </child>
           </object>
         </child>
