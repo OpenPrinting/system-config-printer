@@ -303,6 +303,7 @@ class NewPrinterGUI(GtkGUI):
                               "rbtnNPDownloadableDriverSearch",
                               "entNPDownloadableDriverSearch",
                               "btnNPDownloadableDriverSearch",
+                              "btnNPDownloadableDriverSearch_label",
                               "cmbNPDownloadableDriverFoundPrinters",
                               "tvNPModels",
                               "tvNPDrivers",
@@ -659,9 +660,7 @@ class NewPrinterGUI(GtkGUI):
         combobox = self.cmbNPDownloadableDriverFoundPrinters
         combobox.set_model (Gtk.ListStore (str, str))
         self.entNPDownloadableDriverSearch.set_text ('')
-        button = self.btnNPDownloadableDriverSearch
-        label = button.get_children ()[0].get_children ()[0].get_children ()[1]
-        self.btnNPDownloadableDriverSearch_label = label
+        label = self.btnNPDownloadableDriverSearch_label
         label.set_text (_("Search"))
 
         if self.dialog_mode in ("printer", "printer_with_uri", "class"):
