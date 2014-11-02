@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.1 -->
+<!-- Generated with glade 3.18.3 -->
 <interface>
   <requires lib="gtk+" version="3.0"/>
   <object class="GtkAdjustment" id="adjustment1">
@@ -246,10 +246,11 @@
                 <property name="can_focus">True</property>
                 <property name="scrollable">True</property>
                 <child>
-                  <object class="GtkVBox" id="vbox25">
+                  <object class="GtkBox" id="vbox25">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="border_width">6</property>
+                    <property name="orientation">vertical</property>
                     <property name="spacing">6</property>
                     <child>
                       <object class="GtkFrame" id="frame3">
@@ -600,10 +601,11 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkVBox" id="vbox28">
+                  <object class="GtkBox" id="vbox28">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="border_width">6</property>
+                    <property name="orientation">vertical</property>
                     <property name="spacing">6</property>
                     <child>
                       <object class="GtkFrame" id="frame4">
@@ -619,9 +621,10 @@
                             <property name="margin_top">6</property>
                             <property name="spacing">18</property>
                             <child>
-                              <object class="GtkVBox" id="vbox26">
+                              <object class="GtkBox" id="vbox26">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="orientation">vertical</property>
                                 <child>
                                   <object class="GtkCheckButton" id="chkPEnabled">
                                     <property name="label" translatable="yes">Enabled</property>
@@ -921,10 +924,11 @@ See server settings&lt;/i&gt;</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkVBox" id="vbox44">
+                  <object class="GtkBox" id="vbox44">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="border_width">6</property>
+                    <property name="orientation">vertical</property>
                     <property name="spacing">6</property>
                     <child>
                       <object class="GtkRadioButton" id="rbtnPAllow">
@@ -1007,9 +1011,10 @@ See server settings&lt;/i&gt;</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkVBox" id="vbox45">
+                          <object class="GtkBox" id="vbox45">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="orientation">vertical</property>
                             <child>
                               <object class="GtkButton" id="btnPDelUser">
                                 <property name="label" translatable="yes">Delete</property>
@@ -1078,10 +1083,11 @@ See server settings&lt;/i&gt;</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkVBox" id="vbClassMembers">
+                  <object class="GtkBox" id="vbClassMembers">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="border_width">6</property>
+                    <property name="orientation">vertical</property>
                     <property name="spacing">6</property>
                     <child>
                       <object class="GtkLabel" id="label64">
@@ -1240,10 +1246,11 @@ See server settings&lt;/i&gt;</property>
                         <property name="can_focus">False</property>
                         <property name="shadow_type">none</property>
                         <child>
-                          <object class="GtkVBox" id="vbPInstallOptions">
+                          <object class="GtkBox" id="vbPInstallOptions">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="border_width">6</property>
+                            <property name="orientation">vertical</property>
                             <property name="spacing">6</property>
                             <child>
                               <object class="GtkHSeparator" id="hseparator1">
@@ -1286,9 +1293,10 @@ See server settings&lt;/i&gt;</property>
                         <property name="can_focus">False</property>
                         <property name="shadow_type">none</property>
                         <child>
-                          <object class="GtkVBox" id="vbPOptions">
+                          <object class="GtkBox" id="vbPOptions">
                             <property name="can_focus">False</property>
                             <property name="border_width">6</property>
+                            <property name="orientation">vertical</property>
                             <property name="spacing">6</property>
                             <child>
                               <object class="GtkHSeparator" id="hseparator2">
@@ -1331,10 +1339,11 @@ See server settings&lt;/i&gt;</property>
                         <property name="can_focus">False</property>
                         <property name="shadow_type">none</property>
                         <child>
-                          <object class="GtkVBox" id="vbox51">
+                          <object class="GtkBox" id="vbox51">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="border_width">6</property>
+                            <property name="orientation">vertical</property>
                             <property name="spacing">6</property>
                             <child>
                               <object class="GtkLabel" id="label136">
@@ -2687,7 +2696,6 @@ See server settings&lt;/i&gt;</property>
                                           <object class="GtkLabel" id="label165">
                                             <property name="visible">True</property>
                                             <property name="can_focus">False</property>
-                                            <property name="label" translatable="yes"/>
                                           </object>
                                           <packing>
                                             <property name="expand">False</property>
@@ -2731,7 +2739,6 @@ See server settings&lt;/i&gt;</property>
                                           <object class="GtkLabel" id="label166">
                                             <property name="visible">True</property>
                                             <property name="can_focus">False</property>
-                                            <property name="label" translatable="yes"/>
                                           </object>
                                           <packing>
                                             <property name="expand">False</property>
@@ -3241,11 +3248,12 @@ See server settings&lt;/i&gt;</property>
                                 <property name="label_xalign">0</property>
                                 <property name="shadow_type">none</property>
                                 <child>
-                                  <object class="GtkVBox" id="vbox52">
+                                  <object class="GtkBox" id="vbox52">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="margin_start">12</property>
                                     <property name="margin_top">6</property>
+                                    <property name="orientation">vertical</property>
                                     <property name="spacing">12</property>
                                     <child>
                                       <object class="GtkTable" id="tblJOOther">
@@ -3288,9 +3296,10 @@ See server settings&lt;/i&gt;</property>
                                       </packing>
                                     </child>
                                     <child>
-                                      <object class="GtkVBox" id="vbox53">
+                                      <object class="GtkBox" id="vbox53">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
+                                        <property name="orientation">vertical</property>
                                         <property name="spacing">6</property>
                                         <child>
                                           <object class="GtkLabel" id="label163">
@@ -3390,10 +3399,11 @@ See server settings&lt;/i&gt;</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkVBox" id="vbPMarkerLevels">
+                  <object class="GtkBox" id="vbPMarkerLevels">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="border_width">6</property>
+                    <property name="orientation">vertical</property>
                     <property name="spacing">6</property>
                     <child>
                       <object class="GtkFrame" id="frame33">
@@ -3402,9 +3412,10 @@ See server settings&lt;/i&gt;</property>
                         <property name="label_xalign">0</property>
                         <property name="shadow_type">none</property>
                         <child>
-                          <object class="GtkVBox" id="vbox1">
+                          <object class="GtkBox" id="vbox1">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="orientation">vertical</property>
                             <property name="spacing">6</property>
                             <child>
                               <object class="GtkScrolledWindow" id="scrolledwindow1">
@@ -3418,10 +3429,11 @@ See server settings&lt;/i&gt;</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <child>
-                                      <object class="GtkVBox" id="vboxMarkerLevels">
+                                      <object class="GtkBox" id="vboxMarkerLevels">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="border_width">3</property>
+                                        <property name="orientation">vertical</property>
                                         <property name="spacing">6</property>
                                         <child>
                                           <placeholder/>

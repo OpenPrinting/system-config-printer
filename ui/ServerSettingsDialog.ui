@@ -14,6 +14,7 @@
       <object class="GtkBox" id="dialog-vbox10">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
         <child internal-child="action_area">
           <object class="GtkButtonBox" id="dialog-action_area10">
             <property name="visible">True</property>
@@ -63,11 +64,12 @@
             <property name="label_xalign">0</property>
             <property name="shadow_type">none</property>
             <child>
-              <object class="GtkVBox" id="vbox1">
+              <object class="GtkBox" id="vbox1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="margin_start">12</property>
                 <property name="margin_top">6</property>
+                <property name="orientation">vertical</property>
                 <property name="spacing">6</property>
                 <child>
                   <object class="GtkHBox" id="hboxServerBrowse">
@@ -193,9 +195,10 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <child>
-                      <object class="GtkVBox" id="frames_vbox">
+                      <object class="GtkBox" id="frames_vbox">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="orientation">vertical</property>
                         <property name="spacing">6</property>
                         <child>
                           <object class="GtkFrame" id="history_frame">
@@ -204,10 +207,11 @@
                             <property name="label_xalign">0</property>
                             <property name="shadow_type">none</property>
                             <child>
-                              <object class="GtkVBox" id="rb_vbox">
+                              <object class="GtkBox" id="rb_vbox">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="margin_start">12</property>
+                                <property name="orientation">vertical</property>
                                 <child>
                                   <object class="GtkRadioButton" id="rbPreserveJobNone">
                                     <property name="label" translatable="yes">Do not preserve job history</property>
@@ -282,10 +286,11 @@
                             <property name="label_xalign">0</property>
                             <property name="shadow_type">none</property>
                             <child>
-                              <object class="GtkVBox" id="vbox2">
+                              <object class="GtkBox" id="vbox2">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="margin_start">12</property>
+                                <property name="orientation">vertical</property>
                                 <property name="spacing">6</property>
                                 <child>
                                   <object class="GtkLabel" id="label5">
