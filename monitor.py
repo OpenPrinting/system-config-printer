@@ -473,6 +473,12 @@ class Monitor(GObject.GObject):
             except KeyError:
                 continue
 
+            if (self.specific_dests != None and
+                event['printer-name'] not in self.specific_dests):
+                del jobs[jobid]
+                self.emit ('job-removed', jobid, nse, event)
+                continue
+
             for attribute in ['job-state',
                               'job-name']:
                 job[attribute] = event[attribute]
