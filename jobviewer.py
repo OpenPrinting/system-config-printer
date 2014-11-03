@@ -555,6 +555,7 @@ class JobViewer (GtkGUI):
         self.port = cups.getPort ()
         self.encryption = cups.getEncryption ()
         self.monitor = monitor.Monitor (bus=bus, my_jobs=my_jobs,
+                                        specific_dests=specific_dests,
                                         host=self.host, port=self.port,
                                         encryption=self.encryption)
         self.monitor.connect ('refresh', self.on_refresh)
