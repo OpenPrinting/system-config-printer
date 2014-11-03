@@ -24,6 +24,7 @@ import cups
 import dbus
 import dbus.glib
 import dbus.service
+import threading
 from gi.repository import Notify
 from gi.repository import GLib
 from gi.repository import GObject
@@ -917,6 +918,8 @@ class JobViewer (GtkGUI):
                                      data.get ('job-printer-uri'),
                                      data.get ('auth-info-required', []),
                                      self.applet)
+
+        self.submenu_set = False
         self.update_sensitivity ()
 
     def get_authentication (self, job, device_uri, printer_uri,
@@ -1266,7 +1269,9 @@ class JobViewer (GtkGUI):
                 menuitem = Gtk.MenuItem (label=printer)
                 menuitem.set_sensitive (uri != None)
                 menuitem.show ()
-                menuitem.connect ('activate', self.on_job_move_activate, uri)
+                self._submenu_connect_hack (menuitem,
+                                            self.on_job_move_activate,
+                                            uri)
                 printers_menu.append (menuitem)
 
             self.move_job_menuitem.set_submenu (printers_menu)
@@ -1488,6 +1493,16 @@ class JobViewer (GtkGUI):
 
         del c
         self.update_monitor ()
+
+    def _submenu_connect_hack (self, item, callback, *args):
+        # See https://bugzilla.gnome.org/show_bug.cgi?id=695488
+        only_once = threading.Semaphore (1)
+        def handle_event (item, event=None):
+            if only_once.acquire (False):
+                GObject.idle_add (callback, item, *args)
+
+        return (item.connect ('button-press-event', handle_event),
+                item.connect ('activate', handle_event))
 
     def on_job_move_activate(self, menuitem, job_printer_uri):
         try:
