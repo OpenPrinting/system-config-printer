@@ -2,7 +2,7 @@
 
 ## system-config-printer
 
-## Copyright (C) 2008, 2009, 2010, 2011, 2012, 2013 Red Hat, Inc.
+## Copyright (C) 2008, 2009, 2010, 2011, 2012, 2013, 2014 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 
@@ -490,6 +490,10 @@ class ServerSettings(GtkGUI):
         os.lseek (fd, 0, os.SEEK_SET)
         try:
             self.cupsconn.putFile ("/admin/conf/cupsd.conf", fd=fd)
+        except cups.IPPError as e:
+            (e, m) = e.args
+            show_IPP_Error (e, m, self.dialog)
+            return
         except cups.HTTPError as e:
             (s,) = e.args
             show_HTTP_Error (s, self.dialog)
