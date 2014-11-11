@@ -92,7 +92,7 @@ _HP_MODEL_BY_NAME = {
 }
 
 _RE_turboprint = re.compile ("turboprint")
-_RE_version_numbers = re.compile (" v\d(?:\d*\.\d+)?(?: |$)")
+_RE_version_numbers = re.compile (" v(?:er\.)?\d(?:\d*\.\d+)?(?: |$)")
 _RE_ignore_suffix = re.compile (","
                                 "| hpijs"
                                 "| foomatic/"
@@ -201,8 +201,9 @@ def ppdMakeModelSplit (ppd_make_and_model):
             if mfr:
                 make = mfr
 
-    # HP PostScript PPDs give NickNames like:
+    # HP and Canon PostScript PPDs give NickNames like:
     # *NickName: "HP LaserJet 4 Plus v2013.111 Postscript (recommended)"
+    # *NickName: "Canon MG4100 series Ver.3.90"
     # Find the version number and truncate at that point.  But beware,
     # other model names can legitimately look like version numbers,
     # e.g. Epson PX V500.
@@ -211,9 +212,9 @@ def ppdMakeModelSplit (ppd_make_and_model):
     modell = model.lower ()
     v = modell.find (" v")
     if v != -1:
-        # Look for " v" followed by a digit, optionally followed by more
-        # digits, a dot, and more digits; and terminated by a space of the
-        # end of the line.
+        # Look for " v" or " ver." followed by a digit, optionally
+        # followed by more digits, a dot, and more digits; and
+        # terminated by a space of the end of the line.
         vmatch = _RE_version_numbers.search (modell)
         if vmatch:
             # Found it -- truncate at that point.
