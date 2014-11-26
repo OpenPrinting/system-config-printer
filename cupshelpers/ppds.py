@@ -716,9 +716,13 @@ class PPDs:
                     fit[each] = self.FIT_EXACT_CMD
                     _debugprint (self.FIT_EXACT_CMD + ": %s" % each)
 
-            _debugprint ("Removed %s due to CMD mis-match" % failed)
-            for each in failed:
-                del fit[each]
+            if len (failed) < len (fit):
+                _debugprint ("Removed %s due to CMD mis-match" % failed)
+                for each in failed:
+                    del fit[each]
+            else:
+                _debugprint ("Not removing %s " % failed +
+                             "due to CMD mis-match as it would leave nothing")
 
         if not fit:
             fallbacks = ["textonly.ppd", "postscript.ppd"]
