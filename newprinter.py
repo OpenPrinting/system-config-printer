@@ -1151,7 +1151,9 @@ class NewPrinterGUI(GtkGUI):
                     # Install package of the driver found on OpenPrinting
                     treeview = self.tvNPDownloadableDrivers
                     model, iter = treeview.get_selection ().get_selected ()
-                    driver = model.get_value (iter, 1)
+                    driver = None
+                    if iter != None:
+                        driver = model.get_value (iter, 1)
                     if driver != None and driver.has_key ('packages'):
                         # Find the package name, repository, and fingerprint
                         # and install the package
