@@ -864,8 +864,13 @@ class JobViewer (GtkGUI):
             s = int (jstate)
 
             if s in [cups.IPP_JOB_HELD, cups.IPP_JOB_STOPPED]:
-                jattrs = ['job-state', 'job-hold-until']
+                jattrs = ['job-state', 'job-hold-until', 'job-printer-uri']
                 pattrs = ['auth-info-required', 'device-uri']
+                # The current job-printer-uri may differ from the one that
+                # is returned when we request it over the connection.
+                # So while we use it to query the printer attributes we
+                # Update it afterwards to make sure that we really
+                # have the one cups uses in the job attributes.
                 uri = data.get ('job-printer-uri')
                 c = authconn.Connection (self.JobsWindow,
                                          host=self.host,
