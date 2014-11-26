@@ -1154,7 +1154,9 @@ class NewPrinterGUI(GtkGUI):
                     driver = None
                     if iter != None:
                         driver = model.get_value (iter, 1)
-                    if driver != None and driver.has_key ('packages'):
+                    if (driver != None and
+                        driver != 0 and
+                        'packages' in driver):
                         # Find the package name, repository, and fingerprint
                         # and install the package
                         if self.installdriverpackage (driver) and \
@@ -3373,6 +3375,7 @@ class NewPrinterGUI(GtkGUI):
             self.btnNPDownloadableDriverSearch_label.set_text (_("Search"))
 
     def fillDownloadableDrivers(self):
+        print ("filldownloadableDrivers")
         self.downloadable_driver_for_printer = None
         widget = self.cmbNPDownloadableDriverFoundPrinters
         model = widget.get_model ()
@@ -3388,41 +3391,46 @@ class NewPrinterGUI(GtkGUI):
                     printer_str = model.get_value (iter, 0)
                 else:
                     printer_id = None
-                    printer_str = None;
+                    printer_str = None
         else:
             printer_id = None
-            printer_str = None;
+            printer_str = None
 
         if printer_id == None:
-            return
+            # If none selected, show all.
+            # This also happens for ID-matching.
+            printer_ids = [x[0] for x in self.downloadable_printers]
+        else:
+            printer_ids = [printer_id]
 
         if printer_str:
             self.downloadable_driver_for_printer = printer_str
 
-        drivers = self.downloadable_drivers[printer_id]
         model = Gtk.ListStore (str,                     # driver name
                                GObject.TYPE_PYOBJECT)   # driver data
         recommended_iter = None
         first_iter = None
-        for driver in drivers.values ():
-            iter = model.append (None)
-            if first_iter == None:
-                first_iter = iter
+        for printer_id in printer_ids:
+            drivers = self.downloadable_drivers[printer_id]
+            for driver in drivers.values ():
+                iter = model.append (None)
+                if first_iter == None:
+                    first_iter = iter
 
-            model.set_value (iter, 0, driver['name'])
-            model.set_value (iter, 1, driver)
+                model.set_value (iter, 0, driver['name'])
+                model.set_value (iter, 1, driver)
 
-            if driver['recommended']:
-                recommended_iter = iter
+                if driver['recommended']:
+                    recommended_iter = iter
 
-        if not self.rbtnNPDownloadableDriverSearch.get_active() and \
-           self.dialog_mode != "download_driver":
-            iter = model.append (None)
-            model.set_value (iter, 0, _("Local Driver"))
-            model.set_value (iter, 1, 0)
+            if not self.rbtnNPDownloadableDriverSearch.get_active() and \
+               self.dialog_mode != "download_driver":
+                iter = model.append (None)
+                model.set_value (iter, 0, _("Local Driver"))
+                model.set_value (iter, 1, 0)
 
-        if recommended_iter == None:
-            recommended_iter = first_iter
+            if recommended_iter == None:
+                recommended_iter = first_iter
 
         treeview = self.tvNPDownloadableDrivers
         treeview.set_model (model)
