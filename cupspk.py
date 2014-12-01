@@ -1,8 +1,8 @@
 # vim: set ts=4 sw=4 et: coding=UTF-8
 #
 # Copyright (C) 2008, 2013 Novell, Inc.
-# Copyright (C) 2008, 2009, 2010, 2012 Red Hat, Inc.
-# Copyright (C) 2008, 2009, 2010, 2012 Tim Waugh <twaugh@redhat.com>
+# Copyright (C) 2008, 2009, 2010, 2012, 2014 Red Hat, Inc.
+# Copyright (C) 2008, 2009, 2010, 2012, 2014 Tim Waugh <twaugh@redhat.com>
 #
 # Authors: Vincent Untz
 #
@@ -133,6 +133,7 @@ class Connection:
                 break
             except dbus.exceptions.DBusException as e:
                 if e.get_dbus_name() == CUPS_PK_NEED_AUTH:
+                    debugprint ("DBus exception: %s" % e.get_dbus_message ())
                     raise cups.IPPError(cups.IPP_NOT_AUTHORIZED, 'pkcancel')
 
                 break
