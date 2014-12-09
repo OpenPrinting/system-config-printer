@@ -47,10 +47,18 @@ debugprint("pk.resolve")
 try:
     res = pk.resolve(PackageKitGlib.FilterEnum.NONE, [package],
                      None, lambda p, t, d: True, None)
+    repo_enable_needed = False
     debugprint("pk.resolve succeeded")
 except GLib.GError:
+    repo_enable_needed = True
     debugprint("pk.resolve failed")
-    # cannot resolve, so we need to install the repo
+package_ids = res.get_package_array()
+if len(package_ids) <= 0:
+    debugprint("res.get_package_array() failed")
+    repo_enable_needed = True
+
+if repo_enable_needed:
+    # Cannot resolve, so we need to install the repo
     # add repository; see
     # http://www.packagekit.org/gtk-doc/PackageKit-pk-client-sync.html#pk-client-repo-enable
     debugprint("pk.repo_enable")
