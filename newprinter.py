@@ -1297,6 +1297,7 @@ class NewPrinterGUI(GtkGUI):
                             self.auto_make = make
                             self.auto_model = model
                             self.auto_driver = ppdname
+                            self.fillDriverList(make, model)
                         if ((status == "exact" or status == "exact-cmd") and \
                             self.dialog_mode != "ppd"):
                             self.exactdrivermatch = True
