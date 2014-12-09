@@ -1553,11 +1553,20 @@ class NewPrinterGUI(GtkGUI):
                 try:
                     self.NewPrinterWindow.show()
                     self.setNPButtons()
-                    self.fillDownloadableDrivers()
+                    if not self.fillDownloadableDrivers():
+                        ready (self.NewPrinterWindow)
+
+                        self.founddownloadabledrivers = False
+                        if self.dialog_mode == "download_driver":
+                            self.on_NPCancel(None)
+                        else:
+                            self.nextNPTab ()
+                    else:
+                        self.nextNPTab ()
                 except:
                     nonfatalException ()
+                    self.nextNPTab ()
 
-                self.nextNPTab ()
         finally:
             Gdk.threads_leave ()
 
@@ -3402,20 +3411,24 @@ class NewPrinterGUI(GtkGUI):
                 if driver['recommended']:
                     recommended_iter = iter
 
-            if not self.rbtnNPDownloadableDriverSearch.get_active() and \
-               self.dialog_mode != "download_driver":
-                iter = model.append (None)
-                model.set_value (iter, 0, _("Local Driver"))
-                model.set_value (iter, 1, 0)
+        if first_iter == None:
+            return False
 
-            if recommended_iter == None:
-                recommended_iter = first_iter
+        if not self.rbtnNPDownloadableDriverSearch.get_active() and \
+           self.dialog_mode != "download_driver":
+            iter = model.append (None)
+            model.set_value (iter, 0, _("Local Driver"))
+            model.set_value (iter, 1, 0)
+
+        if recommended_iter == None:
+            recommended_iter = first_iter
 
         treeview = self.tvNPDownloadableDrivers
         treeview.set_model (model)
         if recommended_iter != None:
             treeview.get_selection ().select_iter (recommended_iter)
         self.on_tvNPDownloadableDrivers_cursor_changed(treeview)
+        return True
 
     def on_rbtnNPDownloadLicense_toggled(self, widget):
         self.setNPButtons ()
