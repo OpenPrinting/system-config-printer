@@ -218,10 +218,6 @@ class NewPrinterGUI(GtkGUI):
         "network": 7,
         }
 
-    DOWNLOADABLE_ONLYPPD=True
-    DOWNLOADABLE_ONLYFREE=True
-    DOWNLOADABLE_PKG_ONLYSIGNED=True
-
     def __init__(self):
         GObject.GObject.__init__ (self)
         self.language = locale.getlocale (locale.LC_MESSAGES)
