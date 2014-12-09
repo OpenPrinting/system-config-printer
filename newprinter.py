@@ -1528,6 +1528,7 @@ class NewPrinterGUI(GtkGUI):
         Gdk.threads_enter ()
 
         try:
+            self.opreq_user_search = False
             self.opreq_handlers = None
             self.opreq = None
             self._searchdialog.hide ()
@@ -3283,6 +3284,7 @@ class NewPrinterGUI(GtkGUI):
         for handler in self.opreq_handlers:
             opreq.disconnect (handler)
 
+        self.opreq_user_search = True
         self.opreq_handlers = None
         self.opreq = None
 
@@ -3351,24 +3353,27 @@ class NewPrinterGUI(GtkGUI):
     def fillDownloadableDrivers(self):
         print ("filldownloadableDrivers")
         self.downloadable_driver_for_printer = None
-        widget = self.cmbNPDownloadableDriverFoundPrinters
-        model = widget.get_model ()
-        iter = widget.get_active_iter ()
-        if iter:
-            printer_id = model.get_value (iter, 1)
-            printer_str = model.get_value (iter, 0)
-            if printer_id == '':
-                widget.set_active (1)
-                iter = widget.get_active_iter ()
-                if iter:
-                    printer_id = model.get_value (iter, 1)
-                    printer_str = model.get_value (iter, 0)
-                else:
-                    printer_id = None
-                    printer_str = None
+        if self.opreq_user_search == True:
+            widget = self.cmbNPDownloadableDriverFoundPrinters
+            model = widget.get_model ()
+            iter = widget.get_active_iter ()
+            if iter:
+                printer_id = model.get_value (iter, 1)
+                printer_str = model.get_value (iter, 0)
+                if printer_id == '':
+                    widget.set_active (1)
+                    iter = widget.get_active_iter ()
+                    if iter:
+                        printer_id = model.get_value (iter, 1)
+                        printer_str = model.get_value (iter, 0)
+                    else:
+                        printer_id = None
+                        printer_str = None
+            else:
+                printer_id = None
+                printer_str = None
         else:
-            printer_id = None
-            printer_str = None
+            printer_id, printer_str = self.downloadable_printers[0]
 
         if printer_id == None:
             # If none selected, show all.
