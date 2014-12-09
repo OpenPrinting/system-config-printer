@@ -3401,6 +3401,15 @@ class NewPrinterGUI(GtkGUI):
         for printer_id in printer_ids:
             drivers = self.downloadable_drivers[printer_id]
             for driver in drivers.values ():
+                if ((not 'ppds' in driver or
+                     len(driver['ppds']) <= 0) and
+                    (config.DOWNLOADABLE_ONLYPPD or
+                     (not self.installdriverpackage (driver,
+                                                     onlycheckpresence =
+                                                     True)))):
+                    debugprint ("Removed invalid driver entry %s" % \
+                                driver['name'])
+                    continue
                 iter = model.append (None)
                 if first_iter == None:
                     first_iter = iter
