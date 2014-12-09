@@ -110,17 +110,28 @@ if package_ids[0].get_info() & PackageKitGlib.InfoEnum.INSTALLED == 0:
     debugprint("package not installed")
     debugprint("pk.install_packages")
     # install package
+    if repo_gpg_id:
+        debugprint("Signature key supplied")
+        repo_gpg_id_supplied = True
+    else:
+        debugprint("Signature key not supplied")
+        repo_gpg_id_supplied = False
     try:
-        if repo_gpg_id:
-            debugprint("Signature key supplied")
-            res = pk.install_packages(True, [package_id], None, progress, None)
-        else:
-            debugprint("Signature key not supplied")
-            res = pk.install_packages(False, [package_id], None, progress, None)
+        res = pk.install_packages(repo_gpg_id_supplied, [package_id], None,
+                                  progress, None)
         debugprint("pk.install_packages succeeded")
     except GLib.GError:
-        debugprint("pk.install_packages failed")
-        sys.exit(1)
+        debugprint("pk.install_packages failed, retrying with modified package ID")
+        # See aptdaemon Ubuntu bug #1397750.
+        try:
+            # Remove last element of the package ID, after the last ";"
+            package_id_mod = package_id[:package_id.rfind(";")+1]
+            res = pk.install_packages(repo_gpg_id_supplied, [package_id_mod],
+                                      None, progress, None)
+            debugprint("pk.install_packages succeeded")
+        except GLib.GError:
+            debugprint("pk.install_packages failed")
+            sys.exit(1)
     if res.get_exit_code() != PackageKitGlib.ExitEnum.SUCCESS:
         debugprint("pk.install_packages errored")
         sys.exit(1)
