@@ -37,9 +37,8 @@ from timedops import *
 import dbus
 from gi.repository import Gdk
 from gi.repository import Gtk
-import pycurl
+import requests
 import functools
-from io import StringIO
 
 import cups
 
@@ -175,23 +174,16 @@ def download_gpg_fingerprint(url):
         debugprint('No system SSL certificates available for trust checking')
         return None
 
-    c = pycurl.Curl()
-    c.setopt(pycurl.URL, url)
-    content = StringIO()
-    c.setopt(pycurl.WRITEFUNCTION, content.write)
-    c.setopt(pycurl.FOLLOWLOCATION, 1)
-    c.setopt(pycurl.MAXREDIRS, 5)
-    c.setopt(pycurl.CAINFO, cert)
-
     try:
-        c.perform()
-    except pycurl.error as e:
-        debugprint('Cannot retrieve %s: %s' % (url, repr (e)))
+        req = requests.get(url, verify=cert)
+        content = req.content.decode("utf-8")
+    except:
+        debugprint('Cannot retrieve %s' % url)
         return None
 
     keyid_re = re.compile(' ((?:(?:[0-9A-F]{4})(?:\s+|$)){10})$', re.M)
 
-    m = keyid_re.search(content.getvalue())
+    m = keyid_re.search(content)
     if m:
         return m.group(1).strip().replace(' ','')
 

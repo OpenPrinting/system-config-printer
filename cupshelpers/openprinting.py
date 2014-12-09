@@ -19,7 +19,7 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-import pycurl, urllib.request, urllib.parse, urllib.error, platform, threading, tempfile, traceback
+import requests, urllib.request, urllib.parse, urllib.error, platform, threading, tempfile, traceback
 import os, sys
 from xml.etree.ElementTree import XML
 from . import Device
@@ -53,12 +53,6 @@ class _QueryThread (threading.Thread):
 
     def run (self):
 
-        # Callback function for pycURL collecting the data coming from
-        # the web server
-        def collect_data(result):
-            self.result += result;
-            return len(result)
-
         # CGI script to be executed
         query_command = "/query.cgi"
         # Headers for the post request
@@ -74,15 +68,9 @@ class _QueryThread (threading.Thread):
         self.result = b''
         status = 1
         try:
-            curl = pycurl.Curl()
-            curl.setopt(pycurl.SSL_VERIFYPEER, 1)
-            curl.setopt(pycurl.SSL_VERIFYHOST, 2)
-            curl.setopt(pycurl.WRITEFUNCTION, collect_data)
-            curl.setopt(pycurl.URL, self.url)
-            status = curl.perform()
-            if status == None: status = 0
-            if (status != 0):
-                self.result = sys.exc_info ()
+            req = requests.get(self.url, verify=True)
+            self.result = req.content
+            status = 0
         except:
             self.result = sys.exc_info ()
             if status == None: status = 0
