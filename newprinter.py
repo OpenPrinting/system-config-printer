@@ -239,6 +239,7 @@ class NewPrinterGUI(GtkGUI):
         self.downloadable_printers = []
         self.nextnptab_rerun = False
         self.printers = {} # set in init()
+        self.recommended_model_selected = False
         self._searchdialog = None
         self._installdialog = None
 
