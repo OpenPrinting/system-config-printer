@@ -116,7 +116,7 @@ class OpenPrintingRequest(GObject.GObject):
             options['onlyppdfiles'] = '1'
         else:
             options['onlydownload'] = '1'
-            options['packagesystem'] = self.packagesystem
+            options['packagesystem'] = config.packagesystem
 
         debugprint ("%s: Querying drivers for %s" % (self, printer_id))
         self._handle = self.openprinting.listDrivers (printer_id,

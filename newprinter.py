@@ -422,10 +422,10 @@ class NewPrinterGUI(GtkGUI):
                 widget.hide ()
         if os.path.exists('/etc/apt/sources.list') or os.path.exists(
             '/etc/apt/sources.list.d'):
-            self.packagesystem = 'deb'
+            config.packagesystem = 'deb'
             self.packageinstaller = 'apt'
         elif os.path.exists('/etc/yum.conf'):
-            self.packagesystem = 'rpm'
+            config.packagesystem = 'rpm'
             self.packageinstaller = 'yum'
         else:
             # No known package system, so we only load single PPDs via
