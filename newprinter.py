@@ -1015,7 +1015,7 @@ class NewPrinterGUI(GtkGUI):
 
         if ret:
             for line in stdout.readlines ():
-                self.installed_driver_files.append(line);
+                self.installed_driver_files.append(line.decode("utf-8"));
 
         return ret
 
