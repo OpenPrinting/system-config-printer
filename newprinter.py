@@ -3814,13 +3814,10 @@ class NewPrinterGUI(GtkGUI):
                             ppdurlobj = urllib.request.urlopen(file_to_download)
                             ppdcontent = ppdurlobj.read()
                             ppdurlobj.close()
-                            (tmpfd, ppdname) = tempfile.mkstemp()
-                            debugprint(ppdname)
-                            ppdfile = os.fdopen(tmpfd, 'wb')
-                            ppdfile.write(ppdcontent)
-                            ppdfile.close()
-                            ppd = cups.PPD(ppdname)
-                            os.unlink(ppdname)
+                            with tempfile.NamedTemporaryFile () as tmpf:
+                                tmpf.write(ppdcontent)
+                                tmpf.flush ()
+                                ppd = cups.PPD(tmpf.file)
 
         except RuntimeError as e:
             debugprint ("RuntimeError: " + repr (e))

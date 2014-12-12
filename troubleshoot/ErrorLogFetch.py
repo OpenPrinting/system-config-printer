@@ -24,7 +24,7 @@ from gi.repository import Gtk
 
 import cups
 import os
-import tempfile
+from tempfile import NamedTemporaryFile
 import datetime
 import time
 from timedops import TimedOperation
@@ -66,21 +66,21 @@ class ErrorLogFetch(Question):
             prompt = c._get_prompt_allowed ()
             c._set_prompt_allowed (False)
             c._connect ()
-            (tmpfd, tmpfname) = tempfile.mkstemp ()
-            os.close (tmpfd)
-            success = False
-            try:
-                c.getFile ('/admin/log/error_log', tmpfname)
-                success = True
-            except cups.HTTPError:
+            with tempfile.NamedTemporaryFile (delete=False) as tmpf:
+                success = False
                 try:
-                    os.remove (tmpfname)
-                except OSError:
-                    pass
+                    c.getFile ('/admin/log/error_log', tmpf.file)
+                    success = True
+                except cups.HTTPError:
+                    try:
+                        os.remove (tmpf.file)
+                    except OSError:
+                        pass
 
-            c._set_prompt_allowed (prompt)
-            if success:
-                return tmpfname
+                c._set_prompt_allowed (prompt)
+                if success:
+                    return tmpf.file
+
             return None
 
         now = datetime.datetime.fromtimestamp (time.time ()).strftime ("%F %T")

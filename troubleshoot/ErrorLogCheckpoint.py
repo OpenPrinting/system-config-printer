@@ -23,7 +23,7 @@ from gi.repository import Gtk
 
 import cups
 import os
-import tempfile
+from tempfile import NamedTemporaryFile
 import datetime
 import time
 from timedops import TimedOperation, OperationCanceled
@@ -134,37 +134,28 @@ class ErrorLogCheckpoint(Question):
         if 'error_log_checkpoint' in self.answers:
             return self.answers
 
-        (tmpfd, tmpfname) = tempfile.mkstemp ()
-        os.close (tmpfd)
-        try:
-            self.op = TimedOperation (self.authconn.getFile,
-                                      args=('/admin/log/error_log', tmpfname),
-                                      parent=parent)
-            self.op.run ()
-        except (RuntimeError, cups.IPPError) as e:
-            self.answers['error_log_checkpoint_exc'] = e
+        with NamedTemporaryFile () as tmpf:
             try:
-                os.remove (tmpfname)
-            except OSError:
-                pass
-        except cups.HTTPError as e:
-            self.answers['error_log_checkpoint_exc'] = e
+                self.op = TimedOperation (self.authconn.getFile,
+                                          args=('/admin/log/error_log',
+                                                tmpf.file),
+                                          parent=parent)
+                self.op.run ()
+            except (RuntimeError, cups.IPPError) as e:
+                self.answers['error_log_checkpoint_exc'] = e
+            except cups.HTTPError as e:
+                self.answers['error_log_checkpoint_exc'] = e
+
+                # Abandon the CUPS connection and make another.
+                answers = self.troubleshooter.answers
+                factory = answers['_authenticated_connection_factory']
+                self.authconn = factory.get_connection ()
+                self.answers['_authenticated_connection'] = self.authconn
+
             try:
-                os.remove (tmpfname)
+                statbuf = os.stat (tmpf.file)
             except OSError:
-                pass
-
-            # Abandon the CUPS connection and make another.
-            answers = self.troubleshooter.answers
-            factory = answers['_authenticated_connection_factory']
-            self.authconn = factory.get_connection ()
-            self.answers['_authenticated_connection'] = self.authconn
-
-        try:
-            statbuf = os.stat (tmpfname)
-            os.remove (tmpfname)
-        except OSError:
-            statbuf = [0, 0, 0, 0, 0, 0, 0]
+                statbuf = [0, 0, 0, 0, 0, 0, 0]
 
         self.answers['error_log_checkpoint'] = statbuf[6]
         self.persistent_answers['error_log_checkpoint'] = statbuf[6]

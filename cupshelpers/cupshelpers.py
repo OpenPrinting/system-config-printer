@@ -1,6 +1,6 @@
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014 Red Hat, Inc.
 ## Authors:
 ##  Florian Festi <ffesti@redhat.com>
 ##  Tim Waugh <twaugh@redhat.com>
@@ -423,44 +423,43 @@ class Printer:
 
         # Also need to check system-wide lpoptions because that's how
         # previous Fedora versions set the default (bug #217395).
-        (tmpfd, tmpfname) = tempfile.mkstemp ()
-        os.remove (tmpfname)
-        try:
-            resource = "/admin/conf/lpoptions"
-            self.connection.getFile(resource, fd=tmpfd)
-        except cups.HTTPError as e:
-            (s,) = e.args
-            if s == cups.HTTP_NOT_FOUND:
-                return False
-
-            raise cups.HTTPError (s)
-
-        f = os.fdopen (tmpfd, 'r+b')
-        f.seek (0)
-        lines = [ line.decode('UTF-8') for line in f.readlines () ]
-        changed = False
-        i = 0
-        for line in lines:
-            if line.startswith ("Default "):
-                # This is the system-wide default.
-                name = line.split (' ')[1]
-                if name != self.name:
-                    # Stop it from over-riding the server default.
-                    lines[i] = "Dest " + line[8:]
-                    changed = True
-                i += 1
-
-        if changed:
-            f.seek (0)
-            f.writelines ([ line.encode('UTF-8') for line in lines ])
-            f.truncate ()
-            os.lseek (tmpfd, 0, os.SEEK_SET)
+        with tempfile.TemporaryFile () as f:
             try:
-                self.connection.putFile (resource, fd=tmpfd)
-            except cups.HTTPError:
-                return False
+                resource = "/admin/conf/lpoptions"
+                self.connection.getFile(resource, fd=f.fileno ())
+            except cups.HTTPError as e:
+                (s,) = e.args
+                if s == cups.HTTP_NOT_FOUND:
+                    return False
 
-        return changed
+                raise cups.HTTPError (s)
+
+            f.seek (0)
+            lines = [ line.decode('UTF-8') for line in f.readlines () ]
+            changed = False
+            i = 0
+            for line in lines:
+                if line.startswith ("Default "):
+                    # This is the system-wide default.
+                    name = line.split (' ')[1]
+                    if name != self.name:
+                        # Stop it from over-riding the server default.
+                        lines[i] = "Dest " + line[8:]
+                        changed = True
+                    i += 1
+
+            if changed:
+                f.seek (0)
+                f.writelines ([ line.encode('UTF-8') for line in lines ])
+                f.truncate ()
+                f.flush ()
+                f.seek (0)
+                try:
+                    self.connection.putFile (resource, fd=f.fileno ())
+                except cups.HTTPError:
+                    return False
+
+            return changed
 
 def getPrinters(connection):
     """
