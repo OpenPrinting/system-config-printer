@@ -25,7 +25,7 @@ from gi.repository import Gdk
 from gi.repository import Gtk
 import os
 from shutil import copyfileobj
-import tempfile
+from tempfile import NamedTemporaryFile
 from debug import *
 
 cups.require ("1.9.50")
@@ -86,18 +86,14 @@ class PPDCache:
         # PPD object from it, then remove the file.  This way we don't
         # leave temporary files around even though we are caching...
         f.seek (0)
-        (tmpfd, tmpfname) = tempfile.mkstemp ()
-        with open (tmpfname, "wb") as tmpf:
+        with NamedTemporaryFile () as tmpf:
             copyfileobj (f, tmpf)
 
-        os.close (tmpfd)
-        try:
-            ppd = cups.PPD (tmpfname)
-            os.unlink (tmpfname)
-            self._schedule_callback (callback, name, ppd, None)
-        except Exception as e:
-            os.unlink (tmpfname)
-            self._schedule_callback (callback, name, None, e)
+            try:
+                ppd = cups.PPD (tmpf.file)
+                self._schedule_callback (callback, name, ppd, None)
+            except Exception as e:
+                self._schedule_callback (callback, name, None, e)
 
     def _connect (self, callback=None):
         self._connecting = True
