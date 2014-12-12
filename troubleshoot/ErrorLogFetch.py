@@ -135,7 +135,7 @@ class ErrorLogFetch(Question):
 
             r = journal.Reader ()
             r.seek_cursor (cursor)
-            r.add_match (_COMM="cupsd")
+            r.add_match (_SYSTEMD_UNIT="cups.service")
             self.answers['journal'] = map (journal_format, r)
 
         if checkpoint != None:
@@ -152,7 +152,7 @@ class ErrorLogFetch(Question):
 
         if (len (self.answers.get ('journal', [])) +
             len (self.answers.get ('error_log', []))) == 0:
-            cmd = ("su -c 'journalctl _COMM=cupsd "
+            cmd = ("su -c 'journalctl -u cups.service "
                    "--since=\"%s\" --until=\"%s\"' > troubleshoot-logs.txt" %
                    (answers['error_log_timestamp'], now))
             self.entry.set_text (cmd)
