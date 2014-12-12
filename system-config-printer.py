@@ -1763,7 +1763,11 @@ class GUI(GtkGUI):
         iconview = self.dests_iconview
         paths = iconview.get_selected_items ()
         model = iconview.get_model ()
-        iter = model.get_iter (paths[0])
+        try:
+            iter = model.get_iter (paths[0])
+        except IndexError:
+            return
+
         name = model.get_value (iter, 2)
         self.set_system_or_user_default_printer (name)
 
