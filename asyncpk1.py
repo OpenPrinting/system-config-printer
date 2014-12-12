@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-## Copyright (C) 2007, 2008, 2009, 2010, 2012, 2013 Red Hat, Inc.
+## Copyright (C) 2007, 2008, 2009, 2010, 2012, 2013, 2014 Red Hat, Inc.
 ## Copyright (C) 2008 Novell, Inc.
 ## Authors: Tim Waugh <twaugh@redhat.com>, Vincent Untz
 
@@ -207,7 +207,7 @@ class _WriteToTmpFile:
             line = tmpfile.readline ()
             while line != '':
                 os.write (fd, line)
-                line = tempfile.readline ()
+                line = tmpfile.readline ()
         else:
             file_object = self._kwds["file"]
             file_object.seek (0)
