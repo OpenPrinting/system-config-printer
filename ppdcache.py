@@ -24,6 +24,7 @@ from gi.repository import GLib
 from gi.repository import Gdk
 from gi.repository import Gtk
 import os
+from shutil import copyfileobj
 import tempfile
 from debug import *
 
@@ -86,8 +87,8 @@ class PPDCache:
         # leave temporary files around even though we are caching...
         f.seek (0)
         (tmpfd, tmpfname) = tempfile.mkstemp ()
-        tmpf = file (tmpfname, "w")
-        tmpf.writelines (f.readlines ())
+        tmpf = open (tmpfname, "wb")
+        copyfileobj (f, tmpf)
         del tmpf
         os.close (tmpfd)
         try:
@@ -112,7 +113,7 @@ class PPDCache:
             # Store an open file object, then remove the actual file.
             # This way we don't leave temporary files around.
             try:
-                self._cache[name] = file (result)
+                self._cache[name] = open (result, "rb")
                 debugprint ("%s: caching %s (fd %d)" %
                             (self, result,
                              self._cache[name].fileno()))
@@ -143,7 +144,7 @@ class PPDCache:
                 # file.  This way we don't leave temporary files
                 # around.
                 try:
-                    self._cache[name] = file (filename)
+                    self._cache[name] = open (filename, "rb")
                     debugprint ("%s: caching %s (fd %d) "
                                 "(%s) - %s" % (self, filename,
                                                self._cache[name].fileno (),
