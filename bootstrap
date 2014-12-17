@@ -12,11 +12,3 @@ if [ -d .git ] && git --version 2>/dev/null >/dev/null && \
   git config merge.merge-changelog.name 'GNU-style ChangeLog merge driver'
   git config merge.merge-changelog.driver 'git-merge-changelog %O %A %B'
 fi
-
-if [ -x /usr/bin/tx ]; then
-  rm -rf .tx
-  tx init --host=https://www.transifex.com
-  tx set --execute --auto-local -r system-config-printer.1-5-x \
-    'po/<lang>.po' --source-lang en \
-    --source-file po/system-config-printer.pot
-fi

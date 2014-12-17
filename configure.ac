@@ -83,5 +83,6 @@ system-config-printer-applet
 install-printerdriver
 dbus/scp-dbus-service
 udev/configure-printer@.service
+zanata.xml
 ])
 AC_OUTPUT

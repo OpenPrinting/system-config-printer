@@ -304,6 +304,12 @@ distcheck-hook: update-po missing-imports
 update-po: missing-languages
 	$(MAKE) -C po update-po
 
+pull-translations:
+	zanata-cli pull -B --src-dir=$(top_srcdir) --trans-dir=$(top_srcdir)/po
+
+push-translations:
+	zanata-cli push -B
+
 missing-languages:
 	bash -c '\
 	eval $$(grep ALL_LINGUAS configure.ac); \
@@ -381,7 +387,7 @@ DISTCLEANFILES=*.pyc *.pyo *~ *.bak \
 	intltool-extract intltool-merge intltool-update \
 	*.desktop man/*.1 \
 	test-ppd-module.sh test-xml-validity.sh pickled-ppds \
-	config.py cupshelpers/config.py
+	config.py cupshelpers/config.py zanata.xml
 
 distclean-local:
 	rm -rf html
