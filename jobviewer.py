@@ -1,5 +1,5 @@
 
-## Copyright (C) 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014 Red Hat, Inc.
+## Copyright (C) 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 ##  Jiri Popelka <jpopelka@redhat.com>
@@ -2386,7 +2386,7 @@ class JobViewer (GtkGUI):
                           cups.IPP_JOB_CANCELED: _("Canceled"),
                           cups.IPP_JOB_ABORTED: _("Aborted"),
                           cups.IPP_JOB_COMPLETED: _("Completed") }[s]
-            except IndexError:
+            except KeyError:
                 pass
 
         if state == None:

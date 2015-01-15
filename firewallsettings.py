@@ -2,7 +2,7 @@
 
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2015 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 
@@ -213,7 +213,10 @@ class SystemConfigFirewall:
 
     def error_handler (self, exc):
         debugprint ("Exception fetching firewall data")
-        self._client_error_handler (exc)
+        if self._client_error_handler:
+            self._client_error_handler (exc)
+        else:
+            debugprint ("Exception: %r" % exc)
 
     def write (self):
         try:
