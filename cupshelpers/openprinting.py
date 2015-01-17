@@ -279,6 +279,18 @@ class OpenPrinting:
                     element = driver.find ('licensetext')
                     if element != None:
                         dict['licensetext'] = element.text
+                    if not 'licensetext' in dict or \
+                       dict['licensetext'] == None:
+                        element = driver.find ('licenselink')
+                        if element != None:
+                            license_url = element.text
+                            if license_url != None:
+                                try:
+                                    req = requests.get(license_url, verify=True)
+                                    dict['licensetext'] = \
+                                        req.content.decode("utf-8")
+                                except:
+                                    _debugprint('Cannot retrieve %s' % url)
 
                     for boolean in ['nonfreesoftware', 'recommended',
                                     'patents', 'thirdpartysupplied',
