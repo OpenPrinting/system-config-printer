@@ -981,24 +981,29 @@ class NewPrinterGUI(GtkGUI):
         try:
             self.p = subprocess.Popen (args, env=new_environ, close_fds=True,
                                        stdin=subprocess.DEVNULL,
-                                       stdout=subprocess.PIPE,
-                                       stderr=subprocess.PIPE)
+                                       stdout=subprocess.PIPE)
             # Keep the UI refreshed while we wait for
             # the drivers query to complete.
             (stdout, stderr) = (self.p.stdout, self.p.stderr)
             done = False
             while self.p.poll() == None:
-                line = stderr.readline ().strip()
+                line = stdout.readline ().strip()
                 if (len(line) > 0):
                     if line == "done":
                         done = True
                         break
-                    try:
-                        percentage = float(line)
-                        if percentage > 0:
-                            pbar.set_fraction(percentage/100)
-                    except:
-                        pass
+                    elif line.startswith(b"P"):
+                        try:
+                            percentage = float(line[1:])
+                            if percentage >= 0:
+                                pbar.set_fraction(percentage/100)
+                            else:
+                                pbar.set_pulse_step(-percentage/100)
+                                pbar.pulse()
+                        except:
+                            pass
+                    else:
+                        self.installed_driver_files.append(line.decode("utf-8"));
                 while Gtk.events_pending ():
                     Gtk.main_iteration ()
                 if not line:
@@ -1014,9 +1019,8 @@ class NewPrinterGUI(GtkGUI):
             self._installdialog.destroy ()
             self._installdialog = None
 
-        if ret:
-            for line in stdout.readlines ():
-                self.installed_driver_files.append(line.decode("utf-8"));
+        if not ret:
+            self.installed_driver_files = [];
 
         return ret
 

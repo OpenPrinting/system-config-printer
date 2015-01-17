@@ -9,8 +9,11 @@ from debug import *
 def progress(progress, type, user_data):
     if (type.value_name == "PK_PROGRESS_TYPE_PERCENTAGE" and
         progress.props.package != None):
-        sys.stderr.write ("%d\n" % progress.props.percentage)
-        sys.stderr.flush ()
+        sys.stdout.write ("P%d\n" % progress.props.percentage)
+        sys.stdout.flush ()
+    else:
+        sys.stdout.write ("P%d\n" % -10)
+        sys.stdout.flush ()
 
 set_debugging (True)
 
@@ -46,7 +49,7 @@ if repo_gpg_id:
 debugprint("pk.resolve")
 try:
     res = pk.resolve(PackageKitGlib.FilterEnum.NONE, [package],
-                     None, lambda p, t, d: True, None)
+                     None, progress, None)
     repo_enable_needed = False
     debugprint("pk.resolve succeeded")
 except GLib.GError:
@@ -90,7 +93,7 @@ if refresh_cache_needed:
 debugprint("pk.resolve")
 try:
     res = pk.resolve(PackageKitGlib.FilterEnum.NONE, [package],
-                     None, lambda p, t, d: True, None)
+                     None, progress, None)
     debugprint("pk.resolve succeeded")
 except GLib.GError:
     debugprint("pk.resolve failed")
@@ -136,7 +139,7 @@ if package_ids[0].get_info() & PackageKitGlib.InfoEnum.INSTALLED == 0:
         debugprint("pk.install_packages errored")
         sys.exit(1)
 
-debugprint("done")
+debugprint("Package successfully installed")
 # If we reach this point, the requested package is on the system, either
 # because we have installed it now or because it was already there
 
@@ -150,3 +153,6 @@ files = res.get_files_array()
 if files:
     for f in files[0].get_property('files'):
         print(f)
+
+# Tell the caller that we are done
+print("done")
