@@ -520,7 +520,6 @@ def test (xml_path=None, attached=False, deviceid=None, debug=False):
         ppds.set_debugprint_fn (debugprint)
             
     locale.setlocale (locale.LC_ALL, "")
-    encoding = locale.getlocale (locale.LC_CTYPE)[1]
     if xml_path == None:
         xml_path = os.path.join (os.path.join (os.path.dirname (__file__),
                                                ".."),
@@ -611,7 +610,7 @@ def test (xml_path=None, attached=False, deviceid=None, debug=False):
 
                 orderedppds = drivertypes.get_ordered_ppdnames (orderedtypes,
                                                                 ppdsdict, fit)
-                print((mm.encode (encoding) + ":"))
+                print(mm + ":")
                 i = 1
                 for t, ppd in orderedppds:
                     print("%d  %s\n    (%s)" % (i, ppd, t))
