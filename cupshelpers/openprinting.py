@@ -277,7 +277,7 @@ class OpenPrinting:
                             dict[attribute] = _normalize_space (element.text)
 
                     element = driver.find ('licensetext')
-                    if element != None:
+                    if element != None and element.text != None:
                         dict['licensetext'] = element.text
                     if not 'licensetext' in dict or \
                        dict['licensetext'] == None:
