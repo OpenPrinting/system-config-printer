@@ -2972,7 +2972,12 @@ class NewPrinterGUI(GtkGUI):
             self.entNPTJetDirectPort.set_text (str (port))
         elif device.type=="serial":
             if not device.is_class:
-                options = device.uri.split("?")[1]
+                parts = device.uri.split("?", 1)
+                if len (parts) > 1:
+                    options = parts[1]
+                else:
+                    options = ""
+
                 options = options.split("+")
                 option_dict = {}
                 for option in options:
