@@ -2,7 +2,7 @@
 
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 ##  Florian Festi <ffesti@redhat.com>
@@ -1802,10 +1802,12 @@ class NewPrinterGUI(GtkGUI):
                                                             devices))
 
         self.dec_spinner_task ()
+        self.check_firewall ()
 
     def dnssd_resolve_reply (self, current_uri, devices):
         self.add_devices (devices, current_uri, no_more=True)
         self.dec_spinner_task ()
+        self.check_firewall ()
 
     def get_hpfax_device_id(self, faxuri):
         new_environ = os.environ.copy()
@@ -2641,40 +2643,57 @@ class NewPrinterGUI(GtkGUI):
         else:
             view.expand_row (path, False)
 
+    def check_firewall (self):
+        view = self.tvNPDevices
+        model = view.get_model ()
+        if not model:
+            return
+
+        network_path = model.get_path (self.devices_network_iter)
+        if not view.row_expanded (network_path):
+            # 'Network' not expanded
+            return
+
+        if self.firewall != None:
+            # Already checked
+            return
+
+        if self.spinner_count > 0:
+            # Still discovering devices?
+            debugprint ("Skipping firewall adjustment: "
+                        "discovery in progress")
+            return
+
+        # Any network printers found?
+        for physdev in self.devices:
+            for device in physdev.get_devices ():
+                if (device.device_class == 'network' and
+                    device.uri != device.type):
+                    debugprint ("Skipping firewall adjustment: "
+                                "network printers found")
+                    return
+
+        # If not, ask about the firewall
+        try:
+            if (self._host == 'localhost' or
+                self._host[0] == '/'):
+                self.firewall = firewallsettings.FirewallD ()
+                if not self.firewall.running:
+                    self.firewall = firewallsettings.SystemConfigFirewall ()
+
+                debugprint ("Examining firewall")
+                self.firewall.read (reply_handler=self.on_firewall_read)
+        except (dbus.DBusException, Exception):
+            nonfatalException ()
+
     def device_row_expanded (self, view, iter, path):
         model = view.get_model ()
         if not model or not iter:
             return
 
         network_path = model.get_path (self.devices_network_iter)
-        if path == network_path and self.firewall == None:
-            # Still discovering devices?
-            if self.spinner_count > 0:
-                debugprint ("Skipping firewall adjustment: "
-                            "discovery in progress")
-                return
-
-            # Any network printers found?
-            for physdev in self.devices:
-                for device in physdev.get_devices ():
-                    if (device.device_class == 'network' and
-                        device.uri != device.type):
-                        debugprint ("Skipping firewall adjustment: "
-                                    "network printers found")
-                        return
-
-            # If not, ask about the firewall
-            try:
-                if (self._host == 'localhost' or
-                    self._host[0] == '/'):
-                    self.firewall = firewallsettings.FirewallD ()
-                    if not self.firewall.running:
-                        self.firewall = firewallsettings.SystemConfigFirewall ()
-
-                    debugprint ("Examining firewall")
-                    self.firewall.read (reply_handler=self.on_firewall_read)
-            except (dbus.DBusException, Exception):
-                nonfatalException ()
+        if path == network_path:
+            self.check_firewall ()
 
     def device_select_function (self, selection, model, path, *UNUSED):
         """
@@ -2958,7 +2977,12 @@ class NewPrinterGUI(GtkGUI):
             self.entNPTJetDirectPort.set_text (str (port))
         elif device.type=="serial":
             if not device.is_class:
-                options = device.uri.split("?")[1]
+                parts = device.uri.split("?", 1)
+                if len (parts) > 1:
+                    options = parts[1]
+                else:
+                    options = ""
+
                 options = options.split("+")
                 option_dict = {}
                 for option in options:
