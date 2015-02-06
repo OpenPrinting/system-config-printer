@@ -2,7 +2,7 @@
 
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 ##  Florian Festi <ffesti@redhat.com>
@@ -316,7 +316,7 @@ class GUI(GtkGUI):
         # Glade-3 doesn't have support for MenuToolButton, so we do that here.
         self.btnNew = Gtk.MenuToolButton ()
         self.btnNew.set_label (_("Add"))
-        self.btnNew.set_icon_name (Gtk.STOCK_ADD)
+        self.btnNew.set_icon_name ("list-add")
         self.btnNew.set_is_important (True)
         newmenu = Gtk.Menu ()
         action = self.ui_manager.get_action ("/new-printer")
@@ -333,7 +333,7 @@ class GUI(GtkGUI):
         self.toolbar.add (Gtk.SeparatorToolItem ())
         self.refreshbutton = Gtk.ToolButton ()
         self.refreshbutton.set_label (_("Refresh"))
-        self.refreshbutton.set_icon_name (Gtk.STOCK_REFRESH)
+        self.refreshbutton.set_icon_name ("view-refresh")
         self.refreshbutton.connect ('clicked', self.on_btnRefresh_clicked)
         self.toolbar.add (self.refreshbutton)
         self.toolbar.show_all ()
@@ -978,7 +978,7 @@ class GUI(GtkGUI):
                             break
 
                         if reason == "paused":
-                            emblem = Gtk.STOCK_MEDIA_PAUSE
+                            emblem = "media-playback-pause"
                             continue
 
                         r = statereason.StateReason (object.name, reason)
@@ -992,7 +992,7 @@ class GUI(GtkGUI):
                         emblem = worst_reason.LEVEL_ICON[level]
 
                 if not emblem and not object.enabled:
-                    emblem = Gtk.STOCK_MEDIA_PAUSE
+                    emblem = "media-playback-pause"
 
                 if object.rejecting:
                     # Show the icon as insensitive
@@ -1649,8 +1649,8 @@ class GUI(GtkGUI):
                                    message_type=Gtk.MessageType.WARNING,
                                    buttons=Gtk.ButtonsType.NONE,
                                    text=message_format)
-        dialog.add_buttons (Gtk.STOCK_CANCEL, Gtk.ResponseType.REJECT,
-                            Gtk.STOCK_DELETE, Gtk.ResponseType.ACCEPT)
+        dialog.add_buttons (_("_Cancel"), Gtk.ResponseType.REJECT,
+                            _("_Delete"), Gtk.ResponseType.ACCEPT)
         dialog.set_default_response (Gtk.ResponseType.REJECT)
         result = dialog.run()
         dialog.destroy()
