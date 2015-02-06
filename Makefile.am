@@ -286,6 +286,7 @@ EXTRA_DIST=\
 	udev/70-printers.rules \
 	udev/configure-printer@.service.in \
 	xml/preferreddrivers.xml \
+	test_PhysicalDevice.py \
 	$(appdata_in_files)
 
 # The man pages are generated from DocBook XML.
@@ -392,7 +393,12 @@ test-xml-validity.sh:	FORCE
 	echo "    $(top_srcdir)/xml/preferreddrivers.xml" >> "$@"
 	chmod 755 "$@"
 
-TESTS = test-xml-validity.sh test-ppd-module.sh
+nosetests.sh:	FORCE
+	echo "#!/bin/bash" > "$@"
+	echo "nosetests-3.4" >> "$@"
+	chmod 755 "$@"
+
+TESTS = test-xml-validity.sh test-ppd-module.sh nosetests.sh
 
 CLEANFILES=			\
 	$(systemd_CLEANFILES)	\
@@ -402,7 +408,7 @@ DISTCLEANFILES=*.pyc *.pyo *~ *.bak \
 	troubleshoot/*.pyc troubleshoot/*.pyo troubleshoot/*~ \
 	intltool-extract intltool-merge intltool-update \
 	*.desktop man/*.1 \
-	test-ppd-module.sh test-xml-validity.sh pickled-ppds \
+	test-ppd-module.sh test-xml-validity.sh nosetests.sh pickled-ppds \
 	config.py cupshelpers/config.py zanata.xml
 
 distclean-local:
