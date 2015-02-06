@@ -6,13 +6,15 @@
 # Andrzej Olszewski <andrzej.olszewski@ifj.edu.pl>, 2004
 # Dimitris Glezos <glezos@indifex.com>, 2011
 # Tom Berner <tom@man.lodz.pl>, 2004
+# Piotr Drąg <piotrdrag@gmail.com>, 2006,2011-2014
+# Piotr Drąg <piotrdrag@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2014-12-18 13:37+0000\n"
-"PO-Revision-Date: 2014-10-23 07:00-0400\n"
-"Last-Translator: Tim Waugh <twaugh@redhat.com>\n"
+"POT-Creation-Date: 2015-02-06 17:50+0000\n"
+"PO-Revision-Date: 2014-11-05 06:41-0500\n"
+"Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish (http://www.transifex.com/projects/p/system-config-"
 "printer/language/pl/)\n"
 "Language: pl\n"
@@ -23,41 +25,41 @@ msgstr ""
 "|| n%100>=20) ? 1 : 2);\n"
 "X-Generator: Zanata 3.5.1\n"
 
-#: ../asyncipp.py:466 ../authconn.py:447 ../authconn.py:449
+#: ../asyncipp.py:473 ../authconn.py:447 ../authconn.py:449
 #: ../errordialogs.py:63 ../pysmb.py:90 ../pysmb.py:92
 msgid "Not authorized"
 msgstr "Nie upoważniono"
 
-#: ../asyncipp.py:467 ../authconn.py:450 ../pysmb.py:93
+#: ../asyncipp.py:474 ../authconn.py:450 ../pysmb.py:93
 msgid "The password may be incorrect."
 msgstr "Hasło może być niepoprawne."
 
-#: ../asyncipp.py:478 ../authconn.py:471
+#: ../asyncipp.py:485 ../authconn.py:471
 #, python-format
 msgid "Authentication (%s)"
 msgstr "Uwierzytelnianie (%s)"
 
-#: ../asyncipp.py:553 ../authconn.py:300 ../errordialogs.py:54
+#: ../asyncipp.py:560 ../authconn.py:300 ../errordialogs.py:54
 #: ../errordialogs.py:68
 msgid "CUPS server error"
 msgstr "Błąd serwera CUPS"
 
-#: ../asyncipp.py:555 ../authconn.py:298
+#: ../asyncipp.py:562 ../authconn.py:298
 #, python-format
 msgid "CUPS server error (%s)"
 msgstr "Błąd serwera CUPS (%s)"
 
-#: ../asyncipp.py:571 ../authconn.py:308 ../errordialogs.py:55
+#: ../asyncipp.py:578 ../authconn.py:308 ../errordialogs.py:55
 #: ../troubleshoot/PrintTestPage.py:431
 #, python-format
 msgid "There was an error during the CUPS operation: '%s'."
 msgstr "Wystąpił błąd podczas działania serwera CUPS: \"%s\"."
 
-#: ../asyncipp.py:574 ../authconn.py:311
+#: ../asyncipp.py:581 ../authconn.py:311
 msgid "Retry"
 msgstr "Ponów"
 
-#: ../asyncipp.py:591 ../authconn.py:254 ../authconn.py:280
+#: ../asyncipp.py:598 ../authconn.py:254 ../authconn.py:280
 msgid "Operation canceled"
 msgstr "Anulowano działanie"
 
@@ -168,7 +170,7 @@ msgstr "usuwanie zadania"
 msgid "canceling job"
 msgstr "anulowanie zadania"
 
-#: ../jobviewer.py:368
+#: ../jobviewer.py:368 ../system-config-printer.py:1652
 msgid "_Cancel"
 msgstr "_Anuluj"
 
@@ -176,7 +178,7 @@ msgstr "_Anuluj"
 msgid "Cancel selected jobs"
 msgstr "Anuluje zaznaczone zadania"
 
-#: ../jobviewer.py:370
+#: ../jobviewer.py:370 ../system-config-printer.py:1653
 msgid "_Delete"
 msgstr "_Usuń"
 
@@ -509,7 +511,7 @@ msgstr "Domyślna"
 
 #. See section 4.2.6 of this document for explanation of finishing types:
 #. ftp://ftp.pwg.org/pub/pwg/candidates/cs-ippfinishings10-20010205-5100.1.pdf
-#: ../newprinter.py:349 ../newprinter.py:360 ../newprinter.py:3719
+#: ../newprinter.py:349 ../newprinter.py:360 ../newprinter.py:3747
 #: ../ppdippstr.py:65 ../printerproperties.py:280
 msgid "None"
 msgstr "Brak"
@@ -591,8 +593,8 @@ msgstr ""
 msgid "All files (*)"
 msgstr "Wszystkie pliki (*)"
 
-#: ../newprinter.py:653 ../newprinter.py:1510 ../newprinter.py:3246
-#: ../newprinter.py:3306 ../newprinter.py:3358 ../applet.py:128
+#: ../newprinter.py:653 ../newprinter.py:1514 ../newprinter.py:3274
+#: ../newprinter.py:3334 ../newprinter.py:3386 ../applet.py:128
 msgid "Search"
 msgstr "Wyszukaj"
 
@@ -614,9 +616,9 @@ msgstr "Zmień sterownik"
 
 #: ../newprinter.py:704
 msgid "Download Printer Driver"
-msgstr ""
+msgstr "Pobierz sterownik drukarki"
 
-#: ../newprinter.py:713 ../newprinter.py:2049 ../newprinter.py:2054
+#: ../newprinter.py:713 ../newprinter.py:2055 ../newprinter.py:2060
 msgid "fetching device list"
 msgstr "przechwytywanie listy urządzeń"
 
@@ -629,60 +631,60 @@ msgstr "Instalowanie sterownika %s"
 msgid "Installing ..."
 msgstr "Instalowanie..."
 
-#: ../newprinter.py:1323 ../newprinter.py:3048 ../newprinter.py:3276
+#: ../newprinter.py:1327 ../newprinter.py:3076 ../newprinter.py:3304
 #: ../ppdsloader.py:86
 msgid "Searching"
 msgstr "Wyszukiwanie"
 
-#: ../newprinter.py:1333 ../ppdsloader.py:93
+#: ../newprinter.py:1337 ../ppdsloader.py:93
 msgid "Searching for drivers"
 msgstr "Wyszukiwanie sterowników"
 
 #. device-info
 #. PhysicalDevice obj
 #. Separator?
-#: ../newprinter.py:1973
+#: ../newprinter.py:1979
 msgid "Enter URI"
 msgstr "Proszę podać adres URI"
 
-#: ../newprinter.py:1978
+#: ../newprinter.py:1984
 msgid "Network Printer"
 msgstr "Drukarka sieciowa"
 
-#: ../newprinter.py:1982
+#: ../newprinter.py:1988
 msgid "Find Network Printer"
 msgstr "Znajdź drukarkę sieciową"
 
-#: ../newprinter.py:2014
+#: ../newprinter.py:2020
 msgid "Allow all incoming IPP Browse packets"
 msgstr "Zezwolenie na wszystkie przychodzące pakiety przeglądania IPP"
 
-#: ../newprinter.py:2019
+#: ../newprinter.py:2025
 msgid "Allow all incoming mDNS traffic"
 msgstr "Zezwolenie na cały ruch przychodzący mDNS"
 
-#: ../newprinter.py:2029 ../newprinter.py:2032 ../newprinter.py:2460
-#: ../newprinter.py:2466 ../serversettings.py:563 ../serversettings.py:568
+#: ../newprinter.py:2035 ../newprinter.py:2038 ../newprinter.py:2466
+#: ../newprinter.py:2472 ../serversettings.py:563 ../serversettings.py:568
 msgid "Adjust Firewall"
 msgstr "Dostosuj zaporę sieciową"
 
-#: ../newprinter.py:2031 ../newprinter.py:2465
+#: ../newprinter.py:2037 ../newprinter.py:2471
 msgid "Do It Later"
 msgstr "Zrób to później"
 
-#: ../newprinter.py:2140 ../newprinter.py:3612
+#: ../newprinter.py:2146 ../newprinter.py:3640
 msgid " (Current)"
 msgstr " (bieżąca)"
 
-#: ../newprinter.py:2210
+#: ../newprinter.py:2216
 msgid "Scanning..."
 msgstr "Skanowanie..."
 
-#: ../newprinter.py:2266
+#: ../newprinter.py:2272
 msgid "No Print Shares"
 msgstr "Brak udziałów drukowania"
 
-#: ../newprinter.py:2267
+#: ../newprinter.py:2273
 msgid ""
 "There were no print shares found.  Please check that the Samba service is "
 "marked as trusted in your firewall configuration."
@@ -690,111 +692,111 @@ msgstr ""
 "Nie odnaleziono udziałów drukowania. Proszę sprawdzić, czy usługa Samba jest "
 "zaznaczona jako zaufana w konfiguracji zapory sieciowej."
 
-#: ../newprinter.py:2408
+#: ../newprinter.py:2414
 #, python-format
 msgid "Verification requires the %s module"
-msgstr ""
+msgstr "Sprawdzanie wymaga modułu %s"
 
-#: ../newprinter.py:2462
+#: ../newprinter.py:2468
 msgid "Allow all incoming SMB/CIFS browse packets"
 msgstr "Zezwolenie na wszystkie przychodzące pakiety przeglądania SMB/CIFS"
 
-#: ../newprinter.py:2578
+#: ../newprinter.py:2584
 msgid "Print Share Verified"
 msgstr "Sprawdzono udział drukowania"
 
-#: ../newprinter.py:2579
+#: ../newprinter.py:2585
 msgid "This print share is accessible."
 msgstr "Ten udział drukowania jest dostępny."
 
-#: ../newprinter.py:2584
+#: ../newprinter.py:2590
 msgid "This print share is not accessible."
 msgstr "Ten udział drukowania jest niedostępny."
 
-#: ../newprinter.py:2587
+#: ../newprinter.py:2593
 msgid "Print Share Inaccessible"
 msgstr "Udział drukowania jest niedostępny"
 
-#: ../newprinter.py:2709
+#: ../newprinter.py:2732
 msgid "Parallel Port"
 msgstr "Port równoległy"
 
-#: ../newprinter.py:2711
+#: ../newprinter.py:2734
 msgid "Serial Port"
 msgstr "Port szeregowy"
 
-#: ../newprinter.py:2713
+#: ../newprinter.py:2736
 msgid "USB"
 msgstr "USB"
 
-#: ../newprinter.py:2715
+#: ../newprinter.py:2738
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: ../newprinter.py:2717 ../newprinter.py:2720
+#: ../newprinter.py:2740 ../newprinter.py:2743
 msgid "HP Linux Imaging and Printing (HPLIP)"
 msgstr "HPLIP (Obrazowanie i drukowanie HP w systemie Linux)"
 
-#: ../newprinter.py:2719 ../newprinter.py:2858 ../newprinter.py:2860
+#: ../newprinter.py:2742 ../newprinter.py:2881 ../newprinter.py:2883
 #: ../system-config-printer.py:899
 msgid "Fax"
 msgstr "Faks"
 
-#: ../newprinter.py:2722
+#: ../newprinter.py:2745
 msgid "Hardware Abstraction Layer (HAL)"
 msgstr "HAL (Warstwa abstrakcji sprzętowej)"
 
-#: ../newprinter.py:2724 ../ppdippstr.py:178
+#: ../newprinter.py:2747 ../ppdippstr.py:178
 msgid "AppSocket/HP JetDirect"
 msgstr "AppSocket/HP JetDirect"
 
-#: ../newprinter.py:2733
+#: ../newprinter.py:2756
 #, python-format
 msgid "LPD/LPR queue '%s'"
 msgstr "Kolejka LPD/LPR \"%s\""
 
-#: ../newprinter.py:2736
+#: ../newprinter.py:2759
 msgid "LPD/LPR queue"
 msgstr "Kolejka LPD/LPR"
 
-#: ../newprinter.py:2739 ../ppdippstr.py:184
+#: ../newprinter.py:2762 ../ppdippstr.py:184
 msgid "Windows Printer via SAMBA"
 msgstr "Drukarka Windows przez Sambę"
 
-#: ../newprinter.py:2750 ../newprinter.py:2752
+#: ../newprinter.py:2773 ../newprinter.py:2775
 msgid "IPP"
 msgstr "IPP"
 
-#: ../newprinter.py:2754
+#: ../newprinter.py:2777
 msgid "HTTP"
 msgstr "HTTP"
 
-#: ../newprinter.py:2762 ../newprinter.py:2923
+#: ../newprinter.py:2785 ../newprinter.py:2946
 msgid "Remote CUPS printer via DNS-SD"
 msgstr "Zdalna drukarka CUPS przez DNS-SD"
 
-#: ../newprinter.py:2774 ../newprinter.py:2933
+#: ../newprinter.py:2797 ../newprinter.py:2956
 #, python-format
 msgid "%s network printer via DNS-SD"
 msgstr "Drukarka sieciowa %s przez DNS-SD"
 
-#: ../newprinter.py:2778 ../newprinter.py:2935
+#: ../newprinter.py:2801 ../newprinter.py:2958
 msgid "Network printer via DNS-SD"
 msgstr "Drukarka sieciowa przez DNS-SD"
 
-#: ../newprinter.py:2902
+#: ../newprinter.py:2925
 msgid "A printer connected to the parallel port."
 msgstr "Drukarka połączona do portu równoległego."
 
-#: ../newprinter.py:2904
+#: ../newprinter.py:2927
 msgid "A printer connected to a USB port."
 msgstr "Drukarka połączona do portu USB."
 
-#: ../newprinter.py:2906
+#: ../newprinter.py:2929
 msgid "A printer connected via Bluetooth."
 msgstr "Drukarka połączona przez Bluetooth."
 
-#: ../newprinter.py:2908
+#: ../newprinter.py:2931
 msgid ""
 "HPLIP software driving a printer, or the printer function of a multi-"
 "function device."
@@ -802,7 +804,7 @@ msgstr ""
 "Oprogramowanie HPLIP steruje drukarką lub funkcją drukarki urządzenia "
 "wielofunkcyjnego."
 
-#: ../newprinter.py:2911
+#: ../newprinter.py:2934
 msgid ""
 "HPLIP software driving a fax machine, or the fax function of a multi-"
 "function device."
@@ -810,51 +812,51 @@ msgstr ""
 "Oprogramowanie HPLIP steruje faksem lub funkcją faksu urządzenia "
 "wielofunkcyjnego."
 
-#: ../newprinter.py:2914
+#: ../newprinter.py:2937
 msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
 msgstr "Lokalne drukarki wykryte przez HAL (Warstwę abstrakcji sprzętowej)."
 
-#: ../newprinter.py:3049
+#: ../newprinter.py:3077
 msgid "Searching for printers"
 msgstr "Wyszukiwanie drukarek"
 
-#: ../newprinter.py:3155 ../ui/NewPrinterWindow.ui.h:46
+#: ../newprinter.py:3183 ../ui/NewPrinterWindow.ui.h:46
 msgid "No printer was found at that address."
 msgstr "Nie odnaleziono drukarek pod tym adresem."
 
-#: ../newprinter.py:3311
+#: ../newprinter.py:3339
 msgid "-- Select from search results --"
 msgstr "-- Proszę wybrać z wyników wyszukiwania --"
 
-#: ../newprinter.py:3313
+#: ../newprinter.py:3341
 msgid "-- No matches found --"
 msgstr "-- Nie odnaleziono --"
 
-#: ../newprinter.py:3427 ../ui/NewPrinterWindow.ui.h:80
+#: ../newprinter.py:3455 ../ui/NewPrinterWindow.ui.h:80
 msgid "Local Driver"
 msgstr "Lokalny sterownik"
 
-#: ../newprinter.py:3460 ../newprinter.py:3523 ../newprinter.py:3621
+#: ../newprinter.py:3488 ../newprinter.py:3551 ../newprinter.py:3649
 msgid " (recommended)"
 msgstr " (zalecane)"
 
-#: ../newprinter.py:3653
+#: ../newprinter.py:3681
 msgid "This PPD is generated by foomatic."
 msgstr "Ten plik PPD został utworzony przez program foomatic."
 
-#: ../newprinter.py:3701
+#: ../newprinter.py:3729
 msgid "OpenPrinting"
 msgstr "OpenPrinting"
 
-#: ../newprinter.py:3712
+#: ../newprinter.py:3740
 msgid "Distributable"
 msgstr "Distributable"
 
-#: ../newprinter.py:3754
+#: ../newprinter.py:3782
 msgid ", "
 msgstr ", "
 
-#: ../newprinter.py:3759
+#: ../newprinter.py:3787
 #, python-format
 msgid ""
 "\n"
@@ -863,20 +865,20 @@ msgstr ""
 "\n"
 "(%s)"
 
-#: ../newprinter.py:3764
+#: ../newprinter.py:3792
 msgid "No support contacts known"
 msgstr "Brak znanego kontaktu wsparcia"
 
-#: ../newprinter.py:3768 ../newprinter.py:3781
+#: ../newprinter.py:3796 ../newprinter.py:3809
 msgid "Not specified."
 msgstr "Nie podano."
 
 #. Foomatic database problem of some sort.
-#: ../newprinter.py:3826
+#: ../newprinter.py:3854
 msgid "Database error"
 msgstr "Błąd bazy danych"
 
-#: ../newprinter.py:3827
+#: ../newprinter.py:3855
 #, python-format
 msgid "The '%s' driver cannot be used with printer '%s %s'."
 msgstr "Sterownik \"%s\" nie może być używany z drukarką \"%s %s\"."
@@ -884,43 +886,43 @@ msgstr "Sterownik \"%s\" nie może być używany z drukarką \"%s %s\"."
 #. This printer references some XML that is not
 #. installed by default.  Point the user at the
 #. package they need to install.
-#: ../newprinter.py:3837
+#: ../newprinter.py:3865
 #, python-format
 msgid "You will need to install the '%s' package in order to use this driver."
 msgstr "Należy zainstalować pakiet \"%s\", aby użyć tego sterownika."
 
 #. This error came from trying to open the PPD file.
-#: ../newprinter.py:3844
+#: ../newprinter.py:3872
 msgid "PPD error"
 msgstr "Błąd pliku PPD"
 
-#: ../newprinter.py:3846
+#: ../newprinter.py:3874
 msgid "Failed to read PPD file.  Possible reason follows:"
 msgstr "Odczytanie pliku PPD nie powiodło się. Możliwe przyczyny:"
 
 #. Failed to get PPD downloaded from OpenPrinting XXX
-#: ../newprinter.py:3864
+#: ../newprinter.py:3892
 msgid "Downloadable drivers"
 msgstr "Sterowniki do pobrania"
 
-#: ../newprinter.py:3865
+#: ../newprinter.py:3893
 msgid "Failed to download PPD."
 msgstr "Pobranie pliku PPD nie powiodło się."
 
-#: ../newprinter.py:3873
+#: ../newprinter.py:3901
 msgid "fetching PPD"
 msgstr "przechwytywanie pliku PPD"
 
-#: ../newprinter.py:3902 ../newprinter.py:3939
+#: ../newprinter.py:3930 ../newprinter.py:3967
 msgid "No Installable Options"
 msgstr "Brak opcji instalacyjnych"
 
-#: ../newprinter.py:4003
+#: ../newprinter.py:4031
 #, python-format
 msgid "adding printer %s"
 msgstr "dodawanie drukarki %s"
 
-#: ../newprinter.py:4032 ../newprinter.py:4044 ../newprinter.py:4062
+#: ../newprinter.py:4060 ../newprinter.py:4072 ../newprinter.py:4090
 #: ../printerproperties.py:1002 ../system-config-printer.py:1688
 #: ../system-config-printer.py:1718
 #, python-format
@@ -1524,11 +1526,12 @@ msgstr "Polecenie konserwacji zostało wysłane jako zadanie %d"
 
 #: ../printerproperties.py:1323
 msgid "Raw Queue"
-msgstr ""
+msgstr "Surowa kolejka"
 
 #: ../printerproperties.py:1324
 msgid "Unable to get queue details. Treating queue as raw."
 msgstr ""
+"Nie można uzyskać szczegółów kolejki. Traktowanie kolejki jako surowej."
 
 #: ../printerproperties.py:1336 ../printerproperties.py:1341
 #: ../printerproperties.py:1438
@@ -1642,15 +1645,13 @@ msgstr "Producent/model"
 
 #: ../system-config-printer.py:318 ../ui/PrinterPropertiesDialog.ui.h:41
 #: ../ui/PrintersWindow.ui.h:10 ../ui/ServerSettingsDialog.ui.h:15
-#, fuzzy
 msgid "Add"
-msgstr "Nieparzyste"
+msgstr "Dodaj"
 
 #: ../system-config-printer.py:335 ../ui/PrinterPropertiesDialog.ui.h:88
 #: ../ui/SMBBrowseDialog.ui.h:2
-#, fuzzy
 msgid "Refresh"
-msgstr "_Odśwież"
+msgstr "Odśwież"
 
 #: ../system-config-printer.py:349
 msgid "_New"
@@ -1867,14 +1868,12 @@ msgstr "Połącz z serwerem CUPS"
 #: ../ui/NewPrinterName.ui.h:2 ../ui/NewPrinterWindow.ui.h:104
 #: ../ui/PrinterPropertiesDialog.ui.h:4 ../ui/ServerSettingsDialog.ui.h:2
 #: ../ui/SMBBrowseDialog.ui.h:3
-#, fuzzy
 msgid "Cancel"
-msgstr "_Anuluj"
+msgstr "Anuluj"
 
 #: ../ui/ConnectDialog.ui.h:3 ../ui/PrintersWindow.ui.h:13
-#, fuzzy
 msgid "Connect"
-msgstr "Połączenie"
+msgstr "Połącz"
 
 #: ../ui/ConnectDialog.ui.h:4
 msgid "Require _encryption"
@@ -1894,7 +1893,7 @@ msgstr "<span weight=\"bold\" size=\"larger\">Łączenie z serwerem CUPS</span>"
 
 #: ../ui/InstallDialog.ui.h:1 ../ui/PrinterPropertiesDialog.ui.h:6
 msgid "Close"
-msgstr ""
+msgstr "Zamknij"
 
 #: ../ui/InstallDialog.ui.h:2
 msgid "_Install"
@@ -1923,7 +1922,7 @@ msgstr "Utworzenie kopii drukarki"
 #: ../ui/NewPrinterName.ui.h:3 ../ui/PrinterPropertiesDialog.ui.h:5
 #: ../ui/ServerSettingsDialog.ui.h:3 ../ui/SMBBrowseDialog.ui.h:4
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #: ../ui/NewPrinterName.ui.h:4
 msgid "New name for the printer"
@@ -2085,7 +2084,7 @@ msgstr "SMB"
 
 #: ../ui/NewPrinterWindow.ui.h:44
 msgid "Find"
-msgstr ""
+msgstr "Znajdź"
 
 #: ../ui/NewPrinterWindow.ui.h:45
 msgid "Searching..."
@@ -2347,15 +2346,15 @@ msgstr "Szczegóły sterownika"
 
 #: ../ui/NewPrinterWindow.ui.h:103
 msgid "Back"
-msgstr ""
+msgstr "Wstecz"
 
 #: ../ui/NewPrinterWindow.ui.h:105 ../ui/PrinterPropertiesDialog.ui.h:3
 msgid "Apply"
-msgstr ""
+msgstr "Zastosuj"
 
 #: ../ui/NewPrinterWindow.ui.h:106
 msgid "Forward"
-msgstr ""
+msgstr "Dalej"
 
 #: ../ui/PrinterPropertiesDialog.ui.h:1
 msgid "Printer Properties"
@@ -2440,9 +2439,8 @@ msgid "<b>State</b>"
 msgstr "<b>Stan</b>"
 
 #: ../ui/PrinterPropertiesDialog.ui.h:30
-#, fuzzy
 msgid "Error Policy:"
-msgstr "Błąd polityki: \t"
+msgstr "Polityka błędów:"
 
 #: ../ui/PrinterPropertiesDialog.ui.h:31
 msgid "Operation Policy:"
@@ -2481,9 +2479,8 @@ msgid "user"
 msgstr "użytkownik"
 
 #: ../ui/PrinterPropertiesDialog.ui.h:40
-#, fuzzy
 msgid "Delete"
-msgstr "_Usuń"
+msgstr "Usuń"
 
 #: ../ui/PrinterPropertiesDialog.ui.h:42
 msgid "Access Control"
@@ -2703,7 +2700,7 @@ msgstr "_Rozwiąż problem"
 
 #: ../ui/PrintersWindow.ui.h:8
 msgid "About"
-msgstr ""
+msgstr "O programie"
 
 #: ../ui/PrintersWindow.ui.h:9
 msgid "There are no printers configured yet."
@@ -2777,7 +2774,7 @@ msgstr ""
 
 #: ../ui/ServerSettingsDialog.ui.h:16
 msgid "Remove"
-msgstr ""
+msgstr "Usuń"
 
 #: ../ui/ServerSettingsDialog.ui.h:17
 msgid "<b>Browse servers</b>"
@@ -2805,7 +2802,7 @@ msgstr "S_konfiguruj drukarki"
 
 #: ../ui/statusicon_popupmenu.ui.h:3
 msgid "Quit"
-msgstr ""
+msgstr "Zakończ"
 
 #: ../ui/WaitWindow.ui.h:1
 msgid "Please Wait"
@@ -3091,13 +3088,15 @@ msgstr "Dziennik debugowania jest już włączony."
 
 #: ../troubleshoot/ErrorLogFetch.py:41
 msgid "Retrieve Journal Entries"
-msgstr ""
+msgstr "Pobierz wpisy dziennika"
 
 #: ../troubleshoot/ErrorLogFetch.py:42
 msgid ""
 "No system journal entries were found. This may be because you are not an "
 "administrator. To fetch journal entries please run this command:"
 msgstr ""
+"Nie odnaleziono żadnych wpisów dziennika, ponieważ użytkownik nie jest "
+"administratorem. Aby pobrać wpisy dziennika, należy wykonać to polecenie:"
 
 #: ../troubleshoot/ErrorLogParse.py:32
 msgid "Error log messages"
@@ -3417,9 +3416,14 @@ msgid ""
 "With system-config-printer you can add, edit and delete printer queues. It "
 "allows you to choose the connection method and the printer driver."
 msgstr ""
+"Za pomocą programu system-config-printer można dodawać, modyfikować i usuwać "
+"kolejki drukarek. Umożliwia on wybieranie metody połączenia i sterownika "
+"drukarki."
 
 #: ../system-config-printer.appdata.xml.in.h:2
 msgid ""
 "For each queue, you can adjust the default page size and other driver "
 "options, as well as seeing ink/toner levels and status messages."
 msgstr ""
+"Dla każdej kolejki można ustawiać oddzielny domyślny rozmiar strony i inne "
+"opcje sterownika, a także wyświetlać poziom tuszu/toneru i komunikaty stanu."
