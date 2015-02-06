@@ -1,6 +1,6 @@
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015 Red Hat, Inc.
 ## Authors:
 ##  Florian Festi <ffesti@redhat.com>
 ##  Tim Waugh <twaugh@redhat.com>
@@ -429,7 +429,7 @@ class Printer:
                 self.connection.getFile(resource, fd=f.fileno ())
             except cups.HTTPError as e:
                 (s,) = e.args
-                if s == cups.HTTP_NOT_FOUND:
+                if s in [cups.HTTP_NOT_FOUND, cups.HTTP_AUTHORIZATION_CANCELED]:
                     return False
 
                 raise cups.HTTPError (s)
