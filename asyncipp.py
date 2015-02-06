@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-## Copyright (C) 2007, 2008, 2009, 2010, 2011, 2012, 2013 Red Hat, Inc.
+## Copyright (C) 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2015 Red Hat, Inc.
 ## Copyright (C) 2008 Novell, Inc.
 ## Author: Tim Waugh <twaugh@redhat.com>
 
@@ -104,6 +104,10 @@ class _IPPConnectionThread(threading.Thread):
                 # Our signal to quit.
                 self._queue.task_done ()
                 break
+            elif self._destroyed:
+                # Just mark all tasks done
+                self._queue.task_done ()
+                continue
 
             self.idle = False
             (fn, args, kwds, rh, eh, ah) = item
@@ -155,7 +159,6 @@ class _IPPConnectionThread(threading.Thread):
             self._queue.task_done ()
 
         debugprint ("Thread exiting")
-        self._destroyed = True
         del self._conn # already destroyed
         del self._reply_handler
         del self._error_handler
@@ -165,6 +168,10 @@ class _IPPConnectionThread(threading.Thread):
         del conn
 
         cups.setPasswordCB2 (None)
+
+    def stop (self):
+        self._destroyed = True
+        self._queue.put (None)
 
     def _auth (self, prompt, conn=None, method=None, resource=None):
         def prompt_auth (prompt):
@@ -263,12 +270,12 @@ class IPPConnection:
             delattr (self, binding)
 
         if self.thread.isAlive ():
+            debugprint ("Stopping worker thread")
+            self.thread.stop ()
             GLib.timeout_add_seconds (1, self._reap_thread)
 
     def _reap_thread (self):
         if self.thread.idle:
-            debugprint ("Putting None on the task queue")
-            self.queue.put (None)
             self.queue.join ()
             return False
 
