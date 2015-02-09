@@ -108,6 +108,7 @@ nobase_pkgdata_DATA=					\
 	gtkinklevel.py					\
 	installpackage.py				\
 	jobviewer.py					\
+	killtimer.py					\
 	monitor.py					\
 	newprinter.py					\
 	OpenPrintingRequest.py				\

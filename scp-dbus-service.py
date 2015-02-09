@@ -34,6 +34,7 @@ import cups
 import cupshelpers
 import dnssdresolve
 import jobviewer
+import killtimer
 import newprinter
 import PhysicalDevice
 import ppdcache
@@ -50,42 +51,6 @@ CONFIG_JOBVIEWER_IFACE=CONFIG_IFACE + ".JobViewer"
 
 g_ppds = None
 g_killtimer = None
-
-class KillTimer:
-    def __init__ (self, timeout=30, killfunc=None):
-        self._timeout = timeout
-        self._killfunc = killfunc
-        self._holds = 0
-        self._add_timeout ()
-
-    def _add_timeout (self):
-        self._timer = GLib.timeout_add_seconds (self._timeout, self._kill)
-
-    def _kill (self):
-        debugprint ("Timeout (%ds), exiting" % self._timeout)
-        if self._killfunc:
-            self._killfunc ()
-        else:
-            sys.exit (0)
-
-    def add_hold (self):
-        if self._holds == 0:
-            debugprint ("Kill timer stopped")
-            GLib.source_remove (self._timer)
-
-        self._holds += 1
-
-    def remove_hold (self):
-        if self._holds > 0:
-            self._holds -= 1
-            if self._holds == 0:
-                debugprint ("Kill timer started")
-                self._add_timeout ()
-
-    def alive (self):
-        if self._holds == 0:
-            GLib.source_remove (self._timer)
-            self._add_timeout ()
 
 class FetchedPPDs(GObject.GObject):
     __gsignals__ = {
@@ -624,7 +589,7 @@ if __name__ == '__main__':
         sys.exit (0)
 
     debugprint ("Service running...")
-    g_killtimer = KillTimer (killfunc=Gtk.main_quit)
+    g_killtimer = killtimer.KillTimer (killfunc=Gtk.main_quit)
     cp = ConfigPrinting ()
     Gdk.threads_enter ()
     Gtk.main ()
