@@ -20,6 +20,8 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+import threading
+
 from gi.repository import GLib
 
 from debug import *
@@ -30,6 +32,7 @@ class KillTimer:
         self._killfunc = killfunc
         self._holds = 0
         self._add_timeout ()
+        self._lock = threading.Lock()
 
     def _add_timeout (self):
         self._timer = GLib.timeout_add_seconds (self._timeout, self._kill)
@@ -42,20 +45,26 @@ class KillTimer:
             sys.exit (0)
 
     def add_hold (self):
+        self._lock.acquire()
         if self._holds == 0:
             debugprint ("Kill timer stopped")
             GLib.source_remove (self._timer)
 
         self._holds += 1
+        self._lock.release()
 
     def remove_hold (self):
+        self._lock.acquire()
         if self._holds > 0:
             self._holds -= 1
             if self._holds == 0:
                 debugprint ("Kill timer started")
                 self._add_timeout ()
+        self._lock.release()
 
     def alive (self):
+        self._lock.acquire()
         if self._holds == 0:
             GLib.source_remove (self._timer)
             self._add_timeout ()
+        self._lock.release()
