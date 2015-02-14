@@ -84,10 +84,8 @@ if refresh_cache_needed:
         debugprint("pk.refresh_cache succeeded")
     except GLib.GError:
         debugprint("pk.refresh_cache failed")
-        sys.exit(1)
     if res.get_exit_code() != PackageKitGlib.ExitEnum.SUCCESS:
         debugprint("pk.refresh_cache errored")
-        sys.exit(1)
 
 # map package name to PackageKit ID; do not print progress here, it's fast
 debugprint("pk.resolve")
