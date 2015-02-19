@@ -282,7 +282,7 @@ class PrinterFinder:
                                   stderr=subprocess.DEVNULL)
         except OSError as e:
             debugprint ("snmp: no good")
-            if e == errno.ENOENT:
+            if e.errno == errno.ENOENT:
                 return
 
             raise
@@ -372,7 +372,7 @@ class PrinterFinder:
                                   stdout=subprocess.PIPE,
                                   stderr=subprocess.DEVNULL)
         except OSError as e:
-            if e == errno.ENOENT:
+            if e.errno == errno.ENOENT:
                 return
 
             raise
