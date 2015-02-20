@@ -589,7 +589,7 @@ class NewPrinterGUI(GtkGUI):
         self.parent = parent
         if not self.parent:
             self.NewPrinterWindow.set_focus_on_map (False)
-            
+
         self.dialog_mode = dialog_mode
         self._device_uri = device_uri
         self.orig_ppd = ppd
@@ -654,23 +654,6 @@ class NewPrinterGUI(GtkGUI):
         label = self.btnNPDownloadableDriverSearch_label
         label.set_text (_("Search"))
 
-        if self.dialog_mode in ("printer", "printer_with_uri", "class"):
-            if self.dialog_mode == "class":
-                name_proto = "class"
-            else:
-                name_proto = "printer"
-            self.entNPName.set_text (self.makeNameUnique(name_proto))
-            self.entNPName.grab_focus()
-            for widget in [self.entNPLocation,
-                           self.entNPDescription,
-                           self.entSMBURI, self.entSMBUsername,
-                           self.entSMBPassword]:
-                widget.set_text('')
-
-        if self.dialog_mode in ['printer_with_uri', 'ppd']:
-            device_dict = { }
-            self.device = cupshelpers.Device (device_uri, **device_dict)
-
         self.entNPTJetDirectPort.set_text('9100')
         self.rbtnSMBAuthPrompt.set_active(True)
 
@@ -679,65 +662,18 @@ class NewPrinterGUI(GtkGUI):
             self.NewPrinterWindow.set_transient_for (self.parent)
 
         if self.dialog_mode == "printer":
-            self.NewPrinterWindow.set_title(_("New Printer"))
-            # Start on devices page (1, not 0)
-            self.ntbkNewPrinter.set_current_page(1)
-            self.fillDeviceTab()
-            self.rbtnNPFoomatic.set_active (True)
-            self.on_rbtnNPFoomatic_toggled(self.rbtnNPFoomatic)
-
+            self._initialisePrinterMode ()
         elif self.dialog_mode == "class":
-            self.NewPrinterWindow.set_title(_("New Class"))
-            self.fillNewClassMembers()
-            # Start on name page
-            self.ntbkNewPrinter.set_current_page(0)
+            self._initialiseClassMode ()
         elif self.dialog_mode == "device":
-            self.NewPrinterWindow.set_title(_("Change Device URI"))
-            self.ntbkNewPrinter.set_current_page(1)
-            self.fillDeviceTab(device_uri)
-        elif self.dialog_mode == "ppd" or \
-            self.dialog_mode == "printer_with_uri" or \
-            self.dialog_mode == "download_driver":
-            if self.dialog_mode == "ppd":
-                self.NewPrinterWindow.set_title(_("Change Driver"))
-            elif self.dialog_mode == "printer_with_uri":
-                self.NewPrinterWindow.set_title(_("New Printer"))
-            else:
-                self.NewPrinterWindow.set_title(_("Download Printer Driver"))
-
-            # We'll need to know the Device ID for this device.
-            if self.dialog_mode == "ppd" and not self.devid:
-                scheme = str(device_uri.split (":", 1)[0])
-                schemes = [scheme]
-                if scheme in ["socket", "lpd", "ipp"]:
-                    schemes.extend (["snmp", "dnssd"])
-                self.fetchDevices_conn = asyncconn.Connection ()
-                self.fetchDevices_conn._begin_operation (_("fetching device list"))
-                self.inc_spinner_task ()
-                cupshelpers.getDevices (self.fetchDevices_conn,
-                                        include_schemes=schemes,
-                                        reply_handler=self.change_ppd_got_devs,
-                                        error_handler=self.change_ppd_got_devs)
-
-            if self.dialog_mode == "download_driver":
-                self.ntbkNewPrinter.set_current_page(7)
-                self.nextnptab_rerun = True
-            else:
-                self.ntbkNewPrinter.set_current_page(2)
-                self.rbtnNPFoomatic.set_active (True)
-                self.on_rbtnNPFoomatic_toggled(self.rbtnNPFoomatic)
-                self.rbtnChangePPDKeepSettings.set_active(True)
-
-                self.auto_make = ""
-                self.auto_model = ""
-                self.auto_driver = None
-
-            if self.dialog_mode == "printer_with_uri" or\
-               self.dialog_mode == "download_driver":
-                self.nextNPTab(step = 0)
-
-            if self.dialog_mode == "download_driver":
-                return True
+            self._initialiseDeviceMode ()
+        elif self.dialog_mode == "printer_with_uri":
+            self._initialisePrinterWithURIMode ()
+        elif self.dialog_mode == "ppd":
+            self._initialisePPDMode ()
+        elif self.dialog_mode == "download_driver":
+            self._initialiseDownloadDriverMode ()
+            return True
 
         if xid == 0 and self.parent:
             self.NewPrinterWindow.set_transient_for (parent)
@@ -752,6 +688,95 @@ class NewPrinterGUI(GtkGUI):
         elif self.dialog_mode == 'download_driver':
             return self.devid != ""
         return True
+
+    def _initialiseClassMode (self):
+        self._initialiseWidgetsForMode ("class")
+        self.NewPrinterWindow.set_title (_("New Class"))
+
+        self.fillNewClassMembers ()
+
+        # Start on name page
+        self.ntbkNewPrinter.set_current_page (0)
+
+    def _initialisePrinterMode (self):
+        self._initialiseWidgetsForMode ("printer")
+        self.NewPrinterWindow.set_title (_("New Printer"))
+
+        # Start on devices page (1, not 0)
+        self.ntbkNewPrinter.set_current_page (1)
+        self.fillDeviceTab ()
+        self.rbtnNPFoomatic.set_active (True)
+        self.on_rbtnNPFoomatic_toggled (self.rbtnNPFoomatic)
+
+    def _initialiseDeviceMode (self):
+        self.NewPrinterWindow.set_title (_("Change Device URI"))
+        self.ntbkNewPrinter.set_current_page (1)
+        self.fillDeviceTab (self._device_uri)
+
+    def _initialisePrinterWithURIMode (self):
+        self._initialiseWidgetsForMode ("printer")
+        self._initialiseDeviceFromURI ()
+
+        self.NewPrinterWindow.set_title (_("New Printer"))
+
+        self.ntbkNewPrinter.set_current_page (2)
+        self.rbtnNPFoomatic.set_active (True)
+        self.on_rbtnNPFoomatic_toggled (self.rbtnNPFoomatic)
+        self.rbtnChangePPDKeepSettings.set_active (True)
+
+        self._initialiseAutoVariables ()
+        self.nextNPTab (step = 0)
+
+    def _initialiseDownloadDriverMode (self):
+        self.NewPrinterWindow.set_title (_("Download Printer Driver"))
+
+        self.ntbkNewPrinter.set_current_page (7)
+        self.nextnptab_rerun = True
+        self.nextNPTab (step = 0)
+
+    def _initialisePPDMode (self):
+        self._initialiseDeviceFromURI ()
+
+        self.NewPrinterWindow.set_title (_("Change Driver"))
+
+        # We'll need to know the Device ID for this device.
+        if not self.devid:
+            scheme = str (self._device_uri.split (":", 1)[0])
+            schemes = [scheme]
+            if scheme in ["socket", "lpd", "ipp"]:
+                schemes.extend (["snmp", "dnssd"])
+            self.fetchDevices_conn = asyncconn.Connection ()
+            self.fetchDevices_conn._begin_operation (_("fetching device list"))
+            self.inc_spinner_task ()
+            cupshelpers.getDevices (self.fetchDevices_conn,
+                                    include_schemes=schemes,
+                                    reply_handler=self.change_ppd_got_devs,
+                                    error_handler=self.change_ppd_got_devs)
+
+        self.ntbkNewPrinter.set_current_page (2)
+        self.rbtnNPFoomatic.set_active (True)
+        self.on_rbtnNPFoomatic_toggled (self.rbtnNPFoomatic)
+        self.rbtnChangePPDKeepSettings.set_active (True)
+
+        self._initialiseAutoVariables ()
+
+    def _initialiseWidgetsForMode (self, mode_name):
+        self.entNPName.set_text (self.makeNameUnique (mode_name))
+        self.entNPName.grab_focus ()
+        for widget in [self.entNPLocation,
+                       self.entNPDescription,
+                       self.entSMBURI, self.entSMBUsername,
+                       self.entSMBPassword]:
+            widget.set_text ('')
+
+    def _initialiseDeviceFromURI (self):
+        device_dict = { }
+        self.device = cupshelpers.Device (self._device_uri, **device_dict)
+
+    def _initialiseAutoVariables (self):
+        self.auto_make = ""
+        self.auto_model = ""
+        self.auto_driver = None
 
     def change_ppd_got_devs (self, conn, result):
         self.fetchDevices_conn._end_operation ()
