@@ -591,6 +591,7 @@ class NewPrinterGUI(GtkGUI):
             self.NewPrinterWindow.set_focus_on_map (False)
             
         self.dialog_mode = dialog_mode
+        self._device_uri = device_uri
         self.orig_ppd = ppd
         self.devid = devid
         self._host = host
@@ -608,6 +609,9 @@ class NewPrinterGUI(GtkGUI):
         self.ppds = None
         self.ppdsmatch_result = None
         self.printer_finder = None
+
+        if not self._validInitParameters ():
+            raise RuntimeError
 
         # Get a current list of printers so that we can know whether
         # the chosen name is unique.
@@ -643,13 +647,6 @@ class NewPrinterGUI(GtkGUI):
         # Clear out any previous list of makes.
         model = self.tvNPMakes.get_model()
         model.clear()
-
-        if device_uri == None and dialog_mode in ['printer_with_uri',
-                                                  'device',
-                                                  'ppd']:
-            raise RuntimeError
-        if devid == "" and dialog_mode == 'download_driver':
-            raise RuntimeError
 
         combobox = self.cmbNPDownloadableDriverFoundPrinters
         combobox.set_model (Gtk.ListStore (str, str))
@@ -747,6 +744,13 @@ class NewPrinterGUI(GtkGUI):
 
         self.NewPrinterWindow.show()
         self.setNPButtons()
+        return True
+
+    def _validInitParameters (self):
+        if self.dialog_mode in ['printer_with_uri', 'device', 'ppd']:
+            return self._device_uri is not None
+        elif self.dialog_mode == 'download_driver':
+            return self.devid != ""
         return True
 
     def change_ppd_got_devs (self, conn, result):
