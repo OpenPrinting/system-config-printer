@@ -948,10 +948,10 @@ class NewPrinterGUI(GtkGUI):
     def on_btnNPForward_clicked(self, widget):
         self.nextNPTab()
 
-    def installdriverpackage (self, driver, onlycheckpresence = False):
+    def installdriverpackage (self, driver):
         install_info = self._getDriverInstallationInfo (driver)
-        if onlycheckpresence:
-            return install_info != None
+        if not install_info:
+            return False
 
         name = install_info['name']
         repo = install_info['repo']
@@ -3680,9 +3680,7 @@ class NewPrinterGUI(GtkGUI):
                 if ((not 'ppds' in driver or
                      len(driver['ppds']) <= 0) and
                     (config.DOWNLOADABLE_ONLYPPD or
-                     (not self.installdriverpackage (driver,
-                                                     onlycheckpresence =
-                                                     True)))):
+                     (not self._getDriverInstallationInfo (driver)))):
                     debugprint ("Removed invalid driver entry %s" % \
                                 driver['name'])
                     continue
