@@ -918,10 +918,10 @@ class NewPrinterGUI(GtkGUI):
         name = ''
         if pkg.endswith('.deb'):
             name = pkg.split('_')[0]
-        elif pkgname.endswith('.rpm'):
+        elif pkg.endswith('.rpm'):
             name = '-'.join(pkg.split('-')[0:-2])
         else:
-            raise ValueError('Unknown package type: ' + pkgname)
+            raise ValueError('Unknown package type: ' + pkg)
 
         # require signature for binary packages; architecture
         # independent packages are usually PPDs, which we trust enough
