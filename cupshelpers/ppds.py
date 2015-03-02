@@ -2,7 +2,7 @@
 
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2014 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2014, 2015 Red Hat, Inc.
 ## Copyright (C) 2006 Florian Festi <ffesti@redhat.com>
 ## Copyright (C) 2006, 2007, 2008, 2009 Tim Waugh <twaugh@redhat.com>
 
@@ -716,13 +716,15 @@ class PPDs:
                     fit[each] = self.FIT_EXACT_CMD
                     _debugprint (self.FIT_EXACT_CMD + ": %s" % each)
 
-            if len (failed) < len (fit):
+            if len (failed) < len ([d for (d, m) in fit.items ()
+                                    if m != 'generic']):
                 _debugprint ("Removed %s due to CMD mis-match" % failed)
                 for each in failed:
                     del fit[each]
             else:
                 _debugprint ("Not removing %s " % failed +
-                             "due to CMD mis-match as it would leave nothing")
+                             "due to CMD mis-match as it would "
+                             "leave nothing good")
 
         if not fit:
             fallbacks = ["textonly.ppd", "postscript.ppd"]
