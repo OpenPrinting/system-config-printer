@@ -1575,7 +1575,10 @@ class NewPrinterGUI(GtkGUI):
                         else:
                             self.nextNPTab ()
                     else:
-                        self.nextNPTab ()
+                        if self.dialog_mode == "download_driver":
+                            self.nextNPTab (step = 0)
+                        else:
+                            self.nextNPTab ()
                 except:
                     nonfatalException ()
                     self.nextNPTab ()
