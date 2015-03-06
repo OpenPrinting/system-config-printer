@@ -1145,30 +1145,10 @@ class NewPrinterGUI(GtkGUI):
                         self.remotecupsqueue = self.device.info
 
                 elif page_nr == 7 and self.nextnptab_rerun == False:
-                    # Install package of the driver found on OpenPrinting
-                    treeview = self.tvNPDownloadableDrivers
-                    model, iter = treeview.get_selection ().get_selected ()
-                    driver = None
-                    if iter != None:
-                        driver = model.get_value (iter, 1)
-                    if (driver != None and
-                        driver != 0 and
-                        'packages' in driver):
-                        # Find the package name, repository, and fingerprint
-                        # and install the package
-                        if self.installdriverpackage (driver) and \
-                                len(self.installed_driver_files) > 0:
-                            # We actually installed a package, delete the
-                            # PPD list to get it regenerated
-                            self.ppds = None
-                            if self.dialog_mode != "download_driver":
-                                if (not self.device.id and
-                                    (not self.device.make_and_model or
-                                     self.device.make_and_model ==
-                                     "Unknown") and
-                                    self.downloadable_driver_for_printer):
-                                    self.device.make_and_model = \
-                                        self.downloadable_driver_for_printer
+                    # Simple check to avoid installing the driver if the
+                    # License Agreement was not accepted yet
+                    if self.rbtnNPDownloadLicenseYes.get_active ():
+                        self._installSelectedDriverFromOpenPrinting()
 
                 devid = None
                 if not self.remotecupsqueue or self.dialog_mode == "ppd":
@@ -1590,6 +1570,35 @@ class NewPrinterGUI(GtkGUI):
         debugprint ("OpenPrinting request failed (%d): %s" % (status,
                                                               repr (err)))
         self.opreq_id_search_done (opreq, list(), dict())
+
+
+    def _installSelectedDriverFromOpenPrinting(self):
+        # Install package of the driver found on OpenPrinting
+        treeview = self.tvNPDownloadableDrivers
+        model, iter = treeview.get_selection ().get_selected ()
+        driver = None
+        if iter != None:
+            driver = model.get_value (iter, 1)
+        if (driver == None or driver == 0 or 'packages' not in driver):
+            return
+
+        # Find the package name, repository, and fingerprint
+        # and install the package
+        if not self.installdriverpackage (driver) or \
+                len(self.installed_driver_files) <= 0:
+            return
+
+        # We actually installed a package, delete the
+        # PPD list to get it regenerated
+        self.ppds = None
+        if self.dialog_mode != "download_driver":
+            if (not self.device.id and
+                (not self.device.make_and_model or
+                 self.device.make_and_model ==
+                 "Unknown") and
+                self.downloadable_driver_for_printer):
+                self.device.make_and_model = \
+                    self.downloadable_driver_for_printer
 
     def setNPButtons(self):
         nr = self.ntbkNewPrinter.get_current_page()
