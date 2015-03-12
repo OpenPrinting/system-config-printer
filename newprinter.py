@@ -1635,7 +1635,9 @@ class NewPrinterGUI(GtkGUI):
             self.btnNPBack.hide()
             self.btnNPForward.hide()
             self.btnNPApply.show()
-            self.btnNPApply.set_sensitive (True)
+
+            accepted = self._is_driver_license_accepted()
+            self.btnNPApply.set_sensitive(accepted)
             return
 
         # class/printer
@@ -1703,19 +1705,20 @@ class NewPrinterGUI(GtkGUI):
                     self.exactdrivermatch:
                 self.btnNPBack.hide ()
         if nr == 7: # Downloadable drivers
-            if self.ntbkNPDownloadableDriverProperties.get_current_page() == 1:
-                accepted = self.rbtnNPDownloadLicenseYes.get_active ()
-            else:
-                treeview = self.tvNPDownloadableDrivers
-                model, iter = treeview.get_selection ().get_selected ()
-                if not iter:
-                    path, column = treeview.get_cursor()
-                    if path:
-                        iter = model.get_iter (path)
-                    #driver = model.get_value (iter, 1)
-                accepted = (iter != None)
-
+            accepted = self._is_driver_license_accepted()
             self.btnNPForward.set_sensitive(accepted)
+
+    def _is_driver_license_accepted(self):
+        if self.ntbkNPDownloadableDriverProperties.get_current_page() == 1:
+            return self.rbtnNPDownloadLicenseYes.get_active ()
+
+        treeview = self.tvNPDownloadableDrivers
+        model, iter = treeview.get_selection ().get_selected ()
+        if not iter:
+            path, column = treeview.get_cursor()
+            if path:
+                iter = model.get_iter (path)
+        return (iter != None)
 
     def on_entNPName_changed(self, widget):
         # restrict
