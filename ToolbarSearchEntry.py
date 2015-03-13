@@ -46,10 +46,10 @@ class ToolbarSearchEntry (Gtk.HBox):
         }
 
     __gsignals__ = {
-        'search' : (GObject.SIGNAL_RUN_LAST,
+        'search' : (GObject.SignalFlags.RUN_LAST,
                     None,
                     (str,)),
-        'activate' : (GObject.SIGNAL_RUN_LAST,
+        'activate' : (GObject.SignalFlags.RUN_LAST,
                       None,
                       ())
         }

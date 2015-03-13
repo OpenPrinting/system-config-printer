@@ -50,7 +50,7 @@ class PPDsLoader(GObject.GObject):
     """
 
     __gsignals__ = {
-        'finished': (GObject.SIGNAL_RUN_LAST, None, ())
+        'finished': (GObject.SignalFlags.RUN_LAST, None, ())
         }
 
     def __init__ (self, device_id=None, parent=None, device_uri=None,

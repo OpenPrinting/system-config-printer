@@ -192,13 +192,13 @@ def download_gpg_fingerprint(url):
 class NewPrinterGUI(GtkGUI):
 
     __gsignals__ = {
-        'destroy':          (GObject.SIGNAL_RUN_LAST, None, ()),
-        'printer-added' :   (GObject.SIGNAL_RUN_LAST, None, (str,)),
-        'printer-modified': (GObject.SIGNAL_RUN_LAST, None,
+        'destroy':          (GObject.SignalFlags.RUN_LAST, None, ()),
+        'printer-added' :   (GObject.SignalFlags.RUN_LAST, None, (str,)),
+        'printer-modified': (GObject.SignalFlags.RUN_LAST, None,
                              (str,    # printer name
                               bool,)), # PPD modified?
-        'driver-download-checked': (GObject.SIGNAL_RUN_LAST, None, (str,)),
-        'dialog-canceled':  (GObject.SIGNAL_RUN_LAST, None, ()),
+        'driver-download-checked': (GObject.SignalFlags.RUN_LAST, None, (str,)),
+        'dialog-canceled':  (GObject.SignalFlags.RUN_LAST, None, ()),
         }
 
     new_printer_device_tabs = {

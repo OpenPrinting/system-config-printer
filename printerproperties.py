@@ -62,8 +62,8 @@ def on_delete_just_hide (widget, event):
 class PrinterPropertiesDialog(GtkGUI):
 
     __gsignals__ = {
-        'destroy':       ( GObject.SIGNAL_RUN_LAST, None, ()),
-        'dialog-closed': ( GObject.SIGNAL_RUN_LAST, None, ()),
+        'destroy':       ( GObject.SignalFlags.RUN_LAST, None, ()),
+        'dialog-closed': ( GObject.SignalFlags.RUN_LAST, None, ()),
         }
 
     printer_states = { cups.IPP_PRINTER_IDLE:

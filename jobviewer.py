@@ -167,11 +167,11 @@ class PrinterURIIndex:
 
 class CancelJobsOperation(GObject.GObject):
     __gsignals__ = {
-        'destroy':     (GObject.SIGNAL_RUN_LAST, None, ()),
-        'job-deleted': (GObject.SIGNAL_RUN_LAST, None, (int,)),
-        'ipp-error':   (GObject.SIGNAL_RUN_LAST, None,
+        'destroy':     (GObject.SignalFlags.RUN_LAST, None, ()),
+        'job-deleted': (GObject.SignalFlags.RUN_LAST, None, (int,)),
+        'ipp-error':   (GObject.SignalFlags.RUN_LAST, None,
                         (int, GObject.TYPE_PYOBJECT)),
-        'finished':    (GObject.SIGNAL_RUN_LAST, None, ())
+        'finished':    (GObject.SignalFlags.RUN_LAST, None, ())
         }
 
     def __init__ (self, parent, host, port, encryption, jobids, purge_job):
@@ -319,7 +319,7 @@ class JobViewer (GtkGUI):
                                    'job-preserved'])
 
     __gsignals__ = {
-        'finished':    (GObject.SIGNAL_RUN_LAST, None, ())
+        'finished':    (GObject.SignalFlags.RUN_LAST, None, ())
         }
 
     def __init__(self, bus=None, loop=None,

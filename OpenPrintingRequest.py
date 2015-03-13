@@ -31,7 +31,7 @@ from gi.repository import GObject
 
 class OpenPrintingRequest(GObject.GObject):
     __gsignals__ = {
-        'finished':     (GObject.SIGNAL_RUN_LAST, None,
+        'finished':     (GObject.SignalFlags.RUN_LAST, None,
                          (
                              # list of (printerid,name) tuples
                              GObject.TYPE_PYOBJECT,
@@ -41,7 +41,7 @@ class OpenPrintingRequest(GObject.GObject):
                              GObject.TYPE_PYOBJECT,
                          )),
 
-        'error':        (GObject.SIGNAL_RUN_LAST, None,
+        'error':        (GObject.SignalFlags.RUN_LAST, None,
                          (
                              # HTTP status
                              int,
