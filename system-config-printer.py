@@ -997,7 +997,7 @@ class GUI(GtkGUI):
                     copy = pixbuf.copy ()
                     copy.fill (0)
                     pixbuf.composite (copy, 0, 0,
-                                      copy.get_width(), copy.get_height(),
+                                      pixbuf.get_width(), pixbuf.get_height(),
                                       0, 0, 1.0, 1.0,
                                       GdkPixbuf.InterpType.BILINEAR, 127)
                     pixbuf = copy
@@ -1008,11 +1008,12 @@ class GUI(GtkGUI):
                         default_emblem = theme.load_icon (def_emblem, w/2, 0)
                         copy = pixbuf.copy ()
                         default_emblem.composite (copy, 0, 0,
-                                                  copy.get_width (),
-                                                  copy.get_height (),
+                                                  default_emblem.get_width (),
+                                                  default_emblem.get_height (),
                                                   0, 0,
                                                   1.0, 1.0,
-                                                  GdkPixbuf.InterpType.NEAREST, 255)
+                                                  GdkPixbuf.InterpType.BILINEAR,
+                                                  255)
                         pixbuf = copy
                     except GLib.GError:
                         debugprint ("No %s icon available" % def_emblem)
@@ -1023,12 +1024,13 @@ class GUI(GtkGUI):
                         other_emblem = theme.load_icon (emblem, w/2, 0)
                         copy = pixbuf.copy ()
                         other_emblem.composite (copy, 0, 0,
-                                                copy.get_width (),
-                                                copy.get_height (),
+                                                other_emblem.get_width (),
+                                                other_emblem.get_height (),
                                                 copy.get_width () / 2,
                                                 copy.get_height () / 2,
                                                 1.0, 1.0,
-                                                GdkPixbuf.InterpType.NEAREST, 255)
+                                                GdkPixbuf.InterpType.BILINEAR,
+                                                255)
                         pixbuf = copy
                     except GLib.GError:
                         debugprint ("No %s icon available" % emblem)
