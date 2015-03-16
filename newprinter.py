@@ -936,7 +936,6 @@ class NewPrinterGUI(GtkGUI):
                 debugprint('Not installing driver as it does not have a valid GPG fingerprint')
                 return False
 
-
         repo = pkgs[pkg].get('repositories', {}).get(self.packageinstaller)
         if not repo:
             debugprint('Local package system %s not found in %s' %
@@ -946,11 +945,6 @@ class NewPrinterGUI(GtkGUI):
 
         if onlycheckpresence:
             return True
-
-        debugprint('Installing driver: %s; Repo: %s; Key ID: %s' %
-                   (repr (name),
-                    repr (repo),
-                    repr (keyid)))
 
         fmt = _("Installing driver %s") % name
         self._installdialog = Gtk.MessageDialog (parent=self.NewPrinterWindow,
@@ -966,8 +960,28 @@ class NewPrinterGUI(GtkGUI):
         dialogarea.add(pbar)
         pbar.show()
 
+        # Save a reference to the progress bar in the dialog, so that
+        # we can easily reference it from do_installdriverpackage()
+        self._installdialog._progress_bar = pbar
+
         self._installdialog.connect ("response", self._installdialog_response)
         self._installdialog.show_all ()
+
+        # Perform the actual installation of the printer driver
+        ret = self.do_installdriverpackage (name, repo, keyid)
+
+        if self._installdialog:
+            self._installdialog.hide ()
+            self._installdialog.destroy ()
+            self._installdialog = None
+
+        return ret
+
+    def do_installdriverpackage(self, name, repo, keyid):
+        debugprint('Installing driver: %s; Repo: %s; Key ID: %s' %
+                   (repr (name),
+                    repr (repo),
+                    repr (keyid)))
 
         # Do the installation with a command line helper script
         new_environ = os.environ.copy()
@@ -985,7 +999,9 @@ class NewPrinterGUI(GtkGUI):
             # Keep the UI refreshed while we wait for
             # the drivers query to complete.
             (stdout, stderr) = (self.p.stdout, self.p.stderr)
+
             done = False
+            pbar = self._installdialog._progress_bar
             while self.p.poll() == None:
                 line = stdout.readline ().strip()
                 if (len(line) > 0):
@@ -1013,11 +1029,6 @@ class NewPrinterGUI(GtkGUI):
         except:
             # Problem executing command.
             ret = False
-
-        if self._installdialog:
-            self._installdialog.hide ()
-            self._installdialog.destroy ()
-            self._installdialog = None
 
         if not ret:
             self.installed_driver_files = [];
