@@ -1234,7 +1234,7 @@ def _self_test(argv):
          "DES:Hewlett-Packard DeskJet 990C;", 0, "HP DeskJet 990C"),
         ("CLASS:PRINTER;MODEL:HP LaserJet 6MP;MANUFACTURER:Hewlett-Packard;"
          "DESCRIPTION:Hewlett-Packard LaserJet 6MP Printer;"
-         "COMMAND SET:PJL,MLC,PCLXL,PCL,POSTSCRIPT;", 0, "HP LaserJet 6MP"),
+         "COMMAND SET:PJL,MLC,PCLXL,PCL,POSTSCRIPT;", 0, "HP LaserJet (6P/)?6MP"),
         # Canon PIXMA iP3000 (from gutenprint)
         ("MFG:Canon;CMD:BJL,BJRaster3,BSCCe;SOJ:TXT01;MDL:iP3000;CLS:PRINTER;"
          "DES:Canon iP3000;VER:1.09;STA:10;FSI:03;", 1, "Canon PIXMA iP3000"),
