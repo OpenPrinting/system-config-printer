@@ -3873,7 +3873,7 @@ class NewPrinterGUI(GtkGUI):
                             with tempfile.NamedTemporaryFile () as tmpf:
                                 tmpf.write(ppdcontent)
                                 tmpf.flush ()
-                                ppd = cups.PPD(tmpf.file)
+                                ppd = cups.PPD(tmpf.name)
 
         except RuntimeError as e:
             debugprint ("RuntimeError: " + repr (e))
