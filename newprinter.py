@@ -3761,27 +3761,29 @@ class NewPrinterGUI(GtkGUI):
         description = driver.get('shortdescription', _("None"))
         self.lblNPDownloadableDriverDescription.set_markup (description)
 
-        functionality = driver['functionality']
-        for field in ["Graphics", "LineArt", "Photo", "Text"]:
-            key = field.lower ()
-            value = None
-            hs = self.__dict__.get ("hsDownloadableDriverPerf%s" % field)
-            unknown = self.__dict__.get ("lblDownloadableDriverPerf%sUnknown"
-                                         % field)
-            if key in functionality:
-                if hs:
-                    try:
-                        value = int (functionality[key])
-                        hs.set_range (0, 100)
-                        hs.set_value (value)
-                        hs.show_all ()
-                        unknown.hide ()
-                    except:
-                        pass
+        if 'functionality' in driver:
+            functionality = driver['functionality']
+            for field in ["Graphics", "LineArt", "Photo", "Text"]:
+                key = field.lower ()
+                value = None
+                hs = self.__dict__.get ("hsDownloadableDriverPerf%s" % field)
+                unknown = self.__dict__.get ("lblDownloadableDriverPerf%sUnknown"
+                                             % field)
+                if key in functionality:
+                    if hs:
+                        try:
+                            value = int (functionality[key])
+                            hs.set_range (0, 100)
+                            hs.set_value (value)
+                            hs.show_all ()
+                            unknown.hide ()
+                        except:
+                            pass
 
-            if value == None:
-                hs.hide ()
-                unknown.show_all ()
+                if value == None:
+                    hs.hide ()
+                    unknown.show_all ()
+
         supportcontacts = ""
         if 'supportcontacts' in driver:
             for supportentry in driver['supportcontacts']:
