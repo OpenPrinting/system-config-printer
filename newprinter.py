@@ -206,6 +206,15 @@ class NewPrinterGUI(GtkGUI):
         'dialog-canceled':  (GObject.SignalFlags.RUN_LAST, None, ()),
         }
 
+    PAGE_DESCRIBE_PRINTER = 0
+    PAGE_SELECT_DEVICE = 1
+    PAGE_SELECT_INSTALL_METHOD = 2
+    PAGE_CHOOSE_DRIVER_FROM_DB = 3
+    PAGE_CHOOSE_CLASS_MEMBERS = 4
+    PAGE_APPLY = 5
+    PAGE_INSTALLABLE_OPTIONS = 6
+    PAGE_DOWNLOAD_DRIVER = 7
+
     new_printer_device_tabs = {
         "parallel" : 0, # empty tab
         "usb" : 0,
@@ -696,21 +705,21 @@ class NewPrinterGUI(GtkGUI):
         self.fillNewClassMembers ()
 
         # Start on name page
-        self.ntbkNewPrinter.set_current_page (0)
+        self.ntbkNewPrinter.set_current_page (self.PAGE_DESCRIBE_PRINTER)
 
     def _initialisePrinterMode (self):
         self._initialiseWidgetsForMode ("printer")
         self.NewPrinterWindow.set_title (_("New Printer"))
 
-        # Start on devices page (1, not 0)
-        self.ntbkNewPrinter.set_current_page (1)
+        # Start on devices page (SELECT_DEVICE, not DESCRIBE_PRINTER)
+        self.ntbkNewPrinter.set_current_page (self.PAGE_SELECT_DEVICE)
         self.fillDeviceTab ()
         self.rbtnNPFoomatic.set_active (True)
         self.on_rbtnNPFoomatic_toggled (self.rbtnNPFoomatic)
 
     def _initialiseDeviceMode (self):
         self.NewPrinterWindow.set_title (_("Change Device URI"))
-        self.ntbkNewPrinter.set_current_page (1)
+        self.ntbkNewPrinter.set_current_page (self.PAGE_SELECT_DEVICE)
         self.fillDeviceTab (self._device_uri)
 
     def _initialisePrinterWithURIMode (self):
@@ -719,7 +728,7 @@ class NewPrinterGUI(GtkGUI):
 
         self.NewPrinterWindow.set_title (_("New Printer"))
 
-        self.ntbkNewPrinter.set_current_page (2)
+        self.ntbkNewPrinter.set_current_page (self.PAGE_SELECT_INSTALL_METHOD)
         self.rbtnNPFoomatic.set_active (True)
         self.on_rbtnNPFoomatic_toggled (self.rbtnNPFoomatic)
         self.rbtnChangePPDKeepSettings.set_active (True)
@@ -730,7 +739,7 @@ class NewPrinterGUI(GtkGUI):
     def _initialiseDownloadDriverMode (self):
         self.NewPrinterWindow.set_title (_("Download Printer Driver"))
 
-        self.ntbkNewPrinter.set_current_page (7)
+        self.ntbkNewPrinter.set_current_page (self.PAGE_DOWNLOAD_DRIVER)
         self.nextnptab_rerun = True
         self.nextNPTab (step = 0)
 
@@ -753,7 +762,7 @@ class NewPrinterGUI(GtkGUI):
                                     reply_handler=self.change_ppd_got_devs,
                                     error_handler=self.change_ppd_got_devs)
 
-        self.ntbkNewPrinter.set_current_page (2)
+        self.ntbkNewPrinter.set_current_page (self.PAGE_SELECT_INSTALL_METHOD)
         self.rbtnNPFoomatic.set_active (True)
         self.on_rbtnNPFoomatic_toggled (self.rbtnNPFoomatic)
         self.rbtnChangePPDKeepSettings.set_active (True)
@@ -800,7 +809,7 @@ class NewPrinterGUI(GtkGUI):
                 self.device = device
 
         # We'll also need the list of PPDs
-        self.ntbkNewPrinter.set_current_page(2)
+        self.ntbkNewPrinter.set_current_page (self.PAGE_SELECT_INSTALL_METHOD)
         self.nextNPTab(step = 0)
 
     def on_ppdsloader_finished_next (self, ppdsloader):
@@ -820,7 +829,7 @@ class NewPrinterGUI(GtkGUI):
 
         debugprint ("Loaded PPDs this time; try nextNPTab again...")
         self.nextnptab_rerun = True
-        if self.ntbkNewPrinter.get_current_page() == 2:
+        if self.ntbkNewPrinter.get_current_page () == self.PAGE_SELECT_INSTALL_METHOD:
             self.nextNPTab (step = 0)
         else:
             self.nextNPTab ()
@@ -1077,14 +1086,20 @@ class NewPrinterGUI(GtkGUI):
         debugprint ("Next clicked on page %d" % page_nr)
 
         if self.dialog_mode == "class":
-            order = [0, 4, 5]
+            order = [
+                self.PAGE_DESCRIBE_PRINTER,
+                self.PAGE_CHOOSE_CLASS_MEMBERS,
+                self.PAGE_APPLY,
+            ]
         elif self.dialog_mode == "printer" or \
                 self.dialog_mode == "printer_with_uri" or \
                 self.dialog_mode == "ppd" or \
                 self.dialog_mode == "download_driver":
             busy (self.NewPrinterWindow)
-            if (((page_nr == 1 or page_nr == 7) and step > 0) or
-                ((page_nr == 2 or page_nr == 7) and step == 0)):
+            if (((page_nr == self.PAGE_SELECT_DEVICE or
+                  page_nr == self.PAGE_DOWNLOAD_DRIVER) and step > 0) or
+                ((page_nr == self.PAGE_SELECT_INSTALL_METHOD or
+                  page_nr == self.PAGE_DOWNLOAD_DRIVER) and step == 0)):
 
                 if self.dialog_mode != "download_driver":
                     uri = self.device.uri
@@ -1106,7 +1121,7 @@ class NewPrinterGUI(GtkGUI):
                             except:
                                 nonfatalException ()
 
-                if page_nr == 1 or page_nr == 2:
+                if page_nr == self.PAGE_SELECT_DEVICE or page_nr == self.PAGE_SELECT_INSTALL_METHOD:
                     self.auto_make, self.auto_model = "", ""
                     self.auto_driver = None
                     self.device.uri = self.getDeviceURI()
@@ -1178,7 +1193,7 @@ class NewPrinterGUI(GtkGUI):
                         # Remote CUPS queue discovered by "dnssd" CUPS backend
                         self.remotecupsqueue = self.device.info
 
-                elif page_nr == 7 and self.nextnptab_rerun == False:
+                elif page_nr == self.PAGE_DOWNLOAD_DRIVER and self.nextnptab_rerun == False:
                     # Simple check to avoid installing the driver if the
                     # License Agreement was not accepted yet
                     if self.rbtnNPDownloadLicenseYes.get_active ():
@@ -1208,7 +1223,7 @@ class NewPrinterGUI(GtkGUI):
 
                 self.nextnptab_rerun = False
 
-                if page_nr == 1 or page_nr == 2:
+                if page_nr == self.PAGE_SELECT_DEVICE or page_nr == self.PAGE_SELECT_INSTALL_METHOD:
                     if (self.nextnptab_rerun == False and
                         hasattr (self.device, 'hp_scannable') and
                         self.device.hp_scannable and
@@ -1328,7 +1343,7 @@ class NewPrinterGUI(GtkGUI):
                             self.dialog_mode != "ppd"):
                             self.exactdrivermatch = True
                             if step == 0:
-                                page_nr = 6;
+                                page_nr = self.PAGE_INSTALLABLE_OPTIONS;
                         else:
                             self.exactdrivermatch = False
                             if (self.dialog_mode != "ppd" and
@@ -1383,9 +1398,9 @@ class NewPrinterGUI(GtkGUI):
                 if (self.dialog_mode == "ppd" or
                     (self.dialog_mode != "download_driver" and
                      not self.remotecupsqueue and
-                     page_nr != 7)):
+                     page_nr != self.PAGE_DOWNLOAD_DRIVER)):
                     self.fillMakeList()
-            elif page_nr == 3: # Model has been selected
+            elif page_nr == self.PAGE_CHOOSE_DRIVER_FROM_DB:
                 if not self.device.id:
                     # Choose an appropriate name when no Device ID
                     # is available, based on the model the user has
@@ -1401,66 +1416,149 @@ class NewPrinterGUI(GtkGUI):
 
             ready (self.NewPrinterWindow)
             if self.dialog_mode == "download_driver":
-                order = [7]
+                order = [
+                    self.PAGE_DOWNLOAD_DRIVER
+                ]
             elif self.dialog_mode == "printer":
                 if self.remotecupsqueue:
-                    order = [1, 0]
+                    order = [
+                        self.PAGE_SELECT_DEVICE,
+                        self.PAGE_DESCRIBE_PRINTER
+                    ]
                 elif (self.founddownloadabledrivers and
                       not self.rbtnNPDownloadableDriverSearch.get_active()):
                     if self.exactdrivermatch:
-                        order = [1, 7, 6, 0]
+                        order = [
+                            self.PAGE_SELECT_DEVICE,
+                            self.PAGE_DOWNLOAD_DRIVER,
+                            self.PAGE_INSTALLABLE_OPTIONS,
+                            self.PAGE_DESCRIBE_PRINTER
+                        ]
                     else:
-                        order = [1, 7, 2, 3, 6, 0]
+                        order = [
+                            self.PAGE_SELECT_DEVICE,
+                            self.PAGE_DOWNLOAD_DRIVER,
+                            self.PAGE_SELECT_INSTALL_METHOD,
+                            self.PAGE_CHOOSE_DRIVER_FROM_DB,
+                            self.PAGE_INSTALLABLE_OPTIONS,
+                            self.PAGE_DESCRIBE_PRINTER
+                        ]
                 elif (self.exactdrivermatch and
                       not self.rbtnNPDownloadableDriverSearch.get_active()):
-                    order = [1, 6, 0]
+                    order = [
+                        self.PAGE_SELECT_DEVICE,
+                        self.PAGE_INSTALLABLE_OPTIONS,
+                        self.PAGE_DESCRIBE_PRINTER
+                    ]
                 elif self.rbtnNPFoomatic.get_active():
-                    order = [1, 2, 3, 6, 0]
+                    order = [
+                        self.PAGE_SELECT_DEVICE,
+                        self.PAGE_SELECT_INSTALL_METHOD,
+                        self.PAGE_CHOOSE_DRIVER_FROM_DB,
+                        self.PAGE_INSTALLABLE_OPTIONS,
+                        self.PAGE_DESCRIBE_PRINTER
+                    ]
                 elif self.rbtnNPPPD.get_active():
-                    order = [1, 2, 6, 0]
+                    order = [
+                        self.PAGE_SELECT_DEVICE,
+                        self.PAGE_SELECT_INSTALL_METHOD,
+                        self.PAGE_INSTALLABLE_OPTIONS,
+                        self.PAGE_DESCRIBE_PRINTER
+                    ]
                 else:
                     # Downloadable driver
-                    order = [1, 2, 7, 6, 0]
+                    order = [
+                        self.PAGE_SELECT_DEVICE,
+                        self.PAGE_SELECT_INSTALL_METHOD,
+                        self.PAGE_DOWNLOAD_DRIVER,
+                        self.PAGE_INSTALLABLE_OPTIONS,
+                        self.PAGE_DESCRIBE_PRINTER
+                    ]
             elif self.dialog_mode == "ppd":
                 if self.rbtnNPFoomatic.get_active():
-                    order = [2, 3, 5, 6]
+                    order = [
+                        self.PAGE_SELECT_INSTALL_METHOD,
+                        self.PAGE_CHOOSE_DRIVER_FROM_DB,
+                        self.PAGE_APPLY,
+                        self.PAGE_INSTALLABLE_OPTIONS
+                    ]
                 elif self.rbtnNPPPD.get_active():
-                    order = [2, 5, 6]
+                    order = [
+                        self.PAGE_SELECT_INSTALL_METHOD,
+                        self.PAGE_APPLY,
+                        self.PAGE_INSTALLABLE_OPTIONS
+                    ]
                 else:
                     # Downloadable driver
-                    order = [2, 7, 5, 6]
+                    order = [
+                        self.PAGE_SELECT_INSTALL_METHOD,
+                        self.PAGE_DOWNLOAD_DRIVER,
+                        self.PAGE_APPLY,
+                        self.PAGE_INSTALLABLE_OPTIONS
+                    ]
             else:
                 if self.remotecupsqueue:
-                    order = [0]
+                    order = [
+                        self.PAGE_DESCRIBE_PRINTER,
+                    ]
                 elif (self.founddownloadabledrivers and
                       not self.rbtnNPDownloadableDriverSearch.get_active()):
                     if self.exactdrivermatch:
-                        order = [7, 6, 0]
+                        order = [
+                            self.PAGE_DOWNLOAD_DRIVER,
+                            self.PAGE_INSTALLABLE_OPTIONS,
+                            self.PAGE_DESCRIBE_PRINTER
+                        ]
                     else:
-                        order = [7, 2, 3, 6, 0]
+                        order = [
+                            self.PAGE_DOWNLOAD_DRIVER,
+                            self.PAGE_SELECT_INSTALL_METHOD,
+                            self.PAGE_CHOOSE_DRIVER_FROM_DB,
+                            self.PAGE_INSTALLABLE_OPTIONS,
+                            self.PAGE_DESCRIBE_PRINTER
+                        ]
                 elif (self.exactdrivermatch and
                       not self.rbtnNPDownloadableDriverSearch.get_active()):
-                    order = [6, 0]
+                    order = [
+                        self.PAGE_INSTALLABLE_OPTIONS,
+                        self.PAGE_DESCRIBE_PRINTER
+                    ]
                 elif self.rbtnNPFoomatic.get_active():
-                    order = [2, 3, 6, 0]
+                    order = [
+                        self.PAGE_SELECT_INSTALL_METHOD,
+                        self.PAGE_CHOOSE_DRIVER_FROM_DB,
+                        self.PAGE_INSTALLABLE_OPTIONS,
+                        self.PAGE_DESCRIBE_PRINTER
+                    ]
                 elif self.rbtnNPPPD.get_active():
-                    order = [2, 6, 0]
+                    order = [
+                        self.PAGE_SELECT_INSTALL_METHOD,
+                        self.PAGE_INSTALLABLE_OPTIONS,
+                        self.PAGE_DESCRIBE_PRINTER
+                    ]
                 else:
                     # Downloadable driver
-                    order = [2, 7, 6, 0]
+                    order = [
+                        self.PAGE_SELECT_INSTALL_METHOD,
+                        self.PAGE_DOWNLOAD_DRIVER,
+                        self.PAGE_INSTALLABLE_OPTIONS,
+                        self.PAGE_DESCRIBE_PRINTER
+                    ]
         elif self.dialog_mode == "device":
-            order = [1]
+            order = [
+                self.PAGE_SELECT_DEVICE,
+            ]
 
         next_page_nr = order[order.index(page_nr)+step]
 
         # fill Installable Options tab
         fetch_ppd = False
         try:
-            if order.index (5) > -1:
+            if order.index (self.PAGE_APPLY) > -1:
                 # There is a copy settings page in this set
-                fetch_ppd = next_page_nr == 5 and step >= 0
+                fetch_ppd = next_page_nr == self.PAGE_APPLY and step >= 0
         except ValueError:
-            fetch_ppd = next_page_nr == 6 and step >= 0
+            fetch_ppd = next_page_nr == self.PAGE_INSTALLABLE_OPTIONS and step >= 0
 
         debugprint ("Will fetch ppd? %d" % fetch_ppd)
         if fetch_ppd:
@@ -1480,19 +1578,20 @@ class NewPrinterGUI(GtkGUI):
                 self.ppd = ppd
 
             if not self.installable_options:
-                if next_page_nr == 6:
+                if next_page_nr == self.PAGE_INSTALLABLE_OPTIONS:
                     # step over if empty
                     next_page_nr = order[order.index(next_page_nr)+1]
 
         # Step over empty Installable Options tab when moving backwards.
-        if next_page_nr == 6 and not self.installable_options and step<0:
+        if next_page_nr == self.PAGE_INSTALLABLE_OPTIONS and \
+                not self.installable_options and step < 0:
             next_page_nr = order[order.index(next_page_nr)-1]
 
         debugprint ("Will advance to page %d" % next_page_nr)
-        if step >= 0 and next_page_nr == 7: # About to show downloadable drivers
+        if step >= 0 and next_page_nr == self.PAGE_DOWNLOAD_DRIVER: # About to show downloadable drivers
             self.fillDownloadableDrivers ()
 
-        if step >= 0 and next_page_nr == 0: # About to choose a name.
+        if step >= 0 and next_page_nr == self.PAGE_DESCRIBE_PRINTER: # About to choose a name.
             # Suggest an appropriate name.
             name = None
             descr = None
@@ -1651,7 +1750,7 @@ class NewPrinterGUI(GtkGUI):
             return
 
         if self.dialog_mode == "ppd":
-            if nr == 5: # Apply
+            if nr == self.PAGE_APPLY:
                 if not self.installable_options:
                     # There are no installable options, so this is the
                     # last page.
@@ -1662,14 +1761,14 @@ class NewPrinterGUI(GtkGUI):
                     self.btnNPForward.show ()
                     self.btnNPApply.hide ()
                 return
-            elif nr == 6:
+            elif nr == self.PAGE_INSTALLABLE_OPTIONS:
                 self.btnNPForward.hide()
                 self.btnNPApply.show()
                 return
             else:
                 self.btnNPForward.show()
                 self.btnNPApply.hide()
-            if nr == 2:
+            if nr == self.PAGE_SELECT_INSTALL_METHOD:
                 self.btnNPBack.hide()
                 self.btnNPForward.show()
                 downloadable_selected = False
@@ -1699,7 +1798,7 @@ class NewPrinterGUI(GtkGUI):
 
         # class/printer
 
-        if nr == 1: # Device
+        if nr == self.PAGE_SELECT_DEVICE:
             valid = False
             try:
                 uri = self.getDeviceURI ()
@@ -1714,7 +1813,7 @@ class NewPrinterGUI(GtkGUI):
         self.btnNPForward.show()
         self.btnNPApply.hide()
 
-        if nr == 0: # Name
+        if nr == self.PAGE_DESCRIBE_PRINTER:
             self.btnNPBack.show()
             if self.dialog_mode == "printer" or \
                     self.dialog_mode == "printer_with_uri":
@@ -1731,7 +1830,7 @@ class NewPrinterGUI(GtkGUI):
                          (self.exactdrivermatch and \
                               not self.installable_options)):
                 self.btnNPBack.hide ()
-        if nr == 2: # Make/PPD file
+        if nr == self.PAGE_SELECT_INSTALL_METHOD:
             downloadable_selected = False
             if self.rbtnNPDownloadableDriverSearch.get_active ():
                 combobox = self.cmbNPDownloadableDriverFoundPrinters
@@ -1749,24 +1848,25 @@ class NewPrinterGUI(GtkGUI):
             # the first step
             if self.dialog_mode == "printer_with_uri":
                 self.btnNPBack.hide()
-        if nr == 3: # Model/Driver
+        if nr == self.PAGE_CHOOSE_DRIVER_FROM_DB:
             model, iter = self.tvNPDrivers.get_selection().get_selected()
             self.btnNPForward.set_sensitive(bool(iter))
-        if nr == 4: # Class Members
+        if nr == self.PAGE_CHOOSE_CLASS_MEMBERS:
             self.btnNPForward.hide()
             self.btnNPApply.show()
             self.btnNPApply.set_sensitive(
                 bool(getCurrentClassMembers(self.tvNCMembers)))
-        if nr == 6: # Installable options
+        if nr == self.PAGE_INSTALLABLE_OPTIONS:
             if self.dialog_mode == "printer_with_uri" and \
                     self.exactdrivermatch:
                 self.btnNPBack.hide ()
-        if nr == 7: # Downloadable drivers
+        if nr == self.PAGE_DOWNLOAD_DRIVER:
             accepted = self._is_driver_license_accepted()
             self.btnNPForward.set_sensitive(accepted)
 
     def _is_driver_license_accepted(self):
-        if self.ntbkNPDownloadableDriverProperties.get_current_page() == 1:
+        current_page = self.ntbkNPDownloadableDriverProperties.get_current_page()
+        if current_page == self.PAGE_SELECT_DEVICE:
             return self.rbtnNPDownloadLicenseYes.get_active ()
 
         treeview = self.tvNPDownloadableDrivers
@@ -2972,13 +3072,13 @@ class NewPrinterGUI(GtkGUI):
         device = model.get_value(iter, 1)
         self.device = device
         self.lblNPDeviceDescription.set_text ('')
-        page = self.new_printer_device_tabs.get(device.type, 1)
+        page = self.new_printer_device_tabs.get (device.type, self.PAGE_SELECT_DEVICE)
         self.ntbkNPType.set_current_page(page)
 
         location = ''
         type = device.type
         url = device.uri.split(":", 1)[-1]
-        if page == 0:
+        if page == self.PAGE_DESCRIBE_PRINTER:
             # This is the "no options" page, with just a label to describe
             # the selected device.
             if device.type == "parallel":
@@ -3253,9 +3353,9 @@ class NewPrinterGUI(GtkGUI):
             return self.device.uri
 
         type = self.device.type
-        page = self.new_printer_device_tabs.get (type, 1)
+        page = self.new_printer_device_tabs.get (type, self.PAGE_SELECT_DEVICE)
         device = type
-        if page == 0:
+        if page == self.PAGE_DESCRIBE_PRINTER:
             # The "no options page".  We already have the URI.
             device = self.device.uri
         elif type == "socket": # JetDirect
@@ -3314,11 +3414,11 @@ class NewPrinterGUI(GtkGUI):
         self.filechooserPPD.set_sensitive(rbtn2)
 
         if rbtn1:
-            page = 0
+            page = self.PAGE_DESCRIBE_PRINTER
         if rbtn2:
-            page = 1
+            page = self.PAGE_SELECT_DEVICE
         if rbtn3:
-            page = 2
+            page = self.PAGE_SELECT_INSTALL_METHOD
         self.ntbkPPDSource.set_current_page (page)
 
         if not rbtn3 and self.opreq:
@@ -3782,10 +3882,10 @@ class NewPrinterGUI(GtkGUI):
                 return
         driver = model.get_value (iter, 1)
         if driver == 0:
-            self.ntbkNPDownloadableDriverProperties.set_current_page(0)
+            self.ntbkNPDownloadableDriverProperties.set_current_page (self.PAGE_DESCRIBE_PRINTER)
             self.setNPButtons()
             return
-        self.ntbkNPDownloadableDriverProperties.set_current_page(1)
+        self.ntbkNPDownloadableDriverProperties.set_current_page (self.PAGE_SELECT_DEVICE)
         supplier = driver.get('supplier', _("OpenPrinting"))
         vendor = self.cbNPDownloadableDriverSupplierVendor
         active = driver['manufacturersupplied']
