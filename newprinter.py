@@ -949,52 +949,13 @@ class NewPrinterGUI(GtkGUI):
         self.nextNPTab()
 
     def installdriverpackage (self, driver, onlycheckpresence = False):
-        pkgs = driver.get('packages', {})
-        arches = list(pkgs.keys())
-        if len(arches) == 0:
-            debugprint('No packages for driver')
-            return False
-        if len(arches) > 1:
-            debugprint('Returned more than one matching architecture, please report this as a bug: %s', repr (arches))
-            return False
-
-        pkgs = pkgs[arches[0]]
-
-        if len(pkgs) != 1:
-            debugprint('Returned more than one package, this is currently not handled')
-            return False
-        pkg = list(pkgs.keys())[0]
-
-        name = ''
-        if pkg.endswith('.deb'):
-            name = pkg.split('_')[0]
-        elif pkg.endswith('.rpm'):
-            name = '-'.join(pkg.split('-')[0:-2])
-        else:
-            raise ValueError('Unknown package type: ' + pkg)
-
-        # require signature for binary packages; architecture
-        # independent packages are usually PPDs, which we trust enough
-        keyid = None
-        if 'fingerprint' not in pkgs[pkg]:
-            if config.DOWNLOADABLE_PKG_ONLYSIGNED and arches[0] not in ['all', 'noarch']:
-                debugprint('Not installing driver as it does not have a GPG fingerprint URL')
-                return False
-        else:
-            keyid = download_gpg_fingerprint(pkgs[pkg]['fingerprint'])
-            if config.DOWNLOADABLE_PKG_ONLYSIGNED and arches[0] not in ['all', 'noarch'] and not keyid:
-                debugprint('Not installing driver as it does not have a valid GPG fingerprint')
-                return False
-
-        repo = pkgs[pkg].get('repositories', {}).get(self.packageinstaller)
-        if not repo:
-            debugprint('Local package system %s not found in %s' %
-                       (self.packageinstaller,
-                        repr (pkgs[pkg].get('repositories', {}))))
-            return False
-
+        install_info = self._getDriverInstallationInfo (driver)
         if onlycheckpresence:
-            return True
+            return install_info != None
+
+        name = install_info['name']
+        repo = install_info['repo']
+        keyid = install_info['keyid']
 
         fmt = _("Installing driver %s") % name
         self._installdialog = Gtk.MessageDialog (parent=self.NewPrinterWindow,
@@ -1084,6 +1045,55 @@ class NewPrinterGUI(GtkGUI):
             self.installed_driver_files = [];
 
         return ret
+
+    def _getDriverInstallationInfo (self, driver):
+        pkgs = driver.get('packages', {})
+        arches = list(pkgs.keys())
+        if len(arches) == 0:
+            debugprint('No packages for driver')
+            return None
+        if len(arches) > 1:
+            debugprint('Returned more than one matching architecture, please report this as a bug: %s', repr (arches))
+            return None
+
+        pkgs = pkgs[arches[0]]
+
+        if len(pkgs) != 1:
+            debugprint('Returned more than one package, this is currently not handled')
+            return None
+        pkg = list(pkgs.keys())[0]
+
+        name = ''
+        if pkg.endswith('.deb'):
+            name = pkg.split('_')[0]
+        elif pkg.endswith('.rpm'):
+            name = '-'.join(pkg.split('-')[0:-2])
+        else:
+            raise ValueError('Unknown package type: ' + pkg)
+
+        # require signature for binary packages; architecture
+        # independent packages are usually PPDs, which we trust enough
+        keyid = None
+        if 'fingerprint' not in pkgs[pkg]:
+            if config.DOWNLOADABLE_PKG_ONLYSIGNED and arches[0] not in ['all', 'noarch']:
+                debugprint('Not installing driver as it does not have a GPG fingerprint URL')
+                return None
+        else:
+            keyid = download_gpg_fingerprint(pkgs[pkg]['fingerprint'])
+            if config.DOWNLOADABLE_PKG_ONLYSIGNED and arches[0] not in ['all', 'noarch'] and not keyid:
+                debugprint('Not installing driver as it does not have a valid GPG fingerprint')
+                return None
+
+
+        repo = pkgs[pkg].get('repositories', {}).get(self.packageinstaller)
+        if not repo:
+            debugprint('Local package system %s not found in %s' %
+                       (self.packageinstaller,
+                        repr (pkgs[pkg].get('repositories', {}))))
+            return None
+
+        # All good: return necessary information to install the driver
+        return { 'name': name, 'repo': repo, 'keyid': keyid }
 
     def _installdialog_response (self, dialog, response):
         self.p.terminate ()
