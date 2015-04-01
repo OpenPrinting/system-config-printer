@@ -1016,8 +1016,8 @@ find_matching_device_uris (struct device_id *id,
   uris->n_uris = uris_noserial.n_uris = all_uris.n_uris = 0;
   uris->uri = uris_noserial.uri = all_uris.uri = NULL;
 
-  /* Leave the bus to settle. */
-  sleep (1);
+  /* Leave the bus to settle (see e.g. bug #1206808). */
+  sleep (5);
 
   cups = httpConnectEncrypt (cupsServer (), ippPort(), cupsEncryption ());
   if (cups == NULL)
