@@ -323,7 +323,7 @@ class RunLoop:
             system_bus.add_signal_receiver (self.handle_dbus_signal,
                                             path=self.DBUS_PATH,
                                             dbus_interface=self.DBUS_IFACE)
-        except DBusException, e:
+        except dbus.DBusException as e:
             try:
                 print >> sys.stderr, ("%s: failed to add D-Bus "
                                       "signal receiver: %s" % (PROGRAM_NAME, e))
@@ -337,7 +337,7 @@ class RunLoop:
             self.system_bus.remove_signal_receiver (self.handle_dbus_signal,
                                                     path=self.DBUS_PATH,
                                                     dbus_interface=self.DBUS_IFACE)
-        except DBusException, e:
+        except dbus.DBusException as e:
             try:
                 print >> sys.stderr, ("%s: failed to remove D-Bus "
                                       "signal receiver: %s" % (PROGRAM_NAME, e))
