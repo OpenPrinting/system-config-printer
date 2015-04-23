@@ -34,3 +34,18 @@ def run_test():
                                    'device-make-and-model': "Abc Def",
                                    'device-id': "MFG:Abc;MDL:Def;"})
     phys.add_device (device)
+    devices = phys.get_devices ()
+    assert devices[0].uri.startswith ("hp:")
+
+    device = cupshelpers.Device("usb://Abc/Def",
+                                **{'device-class': "direct",
+                                   'device-make-and-model': "Abc Def",
+                                   'device-id': "MFG:Abc;MDL:Def;"})
+    phys = PhysicalDevice (device)
+    device = cupshelpers.Device("hp://Abc/Def",
+                                **{'device-class': "direct",
+                                   'device-make-and-model': "Abc Def",
+                                   'device-id': "MFG:Abc;MDL:Def;"})
+    phys.add_device (device)
+    devices = phys.get_devices ()
+    assert devices[0].uri.startswith ("hp")
