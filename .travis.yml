@@ -3,7 +3,7 @@ python:
   - "3.4"
 before_install:
   - "sudo apt-get update -qq"
-  - "sudo apt-get install -qq intltool xmlto python-cups"
+  - "sudo apt-get install -qq intltool xmlto"
 script: ./bootstrap && ./configure && make && make check && make distcheck
 notifications:
   email: false
