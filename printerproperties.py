@@ -1939,7 +1939,6 @@ class PrinterPropertiesDialog(GtkGUI):
         pass
 
 if __name__ == '__main__':
-    import locale
     import sys
 
     if len (sys.argv) < 2:

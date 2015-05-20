@@ -184,7 +184,7 @@ class GetBestDriversRequest:
                             g_killtimer.remove_hold ()
                         finally:
                             e = RuntimeError ("Failed to launch dialog")
-                            self.error_handler (r)
+                            self.error_handler (e)
 
                     return
             except:
