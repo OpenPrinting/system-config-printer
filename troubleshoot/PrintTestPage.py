@@ -495,13 +495,7 @@ class PrintTestPage(Question):
         for event in notifications['events']:
             seq = event['notify-sequence-number']
 	    self.sub_seq = seq
-            try:
-                if seq <= self.sub_seq:
-                    # Work around a bug in pycups < 1.9.34
-                    continue
-            except AttributeError:
-                pass
-            
+
             job = event['notify-job-id']
 
             nse = event['notify-subscribed-event']

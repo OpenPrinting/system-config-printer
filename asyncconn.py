@@ -20,8 +20,6 @@
 
 import cups
 import os
-
-import config
 from debug import *
 import debug
 
