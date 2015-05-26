@@ -547,68 +547,68 @@ class Device:
         Compare devices by order of preference.
         """
         if other == None:
-            return 1
+            return True
 
         if self.is_class != other.is_class:
             if other.is_class:
-                return 1
-            return -1
+                return True
+            return False
         if not self.is_class and (self.type != other.type):
             # "hp"/"hpfax" before "usb" before * before "parallel" before
             # "serial"
             if other.type == "serial":
-                return 1
+                return True
             if self.type == "serial":
-                return -1
+                return False
             if other.type == "parallel":
-                return 1
+                return True
             if self.type == "parallel":
-                return -1
+                return False
             if other.type == "hp":
-                return -1
+                return False
             if self.type == "hp":
-                return 1
+                return True
             if other.type == "hpfax":
-                return -1
+                return False
             if self.type == "hpfax":
-                return 1
+                return True
             if other.type == "dnssd":
-                return -1
+                return False
             if self.type == "dnssd":
-                return 1
+                return True
             if other.type == "socket":
-                return -1
+                return False
             if self.type == "socket":
-                return 1
+                return True
             if other.type == "lpd":
-                return -1
+                return False
             if self.type == "lpd":
-                return 1
+                return True
             if other.type == "ipps":
-                return -1
+                return False
             if self.type == "ipps":
-                return 1
+                return True
             if other.type == "ipp":
-                return -1
+                return False
             if self.type == "ipp":
-                return 1
+                return True
             if other.type == "usb":
-                return -1
+                return False
             if self.type == "usb":
-                return 1
+                return True
         if self.type == "dnssd" and other.type == "dnssd":
             if other.uri.find("._pdl-datastream") != -1: # Socket
-                return -1
+                return False
             if self.uri.find("._pdl-datastream") != -1:
-                return 1
+                return True
             if other.uri.find("._printer") != -1: # LPD
-                return -1
+                return False
             if self.uri.find("._printer") != -1:
-                return 1
+                return True
             if other.uri.find("._ipp") != -1: # IPP
-                return -1
+                return False
             if self.uri.find("._ipp") != -1:
-                return 1
+                return True
         result = bool(self.id) < bool(other.id)
         if not result:
             result = self.info < other.info

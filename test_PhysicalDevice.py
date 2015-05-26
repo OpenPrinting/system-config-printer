@@ -55,3 +55,21 @@ def test_ordering():
     phys.add_device (device)
     devices = phys.get_devices ()
     assert devices[0].uri.startswith ("hp")
+
+    dev1 = cupshelpers.Device("hp:/usb/HP_Color_LaserJet_CP3525?serial=CNCTC8G0QX",
+                              **{'device-id':'MFG:Hewlett-Packard;CMD:PJL,MLC,BIDI-ECP,PJL,PCLXL,PCL,POSTSCRIPT,PDF;MDL:HP Color LaserJet CP3525;CLS:PRINTER;DES:Hewlett-Packard Color LaserJet CP3525;',
+                                 'device-make-and-model':'HP Color LaserJet CP3525',
+                                 'device-class':'direct'})
+    phys = PhysicalDevice (dev1)
+    dev2 = cupshelpers.Device('usb://HP/Color%20LaserJet%20CP3525?serial=CNCTC8G0QX',
+                              **{'device-id':'MFG:Hewlett-Packard;CMD:PJL,MLC,BIDI-ECP,PJL,PCLXL,PCL,POSTSCRIPT,PDF;MDL:HP Color LaserJet CP3525;CLS:PRINTER;DES:Hewlett-Packard Color LaserJet CP3525;',
+                                 'device-make-and-model':'HP Color LaserJet CP3525',
+                                 'device-class':'direct'})
+
+    # hp device should sort < usb device
+    assert dev1 < dev2
+
+    phys.add_device (dev2)
+    devices = phys.get_devices ()
+    assert devices[0] < devices[1]
+    assert devices[0].uri.startswith ("hp")
