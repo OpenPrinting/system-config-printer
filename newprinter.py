@@ -4218,7 +4218,6 @@ if __name__ == '__main__':
 
     os.environ["SYSTEM_CONFIG_PRINTER_UI"] = "ui"
     import ppdippstr
-    import locale
     locale.setlocale (locale.LC_ALL, "")
     ppdippstr.init ()
     set_debugging (True)

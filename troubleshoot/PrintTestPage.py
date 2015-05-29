@@ -494,13 +494,8 @@ class PrintTestPage(Question):
         test_jobs = self.persistent_answers.get('test_page_job_id', [])
         for event in notifications['events']:
             seq = event['notify-sequence-number']
-            try:
-                if seq <= self.sub_seq:
-                    # Work around a bug in pycups < 1.9.34
-                    continue
-            except AttributeError:
-                pass
-            self.sub_seq = seq
+	    self.sub_seq = seq
+
             job = event['notify-job-id']
 
             nse = event['notify-subscribed-event']

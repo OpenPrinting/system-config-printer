@@ -27,7 +27,6 @@ from gi.repository import Gtk
 from timedops import TimedOperation
 import subprocess
 import threading
-import errno
 import cups
 from gi.repository import GObject
 from gi.repository import GLib

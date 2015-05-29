@@ -366,7 +366,7 @@ def run (quitfn=None, parent=None):
     return troubleshooter
 
 if __name__ == "__main__":
-    import sys, getopt
+    import getopt
     try:
         opts, args = getopt.gnu_getopt (sys.argv[1:], '',
                                         ['debug'])
