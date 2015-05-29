@@ -156,7 +156,11 @@ def download_gpg_fingerprint(url):
     # openprinting.org driver packages.
     ssl_cert_file_paths = [
         # Debian/Ubuntu use the ca-certificates package:
-        '/etc/ssl/certs/ca-certificates.crt'
+        '/etc/ssl/certs/ca-certificates.crt',
+
+        # Fedora place the certificates in different locations:
+        '/etc/ssl/certs/ca-bundle.crt',
+        '/etc/pki/tls/certs/ca-bundle.crt'
         ]
 
     # default GPG key server
@@ -169,6 +173,7 @@ def download_gpg_fingerprint(url):
     for f in ssl_cert_file_paths:
         if os.path.exists(f):
             cert = f
+            break;
 
     if not cert:
         debugprint('No system SSL certificates available for trust checking')
