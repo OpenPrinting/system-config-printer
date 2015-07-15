@@ -241,11 +241,11 @@ class PrinterFinder:
 
     def _do_find (self):
         self._cached_attributes = dict()
-        for fn in [self._probe_jetdirect,
+        for fn in [self._probe_hplip,
+                   self._probe_jetdirect,
                    self._probe_ipp,
                    self._probe_snmp,
                    self._probe_lpd,
-                   self._probe_hplip,
                    self._probe_smb]:
             if self.quit:
                 return

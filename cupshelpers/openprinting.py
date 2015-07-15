@@ -290,7 +290,8 @@ class OpenPrinting:
                                     dict['licensetext'] = \
                                         req.content.decode("utf-8")
                                 except:
-                                    _debugprint('Cannot retrieve %s' % url)
+                                    _debugprint('Cannot retrieve %s' %
+                                                license_url)
 
                     for boolean in ['nonfreesoftware', 'recommended',
                                     'patents', 'thirdpartysupplied',
