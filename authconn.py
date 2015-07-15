@@ -41,10 +41,12 @@ class AuthDialog(Gtk.Dialog):
                   flags=Gtk.DialogFlags.MODAL,
                   buttons=(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
                            Gtk.STOCK_OK, Gtk.ResponseType.OK),
-                  auth_info_required=['username', 'password'],
+                  auth_info_required=None,
                   allow_remember=False):
         if title == None:
             title = _("Authentication")
+        if auth_info_required is None:
+            auth_info_required = ['username', 'password']
         Gtk.Dialog.__init__ (self, title, parent, flags, buttons)
         self.auth_info_required = auth_info_required
         self.set_default_response (Gtk.ResponseType.OK)
