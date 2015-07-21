@@ -71,8 +71,11 @@ SEARCHING_ICON="document-print-preview"
 Notify.init('System Config Printer Notification')
 
 class PrinterURIIndex:
-    def __init__ (self, names=[]):
+    def __init__ (self, names=None):
         self.printer = {}
+        if names is None:
+            names = []
+
         self.names = names
         self._collect_names ()
 

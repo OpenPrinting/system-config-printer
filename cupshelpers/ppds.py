@@ -461,8 +461,8 @@ class PPDs:
     def getStatusFromFit (self, fit):
         return self._fit_to_status.get (fit, xmldriverprefs.DriverType.FIT_NONE)
 
-    def orderPPDNamesByPreference (self, ppdnamelist=[],
-                                   downloadedfiles=[],
+    def orderPPDNamesByPreference (self, ppdnamelist=None,
+                                   downloadedfiles=None,
                                    make_and_model=None,
                                    devid=None, fit=None):
         """
@@ -482,6 +482,12 @@ class PPDs:
         @type fit: dict of PPD name:fit
 	@returns: string list
 	"""
+        if ppdnamelist is None:
+            ppdnamelist = []
+
+        if downloadedfiles is None:
+            downloadedfiles = []
+
         if fit == None:
             fit = {}
 
@@ -526,7 +532,7 @@ class PPDs:
         return ppdnamelist
 
     def getPPDNamesFromDeviceID (self, mfg, mdl, description="",
-                                 commandsets=[], uri=None,
+                                 commandsets=None, uri=None,
                                  make_and_model=None):
         """
 	Obtain a best-effort PPD match for an IEEE 1284 Device ID.
@@ -549,6 +555,9 @@ class PPDs:
         orig_mfg = mfg
         orig_mdl = mdl
         self._init_ids ()
+
+        if commandsets is None:
+            commandsets = []
 
         # Start with an empty result list and build it up using
         # several search methods, in increasing order of fuzziness.
@@ -774,8 +783,8 @@ class PPDs:
         return fit
 
     def getPPDNameFromDeviceID (self, mfg, mdl, description="",
-                                commandsets=[], uri=None,
-                                downloadedfiles=[],
+                                commandsets=None, uri=None,
+                                downloadedfiles=None,
                                 make_and_model=None):
         """
 	Obtain a best-effort PPD match for an IEEE 1284 Device ID.
@@ -810,6 +819,12 @@ class PPDs:
         @type make_and_model: string
 	@returns: an integer,string pair of (status,ppd-name)
 	"""
+
+        if commandsets is None:
+            commandsets = []
+
+        if downloadedfiles is None:
+            downloadedfiles = []
 
         fit = self.getPPDNamesFromDeviceID (mfg, mdl, description,
                                             commandsets, uri,
@@ -953,9 +968,13 @@ class PPDs:
 
         return (fit, ppdnamelist)
 
-    def _getPPDNameFromCommandSet (self, commandsets=[]):
+    def _getPPDNameFromCommandSet (self, commandsets=None):
         """Return ppd-name list or None, given a list of strings representing
         the command sets supported."""
+
+        if commandsets is None:
+            commandsets = []
+
         try:
             self._init_makes ()
             models = self.makes["Generic"]
