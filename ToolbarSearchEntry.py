@@ -34,6 +34,7 @@ import config
 import gettext
 gettext.install(domain=config.PACKAGE, localedir=config.localedir)
 
+
 class ToolbarSearchEntry (Gtk.HBox):
     __gproperties__ = {
         'search_timeout' : (GObject.TYPE_UINT,
@@ -42,7 +43,7 @@ class ToolbarSearchEntry (Gtk.HBox):
                             0,
                             5000,
                             300,
-                            GObject.PARAM_READWRITE)
+                            GObject.ParamFlags.READWRITE)
         }
 
     __gsignals__ = {
