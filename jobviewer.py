@@ -25,6 +25,8 @@ import dbus
 import dbus.glib
 import dbus.service
 import threading
+import gi
+gi.require_version('Notify', '0.7')
 from gi.repository import Notify
 from gi.repository import GLib
 from gi.repository import GObject
@@ -52,6 +54,7 @@ from functools import reduce
 cups.require("1.9.47")
 
 try:
+    gi.require_version('GnomeKeyring', '1.0')
     from gi.repository import GnomeKeyring
     USE_KEYRING=True
 except ImportError:
