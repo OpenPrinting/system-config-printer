@@ -8,7 +8,7 @@ from debug import *
 # http://www.packagekit.org/gtk-doc/PkProgress.html
 def progress(progress, type, user_data):
     if (type.value_name == "PK_PROGRESS_TYPE_PERCENTAGE" and
-        progress.props.package != None):
+        progress.props.package is not None):
         sys.stdout.write ("P%d\n" % progress.props.percentage)
         sys.stdout.flush ()
     else:

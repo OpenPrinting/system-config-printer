@@ -140,7 +140,7 @@ class Monitor(GObject.GObject):
         self.received_any_dbus_signals = False
         self.update_timer = None
 
-        if bus == None:
+        if bus is None:
             try:
                 bus = dbus.SystemBus ()
             except dbus.exceptions.DBusException:
@@ -148,7 +148,7 @@ class Monitor(GObject.GObject):
                 pass
 
         self.bus = bus
-        if bus != None:
+        if bus is not None:
             bus.add_signal_receiver (self.handle_dbus_signal,
                                      path=self.DBUS_PATH,
                                      dbus_interface=self.DBUS_IFACE)
@@ -177,7 +177,7 @@ class Monitor(GObject.GObject):
                 pass
             cups.setUser (user)
 
-        if self.bus != None:
+        if self.bus is not None:
             self.bus.remove_signal_receiver (self.handle_dbus_signal,
                                              path=self.DBUS_PATH,
                                              dbus_interface=self.DBUS_IFACE)
@@ -436,7 +436,7 @@ class Monitor(GObject.GObject):
                 (nse == 'job-state-changed' and
                  jobid not in jobs and
                  event['job-state'] == cups.IPP_JOB_PROCESSING)):
-                if (self.specific_dests != None and
+                if (self.specific_dests is not None and
                     event['printer-name'] not in self.specific_dests):
                     continue
 
@@ -471,7 +471,7 @@ class Monitor(GObject.GObject):
             except KeyError:
                 continue
 
-            if (self.specific_dests != None and
+            if (self.specific_dests is not None and
                 event['printer-name'] not in self.specific_dests):
                 del jobs[jobid]
                 self.emit ('job-removed', jobid, nse, event)
@@ -505,7 +505,7 @@ class Monitor(GObject.GObject):
         debugprint ("refresh")
 
         self.emit ('refresh')
-        if which_jobs != None:
+        if which_jobs is not None:
             self.which_jobs = which_jobs
 
         user = cups.getUser ()
@@ -603,7 +603,7 @@ class Monitor(GObject.GObject):
             GLib.idle_add (self.emit, 'cups-connection-error')
             return
 
-        if self.specific_dests != None:
+        if self.specific_dests is not None:
             for jobid in jobs.keys ():
                 uri = jobs[jobid].get('job-printer-uri', '/')
                 i = uri.rfind ('/')
@@ -679,7 +679,7 @@ class Monitor(GObject.GObject):
         for jobid in range (self.fetch_first_job_id, last_jobid + 1):
             try:
                 job = fetched[jobid]
-                if self.specific_dests != None:
+                if self.specific_dests is not None:
                     uri = job.get('job-printer-uri', '/')
                     i = uri.rfind ('/')
                     printer = uri[i + 1:]
@@ -730,7 +730,7 @@ class Monitor(GObject.GObject):
         return True
 
     def sort_jobs_by_printer (self, jobs=None):
-        if jobs == None:
+        if jobs is None:
             jobs = self.jobs
 
         my_printers = set()

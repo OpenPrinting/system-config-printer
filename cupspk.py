@@ -172,7 +172,7 @@ class Connection:
                     # we accept a mix between bool and str
                     retval.append(str(args[i]))
                     continue
-                elif types[i] == str and args[i] == None:
+                elif types[i] == str and args[i] is None:
                     # None is an empty string for dbus
                     retval.append('')
                     continue
@@ -180,7 +180,7 @@ class Connection:
                     # we accept a mix between list and tuple
                     retval.append(list(args[i]))
                     continue
-                elif types[i] == list and args[i] == None:
+                elif types[i] == list and args[i] is None:
                     # None is an empty list
                     retval.append([])
                     continue
@@ -272,7 +272,7 @@ class Connection:
              return result
 
         result_str = {}
-        if result != None:
+        if result is not None:
             for i in result.keys():
                 if type(i) == dbus.String:
                     result_str[str(i)] = str(result[i])
@@ -297,7 +297,7 @@ class Connection:
                 else:
                     device_uri = result_str[i]
 
-            if device_uri != None:
+            if device_uri is not None:
                 devices[device_uri] = device_dict
 
             n += 1
@@ -382,7 +382,7 @@ class Connection:
                 else:
                     filename = None
 
-        if (not use_pycups) and (fd != None or file_object != None):
+        if (not use_pycups) and (fd is not None or file_object is not None):
             # Create the temporary file in /tmp to ensure that
             # cups-pk-helper-mechanism is able to write to it.
             (tmpfd, tmpfname) = tempfile.mkstemp(dir="/tmp")
@@ -398,7 +398,7 @@ class Connection:
             tmpfile = os.fdopen (tmpfd, 'rt')
             tmpfile.seek (0)
 
-            if fd != None:
+            if fd is not None:
                 os.lseek (fd, 0, os.SEEK_SET)
                 line = tmpfile.readline()
                 while line != '':
@@ -439,11 +439,11 @@ class Connection:
                 else:
                     filename = None
 
-        if (not use_pycups) and (fd != None or file_object != None):
+        if (not use_pycups) and (fd is not None or file_object is not None):
             (tmpfd, tmpfname) = tempfile.mkstemp()
             os.lseek (tmpfd, 0, os.SEEK_SET)
 
-            if fd != None:
+            if fd is not None:
                 os.lseek (fd, 0, os.SEEK_SET)
                 buf = os.read (fd, 512)
                 while buf != '':
@@ -725,7 +725,7 @@ class Connection:
                                                self._connection.adminGetServerSettings,
                                                *args, **kwds)
         settings = {}
-        if result != None:
+        if result is not None:
             for i in result.keys():
                 if type(i) == dbus.String:
                     settings[str(i)] = str(result[i])

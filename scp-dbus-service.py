@@ -66,7 +66,7 @@ class FetchedPPDs(GObject.GObject):
         self._ppds = None
 
     def is_ready (self):
-        return self._ppds != None
+        return self._ppds is not None
 
     def get_ppds (self):
         return self._ppds
@@ -103,7 +103,7 @@ class GetBestDriversRequest:
 
         g_killtimer.add_hold ()
         global g_ppds
-        if g_ppds == None:
+        if g_ppds is None:
             debugprint ("GetBestDrivers request: need to fetch PPDs")
             g_ppds = FetchedPPDs (self.cupsconn, self.language)
             self._signals.append (g_ppds.connect ('ready', self._ppds_ready))
@@ -491,7 +491,7 @@ class ConfigPrinting(dbus.service.Object):
     @dbus.service.method(dbus_interface=CONFIG_IFACE,
                          in_signature='', out_signature='s')
     def JobApplet(self):
-       if self._jobapplet == None or self._jobapplet.has_finished:
+       if self._jobapplet is None or self._jobapplet.has_finished:
             self._pathn += 1
             path = "%s/JobApplet/%s" % (CONFIG_PATH, self._pathn)
             self._jobapplet = ConfigPrintingJobApplet (self.bus, path)

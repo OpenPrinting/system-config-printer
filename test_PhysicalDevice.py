@@ -26,7 +26,7 @@ try:
 except ImportError:
     cups = None
 
-@pytest.mark.skipif(cups == None, reason="cups module not available")
+@pytest.mark.skipif(cups is None, reason="cups module not available")
 def test_ordering():
     # See https://bugzilla.redhat.com/show_bug.cgi?id=1154686
     device = cupshelpers.Device("dnssd://Abc%20Def%20%5BABCDEF%5D._ipp._tcp.local/",

@@ -45,7 +45,7 @@ def _singleton (x):
         return x[0]
     return x
 
-@pytest.mark.skipif(cups == None, reason="cups module not available")
+@pytest.mark.skipif(cups is None, reason="cups module not available")
 def test_ppds():
     picklefile="pickled-ppds"
     try:
@@ -163,7 +163,7 @@ def test_ppds():
                 match = re.match (modelre,
                                   _singleton (ppddict['ppd-make-and-model']),
                                   re.I)
-                success = match != None
+                success = match is not None
             else:
                 success = False
 

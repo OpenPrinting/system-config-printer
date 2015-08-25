@@ -171,7 +171,7 @@ class SystemConfigFirewall:
                         (self, repr(self._fw_data)))
             if self._fw_data:
                 debugprint ("Using cached firewall data")
-                if reply_handler == None:
+                if reply_handler is None:
                     return self._fw_data
 
                 self._client_reply_handler (self._fw_data)
@@ -226,7 +226,7 @@ class SystemConfigFirewall:
 
     def _check_any_allowed (self, search):
         (args, filename) = self._get_fw_data ()
-        if filename == None: return True
+        if filename is None: return True
         isect = set (search).intersection (set (args))
         return len (isect) != 0
 
@@ -236,7 +236,7 @@ class SystemConfigFirewall:
             (args, filename) = self._fw_data
         except AttributeError:
             (args, filename) = self._get_fw_data ()
-        if filename == None: return
+        if filename is None: return
 
         args.append ("--service=" + service)
         self._fw_data = (args, filename)

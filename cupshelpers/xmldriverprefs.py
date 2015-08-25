@@ -99,7 +99,7 @@ class DriverType:
 
         # If the PPD name pattern includes a scheme, we can perhaps
         # deduce which package would provide this driver type.
-        if self._packagehint != None:
+        if self._packagehint is not None:
             return
 
         parts = pattern.split (":", 1)
@@ -388,7 +388,7 @@ class PrinterType:
         Return False otherwise.
         """
 
-        matches = (self.make_and_model == None and self.deviceid == [])
+        matches = (self.make_and_model is None and self.deviceid == [])
         if self.make_and_model:
             if self.make_and_model.match (make_and_model):
                 matches = True
@@ -451,10 +451,10 @@ class PreferenceOrder:
         short-form upper-case field keys.
         """
 
-        if deviceid == None:
+        if deviceid is None:
             deviceid = {}
 
-        if make_and_model == None:
+        if make_and_model is None:
             make_and_model = ""
 
         orderedtypes = []
@@ -520,7 +520,7 @@ def test (xml_path=None, attached=False, deviceid=None, debug=False):
         ppds.set_debugprint_fn (debugprint)
             
     locale.setlocale (locale.LC_ALL, "")
-    if xml_path == None:
+    if xml_path is None:
         xml_path = os.path.join (os.path.join (os.path.dirname (__file__),
                                                ".."),
                                  "xml")

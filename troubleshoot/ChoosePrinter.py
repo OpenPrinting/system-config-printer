@@ -78,15 +78,15 @@ class ChoosePrinter(Question):
             printers = None
             dests_list = []
             for (name, instance), dest in dests.items ():
-                if name == None:
+                if name is None:
                     continue
 
-                if instance != None:
+                if instance is not None:
                     queue = "%s/%s" % (name, instance)
                 else:
                     queue = name
 
-                if printers == None:
+                if printers is None:
                     printers = self.timedop (c.getPrinters,
                                              parent=parent).run ()
 
@@ -122,7 +122,7 @@ class ChoosePrinter(Question):
 
     def can_click_forward (self):
         model, iter = self.treeview.get_selection ().get_selected ()
-        if iter == None:
+        if iter is None:
             return False
         return True
 

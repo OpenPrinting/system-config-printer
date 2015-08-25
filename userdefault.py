@@ -140,7 +140,7 @@ class UserDefaultPrompt:
         systemwide.set_active (True)
         clearpersonal.set_active (True)
         self.userdef = UserDefaultPrinter ()
-        clearpersonal.set_sensitive (self.userdef.get () != None)
+        clearpersonal.set_sensitive (self.userdef.get () is not None)
 
         self.systemwide = systemwide
         self.clearpersonal = clearpersonal
@@ -150,7 +150,7 @@ class UserDefaultPrompt:
         dialog.show_all ()
 
     def on_toggled (self, button):
-        self.clearpersonal.set_sensitive (self.userdef.get () != None and
+        self.clearpersonal.set_sensitive (self.userdef.get () is not None and
                                           self.systemwide.get_active ())
 
     def on_response (self, dialog, response_id):

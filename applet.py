@@ -361,7 +361,7 @@ class RunLoop:
     def check_for_jobs (self, *args):
         debugprint ("checking for jobs")
         if any_jobs ():
-            if self.timer != None:
+            if self.timer is not None:
                 GLib.source_remove (self.timer)
 
             self.remove_signal_receiver ()

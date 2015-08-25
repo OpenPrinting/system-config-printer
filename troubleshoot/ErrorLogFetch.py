@@ -122,7 +122,7 @@ class ErrorLogFetch(Question):
                 pass
 
         self.answers = {}
-        if journal and cursor != None:
+        if journal and cursor is not None:
             def journal_format (x):
                 try:
                     priority = "XACEWNIDd"[x['PRIORITY']]
@@ -138,12 +138,12 @@ class ErrorLogFetch(Question):
             r.add_match (_SYSTEMD_UNIT="cups.service")
             self.answers['journal'] = [journal_format (x) for x in r]
 
-        if checkpoint != None:
+        if checkpoint is not None:
             self.op = TimedOperation (fetch_log,
                                       (self.authconn,),
                                       parent=parent)
             tmpfname = self.op.run ()
-            if tmpfname != None:
+            if tmpfname is not None:
                 f = open (tmpfname)
                 f.seek (checkpoint)
                 lines = f.readlines ()

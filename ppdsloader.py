@@ -74,7 +74,7 @@ class PPDsLoader(GObject.GObject):
         self._ppdsmatch_result = None
         self._jockey_queried = False
         self._jockey_has_answered = False
-        self._local_cups = (self._host == None or
+        self._local_cups = (self._host is None or
                             self._host == "localhost" or
                             self._host[0] == '/')
         try:
@@ -196,7 +196,7 @@ class PPDsLoader(GObject.GObject):
 
         conn.destroy ()
         self._conn = None
-        if self._dialog != None:
+        if self._dialog is not None:
             self._dialog.destroy ()
             self._dialog = None
 
@@ -207,7 +207,7 @@ class PPDsLoader(GObject.GObject):
         self._conn = None
         self._ppds = None
         self._exc = exc
-        if self._dialog != None:
+        if self._dialog is not None:
             self._dialog.destroy ()
             self._dialog = None
 
@@ -273,11 +273,11 @@ class PPDsLoader(GObject.GObject):
         if self._need_requery_cups:
             self._query_cups ()
         else:
-            if self._conn != None:
+            if self._conn is not None:
                 self._conn.destroy ()
                 self._conn = None
 
-            if self._dialog != None:
+            if self._dialog is not None:
                 self._dialog.destroy ()
                 self._dialog = None
 
@@ -306,7 +306,7 @@ if __name__ == "__main__":
             exc = ppdsloader.get_error ()
             print(exc)
             ppds = ppdsloader.get_ppds ()
-            if ppds != None:
+            if ppds is not None:
                 print(len (ppds))
 
             ppdsloader.destroy ()

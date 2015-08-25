@@ -140,7 +140,7 @@ class PrintTestPage(Question):
                     mediatype = value
                     break
 
-        if mediatype != None:
+        if mediatype is not None:
             mediatype_string = '\n\n' + (_("Remember to load paper of type "
                                            "'%s' into the printer first.") %
                                          mediatype)
@@ -313,7 +313,7 @@ class PrintTestPage(Question):
                         attrs = c.getJobAttributes (jobid)
                     except AttributeError:
                         # getJobAttributes was introduced in pycups 1.9.35.
-                        if job_attrs == None:
+                        if job_attrs is None:
                             job_attrs = c.getJobs (which_jobs='all')
 
                         attrs = self.job_attrs[jobid]
@@ -360,7 +360,7 @@ class PrintTestPage(Question):
             except KeyError:
                 printer_name = None
 
-        if printer_name != None:
+        if printer_name is not None:
             model.set_value (iter, 2, printer_name)
 
         model.set_value (iter, 3, job_dict['job-name'])
@@ -383,7 +383,7 @@ class PrintTestPage(Question):
         mimetypes = [None, 'text/plain']
         for mimetype in mimetypes:
             try:
-                if mimetype == None:
+                if mimetype is None:
                     # Default test page.
                     self.op = TimedOperation (print_test_page,
                                               (answers['cups_queue'],),
@@ -421,7 +421,7 @@ class PrintTestPage(Question):
                 if (e == cups.IPP_DOCUMENT_FORMAT and
                     mimetypes.index (mimetype) < (len (mimetypes) - 1)):
                     # Try next format.
-                    if tmpfname != None:
+                    if tmpfname is not None:
                         os.unlink (tmpfname)
                         tmpfname = None
                     continue

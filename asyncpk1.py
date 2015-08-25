@@ -242,7 +242,7 @@ class PK1Connection:
             self._system_bus = None
 
         global _DevicesGet_uses_new_api
-        if _DevicesGet_uses_new_api == None and self._system_bus:
+        if _DevicesGet_uses_new_api is None and self._system_bus:
             try:
                 obj = self._system_bus.get_object(CUPS_PK_NAME, CUPS_PK_PATH)
                 proxy = dbus.Interface (obj, dbus.INTROSPECTABLE_IFACE)
@@ -324,7 +324,7 @@ class PK1Connection:
             del leftover_kwds["auth_handler"]
 
         result = [True, reply_handler, error_handler, ()]
-        if self._system_bus == None:
+        if self._system_bus is None:
             return result
 
         tup = []
@@ -461,7 +461,7 @@ class PK1Connection:
                 else:
                     device_uri = result_str[keywithaffix]
 
-            if device_uri != None:
+            if device_uri is not None:
                 devices[device_uri] = device_dict
 
             n += 1

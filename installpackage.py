@@ -42,18 +42,18 @@ class PackageKit:
 
     def InstallPackageName (self, xid, timestamp, name):
         try:
-            if self.iface != None:
-                self.iface.InstallPackageNames(xid, [name], \
-                                           "hide-finished,show-warnings", \
+            if self.iface is not None:
+                self.iface.InstallPackageNames(xid, [name],
+                                           "hide-finished,show-warnings",
                                            timeout = 999999)
         except dbus.exceptions.DBusException:
             pass
 
     def InstallProvideFile (self, xid, timestamp, filename):
         try:
-            if self.iface != None:
-                self.iface.InstallProvideFiles(xid, [filename], \
-                                               "hide-finished,show-warnings", \
+            if self.iface is not None:
+                self.iface.InstallProvideFiles(xid, [filename],
+                                               "hide-finished,show-warnings",
                                                timeout = 999999)
         except dbus.exceptions.DBusException:
             pass

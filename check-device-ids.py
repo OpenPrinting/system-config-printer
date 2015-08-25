@@ -64,7 +64,7 @@ else:
            "by temporarily disabling your firewall (or by allowing\n"
            "incoming UDP packets on port 161).\n")
 
-if devices == None:
+if devices is None:
     if not SPECIFIC_URI:
         print("Examining connected devices")
 
@@ -87,7 +87,7 @@ if devices == None:
             sys.exit (1)
 
 if SPECIFIC_URI:
-    if devices.get (SPECIFIC_URI) == None:
+    if devices.get (SPECIFIC_URI) is None:
         devices = { SPECIFIC_URI:
                         { 'device-make-and-model': '',
                           'device-id': ''} }
@@ -123,7 +123,7 @@ for device, attrs in devices.items ():
                 devs = []
 
                 def got_device (dev):
-                    if dev != None:
+                    if dev is not None:
                         devs.append (dev)
 
                 import probe_printer

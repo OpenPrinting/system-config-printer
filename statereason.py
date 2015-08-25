@@ -52,7 +52,7 @@ class StateReason:
         return self.printer
 
     def get_level (self):
-        if self.level != None:
+        if self.level is not None:
             return self.level
 
         if (self.reason.endswith ("-report") or
@@ -156,7 +156,7 @@ class StateReason:
                     for scheme in schemes:
                         lreason = self._ppd.localizeIPPReason(self.reason,
                                                               scheme)
-                        if lreason != None:
+                        if lreason is not None:
                             localized_reason = localized_reason + lreason + ", "
                     if localized_reason != "":
                         reason = localized_reason[:-2]

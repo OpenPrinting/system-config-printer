@@ -43,7 +43,7 @@ class AuthDialog(Gtk.Dialog):
                            Gtk.STOCK_OK, Gtk.ResponseType.OK),
                   auth_info_required=None,
                   allow_remember=False):
-        if title == None:
+        if title is None:
             title = _("Authentication")
         if auth_info_required is None:
             auth_info_required = ['username', 'password']
@@ -124,13 +124,13 @@ class _AuthInfoCache:
         self.creds = dict() # by (host,port)
 
     def cache_auth_info (self, data, host=None, port=None):
-        if port == None:
+        if port is None:
             port = 631
 
         self.creds[(host,port)] = data
 
     def lookup_auth_info (self, host=None, port=None):
-        if port == None:
+        if port is None:
             port = 631
 
         try:
@@ -139,7 +139,7 @@ class _AuthInfoCache:
             return None
 
     def remove_auth_info (self, host=None, port=None):
-        if port == None:
+        if port is None:
             port = 631
 
         try:
@@ -152,11 +152,11 @@ global_authinfocache = _AuthInfoCache ()
 class Connection:
     def __init__ (self, parent=None, try_as_root=True, lock=False,
                   host=None, port=None, encryption=None):
-        if host != None:
+        if host is not None:
             cups.setServer (host)
-        if port != None:
+        if port is not None:
             cups.setPort (port)
-        if encryption != None:
+        if encryption is not None:
             cups.setEncryption (encryption)
 
         self._use_password = ''
@@ -341,7 +341,7 @@ class Connection:
         self._passes += 1
 
         creds = global_authinfocache.lookup_auth_info (host=self._server, port=self._port)
-        if creds != None:
+        if creds is not None:
             if (creds[0] != 'root' or self._try_as_root):
                 (self._use_user, self._use_password) = creds
             del creds

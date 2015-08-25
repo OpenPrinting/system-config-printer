@@ -165,7 +165,7 @@ class Option:
 
     def on_btnConflict_clicked(self, button):
         parent = self.btnConflict
-        while parent != None and not isinstance (parent, Gtk.Window):
+        while parent is not None and not isinstance (parent, Gtk.Window):
             parent = parent.get_parent ()
         dialog = Gtk.MessageDialog (parent=parent,
                                     modal=True, destroy_with_parent=True,

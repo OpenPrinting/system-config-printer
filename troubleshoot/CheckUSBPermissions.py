@@ -81,7 +81,7 @@ class CheckUSBPermissions(Question):
         dev_by_id = {}
         this_dev = None
         for line in lsusb_stdout:
-            if (this_dev != None and
+            if (this_dev is not None and
                 ((line.find ("bInterfaceClass") != -1 and
                   line.find ("7 Printer") != -1) or
                  (line.find ("bInterfaceSubClass") != -1 and

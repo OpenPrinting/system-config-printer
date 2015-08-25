@@ -120,7 +120,7 @@ class CheckPPDSanity(Question):
         if tmpf:
             os.unlink (tmpf)
 
-        if title == None and not answers['cups_printer_remote']:
+        if title is None and not answers['cups_printer_remote']:
             (pkgs, exes) = cupshelpers.missingPackagesAndExecutables (ppd)
             self.answers['missing_pkgs_and_exes'] = (pkgs, exes)
             if len (pkgs) > 0 or len (exes) > 0:
@@ -142,11 +142,11 @@ class CheckPPDSanity(Question):
                              "is not currently installed.") % (name,
                                                                (exes + pkgs)[0])
 
-        if title != None:
+        if title is not None:
             self.label.set_markup ('<span weight="bold" size="larger">' +
                                    title + '</span>\n\n' + text)
 
-        return title != None
+        return title is not None
 
     def connect_signals (self, handle):
         self.button_sigid = self.install_button.connect ("clicked",

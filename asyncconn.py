@@ -114,7 +114,7 @@ class Connection(SemanticOperations):
         self._destroyed = False
 
         # Decide whether to use direct IPP or PolicyKit.
-        if host == None:
+        if host is None:
             host = cups.getServer()
         use_pk = ((host.startswith ('/') or host == 'localhost') and
                   os.getuid () != 0)

@@ -57,7 +57,7 @@ class TimedSubprocess(Timed):
         self.parent = parent
         self.show_dialog = show_dialog
         for f in [self.subp.stdout, self.subp.stderr]:
-            if f != None:
+            if f is not None:
                 source = GLib.io_add_watch (f,
                                             GLib.IO_IN |
                                             GLib.IO_HUP |
@@ -82,7 +82,7 @@ class TimedSubprocess(Timed):
             GLib.source_remove (self.wait_source)
         for source in self.io_source:
             GLib.source_remove (source)
-        if self.wait_window != None:
+        if self.wait_window is not None:
             self.wait_window.destroy ()
         return (self.output.get (self.subp.stdout, '').split ('\n'),
                 self.output.get (self.subp.stderr, '').split ('\n'),
@@ -178,7 +178,7 @@ class TimedOperation(Timed):
                                        kwargs=kwargs)
         self.thread.start ()
 
-        self.use_callback = callback != None
+        self.use_callback = callback is not None
         if self.use_callback:
             self.timeout_source = GLib.timeout_add (50, self._check_thread)
 
@@ -218,8 +218,8 @@ class TimedOperation(Timed):
         # Thread has finished.  Stop the sub-loop or trigger callback.
         self.timeout_source = False
         if self.use_callback:
-            if self.callback != None:
-                if self.context != None:
+            if self.callback is not None:
+                if self.context is not None:
                     self.callback (self.thread.result, self.thread.exception,
                                    self.context)
                 else:

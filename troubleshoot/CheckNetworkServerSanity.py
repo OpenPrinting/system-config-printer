@@ -160,7 +160,7 @@ class CheckNetworkServerSanity(Question):
                 (e, s) = e.args
                 self.answers['remote_server_smb_shares'] = (e, s)
 
-            if context != None and 'cups_printer_dict' in answers:
+            if context is not None and 'cups_printer_dict' in answers:
                 uri = answers['cups_printer_dict'].get ('device-uri', '')
                 u = smburi.SMBURI (uri)
                 (group, host, share, user, password) = u.separate ()

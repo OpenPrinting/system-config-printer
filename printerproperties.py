@@ -561,7 +561,7 @@ class PrinterPropertiesDialog(GtkGUI):
         if not encryption:
             self._encryption = cups.getEncryption ()
 
-        if self._monitor == None:
+        if self._monitor is None:
             self.set_monitor (monitor.Monitor (monitor_jobs=False))
 
         self._ppdcache = self._monitor.get_ppdcache ()
@@ -766,7 +766,7 @@ class PrinterPropertiesDialog(GtkGUI):
 
     def on_tvPUsers_cursor_changed(self, widget):
         selection = widget.get_selection ()
-        if selection == None:
+        if selection is None:
             return
 
         model, rows = selection.get_selected_rows()
@@ -991,7 +991,7 @@ class PrinterPropertiesDialog(GtkGUI):
         self.btnPrinterPropertiesOK.set_sensitive (not self.conflicts)
 
     def save_printer(self, printer, saveall=False, parent=None):
-        if parent == None:
+        if parent is None:
             parent = self.dialog
         class_deleted = False
         name = printer.name
@@ -1152,7 +1152,7 @@ class PrinterPropertiesDialog(GtkGUI):
     def on_tvPrinterProperties_cursor_changed (self, treeview):
         # Adjust notebook to reflect selected item.
         (path, column) = treeview.get_cursor ()
-        if path != None:
+        if path is not None:
             model = treeview.get_model ()
             iter = model.get_iter (path)
             n = model.get_value (iter, 1)
@@ -1218,7 +1218,7 @@ class PrinterPropertiesDialog(GtkGUI):
         c._end_operation ()
         cups.setUser (user)
 
-        if job_id != None:
+        if job_id is not None:
             show_info_dialog (_("Submitted"),
                               _("Test page submitted as job %d") % job_id,
                               parent=self.parent)
@@ -1263,7 +1263,7 @@ class PrinterPropertiesDialog(GtkGUI):
         self.maintenance_command ("Clean all")
 
     def fillComboBox(self, combobox, values, value, translationdict=None):
-        if translationdict == None:
+        if translationdict is None:
             translationdict = ppdippstr.TranslationDict ()
 
         model = Gtk.ListStore (str,
@@ -1572,11 +1572,11 @@ class PrinterPropertiesDialog(GtkGUI):
             table.set_row_spacings (12)
             self.vboxMarkerLevels.pack_start (table, False, False, 0)
             for color, name, marker_type, level in markers:
-                if name == None:
+                if name is None:
                     name = ''
                 elif self.ppd != False:
                     localized_name = self.ppd.localizeMarkerName(name)
-                    if localized_name != None:
+                    if localized_name is not None:
                         name = localized_name
 
                 row = num_markers / 4
@@ -1849,7 +1849,7 @@ class PrinterPropertiesDialog(GtkGUI):
 
     def sensitise_new_printer_widgets (self, sensitive=True):
         sensitive = (sensitive and
-                     self.printer != None and
+                     self.printer is not None and
                      not (self.printer.discovered or
                           bool (self.changed)))
         for button in [self.btnChangePPD,

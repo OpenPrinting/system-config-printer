@@ -62,7 +62,7 @@ class OpenPrintingRequest(GObject.GObject):
 
     def cancel (self):
         debugprint ("%s: cancel()" % self)
-        if self._handle != None:
+        if self._handle is not None:
             self.openprinting.cancelOperation (self._handle)
             self._handle = None
 

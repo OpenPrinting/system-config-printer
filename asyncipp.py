@@ -71,11 +71,11 @@ class _IPPConnectionThread(threading.Thread):
         self._auth_queue.put (password)
 
     def run (self):
-        if self.host == None:
+        if self.host is None:
             self.host = cups.getServer ()
-        if self.port == None:
+        if self.port is None:
             self.port = cups.getPort ()
-        if self._encryption == None:
+        if self._encryption is None:
             self._encryption = cups.getEncryption ()
 
         if self.user:
@@ -100,7 +100,7 @@ class _IPPConnectionThread(threading.Thread):
             self.idle = self._queue.empty ()
             item = self._queue.get ()
             debugprint ("Next task: %s" % repr (item))
-            if item == None:
+            if item is None:
                 # Our signal to quit.
                 self._queue.task_done ()
                 break
@@ -176,7 +176,7 @@ class _IPPConnectionThread(threading.Thread):
     def _auth (self, prompt, conn=None, method=None, resource=None):
         def prompt_auth (prompt):
             Gdk.threads_enter ()
-            if conn == None:
+            if conn is None:
                 self._auth_handler (prompt, self._conn)
             else:
                 self._auth_handler (prompt, self._conn, method, resource)
@@ -184,7 +184,7 @@ class _IPPConnectionThread(threading.Thread):
             Gdk.threads_leave ()
             return False
 
-        if self._auth_handler == None:
+        if self._auth_handler is None:
             return ""
 
         GLib.idle_add (prompt_auth, prompt)
@@ -349,7 +349,7 @@ class _IPPAuthOperation:
         del self._client_error_handler
 
     def error_handler (self, conn, exc):
-        if self._client_fn == None:
+        if self._client_fn is None:
             # This is the initial "connection" operation, or a
             # subsequent reconnection attempt.
             debugprint ("Connection/reconnection failed")
@@ -433,7 +433,7 @@ class _IPPAuthOperation:
 
     def auth_handler (self, prompt, conn, method=None, resource=None):
         if self._auth_called == False:
-            if self._user == None:
+            if self._user is None:
                 self._user = cups.getUser()
             if self._user:
                 host = conn.thread.host
@@ -479,7 +479,7 @@ class _IPPAuthOperation:
         if conn.semantic:
             op = conn.semantic.current_operation ()
 
-        if op == None:
+        if op is None:
             d = authconn.AuthDialog (parent=conn.parent)
         else:
             title = _("Authentication (%s)") % op
@@ -487,7 +487,7 @@ class _IPPAuthOperation:
                                      parent=conn.parent)
 
         d.set_prompt ('')
-        if self._user == None:
+        if self._user is None:
             self._user = cups.getUser()
         d.set_auth_info (['', ''])
         d.field_grab_focus ('username')
@@ -543,7 +543,7 @@ class _IPPAuthOperation:
         # so we've reconnected as that user.  Alternatively, the
         # connection has failed and we're retrying.
         debugprint ("Connected as %s" % self._user)
-        if self._client_fn != None:
+        if self._client_fn is not None:
             self.submit_task ()
 
     def _reconnect_error (self, conn, exc):
@@ -556,7 +556,7 @@ class _IPPAuthOperation:
         if conn.semantic:
             op = conn.semantic.current_operation ()
 
-        if op == None:
+        if op is None:
             msg = _("CUPS server error")
         else:
             msg = _("CUPS server error (%s)") % op
@@ -567,7 +567,7 @@ class _IPPAuthOperation:
                                buttons=Gtk.ButtonsType.NONE,
                                text=msg)
 
-        if self._client_fn == None and type (exc) == RuntimeError:
+        if self._client_fn is None and type (exc) == RuntimeError:
             # This was a connection failure.
             message = 'service-error-service-unavailable'
         elif type (exc) == cups.IPPError:

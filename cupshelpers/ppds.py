@@ -139,7 +139,7 @@ def ppdMakeModelSplit (ppd_make_and_model):
             break
 
     # Handle PPDs provided by Turboprint
-    if make == None and _RE_turboprint.search (l):
+    if make is None and _RE_turboprint.search (l):
         t = ppd_make_and_model.find (" TurboPrint")
         if t != -1:
             t2 = ppd_make_and_model.rfind (" TurboPrint")
@@ -344,9 +344,9 @@ class PPDs:
 
         self.drivertypes = xmldriverprefs.DriverTypes ()
         self.preforder = xmldriverprefs.PreferenceOrder ()
-        if xml_dir == None:
+        if xml_dir is None:
             xml_dir = os.environ.get ("CUPSHELPERS_XMLDIR")
-            if xml_dir == None:
+            if xml_dir is None:
                 from . import config
                 xml_dir = os.path.join (config.sysconfdir, "cupshelpers")
 
@@ -361,7 +361,7 @@ class PPDs:
             self.drivertypes = None
             self.preforder = None
 
-        if (language == None or
+        if (language is None or
             language == "C" or
             language == "POSIX"):
             language = "en_US"
@@ -488,7 +488,7 @@ class PPDs:
         if downloadedfiles is None:
             downloadedfiles = []
 
-        if fit == None:
+        if fit is None:
             fit = {}
 
         if self.drivertypes and self.preforder:
@@ -618,7 +618,7 @@ class PPDs:
                 make = self.lmakes[mfgl]
 
         _debugprint ("make: %s" % make)
-        if make != None:
+        if make is not None:
             mdls = self.makes[make]
             mdlsl = self.lmodels[normalize(make)]
 
@@ -904,7 +904,7 @@ class PPDs:
             mdlitems = [(x.lower (), mdls[x]) for x in mdlnames]
             modelid = None
             for word in mdll.split (' '):
-                if modelid == None:
+                if modelid is None:
                     modelid = word
 
                 have_digits = False

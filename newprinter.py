@@ -76,7 +76,7 @@ TEXT_adjust_firewall = _("The firewall may need adjusting in order to "
 def validDeviceURI (uri):
     """Returns True is the provided URI is valid."""
     (scheme, rest) = urllib.parse.splittype (uri)
-    if scheme == None or scheme == '':
+    if scheme is None or scheme == '':
         return False
     return True
 
@@ -455,7 +455,7 @@ class NewPrinterGUI(GtkGUI):
 
         def protect_toggle (toggle_widget):
             active = getattr (toggle_widget, 'protect_active', None)
-            if active != None:
+            if active is not None:
                 toggle_widget.set_active (active)
 
         for widget in [self.cbNPDownloadableDriverSupplierVendor,
@@ -897,7 +897,7 @@ class NewPrinterGUI(GtkGUI):
 
     def on_tvNCMembers_cursor_changed(self, widget):
         selection = widget.get_selection()
-        if selection == None:
+        if selection is None:
             return
 
         model_from, rows = selection.get_selected_rows()
@@ -905,7 +905,7 @@ class NewPrinterGUI(GtkGUI):
 
     def on_tvNCNotMembers_cursor_changed(self, widget):
         selection = widget.get_selection()
-        if selection == None:
+        if selection is None:
             return
 
         model_from, rows = selection.get_selected_rows()
@@ -929,7 +929,7 @@ class NewPrinterGUI(GtkGUI):
             self.dec_spinner_task ()
 
         self.NewPrinterWindow.hide()
-        if self.opreq != None:
+        if self.opreq is not None:
             for handler in self.opreq_handlers:
                 self.opreq.disconnect (handler)
 
@@ -1013,7 +1013,7 @@ class NewPrinterGUI(GtkGUI):
 
             done = False
             pbar = self._installdialog._progress_bar
-            while self.p.poll() == None:
+            while self.p.poll() is None:
                 line = stdout.readline ().strip()
                 if (len(line) > 0):
                     if line == "done":
@@ -1131,7 +1131,7 @@ class NewPrinterGUI(GtkGUI):
         if fetch_ppd:
             self.ppd = self.getNPPPD()
             self.installable_options = False
-            if self.ppd == None:
+            if self.ppd is None:
                 return
 
             # Prepare Installable Options screen.
@@ -1173,7 +1173,7 @@ class NewPrinterGUI(GtkGUI):
                 nonfatalException ()
 
             try:
-                if name == None and isinstance (self.ppd, cups.PPD):
+                if name is None and isinstance (self.ppd, cups.PPD):
                     mname = self.ppd.findAttr ("modelName").value
                     make, model = cupshelpers.ppds.ppdMakeModelSplit (mname)
                     if make and model:
@@ -1399,7 +1399,7 @@ class NewPrinterGUI(GtkGUI):
             if not devid:
                 devid = None
 
-            if self.ppds == None and self.dialog_mode != "download_driver":
+            if self.ppds is None and self.dialog_mode != "download_driver":
                 self._loadPPDsForDevice (devid, uri)
                 # _loadPPDsForDevice () is an asynchronous operation, so
                 # let the caller know that it can't continue for now.
@@ -1498,9 +1498,9 @@ class NewPrinterGUI(GtkGUI):
         treeview = self.tvNPDownloadableDrivers
         model, iter = treeview.get_selection ().get_selected ()
         driver = None
-        if iter != None:
+        if iter is not None:
             driver = model.get_value (iter, 1)
-        if driver == None or driver == 0 or 'packages' not in driver:
+        if driver is None or driver == 0 or 'packages' not in driver:
             return
 
         # Find the package name, repository, and fingerprint
@@ -1800,9 +1800,9 @@ class NewPrinterGUI(GtkGUI):
         treeview = self.tvNPDownloadableDrivers
         model, iter = treeview.get_selection ().get_selected ()
         driver = None
-        if iter != None:
+        if iter is not None:
             driver = model.get_value (iter, 1)
-        if (driver == None or driver == 0 or 'packages' not in driver):
+        if (driver is None or driver == 0 or 'packages' not in driver):
             return
 
         # Find the package name, repository, and fingerprint
@@ -1870,7 +1870,7 @@ class NewPrinterGUI(GtkGUI):
 
                 self.btnNPForward.set_sensitive(bool(
                         (self.rbtnNPFoomatic.get_active() and
-                         self.tvNPMakes.get_cursor()[0] != None) or
+                         self.tvNPMakes.get_cursor()[0] is not None) or
                         self.filechooserPPD.get_filename() or
                         downloadable_selected))
                 return
@@ -1965,7 +1965,7 @@ class NewPrinterGUI(GtkGUI):
             path, column = treeview.get_cursor()
             if path:
                 iter = model.get_iter (path)
-        return (iter != None)
+        return iter is not None
 
     def on_entNPName_changed(self, widget):
         # restrict
@@ -2151,10 +2151,10 @@ class NewPrinterGUI(GtkGUI):
         Returns (hostname or None, uri or None).
         """
         uri = None
-        if device == None:
+        if device is None:
             device = self.device
         # Determine host name/IP
-        if host == None:
+        if host is None:
             s = device.uri.find ("://")
             if s != -1:
                 s += 3
@@ -2180,7 +2180,7 @@ class NewPrinterGUI(GtkGUI):
                 # Problem executing command.
                 pass
 
-            if stdout != None:
+            if stdout is not None:
                 line = stdout.decode ().strip ()
                 words = probe_printer.wordsep (line)
                 n = len (words)
@@ -2517,7 +2517,7 @@ class NewPrinterGUI(GtkGUI):
 
         ready(self.SMBBrowseDialog)
 
-        if store.get_iter_first () == None:
+        if store.get_iter_first () is None:
             self.SMBBrowseDialog.hide ()
             show_info_dialog (_("No Print Shares"),
                               _("There were no print shares found.  "
@@ -2534,14 +2534,14 @@ class NewPrinterGUI(GtkGUI):
     def smbbrowser_cell_share (self, column, cell, model, iter, data):
         entry = model.get_value (iter, 0)
         share = ''
-        if entry != None:
+        if entry is not None:
             share = entry.name
         cell.set_property ('text', share)
 
     def smbbrowser_cell_comment (self, column, cell, model, iter, data):
         entry = model.get_value (iter, 0)
         comment = ''
-        if entry != None:
+        if entry is not None:
             comment = entry.comment
         cell.set_property ('text', comment)
 
@@ -2564,7 +2564,7 @@ class NewPrinterGUI(GtkGUI):
         """Handler for expanding a row in the SMB tree view."""
         model = view.get_model ()
         entry = model.get_value (iter, 0)
-        if entry == None:
+        if entry is None:
             return
 
         if entry.smbc_type == pysmb.smbc.WORKGROUP:
@@ -2685,7 +2685,7 @@ class NewPrinterGUI(GtkGUI):
 
     def on_tvSMBBrowser_cursor_changed(self, widget):
         selection = self.tvSMBBrowser.get_selection()
-        if selection == None:
+        if selection is None:
             return
 
         store, iter = selection.get_selected()
@@ -2695,7 +2695,7 @@ class NewPrinterGUI(GtkGUI):
             if entry:
                 is_share = entry.smbc_type == pysmb.smbc.PRINTER_SHARE
 
-        self.btnSMBBrowseOk.set_sensitive(iter != None and is_share)
+        self.btnSMBBrowseOk.set_sensitive(iter is not None and is_share)
 
     def on_btnSMBBrowse_clicked(self, button):
         self.btnSMBBrowseOk.set_sensitive(False)
@@ -2904,7 +2904,7 @@ class NewPrinterGUI(GtkGUI):
             # 'Network' not expanded
             return
 
-        if self.firewall != None:
+        if self.firewall is not None:
             # Already checked
             return
 
@@ -2952,7 +2952,7 @@ class NewPrinterGUI(GtkGUI):
         """
         model = self.tvNPDevices.get_model ()
         iter = model.get_iter (path)
-        if model.get_value (iter, 1) != None:
+        if model.get_value (iter, 1) is not None:
             return True
 
         self.device_row_activated (self.tvNPDevices, path, None)
@@ -2968,13 +2968,13 @@ class NewPrinterGUI(GtkGUI):
 
         self.device_selected += 1
         path, column = widget.get_cursor ()
-        if path == None:
+        if path is None:
             return
 
         model = widget.get_model ()
         iter = model.get_iter (path)
         physicaldevice = model.get_value (iter, 1)
-        if physicaldevice == None:
+        if physicaldevice is None:
             return
         show_uris = True
         for device in physicaldevice.get_devices ():
@@ -3043,7 +3043,7 @@ class NewPrinterGUI(GtkGUI):
                         protocol = "LPD"
                     elif name.find("._pdl-datastream") != -1:
                         protocol = "AppSocket/JetDirect"
-                    if protocol != None:
+                    if protocol is not None:
                         device.menuentry = (_("%s network printer via DNS-SD")
                                             % protocol)
                     else:
@@ -3079,10 +3079,10 @@ class NewPrinterGUI(GtkGUI):
                     break
                 elif device.type in ["socket", "lpd", "ipp", "dnssd", "mdns"]:
                     # This is a network printer.
-                    if host == None and device.type in ["socket", "lpd", "ipp"]:
+                    if host is None and device.type in ["socket", "lpd", "ipp"]:
                         (scheme, rest) = urllib.parse.splittype (device.uri)
                         (hostport, rest) = urllib.parse.splithost (rest)
-                        if hostport != None:
+                        if hostport is not None:
                             (host, port) = urllib.parse.splitport (hostport)
                     if host:
                         is_network = True
@@ -3154,7 +3154,7 @@ class NewPrinterGUI(GtkGUI):
 
     def on_tvNPDeviceURIs_cursor_changed(self, widget):
         path, column = widget.get_cursor ()
-        if path == None:
+        if path is None:
             return
 
         model = widget.get_model ()
@@ -3202,7 +3202,7 @@ class NewPrinterGUI(GtkGUI):
                         protocol = "LPD"
                     elif name.find("._pdl-datastream") != -1:
                         protocol = "AppSocket/JetDirect"
-                    if protocol != None:
+                    if protocol is not None:
                         text = _("%s network printer via DNS-SD") % protocol
                     else:
                         text = _("Network printer via DNS-SD")
@@ -3377,7 +3377,7 @@ class NewPrinterGUI(GtkGUI):
         host = self.entNPTNetworkHostname.get_text ()
 
         def found_callback (new_device):
-            if self.printer_finder == None:
+            if self.printer_finder is None:
                 return
 
             GLib.idle_add (self.found_network_printer_callback, new_device)
@@ -3532,7 +3532,7 @@ class NewPrinterGUI(GtkGUI):
                        self.cmbNPDownloadableDriverFoundPrinters]:
             widget.set_sensitive(rbtn3)
         self.btnNPDownloadableDriverSearch.\
-            set_sensitive (rbtn3 and (self.opreq == None))
+            set_sensitive (rbtn3 and (self.opreq is None))
 
         self.setNPButtons()
 
@@ -3541,7 +3541,7 @@ class NewPrinterGUI(GtkGUI):
 
     def on_btnNPDownloadableDriverSearch_clicked(self, widget):
         self.searchedfordriverpackages = True
-        if self.opreq != None:
+        if self.opreq is not None:
             for handler in self.opreq_handlers:
                 self.opreq.disconnect (handler)
 
@@ -3625,7 +3625,7 @@ class NewPrinterGUI(GtkGUI):
     def on_cmbNPDownloadableDriverFoundPrinters_changed(self, widget):
         self.setNPButtons ()
 
-        if self.opreq != None:
+        if self.opreq is not None:
             for handler in self.opreq_handlers:
                 self.opreq.disconnect (handler)
 
@@ -3660,7 +3660,7 @@ class NewPrinterGUI(GtkGUI):
         else:
             printer_id, printer_str = self.downloadable_printers[0]
 
-        if printer_id == None:
+        if printer_id is None:
             # If none selected, show all.
             # This also happens for ID-matching.
             printer_ids = [x[0] for x in self.downloadable_printers]
@@ -3685,7 +3685,7 @@ class NewPrinterGUI(GtkGUI):
                                 driver['name'])
                     continue
                 iter = model.append (None)
-                if first_iter == None:
+                if first_iter is None:
                     first_iter = iter
 
                 model.set_value (iter, 0, driver['name'])
@@ -3694,7 +3694,7 @@ class NewPrinterGUI(GtkGUI):
                 if driver['recommended']:
                     recommended_iter = iter
 
-        if first_iter == None:
+        if first_iter is None:
             return False
 
         if not self.rbtnNPDownloadableDriverSearch.get_active() and \
@@ -3703,12 +3703,12 @@ class NewPrinterGUI(GtkGUI):
             model.set_value (iter, 0, _("Local Driver"))
             model.set_value (iter, 1, 0)
 
-        if recommended_iter == None:
+        if recommended_iter is None:
             recommended_iter = first_iter
 
         treeview = self.tvNPDownloadableDrivers
         treeview.set_model (model)
-        if recommended_iter != None:
+        if recommended_iter is not None:
             treeview.get_selection ().select_iter (recommended_iter)
         self.on_tvNPDownloadableDrivers_cursor_changed(treeview)
         return True
@@ -3759,9 +3759,9 @@ class NewPrinterGUI(GtkGUI):
                 search = devid_dict["DES"]
             elif devid_dict["MFG"]:
                 search = devid_dict["MFG"]
-        if search == '' and self.auto_make != None:
+        if search == '' and self.auto_make is not None:
             search += self.auto_make
-            if self.auto_model != None:
+            if self.auto_model is not None:
                 search += " " + self.auto_model
         if (search.startswith("Generic") or
             search.startswith("Unknown")):
@@ -3770,7 +3770,7 @@ class NewPrinterGUI(GtkGUI):
 
     def on_tvNPMakes_cursor_changed(self, tvNPMakes):
         path, column = tvNPMakes.get_cursor()
-        if path != None and self.ppds != None:
+        if path is not None and self.ppds is not None:
             model = tvNPMakes.get_model ()
             iter = model.get_iter (path)
             self.NPMake = model.get(iter, 1)[0]
@@ -3932,7 +3932,7 @@ class NewPrinterGUI(GtkGUI):
 
     def on_tvNPModels_cursor_changed(self, widget):
         path, column = widget.get_cursor()
-        if path != None:
+        if path is not None:
             model = widget.get_model ()
             iter = model.get_iter (path)
             pmodel = model.get(iter, 1)[0]
@@ -3958,7 +3958,7 @@ class NewPrinterGUI(GtkGUI):
         self.frmNPDownloadableDriverLicenseTerms.hide ()
 
         selection = widget.get_selection ()
-        if selection == None:
+        if selection is None:
             return
 
         model, iter = selection.get_selected ()
@@ -4014,7 +4014,7 @@ class NewPrinterGUI(GtkGUI):
                         except:
                             pass
 
-                if value == None:
+                if value is None:
                     hs.hide ()
                     unknown.show_all ()
 
@@ -4452,7 +4452,7 @@ if __name__ == '__main__':
     n.connect ("printer-added", on_signal)
     n.connect ("printer-modified", on_signal)
     n.connect ("dialog-canceled", on_signal)
-    if setup_printer != None:
+    if setup_printer is not None:
         n.init ("printer_with_uri", device_uri=setup_printer, devid=devid)
     else:
         n.init ("printer")

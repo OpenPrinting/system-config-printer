@@ -46,11 +46,11 @@ class Validator:
         for printer in preferenceorder.getchildren ():
             types = []
             drivers = printer.find ("drivers")
-            if drivers != None:
+            if drivers is not None:
                 types.extend (drivers.getchildren ())
 
             blacklist = printer.find ("blacklist")
-            if blacklist != None:
+            if blacklist is not None:
                 types.extend (blacklist.getchildren ())
 
             for drivertype in types:

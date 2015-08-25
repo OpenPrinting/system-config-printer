@@ -188,7 +188,7 @@ class LpdServer:
                 break
 
             found = self.probe_queue(name, result)
-            if found == None:
+            if found is None:
                 # Couldn't even connect.
                 break
 
@@ -338,7 +338,7 @@ class PrinterFinder:
                 return
 
             found = lpd.probe_queue (name, [])
-            if found == None:
+            if found is None:
                 # Couldn't even connect.
                 debugprint ("lpd: couldn't connect")
                 break
@@ -505,7 +505,7 @@ if __name__ == '__main__':
     loop = GObject.MainLoop ()
 
     def display (device):
-        if device == None:
+        if device is None:
             loop.quit ()
 
     addr = sys.argv[1]

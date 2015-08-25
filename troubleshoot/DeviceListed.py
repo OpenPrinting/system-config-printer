@@ -133,7 +133,7 @@ class DeviceListed(Question):
 
     def can_click_forward (self):
         model, iter = self.treeview.get_selection ().get_selected ()
-        if iter == None:
+        if iter is None:
             return False
         return True
 

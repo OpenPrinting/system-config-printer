@@ -52,7 +52,7 @@ class GtkGUI(GObject.GObject):
             except AttributeError:
                 win = None
             
-            if win != None:
+            if win is not None:
                 Gtk.Window.set_focus_on_map(widget.get_top_level (),
                                             self.focus_on_map)
                 widget.show()

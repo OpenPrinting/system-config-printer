@@ -223,7 +223,7 @@ class GUI(GtkGUI):
                 pass # Maybe cups-pk-helper isn't installed.
 
         self.unlock_button = Gtk.LockButton ()
-        if self.edit_permission != None:
+        if self.edit_permission is not None:
             self.edit_permission.connect ("notify::allowed",
                                           self.polkit_permission_changed)
 
@@ -499,7 +499,7 @@ class GUI(GtkGUI):
     def display_properties_dialog_for (self, queue):
         model = self.dests_iconview.get_model ()
         iter = model.get_iter_first ()
-        while iter != None:
+        while iter is not None:
             name = model.get_value (iter, 2)
             if name == queue:
                 path = model.get_path (iter)
@@ -510,7 +510,7 @@ class GUI(GtkGUI):
                 break
             iter = model.iter_next (iter)
 
-        if iter == None:
+        if iter is None:
             raise RuntimeError
 
     def setup_toolbar_for_search_entry (self):
@@ -610,7 +610,7 @@ class GUI(GtkGUI):
 
         userdef = userdefault.UserDefaultPrinter ().get ()
         if (n != 1 or
-            (userdef == None and self.default_printer == name)):
+            (userdef is None and self.default_printer == name)):
             set_default_sensitivity = False
         else:
             set_default_sensitivity = True
@@ -648,7 +648,7 @@ class GUI(GtkGUI):
             click_path = iconview.get_path_at_pos (int (event.x),
                                                    int (event.y))
             paths = iconview.get_selected_items ()
-            if click_path == None:
+            if click_path is None:
                 iconview.unselect_all ()
             elif click_path not in paths:
                 iconview.unselect_all ()
@@ -847,19 +847,19 @@ class GUI(GtkGUI):
 
             if self.current_filter_mode == "filter-name":
                 for name in printers_set.keys ():
-                    if pattern.search (name) != None:
+                    if pattern.search (name) is not None:
                         printers_subset[name] = printers_set[name]
             elif self.current_filter_mode == "filter-description":
                 for name, printer in printers_set.items ():
-                    if pattern.search (printer.info) != None:
+                    if pattern.search (printer.info) is not None:
                         printers_subset[name] = printers_set[name]
             elif self.current_filter_mode == "filter-location":
                 for name, printer in printers_set.items ():
-                    if pattern.search (printer.location) != None:
+                    if pattern.search (printer.location) is not None:
                         printers_subset[name] = printers_set[name]
             elif self.current_filter_mode == "filter-manufacturer":
                 for name, printer in printers_set.items ():
-                    if pattern.search (printer.make_and_model) != None:
+                    if pattern.search (printer.make_and_model) is not None:
                         printers_subset[name] = printers_set[name]
             else:
                 nonfatalException ()
@@ -958,7 +958,7 @@ class GUI(GtkGUI):
                         except GLib.GError:
                             pass
 
-                    if pixbuf == None:
+                    if pixbuf is None:
                         try:
                             pixbuf = theme.load_icon ('printer', w, 0)
                         except:
@@ -987,7 +987,7 @@ class GUI(GtkGUI):
                             continue
 
                         r = statereason.StateReason (object.name, reason)
-                        if worst_reason == None:
+                        if worst_reason is None:
                             worst_reason = r
                         elif r > worst_reason:
                             worst_reason = r
@@ -1256,7 +1256,7 @@ class GUI(GtkGUI):
     # refresh
 
     def on_btnRefresh_clicked(self, button):
-        if self.cups == None:
+        if self.cups is None:
             try:
                 self.cups = authconn.Connection(self.PrintersWindow)
             except RuntimeError:
@@ -1375,11 +1375,11 @@ class GUI(GtkGUI):
 
     def on_rename_activate(self, *UNUSED):
         tuple = self.dests_iconview.get_cursor ()
-        if tuple == None:
+        if tuple is None:
             return
 
         (res, path, cell) = tuple
-        if path == None:
+        if path is None:
             # Printer removed?
             return
 
@@ -1737,7 +1737,7 @@ class GUI(GtkGUI):
             self.cups._end_operation ()
 
         if success and share:
-            if self.server_is_publishing == None:
+            if self.server_is_publishing is None:
                 # We haven't yet seen a server-is-sharing-printers attribute.
                 # Assuming CUPS 1.4, this means we haven't opened a
                 # properties dialog yet.  Fetch the attributes now and
@@ -1800,7 +1800,7 @@ class GUI(GtkGUI):
         out_model = self.newPrinterGUI.tvNCNotMembers.get_model ()
         in_model = self.newPrinterGUI.tvNCMembers.get_model ()
         iter = out_model.get_iter_first ()
-        while iter != None:
+        while iter is not None:
             next = out_model.iter_next (iter)
             data = out_model.get (iter, 0)
             if data[0] in class_members:
@@ -1947,7 +1947,7 @@ class GUI(GtkGUI):
         # Now select it.
         model = self.dests_iconview.get_model ()
         iter = model.get_iter_first ()
-        while iter != None:
+        while iter is not None:
             queue = model.get_value (iter, 2)
             if queue == name:
                 path = model.get_path (iter)
@@ -2116,7 +2116,7 @@ class GUI(GtkGUI):
             # the new PPD (see bug #441836).
             try:
                 option = self.propertiesDlg.server_side_options['media']
-                if option.get_current_value () == None:
+                if option.get_current_value () is None:
                     debugprint ("Invalid media option: resetting")
                     option.reset ()
                     self.propertiesDlg.changed.add (option)

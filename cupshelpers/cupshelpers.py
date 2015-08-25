@@ -55,7 +55,7 @@ class Printer:
         self._ppd = None # load on demand
 
     def __del__ (self):
-        if self._ppd != None:
+        if self._ppd is not None:
             os.unlink(self._ppd)
 
     def __repr__ (self):
@@ -210,7 +210,7 @@ class Printer:
                 else:
                     raise
 
-        if result == None and self._ppd != None:
+        if result is None and self._ppd is not None:
             result = cups.PPD (self._ppd)
 
         return result
@@ -368,7 +368,7 @@ class Printer:
                  attrs['job-name'] == 'Test Page')):
                 ret.append (id)
 
-                if limit != None and len (ret) == limit:
+                if limit is not None and len (ret) == limit:
                     break
         return ret
 
@@ -402,7 +402,7 @@ class Printer:
                            cups.IPP_JOB_PENDING) < cups.IPP_JOB_COMPLETED):
                 continue
             ret.append (id)
-            if limit != None and len (ret) == limit:
+            if limit is not None and len (ret) == limit:
                 break
 
         return ret
@@ -546,7 +546,7 @@ class Device:
         """
         Compare devices by order of preference.
         """
-        if other == None:
+        if other is None:
             return True
 
         if self.is_class != other.is_class:
@@ -665,7 +665,7 @@ def activateNewPrinter(connection, name):
     connection.acceptJobs (name)
 
     # Set as the default if there is not already a default printer.
-    if connection.getDefault () == None:
+    if connection.getDefault () is None:
         connection.setDefault (name)
 
 def copyPPDOptions(ppd1, ppd2):

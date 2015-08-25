@@ -69,14 +69,14 @@ class Locale(Question):
                 except IOError:
                     continue
 
-            if conf != None:
+            if conf is not None:
                 for line in conf:
                     if line.startswith("LC_PAPER="):
                         system_lang = line[9:].strip ('\n"')
-                    elif system_lang == None and line.startswith ("LANG="):
+                    elif system_lang is None and line.startswith ("LANG="):
                         system_lang = line[5:].strip ('\n"')
 
-                if system_lang != None:
+                if system_lang is not None:
                     dot = system_lang.find ('.')
                     if dot != -1:
                         system_lang = system_lang[:dot]
@@ -106,7 +106,7 @@ class Locale(Question):
             job_status = []
 
         self.answers['printer_page_size'] = printer_page_size
-        if printer_page_size != None:
+        if printer_page_size is not None:
             job_page_size = None
             for (test, jobid, printer, doc, status, attrs) in job_status:
                 if test:

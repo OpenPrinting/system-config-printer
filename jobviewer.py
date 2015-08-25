@@ -147,11 +147,11 @@ class PrinterURIIndex:
 
     def _map_printer (self, uri=None, name=None, connection=None):
         try:
-            if connection == None:
+            if connection is None:
                 connection = cups.Connection ()
 
             r = ['printer-name', 'printer-uri-supported', 'printer-more-info']
-            if uri != None:
+            if uri is not None:
                 attrs = connection.getPrinterAttributes (uri=uri,
                                                          requested_attributes=r)
             else:
@@ -166,7 +166,7 @@ class PrinterURIIndex:
 
         name = attrs['printer-name']
         self.update_from_attrs (name, attrs)
-        if uri != None:
+        if uri is not None:
             self.printer[uri] = name
         return name
 
@@ -551,7 +551,7 @@ class JobViewer (GtkGUI):
             self.statusicon.set_visible (False)
 
         # D-Bus
-        if bus == None:
+        if bus is None:
             bus = dbus.SystemBus ()
 
         self.connect_signals ()
@@ -643,7 +643,7 @@ class JobViewer (GtkGUI):
                         pass
                     notification.closed = True
 
-        if self.job_creation_times_timer != None:
+        if self.job_creation_times_timer is not None:
             GLib.source_remove (self.job_creation_times_timer)
             self.job_creation_times_timer = None
 
@@ -697,7 +697,7 @@ class JobViewer (GtkGUI):
 
                 if loc:
                     w.set_skip_taskbar_hint (True)
-                    if aw != None:
+                    if aw is not None:
                         aw.set_skip_taskbar_hint (True)
                     self.JobsWindow.iconify ()
                 else:
@@ -706,7 +706,7 @@ class JobViewer (GtkGUI):
                 self.JobsWindow.present ()
                 self.JobsWindow.set_skip_taskbar_hint (False)
                 aw = self.JobsAttributesWindow.get_window()
-                if aw != None:
+                if aw is not None:
                     aw.set_skip_taskbar_hint (False)
 
         self.JobsWindow.visible = not visible
@@ -807,7 +807,7 @@ class JobViewer (GtkGUI):
         self.jobiters[job] = iter
 
         range = self.treeview.get_visible_range ()
-        if range != None:
+        if range is not None:
             (start, end) = range
             if (self.store.get_sort_column_id () == (0,
                                                      Gtk.SortType.DESCENDING) and
@@ -842,7 +842,7 @@ class JobViewer (GtkGUI):
         if r:
             attrs = None
             try:
-                if connection == None:
+                if connection is None:
                     connection = cups.Connection (host=self.host,
                                                   port=self.port,
                                                   encryption=self.encryption)
@@ -957,12 +957,12 @@ class JobViewer (GtkGUI):
                     informational_attrs["domain"] = str (group)
                 else:
                     (serverport, rest) = urllib.parse.splithost (rest)
-                    if serverport == None:
+                    if serverport is None:
                         server = None
                     else:
                         (server, port) = urllib.parse.splitnport (serverport)
 
-                if scheme == None or server == None:
+                if scheme is None or server is None:
                     try_keyring = False
                 else:
                     informational_attrs.update ({ "server": str (server.lower ()),
@@ -1022,7 +1022,7 @@ class JobViewer (GtkGUI):
                 except RuntimeError:
                     try_keyring = False
 
-            if try_keyring and auth_info != None:
+            if try_keyring and auth_info is not None:
                 try:
                     c._begin_operation (_("authenticating job"))
                     c.authenticateJob (job, auth_info)
@@ -1130,7 +1130,7 @@ class JobViewer (GtkGUI):
                 auth_info_required = getattr (dialog,
                                               "auth_info_required",
                                               None)
-                if keyring_attrs != None and auth_info_required != None:
+                if keyring_attrs is not None and auth_info_required is not None:
                     try:
                         ind = auth_info_required.index ('username')
                         keyring_attrs['user'] = auth_info[ind]
@@ -1278,7 +1278,7 @@ class JobViewer (GtkGUI):
                 except KeyError:
                     uri = None
                 menuitem = Gtk.MenuItem (label=printer)
-                menuitem.set_sensitive (uri != None)
+                menuitem.set_sensitive (uri is not None)
                 menuitem.show ()
                 self._submenu_connect_hack (menuitem,
                                             self.on_job_move_activate,
@@ -1325,7 +1325,7 @@ class JobViewer (GtkGUI):
 
     def poll_subprocess(self, process):
         returncode = process.poll ()
-        return returncode == None
+        return returncode is None
 
     def on_icon_quit_activate (self, menuitem):
         self.cleanup ()
@@ -1460,7 +1460,7 @@ class JobViewer (GtkGUI):
                     format = document.get('document-format', '')
 
                     # if there's no document-name retrieved
-                    if name == None:
+                    if name is None:
                         # give the default filename some meaningful name
                         name = _("retrieved")+str(document_number)
                         # add extension according to format
@@ -1471,7 +1471,7 @@ class JobViewer (GtkGUI):
                         elif format.find('application/') != -1:
                             name = name + format.replace('application/', '.')
 
-                    if tempfile != None:
+                    if tempfile is not None:
                         dialog = Gtk.FileChooserDialog (title=_("Save File"),
                                             transient_for=self.JobsWindow,
                                             action=Gtk.FileChooserAction.SAVE)
@@ -1603,7 +1603,7 @@ class JobViewer (GtkGUI):
 
     def update_job_attributes_viewer(self, jobid, conn=None):
         """ Update attributes store with new values. """
-        if conn != None:
+        if conn is not None:
             c = conn
         else:
             try:
@@ -1642,7 +1642,7 @@ class JobViewer (GtkGUI):
     ## Icon manipulation
     def add_state_reason_emblem (self, pixbuf, printer=None):
         worst_reason = None
-        if printer == None and self.worst_reason != None:
+        if printer is None and self.worst_reason is not None:
             # Check that it's valid.
             printer = self.worst_reason.get_printer ()
             found = False
@@ -1650,17 +1650,17 @@ class JobViewer (GtkGUI):
                 if reason == self.worst_reason:
                     worst_reason = self.worst_reason
                     break
-            if worst_reason == None:
+            if worst_reason is None:
                 self.worst_reason = None
 
-        if printer != None:
+        if printer is not None:
             for reason in self.printer_state_reasons.get (printer, []):
-                if worst_reason == None:
+                if worst_reason is None:
                     worst_reason = reason
                 elif reason > worst_reason:
                     worst_reason = reason
 
-        if worst_reason != None:
+        if worst_reason is not None:
             level = worst_reason.get_level ()
             if level > StateReason.REPORT:
                 # Add an emblem to the icon.
@@ -1687,7 +1687,7 @@ class JobViewer (GtkGUI):
         if not self.applet:
             return
 
-        if have_jobs == None:
+        if have_jobs is None:
             have_jobs = len (self.jobs.keys ()) > 0
 
         if have_jobs:
@@ -1711,7 +1711,7 @@ class JobViewer (GtkGUI):
         if not self.applet:
             return
 
-        if tooltip == None:
+        if tooltip is None:
             num_jobs = len (self.jobs)
             if num_jobs == 0:
                 tooltip = _("No documents queued")
@@ -1756,7 +1756,7 @@ class JobViewer (GtkGUI):
 
         Gdk.threads_enter ()
         self.statusbar.pop (0)
-        if self.worst_reason != None:
+        if self.worst_reason is not None:
             (title, tooltip) = self.worst_reason.get_description ()
             self.statusbar.push (0, tooltip)
         else:
@@ -1860,7 +1860,7 @@ class JobViewer (GtkGUI):
         job = self.jobs.get (jobid, {})
         document = job.get ('job-name', _("Unknown"))
         printer_uri = job.get ('job-printer-uri')
-        if printer_uri != None:
+        if printer_uri is not None:
             # Determine if this printer is remote.  There's no need to
             # show a notification if the printer is connected to this
             # machine.
@@ -1869,7 +1869,7 @@ class JobViewer (GtkGUI):
             # determined this if authentication was required.
             device_uri = job.get ('device-uri')
 
-            if device_uri == None:
+            if device_uri is None:
                 pattrs = ['device-uri']
                 c = authconn.Connection (self.JobsWindow,
                                          host=self.host,
@@ -1883,7 +1883,7 @@ class JobViewer (GtkGUI):
 
                 device_uri = attrs.get ('device-uri')
 
-            if device_uri != None:
+            if device_uri is not None:
                 (scheme, rest) = urllib.parse.splittype (device_uri)
                 if scheme not in ['socket', 'ipp', 'http', 'smb']:
                     return
@@ -2228,7 +2228,7 @@ class JobViewer (GtkGUI):
         except KeyError:
             debugprint ("Couldn't find state reason (no reasons)!")
 
-        if reason != None:
+        if reason is not None:
             tuple = reason.get_tuple ()
         else:
             debugprint ("Couldn't find state reason in list!")
@@ -2241,7 +2241,7 @@ class JobViewer (GtkGUI):
                     tuple = (level, p, r)
                     break
 
-            if tuple == None:
+            if tuple is None:
                 debugprint ("Unexpected now_connected signal "
                             "(reason not in notifications list)")
                 return
@@ -2334,7 +2334,7 @@ class JobViewer (GtkGUI):
         elif s == cups.IPP_JOB_HELD:
             state = _("Held")
             until = data.get ('job-hold-until')
-            if until != None:
+            if until is not None:
                 try:
                     colon1 = until.find (':')
                     if colon1 != -1:
@@ -2362,7 +2362,7 @@ class JobViewer (GtkGUI):
                         os.environ["TZ"] = "UTC"
                         simpletime = time.mktime (hold)
 
-                        if old_tz == None:
+                        if old_tz is None:
                             del os.environ["TZ"]
                         else:
                             os.environ["TZ"] = old_tz
@@ -2395,7 +2395,7 @@ class JobViewer (GtkGUI):
             except KeyError:
                 pass
 
-        if state == None:
+        if state is None:
             state = _("Unknown")
 
         return state

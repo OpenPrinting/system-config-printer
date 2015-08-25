@@ -60,7 +60,7 @@ class PhysicalDevice:
             if rest.startswith ("/net/"):
                 (rest, ipparam) = urllib.parse.splitquery (rest[5:])
 
-            if ipparam != None:
+            if ipparam is not None:
                 if ipparam.startswith("ip="):
                     hostport = ipparam[3:]
                 elif ipparam.startswith ("hostname="):
@@ -77,7 +77,7 @@ class PhysicalDevice:
             return None, None
         else:
             (hostport, rest) = urllib.parse.splithost (rest)
-            if hostport == None:
+            if hostport is None:
                 return None, None
 
         if hostport:
@@ -90,19 +90,19 @@ class PhysicalDevice:
             host, dnssdhost = self._get_host_from_uri (device.uri)
             if (hasattr (device, 'address')):
                 host = device.address
-            if (hasattr (device, 'hostname') and dnssdhost == None):
+            if (hasattr (device, 'hostname') and dnssdhost is None):
                 dnssdhost = device.hostname
-            if (host == None and dnssdhost == None) or \
+            if (host is None and dnssdhost is None) or \
                (host and self._network_host and \
                 host != self._network_host) or \
                (dnssdhost and self.dnssd_hostname and \
                 dnssdhost != self.dnssd_hostname) or \
-               (host == None and self.dnssd_hostname == None) or \
-               (dnssdhost == None and self._network_host == None):
+               (host is None and self.dnssd_hostname is None) or \
+               (dnssdhost is None and self._network_host is None):
                 raise ValueError
         else:
             (mfg, mdl) = self._canonical_id (device)
-            if self.devices == None:
+            if self.devices is None:
                 self.mfg = mfg
                 self.mdl = mdl
                 self.mfg_lower = mfg.lower ()
@@ -157,11 +157,11 @@ class PhysicalDevice:
             if dnssdhost:
                 self.dnssd_hostname = dnssdhost;
 
-        if (hasattr (device, 'address') and self._network_host == None):
+        if (hasattr (device, 'address') and self._network_host is None):
             address = device.address
             if address:
                 self._network_host = address
-        if (hasattr (device, 'hostname') and self.dnssd_hostname == None):
+        if (hasattr (device, 'hostname') and self.dnssd_hostname is None):
             hostname = device.hostname
             if hostname:
                 self.dnssd_hostname = hostname
@@ -275,10 +275,10 @@ class PhysicalDevice:
             return False
 
         if self._network_host != other._network_host:
-            if self._network_host == None:
+            if self._network_host is None:
                 return True
 
-            if other._network_host == None:
+            if other._network_host is None:
                 return False
 
             return self._network_host < other._network_host
