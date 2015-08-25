@@ -1682,11 +1682,11 @@ class NewPrinterGUI(GtkGUI):
                     fmt = _("Searching")
                     self._searchdialog = Gtk.MessageDialog (
                         parent=self.NewPrinterWindow,
-                        flags=Gtk.DialogFlags.MODAL |
-                        Gtk.DialogFlags.DESTROY_WITH_PARENT,
-                        type=Gtk.MessageType.INFO,
+                        modal=True,
+                        destroy_with_parent=True,
+                        message_type=Gtk.MessageType.INFO,
                         buttons=Gtk.ButtonsType.CANCEL,
-                        message_format=fmt)
+                        text=fmt)
 
                     self._searchdialog.format_secondary_text (
                         _("Searching for drivers"))
