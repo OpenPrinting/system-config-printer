@@ -2181,7 +2181,12 @@ class NewPrinterGUI(GtkGUI):
                 pass
 
             if stdout is not None:
-                line = stdout.decode ().strip ()
+                try:
+                    line = stdout.decode ('utf-8').strip ()
+                except UnicodeDecodeError:
+                    # Work-around snmp backend output encoded as iso-8859-1 (despire RFC 2571).
+                    # If it's neither iso-8859-1, make a best guess by ignoring problematic bytes.
+                    line = stdout.decode (encoding='iso-8859-1', errors='ignore').strip ()
                 words = probe_printer.wordsep (line)
                 n = len (words)
                 if n < 4:
