@@ -66,7 +66,7 @@ class ErrorLogFetch(Question):
             prompt = c._get_prompt_allowed ()
             c._set_prompt_allowed (False)
             c._connect ()
-            with tempfile.NamedTemporaryFile (delete=False) as tmpf:
+            with NamedTemporaryFile (delete=False) as tmpf:
                 success = False
                 try:
                     c.getFile ('/admin/log/error_log', tmpf.file)
