@@ -494,7 +494,7 @@ class PrintTestPage(Question):
         test_jobs = self.persistent_answers.get('test_page_job_id', [])
         for event in notifications['events']:
             seq = event['notify-sequence-number']
-	    self.sub_seq = seq
+            self.sub_seq = seq
 
             job = event['notify-job-id']
 
