@@ -1231,6 +1231,7 @@ class PrinterPropertiesDialog(GtkGUI):
 
         with tempfile.NamedTemporaryFile(mode='wt') as tmpfile:
             tmpfile.write ("#CUPS-COMMAND\n%s\n" % command)
+            tmpfile.flush()
             self.cups._begin_operation (_("sending maintenance command"))
             try:
                 format = "application/vnd.cups-command"
