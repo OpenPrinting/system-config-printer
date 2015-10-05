@@ -154,7 +154,7 @@ class ErrorLogFetch(Question):
             len (self.answers.get ('error_log', []))) == 0:
             cmd = ("su -c 'journalctl -u cups.service "
                    "--since=\"%s\" --until=\"%s\"' > troubleshoot-logs.txt" %
-                   (answers['error_log_timestamp'], now))
+                   (timestamp, now))
             self.entry.set_text (cmd)
             return True
 
