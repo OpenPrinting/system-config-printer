@@ -1030,7 +1030,9 @@ class GUI(GtkGUI):
                     try:
                         other_emblem = theme.load_icon (emblem, w/2, 0)
                         copy = pixbuf.copy ()
-                        other_emblem.composite (copy, 0, 0,
+                        other_emblem.composite (copy,
+                                                copy.get_width () / 2,
+                                                copy.get_height () / 2,
                                                 other_emblem.get_width (),
                                                 other_emblem.get_height (),
                                                 copy.get_width () / 2,
