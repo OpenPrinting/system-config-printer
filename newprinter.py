@@ -1705,6 +1705,7 @@ class NewPrinterGUI(GtkGUI):
                         self.opreq.connect (
                             'error',
                             self.opreq_id_search_error))
+                    self.opreq_user_search = False
                     self.opreq.searchPrinters (devid)
 
                     # Searching for drivers in OpenPrinting takes times, so
