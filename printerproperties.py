@@ -35,6 +35,7 @@ import cupshelpers, options
 from gi.repository import GObject
 from gi.repository import GLib
 from gui import GtkGUI
+import html  # requires python3.2
 from optionwidgets import OptionWidget
 from debug import *
 import authconn
@@ -1733,7 +1734,8 @@ class PrinterPropertiesDialog(GtkGUI):
                                                  self.static_tabs)
                 tab_label = self.lblPInstallOptions
             else:
-                frame = Gtk.Frame(label="<b>%s</b>" % ppdippstr.ppd.get (group.text))
+                group_name = ppdippstr.ppd.get (group.text)
+                frame = Gtk.Frame(label="<b>%s</b>" % html.escape (group_name))
                 frame.get_label_widget().set_use_markup(True)
                 frame.set_shadow_type (Gtk.ShadowType.NONE)
                 self.vbPOptions.pack_start (frame, False, False, 0)
