@@ -388,7 +388,7 @@ test-xml-validity.sh:	FORCE
 
 py.test.sh:	FORCE
 	echo "#!/bin/bash" > "$@"
-	echo "exec py.test-3.4" >> "$@"
+	echo "exec ${PYTEST-py.test}" >> "$@"
 	chmod 755 "$@"
 
 TESTS = test-xml-validity.sh py.test.sh
