@@ -52,6 +52,11 @@ cupshelpers/config.py: cupshelpers/config.py.in Makefile
 	  -e "s|\@cupsserverbindir\@|$(cupsserverbindir)|" \
 	  $< > $@
 
+dbus/org.fedoraproject.Config.Printing.service: dbus/org.fedoraproject.Config.Printing.service.in
+	sed \
+	-e "s|\@bindir\@|$(bindir)|" \
+	$< >$@
+
 # Use distutils to build the module.
 all-local: .stamp-distutils-in-builddir config.py cupshelpers/config.py
 	$(PYTHON) setup.py build
@@ -286,6 +291,7 @@ EXTRA_DIST=\
 	udev/udev-add-printer \
 	udev/70-printers.rules \
 	udev/configure-printer@.service.in \
+	dbus/org.fedoraproject.Config.Printing.service.in \
 	xml/preferreddrivers.xml \
 	test_PhysicalDevice.py \
 	$(appdata_in_files)
@@ -402,7 +408,8 @@ DISTCLEANFILES=*.pyc *.pyo *~ *.bak \
 	intltool-extract intltool-merge intltool-update \
 	*.desktop man/*.1 \
 	test-ppd-module.sh test-xml-validity.sh py.test.sh pickled-ppds \
-	config.py cupshelpers/config.py zanata.xml
+	config.py cupshelpers/config.py zanata.xml \
+	dbus/org.fedoraproject.Config.Printing.service
 
 distclean-local:
 	rm -rf html
