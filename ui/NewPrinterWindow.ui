@@ -2473,25 +2473,21 @@ ipp://printer.mydomain/ipp</property>
                                 <property name="orientation">vertical</property>
                                 <property name="spacing">12</property>
                                 <child>
-                                  <object class="GtkTable" id="table20">
+                                  <object class="GtkGrid" id="grid1">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="n_rows">4</property>
-                                    <property name="n_columns">4</property>
-                                    <property name="column_spacing">6</property>
                                     <property name="row_spacing">6</property>
+                                    <property name="column_spacing">6</property>
                                     <child>
-                                      <object class="GtkLabel" id="label225">
+                                      <object class="GtkLabel" id="label221">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="xalign">0</property>
-                                        <property name="label" translatable="yes">Description:</property>
+                                        <property name="label" translatable="yes">Supplier:</property>
                                       </object>
                                       <packing>
-                                        <property name="top_attach">2</property>
-                                        <property name="bottom_attach">3</property>
-                                        <property name="x_options">GTK_FILL</property>
-                                        <property name="y_options">GTK_FILL</property>
+                                        <property name="left_attach">0</property>
+                                        <property name="top_attach">0</property>
                                       </packing>
                                     </child>
                                     <child>
@@ -2502,59 +2498,47 @@ ipp://printer.mydomain/ipp</property>
                                         <property name="label" translatable="yes">License:</property>
                                       </object>
                                       <packing>
+                                        <property name="left_attach">0</property>
                                         <property name="top_attach">1</property>
-                                        <property name="bottom_attach">2</property>
-                                        <property name="x_options">GTK_FILL</property>
-                                        <property name="y_options">GTK_FILL</property>
                                       </packing>
                                     </child>
                                     <child>
-                                      <object class="GtkLabel" id="label221">
+                                      <object class="GtkLabel" id="label225">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="xalign">0</property>
-                                        <property name="label" translatable="yes">Supplier:</property>
+                                        <property name="label" translatable="yes">Description:</property>
                                       </object>
                                       <packing>
-                                        <property name="x_options">GTK_FILL</property>
-                                        <property name="y_options">GTK_FILL</property>
+                                        <property name="left_attach">0</property>
+                                        <property name="top_attach">2</property>
                                       </packing>
                                     </child>
                                     <child>
-                                      <object class="GtkLabel" id="lblNPDownloadableDriverLicense">
+                                      <object class="GtkLabel" id="label2212">
                                         <property name="visible">True</property>
-                                        <property name="can_focus">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="label" translatable="yes">Support:</property>
                                         <property name="xalign">0</property>
-                                        <property name="label" translatable="yes">license</property>
-                                        <property name="wrap">True</property>
-                                        <property name="selectable">True</property>
                                       </object>
                                       <packing>
-                                        <property name="left_attach">1</property>
-                                        <property name="right_attach">2</property>
-                                        <property name="top_attach">1</property>
-                                        <property name="bottom_attach">2</property>
-                                        <property name="x_options">GTK_FILL</property>
-                                        <property name="y_options">GTK_FILL</property>
+                                        <property name="left_attach">0</property>
+                                        <property name="top_attach">3</property>
                                       </packing>
                                     </child>
                                     <child>
-                                      <object class="GtkLabel" id="lblNPDownloadableDriverDescription">
+                                      <object class="GtkLabel" id="lblNPDownloadableDriverSupplier">
                                         <property name="visible">True</property>
-                                        <property name="can_focus">True</property>
-                                        <property name="xalign">0</property>
-                                        <property name="label" translatable="yes">short description</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="label" translatable="yes">supplier</property>
                                         <property name="use_markup">True</property>
                                         <property name="wrap">True</property>
                                         <property name="selectable">True</property>
                                       </object>
                                       <packing>
                                         <property name="left_attach">1</property>
-                                        <property name="right_attach">4</property>
-                                        <property name="top_attach">2</property>
-                                        <property name="bottom_attach">3</property>
-                                        <property name="x_options">GTK_FILL</property>
-                                        <property name="y_options"/>
+                                        <property name="top_attach">0</property>
+                                        <property name="width">2</property>
                                       </packing>
                                     </child>
                                     <child>
@@ -2564,48 +2548,25 @@ ipp://printer.mydomain/ipp</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
                                         <property name="use_underline">True</property>
+                                        <property name="xalign">0</property>
                                         <property name="draw_indicator">True</property>
                                       </object>
                                       <packing>
                                         <property name="left_attach">3</property>
-                                        <property name="right_attach">4</property>
-                                        <property name="x_options">GTK_FILL</property>
-                                        <property name="y_options"/>
+                                        <property name="top_attach">0</property>
                                       </packing>
                                     </child>
                                     <child>
-                                      <object class="GtkLabel" id="lblNPDownloadableDriverSupplier">
+                                      <object class="GtkLabel" id="lblNPDownloadableDriverLicense">
                                         <property name="visible">True</property>
-                                        <property name="can_focus">True</property>
-                                        <property name="xalign">0</property>
-                                        <property name="label" translatable="yes">supplier</property>
-                                        <property name="use_markup">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="label" translatable="yes">license</property>
                                         <property name="wrap">True</property>
                                         <property name="selectable">True</property>
                                       </object>
                                       <packing>
                                         <property name="left_attach">1</property>
-                                        <property name="right_attach">3</property>
-                                        <property name="x_options">GTK_FILL</property>
-                                        <property name="y_options">GTK_FILL</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <object class="GtkCheckButton" id="cbNPDownloadableDriverLicenseFree">
-                                        <property name="label" translatable="yes">Free software</property>
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">True</property>
-                                        <property name="receives_default">False</property>
-                                        <property name="use_underline">True</property>
-                                        <property name="draw_indicator">True</property>
-                                      </object>
-                                      <packing>
-                                        <property name="left_attach">3</property>
-                                        <property name="right_attach">4</property>
                                         <property name="top_attach">1</property>
-                                        <property name="bottom_attach">2</property>
-                                        <property name="x_options">GTK_FILL</property>
-                                        <property name="y_options"/>
                                       </packing>
                                     </child>
                                     <child>
@@ -2615,53 +2576,63 @@ ipp://printer.mydomain/ipp</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
                                         <property name="use_underline">True</property>
+                                        <property name="xalign">0</property>
                                         <property name="draw_indicator">True</property>
                                       </object>
                                       <packing>
                                         <property name="left_attach">2</property>
-                                        <property name="right_attach">3</property>
                                         <property name="top_attach">1</property>
-                                        <property name="bottom_attach">2</property>
-                                        <property name="x_options">GTK_FILL</property>
-                                        <property name="y_options"/>
                                       </packing>
                                     </child>
                                     <child>
-                                      <object class="GtkLabel" id="label2212">
+                                      <object class="GtkCheckButton" id="cbNPDownloadableDriverLicenseFree">
+                                        <property name="label" translatable="yes">Free software</property>
                                         <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="receives_default">False</property>
+                                        <property name="use_underline">True</property>
                                         <property name="xalign">0</property>
-                                        <property name="label" translatable="yes">Support:</property>
+                                        <property name="draw_indicator">True</property>
                                       </object>
                                       <packing>
-                                        <property name="top_attach">3</property>
-                                        <property name="bottom_attach">4</property>
-                                        <property name="x_options">GTK_FILL</property>
-                                        <property name="y_options">GTK_FILL</property>
+                                        <property name="left_attach">3</property>
+                                        <property name="top_attach">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkLabel" id="lblNPDownloadableDriverDescription">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="use_markup">True</property>
+                                        <property name="wrap">True</property>
+                                        <property name="selectable">True</property>
+                                        <property name="xalign">0</property>
+                                        <property name="label" translatable="yes">short description</property>
+                                      </object>
+                                      <packing>
+                                        <property name="left_attach">1</property>
+                                        <property name="top_attach">2</property>
+                                        <property name="width">3</property>
                                       </packing>
                                     </child>
                                     <child>
                                       <object class="GtkLabel" id="lblNPDownloadableDriverSupportContacts">
                                         <property name="visible">True</property>
-                                        <property name="can_focus">True</property>
-                                        <property name="xalign">0</property>
+                                        <property name="can_focus">False</property>
                                         <property name="label" translatable="yes">support contacts</property>
                                         <property name="wrap">True</property>
                                         <property name="selectable">True</property>
                                       </object>
                                       <packing>
                                         <property name="left_attach">1</property>
-                                        <property name="right_attach">4</property>
                                         <property name="top_attach">3</property>
-                                        <property name="bottom_attach">4</property>
-                                        <property name="x_options">GTK_FILL</property>
-                                        <property name="y_options">GTK_FILL</property>
+                                        <property name="width">3</property>
                                       </packing>
                                     </child>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
-                                    <property name="fill">False</property>
+                                    <property name="fill">True</property>
                                     <property name="position">0</property>
                                   </packing>
                                 </child>
