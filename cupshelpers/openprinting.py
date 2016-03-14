@@ -378,11 +378,19 @@ class OpenPrinting:
         if isinstance(model, Device):
             model = model.id
 
+        architecture = platform.machine()
+
+        # On Intel, we could be running a 32bit user space with a 64bit kernel, in
+        # which case platform.machine() will return x86_64, leading to downloading
+        # the wrong printer driver, so we make sure we ask for i386 in that case.
+        if architecture == 'x86_64' and platform.architecture()[0] == '32bit':
+            architecture = 'i386'
+
         params = { 'type': 'drivers',
                    'moreinfo': '1',
                    'showprinterid': '1',
                    'onlynewestdriverpackages': '1',
-                   'architectures': platform.machine(),
+                   'architectures': architecture,
                    'noobsoletes': '1',
                    'onlyfree': str (self.onlyfree),
                    'onlymanufacturer': str (self.onlymanufacturer),
