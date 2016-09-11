@@ -53,6 +53,7 @@ def show_help():
            "Options:\n\n"
            "  --debug                 Enable debugging output.\n"
            "  --show-jobs <printer>   Show the print queue for <printer>\n"
+           "  --embedded              Enable to start in Embedded mode.\n "
            "  --help                  Show this message.\n")
 
 if len(sys.argv)>1 and sys.argv[1] == '--help':
@@ -99,6 +100,9 @@ ppdippstr.init ()
 pkgdata = config.pkgdatadir
 iconpath = os.path.join (pkgdata, 'icons/')
 sys.path.append (pkgdata)
+
+PlugWindow = None
+PlugWindowId = None
 
 def CUPS_server_hostname ():
     host = cups.getServer ()
@@ -205,6 +209,16 @@ class GUI(GtkGUI):
 
                         domain=config.PACKAGE)
 
+        if PlugWindowId:
+            self.PrintersWindow.hide()
+            # the "vbox4" widget
+            vbox = self.PrintersWindow.get_children()[0]
+            PlugWindow = Gtk.Plug.new(PlugWindowId)
+            Gtk.Container.remove(self.PrintersWindow, vbox)
+            PlugWindow.add(vbox)
+            self.PrintersWindow.set_transient_for(PlugWindow)
+            PlugWindow.show_all()
+            self.PrintersWindow = PlugWindow
 
         # Since some dialogs are reused we can't let the delete-event's
         # default handler destroy them
@@ -2194,7 +2208,8 @@ if __name__ == "__main__":
     import getopt
     try:
         opts, args = getopt.gnu_getopt (sys.argv[1:], '',
-                                        ['debug', 'show-jobs='])
+                                        ['embedded=',
+                                            'debug', 'show-jobs='])
     except getopt.GetoptError:
         show_help ()
         sys.exit (1)
@@ -2207,5 +2222,8 @@ if __name__ == "__main__":
             cupshelpers.set_debugprint_fn (debugprint)
         elif opt == '--show-jobs':
             show_jobs = optarg
+
+        if opt == "--embedded":
+            PlugWindowId = int(optarg)
 
     main(show_jobs)
