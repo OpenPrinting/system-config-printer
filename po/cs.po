@@ -10,13 +10,15 @@
 # Miloslav Trmač <mitr@volny.cz>, 2002-2004
 # zdenek <chmelarz@gmail.com>, 2013-2014
 # zdenek <chmelarz@centrum.cz>, 2013
+# Zdenek <chmelarz@gmail.com>, 2016. #zanata
+# Zdenek Dohnal <zdohnal@redhat.com>, 2016. #zanata
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
 "POT-Creation-Date: 2015-03-17 15:19+0000\n"
-"PO-Revision-Date: 2014-10-23 06:58-0400\n"
-"Last-Translator: Tim Waugh <twaugh@redhat.com>\n"
+"PO-Revision-Date: 2016-09-03 08:52-0400\n"
+"Last-Translator: Zdenek <chmelarz@gmail.com>\n"
 "Language-Team: Czech (http://www.transifex.com/projects/p/system-config-"
 "printer/language/cs/)\n"
 "Language: cs\n"
@@ -24,7 +26,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Zanata 3.6.2\n"
+"X-Generator: Zanata 3.9.5\n"
 
 #: ../asyncipp.py:473 ../authconn.py:447 ../authconn.py:449
 #: ../errordialogs.py:63 ../pysmb.py:90 ../pysmb.py:92
@@ -693,7 +695,7 @@ msgstr ""
 #: ../newprinter.py:2440
 #, python-format
 msgid "Verification requires the %s module"
-msgstr ""
+msgstr "Ověření vyžaduje modul %s"
 
 #: ../newprinter.py:2494
 msgid "Allow all incoming SMB/CIFS browse packets"
@@ -1523,11 +1525,11 @@ msgstr "Příkaz údržby byl odeslán jako úloha %d"
 
 #: ../printerproperties.py:1323
 msgid "Raw Queue"
-msgstr ""
+msgstr "Nezpracovaná fronta"
 
 #: ../printerproperties.py:1324
 msgid "Unable to get queue details. Treating queue as raw."
-msgstr ""
+msgstr "Nelze získat detaily fronty. Ošetření fronty jako nezpracované."
 
 #: ../printerproperties.py:1336 ../printerproperties.py:1341
 #: ../printerproperties.py:1438
@@ -1639,15 +1641,13 @@ msgstr "Výrobce a model"
 
 #: ../system-config-printer.py:318 ../ui/PrinterPropertiesDialog.ui.h:41
 #: ../ui/PrintersWindow.ui.h:10 ../ui/ServerSettingsDialog.ui.h:15
-#, fuzzy
 msgid "Add"
-msgstr "Lichá"
+msgstr "Přidat"
 
 #: ../system-config-printer.py:335 ../ui/PrinterPropertiesDialog.ui.h:88
 #: ../ui/SMBBrowseDialog.ui.h:2
-#, fuzzy
 msgid "Refresh"
-msgstr "_Obnovit"
+msgstr "Obnovit"
 
 #: ../system-config-printer.py:349
 msgid "_New"
@@ -1861,12 +1861,10 @@ msgstr "Připojit se k CUPS serveru"
 #: ../ui/NewPrinterName.ui.h:2 ../ui/NewPrinterWindow.ui.h:104
 #: ../ui/PrinterPropertiesDialog.ui.h:4 ../ui/ServerSettingsDialog.ui.h:2
 #: ../ui/SMBBrowseDialog.ui.h:3
-#, fuzzy
 msgid "Cancel"
-msgstr "_Zrušit"
+msgstr "Zrušit"
 
 #: ../ui/ConnectDialog.ui.h:3 ../ui/PrintersWindow.ui.h:13
-#, fuzzy
 msgid "Connect"
 msgstr "Spojení"
 
@@ -1889,7 +1887,7 @@ msgstr ""
 
 #: ../ui/InstallDialog.ui.h:1 ../ui/PrinterPropertiesDialog.ui.h:6
 msgid "Close"
-msgstr ""
+msgstr "Zavřít"
 
 #: ../ui/InstallDialog.ui.h:2
 msgid "_Install"
@@ -1918,7 +1916,7 @@ msgstr "Duplikovat tiskárnu"
 #: ../ui/NewPrinterName.ui.h:3 ../ui/PrinterPropertiesDialog.ui.h:5
 #: ../ui/ServerSettingsDialog.ui.h:3 ../ui/SMBBrowseDialog.ui.h:4
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #: ../ui/NewPrinterName.ui.h:4
 msgid "New name for the printer"
@@ -2080,7 +2078,7 @@ msgstr "SMB"
 
 #: ../ui/NewPrinterWindow.ui.h:44
 msgid "Find"
-msgstr ""
+msgstr "Hledat"
 
 #: ../ui/NewPrinterWindow.ui.h:45
 msgid "Searching..."
@@ -2340,15 +2338,15 @@ msgstr "Podrobnosti o ovladači"
 
 #: ../ui/NewPrinterWindow.ui.h:103
 msgid "Back"
-msgstr ""
+msgstr "Zpět"
 
 #: ../ui/NewPrinterWindow.ui.h:105 ../ui/PrinterPropertiesDialog.ui.h:3
 msgid "Apply"
-msgstr ""
+msgstr "Použít"
 
 #: ../ui/NewPrinterWindow.ui.h:106
 msgid "Forward"
-msgstr ""
+msgstr "Vpřed"
 
 #: ../ui/PrinterPropertiesDialog.ui.h:1
 msgid "Printer Properties"
@@ -2433,9 +2431,8 @@ msgid "<b>State</b>"
 msgstr "<b>Stav</b>"
 
 #: ../ui/PrinterPropertiesDialog.ui.h:30
-#, fuzzy
 msgid "Error Policy:"
-msgstr "Chybová politika: \t"
+msgstr "Politika chyby:"
 
 #: ../ui/PrinterPropertiesDialog.ui.h:31
 msgid "Operation Policy:"
@@ -2474,9 +2471,8 @@ msgid "user"
 msgstr "uživatel"
 
 #: ../ui/PrinterPropertiesDialog.ui.h:40
-#, fuzzy
 msgid "Delete"
-msgstr "_Smazat"
+msgstr "Smazat"
 
 #: ../ui/PrinterPropertiesDialog.ui.h:42
 msgid "Access Control"
@@ -2696,7 +2692,7 @@ msgstr "_Řešit potíže"
 
 #: ../ui/PrintersWindow.ui.h:8
 msgid "About"
-msgstr ""
+msgstr "O aplikaci"
 
 #: ../ui/PrintersWindow.ui.h:9
 msgid "There are no printers configured yet."
@@ -2769,7 +2765,7 @@ msgstr ""
 
 #: ../ui/ServerSettingsDialog.ui.h:16
 msgid "Remove"
-msgstr ""
+msgstr "Odstranit"
 
 #: ../ui/ServerSettingsDialog.ui.h:17
 msgid "<b>Browse servers</b>"
@@ -2797,7 +2793,7 @@ msgstr "_Konfigurovat tiskárny"
 
 #: ../ui/statusicon_popupmenu.ui.h:3
 msgid "Quit"
-msgstr ""
+msgstr "Ukončit"
 
 #: ../ui/WaitWindow.ui.h:1
 msgid "Please Wait"
@@ -3079,13 +3075,15 @@ msgstr "Ladící výpisy již byly povoleny."
 
 #: ../troubleshoot/ErrorLogFetch.py:41
 msgid "Retrieve Journal Entries"
-msgstr ""
+msgstr "Načtení položek žurnálu"
 
 #: ../troubleshoot/ErrorLogFetch.py:42
 msgid ""
 "No system journal entries were found. This may be because you are not an "
 "administrator. To fetch journal entries please run this command:"
 msgstr ""
+"Nenalezeny žádné záznamy systémového žurnálu. Může to být způsobeno tím, že "
+"nejste administrátor. Pro načtení žurnálu spusťte tento příkaz:"
 
 #: ../troubleshoot/ErrorLogParse.py:32
 msgid "Error log messages"
@@ -3404,9 +3402,14 @@ msgid ""
 "With system-config-printer you can add, edit and delete printer queues. It "
 "allows you to choose the connection method and the printer driver."
 msgstr ""
+"Se system-config-printer lze přidat, upravit a odstranit tiskové fronty. "
+"Umožní vám vybrat si způsob připojení a ovladač tiskárny."
 
 #: ../system-config-printer.appdata.xml.in.h:2
 msgid ""
 "For each queue, you can adjust the default page size and other driver "
 "options, as well as seeing ink/toner levels and status messages."
 msgstr ""
+"Pro každou tiskovou frontu lze nastavit výchozí velikost stránky a další "
+"možnosti ovladače, stejně jako vidět množství inkoustu / toneru a zprávy o "
+"stavu."

@@ -9,13 +9,14 @@
 # Lubomir Kundrak <lkundrak@redhat.com>, 2007
 # Michal Hriň <michalhrin@aol.com>, 2011
 # Mike Karas <zoliqe@gmail.com>, 2005
+# Dusan Kazik <prescott66@gmail.com>, 2015. #zanata
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
 "POT-Creation-Date: 2015-03-17 15:19+0000\n"
-"PO-Revision-Date: 2014-10-23 07:03-0400\n"
-"Last-Translator: Tim Waugh <twaugh@redhat.com>\n"
+"PO-Revision-Date: 2015-09-22 08:22-0400\n"
+"Last-Translator: Dusan Kazik <prescott66@gmail.com>\n"
 "Language-Team: Slovak (http://www.transifex.com/projects/p/system-config-"
 "printer/language/sk/)\n"
 "Language: sk\n"
@@ -23,7 +24,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Zanata 3.6.2\n"
+"X-Generator: Zanata 3.9.5\n"
 
 #: ../asyncipp.py:473 ../authconn.py:447 ../authconn.py:449
 #: ../errordialogs.py:63 ../pysmb.py:90 ../pysmb.py:92
@@ -612,7 +613,7 @@ msgstr "Zmeniť ovládač"
 
 #: ../newprinter.py:704
 msgid "Download Printer Driver"
-msgstr ""
+msgstr "Prevziať ovládač tlačiarne"
 
 #: ../newprinter.py:713 ../newprinter.py:2081 ../newprinter.py:2086
 msgid "fetching device list"
@@ -621,11 +622,11 @@ msgstr "získava sa zoznam zariadení"
 #: ../newprinter.py:949
 #, python-format
 msgid "Installing driver %s"
-msgstr ""
+msgstr "Inštaluje sa ovládač %s"
 
 #: ../newprinter.py:956
 msgid "Installing ..."
-msgstr ""
+msgstr "Inštaluje sa..."
 
 #: ../newprinter.py:1318 ../newprinter.py:3102 ../newprinter.py:3330
 #: ../ppdsloader.py:86
@@ -691,11 +692,11 @@ msgstr ""
 #: ../newprinter.py:2440
 #, python-format
 msgid "Verification requires the %s module"
-msgstr ""
+msgstr "Overenie vyžaduje modul %s"
 
 #: ../newprinter.py:2494
 msgid "Allow all incoming SMB/CIFS browse packets"
-msgstr ""
+msgstr "Umožniť všetkým prichádzajúcim SMB/CIFS prehliadať pakety"
 
 #: ../newprinter.py:2610
 msgid "Print Share Verified"
@@ -1521,11 +1522,12 @@ msgstr "Príkaz na údržbu bol odoslaný ako úloha %d"
 
 #: ../printerproperties.py:1323
 msgid "Raw Queue"
-msgstr ""
+msgstr "Surová fronta"
 
 #: ../printerproperties.py:1324
 msgid "Unable to get queue details. Treating queue as raw."
 msgstr ""
+"Nie je možné získať podrobnosti o fronte. Fronta bude spracovaná ako surová."
 
 #: ../printerproperties.py:1336 ../printerproperties.py:1341
 #: ../printerproperties.py:1438
@@ -1534,7 +1536,7 @@ msgstr "Chyba"
 
 #: ../printerproperties.py:1337
 msgid "The PPD file for this queue is damaged."
-msgstr ""
+msgstr "Súbor PPD pre túto frontu je poškodený."
 
 #: ../printerproperties.py:1342
 msgid "There was a problem connecting to the CUPS server."
@@ -1560,7 +1562,7 @@ msgstr "Problémy?"
 
 #: ../serversettings.py:273
 msgid "Enter hostname"
-msgstr ""
+msgstr "Zadajte názov hostiteľa"
 
 #: ../serversettings.py:524
 msgid "modifying server settings"
@@ -1638,15 +1640,13 @@ msgstr "Výrobca / Model"
 
 #: ../system-config-printer.py:318 ../ui/PrinterPropertiesDialog.ui.h:41
 #: ../ui/PrintersWindow.ui.h:10 ../ui/ServerSettingsDialog.ui.h:15
-#, fuzzy
 msgid "Add"
-msgstr "Nepárne"
+msgstr "Pridať"
 
 #: ../system-config-printer.py:335 ../ui/PrinterPropertiesDialog.ui.h:88
 #: ../ui/SMBBrowseDialog.ui.h:2
-#, fuzzy
 msgid "Refresh"
-msgstr "_Obnoviť"
+msgstr "Obnoviť"
 
 #: ../system-config-printer.py:349
 msgid "_New"
@@ -1655,7 +1655,7 @@ msgstr "_Nová"
 #: ../system-config-printer.py:711
 #, python-format
 msgid "Print Settings - %s"
-msgstr ""
+msgstr "Nastavenia tlače - %s"
 
 #: ../system-config-printer.py:714
 #, python-format
@@ -1689,7 +1689,7 @@ msgstr "Zdieľaná sieťová tlačiareň"
 
 #: ../system-config-printer.py:1064
 msgid "Service framework not available"
-msgstr ""
+msgstr "Rozhranie služby nie je dostupné"
 
 #: ../system-config-printer.py:1066
 msgid "Cannot start service on remote server"
@@ -1832,6 +1832,18 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA."
 msgstr ""
+"Toto je slobodný software; môžete ho šíriť a/alebo upravovať podľa "
+"ustanovení GNU General Public License vydaných Free Software Foundation; buď "
+"verzia 2 tejto licencie alebo (podľa vášho uváženia) ktorákoľvek neskoršia "
+"verzia.\n"
+"\n"
+"Tento program je šírený v nádeji, že bude užitočný, avšak BEZ AKEJKOĽVEK "
+"ZÁRUKY; neposkytujú sa ani odvodené záruky PREDAJNOSTI alebo VHODNOSTI PRE "
+"URČITÝ ÚČEL. Ďalšie podrobnosti môžete nájsť v GNU General Public License.\n"
+"\n"
+"Kópiu GNU General Public License by ste mali obdržať spolu s týmto "
+"programom; ak sa tak nestalo napíšte si o ňu Free Software Foundation, Inc., "
+"51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA."
 
 #. TRANSLATORS: Replace this string with your names, one name per line.  Thank you very much for your effort on translating system-config-printer and all our other tools!
 #: ../ui/AboutDialog.ui.h:9
@@ -1839,7 +1851,8 @@ msgid "translator-credits"
 msgstr ""
 "Mike Karas\n"
 "Lubomir Kundrak\n"
-"Ondrej Šulek"
+"Ondrej Šulek\n"
+"Dušan Kazik"
 
 #: ../ui/ConnectDialog.ui.h:1
 msgid "Connect to CUPS server"
@@ -1849,14 +1862,12 @@ msgstr "Pripojiť sa na server CUPS"
 #: ../ui/NewPrinterName.ui.h:2 ../ui/NewPrinterWindow.ui.h:104
 #: ../ui/PrinterPropertiesDialog.ui.h:4 ../ui/ServerSettingsDialog.ui.h:2
 #: ../ui/SMBBrowseDialog.ui.h:3
-#, fuzzy
 msgid "Cancel"
-msgstr "_Zrušiť"
+msgstr "Zrušiť"
 
 #: ../ui/ConnectDialog.ui.h:3 ../ui/PrintersWindow.ui.h:13
-#, fuzzy
 msgid "Connect"
-msgstr "Pripojenie"
+msgstr "Pripojiť"
 
 #: ../ui/ConnectDialog.ui.h:4
 msgid "Require _encryption"
@@ -1876,7 +1887,7 @@ msgstr "<span weight=\"bold\" size=\"larger\">Pripájanie na CUPS server</span>"
 
 #: ../ui/InstallDialog.ui.h:1 ../ui/PrinterPropertiesDialog.ui.h:6
 msgid "Close"
-msgstr ""
+msgstr "Zavrieť"
 
 #: ../ui/InstallDialog.ui.h:2
 msgid "_Install"
@@ -1905,7 +1916,7 @@ msgstr "Duplikovať tlačiareň"
 #: ../ui/NewPrinterName.ui.h:3 ../ui/PrinterPropertiesDialog.ui.h:5
 #: ../ui/ServerSettingsDialog.ui.h:3 ../ui/SMBBrowseDialog.ui.h:4
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #: ../ui/NewPrinterName.ui.h:4
 msgid "New name for the printer"
@@ -2067,7 +2078,7 @@ msgstr "SMB"
 
 #: ../ui/NewPrinterWindow.ui.h:44
 msgid "Find"
-msgstr ""
+msgstr "Nájsť"
 
 #: ../ui/NewPrinterWindow.ui.h:45
 msgid "Searching..."
@@ -2125,6 +2136,9 @@ msgid ""
 "disk that comes with the printer. For PostScript printers they are often "
 "part of the Windows<sup>®</sup> driver."
 msgstr ""
+"Súbory s popisom talčiarní typu PostScript (PPD) je často možné nájsť na "
+"disku s ovládačmi, ktorý je pribalený k tlačiarni. Pre tlačiarne typu "
+"PostScript sú často súčasťou ovládača pre systém Windows<sup>®</sup>."
 
 #: ../ui/NewPrinterWindow.ui.h:57
 msgid "Make and model:"
@@ -2326,15 +2340,15 @@ msgstr "Podrobnosti o ovládači"
 
 #: ../ui/NewPrinterWindow.ui.h:103
 msgid "Back"
-msgstr ""
+msgstr "Späť"
 
 #: ../ui/NewPrinterWindow.ui.h:105 ../ui/PrinterPropertiesDialog.ui.h:3
 msgid "Apply"
-msgstr ""
+msgstr "Použiť"
 
 #: ../ui/NewPrinterWindow.ui.h:106
 msgid "Forward"
-msgstr ""
+msgstr "Dopredu"
 
 #: ../ui/PrinterPropertiesDialog.ui.h:1
 msgid "Printer Properties"
@@ -2366,11 +2380,11 @@ msgstr "Výrobca a model:"
 
 #: ../ui/PrinterPropertiesDialog.ui.h:13
 msgid "printer state"
-msgstr ""
+msgstr "stav tlačiarne"
 
 #: ../ui/PrinterPropertiesDialog.ui.h:14
 msgid "make and model"
-msgstr ""
+msgstr "výrobca a model"
 
 #: ../ui/PrinterPropertiesDialog.ui.h:15
 msgid "<b>Settings</b>"
@@ -2419,9 +2433,8 @@ msgid "<b>State</b>"
 msgstr "<b>Stav</b>"
 
 #: ../ui/PrinterPropertiesDialog.ui.h:30
-#, fuzzy
 msgid "Error Policy:"
-msgstr "Chyba pravidla: \t"
+msgstr "Chyba politiky: "
 
 #: ../ui/PrinterPropertiesDialog.ui.h:31
 msgid "Operation Policy:"
@@ -2460,9 +2473,8 @@ msgid "user"
 msgstr "používateľ"
 
 #: ../ui/PrinterPropertiesDialog.ui.h:40
-#, fuzzy
 msgid "Delete"
-msgstr "O_dstrániť"
+msgstr "Odstrániť"
 
 #: ../ui/PrinterPropertiesDialog.ui.h:42
 msgid "Access Control"
@@ -2548,7 +2560,7 @@ msgstr "Rozlíšenie tlačiarne:"
 
 #: ../ui/PrinterPropertiesDialog.ui.h:65
 msgid "Output bin:"
-msgstr ""
+msgstr "Výstupný kôš:"
 
 #: ../ui/PrinterPropertiesDialog.ui.h:66
 msgid "More"
@@ -2682,7 +2694,7 @@ msgstr "Riešenie _problémov"
 
 #: ../ui/PrintersWindow.ui.h:8
 msgid "About"
-msgstr ""
+msgstr "O programe"
 
 #: ../ui/PrintersWindow.ui.h:9
 msgid "There are no printers configured yet."
@@ -2754,7 +2766,7 @@ msgstr ""
 
 #: ../ui/ServerSettingsDialog.ui.h:16
 msgid "Remove"
-msgstr ""
+msgstr "Odstrániť"
 
 #: ../ui/ServerSettingsDialog.ui.h:17
 msgid "<b>Browse servers</b>"
@@ -2782,7 +2794,7 @@ msgstr "_Konfigurovať tlačiarne"
 
 #: ../ui/statusicon_popupmenu.ui.h:3
 msgid "Quit"
-msgstr ""
+msgstr "Ukončiť"
 
 #: ../ui/WaitWindow.ui.h:1
 msgid "Please Wait"
@@ -2790,7 +2802,7 @@ msgstr "Čakajte, prosím"
 
 #: ../system-config-printer.desktop.in.h:1
 msgid "Print Settings"
-msgstr ""
+msgstr "Nastavenia tlače"
 
 #: ../system-config-printer.desktop.in.h:2
 msgid "Configure printers"
@@ -2938,6 +2950,8 @@ msgid ""
 "To start this tool, select System->Administration->Print Settings from the "
 "main menu."
 msgstr ""
+"Na spustenie tohoto nástroja vyberte položku Systém->Správa->Nastavenia "
+"tlače z hlavnej ponuky."
 
 #: ../troubleshoot/CheckLocalServerPublishing.py:28
 msgid "Server Not Exporting Printers"
@@ -3063,13 +3077,16 @@ msgstr "Ladiace zápisy už boli povolené."
 
 #: ../troubleshoot/ErrorLogFetch.py:41
 msgid "Retrieve Journal Entries"
-msgstr ""
+msgstr "Získať položky žurnálu"
 
 #: ../troubleshoot/ErrorLogFetch.py:42
 msgid ""
 "No system journal entries were found. This may be because you are not an "
 "administrator. To fetch journal entries please run this command:"
 msgstr ""
+"Nenašli sa žiadne položky systémového žurnálu. Môže to byť kvôli tomu, že "
+"nie ste administrátor. Na získanie položiek žurnálu, prosím, spustite tento "
+"príkaz:"
 
 #: ../troubleshoot/ErrorLogParse.py:32
 msgid "Error log messages"
@@ -3297,7 +3314,7 @@ msgstr "Chyba ukladania súboru"
 
 #: ../troubleshoot/Shrug.py:94
 msgid "There was an error saving the file:"
-msgstr ""
+msgstr "Vyskytla sa chyba pri ukladaní súboru:"
 
 #: ../troubleshoot/Welcome.py:45
 msgid "Trouble-shooting Printing"
@@ -3386,9 +3403,13 @@ msgid ""
 "With system-config-printer you can add, edit and delete printer queues. It "
 "allows you to choose the connection method and the printer driver."
 msgstr ""
+"S programom system-config-printer môžete pridávať, upravovať a odstraňovať "
+"tlačové fronty. Umožňuje vám zvoliť spôsob pripojenia a ovládač tlačiarne."
 
 #: ../system-config-printer.appdata.xml.in.h:2
 msgid ""
 "For each queue, you can adjust the default page size and other driver "
 "options, as well as seeing ink/toner levels and status messages."
 msgstr ""
+"Pre každú frontu môžete upraviť predvolenú veľkosť stránky a iné voľby "
+"ovládača, ako zobrazenie úrovní a stavových správ atramentu alebo toneru."

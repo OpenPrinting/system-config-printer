@@ -10,6 +10,7 @@
 # Robert Antoni Buj i Gelonch <robert.buj@gmail.com>, 2013
 # Xavier Conde Rueda <xavi.conde@gmail.com>, 2004
 # Robert Antoni Buj Gelonch <rbuj@fedoraproject.org>, 2014. #zanata
+# Alex Henrie <alexhenrie24@gmail.com>, 2015. #zanata
 # Jordi Mas <jmas@softcatala.org>, 2015. #zanata
 # Robert Antoni Buj Gelonch <rbuj@fedoraproject.org>, 2015. #zanata
 msgid ""
@@ -17,8 +18,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
 "POT-Creation-Date: 2015-03-17 15:19+0000\n"
-"PO-Revision-Date: 2015-05-14 01:55-0400\n"
-"Last-Translator: Jordi Mas <jmas@softcatala.org>\n"
+"PO-Revision-Date: 2015-11-17 12:47-0500\n"
+"Last-Translator: Robert Antoni Buj Gelonch <rbuj@fedoraproject.org>\n"
 "Language-Team: Catalan (http://www.transifex.com/projects/p/system-config-"
 "printer/language/ca/)\n"
 "Language: ca\n"
@@ -26,7 +27,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Zanata 3.6.2\n"
+"X-Generator: Zanata 3.9.5\n"
 
 #: ../asyncipp.py:473 ../authconn.py:447 ../authconn.py:449
 #: ../errordialogs.py:63 ../pysmb.py:90 ../pysmb.py:92
@@ -56,7 +57,7 @@ msgstr "Error del servidor CUPS (%s)"
 #: ../troubleshoot/PrintTestPage.py:431
 #, python-format
 msgid "There was an error during the CUPS operation: '%s'."
-msgstr "Hi va haver un error durant l'operació del CUPS: «%s»."
+msgstr "Hi ha hagut un error durant l'operació del CUPS: «%s»."
 
 #: ../asyncipp.py:581 ../authconn.py:311
 msgid "Retry"
@@ -127,7 +128,7 @@ msgstr "estat %s"
 #: ../errordialogs.py:84
 #, python-format
 msgid "There was an HTTP error: %s."
-msgstr "Hi va haver un error d'HTTP: %s"
+msgstr "Hi ha hagut un error d'HTTP: %s."
 
 #: ../jobviewer.py:186
 msgid "Delete Jobs"
@@ -393,31 +394,31 @@ msgstr "processant / pendent:   %d / %d"
 
 #: ../jobviewer.py:1886
 msgid "Document printed"
-msgstr "Document imprès"
+msgstr "S'ha imprès el document"
 
 #: ../jobviewer.py:1887
 #, python-format
 msgid "Document `%s' has been sent to `%s' for printing."
-msgstr "S'ha enviat el document `%s' per a ser imprès a `%s'."
+msgstr "S'ha enviat el document «%s» per a ser imprès a «%s»."
 
 #: ../jobviewer.py:2049
 #, python-format
 msgid "There was a problem sending document `%s' (job %d) to the printer."
 msgstr ""
-"Hi va haver un problema en enviar el document «%s» (treball %d) a la "
+"Hi ha hagut un problema en enviar el document «%s» (treball %d) a la "
 "impressora."
 
 #: ../jobviewer.py:2053
 #, python-format
 msgid "There was a problem processing document `%s' (job %d)."
-msgstr "Hi va haver un problema en processar el document «%s» (treball %d)."
+msgstr "Hi ha hagut un problema en processar el document «%s» (treball %d)."
 
 #. Give up and use the provided message untranslated.
 #: ../jobviewer.py:2060
 #, python-format
 msgid "There was a problem printing document `%s' (job %d): `%s'."
 msgstr ""
-"Hi va haver un problema en imprimir el document «%s» (treball %d): «%s»."
+"Hi ha hagut un problema en imprimir el document «%s» (treball %d): «%s»."
 
 #: ../jobviewer.py:2067 ../jobviewer.py:2084
 msgid "Print Error"
@@ -632,7 +633,7 @@ msgstr "S'està instal·lant el controlador %s"
 
 #: ../newprinter.py:956
 msgid "Installing ..."
-msgstr "S'està instal·lant ..."
+msgstr "S'està instal·lant..."
 
 #: ../newprinter.py:1318 ../newprinter.py:3102 ../newprinter.py:3330
 #: ../ppdsloader.py:86
@@ -673,7 +674,7 @@ msgstr "Ajusta el tallafoc"
 
 #: ../newprinter.py:2063 ../newprinter.py:2497
 msgid "Do It Later"
-msgstr "Fes-ho Després"
+msgstr "Fes-ho després"
 
 #: ../newprinter.py:2172 ../newprinter.py:3666
 msgid " (Current)"
@@ -692,8 +693,8 @@ msgid ""
 "There were no print shares found.  Please check that the Samba service is "
 "marked as trusted in your firewall configuration."
 msgstr ""
-"No s'han trobat comparticions d'impressió. Comproveu que el servei Samba "
-"està marcat com a confiable en la configuració del tallafoc."
+"No s'ha trobat cap compartició d'impressió. Comproveu que el servei Samba "
+"estigui marcat com a confiable en la configuració del tallafoc."
 
 #: ../newprinter.py:2440
 #, python-format
@@ -871,11 +872,11 @@ msgstr ""
 
 #: ../newprinter.py:3820
 msgid "No support contacts known"
-msgstr "Cap contacte de suport conegut"
+msgstr "No es coneix cap contacte de suport"
 
 #: ../newprinter.py:3824 ../newprinter.py:3837
 msgid "Not specified."
-msgstr "No especificat."
+msgstr "No està especificat."
 
 #. Foomatic database problem of some sort.
 #: ../newprinter.py:3882
@@ -980,7 +981,7 @@ msgstr "Estàndard"
 
 #: ../ppdippstr.py:70
 msgid "Top secret"
-msgstr "Secret"
+msgstr "Màxim secret"
 
 #: ../ppdippstr.py:71
 msgid "Unclassified"
@@ -996,7 +997,7 @@ msgstr "Indefinit"
 
 #: ../ppdippstr.py:79
 msgid "Daytime"
-msgstr "Data"
+msgstr "Dia"
 
 #: ../ppdippstr.py:80
 msgid "Evening"
@@ -1065,7 +1066,7 @@ msgstr "Qualitat normal (color en paper fotogràfic)"
 
 #: ../ppdippstr.py:116
 msgid "Media source"
-msgstr "Origen del suport"
+msgstr "Origen del mitjà"
 
 #: ../ppdippstr.py:117
 msgid "Printer default"
@@ -1165,7 +1166,7 @@ msgstr "Resolució, qualitat, tipus de tinta, tipus de suport"
 
 #: ../ppdippstr.py:145
 msgid "Controlled by 'Printout mode'"
-msgstr "Controlat per 'Model d'impressió'"
+msgstr "Controlat per «Mode d'impressió»"
 
 #: ../ppdippstr.py:147
 msgid "300 dpi, color, black + color cartridge"
@@ -1254,15 +1255,15 @@ msgstr "Vertical (sense girar)"
 
 #: ../printerproperties.py:260
 msgid "Landscape (90 degrees)"
-msgstr "Apaïsat (90°)"
+msgstr "Apaïsat (90 graus)"
 
 #: ../printerproperties.py:261
 msgid "Reverse landscape (270 degrees)"
-msgstr "Apaïsat invertit (270°)"
+msgstr "Apaïsat invertit (270 graus)"
 
 #: ../printerproperties.py:262
 msgid "Reverse portrait (180 degrees)"
-msgstr "Vertical invertit (180°)"
+msgstr "Vertical invertit (180 graus)"
 
 #: ../printerproperties.py:268
 msgid "Left to right, top to bottom"
@@ -1294,7 +1295,7 @@ msgstr "De baix a dalt, d'esquerra a dreta"
 
 #: ../printerproperties.py:275
 msgid "Bottom to top, right to left"
-msgstr "De dalt a baix, de dreta a esquerra"
+msgstr "De baix a dalt, de dreta a esquerra"
 
 #: ../printerproperties.py:281
 msgid "Staple"
@@ -1479,7 +1480,7 @@ msgstr "s'està modificant la classe %s"
 
 #: ../printerproperties.py:1018
 msgid "This will delete this class!"
-msgstr "Això farà que se suprimeixi aquesta classe."
+msgstr "Això suprimirà aquesta classe!"
 
 #: ../printerproperties.py:1019
 msgid "Proceed anyway?"
@@ -1507,7 +1508,7 @@ msgid ""
 "printer is not shared."
 msgstr ""
 "El servidor remot no ha acceptat el treball d'impressió. Probablement la "
-"impressora no s'està compartint."
+"impressora no es comparteix."
 
 #: ../printerproperties.py:1222 ../printerproperties.py:1241
 msgid "Submitted"
@@ -1516,25 +1517,25 @@ msgstr "Enviat"
 #: ../printerproperties.py:1223
 #, python-format
 msgid "Test page submitted as job %d"
-msgstr "La pàgina de prova s'ha enviat com a treball %d"
+msgstr "La pàgina de prova s'ha enviat com al treball %d"
 
 #: ../printerproperties.py:1234
 msgid "sending maintenance command"
-msgstr "s'està enviant una ordre de manteniment"
+msgstr "s'està enviant un ordre de manteniment"
 
 #: ../printerproperties.py:1242
 #, python-format
 msgid "Maintenance command submitted as job %d"
-msgstr "L'ordre de manteniment s'ha enviat com a treball %d"
+msgstr "L'ordre de manteniment s'ha enviat com al treball %d"
 
 #: ../printerproperties.py:1323
 msgid "Raw Queue"
-msgstr "Cua RAW"
+msgstr "Cua crua"
 
 #: ../printerproperties.py:1324
 msgid "Unable to get queue details. Treating queue as raw."
 msgstr ""
-"No s'han pogut obtenir els detalls de la cua. Es tractarà la cua com a RAW."
+"No s'ha pogut obtenir els detalls de la cua. Es tractarà la cua com a crua."
 
 #: ../printerproperties.py:1336 ../printerproperties.py:1341
 #: ../printerproperties.py:1438
@@ -1543,11 +1544,11 @@ msgstr "Error"
 
 #: ../printerproperties.py:1337
 msgid "The PPD file for this queue is damaged."
-msgstr "El fitxer PPD per aquesta cua d'impressió està danyat."
+msgstr "El fitxer PPD d'aquesta cua d'impressió està danyat."
 
 #: ../printerproperties.py:1342
 msgid "There was a problem connecting to the CUPS server."
-msgstr "Hi va haver un problema en connectar al servidor CUPS."
+msgstr "Hi ha hagut un problema en connectar al servidor CUPS."
 
 #: ../printerproperties.py:1439
 #, python-format
@@ -1577,7 +1578,7 @@ msgstr "s'estan modificant els ajustos del servidor"
 
 #: ../serversettings.py:564
 msgid "Adjust the firewall now to allow all incoming IPP connections?"
-msgstr "Ajusta ara el tallafoc per a permetre connexions IPP entrants?"
+msgstr "Voleu ajustar ara el tallafoc per a permetre connexions IPP entrants?"
 
 #: ../system-config-printer.py:233
 msgid "_Connect..."
@@ -1585,7 +1586,7 @@ msgstr "_Connecta..."
 
 #: ../system-config-printer.py:234
 msgid "Choose a different CUPS server"
-msgstr "Connecta a un servidor CUPS diferent"
+msgstr "Tria un servidor CUPS diferent"
 
 #: ../system-config-printer.py:236
 msgid "_Settings..."
@@ -1613,7 +1614,7 @@ msgstr "_Duplica"
 
 #: ../system-config-printer.py:252
 msgid "Set As De_fault"
-msgstr "_Estableix-la com la predeterminada"
+msgstr "_Estableix-la com a la predeterminada"
 
 #: ../system-config-printer.py:256
 msgid "_Create class"
@@ -1661,7 +1662,7 @@ msgstr "_Nova"
 #: ../system-config-printer.py:711
 #, python-format
 msgid "Print Settings - %s"
-msgstr "Ajustos de la impressió - %s"
+msgstr "Ajustos d'impressió - %s"
 
 #: ../system-config-printer.py:714
 #, python-format
@@ -1695,7 +1696,7 @@ msgstr "Compartició d'impressió de xarxa"
 
 #: ../system-config-printer.py:1064
 msgid "Service framework not available"
-msgstr "El framework de servei no està disponible"
+msgstr "El marc de treball del servei no està disponible"
 
 #: ../system-config-printer.py:1066
 msgid "Cannot start service on remote server"
@@ -1842,7 +1843,7 @@ msgid ""
 msgstr ""
 "Aquest programa és programari lliure; podeu redistribuir-ho i/o modificar-ho "
 "sota els termes de la Llicència Pública General de GNU, publicada per la "
-"Free Software Foundation; tant la versió 2 de la Llicència, o (a la teva "
+"Free Software Foundation; tant la versió 2 de la Llicència, o (a la vostra "
 "elecció) qualsevol versió posterior.\n"
 "\n"
 "Aquest programa es distribueix amb l'esperança de què sigui útil, però SENSE "
@@ -1989,7 +1990,7 @@ msgid ""
 "ipp://printer.mydomain/ipp"
 msgstr ""
 "Per exemple:\n"
-"ipp://servidor-cups/impressores/cua-impressio\n"
+"ipp://servidor-cups/impressores/cua-impressió\n"
 "ipp://impressora.elmeudomini/ipp"
 
 #: ../ui/NewPrinterWindow.ui.h:18 ../troubleshoot/DeviceListed.py:47
@@ -2290,7 +2291,7 @@ msgstr "llicència"
 
 #: ../ui/NewPrinterWindow.ui.h:85
 msgid "short description"
-msgstr "Descripció curta"
+msgstr "descripció curta"
 
 #: ../ui/NewPrinterWindow.ui.h:86
 msgid "Manufacturer"
@@ -2550,7 +2551,7 @@ msgstr "Prioritat dels treballs:"
 
 #: ../ui/PrinterPropertiesDialog.ui.h:59
 msgid "Media:"
-msgstr "Suports:"
+msgstr "Mitjans:"
 
 #: ../ui/PrinterPropertiesDialog.ui.h:60
 msgid "Sides:"
@@ -2719,8 +2720,8 @@ msgid ""
 "Printing service not available.  Start the service on this computer or "
 "connect to another server."
 msgstr ""
-"Servei d'impressió no disponible.  Inicieu el servei en aquest ordinador o "
-"connecteu-vos a un altre servidor."
+"El servei d'impressió no està disponible.  Inicieu el servei en aquest "
+"ordinador o connecteu-vos a un altre servidor."
 
 #: ../ui/PrintersWindow.ui.h:12
 msgid "Start Service"
@@ -2805,7 +2806,7 @@ msgstr "_Amaga"
 
 #: ../ui/statusicon_popupmenu.ui.h:2
 msgid "_Configure Printers"
-msgstr "_Configurar Impressores"
+msgstr "_Configurar impressores"
 
 #: ../ui/statusicon_popupmenu.ui.h:3
 msgid "Quit"
@@ -2817,7 +2818,7 @@ msgstr "Espereu, si us plau"
 
 #: ../system-config-printer.desktop.in.h:1
 msgid "Print Settings"
-msgstr "Ajustos de la impressió"
+msgstr "Ajustos d'impressió"
 
 #: ../system-config-printer.desktop.in.h:2
 msgid "Configure printers"
@@ -2929,7 +2930,7 @@ msgstr "Error en la configuració de la impressora"
 #: ../statereason.py:133
 #, python-format
 msgid "There is a missing print filter for printer '%s'."
-msgstr "Manca un filtre d'impressió per a la impressora '%s'."
+msgstr "Manca un filtre d'impressió per a la impressora «%s»."
 
 #: ../statereason.py:145
 msgid "Printer report"
@@ -2965,8 +2966,8 @@ msgid ""
 "To start this tool, select System->Administration->Print Settings from the "
 "main menu."
 msgstr ""
-"Per iniciar aquesta eina, seleccioneu Sistema->Administració->Ajustos de la "
-"impressió al menú principal."
+"Per iniciar aquesta eina, seleccioneu «Sistema->Administració->Ajustos de la "
+"impressió» al menú principal."
 
 #: ../troubleshoot/CheckLocalServerPublishing.py:28
 msgid "Server Not Exporting Printers"
@@ -3079,7 +3080,8 @@ msgid ""
 "cause the scheduler to restart.  Click the button below to enable debugging."
 msgstr ""
 "Aquest pas habilitarà la depuració del planificador del cups, cosa que pot "
-"causar el seu reinici. Feu clic al botó de sota per a habilitar la depuració."
+"causar que es reiniciï. Feu clic al botó de sota per a habilitar la "
+"depuració."
 
 #: ../troubleshoot/ErrorLogCheckpoint.py:45
 msgid "Enable Debugging"
@@ -3087,11 +3089,11 @@ msgstr "Habilita la depuració"
 
 #: ../troubleshoot/ErrorLogCheckpoint.py:236
 msgid "Debug logging enabled."
-msgstr "S'ha habilitat el registre de la depuració"
+msgstr "S'ha habilitat el registre de la depuració."
 
 #: ../troubleshoot/ErrorLogCheckpoint.py:238
 msgid "Debug logging was already enabled."
-msgstr "Ja estava habilitat el registre de la depuració"
+msgstr "El registre de la depuració ja estava habilitat."
 
 #: ../troubleshoot/ErrorLogFetch.py:41
 msgid "Retrieve Journal Entries"
@@ -3142,7 +3144,7 @@ msgstr "Ubicació de la impressora"
 #: ../troubleshoot/LocalOrRemote.py:27
 msgid "Is the printer connected to this computer or available on the network?"
 msgstr ""
-"La impressora està connectada a aquest ordinador o bé està disponible a la "
+"Està la impressora connectada a aquest ordinador o bé està disponible a la "
 "xarxa?"
 
 #: ../troubleshoot/LocalOrRemote.py:29
@@ -3214,7 +3216,7 @@ msgstr "No"
 #: ../troubleshoot/PrintTestPage.py:144
 #, python-format
 msgid "Remember to load paper of type '%s' into the printer first."
-msgstr "Recordeu carregar paper del tipus «%s» a la primera."
+msgstr "Recordeu primer carregar paper del tipus «%s» a la impressora."
 
 #: ../troubleshoot/PrintTestPage.py:430
 msgid "Error submitting test page"
@@ -3246,9 +3248,9 @@ msgid ""
 "To enable it, select the 'Enabled' checkbox in the 'Policies' tab for the "
 "printer in the printer administration tool."
 msgstr ""
-"Per habilitar-la, seleccioneu la casella de selecció 'Habilitada' a la "
-"pestanya de 'Polítiques' de la impressora en l'eina d'administració "
-"d'impressores."
+"Per habilitar-la, en l'eina d'administració d'impressores seleccioneu la "
+"casella de selecció «Habilitada» a la pestanya «Polítiques» per a la "
+"impressora."
 
 #: ../troubleshoot/QueueRejectingJobs.py:33
 msgid "Queue Rejecting Jobs"
@@ -3264,9 +3266,9 @@ msgid ""
 "To make the queue accept jobs, select the 'Accepting Jobs' checkbox in the "
 "'Policies' tab for the printer in the printer administration tool."
 msgstr ""
-"Per a fer que la cua accepti treballs, seleccioneu la casella de selecció "
-"'Acceptació de treballs' a la pestanya de 'Polítiques' de la impressora en "
-"l'eina d'administració d'impressores."
+"Per a fer que la cua accepti treballs, en l'eina d'administració "
+"d'impressores seleccioneu la casella de selecció «Acceptació de treballs» a "
+"la pestanya «Polítiques» per a la impressora."
 
 #: ../troubleshoot/RemoteAddress.py:28
 msgid "Remote Address"
@@ -3300,7 +3302,7 @@ msgid ""
 msgstr ""
 "El gestor de cues d'impressió CUPS no s'està executant. Per a arreglar-ho, "
 "escolliu Sistema->Administració->Serveis del menú principal i cerqueu el "
-"servei «CUPS»."
+"servei «cups»."
 
 #: ../troubleshoot/ServerFirewalled.py:28
 msgid "Check Server Firewall"
@@ -3329,21 +3331,21 @@ msgid ""
 "collected together with other useful information.  If you would like to "
 "report a bug, please include this information."
 msgstr ""
-"No hi ha cap solució obvia per aquest problema. Les vostres respostes han "
-"estar recollides juntament amb més informació útil. Inclogueu aquesta "
-"informació si voleu informar d'un error."
+"No hi ha cap solució obvia per aquest problema. Les vostres respostes s'han "
+"recollit juntament amb més informació útil. Inclogueu aquesta informació si "
+"voleu informar d'un error."
 
 #: ../troubleshoot/Shrug.py:36
 msgid "Diagnostic Output (Advanced)"
-msgstr "Sortida de diagnòstic (avançat)"
+msgstr "Sortida diagnòstica (avançat)"
 
 #: ../troubleshoot/Shrug.py:93
 msgid "Error saving file"
-msgstr "Error desant el fitxer"
+msgstr "Error en desar el fitxer"
 
 #: ../troubleshoot/Shrug.py:94
 msgid "There was an error saving the file:"
-msgstr "Hi va haver un error en desar el fitxer:"
+msgstr "Hi ha hagut un error en desar el fitxer:"
 
 #: ../troubleshoot/Welcome.py:45
 msgid "Trouble-shooting Printing"

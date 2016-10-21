@@ -22,13 +22,14 @@
 # Mathieu Schopfer <mat.schopfer@bluewin.ch>, 2008
 # Pablo Martin-Gomez <pablo.martin-gomez@laposte.net>, 2010
 # Stephane Raimbault <stephane.raimbault@free.fr>, 2004
+# Julie Carbone <jcarbone@redhat.com>, 2016. #zanata
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
 "POT-Creation-Date: 2015-03-17 15:19+0000\n"
-"PO-Revision-Date: 2014-10-23 07:01-0400\n"
-"Last-Translator: Tim Waugh <twaugh@redhat.com>\n"
+"PO-Revision-Date: 2016-02-23 01:24-0500\n"
+"Last-Translator: Julie Carbone <jcarbone@redhat.com>\n"
 "Language-Team: French (http://www.transifex.com/projects/p/system-config-"
 "printer/language/fr/)\n"
 "Language: fr\n"
@@ -36,7 +37,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Zanata 3.6.2\n"
+"X-Generator: Zanata 3.9.5\n"
 
 #: ../asyncipp.py:473 ../authconn.py:447 ../authconn.py:449
 #: ../errordialogs.py:63 ../pysmb.py:90 ../pysmb.py:92
@@ -631,7 +632,7 @@ msgstr "Modifier le pilote"
 
 #: ../newprinter.py:704
 msgid "Download Printer Driver"
-msgstr ""
+msgstr "Télécharger le pilote de l'imprimante"
 
 #: ../newprinter.py:713 ../newprinter.py:2081 ../newprinter.py:2086
 msgid "fetching device list"
@@ -711,7 +712,7 @@ msgstr ""
 #: ../newprinter.py:2440
 #, python-format
 msgid "Verification requires the %s module"
-msgstr ""
+msgstr "La vérification nécessite le module %s"
 
 #: ../newprinter.py:2494
 msgid "Allow all incoming SMB/CIFS browse packets"
@@ -1545,11 +1546,13 @@ msgstr "Commande de maintenance soumise comme tâche d'impression %d"
 
 #: ../printerproperties.py:1323
 msgid "Raw Queue"
-msgstr ""
+msgstr "File d'attente Raw"
 
 #: ../printerproperties.py:1324
 msgid "Unable to get queue details. Treating queue as raw."
 msgstr ""
+"Impossible d'obtenir les informations de la file d'attente. File d'attente "
+"traitée comme raw"
 
 #: ../printerproperties.py:1336 ../printerproperties.py:1341
 #: ../printerproperties.py:1438
@@ -1663,15 +1666,13 @@ msgstr "Fabricant / Modèle"
 
 #: ../system-config-printer.py:318 ../ui/PrinterPropertiesDialog.ui.h:41
 #: ../ui/PrintersWindow.ui.h:10 ../ui/ServerSettingsDialog.ui.h:15
-#, fuzzy
 msgid "Add"
-msgstr "Impair"
+msgstr "Ajouter"
 
 #: ../system-config-printer.py:335 ../ui/PrinterPropertiesDialog.ui.h:88
 #: ../ui/SMBBrowseDialog.ui.h:2
-#, fuzzy
 msgid "Refresh"
-msgstr "_Rafraîchir"
+msgstr "Rafraîchir"
 
 #: ../system-config-printer.py:349
 msgid "_New"
@@ -1896,14 +1897,12 @@ msgstr "Se connecter au serveur CUPS"
 #: ../ui/NewPrinterName.ui.h:2 ../ui/NewPrinterWindow.ui.h:104
 #: ../ui/PrinterPropertiesDialog.ui.h:4 ../ui/ServerSettingsDialog.ui.h:2
 #: ../ui/SMBBrowseDialog.ui.h:3
-#, fuzzy
 msgid "Cancel"
-msgstr "_Annuler"
+msgstr "Annuler"
 
 #: ../ui/ConnectDialog.ui.h:3 ../ui/PrintersWindow.ui.h:13
-#, fuzzy
 msgid "Connect"
-msgstr "Connexion"
+msgstr "Connecter"
 
 #: ../ui/ConnectDialog.ui.h:4
 msgid "Require _encryption"
@@ -1923,7 +1922,7 @@ msgstr "<span weight=\"bold\" size=\"larger\">Connexion au serveur CUPS</span>"
 
 #: ../ui/InstallDialog.ui.h:1 ../ui/PrinterPropertiesDialog.ui.h:6
 msgid "Close"
-msgstr ""
+msgstr "Fermer"
 
 #: ../ui/InstallDialog.ui.h:2
 msgid "_Install"
@@ -1952,7 +1951,7 @@ msgstr "Dupliquer l'imprimante"
 #: ../ui/NewPrinterName.ui.h:3 ../ui/PrinterPropertiesDialog.ui.h:5
 #: ../ui/ServerSettingsDialog.ui.h:3 ../ui/SMBBrowseDialog.ui.h:4
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #: ../ui/NewPrinterName.ui.h:4
 msgid "New name for the printer"
@@ -2115,7 +2114,7 @@ msgstr "SMB"
 
 #: ../ui/NewPrinterWindow.ui.h:44
 msgid "Find"
-msgstr ""
+msgstr "Trouver"
 
 #: ../ui/NewPrinterWindow.ui.h:45
 msgid "Searching..."
@@ -2382,15 +2381,15 @@ msgstr "Détails du pilotes"
 
 #: ../ui/NewPrinterWindow.ui.h:103
 msgid "Back"
-msgstr ""
+msgstr "Retour"
 
 #: ../ui/NewPrinterWindow.ui.h:105 ../ui/PrinterPropertiesDialog.ui.h:3
 msgid "Apply"
-msgstr ""
+msgstr "Appliquer"
 
 #: ../ui/NewPrinterWindow.ui.h:106
 msgid "Forward"
-msgstr ""
+msgstr "Suivant"
 
 #: ../ui/PrinterPropertiesDialog.ui.h:1
 msgid "Printer Properties"
@@ -2475,9 +2474,8 @@ msgid "<b>State</b>"
 msgstr "<b>État</b>"
 
 #: ../ui/PrinterPropertiesDialog.ui.h:30
-#, fuzzy
 msgid "Error Policy:"
-msgstr "Comportement en cas d'erreur : \t"
+msgstr "Politique d'erreur : \t"
 
 #: ../ui/PrinterPropertiesDialog.ui.h:31
 msgid "Operation Policy:"
@@ -2516,9 +2514,8 @@ msgid "user"
 msgstr "utilisateur"
 
 #: ../ui/PrinterPropertiesDialog.ui.h:40
-#, fuzzy
 msgid "Delete"
-msgstr "_Supprimer"
+msgstr "Supprimer"
 
 #: ../ui/PrinterPropertiesDialog.ui.h:42
 msgid "Access Control"
@@ -2738,7 +2735,7 @@ msgstr "_Dépannage"
 
 #: ../ui/PrintersWindow.ui.h:8
 msgid "About"
-msgstr ""
+msgstr "À propos"
 
 #: ../ui/PrintersWindow.ui.h:9
 msgid "There are no printers configured yet."
@@ -2813,7 +2810,7 @@ msgstr ""
 
 #: ../ui/ServerSettingsDialog.ui.h:16
 msgid "Remove"
-msgstr ""
+msgstr "Supprimer"
 
 #: ../ui/ServerSettingsDialog.ui.h:17
 msgid "<b>Browse servers</b>"
@@ -2841,7 +2838,7 @@ msgstr "_Configurer les imprimantes"
 
 #: ../ui/statusicon_popupmenu.ui.h:3
 msgid "Quit"
-msgstr ""
+msgstr "Quitter"
 
 #: ../ui/WaitWindow.ui.h:1
 msgid "Please Wait"
@@ -3129,13 +3126,16 @@ msgstr "La journalisation de débogage était déjà activée."
 
 #: ../troubleshoot/ErrorLogFetch.py:41
 msgid "Retrieve Journal Entries"
-msgstr ""
+msgstr "Récupérer les entrées de journaux"
 
 #: ../troubleshoot/ErrorLogFetch.py:42
 msgid ""
 "No system journal entries were found. This may be because you are not an "
 "administrator. To fetch journal entries please run this command:"
 msgstr ""
+"Aucune entrée de journal de système trouvée. Cela peut être dû au fait que "
+"vous n'êtes pas un administrateur. Pour récupérer des entrées de journaux, "
+"exécutez la commande suivante :"
 
 #: ../troubleshoot/ErrorLogParse.py:32
 msgid "Error log messages"
@@ -3465,9 +3465,15 @@ msgid ""
 "With system-config-printer you can add, edit and delete printer queues. It "
 "allows you to choose the connection method and the printer driver."
 msgstr ""
+"Avec system-config-printer vous pouvez ajouter, modifier et supprimer des "
+"files d'attente d'imprimante. Cela vous permet de choisir la méthode de "
+"connexion et le pilote de l'imprimante."
 
 #: ../system-config-printer.appdata.xml.in.h:2
 msgid ""
 "For each queue, you can adjust the default page size and other driver "
 "options, as well as seeing ink/toner levels and status messages."
 msgstr ""
+"Pour chaque file d'attente, vous pouvez ajuster la taille de la page par "
+"défaut et d'autres options de pilote, ainsi que consulter les niveaux "
+"d'encre et les messages de statut."

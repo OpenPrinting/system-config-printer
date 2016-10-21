@@ -20,13 +20,14 @@
 # Артём Попов <artfwo@gmail., 2009
 # Игорь Горбунов <igor.gorbounov@gmail.com>, 2011
 # Ilyas B Arinov <arinov.ilyas@gmail.com>, 2015. #zanata
+# yuliya <ypoyarko@redhat.com>, 2016. #zanata
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
 "POT-Creation-Date: 2015-03-17 15:19+0000\n"
-"PO-Revision-Date: 2015-06-07 08:01-0400\n"
-"Last-Translator: Ilyas B Arinov <arinov.ilyas@gmail.com>\n"
+"PO-Revision-Date: 2016-03-30 10:47-0400\n"
+"Last-Translator: yuliya <ypoyarko@redhat.com>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/system-config-"
 "printer/language/ru/)\n"
 "Language: ru\n"
@@ -35,7 +36,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Zanata 3.6.2\n"
+"X-Generator: Zanata 3.9.5\n"
 
 #: ../asyncipp.py:473 ../authconn.py:447 ../authconn.py:449
 #: ../errordialogs.py:63 ../pysmb.py:90 ../pysmb.py:92
@@ -646,14 +647,14 @@ msgstr "Поиск"
 
 #: ../newprinter.py:1328 ../ppdsloader.py:93
 msgid "Searching for drivers"
-msgstr "Поиск драйверов"
+msgstr "Идет поиск драйверов..."
 
 #. device-info
 #. PhysicalDevice obj
 #. Separator?
 #: ../newprinter.py:2005
 msgid "Enter URI"
-msgstr "Введите URL"
+msgstr "Введите адрес"
 
 #: ../newprinter.py:2010
 msgid "Network Printer"
@@ -661,7 +662,7 @@ msgstr "Сетевой принтер"
 
 #: ../newprinter.py:2014
 msgid "Find Network Printer"
-msgstr "Найти сетевой принтер"
+msgstr "Поиск сетевого принтера"
 
 #: ../newprinter.py:2046
 msgid "Allow all incoming IPP Browse packets"
@@ -769,7 +770,7 @@ msgstr "Очередь LPD/LPR"
 
 #: ../newprinter.py:2788 ../ppdippstr.py:184
 msgid "Windows Printer via SAMBA"
-msgstr "Принтер Windows через SAMBA"
+msgstr "Принтер Windows (SAMBA)"
 
 #: ../newprinter.py:2799 ../newprinter.py:2801
 msgid "IPP"
@@ -1209,19 +1210,19 @@ msgstr "1200 dpi, фото, чёрный + цветной картридж, фо
 
 #: ../ppdippstr.py:170
 msgid "Internet Printing Protocol (ipp)"
-msgstr "Протокол печати через Интернет (ipp)"
+msgstr "Печать через Интернет (ipp)"
 
 #: ../ppdippstr.py:172
 msgid "Internet Printing Protocol (http)"
-msgstr "Протокол печати через Интернет (http)"
+msgstr "Печать через Интернет (http)"
 
 #: ../ppdippstr.py:174
 msgid "Internet Printing Protocol (https)"
-msgstr "Протокол печати через Интернет (https)"
+msgstr "Печать через Интернет (https)"
 
 #: ../ppdippstr.py:176
 msgid "LPD/LPR Host or Printer"
-msgstr "Узел LPD/LPR или принтер"
+msgstr "Принтер или узел LPD/LPR"
 
 #: ../ppdippstr.py:180
 msgid "Serial Port #1"
@@ -1862,11 +1863,11 @@ msgstr ""
 #. TRANSLATORS: Replace this string with your names, one name per line.  Thank you very much for your effort on translating system-config-printer and all our other tools!
 #: ../ui/AboutDialog.ui.h:9
 msgid "translator-credits"
-msgstr "сведения о переводчиках"
+msgstr "Yulia Poyarkova <ypoyarko@fedoraproject.org>"
 
 #: ../ui/ConnectDialog.ui.h:1
 msgid "Connect to CUPS server"
-msgstr "Подключен к %s"
+msgstr "Подключение к серверу CUPS"
 
 #: ../ui/ConnectDialog.ui.h:2 ../ui/ConnectingDialog.ui.h:2
 #: ../ui/NewPrinterName.ui.h:2 ../ui/NewPrinterWindow.ui.h:104
@@ -1877,7 +1878,7 @@ msgstr "Отменить"
 
 #: ../ui/ConnectDialog.ui.h:3 ../ui/PrintersWindow.ui.h:13
 msgid "Connect"
-msgstr "Подключить"
+msgstr "Подключиться"
 
 #: ../ui/ConnectDialog.ui.h:4
 msgid "Require _encryption"
@@ -1885,7 +1886,7 @@ msgstr "Необходимо шифрование"
 
 #: ../ui/ConnectDialog.ui.h:5
 msgid "CUPS _server:"
-msgstr "Сервера CUPS"
+msgstr "_Сервер CUPS:"
 
 #: ../ui/ConnectingDialog.ui.h:1
 msgid "Connecting to CUPS server"
@@ -1939,7 +1940,7 @@ msgstr "<span weight=\"bold\" size=\"larger\">Опишите принтер</spa
 
 #: ../ui/NewPrinterWindow.ui.h:3
 msgid "Short name for this printer such as \"laserjet\""
-msgstr "Короткое имя для этого принтера, например «laserjet»"
+msgstr "Краткое имя принтера, например «laserjet»"
 
 #: ../ui/NewPrinterWindow.ui.h:4
 msgid "<b>Printer Name</b>"
@@ -1947,8 +1948,7 @@ msgstr "<b>Имя принтера</b>"
 
 #: ../ui/NewPrinterWindow.ui.h:5
 msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
-msgstr ""
-"Удобное для восприятия описание, например, \"HP LaserJet с дуплексером\""
+msgstr "Удобное для восприятия описание, например «HP LaserJet с дуплексером»"
 
 #: ../ui/NewPrinterWindow.ui.h:6
 msgid "<b>Description</b> (optional)"
@@ -1956,11 +1956,11 @@ msgstr "<b>Описание</b> (необязательно)"
 
 #: ../ui/NewPrinterWindow.ui.h:7
 msgid "Human-readable location such as \"Lab 1\""
-msgstr "Удобное для восприятия местоположение, например, \"Lab 1\""
+msgstr "Описание места расположения принтера, например «Lab 1»"
 
 #: ../ui/NewPrinterWindow.ui.h:8
 msgid "<b>Location</b> (optional)"
-msgstr "<b>Местонахождение</b> (необязательно)"
+msgstr "<b>Расположение</b> (необязательно)"
 
 #: ../ui/NewPrinterWindow.ui.h:10
 msgid "<span weight=\"bold\" size=\"larger\">Select Device</span>"
@@ -1988,7 +1988,7 @@ msgid ""
 "ipp://cups-server/printers/printer-queue\n"
 "ipp://printer.mydomain/ipp"
 msgstr ""
-"Например:\n"
+"Примеры:\n"
 "ipp://cups-server/printers/printer-queue\n"
 "ipp://printer.mydomain/ipp"
 
@@ -2002,11 +2002,11 @@ msgstr "Сервер:"
 
 #: ../ui/NewPrinterWindow.ui.h:20
 msgid "Port number:"
-msgstr "Номер порта:"
+msgstr "Порт:"
 
 #: ../ui/NewPrinterWindow.ui.h:21
 msgid "<b>Location of the network printer</b>"
-msgstr "<b>Местонахождение сетевого принтера</b>"
+msgstr "<b>Расположение сетевого принтера</b>"
 
 #: ../ui/NewPrinterWindow.ui.h:22
 msgid "JetDirect"
@@ -2070,11 +2070,11 @@ msgstr "<b>Принтер SMB</b>"
 
 #: ../ui/NewPrinterWindow.ui.h:37
 msgid "Prompt user if authentication is required"
-msgstr "Запросить у пользователя, если требуется проверка подлинности"
+msgstr "Запрашивать данные аутентификации у пользователя"
 
 #: ../ui/NewPrinterWindow.ui.h:38
 msgid "Set authentication details now"
-msgstr "Задать сведения о проверке подлинности сейчас"
+msgstr "Ввести данные аутентификации сейчас"
 
 #: ../ui/NewPrinterWindow.ui.h:41
 msgid "<b>Authentication</b>"
@@ -2126,7 +2126,7 @@ msgstr "Предоставить PPD-файл"
 
 #: ../ui/NewPrinterWindow.ui.h:54
 msgid "Search for a printer driver to download"
-msgstr "Поиск драйвера принтера для загрузки"
+msgstr "Поиск драйвера принтера"
 
 #: ../ui/NewPrinterWindow.ui.h:55
 msgid ""
@@ -2170,7 +2170,7 @@ msgstr "Комментарии..."
 
 #: ../ui/NewPrinterWindow.ui.h:61
 msgid "<span weight=\"bold\" size=\"larger\">Choose Class Members</span>"
-msgstr "<span weight=\"bold\" size=\"larger\">Выберите члены класса</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">Выберите из класса</span>"
 
 #: ../ui/NewPrinterWindow.ui.h:62 ../ui/PrinterPropertiesDialog.ui.h:44
 msgid "move left"
@@ -2182,7 +2182,7 @@ msgstr "сдвинуть вправо"
 
 #: ../ui/NewPrinterWindow.ui.h:64
 msgid "Class Members"
-msgstr "Члены класса"
+msgstr "Элементы класса"
 
 #: ../ui/NewPrinterWindow.ui.h:65
 msgid "<span weight=\"bold\" size=\"larger\">Existing Settings</span>"
@@ -2361,7 +2361,7 @@ msgstr "Применить"
 
 #: ../ui/NewPrinterWindow.ui.h:106
 msgid "Forward"
-msgstr "Вперед"
+msgstr "Далее"
 
 #: ../ui/PrinterPropertiesDialog.ui.h:1
 msgid "Printer Properties"
@@ -2751,7 +2751,7 @@ msgstr ""
 
 #: ../ui/ServerSettingsDialog.ui.h:9
 msgid "Save _debugging information for troubleshooting"
-msgstr "Сохранять отладочную информацию для устранения ошибок"
+msgstr "Сохранять отладочную информацию для диагностики"
 
 #: ../ui/ServerSettingsDialog.ui.h:10
 msgid "Do not preserve job history"
@@ -3028,8 +3028,8 @@ msgid ""
 "Please select the network printer you are trying to use from the list below. "
 "If it does not appear in the list, select 'Not listed'."
 msgstr ""
-"Пожалуйста, выберите сетевой принтер, который вы пытаетесь использовать, из "
-"следующего списка. Если его нет в списке, выберите «Нет в списке»."
+"Выберите сетевой принтер из списка. Если интересующего принтера нет в "
+"списке, выберите «Нет в списке»."
 
 #: ../troubleshoot/ChooseNetworkPrinter.py:41
 #: ../troubleshoot/ChoosePrinter.py:47 ../troubleshoot/DeviceListed.py:45
@@ -3335,7 +3335,7 @@ msgstr "Произошла ошибка при сохранении файла:"
 
 #: ../troubleshoot/Welcome.py:45
 msgid "Trouble-shooting Printing"
-msgstr "Диагностика проблем с печатью"
+msgstr "Диагностика ошибок печати"
 
 #: ../troubleshoot/Welcome.py:47
 msgid ""
@@ -3343,7 +3343,7 @@ msgid ""
 "printing. Based on your answers a solution may be suggested."
 msgstr ""
 "Сейчас вам будет задано несколько вопросов о характере проблем с печатью. На "
-"основе ваших ответов будет предложено решение проблемы."
+"основе ваших ответов будет подобрано решение."
 
 #: ../troubleshoot/Welcome.py:51
 msgid "Click 'Forward' to begin."
@@ -3355,7 +3355,7 @@ msgstr "Настройка нового принтера"
 
 #: ../applet.py:85
 msgid "Please wait..."
-msgstr "Пожалуйста подождите..."
+msgstr "Пожалуйста, подождите..."
 
 #. name is a URI, no queue was generated, because no suitable
 #. driver was found
