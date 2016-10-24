@@ -263,6 +263,32 @@
       </avoid>
     </printer>
 
+    <!--
+      We need driver for CLP-310 but there are other CLP-315 which are preferred because their drivertype is higher
+      in the preferenceorder.
+      Driver for CLP-310 provides drivertype "splix" and "foomatic" so others which are higher in preferenceorder
+      must be placed here.
+    -->
+    <printer>
+      <make-and-model match="Samsung CLP 310" />
+      <deviceid>
+        <field name="MFG" match="Samsung" />
+        <field name="MDL" match="CLP-310 Series" />
+      </deviceid>
+      <avoid>
+        <drivertype>manufacturer-cmd</drivertype>
+        <drivertype>foomatic-recommended-nonpostscript</drivertype>
+        <drivertype>manufacturer*</drivertype>
+        <drivertype>pdf</drivertype>
+        <drivertype>foomatic-recommended-postscript</drivertype>
+        <drivertype>hpcups</drivertype>
+        <drivertype>foomatic-postscript</drivertype>
+        <drivertype>gutenprint-simplified</drivertype>
+        <drivertype>gutenprint-expert</drivertype>
+        <drivertype>foomatic-gutenprint</drivertype>
+      </avoid>
+    </printer>
+
     <printer>
       <!-- For all printers -->
       <drivers>
