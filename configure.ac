@@ -74,7 +74,7 @@ if test "x$with_systemdsystemunitdir" != xno; then
 fi
 AM_CONDITIONAL(HAVE_SYSTEMD, [test -n "$with_systemdsystemunitdir" -a "x$with_systemdsystemunitdir" != xno ])
 
-ALL_LINGUAS="af am ar as ast bal be bg bn_IN bn bo br brx bs ca cs cy da de_CH de el en_GB eo es et eu fa fi fr gl gu he hi hr hu ia id ilo is it ja ka kk km kn ko ky lt lv mai mk ml mn mr ms nb nds ne nl nn nso or pa pl pt_BR pt ro ru si sk sl sq sr@latin sr sv ta te tg th tr uk ur vi zh_CN zh_HK zh_TW zu"
+ALL_LINGUAS="ar as bg bn bn_IN br bs ca cs cy da de el en_GB es et fa fi fr gu he hi hr hu id is it ja kn ko lt lv mai mk ml mr ms nb nds nl nn or pa pl pt pt_BR ro ru si sk sl sr sr@latin sv ta te th tr uk vi zh_CN zh_TW"
 AC_CONFIG_FILES([
 Makefile
 po/Makefile.in
