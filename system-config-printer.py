@@ -52,7 +52,8 @@ def show_help():
            "a CUPS server configuration program.\n\n"
            "Options:\n\n"
            "  --debug                 Enable debugging output.\n"
-           "  --show-jobs <printer>   Show the print queue for <printer>\n"
+           "  --show-jobs <printer>   Show the print queue for <printer> or 'ALL' for all printers\n"
+           "  --my-jobs               Show only the actual users jobs, if you have used the --show-jobs option\n"
            "  --help                  Show this message.\n")
 
 if len(sys.argv)>1 and sys.argv[1] == '--help':
@@ -2178,8 +2179,12 @@ def main(show_jobs):
     DBusGMainLoop (set_as_default=True)
 
     if show_jobs:
-        viewer = jobviewer.JobViewer (None, None, my_jobs=False,
-                                      specific_dests=[show_jobs])
+        if show_jobs == "ALL":
+            viewer = jobviewer.JobViewer (None, None, my_jobs=my_jobs,
+                                        specific_dests=None)
+        else:
+            viewer = jobviewer.JobViewer (None, None, my_jobs=my_jobs,
+                                          specific_dests=[show_jobs])
         viewer.connect ('finished', Gtk.main_quit)
     else:
         mainwindow = GUI()
@@ -2194,12 +2199,13 @@ if __name__ == "__main__":
     import getopt
     try:
         opts, args = getopt.gnu_getopt (sys.argv[1:], '',
-                                        ['debug', 'show-jobs='])
+                                        ['debug', 'show-jobs=', 'my-jobs'])
     except getopt.GetoptError:
         show_help ()
         sys.exit (1)
 
     show_jobs = False
+    my_jobs = False
 
     for opt, optarg in opts:
         if opt == '--debug':
@@ -2207,5 +2213,7 @@ if __name__ == "__main__":
             cupshelpers.set_debugprint_fn (debugprint)
         elif opt == '--show-jobs':
             show_jobs = optarg
+        elif opt == '--my-jobs':
+            my_jobs = True
 
-    main(show_jobs)
+    main(show_jobs, my_jobs)
