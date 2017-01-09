@@ -1,4 +1,4 @@
-AC_INIT(system-config-printer, 1.5.8)
+AC_INIT(system-config-printer, 1.5.9)
 AC_CONFIG_SRCDIR(system-config-printer.py)
 AM_INIT_AUTOMAKE([dist-xz dist-bzip2 subdir-objects 1.6])
 IT_PROG_INTLTOOL
@@ -74,7 +74,7 @@ if test "x$with_systemdsystemunitdir" != xno; then
 fi
 AM_CONDITIONAL(HAVE_SYSTEMD, [test -n "$with_systemdsystemunitdir" -a "x$with_systemdsystemunitdir" != xno ])
 
-ALL_LINGUAS="ar as bg bn bn_IN br bs ca cs cy da de el en_GB es et fa fi fr gu he hi hr hu id is it ja kn ko lt lv mai mk ml mr ms nb nds nl nn or pa pl pt pt_BR ro ru si sk sl sr sr@latin sv ta te th tr uk vi zh_CN zh_TW"
+ALL_LINGUAS="ar as bg bn_IN bn br bs ca cs cy da de el en_GB es et fa fi fr gu he hi hr hu id is it ja kn ko lt lv mai mk ml mr ms nb nds nl nn or pa pl pt_BR pt ro ru si sk sl sr@latin sr sv ta te th tr uk vi zh_CN zh_TW"
 AC_CONFIG_FILES([
 Makefile
 po/Makefile.in
