@@ -52,7 +52,7 @@ cupshelpers/config.py: cupshelpers/config.py.in Makefile
 	  -e "s|\@cupsserverbindir\@|$(cupsserverbindir)|" \
 	  $< > $@
 
-dbus/org.fedoraproject.Config.Printing.service: dbus/org.fedoraproject.Config.Printing.service.in
+dbus/org.fedoraproject.Config.Printing.service: dbus/org.fedoraproject.Config.Printing.service.in $(top_builddir)/config.status Makefile
 	sed \
 	-e "s|\@bindir\@|$(bindir)|" \
 	$< >$@
@@ -222,7 +222,7 @@ dbusinterfaces_DATA =				\
 	dbus/org.fedoraproject.Config.Printing.xml
 dbusinterfacesdir = $(datadir)/dbus-1/interfaces/
 
-dbusservices_DATA =				\
+nodist_dbusservices_DATA =				\
 	dbus/org.fedoraproject.Config.Printing.service
 dbusservicesdir = $(datadir)/dbus-1/services/
 
