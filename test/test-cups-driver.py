@@ -47,8 +47,8 @@ class MissingExecutables(Exception):
 class Driver:
     def __init__ (self, driver):
         self.exe = "/usr/lib/cups/driver/%s" % driver
-	self.ppds = None
-	self.files = {}
+        self.ppds = None
+        self.files = {}
         signal.signal (signal.SIGALRM, self._alarm)
 
     def _alarm (self, sig, stack):
@@ -56,7 +56,7 @@ class Driver:
 
     def list (self):
         if self.ppds:
-		return self.ppds
+            return self.ppds
 
         signal.alarm (60)
         p = subprocess.Popen ([self.exe, "list"],
@@ -69,24 +69,24 @@ class Driver:
             posix.kill (p.pid, signal.SIGKILL)
             raise
 
-	if stderr:
-		print(stderr.decode (), file=sys.stderr)
+        if stderr:
+            print(stderr.decode (), file=sys.stderr)
 
-	ppds = []
-	lines = stdout.decode ().split ('\n')
-	for line in lines:
-		l = shlex.split (line)
-		if len (l) < 1:
-			continue
-		ppds.append (l[0])
+        ppds = []
+        lines = stdout.decode ().split ('\n')
+        for line in lines:
+            l = shlex.split (line)
+            if len (l) < 1:
+                continue
+            ppds.append (l[0])
 
-	self.ppds = ppds
-	return ppds
+        self.ppds = ppds
+        return ppds
 
     def cat (self, name):
         try:
             return self.files[name]
-	except KeyError:
+        except KeyError:
             signal.alarm (10)
             p = subprocess.Popen ([self.exe, "cat", name],
                                   stdout=subprocess.PIPE,
