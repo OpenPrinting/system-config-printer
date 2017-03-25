@@ -106,7 +106,7 @@ class Driver:
 
 opts, args = getopt (sys.argv[1:], "m:")
 if len (args) != 1:
-    print "Syntax: test-cups-driver [-m REGEXP] DRIVER"
+    print ("Syntax: test-cups-driver [-m REGEXP] DRIVER")
     sys.exit (1)
 
 match = None
