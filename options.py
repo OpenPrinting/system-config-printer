@@ -38,7 +38,7 @@ class IPPResolution(tuple):
             cls.UNITS_BY_STR[s] = v
 
         if isinstance (values, str):
-            matches = re.match ("(\d+)\D+(\d+)(.*)", values).groups ()
+            matches = re.match (r"(\d+)\D+(\d+)(.*)", values).groups ()
             xres = int (matches[0])
             yres = int (matches[1])
             units = cls.UNITS_BY_STR.get (matches[2], cls.UNITS_DEFAULT)
@@ -449,7 +449,7 @@ class OptionSelectOneResolution(OptionSelectOne):
                             self.UNITS_BY_VAL.get (value[2], ""))
 
     def value(self, string):
-        matches = re.match ("(\d+)\D+(\d+)(.*)", string).groups ()
+        matches = re.match (r"(\d+)\D+(\d+)(.*)", string).groups ()
         return (int (matches[0]), int (matches[1]),
                 self.UNITS_BY_STR.get (matches[2], self.UNITS_DEFAULT))
 
