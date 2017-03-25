@@ -1546,7 +1546,7 @@ class JobViewer (GtkGUI):
         pattrs_req = ['auth-info-required', 'device-uri']
 
         for jobid in self.jobids:
-            # Get the requried attributes for this job
+            # Get the required attributes for this job
             jattrs = c.getJobAttributes (jobid,
                                          requested_attributes=jattrs_req)
             uri = jattrs.get ('job-printer-uri')
