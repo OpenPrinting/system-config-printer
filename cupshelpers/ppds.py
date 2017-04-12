@@ -94,13 +94,13 @@ _HP_MODEL_BY_NAME = {
 }
 
 _RE_turboprint = re.compile ("turboprint")
-_RE_version_numbers = re.compile (" v(?:er\.)?\d(?:\d*\.\d+)?(?: |$)")
+_RE_version_numbers = re.compile (r" v(?:er\.)?\d(?:\d*\.\d+)?(?: |$)")
 _RE_ignore_suffix = re.compile (","
                                 "| hpijs"
                                 "| foomatic/"
                                 "| - "
                                 "| w/"
-                                "| \("
+                                "| \\("
                                 "| postscript"
                                 "| ps"
                                 "| pdf"

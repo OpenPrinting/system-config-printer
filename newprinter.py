@@ -186,7 +186,7 @@ def download_gpg_fingerprint(url):
         debugprint('Cannot retrieve %s' % url)
         return None
 
-    keyid_re = re.compile(' ((?:(?:[0-9A-F]{4})(?:\s+|$)){10})$', re.M)
+    keyid_re = re.compile(r' ((?:(?:[0-9A-F]{4})(?:\s+|$)){10})$', re.M)
 
     m = keyid_re.search(content)
     if m:
@@ -1450,7 +1450,7 @@ class NewPrinterGUI(GtkGUI):
         # not automatically set up on our local CUPS server
         # (for example DNS-SD broadcasted queue from Mac OS X)
         self.remotecupsqueue = None
-        res = re.search ("ipp://(\S+?)(:\d+|)/printers/(\S+)", uri)
+        res = re.search (r"ipp://(\S+?)(:\d+|)/printers/(\S+)", uri)
         if res:
             resg = res.groups()
             if len (resg[1]) > 0:
@@ -2080,7 +2080,7 @@ class NewPrinterGUI(GtkGUI):
         for line in stdout.decode ().split ("\n"):
             if line.find ("fax-type") == -1:
                 continue
-            res = re.search ("(\d+)", line)
+            res = re.search (r"(\d+)", line)
             if res:
                 resg = res.groups()
                 try:
