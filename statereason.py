@@ -31,9 +31,9 @@ class StateReason:
     ERROR=3
 
     LEVEL_ICON={
-        REPORT: "gtk-dialog-info",
-        WARNING: "gtk-dialog-warning",
-        ERROR: "gtk-dialog-error"
+        REPORT: "dialog-information",
+        WARNING: "dialog-warning",
+        ERROR: "dialog-error"
         }
 
     def __init__(self, printer, reason, ppdcache=None):
