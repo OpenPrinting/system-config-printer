@@ -1451,7 +1451,7 @@ class PrinterPropertiesDialog(GtkGUI):
         for option in self.printer.attributes.keys ():
             if option in self.server_side_options:
                 continue
-            if option == "output-mode":
+            if option == "output-mode" or option == "media-col":
                 # Not settable
                 continue
             value = self.printer.attributes[option]
