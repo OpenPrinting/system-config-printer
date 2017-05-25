@@ -664,6 +664,24 @@ class PPDs:
                     fit[driver] = self.FIT_GENERIC
                     _debugprint ("%s: %s" % (fit[driver], driver))
 
+        # Check by the URI whether our printer is connected via IPP
+        # and if not, remove the PPD entries for driverless printing
+        # (ppdname = "driverless:..." from the list)
+        if (not uri or
+            (not uri.startswith("ipp:") and
+             not uri.startswith("ipps:") and
+             (not uri.startswith("dnssd") or
+              not "._ipp" in uri))):
+            failed = set()
+            for ppdname in fit.keys ():
+                if (ppdname.startswith("driverless:")):
+                    failed.add (ppdname)
+            if (len(failed) > 0):
+                _debugprint ("Removed %s due to non-IPP connection" % failed)
+                for each in failed:
+                    del fit[each]
+            failed = set()
+
         # What about the CMD field of the Device ID?  Some devices
         # have optional units for page description languages, such as
         # PostScript, and they will report different CMD strings
