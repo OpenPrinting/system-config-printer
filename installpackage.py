@@ -44,7 +44,7 @@ class PackageKit:
         try:
             if self.iface is not None:
                 self.iface.InstallPackageNames(xid, [name],
-                                           "hide-finished,show-warnings",
+                                           "show-progress,show-finished,show-warning",
                                            timeout = 999999)
         except dbus.exceptions.DBusException:
             pass
@@ -53,7 +53,7 @@ class PackageKit:
         try:
             if self.iface is not None:
                 self.iface.InstallProvideFiles(xid, [filename],
-                                               "hide-finished,show-warnings",
+                                               "show-progress,show-finished,show-warning",
                                                timeout = 999999)
         except dbus.exceptions.DBusException:
             pass
