@@ -19,6 +19,7 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+from debug import *
 from gi.repository import Gtk
 import cups
 import ppdippstr
@@ -140,7 +141,7 @@ class OptionAlwaysShown(OptionInterface):
 
         if (type(self.widget) == Gtk.ComboBox and
             self.widget.get_model () is None):
-            print("No ComboBox model for %s" % self.name)
+            debugprint("No ComboBox model for %s" % self.name)
             model = Gtk.ListStore (str)
             self.widget.set_model (model)
 
@@ -419,10 +420,10 @@ class OptionSelectOne(Option):
         if selected is not None:
             self.selector.set_active(selected)
         else:
-            print("Unknown value for %s: %s" % (name, value))
-            print("Choices:", supported)
+            debugprint("Unknown value for %s: %s" % (name, value))
+            debugprint("Choices:", supported)
             if len(supported) > 0:
-                print("Selecting from choices:", supported[0])
+                debugprint("Selecting from choices:", supported[0])
                 self.selector.set_active(0)
         self.selector.connect("changed", self.changed)
 
