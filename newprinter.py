@@ -484,11 +484,7 @@ class NewPrinterGUI(GtkGUI):
 
         # SMB browser
         self.smb_store = Gtk.TreeStore (GObject.TYPE_PYOBJECT)
-        self.btnSMBBrowse.set_sensitive (PYSMB_AVAILABLE)
-        if not PYSMB_AVAILABLE:
-            self.btnSMBBrowse.set_tooltip_text (_("Browsing not available "
-                                                  "(pysmbc not installed)"))
-
+        self.btnSMBBrowse.set_sensitive (True)
         self.tvSMBBrowser.set_model (self.smb_store)
 
         # SMB list columns
@@ -1380,7 +1376,7 @@ class NewPrinterGUI(GtkGUI):
     def _handlePrinterInstallationStage (self, page_nr, step):
         if self.dialog_mode != "download_driver":
             uri = self.device.uri
-            if uri and uri.startswith ("smb://"):
+            if uri and uri.startswith ("smb"):
                 # User has selected an smb device
                 uri = SMBURI (uri=uri[6:]).sanitize_uri ()
                 self._installSMBBackendIfNeeded ()
@@ -2247,6 +2243,13 @@ class NewPrinterGUI(GtkGUI):
                                      row=[network_dict['device-info'],
                                           PhysicalDevice (network), False])
         model.insert_after (network_iter, find_nw_iter, row=['', None, True])
+        smbdev_dict = { 'device-class': 'network',
+                        'device-info': _("Windows Printer via SAMBA") }
+        smbdev = cupshelpers.Device ('smb', **smbdev_dict)
+        find_smb_iter = model.append (network_iter,
+                                     row=[smbdev_dict['device-info'],
+                                          PhysicalDevice (smbdev), False])
+        model.insert_after (find_nw_iter, find_smb_iter, row=['', None, True])
         self.devices_uri_iter = uri_iter
         self.devices_find_nw_iter = find_nw_iter
         self.devices_network_iter = network_iter
@@ -2365,8 +2368,9 @@ class NewPrinterGUI(GtkGUI):
                     else:
                         device2.uri = "delete"
         devices = [x for x in devices if x.uri not in ("hp", "hpfax",
-                                                 "hal", "beh",
-                                                 "scsi", "http", "delete")]
+                                                       "hal", "beh", "smb", 
+                                                       "scsi", "http",
+                                                       "delete")]
         newdevices = []
         for device in devices:
             physicaldevice = PhysicalDevice (device)
@@ -2459,6 +2463,26 @@ class NewPrinterGUI(GtkGUI):
             self.tvNPDeviceURIs.set_cursor (connection_select_path, column, False)
 
     ## SMB browsing
+
+    def install_python3_smbc_if_needed (self):
+        global PYSMB_AVAILABLE
+        global pysmb # Make the import of pysmb globally available
+        # Does the SMB client library  need to be installed?
+        if not PYSMB_AVAILABLE:
+            debugprint ("No SMB client library present so attempting install")
+            try:
+                pk = installpackage.PackageKit ()
+                # The following call means a blocking, synchronous, D-Bus call
+                pk.InstallPackageName (0, 0, "python3-smbc")
+                try:
+                    import pysmb
+                    PYSMB_AVAILABLE=True
+                    debugprint ("SMB client successfully installed and set up.")
+                except:
+                    debugprint ("SMB client setup failed.")
+            except:
+                debugprint ("Error during installation/setup of SMB client.")
+        return PYSMB_AVAILABLE
 
     def browse_smb_hosts(self):
         """Initialise the SMB tree store."""
@@ -2665,10 +2689,7 @@ class NewPrinterGUI(GtkGUI):
             ready (self.SMBBrowseDialog)
 
     def set_btnSMBVerify_sensitivity (self, on):
-        self.btnSMBVerify.set_sensitive (PYSMB_AVAILABLE and on)
-        if not PYSMB_AVAILABLE or not on:
-            self.btnSMBVerify.set_tooltip_text (_("Verification requires the "
-                                                  "%s module") % "pysmbc")
+        self.btnSMBVerify.set_sensitive (on)
 
     def on_entSMBURI_changed (self, ent):
         allowed_chars = string.ascii_letters+string.digits+'_-./:%[]@'
@@ -2704,6 +2725,10 @@ class NewPrinterGUI(GtkGUI):
         self.btnSMBBrowseOk.set_sensitive(iter is not None and is_share)
 
     def on_btnSMBBrowse_clicked(self, button):
+        """Check whether the needed SMB client library is available and"""
+        """install it if needed"""
+        if not self.install_python3_smbc_if_needed(): return
+
         self.btnSMBBrowseOk.set_sensitive(False)
 
         try:
@@ -2778,6 +2803,10 @@ class NewPrinterGUI(GtkGUI):
         self.tblSMBAuth.set_sensitive(widget.get_active())
 
     def on_btnSMBVerify_clicked(self, button):
+        """Check whether the needed SMB client library is available and"""
+        """install it if needed"""
+        if not self.install_python3_smbc_if_needed(): return
+
         uri = self.entSMBURI.get_text ()
         (group, host, share, u, p) = SMBURI (uri=uri).separate ()
         user = ''
