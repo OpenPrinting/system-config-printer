@@ -3054,10 +3054,16 @@ class NewPrinterGUI(GtkGUI):
                         queue = queue[1:]
                     if queue.startswith("printers/"):
                         queue = queue[9:]
-                if queue != '':
-                    device.menuentry = (_("IPP") + " (%s)" % queue)
+                if 'driverless' in device.info:
+                    drvless = "Driverless "
+                    device.driverless = True
                 else:
-                    device.menuentry = _("IPP")
+                    drvless = ""
+                if queue != '':
+                    device.menuentry = (("%s" + _("IPP") + " (%s)") %
+                                        (drvless, queue))
+                else:
+                    device.menuentry = (("%s" + _("IPP")) % drvless)
             elif device.type == "http" or device.type == "https":
                 device.menuentry = _("HTTP")
             elif device.type == "dnssd" or device.type == "mdns":
