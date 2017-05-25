@@ -582,10 +582,10 @@ class PPDs:
             try:
                 for each in self.ids["hp"][mdll]:
                     fit[each] = self.FIT_EXACT
-                print ("**** Incorrect IEEE 1284 Device ID: %s" %
-                       self.ids["hp"][mdll])
-                print ("**** Actual ID is MFG:%s;MDL:%s;" % (mfg, mdl))
-                print ("**** Please report a bug against the HPLIP component")
+                _debugprint ("**** Incorrect IEEE 1284 Device ID: %s" %
+                             self.ids["hp"][mdll])
+                _debugprint ("**** Actual ID is MFG:%s;MDL:%s;" % (mfg, mdl))
+                _debugprint ("**** Please report a bug against the HPLIP component")
                 id_matched = True
             except KeyError:
                 pass
@@ -777,8 +777,8 @@ class PPDs:
             if description:
                 id += "DES:%s;" % description
 
-            print ("No ID match for device %s:" % sanitised_uri)
-            print (id)
+            _debugprint ("No ID match for device %s:" % sanitised_uri)
+            _debugprint (id)
 
         return fit
 
@@ -844,7 +844,7 @@ class PPDs:
         _debugprint ("Found PPDs: %s" % str (ppdnamelist))
 
         status = self.getStatusFromFit (fit[ppdnamelist[0]])
-        print ("Using %s (status: %d)" % (ppdnamelist[0], status))
+        _debugprint ("Using %s (status: %d)" % (ppdnamelist[0], status))
         return (status, ppdnamelist[0])
 
     def _findBestMatchPPDs (self, mdls, mdl):
