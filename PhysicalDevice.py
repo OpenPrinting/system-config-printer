@@ -50,6 +50,15 @@ class PhysicalDevice:
 
         return cupshelpers.ppds.ppdMakeModelSplit (make_and_model)
 
+    def _add_dot_local_if_needed(self, hostname):
+        if (hostname is None):
+            return None
+        if ((not '.' in hostname) and (not ':' in hostname) and
+            (hostname != 'localhost')):
+            return hostname + '.local'
+        else:
+            return hostname
+
     def _get_host_from_uri (self, uri):
         hostport = None
         host = None
@@ -83,20 +92,25 @@ class PhysicalDevice:
         if hostport:
             (host, port) = urllib.parse.splitport (hostport)
 
-        return host, dnssdhost
+        return self._add_dot_local_if_needed(host), \
+            self._add_dot_local_if_needed(dnssdhost)
 
     def add_device (self, device):
         if self._network_host or self.dnssd_hostname:
             host, dnssdhost = self._get_host_from_uri (device.uri)
             if (hasattr (device, 'address')):
-                host = device.address
+                host = self._add_dot_local_if_needed(device.address)
             if (hasattr (device, 'hostname') and dnssdhost is None):
-                dnssdhost = device.hostname
+                dnssdhost = self._add_dot_local_if_needed(device.hostname)
             if (host is None and dnssdhost is None) or \
-               (host and self._network_host and \
-                host != self._network_host) or \
-               (dnssdhost and self.dnssd_hostname and \
-                dnssdhost != self.dnssd_hostname) or \
+               not ((host and self._network_host and
+                     host == self._network_host) or
+                    (host and self.dnssd_hostname and
+                     host == self.dnssd_hostname) or
+                    (dnssdhost and self._network_host and
+                     dnssdhost == self._network_host) or
+                    (dnssdhost and self.dnssd_hostname and
+                     dnssdhost == self.dnssd_hostname)) or \
                (host is None and self.dnssd_hostname is None) or \
                (dnssdhost is None and self._network_host is None):
                 raise ValueError
@@ -160,11 +174,11 @@ class PhysicalDevice:
         if (hasattr (device, 'address') and self._network_host is None):
             address = device.address
             if address:
-                self._network_host = address
+                self._network_host = self._add_dot_local_if_needed(address)
         if (hasattr (device, 'hostname') and self.dnssd_hostname is None):
             hostname = device.hostname
             if hostname:
-                self.dnssd_hostname = hostname
+                self.dnssd_hostname = self._add_dot_local_if_needed(hostname)
 
     def get_devices (self):
         return self.devices
@@ -230,7 +244,23 @@ class PhysicalDevice:
         if type (other) != type (self):
             return False
 
-        if self._network_host != other._network_host:
+        if not (((not self._network_host or len (self._network_host) == 0) and
+                 (not other._network_host or len (other._network_host) == 0) and
+                 (not self.dnssd_hostname or len (self.dnssd_hostname) == 0) and
+                 (not other.dnssd_hostname or
+                  len (other.dnssd_hostname) == 0)) or
+                (self._network_host and len (self._network_host) > 0 and
+                 other._network_host and len (other._network_host) > 0 and
+                 self._network_host == other._network_host) or
+                (self.dnssd_hostname and len (self.dnssd_hostname) > 0 and
+                 other.dnssd_hostname and len (other.dnssd_hostname) > 0 and
+                 self.dnssd_hostname == other.dnssd_hostname) or
+                (self._network_host and len (self._network_host) > 0 and
+                 other.dnssd_hostname and len (other.dnssd_hostname) > 0 and
+                 self._network_host == other.dnssd_hostname) or
+                (self.dnssd_hostname and len (self.dnssd_hostname) > 0 and
+                 other._network_host and len (other._network_host) > 0 and
+                 self.dnssd_hostname == other._network_host)):
             return False
 
         devs = other.get_devices()

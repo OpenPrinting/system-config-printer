@@ -582,10 +582,10 @@ class PPDs:
             try:
                 for each in self.ids["hp"][mdll]:
                     fit[each] = self.FIT_EXACT
-                print ("**** Incorrect IEEE 1284 Device ID: %s" %
-                       self.ids["hp"][mdll])
-                print ("**** Actual ID is MFG:%s;MDL:%s;" % (mfg, mdl))
-                print ("**** Please report a bug against the HPLIP component")
+                _debugprint ("**** Incorrect IEEE 1284 Device ID: %s" %
+                             self.ids["hp"][mdll])
+                _debugprint ("**** Actual ID is MFG:%s;MDL:%s;" % (mfg, mdl))
+                _debugprint ("**** Please report a bug against the HPLIP component")
                 id_matched = True
             except KeyError:
                 pass
@@ -663,6 +663,24 @@ class PPDs:
                 for driver in generic:
                     fit[driver] = self.FIT_GENERIC
                     _debugprint ("%s: %s" % (fit[driver], driver))
+
+        # Check by the URI whether our printer is connected via IPP
+        # and if not, remove the PPD entries for driverless printing
+        # (ppdname = "driverless:..." from the list)
+        if (not uri or
+            (not uri.startswith("ipp:") and
+             not uri.startswith("ipps:") and
+             (not uri.startswith("dnssd") or
+              not "._ipp" in uri))):
+            failed = set()
+            for ppdname in fit.keys ():
+                if (ppdname.startswith("driverless:")):
+                    failed.add (ppdname)
+            if (len(failed) > 0):
+                _debugprint ("Removed %s due to non-IPP connection" % failed)
+                for each in failed:
+                    del fit[each]
+            failed = set()
 
         # What about the CMD field of the Device ID?  Some devices
         # have optional units for page description languages, such as
@@ -777,8 +795,8 @@ class PPDs:
             if description:
                 id += "DES:%s;" % description
 
-            print ("No ID match for device %s:" % sanitised_uri)
-            print (id)
+            _debugprint ("No ID match for device %s:" % sanitised_uri)
+            _debugprint (id)
 
         return fit
 
@@ -844,7 +862,7 @@ class PPDs:
         _debugprint ("Found PPDs: %s" % str (ppdnamelist))
 
         status = self.getStatusFromFit (fit[ppdnamelist[0]])
-        print ("Using %s (status: %d)" % (ppdnamelist[0], status))
+        _debugprint ("Using %s (status: %d)" % (ppdnamelist[0], status))
         return (status, ppdnamelist[0])
 
     def _findBestMatchPPDs (self, mdls, mdl):

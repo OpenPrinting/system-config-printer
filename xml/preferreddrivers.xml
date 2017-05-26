@@ -83,6 +83,10 @@
     <!-- END OF GENERIC DRIVERS -->
     <!-- now fit is either exact-cmd, exact, or close -->
 
+    <drivertype name="driverless">
+      <ppdname match="driverless:"/>
+    </drivertype>
+
     <drivertype name="cups">
       <ppdname match="drv:///sample.drv/"/>
     </drivertype>
@@ -292,6 +296,7 @@
     <printer>
       <!-- For all printers -->
       <drivers>
+	<drivertype>driverless</drivertype>
 	<drivertype>manufacturer-cmd</drivertype>
 	<drivertype>foomatic-recommended-nonpostscript</drivertype>
 	<drivertype>manufacturer*</drivertype>

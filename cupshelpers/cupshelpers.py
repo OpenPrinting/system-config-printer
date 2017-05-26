@@ -553,61 +553,74 @@ class Device:
             if other.is_class:
                 return True
             return False
-        if not self.is_class and (self.type != other.type):
+
+        stype = self.type
+        if stype == "dnssd":
+            if self.uri.find("._ipp") != -1:
+                stype = "dnssdi"
+            elif self.uri.find("._pdl-datastream") != -1:
+                stype = "dnssds"
+            elif self.uri.find("._printer") != -1:
+                stype = "dnssdl"
+        otype = other.type
+        if otype == "dnssd":
+            if other.uri.find("._ipp") != -1:
+                otype = "dnssdi"
+            elif other.uri.find("._pdl-datastream") != -1:
+                otype = "dnssds"
+            elif other.uri.find("._printer") != -1:
+                otype = "dnssdl"
+
+        if not self.is_class and (stype != otype):
             # "hp"/"hpfax" before "usb" before * before "parallel" before
             # "serial"
-            if other.type == "serial":
+            if otype == "serial":
                 return True
-            if self.type == "serial":
+            if stype == "serial":
                 return False
-            if other.type == "parallel":
+            if otype == "parallel":
                 return True
-            if self.type == "parallel":
+            if stype == "parallel":
                 return False
-            if other.type == "hp":
+            if otype == "hp":
                 return False
-            if self.type == "hp":
+            if stype == "hp":
                 return True
-            if other.type == "hpfax":
+            if otype == "hpfax":
                 return False
-            if self.type == "hpfax":
+            if stype == "hpfax":
                 return True
-            if other.type == "dnssd":
+            if otype == "dnssdi":
                 return False
-            if self.type == "dnssd":
+            if stype == "dnssdi":
                 return True
-            if other.type == "socket":
+            if otype == "ipps":
                 return False
-            if self.type == "socket":
+            if stype == "ipps":
                 return True
-            if other.type == "lpd":
+            if otype == "ipp":
                 return False
-            if self.type == "lpd":
+            if stype == "ipp":
                 return True
-            if other.type == "ipps":
+            if otype == "dnssds":
                 return False
-            if self.type == "ipps":
+            if stype == "dnssds":
                 return True
-            if other.type == "ipp":
+            if otype == "socket":
                 return False
-            if self.type == "ipp":
+            if stype == "socket":
                 return True
-            if other.type == "usb":
+            if otype == "dnssdl":
                 return False
-            if self.type == "usb":
+            if stype == "dnssdl":
                 return True
-        if self.type == "dnssd" and other.type == "dnssd":
-            if other.uri.find("._pdl-datastream") != -1: # Socket
+            if otype == "lpd":
                 return False
-            if self.uri.find("._pdl-datastream") != -1:
+            if stype == "lpd":
                 return True
-            if other.uri.find("._printer") != -1: # LPD
+            if otype == "usb":
                 return False
-            if self.uri.find("._printer") != -1:
-                return True
-            if other.uri.find("._ipp") != -1: # IPP
-                return False
-            if self.uri.find("._ipp") != -1:
+            if stype == "usb":
                 return True
         result = bool(self.id) < bool(other.id)
         if not result:

@@ -948,7 +948,7 @@ class GUI(GtkGUI):
                               'i-network-printer'),
                          'smb-printer':
                              (_("Network print share"),
-                              'printer'),
+                              'i-network-printer'),
                          'network-printer':
                              (_("Network printer"),
                               'i-network-printer'),
@@ -971,14 +971,23 @@ class GUI(GtkGUI):
                     type = 'local-class'
                 else:
                     (scheme, rest) = urllib.parse.splittype (object.device_uri)
-                    if scheme == 'ipp':
-                        type = 'ipp-printer'
+                    if scheme in ['ipp', 'ipps']:
+                        if rest.startswith("//localhost"): # IPP-over-USB
+                            type = 'local-printer'
+                        else: # IPP network printer
+                            type = 'ipp-printer'
                     elif scheme == 'smb':
                         type = 'smb-printer'
                     elif scheme == 'hpfax':
                         type = 'local-fax'
-                    elif scheme in ['socket', 'lpd']:
+                    elif scheme in ['socket', 'lpd', 'dnssd']:
                         type = 'network-printer'
+                    elif object.device_uri.startswith('hp:/net/'):
+                        type = 'network-printer'
+                    elif object.device_uri.startswith('hpfax:/net/'):
+                        type = 'network-printer'
+                    elif scheme == 'implicitclass': # cups-browsed-discovered
+                        type = 'discovered-printer'
 
                 (tip, icon) = PRINTER_TYPE[type]
                 (result, w, h) = Gtk.icon_size_lookup (Gtk.IconSize.DIALOG)
