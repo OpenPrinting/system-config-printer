@@ -2369,7 +2369,7 @@ class NewPrinterGUI(GtkGUI):
                         device2.uri = "delete"
         devices = [x for x in devices if x.uri not in ("hp", "hpfax",
                                                        "hal", "beh", "smb", 
-                                                       "scsi", "http",
+                                                       "scsi", "http", "bjnp",
                                                        "delete")]
         newdevices = []
         for device in devices:
