@@ -23,8 +23,9 @@ import gettext
 gettext.install(domain=config.PACKAGE, localedir=config.localedir)
 import cupshelpers
 import urllib.parse
-
 import ppdippstr
+import socket
+from debug import *
 
 class PhysicalDevice:
     def __init__(self, device):
@@ -32,6 +33,7 @@ class PhysicalDevice:
         self._network_host = None
         self.dnssd_hostname = None
         self._cupsserver = False
+        self.firsturi = None
         self.add_device (device)
         self._user_data = {}
         self._ppdippstr = ppdippstr.backends
@@ -91,6 +93,20 @@ class PhysicalDevice:
 
         if hostport:
             (host, port) = urllib.parse.splitport (hostport)
+
+        if (host):
+            ip = None
+            try:
+                ip = socket.gethostbyname(host)
+                if ip:
+                    host = ip
+            except:
+                pass
+        elif (dnssdhost):
+            try:
+                host = socket.gethostbyname(dnssdhost)
+            except:
+                host = None
 
         return self._add_dot_local_if_needed(host), \
             self._add_dot_local_if_needed(dnssdhost)
@@ -160,6 +176,11 @@ class PhysicalDevice:
             if d.uri == device.uri:
                 return
 
+        # Use the URI of the very first device added as a kind of identifier
+        # for this physical device record, to make debugging easier
+        if not self.firsturi:
+            self.firsturi = device.uri;
+
         self.devices.append (device)
         self.devices.sort ()
 
@@ -175,10 +196,20 @@ class PhysicalDevice:
             address = device.address
             if address:
                 self._network_host = self._add_dot_local_if_needed(address)
+
         if (hasattr (device, 'hostname') and self.dnssd_hostname is None):
             hostname = device.hostname
             if hostname:
                 self.dnssd_hostname = self._add_dot_local_if_needed(hostname)
+
+        if (self.dnssd_hostname and self._network_host is None):
+            try:
+                self._network_host = socket.gethostbyname(hostname);
+            except:
+                self._network_host = None
+
+        debugprint("Device %s added to physical device: %s" %
+                   (device.uri, repr(self)))
 
     def get_devices (self):
         return self.devices
@@ -236,9 +267,9 @@ class PhysicalDevice:
         return "(description: %s)" % self.__repr__ ()
 
     def __repr__ (self):
-        return "<PhysicalDevice.PhysicalDevice (%s,%s,%s)>" % (self.mfg,
-                                                               self.mdl,
-                                                               self.sn)
+        return ("<PhysicalDevice.PhysicalDevice (%s,%s,%s,%s,%s,%s)>" %
+                (self.mfg, self.mdl, self.sn, self._network_host,
+                 self.dnssd_hostname, self.firsturi))
 
     def __eq__(self, other):
         if type (other) != type (self):
@@ -304,6 +335,9 @@ class PhysicalDevice:
         if type (other) != type (self):
             return False
 
+        if self == other:
+            return False;
+
         if self._network_host != other._network_host:
             if self._network_host is None:
                 return True
@@ -312,6 +346,15 @@ class PhysicalDevice:
                 return False
 
             return self._network_host < other._network_host
+
+        if self.dnssd_hostname != other.dnssd_hostname:
+            if self.dnssd_hostname is None:
+                return True
+
+            if other.dnssd_hostname is None:
+                return False
+
+            return self.dnssd_hostname < other.dnssd_hostname
 
         devs = other.get_devices()
         if devs:
@@ -335,7 +378,9 @@ class PhysicalDevice:
                 make_and_model = dev.mdl
             else:
                 make_and_model = "%s %s" % (dev.mfg, dev.mdl)
-            return cupshelpers.ppds.ppdMakeModelSplit (make_and_model)
+            (mfg, mdl) = cupshelpers.ppds.ppdMakeModelSplit (make_and_model)
+            return (cupshelpers.ppds.normalize (mfg),
+                    cupshelpers.ppds.normalize (mdl))
 
         (our_mfg, our_mdl) = split_make_and_model (self)
         (other_mfg, other_mdl) = split_make_and_model (other)
