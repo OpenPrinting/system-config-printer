@@ -1986,7 +1986,7 @@ class NewPrinterGUI(GtkGUI):
 
         # Search for Bluetooth printers together with the network printers
         # as the Bluetooth search takes rather long time
-        network_schemes = ["dnssd", "snmp", "bluetooth"]
+        network_schemes = ["dnssd", "snmp", "driverless", "bjnp", "bluetooth"]
         error_handler = self.error_getting_devices
         if network == False:
             reply_handler = (lambda x, y:
