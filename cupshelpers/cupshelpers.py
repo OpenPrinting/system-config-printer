@@ -562,6 +562,9 @@ class Device:
                 stype = "dnssds"
             elif self.uri.find("._printer") != -1:
                 stype = "dnssdl"
+        if stype == "usb":
+            if self.uri.lower().find("fax") != -1:
+                stype = "usbfax"
         otype = other.type
         if otype == "dnssd":
             if other.uri.find("._ipp") != -1:
@@ -570,6 +573,9 @@ class Device:
                 otype = "dnssds"
             elif other.uri.find("._printer") != -1:
                 otype = "dnssdl"
+        if otype == "usb":
+            if other.uri.lower().find("fax") != -1:
+                otype = "usbfax"
 
         if not self.is_class and (stype != otype):
             # "hp"/"hpfax" before "usb" before * before "parallel" before
@@ -621,6 +627,10 @@ class Device:
             if otype == "usb":
                 return False
             if stype == "usb":
+                return True
+            if otype == "usbfax":
+                return False
+            if stype == "usbfax":
                 return True
         result = bool(self.id) < bool(other.id)
         if not result:
