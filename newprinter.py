@@ -3037,7 +3037,11 @@ class NewPrinterGUI(GtkGUI):
             elif device.type == "serial":
                 device.menuentry = _("Serial Port")
             elif device.type == "usb":
-                device.menuentry = _("USB")
+                if (hasattr(device, "uri") and
+                    device.uri.lower().find("fax") > -1):
+                    device.menuentry = _("Fax") + " - " + _("USB")
+                else:
+                    device.menuentry = _("USB")
             elif device.type == "bluetooth":
                 device.menuentry = _("Bluetooth")
             elif device.type == "hp":
@@ -3225,6 +3229,7 @@ class NewPrinterGUI(GtkGUI):
         page = self.new_printer_device_tabs.get (device.type, self.PAGE_SELECT_DEVICE)
         self.ntbkNPType.set_current_page(page)
 
+        debugprint("Selected connection type. URI: %s" % device.uri)
         location = ''
         type = device.type
         url = device.uri.split(":", 1)[-1]
@@ -3234,7 +3239,14 @@ class NewPrinterGUI(GtkGUI):
             if device.type == "parallel":
                 text = _("A printer connected to the parallel port.")
             elif device.type == "usb":
-                text = _("A printer connected to a USB port.")
+                if (hasattr(device, "uri") and
+                    device.uri.lower().find("fax") > -1):
+                    device.menuentry = _("Fax") + " - " + _("USB")
+                    text = _("A fax machine or the fax function "
+                             "of a multi-function device connected "
+                             "to a USB port.")
+                else:
+                    text = _("A printer connected to a USB port.")
             elif device.type == "bluetooth":
                 text = _("A printer connected via Bluetooth.")
             elif device.type == "hp":
