@@ -2373,13 +2373,24 @@ class NewPrinterGUI(GtkGUI):
                                                        "delete")]
         newdevices = []
         for device in devices:
+            debugprint("Adding device with URI %s" % device.uri)
+            if (hasattr (device, 'address')):
+                debugprint("   Device address %s" % device.address)
+            if (hasattr (device, 'hostname')):
+                debugprint("   Device host name %s" % device.hostname)
             physicaldevice = PhysicalDevice (device)
+            debugprint ("   Created physical device %s" % repr(physicaldevice))
             try:
                 i = self.devices.index (physicaldevice)
+                debugprint ("   Physical device %d is the same printer" % i)
                 self.devices[i].add_device (device)
+                debugprint ("   New physical device %s is same as physical device %d: %s" %
+                            (repr(physicaldevice), i, repr(self.devices[i])))
+                debugprint ("   Joining devices")
             except ValueError:
                 self.devices.append (physicaldevice)
                 newdevices.append (physicaldevice)
+                debugprint ("   Physical device %s is a completely new device" % repr(physicaldevice))
 
         self.devices.sort()
         if current_uri:
@@ -2398,7 +2409,15 @@ class NewPrinterGUI(GtkGUI):
 
         network_iter = self.devices_network_iter
         find_nw_iter = self.devices_find_nw_iter
-        for device in newdevices:
+        for newdevice in newdevices:
+            device = None
+            try:
+                i = self.devices.index (newdevice)
+                device = self.devices[i]
+            except ValueError:
+                debugprint("ERROR: Cannot identify new physical device with its entry in the device list (%s)" %
+                           repr(newdevice))
+                continue
             devs = device.get_devices ()
             network = devs[0].device_class == 'network'
             info = device.get_info ()
