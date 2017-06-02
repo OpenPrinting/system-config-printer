@@ -323,7 +323,13 @@ class PhysicalDevice:
         (our_mfg, our_mdl) = split_make_and_model (self)
         (other_mfg, other_mdl) = split_make_and_model (other)
 
-        if our_mfg != other_mfg or our_mdl != other_mdl:
+        if our_mfg != other_mfg:
+            return False
+
+        if our_mfg == "hp" and self.sn != '' and self.sn == other.sn:
+            return True
+
+        if our_mdl != other_mdl:
             return False
 
         if self.sn == '' or other.sn == '':
