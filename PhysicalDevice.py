@@ -61,6 +61,18 @@ class PhysicalDevice:
         else:
             return hostname
 
+    def _get_address (self, hostname):
+        try:
+            address = socket.getaddrinfo(hostname, 0,
+                                         family=socket.AF_INET)[0][4][0]
+        except:
+            try:
+                address = socket.getaddrinfo(hostname, 0,
+                                             family=socket.AF_INET6)[0][4][0]
+            except:
+                address = None
+        return address
+
     def _get_host_from_uri (self, uri):
         hostport = None
         host = None
@@ -97,14 +109,14 @@ class PhysicalDevice:
         if (host):
             ip = None
             try:
-                ip = socket.gethostbyname(host)
+                ip = self._get_address(host)
                 if ip:
                     host = ip
             except:
                 pass
         elif (dnssdhost):
             try:
-                host = socket.gethostbyname(dnssdhost)
+                host = self._get_address(dnssdhost)
             except:
                 host = None
 
@@ -204,7 +216,7 @@ class PhysicalDevice:
 
         if (self.dnssd_hostname and self._network_host is None):
             try:
-                self._network_host = socket.gethostbyname(hostname);
+                self._network_host = self._get_address(hostname);
             except:
                 self._network_host = None
 
