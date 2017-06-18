@@ -57,7 +57,7 @@ try:
     gi.require_version('GnomeKeyring', '1.0')
     from gi.repository import GnomeKeyring
     USE_KEYRING=True
-except ImportError:
+except (ImportError, ValueError):
     USE_KEYRING=False
 
 import gettext
