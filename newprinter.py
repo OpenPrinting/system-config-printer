@@ -1986,7 +1986,7 @@ class NewPrinterGUI(GtkGUI):
 
         # Search for Bluetooth printers together with the network printers
         # as the Bluetooth search takes rather long time
-        network_schemes = ["dnssd", "snmp", "bluetooth"]
+        network_schemes = ["dnssd", "snmp", "driverless", "bjnp", "bluetooth"]
         error_handler = self.error_getting_devices
         if network == False:
             reply_handler = (lambda x, y:
@@ -2369,17 +2369,28 @@ class NewPrinterGUI(GtkGUI):
                         device2.uri = "delete"
         devices = [x for x in devices if x.uri not in ("hp", "hpfax",
                                                        "hal", "beh", "smb", 
-                                                       "scsi", "http",
+                                                       "scsi", "http", "bjnp",
                                                        "delete")]
         newdevices = []
         for device in devices:
+            debugprint("Adding device with URI %s" % device.uri)
+            if (hasattr (device, 'address')):
+                debugprint("   Device address %s" % device.address)
+            if (hasattr (device, 'hostname')):
+                debugprint("   Device host name %s" % device.hostname)
             physicaldevice = PhysicalDevice (device)
+            debugprint ("   Created physical device %s" % repr(physicaldevice))
             try:
                 i = self.devices.index (physicaldevice)
+                debugprint ("   Physical device %d is the same printer" % i)
                 self.devices[i].add_device (device)
+                debugprint ("   New physical device %s is same as physical device %d: %s" %
+                            (repr(physicaldevice), i, repr(self.devices[i])))
+                debugprint ("   Joining devices")
             except ValueError:
                 self.devices.append (physicaldevice)
                 newdevices.append (physicaldevice)
+                debugprint ("   Physical device %s is a completely new device" % repr(physicaldevice))
 
         self.devices.sort()
         if current_uri:
@@ -2398,7 +2409,15 @@ class NewPrinterGUI(GtkGUI):
 
         network_iter = self.devices_network_iter
         find_nw_iter = self.devices_find_nw_iter
-        for device in newdevices:
+        for newdevice in newdevices:
+            device = None
+            try:
+                i = self.devices.index (newdevice)
+                device = self.devices[i]
+            except ValueError:
+                debugprint("ERROR: Cannot identify new physical device with its entry in the device list (%s)" %
+                           repr(newdevice))
+                continue
             devs = device.get_devices ()
             network = devs[0].device_class == 'network'
             info = device.get_info ()
@@ -3018,7 +3037,11 @@ class NewPrinterGUI(GtkGUI):
             elif device.type == "serial":
                 device.menuentry = _("Serial Port")
             elif device.type == "usb":
-                device.menuentry = _("USB")
+                if (hasattr(device, "uri") and
+                    device.uri.lower().find("fax") > -1):
+                    device.menuentry = _("Fax") + " - " + _("USB")
+                else:
+                    device.menuentry = _("USB")
             elif device.type == "bluetooth":
                 device.menuentry = _("Bluetooth")
             elif device.type == "hp":
@@ -3206,6 +3229,7 @@ class NewPrinterGUI(GtkGUI):
         page = self.new_printer_device_tabs.get (device.type, self.PAGE_SELECT_DEVICE)
         self.ntbkNPType.set_current_page(page)
 
+        debugprint("Selected connection type. URI: %s" % device.uri)
         location = ''
         type = device.type
         url = device.uri.split(":", 1)[-1]
@@ -3215,7 +3239,14 @@ class NewPrinterGUI(GtkGUI):
             if device.type == "parallel":
                 text = _("A printer connected to the parallel port.")
             elif device.type == "usb":
-                text = _("A printer connected to a USB port.")
+                if (hasattr(device, "uri") and
+                    device.uri.lower().find("fax") > -1):
+                    device.menuentry = _("Fax") + " - " + _("USB")
+                    text = _("A fax machine or the fax function "
+                             "of a multi-function device connected "
+                             "to a USB port.")
+                else:
+                    text = _("A printer connected to a USB port.")
             elif device.type == "bluetooth":
                 text = _("A printer connected via Bluetooth.")
             elif device.type == "hp":
