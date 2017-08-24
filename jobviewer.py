@@ -1867,7 +1867,10 @@ class JobViewer (GtkGUI):
             "cups-remote-stopped",
             "cups-remote-canceled",
             "cups-remote-aborted",
-            "cups-remote-completed"
+            "cups-remote-completed",
+            
+            # The cups-waiting-for-job-completed job state reason is normal and should not cause a desktop notification
+            "cups-waiting-for-job-completed"
             ]
 
         if reason.get_reason () in blacklist:
