@@ -1044,8 +1044,8 @@ class JobViewer (GtkGUI):
                 for keyring_attrs in [identifying_attrs, informational_attrs]:
                     attrs = dict()
                     for key, val in keyring_attrs.items ():
-                        attrs.update (key,
-                                      val)
+                        key_val_dict = {key : val}
+                        attrs.update (key_val_dict)
                     service_obj = ServiceGet()
                     service = service_obj.get_service()
 
