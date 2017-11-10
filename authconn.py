@@ -21,8 +21,10 @@ import threading
 import config
 import cups
 import cupspk
+import gi
 from gi.repository import GLib
 from gi.repository import Gdk
+gi.requires_version('Gtk', '3.0')
 from gi.repository import Gtk
 import os
 from errordialogs import *
