@@ -1205,7 +1205,8 @@ class JobViewer (GtkGUI):
                     secret = auth_info[ind]
                     attrs = dict()
                     for key, val in keyring_attrs.items ():
-                        attrs.update(key, val)
+                        key_val_dict = {key : val}
+                        attrs.update (key_val_dict)
                     password_obj = PasswordStore(attrs,
                                                  name,
                                                  secret)
