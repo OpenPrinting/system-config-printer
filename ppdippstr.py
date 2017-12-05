@@ -92,7 +92,23 @@ def init ():
     global ppd
     ppd = TranslationDict ({
             "General": _("General"),
-
+            "Print Quality": _("Print Quality"),
+            "Draft": _("Draft"),
+            "Normal": _("Normal"),
+            "Resolution": _("Resolution"),
+            "Color Mode": _("Color Mode"),
+            "Quality": _("Quality"),
+            "Paper Source": _("Paper source"),
+            "Media Type": _("Media Type"),
+                "Bond": _("Bond"),
+                "Color": _("Color"),
+                "Envelope": _("Envelope"),
+                "Labels": _("Labels"),
+                "Standard Paper": _("Standard Paper"),
+            "Print Density": _("Print Density"),
+            
+            "Adjustment": _("Adjustment"),
+        
             # HPIJS options
             "Printout Mode": _("Printout mode"),
             "Draft (auto-detect paper type)":
@@ -126,6 +142,7 @@ def init ():
 
             "Page Size": _("Page size"),
             "Custom": _("Custom"),
+            "Letter": _("Letter"),
             "Photo or 4x6 inch index card": _("Photo or 4x6 inch index card"),
             "Photo or 5x7 inch index card": _("Photo or 5x7 inch index card"),
             "Photo with tear-off tab": _("Photo with tear-off tab"),
