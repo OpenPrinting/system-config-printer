@@ -93,22 +93,50 @@ def init ():
     ppd = TranslationDict ({
             "General": _("General"),
             "Print Quality": _("Print Quality"),
+            "Printing Quality": _("Printing Quality"),
             "Draft": _("Draft"),
             "Normal": _("Normal"),
             "Resolution": _("Resolution"),
             "Color Mode": _("Color Mode"),
             "Quality": _("Quality"),
             "Paper Source": _("Paper source"),
+                "Auto Source": _("Auto Source"),
+                "Manual Feed": _("Manual Feed"),
+                "Middle Tray": _("Middle Tray"),
+                
             "Media Type": _("Media Type"),
                 "Bond": _("Bond"),
                 "Color": _("Color"),
                 "Envelope": _("Envelope"),
                 "Labels": _("Labels"),
                 "Standard Paper": _("Standard Paper"),
+                "Heavy": _("Heavy"),
+                "Light": _("Light"),
+                "Recycled": _("Recycled"),
+                
             "Print Density": _("Print Density"),
+            	"Extra Light(1)": _("Extra Light(1)"),
+            	"Light (2)": _("Light (2)"),
+            	"Medium (3)": _("Medium (3)"),
+            	"Dark (4)": _("Dark (4)"),
+            	"Extra Dark (5)": _("Extra Dark (5)"),
+            "Copies":_("Copies")
             
             "Adjustment": _("Adjustment"),
-        
+            "Halftone Algorithm": _("Halftone Algorithm")
+           	 "Default":_("Default")
+            
+            "Miscellaneous": _("Miscellaneous")
+            
+            #Epson xp serie
+            "_Media Size": _("_Media Size"),
+            "_Grayscale": _("_Grayscale"),
+            "_Brightness": _("_Brightness"),
+            "_Contrast": _("_Contrast"),
+            "_Saturation": _("_Saturation"),
+            "Off": _("Off"),
+            "On": _("On"),   
+            
             # HPIJS options
             "Printout Mode": _("Printout mode"),
             "Draft (auto-detect paper type)":
