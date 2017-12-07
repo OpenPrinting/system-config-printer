@@ -150,7 +150,7 @@ def init ():
                 "Transparency Film": _("Transparency Film"),             
                 "CD or DVD Media": _("CD or DVD Media"),
             "Print Density": _("Print Density"),
-            	"Extra Light(1)": _("Extra Light(1)"),
+            	"Extra Light (1)": _("Extra Light (1)"),
             	"Light (2)": _("Light (2)"),
             	"Medium (3)": _("Medium (3)"),
             	"Dark (4)": _("Dark (4)"),
