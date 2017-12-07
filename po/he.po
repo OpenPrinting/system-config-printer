@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2017-12-05 14:57+0100\n"
+"POT-Creation-Date: 2017-12-07 16:23+0100\n"
 "PO-Revision-Date: 2016-09-16 06:38-0400\n"
 "Last-Translator: Niv Baehr <bloop93@gmail.com>\n"
 "Language-Team: Hebrew (http://www.transifex.com/projects/p/system-config-"
@@ -502,7 +502,7 @@ msgid ""
 msgstr ""
 
 #: ../newprinter.py:358 ../newprinter.py:369 ../newprinter.py:375
-#: ../newprinter.py:380
+#: ../newprinter.py:380 ../ppdippstr.py:127
 msgid "Default"
 msgstr "ברירת מחדל"
 
@@ -647,7 +647,7 @@ msgstr "מדפסת רשת"
 msgid "Find Network Printer"
 msgstr "מצא מדפסת רשת"
 
-#: ../newprinter.py:2247 ../newprinter.py:3070 ../ppdippstr.py:201
+#: ../newprinter.py:2247 ../newprinter.py:3070 ../ppdippstr.py:229
 msgid "Windows Printer via SAMBA"
 msgstr "מדפסת חלונות דרך SAMBA"
 
@@ -737,7 +737,7 @@ msgstr "HP Linux Imaging and Printing (HPLIP)"
 msgid "Hardware Abstraction Layer (HAL)"
 msgstr "שכבת הפשטת חומרה (Hardware Abstraction Layer)."
 
-#: ../newprinter.py:3055 ../ppdippstr.py:195
+#: ../newprinter.py:3055 ../ppdippstr.py:223
 msgid "AppSocket/HP JetDirect"
 msgstr ""
 
@@ -1013,274 +1013,367 @@ msgstr "כללי"
 msgid "Print Quality"
 msgstr "יישומון תורי הדפסה"
 
-#: ../ppdippstr.py:96 ../printerproperties.py:324
+#: ../ppdippstr.py:96
+#, fuzzy
+msgid "Printing Quality"
+msgstr "יישומון תורי הדפסה"
+
+#: ../ppdippstr.py:97 ../printerproperties.py:324
 msgid "Draft"
 msgstr ""
 
-#: ../ppdippstr.py:97 ../printerproperties.py:320 ../printerproperties.py:325
+#: ../ppdippstr.py:98 ../printerproperties.py:320 ../printerproperties.py:325
 msgid "Normal"
 msgstr "רגיל"
 
-#: ../ppdippstr.py:98
+#: ../ppdippstr.py:99
 msgid "Resolution"
 msgstr ""
 
-#: ../ppdippstr.py:99
+#: ../ppdippstr.py:100
 msgid "Color Mode"
 msgstr ""
 
-#: ../ppdippstr.py:100
+#: ../ppdippstr.py:101
 msgid "Quality"
 msgstr ""
 
-#: ../ppdippstr.py:101
+#: ../ppdippstr.py:102
 #, fuzzy
 msgid "Paper source"
 msgstr "מקור מדיה"
 
-#: ../ppdippstr.py:102
-#, fuzzy
-msgid "Media Type"
-msgstr "מקור מדיה"
-
 #: ../ppdippstr.py:103
-msgid "Bond"
+msgid "Auto Source"
 msgstr ""
 
 #: ../ppdippstr.py:104
-msgid "Color"
-msgstr ""
+#, fuzzy
+msgid "Manual Feed"
+msgstr "הזנה ידנית"
 
 #: ../ppdippstr.py:105
-#, fuzzy
-msgid "Envelope"
-msgstr "מזין מעטפות"
-
-#: ../ppdippstr.py:106
-msgid "Labels"
+msgid "Middle Tray"
 msgstr ""
 
 #: ../ppdippstr.py:107
 #, fuzzy
+msgid "Media Type"
+msgstr "מקור מדיה"
+
+#: ../ppdippstr.py:108
+msgid "Bond"
+msgstr ""
+
+#: ../ppdippstr.py:109
+msgid "Color"
+msgstr ""
+
+#: ../ppdippstr.py:110
+#, fuzzy
+msgid "Envelope"
+msgstr "מזין מעטפות"
+
+#: ../ppdippstr.py:111
+msgid "Labels"
+msgstr ""
+
+#: ../ppdippstr.py:112
+#, fuzzy
 msgid "Standard Paper"
 msgstr "רגיל"
 
-#: ../ppdippstr.py:108
+#: ../ppdippstr.py:113
+msgid "Heavy"
+msgstr ""
+
+#: ../ppdippstr.py:114
+#, fuzzy
+msgid "Light"
+msgstr "לילה"
+
+#: ../ppdippstr.py:115
+msgid "Recycled"
+msgstr ""
+
+#: ../ppdippstr.py:117
 #, fuzzy
 msgid "Print Density"
 msgstr "הדפסת עמוד ניסיון"
 
-#: ../ppdippstr.py:110
+#: ../ppdippstr.py:118
+msgid "Extra Light(1)"
+msgstr ""
+
+#: ../ppdippstr.py:119
+msgid "Light (2)"
+msgstr ""
+
+#: ../ppdippstr.py:120
+msgid "Medium (3)"
+msgstr ""
+
+#: ../ppdippstr.py:121
+msgid "Dark (4)"
+msgstr ""
+
+#: ../ppdippstr.py:122
+msgid "Extra Dark (5)"
+msgstr ""
+
+#: ../ppdippstr.py:123
+#, fuzzy
+msgid "Copies"
+msgstr "עותקים:"
+
+#: ../ppdippstr.py:125
 #, fuzzy
 msgid "Adjustment"
 msgstr "התאמת גוון:"
 
-#. HPIJS options
-#: ../ppdippstr.py:113
-msgid "Printout mode"
-msgstr "מצב הדפסה"
-
-#: ../ppdippstr.py:115
-msgid "Draft (auto-detect-paper type)"
-msgstr "טיוטה (זהה סוג נייר אוטומטית)"
-
-#: ../ppdippstr.py:117
-msgid "Draft grayscale (auto-detect-paper type)"
-msgstr "טיוטה בגווני אפור (זהה סוג נייר אוטומטית)"
-
-#: ../ppdippstr.py:119
-msgid "Normal (auto-detect-paper type)"
-msgstr "רגיל (זהה סוג נייר אוטומטית)"
-
-#: ../ppdippstr.py:121
-msgid "Normal grayscale (auto-detect-paper type)"
-msgstr "רגיל בגווני אפור (זהה סוג נייר אוטומטית)"
-
-#: ../ppdippstr.py:123
-msgid "High quality (auto-detect-paper type)"
-msgstr "איכות גבוהה (זהה סוג נייר אוטומטית)"
-
-#: ../ppdippstr.py:125
-msgid "High quality grayscale (auto-detect-paper type)"
-msgstr "איכות גבוהה בגווני אפור (זהה סוג נייר אוטומטית)"
-
 #: ../ppdippstr.py:126
-msgid "Photo (on photo paper)"
-msgstr "תמונה (על נייר פוטו)"
+#, fuzzy
+msgid "Halftone Algorithm"
+msgstr "אלגוריתמים מוגנים בפטנט"
 
-#: ../ppdippstr.py:128
-msgid "Best quality (color on photo paper)"
-msgstr "איכות הכי טובה (צבע על נייר פוטו)"
+#: ../ppdippstr.py:129
+msgid "Miscellaneous"
+msgstr ""
 
-#: ../ppdippstr.py:130
-msgid "Normal quality (color on photo paper)"
-msgstr "איכות רגילה (צבע על נייר פוטו)"
-
+#. Epson xp serie
 #: ../ppdippstr.py:132
-msgid "Media source"
+#, fuzzy
+msgid "_Media Size"
 msgstr "מקור מדיה"
 
 #: ../ppdippstr.py:133
-msgid "Printer default"
-msgstr "ברירת מחדל של מדפסת"
+msgid "_Grayscale"
+msgstr ""
 
 #: ../ppdippstr.py:134
-msgid "Photo tray"
-msgstr "מגש פוטו"
+#, fuzzy
+msgid "_Brightness"
+msgstr "בהירות:"
 
 #: ../ppdippstr.py:135
-msgid "Upper tray"
-msgstr "מגש עליון"
+msgid "_Contrast"
+msgstr ""
 
 #: ../ppdippstr.py:136
-msgid "Lower tray"
-msgstr "מגש תחתון"
+#, fuzzy
+msgid "_Saturation"
+msgstr "רוויה:"
 
-#: ../ppdippstr.py:137
-msgid "CD or DVD tray"
-msgstr "מגש תקליטורים"
-
-#: ../ppdippstr.py:138
-msgid "Envelope feeder"
-msgstr "מזין מעטפות"
-
-#: ../ppdippstr.py:139
-msgid "Large capacity tray"
-msgstr "מגש בעל קיבולת גבוהה"
-
-#: ../ppdippstr.py:140
-msgid "Manual feeder"
-msgstr "הזנה ידנית"
-
-#: ../ppdippstr.py:141
-msgid "Multi-purpose tray"
-msgstr "מגש רב-תכליתי"
-
-#: ../ppdippstr.py:143
-msgid "Page size"
-msgstr "גודל עמוד"
-
-#: ../ppdippstr.py:144
-msgid "Custom"
-msgstr "מותאם אישית"
-
-#: ../ppdippstr.py:145
-msgid "Letter"
-msgstr ""
-
-#: ../ppdippstr.py:146
-msgid "Photo or 4x6 inch index card"
-msgstr "תמונה או כרטיס אינדקס בגודל 4x6 אינץ'"
-
-#: ../ppdippstr.py:147
-msgid "Photo or 5x7 inch index card"
-msgstr "תמונה או כרטיס אינדקס בגודל 5x7 אינץ'"
-
-#: ../ppdippstr.py:148
-msgid "Photo with tear-off tab"
-msgstr "תמונה עם סימני חיתוך"
-
-#: ../ppdippstr.py:149
-msgid "3x5 inch index card"
-msgstr "כרטיס אינדקס בגודל 3x5 אינץ'"
-
-#: ../ppdippstr.py:150
-msgid "5x8 inch index card"
-msgstr "כרטיס אינדקס בגודל 5x8 אינץ'"
-
-#: ../ppdippstr.py:151
-msgid "A6 with tear-off tab"
-msgstr ""
-
-#: ../ppdippstr.py:152
-msgid "CD or DVD 80mm"
-msgstr "תקליטור או תקליטור DVD ‏88מ\"מ"
-
-#: ../ppdippstr.py:153
-msgid "CD or DVD 120mm"
-msgstr "תקליטור או תקליטור DVD‏ 120מ\"מ"
-
-#: ../ppdippstr.py:155
-msgid "Double-sided printing"
-msgstr "הדפסה דו-צדדית"
-
-#: ../ppdippstr.py:156
-msgid "Long edge (standard)"
-msgstr ""
-
-#: ../ppdippstr.py:157
-msgid "Short edge (flip)"
-msgstr ""
-
-#: ../ppdippstr.py:158
+#: ../ppdippstr.py:137 ../ppdippstr.py:186
 msgid "Off"
 msgstr "מכובה"
 
+#: ../ppdippstr.py:138
+msgid "On"
+msgstr ""
+
+#. HPIJS options
+#: ../ppdippstr.py:141
+msgid "Printout mode"
+msgstr "מצב הדפסה"
+
+#: ../ppdippstr.py:143
+msgid "Draft (auto-detect-paper type)"
+msgstr "טיוטה (זהה סוג נייר אוטומטית)"
+
+#: ../ppdippstr.py:145
+msgid "Draft grayscale (auto-detect-paper type)"
+msgstr "טיוטה בגווני אפור (זהה סוג נייר אוטומטית)"
+
+#: ../ppdippstr.py:147
+msgid "Normal (auto-detect-paper type)"
+msgstr "רגיל (זהה סוג נייר אוטומטית)"
+
+#: ../ppdippstr.py:149
+msgid "Normal grayscale (auto-detect-paper type)"
+msgstr "רגיל בגווני אפור (זהה סוג נייר אוטומטית)"
+
+#: ../ppdippstr.py:151
+msgid "High quality (auto-detect-paper type)"
+msgstr "איכות גבוהה (זהה סוג נייר אוטומטית)"
+
+#: ../ppdippstr.py:153
+msgid "High quality grayscale (auto-detect-paper type)"
+msgstr "איכות גבוהה בגווני אפור (זהה סוג נייר אוטומטית)"
+
+#: ../ppdippstr.py:154
+msgid "Photo (on photo paper)"
+msgstr "תמונה (על נייר פוטו)"
+
+#: ../ppdippstr.py:156
+msgid "Best quality (color on photo paper)"
+msgstr "איכות הכי טובה (צבע על נייר פוטו)"
+
+#: ../ppdippstr.py:158
+msgid "Normal quality (color on photo paper)"
+msgstr "איכות רגילה (צבע על נייר פוטו)"
+
+#: ../ppdippstr.py:160
+msgid "Media source"
+msgstr "מקור מדיה"
+
 #: ../ppdippstr.py:161
-msgid "Resolution, quality, ink type, media type"
-msgstr "רזולוציה, איכות, סוג דיו, סוג מדיה"
+msgid "Printer default"
+msgstr "ברירת מחדל של מדפסת"
 
 #: ../ppdippstr.py:162
-msgid "Controlled by 'Printout mode'"
-msgstr "נשלט ע\"י 'מצב הדפסה'"
+msgid "Photo tray"
+msgstr "מגש פוטו"
+
+#: ../ppdippstr.py:163
+msgid "Upper tray"
+msgstr "מגש עליון"
 
 #: ../ppdippstr.py:164
-msgid "300 dpi, color, black + color cartridge"
-msgstr "‏300 dpi, צבע, מחסניות שחורות וצבעוניות"
+msgid "Lower tray"
+msgstr "מגש תחתון"
+
+#: ../ppdippstr.py:165
+msgid "CD or DVD tray"
+msgstr "מגש תקליטורים"
 
 #: ../ppdippstr.py:166
-msgid "300 dpi, draft, color, black + color cartridge"
-msgstr "‏300 dpi, טיוטה, מחסניות שחורות וצבעוניות"
+msgid "Envelope feeder"
+msgstr "מזין מעטפות"
+
+#: ../ppdippstr.py:167
+msgid "Large capacity tray"
+msgstr "מגש בעל קיבולת גבוהה"
 
 #: ../ppdippstr.py:168
-msgid "300 dpi, draft, grayscale, black + color cartridge"
-msgstr ""
+msgid "Manual feeder"
+msgstr "הזנה ידנית"
 
-#: ../ppdippstr.py:170
-msgid "300 dpi, grayscale, black + color cartridge"
-msgstr ""
+#: ../ppdippstr.py:169
+msgid "Multi-purpose tray"
+msgstr "מגש רב-תכליתי"
+
+#: ../ppdippstr.py:171
+msgid "Page size"
+msgstr "גודל עמוד"
 
 #: ../ppdippstr.py:172
-msgid "600 dpi, color, black + color cartridge"
+msgid "Custom"
+msgstr "מותאם אישית"
+
+#: ../ppdippstr.py:173
+msgid "Letter"
 msgstr ""
 
 #: ../ppdippstr.py:174
-msgid "600 dpi, grayscale, black + color cartridge"
-msgstr ""
+msgid "Photo or 4x6 inch index card"
+msgstr "תמונה או כרטיס אינדקס בגודל 4x6 אינץ'"
+
+#: ../ppdippstr.py:175
+msgid "Photo or 5x7 inch index card"
+msgstr "תמונה או כרטיס אינדקס בגודל 5x7 אינץ'"
 
 #: ../ppdippstr.py:176
-msgid "600 dpi, photo, black + color cartridge, photo paper"
-msgstr ""
+msgid "Photo with tear-off tab"
+msgstr "תמונה עם סימני חיתוך"
+
+#: ../ppdippstr.py:177
+msgid "3x5 inch index card"
+msgstr "כרטיס אינדקס בגודל 3x5 אינץ'"
 
 #: ../ppdippstr.py:178
-msgid "600 dpi, color, black + color cartridge, photo paper, normal"
+msgid "5x8 inch index card"
+msgstr "כרטיס אינדקס בגודל 5x8 אינץ'"
+
+#: ../ppdippstr.py:179
+msgid "A6 with tear-off tab"
 msgstr ""
 
 #: ../ppdippstr.py:180
-msgid "1200 dpi, photo, black + color cartridge, photo paper"
+msgid "CD or DVD 80mm"
+msgstr "תקליטור או תקליטור DVD ‏88מ\"מ"
+
+#: ../ppdippstr.py:181
+msgid "CD or DVD 120mm"
+msgstr "תקליטור או תקליטור DVD‏ 120מ\"מ"
+
+#: ../ppdippstr.py:183
+msgid "Double-sided printing"
+msgstr "הדפסה דו-צדדית"
+
+#: ../ppdippstr.py:184
+msgid "Long edge (standard)"
 msgstr ""
 
-#: ../ppdippstr.py:187
-msgid "Internet Printing Protocol (ipp)"
+#: ../ppdippstr.py:185
+msgid "Short edge (flip)"
 msgstr ""
 
 #: ../ppdippstr.py:189
+msgid "Resolution, quality, ink type, media type"
+msgstr "רזולוציה, איכות, סוג דיו, סוג מדיה"
+
+#: ../ppdippstr.py:190
+msgid "Controlled by 'Printout mode'"
+msgstr "נשלט ע\"י 'מצב הדפסה'"
+
+#: ../ppdippstr.py:192
+msgid "300 dpi, color, black + color cartridge"
+msgstr "‏300 dpi, צבע, מחסניות שחורות וצבעוניות"
+
+#: ../ppdippstr.py:194
+msgid "300 dpi, draft, color, black + color cartridge"
+msgstr "‏300 dpi, טיוטה, מחסניות שחורות וצבעוניות"
+
+#: ../ppdippstr.py:196
+msgid "300 dpi, draft, grayscale, black + color cartridge"
+msgstr ""
+
+#: ../ppdippstr.py:198
+msgid "300 dpi, grayscale, black + color cartridge"
+msgstr ""
+
+#: ../ppdippstr.py:200
+msgid "600 dpi, color, black + color cartridge"
+msgstr ""
+
+#: ../ppdippstr.py:202
+msgid "600 dpi, grayscale, black + color cartridge"
+msgstr ""
+
+#: ../ppdippstr.py:204
+msgid "600 dpi, photo, black + color cartridge, photo paper"
+msgstr ""
+
+#: ../ppdippstr.py:206
+msgid "600 dpi, color, black + color cartridge, photo paper, normal"
+msgstr ""
+
+#: ../ppdippstr.py:208
+msgid "1200 dpi, photo, black + color cartridge, photo paper"
+msgstr ""
+
+#: ../ppdippstr.py:215
+msgid "Internet Printing Protocol (ipp)"
+msgstr ""
+
+#: ../ppdippstr.py:217
 msgid "Internet Printing Protocol (http)"
 msgstr ""
 
-#: ../ppdippstr.py:191
+#: ../ppdippstr.py:219
 msgid "Internet Printing Protocol (https)"
 msgstr ""
 
-#: ../ppdippstr.py:193
+#: ../ppdippstr.py:221
 msgid "LPD/LPR Host or Printer"
 msgstr ""
 
-#: ../ppdippstr.py:197
+#: ../ppdippstr.py:225
 msgid "Serial Port #1"
 msgstr ""
 
-#: ../ppdippstr.py:199
+#: ../ppdippstr.py:227
 msgid "LPT #1"
 msgstr ""
 

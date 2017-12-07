@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2017-12-05 14:57+0100\n"
+"POT-Creation-Date: 2017-12-07 16:23+0100\n"
 "PO-Revision-Date: 2016-08-18 06:12-0400\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Hungarian (http://www.transifex.com/projects/p/system-config-"
@@ -506,7 +506,7 @@ msgstr ""
 "észleléséhez. Be kívánja állítani most a tűzfalat?"
 
 #: ../newprinter.py:358 ../newprinter.py:369 ../newprinter.py:375
-#: ../newprinter.py:380
+#: ../newprinter.py:380 ../ppdippstr.py:127
 msgid "Default"
 msgstr "Alapértelmezett"
 
@@ -651,7 +651,7 @@ msgstr "Hálózati nyomtató"
 msgid "Find Network Printer"
 msgstr "Hálózati nyomtató keresése"
 
-#: ../newprinter.py:2247 ../newprinter.py:3070 ../ppdippstr.py:201
+#: ../newprinter.py:2247 ../newprinter.py:3070 ../ppdippstr.py:229
 msgid "Windows Printer via SAMBA"
 msgstr "Windows nyomtató SAMBA megosztáson"
 
@@ -741,7 +741,7 @@ msgstr "HP Linux Imaging and Printing (HPLIP)"
 msgid "Hardware Abstraction Layer (HAL)"
 msgstr "Hardverabsztrakciós réteg (HAL)"
 
-#: ../newprinter.py:3055 ../ppdippstr.py:195
+#: ../newprinter.py:3055 ../ppdippstr.py:223
 msgid "AppSocket/HP JetDirect"
 msgstr "AppSocket/HP JetDirect"
 
@@ -1023,275 +1023,368 @@ msgstr "Általános"
 msgid "Print Quality"
 msgstr "Nyomtatási minőség:"
 
-#: ../ppdippstr.py:96 ../printerproperties.py:324
+#: ../ppdippstr.py:96
+#, fuzzy
+msgid "Printing Quality"
+msgstr "Nyomtatási minőség:"
+
+#: ../ppdippstr.py:97 ../printerproperties.py:324
 msgid "Draft"
 msgstr "Vázlat"
 
-#: ../ppdippstr.py:97 ../printerproperties.py:320 ../printerproperties.py:325
+#: ../ppdippstr.py:98 ../printerproperties.py:320 ../printerproperties.py:325
 msgid "Normal"
 msgstr "Szokásos"
 
-#: ../ppdippstr.py:98
+#: ../ppdippstr.py:99
 #, fuzzy
 msgid "Resolution"
 msgstr "Nyomtató felbontás:"
 
-#: ../ppdippstr.py:99
+#: ../ppdippstr.py:100
 msgid "Color Mode"
 msgstr ""
 
-#: ../ppdippstr.py:100
+#: ../ppdippstr.py:101
 msgid "Quality"
 msgstr ""
 
-#: ../ppdippstr.py:101
+#: ../ppdippstr.py:102
 #, fuzzy
 msgid "Paper source"
 msgstr "Papírforrás"
 
-#: ../ppdippstr.py:102
-#, fuzzy
-msgid "Media Type"
-msgstr "Papírforrás"
-
 #: ../ppdippstr.py:103
-msgid "Bond"
+msgid "Auto Source"
 msgstr ""
 
 #: ../ppdippstr.py:104
-msgid "Color"
-msgstr ""
+#, fuzzy
+msgid "Manual Feed"
+msgstr "Kézi adagoló"
 
 #: ../ppdippstr.py:105
-#, fuzzy
-msgid "Envelope"
-msgstr "Borítékadagoló"
-
-#: ../ppdippstr.py:106
-msgid "Labels"
+msgid "Middle Tray"
 msgstr ""
 
 #: ../ppdippstr.py:107
 #, fuzzy
+msgid "Media Type"
+msgstr "Papírforrás"
+
+#: ../ppdippstr.py:108
+msgid "Bond"
+msgstr ""
+
+#: ../ppdippstr.py:109
+msgid "Color"
+msgstr ""
+
+#: ../ppdippstr.py:110
+#, fuzzy
+msgid "Envelope"
+msgstr "Borítékadagoló"
+
+#: ../ppdippstr.py:111
+msgid "Labels"
+msgstr ""
+
+#: ../ppdippstr.py:112
+#, fuzzy
 msgid "Standard Paper"
 msgstr "Normál"
 
-#: ../ppdippstr.py:108
+#: ../ppdippstr.py:113
+msgid "Heavy"
+msgstr ""
+
+#: ../ppdippstr.py:114
+#, fuzzy
+msgid "Light"
+msgstr "Éjszaka"
+
+#: ../ppdippstr.py:115
+msgid "Recycled"
+msgstr ""
+
+#: ../ppdippstr.py:117
 #, fuzzy
 msgid "Print Density"
 msgstr "Nyomtatási minőség:"
 
-#: ../ppdippstr.py:110
+#: ../ppdippstr.py:118
+msgid "Extra Light(1)"
+msgstr ""
+
+#: ../ppdippstr.py:119
+msgid "Light (2)"
+msgstr ""
+
+#: ../ppdippstr.py:120
+msgid "Medium (3)"
+msgstr ""
+
+#: ../ppdippstr.py:121
+msgid "Dark (4)"
+msgstr ""
+
+#: ../ppdippstr.py:122
+msgid "Extra Dark (5)"
+msgstr ""
+
+#: ../ppdippstr.py:123
+#, fuzzy
+msgid "Copies"
+msgstr "Példányszám:"
+
+#: ../ppdippstr.py:125
 #, fuzzy
 msgid "Adjustment"
 msgstr "Árnyalat módosítása:"
 
-#. HPIJS options
-#: ../ppdippstr.py:113
-msgid "Printout mode"
-msgstr "Nyomtatás módja"
-
-#: ../ppdippstr.py:115
-msgid "Draft (auto-detect-paper type)"
-msgstr "Vázlat (automatikus papírtípus-érzékelés)"
-
-#: ../ppdippstr.py:117
-msgid "Draft grayscale (auto-detect-paper type)"
-msgstr "Vázlat – Szürkeárnyalatos (automatikus papírtípus-érzékelés)"
-
-#: ../ppdippstr.py:119
-msgid "Normal (auto-detect-paper type)"
-msgstr "Általános (automatikus papírtípus-érzékelés)"
-
-#: ../ppdippstr.py:121
-msgid "Normal grayscale (auto-detect-paper type)"
-msgstr "Általános – Szürkeárnyalatos (automatikus papírtípus-érzékelés)"
-
-#: ../ppdippstr.py:123
-msgid "High quality (auto-detect-paper type)"
-msgstr "Magas minőség (automatikus papírtípus-érzékelés)"
-
-#: ../ppdippstr.py:125
-msgid "High quality grayscale (auto-detect-paper type)"
-msgstr "Magas minőség – Szürkeárnyalatos (automatikus papírtípus-érzékelés)"
-
 #: ../ppdippstr.py:126
-msgid "Photo (on photo paper)"
-msgstr "Fotó (fotópapíron)"
+#, fuzzy
+msgid "Halftone Algorithm"
+msgstr "Szabadalmaztatott algoritmusok"
 
-#: ../ppdippstr.py:128
-msgid "Best quality (color on photo paper)"
-msgstr "Legjobb minőség (színes nyomtatás fotópapírra)"
+#: ../ppdippstr.py:129
+msgid "Miscellaneous"
+msgstr ""
 
-#: ../ppdippstr.py:130
-msgid "Normal quality (color on photo paper)"
-msgstr "Általános minőség (színes nyomtatás fotópapírra)"
-
+#. Epson xp serie
 #: ../ppdippstr.py:132
-msgid "Media source"
+#, fuzzy
+msgid "_Media Size"
 msgstr "Papírforrás"
 
 #: ../ppdippstr.py:133
-msgid "Printer default"
-msgstr "Nyomtató alapértelmezése"
-
-#: ../ppdippstr.py:134
-msgid "Photo tray"
-msgstr "Fotópapír tálca"
-
-#: ../ppdippstr.py:135
-msgid "Upper tray"
-msgstr "Felső tálca"
-
-#: ../ppdippstr.py:136
-msgid "Lower tray"
-msgstr "Alsó tálca"
-
-#: ../ppdippstr.py:137
-msgid "CD or DVD tray"
-msgstr "CD vagy DVD tálca"
-
-#: ../ppdippstr.py:138
-msgid "Envelope feeder"
-msgstr "Borítékadagoló"
-
-#: ../ppdippstr.py:139
-msgid "Large capacity tray"
-msgstr "Nagykapacitású tálca"
-
-#: ../ppdippstr.py:140
-msgid "Manual feeder"
-msgstr "Kézi adagoló"
-
-#: ../ppdippstr.py:141
-msgid "Multi-purpose tray"
-msgstr "Többfunkciós tálca"
-
-#: ../ppdippstr.py:143
-msgid "Page size"
-msgstr "Oldalméret"
-
-#: ../ppdippstr.py:144
-msgid "Custom"
-msgstr "Egyéni"
-
-#: ../ppdippstr.py:145
-msgid "Letter"
+msgid "_Grayscale"
 msgstr ""
 
-#: ../ppdippstr.py:146
-msgid "Photo or 4x6 inch index card"
-msgstr "Fotó vagy 4x6 hüvelykes indexkép"
+#: ../ppdippstr.py:134
+#, fuzzy
+msgid "_Brightness"
+msgstr "Fényesség:"
 
-#: ../ppdippstr.py:147
-msgid "Photo or 5x7 inch index card"
-msgstr "Fotó vagy 5x7 hüvelykes indexkép"
+#: ../ppdippstr.py:135
+msgid "_Contrast"
+msgstr ""
 
-#: ../ppdippstr.py:148
-msgid "Photo with tear-off tab"
-msgstr "Fotó letéphető füllel"
+#: ../ppdippstr.py:136
+#, fuzzy
+msgid "_Saturation"
+msgstr "Telítettség:"
 
-#: ../ppdippstr.py:149
-msgid "3x5 inch index card"
-msgstr "3x5 hüvelykes indexkép"
-
-#: ../ppdippstr.py:150
-msgid "5x8 inch index card"
-msgstr "5x8 hüvelykes indexkép"
-
-#: ../ppdippstr.py:151
-msgid "A6 with tear-off tab"
-msgstr "A6, letéphető füllel"
-
-#: ../ppdippstr.py:152
-msgid "CD or DVD 80mm"
-msgstr "80 milliméteres CD vagy DVD"
-
-#: ../ppdippstr.py:153
-msgid "CD or DVD 120mm"
-msgstr "120 milliméteres CD vagy DVD"
-
-#: ../ppdippstr.py:155
-msgid "Double-sided printing"
-msgstr "Kétoldalas nyomtatás"
-
-#: ../ppdippstr.py:156
-msgid "Long edge (standard)"
-msgstr "Hosszabb élnél (könyv)"
-
-#: ../ppdippstr.py:157
-msgid "Short edge (flip)"
-msgstr "Rövidebb élnél (hajtható)"
-
-#: ../ppdippstr.py:158
+#: ../ppdippstr.py:137 ../ppdippstr.py:186
 msgid "Off"
 msgstr "Kikapcsolva"
 
+#: ../ppdippstr.py:138
+msgid "On"
+msgstr ""
+
+#. HPIJS options
+#: ../ppdippstr.py:141
+msgid "Printout mode"
+msgstr "Nyomtatás módja"
+
+#: ../ppdippstr.py:143
+msgid "Draft (auto-detect-paper type)"
+msgstr "Vázlat (automatikus papírtípus-érzékelés)"
+
+#: ../ppdippstr.py:145
+msgid "Draft grayscale (auto-detect-paper type)"
+msgstr "Vázlat – Szürkeárnyalatos (automatikus papírtípus-érzékelés)"
+
+#: ../ppdippstr.py:147
+msgid "Normal (auto-detect-paper type)"
+msgstr "Általános (automatikus papírtípus-érzékelés)"
+
+#: ../ppdippstr.py:149
+msgid "Normal grayscale (auto-detect-paper type)"
+msgstr "Általános – Szürkeárnyalatos (automatikus papírtípus-érzékelés)"
+
+#: ../ppdippstr.py:151
+msgid "High quality (auto-detect-paper type)"
+msgstr "Magas minőség (automatikus papírtípus-érzékelés)"
+
+#: ../ppdippstr.py:153
+msgid "High quality grayscale (auto-detect-paper type)"
+msgstr "Magas minőség – Szürkeárnyalatos (automatikus papírtípus-érzékelés)"
+
+#: ../ppdippstr.py:154
+msgid "Photo (on photo paper)"
+msgstr "Fotó (fotópapíron)"
+
+#: ../ppdippstr.py:156
+msgid "Best quality (color on photo paper)"
+msgstr "Legjobb minőség (színes nyomtatás fotópapírra)"
+
+#: ../ppdippstr.py:158
+msgid "Normal quality (color on photo paper)"
+msgstr "Általános minőség (színes nyomtatás fotópapírra)"
+
+#: ../ppdippstr.py:160
+msgid "Media source"
+msgstr "Papírforrás"
+
 #: ../ppdippstr.py:161
+msgid "Printer default"
+msgstr "Nyomtató alapértelmezése"
+
+#: ../ppdippstr.py:162
+msgid "Photo tray"
+msgstr "Fotópapír tálca"
+
+#: ../ppdippstr.py:163
+msgid "Upper tray"
+msgstr "Felső tálca"
+
+#: ../ppdippstr.py:164
+msgid "Lower tray"
+msgstr "Alsó tálca"
+
+#: ../ppdippstr.py:165
+msgid "CD or DVD tray"
+msgstr "CD vagy DVD tálca"
+
+#: ../ppdippstr.py:166
+msgid "Envelope feeder"
+msgstr "Borítékadagoló"
+
+#: ../ppdippstr.py:167
+msgid "Large capacity tray"
+msgstr "Nagykapacitású tálca"
+
+#: ../ppdippstr.py:168
+msgid "Manual feeder"
+msgstr "Kézi adagoló"
+
+#: ../ppdippstr.py:169
+msgid "Multi-purpose tray"
+msgstr "Többfunkciós tálca"
+
+#: ../ppdippstr.py:171
+msgid "Page size"
+msgstr "Oldalméret"
+
+#: ../ppdippstr.py:172
+msgid "Custom"
+msgstr "Egyéni"
+
+#: ../ppdippstr.py:173
+msgid "Letter"
+msgstr ""
+
+#: ../ppdippstr.py:174
+msgid "Photo or 4x6 inch index card"
+msgstr "Fotó vagy 4x6 hüvelykes indexkép"
+
+#: ../ppdippstr.py:175
+msgid "Photo or 5x7 inch index card"
+msgstr "Fotó vagy 5x7 hüvelykes indexkép"
+
+#: ../ppdippstr.py:176
+msgid "Photo with tear-off tab"
+msgstr "Fotó letéphető füllel"
+
+#: ../ppdippstr.py:177
+msgid "3x5 inch index card"
+msgstr "3x5 hüvelykes indexkép"
+
+#: ../ppdippstr.py:178
+msgid "5x8 inch index card"
+msgstr "5x8 hüvelykes indexkép"
+
+#: ../ppdippstr.py:179
+msgid "A6 with tear-off tab"
+msgstr "A6, letéphető füllel"
+
+#: ../ppdippstr.py:180
+msgid "CD or DVD 80mm"
+msgstr "80 milliméteres CD vagy DVD"
+
+#: ../ppdippstr.py:181
+msgid "CD or DVD 120mm"
+msgstr "120 milliméteres CD vagy DVD"
+
+#: ../ppdippstr.py:183
+msgid "Double-sided printing"
+msgstr "Kétoldalas nyomtatás"
+
+#: ../ppdippstr.py:184
+msgid "Long edge (standard)"
+msgstr "Hosszabb élnél (könyv)"
+
+#: ../ppdippstr.py:185
+msgid "Short edge (flip)"
+msgstr "Rövidebb élnél (hajtható)"
+
+#: ../ppdippstr.py:189
 msgid "Resolution, quality, ink type, media type"
 msgstr "Felbontás, minőség, tintatípus, papírtípus"
 
-#: ../ppdippstr.py:162
+#: ../ppdippstr.py:190
 msgid "Controlled by 'Printout mode'"
 msgstr "A „Nyomtatás módja” beállításnál megadott szerint"
 
-#: ../ppdippstr.py:164
+#: ../ppdippstr.py:192
 msgid "300 dpi, color, black + color cartridge"
 msgstr "300 dpi, színes, fekete és színes tintapatron"
 
-#: ../ppdippstr.py:166
+#: ../ppdippstr.py:194
 msgid "300 dpi, draft, color, black + color cartridge"
 msgstr "300 dpi, vázlat – színes, fekete és színes tintapatron"
 
-#: ../ppdippstr.py:168
+#: ../ppdippstr.py:196
 msgid "300 dpi, draft, grayscale, black + color cartridge"
 msgstr "300 dpi, vázlat – szürkeárnyalatos, fekete és színes tintapatron"
 
-#: ../ppdippstr.py:170
+#: ../ppdippstr.py:198
 msgid "300 dpi, grayscale, black + color cartridge"
 msgstr "300 dpi, szürkeárnyalatos, fekete és színes tintapatron"
 
-#: ../ppdippstr.py:172
+#: ../ppdippstr.py:200
 msgid "600 dpi, color, black + color cartridge"
 msgstr "600 dpi, színes, fekete és színes tintapatron"
 
-#: ../ppdippstr.py:174
+#: ../ppdippstr.py:202
 msgid "600 dpi, grayscale, black + color cartridge"
 msgstr "600 dpi, szürkeárnyalatos, fekete és színes tintapatron"
 
-#: ../ppdippstr.py:176
+#: ../ppdippstr.py:204
 msgid "600 dpi, photo, black + color cartridge, photo paper"
 msgstr "600 dpi, fotó, fekete és színes tintapatron, fotópapírra"
 
-#: ../ppdippstr.py:178
+#: ../ppdippstr.py:206
 msgid "600 dpi, color, black + color cartridge, photo paper, normal"
 msgstr "600 dpi, színes, fekete és színes tintapatron, fotópapírra, általános"
 
-#: ../ppdippstr.py:180
+#: ../ppdippstr.py:208
 msgid "1200 dpi, photo, black + color cartridge, photo paper"
 msgstr "1200 dpi, fotó, fekete és színes tintapatron, fotópapírra"
 
-#: ../ppdippstr.py:187
+#: ../ppdippstr.py:215
 msgid "Internet Printing Protocol (ipp)"
 msgstr "Internetes nyomtatási protokoll (ipp)"
 
-#: ../ppdippstr.py:189
+#: ../ppdippstr.py:217
 msgid "Internet Printing Protocol (http)"
 msgstr "Internetes nyomtatási protokoll (http)"
 
-#: ../ppdippstr.py:191
+#: ../ppdippstr.py:219
 msgid "Internet Printing Protocol (https)"
 msgstr "Internetes nyomtatási protokoll (https)"
 
-#: ../ppdippstr.py:193
+#: ../ppdippstr.py:221
 msgid "LPD/LPR Host or Printer"
 msgstr "LPD/LPR gazdagép vagy nyomtató"
 
-#: ../ppdippstr.py:197
+#: ../ppdippstr.py:225
 msgid "Serial Port #1"
 msgstr "1. soros port"
 
-#: ../ppdippstr.py:199
+#: ../ppdippstr.py:227
 msgid "LPT #1"
 msgstr "1. párhuzamos port"
 

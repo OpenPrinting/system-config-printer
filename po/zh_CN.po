@@ -21,7 +21,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2017-12-05 14:57+0100\n"
+"POT-Creation-Date: 2017-12-07 16:23+0100\n"
 "PO-Revision-Date: 2016-03-31 12:18-0400\n"
 "Last-Translator: Leah Liu <lliu@redhat.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/projects/p/system-"
@@ -511,7 +511,7 @@ msgid ""
 msgstr "可能需要调整防火墙以便探测到网络打印机。现在调整防火墙吗？"
 
 #: ../newprinter.py:358 ../newprinter.py:369 ../newprinter.py:375
-#: ../newprinter.py:380
+#: ../newprinter.py:380 ../ppdippstr.py:127
 msgid "Default"
 msgstr "默认"
 
@@ -655,7 +655,7 @@ msgstr "网络打印机"
 msgid "Find Network Printer"
 msgstr "查找网络打印机"
 
-#: ../newprinter.py:2247 ../newprinter.py:3070 ../ppdippstr.py:201
+#: ../newprinter.py:2247 ../newprinter.py:3070 ../ppdippstr.py:229
 msgid "Windows Printer via SAMBA"
 msgstr "使用 SAMBA 的 Windows 打印机"
 
@@ -744,7 +744,7 @@ msgstr "HP Linux 映像及打印（HPLIP）"
 msgid "Hardware Abstraction Layer (HAL)"
 msgstr "硬件提取层 (HAL) "
 
-#: ../newprinter.py:3055 ../ppdippstr.py:195
+#: ../newprinter.py:3055 ../ppdippstr.py:223
 msgid "AppSocket/HP JetDirect"
 msgstr "AppSocket/HP JetDirect"
 
@@ -1019,275 +1019,368 @@ msgstr "常规"
 msgid "Print Quality"
 msgstr "打印质量："
 
-#: ../ppdippstr.py:96 ../printerproperties.py:324
+#: ../ppdippstr.py:96
+#, fuzzy
+msgid "Printing Quality"
+msgstr "打印质量："
+
+#: ../ppdippstr.py:97 ../printerproperties.py:324
 msgid "Draft"
 msgstr "草稿"
 
-#: ../ppdippstr.py:97 ../printerproperties.py:320 ../printerproperties.py:325
+#: ../ppdippstr.py:98 ../printerproperties.py:320 ../printerproperties.py:325
 msgid "Normal"
 msgstr "正常"
 
-#: ../ppdippstr.py:98
+#: ../ppdippstr.py:99
 #, fuzzy
 msgid "Resolution"
 msgstr "打印机分辨率："
 
-#: ../ppdippstr.py:99
+#: ../ppdippstr.py:100
 msgid "Color Mode"
 msgstr ""
 
-#: ../ppdippstr.py:100
+#: ../ppdippstr.py:101
 msgid "Quality"
 msgstr ""
 
-#: ../ppdippstr.py:101
+#: ../ppdippstr.py:102
 #, fuzzy
 msgid "Paper source"
 msgstr "介质源"
 
-#: ../ppdippstr.py:102
-#, fuzzy
-msgid "Media Type"
-msgstr "介质源"
-
 #: ../ppdippstr.py:103
-msgid "Bond"
+msgid "Auto Source"
 msgstr ""
 
 #: ../ppdippstr.py:104
-msgid "Color"
-msgstr ""
+#, fuzzy
+msgid "Manual Feed"
+msgstr "手动喂纸器"
 
 #: ../ppdippstr.py:105
-#, fuzzy
-msgid "Envelope"
-msgstr "信封喂纸器"
-
-#: ../ppdippstr.py:106
-msgid "Labels"
+msgid "Middle Tray"
 msgstr ""
 
 #: ../ppdippstr.py:107
 #, fuzzy
+msgid "Media Type"
+msgstr "介质源"
+
+#: ../ppdippstr.py:108
+msgid "Bond"
+msgstr ""
+
+#: ../ppdippstr.py:109
+msgid "Color"
+msgstr ""
+
+#: ../ppdippstr.py:110
+#, fuzzy
+msgid "Envelope"
+msgstr "信封喂纸器"
+
+#: ../ppdippstr.py:111
+msgid "Labels"
+msgstr ""
+
+#: ../ppdippstr.py:112
+#, fuzzy
 msgid "Standard Paper"
 msgstr "标准"
 
-#: ../ppdippstr.py:108
+#: ../ppdippstr.py:113
+msgid "Heavy"
+msgstr ""
+
+#: ../ppdippstr.py:114
+#, fuzzy
+msgid "Light"
+msgstr "夜间"
+
+#: ../ppdippstr.py:115
+msgid "Recycled"
+msgstr ""
+
+#: ../ppdippstr.py:117
 #, fuzzy
 msgid "Print Density"
 msgstr "打印质量："
 
-#: ../ppdippstr.py:110
+#: ../ppdippstr.py:118
+msgid "Extra Light(1)"
+msgstr ""
+
+#: ../ppdippstr.py:119
+msgid "Light (2)"
+msgstr ""
+
+#: ../ppdippstr.py:120
+msgid "Medium (3)"
+msgstr ""
+
+#: ../ppdippstr.py:121
+msgid "Dark (4)"
+msgstr ""
+
+#: ../ppdippstr.py:122
+msgid "Extra Dark (5)"
+msgstr ""
+
+#: ../ppdippstr.py:123
+#, fuzzy
+msgid "Copies"
+msgstr "副本："
+
+#: ../ppdippstr.py:125
 #, fuzzy
 msgid "Adjustment"
 msgstr "色彩调节："
 
-#. HPIJS options
-#: ../ppdippstr.py:113
-msgid "Printout mode"
-msgstr "打印输出模式"
-
-#: ../ppdippstr.py:115
-msgid "Draft (auto-detect-paper type)"
-msgstr "草稿 (自动探测纸张类型)"
-
-#: ../ppdippstr.py:117
-msgid "Draft grayscale (auto-detect-paper type)"
-msgstr "草稿灰度 (自动探测纸张类型)"
-
-#: ../ppdippstr.py:119
-msgid "Normal (auto-detect-paper type)"
-msgstr "通用 (自动探测纸张类型)"
-
-#: ../ppdippstr.py:121
-msgid "Normal grayscale (auto-detect-paper type)"
-msgstr "通用灰度 (自动探测纸张类型)"
-
-#: ../ppdippstr.py:123
-msgid "High quality (auto-detect-paper type)"
-msgstr "高质量 (自动探测纸张类型)"
-
-#: ../ppdippstr.py:125
-msgid "High quality grayscale (auto-detect-paper type)"
-msgstr "高质量灰度 (自动探测纸张类型)"
-
 #: ../ppdippstr.py:126
-msgid "Photo (on photo paper)"
-msgstr "照片 (使用照片纸)"
+#, fuzzy
+msgid "Halftone Algorithm"
+msgstr "专利算法"
 
-#: ../ppdippstr.py:128
-msgid "Best quality (color on photo paper)"
-msgstr "最佳质量 (使用照片纸彩色)"
+#: ../ppdippstr.py:129
+msgid "Miscellaneous"
+msgstr ""
 
-#: ../ppdippstr.py:130
-msgid "Normal quality (color on photo paper)"
-msgstr "一般质量 (使用照片纸彩色)"
-
+#. Epson xp serie
 #: ../ppdippstr.py:132
-msgid "Media source"
+#, fuzzy
+msgid "_Media Size"
 msgstr "介质源"
 
 #: ../ppdippstr.py:133
-msgid "Printer default"
-msgstr "打印机默认"
-
-#: ../ppdippstr.py:134
-msgid "Photo tray"
-msgstr "照片槽"
-
-#: ../ppdippstr.py:135
-msgid "Upper tray"
-msgstr "较上的槽"
-
-#: ../ppdippstr.py:136
-msgid "Lower tray"
-msgstr "较下的槽"
-
-#: ../ppdippstr.py:137
-msgid "CD or DVD tray"
-msgstr "CD 或 DVD 槽"
-
-#: ../ppdippstr.py:138
-msgid "Envelope feeder"
-msgstr "信封喂纸器"
-
-#: ../ppdippstr.py:139
-msgid "Large capacity tray"
-msgstr "大容量槽"
-
-#: ../ppdippstr.py:140
-msgid "Manual feeder"
-msgstr "手动喂纸器"
-
-#: ../ppdippstr.py:141
-msgid "Multi-purpose tray"
-msgstr "多功能槽"
-
-#: ../ppdippstr.py:143
-msgid "Page size"
-msgstr "页面大小"
-
-#: ../ppdippstr.py:144
-msgid "Custom"
-msgstr "自定义"
-
-#: ../ppdippstr.py:145
-msgid "Letter"
+msgid "_Grayscale"
 msgstr ""
 
-#: ../ppdippstr.py:146
-msgid "Photo or 4x6 inch index card"
-msgstr "照片或 4x6 英寸索引卡片"
+#: ../ppdippstr.py:134
+#, fuzzy
+msgid "_Brightness"
+msgstr "亮度："
 
-#: ../ppdippstr.py:147
-msgid "Photo or 5x7 inch index card"
-msgstr "照片或 5x7 英寸索引卡片"
+#: ../ppdippstr.py:135
+msgid "_Contrast"
+msgstr ""
 
-#: ../ppdippstr.py:148
-msgid "Photo with tear-off tab"
-msgstr "带易开标签的照片"
+#: ../ppdippstr.py:136
+#, fuzzy
+msgid "_Saturation"
+msgstr "饱和度："
 
-#: ../ppdippstr.py:149
-msgid "3x5 inch index card"
-msgstr "3x5 英寸索引卡片"
-
-#: ../ppdippstr.py:150
-msgid "5x8 inch index card"
-msgstr "5x8 英寸索引卡片"
-
-#: ../ppdippstr.py:151
-msgid "A6 with tear-off tab"
-msgstr "带易开标签的 A6 纸"
-
-#: ../ppdippstr.py:152
-msgid "CD or DVD 80mm"
-msgstr "CD 或 DVD 80 毫米"
-
-#: ../ppdippstr.py:153
-msgid "CD or DVD 120mm"
-msgstr "CD 或 DVD 120 毫米"
-
-#: ../ppdippstr.py:155
-msgid "Double-sided printing"
-msgstr "双面打印"
-
-#: ../ppdippstr.py:156
-msgid "Long edge (standard)"
-msgstr "长边 (标准)"
-
-#: ../ppdippstr.py:157
-msgid "Short edge (flip)"
-msgstr "短边 (翻转)"
-
-#: ../ppdippstr.py:158
+#: ../ppdippstr.py:137 ../ppdippstr.py:186
 msgid "Off"
 msgstr "关闭"
 
+#: ../ppdippstr.py:138
+msgid "On"
+msgstr ""
+
+#. HPIJS options
+#: ../ppdippstr.py:141
+msgid "Printout mode"
+msgstr "打印输出模式"
+
+#: ../ppdippstr.py:143
+msgid "Draft (auto-detect-paper type)"
+msgstr "草稿 (自动探测纸张类型)"
+
+#: ../ppdippstr.py:145
+msgid "Draft grayscale (auto-detect-paper type)"
+msgstr "草稿灰度 (自动探测纸张类型)"
+
+#: ../ppdippstr.py:147
+msgid "Normal (auto-detect-paper type)"
+msgstr "通用 (自动探测纸张类型)"
+
+#: ../ppdippstr.py:149
+msgid "Normal grayscale (auto-detect-paper type)"
+msgstr "通用灰度 (自动探测纸张类型)"
+
+#: ../ppdippstr.py:151
+msgid "High quality (auto-detect-paper type)"
+msgstr "高质量 (自动探测纸张类型)"
+
+#: ../ppdippstr.py:153
+msgid "High quality grayscale (auto-detect-paper type)"
+msgstr "高质量灰度 (自动探测纸张类型)"
+
+#: ../ppdippstr.py:154
+msgid "Photo (on photo paper)"
+msgstr "照片 (使用照片纸)"
+
+#: ../ppdippstr.py:156
+msgid "Best quality (color on photo paper)"
+msgstr "最佳质量 (使用照片纸彩色)"
+
+#: ../ppdippstr.py:158
+msgid "Normal quality (color on photo paper)"
+msgstr "一般质量 (使用照片纸彩色)"
+
+#: ../ppdippstr.py:160
+msgid "Media source"
+msgstr "介质源"
+
 #: ../ppdippstr.py:161
+msgid "Printer default"
+msgstr "打印机默认"
+
+#: ../ppdippstr.py:162
+msgid "Photo tray"
+msgstr "照片槽"
+
+#: ../ppdippstr.py:163
+msgid "Upper tray"
+msgstr "较上的槽"
+
+#: ../ppdippstr.py:164
+msgid "Lower tray"
+msgstr "较下的槽"
+
+#: ../ppdippstr.py:165
+msgid "CD or DVD tray"
+msgstr "CD 或 DVD 槽"
+
+#: ../ppdippstr.py:166
+msgid "Envelope feeder"
+msgstr "信封喂纸器"
+
+#: ../ppdippstr.py:167
+msgid "Large capacity tray"
+msgstr "大容量槽"
+
+#: ../ppdippstr.py:168
+msgid "Manual feeder"
+msgstr "手动喂纸器"
+
+#: ../ppdippstr.py:169
+msgid "Multi-purpose tray"
+msgstr "多功能槽"
+
+#: ../ppdippstr.py:171
+msgid "Page size"
+msgstr "页面大小"
+
+#: ../ppdippstr.py:172
+msgid "Custom"
+msgstr "自定义"
+
+#: ../ppdippstr.py:173
+msgid "Letter"
+msgstr ""
+
+#: ../ppdippstr.py:174
+msgid "Photo or 4x6 inch index card"
+msgstr "照片或 4x6 英寸索引卡片"
+
+#: ../ppdippstr.py:175
+msgid "Photo or 5x7 inch index card"
+msgstr "照片或 5x7 英寸索引卡片"
+
+#: ../ppdippstr.py:176
+msgid "Photo with tear-off tab"
+msgstr "带易开标签的照片"
+
+#: ../ppdippstr.py:177
+msgid "3x5 inch index card"
+msgstr "3x5 英寸索引卡片"
+
+#: ../ppdippstr.py:178
+msgid "5x8 inch index card"
+msgstr "5x8 英寸索引卡片"
+
+#: ../ppdippstr.py:179
+msgid "A6 with tear-off tab"
+msgstr "带易开标签的 A6 纸"
+
+#: ../ppdippstr.py:180
+msgid "CD or DVD 80mm"
+msgstr "CD 或 DVD 80 毫米"
+
+#: ../ppdippstr.py:181
+msgid "CD or DVD 120mm"
+msgstr "CD 或 DVD 120 毫米"
+
+#: ../ppdippstr.py:183
+msgid "Double-sided printing"
+msgstr "双面打印"
+
+#: ../ppdippstr.py:184
+msgid "Long edge (standard)"
+msgstr "长边 (标准)"
+
+#: ../ppdippstr.py:185
+msgid "Short edge (flip)"
+msgstr "短边 (翻转)"
+
+#: ../ppdippstr.py:189
 msgid "Resolution, quality, ink type, media type"
 msgstr "分辨率，质量，墨水类型，介质类型"
 
-#: ../ppdippstr.py:162
+#: ../ppdippstr.py:190
 msgid "Controlled by 'Printout mode'"
 msgstr "由“打印输出模式”控制"
 
-#: ../ppdippstr.py:164
+#: ../ppdippstr.py:192
 msgid "300 dpi, color, black + color cartridge"
 msgstr "300 dpi，彩色，黑白＋彩色墨盒"
 
-#: ../ppdippstr.py:166
+#: ../ppdippstr.py:194
 msgid "300 dpi, draft, color, black + color cartridge"
 msgstr "300 dpi，草稿，彩色，黑白＋彩色墨盒"
 
-#: ../ppdippstr.py:168
+#: ../ppdippstr.py:196
 msgid "300 dpi, draft, grayscale, black + color cartridge"
 msgstr "300 dpi，草稿，灰度，黑白＋彩色墨盒"
 
-#: ../ppdippstr.py:170
+#: ../ppdippstr.py:198
 msgid "300 dpi, grayscale, black + color cartridge"
 msgstr "300 dpi，灰度，黑白＋彩色墨盒"
 
-#: ../ppdippstr.py:172
+#: ../ppdippstr.py:200
 msgid "600 dpi, color, black + color cartridge"
 msgstr "600 dpi，彩色，黑白＋彩色墨盒"
 
-#: ../ppdippstr.py:174
+#: ../ppdippstr.py:202
 msgid "600 dpi, grayscale, black + color cartridge"
 msgstr "600 dpi，灰度，黑白＋彩色墨盒"
 
-#: ../ppdippstr.py:176
+#: ../ppdippstr.py:204
 msgid "600 dpi, photo, black + color cartridge, photo paper"
 msgstr "600 dpi，照片，黑白＋彩色墨盒，照片纸"
 
-#: ../ppdippstr.py:178
+#: ../ppdippstr.py:206
 msgid "600 dpi, color, black + color cartridge, photo paper, normal"
 msgstr "600 dpi，彩色，黑白＋彩色墨盒，照片纸，正常模式"
 
-#: ../ppdippstr.py:180
+#: ../ppdippstr.py:208
 msgid "1200 dpi, photo, black + color cartridge, photo paper"
 msgstr "1200 dpi，照片，黑白＋彩色墨盒，照片纸"
 
-#: ../ppdippstr.py:187
+#: ../ppdippstr.py:215
 msgid "Internet Printing Protocol (ipp)"
 msgstr "互联网打印协议(IPP)"
 
-#: ../ppdippstr.py:189
+#: ../ppdippstr.py:217
 msgid "Internet Printing Protocol (http)"
 msgstr "互联网打印协议（http）"
 
-#: ../ppdippstr.py:191
+#: ../ppdippstr.py:219
 msgid "Internet Printing Protocol (https)"
 msgstr "互联网打印协议（https)"
 
-#: ../ppdippstr.py:193
+#: ../ppdippstr.py:221
 msgid "LPD/LPR Host or Printer"
 msgstr "LPD/LPR 主机或者打印机"
 
-#: ../ppdippstr.py:197
+#: ../ppdippstr.py:225
 msgid "Serial Port #1"
 msgstr "串口 #1"
 
-#: ../ppdippstr.py:199
+#: ../ppdippstr.py:227
 msgid "LPT #1"
 msgstr "LPT #1"
 

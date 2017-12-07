@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2017-12-05 14:57+0100\n"
+"POT-Creation-Date: 2017-12-07 16:23+0100\n"
 "PO-Revision-Date: 2014-12-16 03:31-0500\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Hindi (http://www.transifex.com/projects/p/system-config-"
@@ -505,7 +505,7 @@ msgstr ""
 "समायोजित करें?"
 
 #: ../newprinter.py:358 ../newprinter.py:369 ../newprinter.py:375
-#: ../newprinter.py:380
+#: ../newprinter.py:380 ../ppdippstr.py:127
 msgid "Default"
 msgstr "डिफ़ॉल्ट"
 
@@ -650,7 +650,7 @@ msgstr "नेटवर्क प्रिंटर"
 msgid "Find Network Printer"
 msgstr "नेटवर्क प्रिंटर ढूँढ़ें"
 
-#: ../newprinter.py:2247 ../newprinter.py:3070 ../ppdippstr.py:201
+#: ../newprinter.py:2247 ../newprinter.py:3070 ../ppdippstr.py:229
 msgid "Windows Printer via SAMBA"
 msgstr "SAMBA के द्वारा विंडो प्रिंटर"
 
@@ -740,7 +740,7 @@ msgstr "एचपी लिनक्स इमेजिंग एंड प्�
 msgid "Hardware Abstraction Layer (HAL)"
 msgstr "हार्डवेयर एबेस्ट्रेक्शन लेयर (HAL)"
 
-#: ../newprinter.py:3055 ../ppdippstr.py:195
+#: ../newprinter.py:3055 ../ppdippstr.py:223
 msgid "AppSocket/HP JetDirect"
 msgstr "AppSocket/HP JetDirect"
 
@@ -1019,275 +1019,368 @@ msgstr "सामान्य"
 msgid "Print Quality"
 msgstr "छपाई गुणवत्ता:"
 
-#: ../ppdippstr.py:96 ../printerproperties.py:324
+#: ../ppdippstr.py:96
+#, fuzzy
+msgid "Printing Quality"
+msgstr "छपाई गुणवत्ता:"
+
+#: ../ppdippstr.py:97 ../printerproperties.py:324
 msgid "Draft"
 msgstr "ड्राफ्ट"
 
-#: ../ppdippstr.py:97 ../printerproperties.py:320 ../printerproperties.py:325
+#: ../ppdippstr.py:98 ../printerproperties.py:320 ../printerproperties.py:325
 msgid "Normal"
 msgstr "सामान्य"
 
-#: ../ppdippstr.py:98
+#: ../ppdippstr.py:99
 #, fuzzy
 msgid "Resolution"
 msgstr "मुद्रक विभेदन:"
 
-#: ../ppdippstr.py:99
+#: ../ppdippstr.py:100
 msgid "Color Mode"
 msgstr ""
 
-#: ../ppdippstr.py:100
+#: ../ppdippstr.py:101
 msgid "Quality"
 msgstr ""
 
-#: ../ppdippstr.py:101
+#: ../ppdippstr.py:102
 #, fuzzy
 msgid "Paper source"
 msgstr "मीडिया स्रोत"
 
-#: ../ppdippstr.py:102
-#, fuzzy
-msgid "Media Type"
-msgstr "मीडिया स्रोत"
-
 #: ../ppdippstr.py:103
-msgid "Bond"
+msgid "Auto Source"
 msgstr ""
 
 #: ../ppdippstr.py:104
-msgid "Color"
-msgstr ""
+#, fuzzy
+msgid "Manual Feed"
+msgstr "मैनुअल फ़ीडर"
 
 #: ../ppdippstr.py:105
-#, fuzzy
-msgid "Envelope"
-msgstr "लिफ़ाफ़ा फ़ींडर"
-
-#: ../ppdippstr.py:106
-msgid "Labels"
+msgid "Middle Tray"
 msgstr ""
 
 #: ../ppdippstr.py:107
 #, fuzzy
+msgid "Media Type"
+msgstr "मीडिया स्रोत"
+
+#: ../ppdippstr.py:108
+msgid "Bond"
+msgstr ""
+
+#: ../ppdippstr.py:109
+msgid "Color"
+msgstr ""
+
+#: ../ppdippstr.py:110
+#, fuzzy
+msgid "Envelope"
+msgstr "लिफ़ाफ़ा फ़ींडर"
+
+#: ../ppdippstr.py:111
+msgid "Labels"
+msgstr ""
+
+#: ../ppdippstr.py:112
+#, fuzzy
 msgid "Standard Paper"
 msgstr "मानक"
 
-#: ../ppdippstr.py:108
+#: ../ppdippstr.py:113
+msgid "Heavy"
+msgstr ""
+
+#: ../ppdippstr.py:114
+#, fuzzy
+msgid "Light"
+msgstr "रात्रि"
+
+#: ../ppdippstr.py:115
+msgid "Recycled"
+msgstr ""
+
+#: ../ppdippstr.py:117
 #, fuzzy
 msgid "Print Density"
 msgstr "छपाई गुणवत्ता:"
 
-#: ../ppdippstr.py:110
+#: ../ppdippstr.py:118
+msgid "Extra Light(1)"
+msgstr ""
+
+#: ../ppdippstr.py:119
+msgid "Light (2)"
+msgstr ""
+
+#: ../ppdippstr.py:120
+msgid "Medium (3)"
+msgstr ""
+
+#: ../ppdippstr.py:121
+msgid "Dark (4)"
+msgstr ""
+
+#: ../ppdippstr.py:122
+msgid "Extra Dark (5)"
+msgstr ""
+
+#: ../ppdippstr.py:123
+#, fuzzy
+msgid "Copies"
+msgstr "कॉपी:"
+
+#: ../ppdippstr.py:125
 #, fuzzy
 msgid "Adjustment"
 msgstr "ह्यू समायोजन:"
 
-#. HPIJS options
-#: ../ppdippstr.py:113
-msgid "Printout mode"
-msgstr "प्रिंटआउट मोड"
-
-#: ../ppdippstr.py:115
-msgid "Draft (auto-detect-paper type)"
-msgstr "मसौदा (auto-detect-paper type)"
-
-#: ../ppdippstr.py:117
-msgid "Draft grayscale (auto-detect-paper type)"
-msgstr "मसौदा ग्रेस्केल (auto-detect-paper type)"
-
-#: ../ppdippstr.py:119
-msgid "Normal (auto-detect-paper type)"
-msgstr "सामान्य (auto-detect-paper type)"
-
-#: ../ppdippstr.py:121
-msgid "Normal grayscale (auto-detect-paper type)"
-msgstr "सामान्य ग्रेस्केल (auto-detect-paper type)"
-
-#: ../ppdippstr.py:123
-msgid "High quality (auto-detect-paper type)"
-msgstr "उच्च गुणवत्ता (auto-detect-paper type)"
-
-#: ../ppdippstr.py:125
-msgid "High quality grayscale (auto-detect-paper type)"
-msgstr "उच्च गुणवत्ता ग्रेस्केल (auto-detect-paper type)"
-
 #: ../ppdippstr.py:126
-msgid "Photo (on photo paper)"
-msgstr "फोटो (फोटो कागज़ पर)"
+#, fuzzy
+msgid "Halftone Algorithm"
+msgstr "पेटेंट किया अलगोरिथम"
 
-#: ../ppdippstr.py:128
-msgid "Best quality (color on photo paper)"
-msgstr "सर्वोत्तम गुणवत्ता (फोटो कागज पर रंग)"
+#: ../ppdippstr.py:129
+msgid "Miscellaneous"
+msgstr ""
 
-#: ../ppdippstr.py:130
-msgid "Normal quality (color on photo paper)"
-msgstr "सामान्य गुणवत्ता (फोटो कागज पर रंग)"
-
+#. Epson xp serie
 #: ../ppdippstr.py:132
-msgid "Media source"
+#, fuzzy
+msgid "_Media Size"
 msgstr "मीडिया स्रोत"
 
 #: ../ppdippstr.py:133
-msgid "Printer default"
-msgstr "प्रिंटर डिफ़ॉल्ट"
-
-#: ../ppdippstr.py:134
-msgid "Photo tray"
-msgstr "चित्र ट्रे"
-
-#: ../ppdippstr.py:135
-msgid "Upper tray"
-msgstr "ऊपरी ट्रे"
-
-#: ../ppdippstr.py:136
-msgid "Lower tray"
-msgstr "निचला ट्रे"
-
-#: ../ppdippstr.py:137
-msgid "CD or DVD tray"
-msgstr "CD या DVD ट्रे"
-
-#: ../ppdippstr.py:138
-msgid "Envelope feeder"
-msgstr "लिफ़ाफ़ा फ़ींडर"
-
-#: ../ppdippstr.py:139
-msgid "Large capacity tray"
-msgstr "बड़ी क्षमता का ट्रे"
-
-#: ../ppdippstr.py:140
-msgid "Manual feeder"
-msgstr "मैनुअल फ़ीडर"
-
-#: ../ppdippstr.py:141
-msgid "Multi-purpose tray"
-msgstr "बहुद्देशीय तश्तरी"
-
-#: ../ppdippstr.py:143
-msgid "Page size"
-msgstr "पृष्ठ आकार"
-
-#: ../ppdippstr.py:144
-msgid "Custom"
-msgstr "मनपसंद"
-
-#: ../ppdippstr.py:145
-msgid "Letter"
+msgid "_Grayscale"
 msgstr ""
 
-#: ../ppdippstr.py:146
-msgid "Photo or 4x6 inch index card"
-msgstr "तस्वीर 4x6 इंच इंडेक्स कार्ड"
+#: ../ppdippstr.py:134
+#, fuzzy
+msgid "_Brightness"
+msgstr "चमकीलापन:"
 
-#: ../ppdippstr.py:147
-msgid "Photo or 5x7 inch index card"
-msgstr "तस्वीर 5x7 इंच इंडेक्स कार्ड"
+#: ../ppdippstr.py:135
+msgid "_Contrast"
+msgstr ""
 
-#: ../ppdippstr.py:148
-msgid "Photo with tear-off tab"
-msgstr "फोटो टीयर-ऑफ टैब सहित"
+#: ../ppdippstr.py:136
+#, fuzzy
+msgid "_Saturation"
+msgstr "संतृप्ति:"
 
-#: ../ppdippstr.py:149
-msgid "3x5 inch index card"
-msgstr "3x5 इंच इंडेक्स कार्ड"
-
-#: ../ppdippstr.py:150
-msgid "5x8 inch index card"
-msgstr "5x8 इंच इंडेक्स कार्ड"
-
-#: ../ppdippstr.py:151
-msgid "A6 with tear-off tab"
-msgstr "A6 टीयर-ऑफ टैब सहित"
-
-#: ../ppdippstr.py:152
-msgid "CD or DVD 80mm"
-msgstr "CD या DVD 80mm"
-
-#: ../ppdippstr.py:153
-msgid "CD or DVD 120mm"
-msgstr "CD या DVD 120mm"
-
-#: ../ppdippstr.py:155
-msgid "Double-sided printing"
-msgstr "दो-तरफा छापें"
-
-#: ../ppdippstr.py:156
-msgid "Long edge (standard)"
-msgstr "दोतरफा (मानक)"
-
-#: ../ppdippstr.py:157
-msgid "Short edge (flip)"
-msgstr "एकतरफा (उल्टें)"
-
-#: ../ppdippstr.py:158
+#: ../ppdippstr.py:137 ../ppdippstr.py:186
 msgid "Off"
 msgstr "बंद"
 
+#: ../ppdippstr.py:138
+msgid "On"
+msgstr ""
+
+#. HPIJS options
+#: ../ppdippstr.py:141
+msgid "Printout mode"
+msgstr "प्रिंटआउट मोड"
+
+#: ../ppdippstr.py:143
+msgid "Draft (auto-detect-paper type)"
+msgstr "मसौदा (auto-detect-paper type)"
+
+#: ../ppdippstr.py:145
+msgid "Draft grayscale (auto-detect-paper type)"
+msgstr "मसौदा ग्रेस्केल (auto-detect-paper type)"
+
+#: ../ppdippstr.py:147
+msgid "Normal (auto-detect-paper type)"
+msgstr "सामान्य (auto-detect-paper type)"
+
+#: ../ppdippstr.py:149
+msgid "Normal grayscale (auto-detect-paper type)"
+msgstr "सामान्य ग्रेस्केल (auto-detect-paper type)"
+
+#: ../ppdippstr.py:151
+msgid "High quality (auto-detect-paper type)"
+msgstr "उच्च गुणवत्ता (auto-detect-paper type)"
+
+#: ../ppdippstr.py:153
+msgid "High quality grayscale (auto-detect-paper type)"
+msgstr "उच्च गुणवत्ता ग्रेस्केल (auto-detect-paper type)"
+
+#: ../ppdippstr.py:154
+msgid "Photo (on photo paper)"
+msgstr "फोटो (फोटो कागज़ पर)"
+
+#: ../ppdippstr.py:156
+msgid "Best quality (color on photo paper)"
+msgstr "सर्वोत्तम गुणवत्ता (फोटो कागज पर रंग)"
+
+#: ../ppdippstr.py:158
+msgid "Normal quality (color on photo paper)"
+msgstr "सामान्य गुणवत्ता (फोटो कागज पर रंग)"
+
+#: ../ppdippstr.py:160
+msgid "Media source"
+msgstr "मीडिया स्रोत"
+
 #: ../ppdippstr.py:161
+msgid "Printer default"
+msgstr "प्रिंटर डिफ़ॉल्ट"
+
+#: ../ppdippstr.py:162
+msgid "Photo tray"
+msgstr "चित्र ट्रे"
+
+#: ../ppdippstr.py:163
+msgid "Upper tray"
+msgstr "ऊपरी ट्रे"
+
+#: ../ppdippstr.py:164
+msgid "Lower tray"
+msgstr "निचला ट्रे"
+
+#: ../ppdippstr.py:165
+msgid "CD or DVD tray"
+msgstr "CD या DVD ट्रे"
+
+#: ../ppdippstr.py:166
+msgid "Envelope feeder"
+msgstr "लिफ़ाफ़ा फ़ींडर"
+
+#: ../ppdippstr.py:167
+msgid "Large capacity tray"
+msgstr "बड़ी क्षमता का ट्रे"
+
+#: ../ppdippstr.py:168
+msgid "Manual feeder"
+msgstr "मैनुअल फ़ीडर"
+
+#: ../ppdippstr.py:169
+msgid "Multi-purpose tray"
+msgstr "बहुद्देशीय तश्तरी"
+
+#: ../ppdippstr.py:171
+msgid "Page size"
+msgstr "पृष्ठ आकार"
+
+#: ../ppdippstr.py:172
+msgid "Custom"
+msgstr "मनपसंद"
+
+#: ../ppdippstr.py:173
+msgid "Letter"
+msgstr ""
+
+#: ../ppdippstr.py:174
+msgid "Photo or 4x6 inch index card"
+msgstr "तस्वीर 4x6 इंच इंडेक्स कार्ड"
+
+#: ../ppdippstr.py:175
+msgid "Photo or 5x7 inch index card"
+msgstr "तस्वीर 5x7 इंच इंडेक्स कार्ड"
+
+#: ../ppdippstr.py:176
+msgid "Photo with tear-off tab"
+msgstr "फोटो टीयर-ऑफ टैब सहित"
+
+#: ../ppdippstr.py:177
+msgid "3x5 inch index card"
+msgstr "3x5 इंच इंडेक्स कार्ड"
+
+#: ../ppdippstr.py:178
+msgid "5x8 inch index card"
+msgstr "5x8 इंच इंडेक्स कार्ड"
+
+#: ../ppdippstr.py:179
+msgid "A6 with tear-off tab"
+msgstr "A6 टीयर-ऑफ टैब सहित"
+
+#: ../ppdippstr.py:180
+msgid "CD or DVD 80mm"
+msgstr "CD या DVD 80mm"
+
+#: ../ppdippstr.py:181
+msgid "CD or DVD 120mm"
+msgstr "CD या DVD 120mm"
+
+#: ../ppdippstr.py:183
+msgid "Double-sided printing"
+msgstr "दो-तरफा छापें"
+
+#: ../ppdippstr.py:184
+msgid "Long edge (standard)"
+msgstr "दोतरफा (मानक)"
+
+#: ../ppdippstr.py:185
+msgid "Short edge (flip)"
+msgstr "एकतरफा (उल्टें)"
+
+#: ../ppdippstr.py:189
 msgid "Resolution, quality, ink type, media type"
 msgstr "विभेदन, गुणवत्ता, इंक प्रकार, मीडिया प्रकार"
 
-#: ../ppdippstr.py:162
+#: ../ppdippstr.py:190
 msgid "Controlled by 'Printout mode'"
 msgstr "'प्रिंटआउट मोड' से नियंत्रित"
 
-#: ../ppdippstr.py:164
+#: ../ppdippstr.py:192
 msgid "300 dpi, color, black + color cartridge"
 msgstr "300 dpi, रंग, काला + रंग कार्ट्रेज"
 
-#: ../ppdippstr.py:166
+#: ../ppdippstr.py:194
 msgid "300 dpi, draft, color, black + color cartridge"
 msgstr "300 dpi,मसौदा, रंग, काला + रंग कार्ट्रेज"
 
-#: ../ppdippstr.py:168
+#: ../ppdippstr.py:196
 msgid "300 dpi, draft, grayscale, black + color cartridge"
 msgstr "300 dpi,मसौदा, ग्रेस्केल, काला + रंग कार्ट्रेज"
 
-#: ../ppdippstr.py:170
+#: ../ppdippstr.py:198
 msgid "300 dpi, grayscale, black + color cartridge"
 msgstr "300 dpi,ग्रेस्केल, काला + रंग कार्ट्रेज"
 
-#: ../ppdippstr.py:172
+#: ../ppdippstr.py:200
 msgid "600 dpi, color, black + color cartridge"
 msgstr "600 dpi, रंग, काला + रंग कार्ट्रेज"
 
-#: ../ppdippstr.py:174
+#: ../ppdippstr.py:202
 msgid "600 dpi, grayscale, black + color cartridge"
 msgstr "600 dpi,ग्रेस्केल, काला + रंग कार्ट्रेज"
 
-#: ../ppdippstr.py:176
+#: ../ppdippstr.py:204
 msgid "600 dpi, photo, black + color cartridge, photo paper"
 msgstr "600 dpi, फोटो, काला + रंग कार्ट्रिज, फोटो कागज"
 
-#: ../ppdippstr.py:178
+#: ../ppdippstr.py:206
 msgid "600 dpi, color, black + color cartridge, photo paper, normal"
 msgstr "600 dpi, color, black + color cartridge, photo paper, normal"
 
-#: ../ppdippstr.py:180
+#: ../ppdippstr.py:208
 msgid "1200 dpi, photo, black + color cartridge, photo paper"
 msgstr "1200 dpi, photo, black + color cartridge, photo paper"
 
-#: ../ppdippstr.py:187
+#: ../ppdippstr.py:215
 msgid "Internet Printing Protocol (ipp)"
 msgstr "इंटरनेट प्रिंटिंग प्रोटोकॉल (ipp)"
 
-#: ../ppdippstr.py:189
+#: ../ppdippstr.py:217
 msgid "Internet Printing Protocol (http)"
 msgstr "इंटरनेट प्रिंटिंग प्रोटोकॉल (http)"
 
-#: ../ppdippstr.py:191
+#: ../ppdippstr.py:219
 msgid "Internet Printing Protocol (https)"
 msgstr "इंटरनेट प्रिंटिंग प्रोटोकॉल (https)"
 
-#: ../ppdippstr.py:193
+#: ../ppdippstr.py:221
 msgid "LPD/LPR Host or Printer"
 msgstr "LPD/LPR मेजबान या मुद्रक"
 
-#: ../ppdippstr.py:197
+#: ../ppdippstr.py:225
 msgid "Serial Port #1"
 msgstr "क्रमिक पोर्ट #1"
 
-#: ../ppdippstr.py:199
+#: ../ppdippstr.py:227
 msgid "LPT #1"
 msgstr "LPT #1"
 

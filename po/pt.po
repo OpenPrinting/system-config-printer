@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2017-12-05 14:57+0100\n"
+"POT-Creation-Date: 2017-12-07 16:23+0100\n"
 "PO-Revision-Date: 2016-09-05 10:40-0400\n"
 "Last-Translator: Ricardo Pinto <ricardo.bigote@gmail.com>\n"
 "Language-Team: Portuguese (http://www.transifex.com/projects/p/system-config-"
@@ -505,7 +505,7 @@ msgstr ""
 "Ajustar a Firewall agora?"
 
 #: ../newprinter.py:358 ../newprinter.py:369 ../newprinter.py:375
-#: ../newprinter.py:380
+#: ../newprinter.py:380 ../ppdippstr.py:127
 msgid "Default"
 msgstr "Omissão"
 
@@ -651,7 +651,7 @@ msgstr "Impressora de rede"
 msgid "Find Network Printer"
 msgstr "Procurar impressoras de rede"
 
-#: ../newprinter.py:2247 ../newprinter.py:3070 ../ppdippstr.py:201
+#: ../newprinter.py:2247 ../newprinter.py:3070 ../ppdippstr.py:229
 msgid "Windows Printer via SAMBA"
 msgstr "Impressora Windows via SAMBA"
 
@@ -741,7 +741,7 @@ msgstr "HP Linux Imaging and Printing (HPLIP)"
 msgid "Hardware Abstraction Layer (HAL)"
 msgstr "Camada de Abstração de Equipamento (HAL)"
 
-#: ../newprinter.py:3055 ../ppdippstr.py:195
+#: ../newprinter.py:3055 ../ppdippstr.py:223
 msgid "AppSocket/HP JetDirect"
 msgstr "AppSocket/HP JetDirect"
 
@@ -1022,275 +1022,368 @@ msgstr "Geral"
 msgid "Print Quality"
 msgstr "Qualidade de impressão:"
 
-#: ../ppdippstr.py:96 ../printerproperties.py:324
+#: ../ppdippstr.py:96
+#, fuzzy
+msgid "Printing Quality"
+msgstr "Qualidade de impressão:"
+
+#: ../ppdippstr.py:97 ../printerproperties.py:324
 msgid "Draft"
 msgstr "Rascunho"
 
-#: ../ppdippstr.py:97 ../printerproperties.py:320 ../printerproperties.py:325
+#: ../ppdippstr.py:98 ../printerproperties.py:320 ../printerproperties.py:325
 msgid "Normal"
 msgstr "Normal"
 
-#: ../ppdippstr.py:98
+#: ../ppdippstr.py:99
 #, fuzzy
 msgid "Resolution"
 msgstr "Resolução da impressora:"
 
-#: ../ppdippstr.py:99
+#: ../ppdippstr.py:100
 msgid "Color Mode"
 msgstr ""
 
-#: ../ppdippstr.py:100
+#: ../ppdippstr.py:101
 msgid "Quality"
 msgstr ""
 
-#: ../ppdippstr.py:101
+#: ../ppdippstr.py:102
 #, fuzzy
 msgid "Paper source"
 msgstr "Origem do suporte"
 
-#: ../ppdippstr.py:102
-#, fuzzy
-msgid "Media Type"
-msgstr "Origem do suporte"
-
 #: ../ppdippstr.py:103
-msgid "Bond"
+msgid "Auto Source"
 msgstr ""
 
 #: ../ppdippstr.py:104
-msgid "Color"
-msgstr ""
+#, fuzzy
+msgid "Manual Feed"
+msgstr "Alimentador manual"
 
 #: ../ppdippstr.py:105
-#, fuzzy
-msgid "Envelope"
-msgstr "Alimentador de envelopes"
-
-#: ../ppdippstr.py:106
-msgid "Labels"
+msgid "Middle Tray"
 msgstr ""
 
 #: ../ppdippstr.py:107
 #, fuzzy
+msgid "Media Type"
+msgstr "Origem do suporte"
+
+#: ../ppdippstr.py:108
+msgid "Bond"
+msgstr ""
+
+#: ../ppdippstr.py:109
+msgid "Color"
+msgstr ""
+
+#: ../ppdippstr.py:110
+#, fuzzy
+msgid "Envelope"
+msgstr "Alimentador de envelopes"
+
+#: ../ppdippstr.py:111
+msgid "Labels"
+msgstr ""
+
+#: ../ppdippstr.py:112
+#, fuzzy
 msgid "Standard Paper"
 msgstr "Standard"
 
-#: ../ppdippstr.py:108
+#: ../ppdippstr.py:113
+msgid "Heavy"
+msgstr ""
+
+#: ../ppdippstr.py:114
+#, fuzzy
+msgid "Light"
+msgstr "Noite"
+
+#: ../ppdippstr.py:115
+msgid "Recycled"
+msgstr ""
+
+#: ../ppdippstr.py:117
 #, fuzzy
 msgid "Print Density"
 msgstr "Qualidade de impressão:"
 
-#: ../ppdippstr.py:110
+#: ../ppdippstr.py:118
+msgid "Extra Light(1)"
+msgstr ""
+
+#: ../ppdippstr.py:119
+msgid "Light (2)"
+msgstr ""
+
+#: ../ppdippstr.py:120
+msgid "Medium (3)"
+msgstr ""
+
+#: ../ppdippstr.py:121
+msgid "Dark (4)"
+msgstr ""
+
+#: ../ppdippstr.py:122
+msgid "Extra Dark (5)"
+msgstr ""
+
+#: ../ppdippstr.py:123
+#, fuzzy
+msgid "Copies"
+msgstr "Cópias:"
+
+#: ../ppdippstr.py:125
 #, fuzzy
 msgid "Adjustment"
 msgstr "Ajuste de tom:"
 
-#. HPIJS options
-#: ../ppdippstr.py:113
-msgid "Printout mode"
-msgstr "Modo de impressão"
-
-#: ../ppdippstr.py:115
-msgid "Draft (auto-detect-paper type)"
-msgstr "Rascunho (auto-detecção do tipo de papel)"
-
-#: ../ppdippstr.py:117
-msgid "Draft grayscale (auto-detect-paper type)"
-msgstr "Rascunho em tons de cinzento (auto-detecção do tipo de papel)"
-
-#: ../ppdippstr.py:119
-msgid "Normal (auto-detect-paper type)"
-msgstr "Normal (auto-detecção do tipo de papel)"
-
-#: ../ppdippstr.py:121
-msgid "Normal grayscale (auto-detect-paper type)"
-msgstr "Normal em tons de cinzento (auto-detecção do tipo de papel)"
-
-#: ../ppdippstr.py:123
-msgid "High quality (auto-detect-paper type)"
-msgstr "Alta qualidade (auto-detecção do tipo de papel)"
-
-#: ../ppdippstr.py:125
-msgid "High quality grayscale (auto-detect-paper type)"
-msgstr "Alta qualidade em tons de cinzento (auto-detecção do tipo de papel)"
-
 #: ../ppdippstr.py:126
-msgid "Photo (on photo paper)"
-msgstr "Fotografia (em papel de fotografia)"
+#, fuzzy
+msgid "Halftone Algorithm"
+msgstr "Algoritmos patenteados"
 
-#: ../ppdippstr.py:128
-msgid "Best quality (color on photo paper)"
-msgstr "Melhor qualidade (cor em papel fotográfico)"
+#: ../ppdippstr.py:129
+msgid "Miscellaneous"
+msgstr ""
 
-#: ../ppdippstr.py:130
-msgid "Normal quality (color on photo paper)"
-msgstr "Qualidade normal (cor em papel fotográfico)"
-
+#. Epson xp serie
 #: ../ppdippstr.py:132
-msgid "Media source"
+#, fuzzy
+msgid "_Media Size"
 msgstr "Origem do suporte"
 
 #: ../ppdippstr.py:133
-msgid "Printer default"
-msgstr "Predefinição da impressora"
-
-#: ../ppdippstr.py:134
-msgid "Photo tray"
-msgstr "Tabuleiro de papel fotográfico"
-
-#: ../ppdippstr.py:135
-msgid "Upper tray"
-msgstr "Tabuleiro superior"
-
-#: ../ppdippstr.py:136
-msgid "Lower tray"
-msgstr "Tabuleiro inferior"
-
-#: ../ppdippstr.py:137
-msgid "CD or DVD tray"
-msgstr "Tabuleiro de CD ou DVD"
-
-#: ../ppdippstr.py:138
-msgid "Envelope feeder"
-msgstr "Alimentador de envelopes"
-
-#: ../ppdippstr.py:139
-msgid "Large capacity tray"
-msgstr "Tabuleiro de grande capacidade"
-
-#: ../ppdippstr.py:140
-msgid "Manual feeder"
-msgstr "Alimentador manual"
-
-#: ../ppdippstr.py:141
-msgid "Multi-purpose tray"
-msgstr "Tabuleiro multi-usos"
-
-#: ../ppdippstr.py:143
-msgid "Page size"
-msgstr "Tamanho da página"
-
-#: ../ppdippstr.py:144
-msgid "Custom"
-msgstr "Personalizado"
-
-#: ../ppdippstr.py:145
-msgid "Letter"
+msgid "_Grayscale"
 msgstr ""
 
-#: ../ppdippstr.py:146
-msgid "Photo or 4x6 inch index card"
-msgstr "Fotografia ou cartão de índice de 4x6 polegadas"
+#: ../ppdippstr.py:134
+#, fuzzy
+msgid "_Brightness"
+msgstr "Brilho:"
 
-#: ../ppdippstr.py:147
-msgid "Photo or 5x7 inch index card"
-msgstr "Fotografia ou cartão de índice de 5x7 polegadas"
+#: ../ppdippstr.py:135
+msgid "_Contrast"
+msgstr ""
 
-#: ../ppdippstr.py:148
-msgid "Photo with tear-off tab"
-msgstr "Foto com aba destacável"
+#: ../ppdippstr.py:136
+#, fuzzy
+msgid "_Saturation"
+msgstr "Saturação:"
 
-#: ../ppdippstr.py:149
-msgid "3x5 inch index card"
-msgstr "Cartão de índice de 3x5 polegadas"
-
-#: ../ppdippstr.py:150
-msgid "5x8 inch index card"
-msgstr "Cartão de índice de 5x8 polegadas"
-
-#: ../ppdippstr.py:151
-msgid "A6 with tear-off tab"
-msgstr "A6 com aba destacável"
-
-#: ../ppdippstr.py:152
-msgid "CD or DVD 80mm"
-msgstr "CD ou DVD de 80mm"
-
-#: ../ppdippstr.py:153
-msgid "CD or DVD 120mm"
-msgstr "CD ou DVD de 120mm"
-
-#: ../ppdippstr.py:155
-msgid "Double-sided printing"
-msgstr "Impressão dos dois lados"
-
-#: ../ppdippstr.py:156
-msgid "Long edge (standard)"
-msgstr "Lado maior (standard)"
-
-#: ../ppdippstr.py:157
-msgid "Short edge (flip)"
-msgstr "Lado menor (rodado)"
-
-#: ../ppdippstr.py:158
+#: ../ppdippstr.py:137 ../ppdippstr.py:186
 msgid "Off"
 msgstr "Desligado"
 
+#: ../ppdippstr.py:138
+msgid "On"
+msgstr ""
+
+#. HPIJS options
+#: ../ppdippstr.py:141
+msgid "Printout mode"
+msgstr "Modo de impressão"
+
+#: ../ppdippstr.py:143
+msgid "Draft (auto-detect-paper type)"
+msgstr "Rascunho (auto-detecção do tipo de papel)"
+
+#: ../ppdippstr.py:145
+msgid "Draft grayscale (auto-detect-paper type)"
+msgstr "Rascunho em tons de cinzento (auto-detecção do tipo de papel)"
+
+#: ../ppdippstr.py:147
+msgid "Normal (auto-detect-paper type)"
+msgstr "Normal (auto-detecção do tipo de papel)"
+
+#: ../ppdippstr.py:149
+msgid "Normal grayscale (auto-detect-paper type)"
+msgstr "Normal em tons de cinzento (auto-detecção do tipo de papel)"
+
+#: ../ppdippstr.py:151
+msgid "High quality (auto-detect-paper type)"
+msgstr "Alta qualidade (auto-detecção do tipo de papel)"
+
+#: ../ppdippstr.py:153
+msgid "High quality grayscale (auto-detect-paper type)"
+msgstr "Alta qualidade em tons de cinzento (auto-detecção do tipo de papel)"
+
+#: ../ppdippstr.py:154
+msgid "Photo (on photo paper)"
+msgstr "Fotografia (em papel de fotografia)"
+
+#: ../ppdippstr.py:156
+msgid "Best quality (color on photo paper)"
+msgstr "Melhor qualidade (cor em papel fotográfico)"
+
+#: ../ppdippstr.py:158
+msgid "Normal quality (color on photo paper)"
+msgstr "Qualidade normal (cor em papel fotográfico)"
+
+#: ../ppdippstr.py:160
+msgid "Media source"
+msgstr "Origem do suporte"
+
 #: ../ppdippstr.py:161
+msgid "Printer default"
+msgstr "Predefinição da impressora"
+
+#: ../ppdippstr.py:162
+msgid "Photo tray"
+msgstr "Tabuleiro de papel fotográfico"
+
+#: ../ppdippstr.py:163
+msgid "Upper tray"
+msgstr "Tabuleiro superior"
+
+#: ../ppdippstr.py:164
+msgid "Lower tray"
+msgstr "Tabuleiro inferior"
+
+#: ../ppdippstr.py:165
+msgid "CD or DVD tray"
+msgstr "Tabuleiro de CD ou DVD"
+
+#: ../ppdippstr.py:166
+msgid "Envelope feeder"
+msgstr "Alimentador de envelopes"
+
+#: ../ppdippstr.py:167
+msgid "Large capacity tray"
+msgstr "Tabuleiro de grande capacidade"
+
+#: ../ppdippstr.py:168
+msgid "Manual feeder"
+msgstr "Alimentador manual"
+
+#: ../ppdippstr.py:169
+msgid "Multi-purpose tray"
+msgstr "Tabuleiro multi-usos"
+
+#: ../ppdippstr.py:171
+msgid "Page size"
+msgstr "Tamanho da página"
+
+#: ../ppdippstr.py:172
+msgid "Custom"
+msgstr "Personalizado"
+
+#: ../ppdippstr.py:173
+msgid "Letter"
+msgstr ""
+
+#: ../ppdippstr.py:174
+msgid "Photo or 4x6 inch index card"
+msgstr "Fotografia ou cartão de índice de 4x6 polegadas"
+
+#: ../ppdippstr.py:175
+msgid "Photo or 5x7 inch index card"
+msgstr "Fotografia ou cartão de índice de 5x7 polegadas"
+
+#: ../ppdippstr.py:176
+msgid "Photo with tear-off tab"
+msgstr "Foto com aba destacável"
+
+#: ../ppdippstr.py:177
+msgid "3x5 inch index card"
+msgstr "Cartão de índice de 3x5 polegadas"
+
+#: ../ppdippstr.py:178
+msgid "5x8 inch index card"
+msgstr "Cartão de índice de 5x8 polegadas"
+
+#: ../ppdippstr.py:179
+msgid "A6 with tear-off tab"
+msgstr "A6 com aba destacável"
+
+#: ../ppdippstr.py:180
+msgid "CD or DVD 80mm"
+msgstr "CD ou DVD de 80mm"
+
+#: ../ppdippstr.py:181
+msgid "CD or DVD 120mm"
+msgstr "CD ou DVD de 120mm"
+
+#: ../ppdippstr.py:183
+msgid "Double-sided printing"
+msgstr "Impressão dos dois lados"
+
+#: ../ppdippstr.py:184
+msgid "Long edge (standard)"
+msgstr "Lado maior (standard)"
+
+#: ../ppdippstr.py:185
+msgid "Short edge (flip)"
+msgstr "Lado menor (rodado)"
+
+#: ../ppdippstr.py:189
 msgid "Resolution, quality, ink type, media type"
 msgstr "Resolução, qualidade, tipo de tinta, tipo de suporte"
 
-#: ../ppdippstr.py:162
+#: ../ppdippstr.py:190
 msgid "Controlled by 'Printout mode'"
 msgstr "Controlado pelo 'Modo de impressão'"
 
-#: ../ppdippstr.py:164
+#: ../ppdippstr.py:192
 msgid "300 dpi, color, black + color cartridge"
 msgstr "300 ppp, cor, tinteiros preto + cores"
 
-#: ../ppdippstr.py:166
+#: ../ppdippstr.py:194
 msgid "300 dpi, draft, color, black + color cartridge"
 msgstr "300 ppp, rascunho, cor, tinteiros preto + cores"
 
-#: ../ppdippstr.py:168
+#: ../ppdippstr.py:196
 msgid "300 dpi, draft, grayscale, black + color cartridge"
 msgstr "300 ppp, rascunho, tons de cinzento, tinteiros preto + cores"
 
-#: ../ppdippstr.py:170
+#: ../ppdippstr.py:198
 msgid "300 dpi, grayscale, black + color cartridge"
 msgstr "300 ppp, tons de cinzento, tinteiros preto + cores"
 
-#: ../ppdippstr.py:172
+#: ../ppdippstr.py:200
 msgid "600 dpi, color, black + color cartridge"
 msgstr "600 ppp, cor, tinteiros preto + cores"
 
-#: ../ppdippstr.py:174
+#: ../ppdippstr.py:202
 msgid "600 dpi, grayscale, black + color cartridge"
 msgstr "600 ppp, tons de cinzento, tinteiros preto + cores"
 
-#: ../ppdippstr.py:176
+#: ../ppdippstr.py:204
 msgid "600 dpi, photo, black + color cartridge, photo paper"
 msgstr "600 ppp, fotografia, tinteiros preto + cores, papel fotográfico"
 
-#: ../ppdippstr.py:178
+#: ../ppdippstr.py:206
 msgid "600 dpi, color, black + color cartridge, photo paper, normal"
 msgstr "600 ppp, cor, tinteiros preto + cores, papel fotográfico, normal"
 
-#: ../ppdippstr.py:180
+#: ../ppdippstr.py:208
 msgid "1200 dpi, photo, black + color cartridge, photo paper"
 msgstr "1200 ppp, fotografia, tinteiros preto + cores, papel fotográfico"
 
-#: ../ppdippstr.py:187
+#: ../ppdippstr.py:215
 msgid "Internet Printing Protocol (ipp)"
 msgstr "Protocolo de Impressão pela Internet (ipp)"
 
-#: ../ppdippstr.py:189
+#: ../ppdippstr.py:217
 msgid "Internet Printing Protocol (http)"
 msgstr "Protocolo de Impressão pela Internet (http)"
 
-#: ../ppdippstr.py:191
+#: ../ppdippstr.py:219
 msgid "Internet Printing Protocol (https)"
 msgstr "Protocolo de Impressão pela Internet (https)"
 
-#: ../ppdippstr.py:193
+#: ../ppdippstr.py:221
 msgid "LPD/LPR Host or Printer"
 msgstr "Servidor ou impressora LPD//LPR"
 
-#: ../ppdippstr.py:197
+#: ../ppdippstr.py:225
 msgid "Serial Port #1"
 msgstr "Porta série #1"
 
-#: ../ppdippstr.py:199
+#: ../ppdippstr.py:227
 msgid "LPT #1"
 msgstr "LPT #1"
 

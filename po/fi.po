@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2017-12-05 14:57+0100\n"
+"POT-Creation-Date: 2017-12-07 16:23+0100\n"
 "PO-Revision-Date: 2016-07-06 04:04-0400\n"
 "Last-Translator: Juhani Numminen <juhaninumminen0@gmail.com>\n"
 "Language-Team: Finnish (http://www.transifex.com/projects/p/system-config-"
@@ -507,7 +507,7 @@ msgstr ""
 "Säädetäänkö palomuuria nyt?"
 
 #: ../newprinter.py:358 ../newprinter.py:369 ../newprinter.py:375
-#: ../newprinter.py:380
+#: ../newprinter.py:380 ../ppdippstr.py:127
 msgid "Default"
 msgstr "Oletus"
 
@@ -653,7 +653,7 @@ msgstr "Verkkotulostin"
 msgid "Find Network Printer"
 msgstr "Etsi verkkotulostin"
 
-#: ../newprinter.py:2247 ../newprinter.py:3070 ../ppdippstr.py:201
+#: ../newprinter.py:2247 ../newprinter.py:3070 ../ppdippstr.py:229
 msgid "Windows Printer via SAMBA"
 msgstr "Windows-tulostin SAMBAn kautta"
 
@@ -743,7 +743,7 @@ msgstr "HP Linux Imaging and Printing (HPLIP)"
 msgid "Hardware Abstraction Layer (HAL)"
 msgstr "Hardware Abstraction Layer (HAL)"
 
-#: ../newprinter.py:3055 ../ppdippstr.py:195
+#: ../newprinter.py:3055 ../ppdippstr.py:223
 msgid "AppSocket/HP JetDirect"
 msgstr "AppSocket/HP JetDirect"
 
@@ -1019,278 +1019,371 @@ msgstr "Yleinen"
 msgid "Print Quality"
 msgstr "Tulostuslaatu:"
 
-#: ../ppdippstr.py:96 ../printerproperties.py:324
+#: ../ppdippstr.py:96
+#, fuzzy
+msgid "Printing Quality"
+msgstr "Tulostuslaatu:"
+
+#: ../ppdippstr.py:97 ../printerproperties.py:324
 msgid "Draft"
 msgstr "Luonnos"
 
-#: ../ppdippstr.py:97 ../printerproperties.py:320 ../printerproperties.py:325
+#: ../ppdippstr.py:98 ../printerproperties.py:320 ../printerproperties.py:325
 msgid "Normal"
 msgstr "Tavallinen"
 
-#: ../ppdippstr.py:98
+#: ../ppdippstr.py:99
 #, fuzzy
 msgid "Resolution"
 msgstr "Tulostimen tarkkuus:"
 
-#: ../ppdippstr.py:99
+#: ../ppdippstr.py:100
 msgid "Color Mode"
 msgstr ""
 
-#: ../ppdippstr.py:100
+#: ../ppdippstr.py:101
 msgid "Quality"
 msgstr ""
 
-#: ../ppdippstr.py:101
+#: ../ppdippstr.py:102
 #, fuzzy
 msgid "Paper source"
 msgstr "Tulostusmateriaalin lähde"
 
-#: ../ppdippstr.py:102
-#, fuzzy
-msgid "Media Type"
-msgstr "Tulostusmateriaalin lähde"
-
 #: ../ppdippstr.py:103
-msgid "Bond"
+msgid "Auto Source"
 msgstr ""
 
 #: ../ppdippstr.py:104
-msgid "Color"
-msgstr ""
+#, fuzzy
+msgid "Manual Feed"
+msgstr "Manuaalinen syötin"
 
 #: ../ppdippstr.py:105
-#, fuzzy
-msgid "Envelope"
-msgstr "Kirjekuorien syötin"
-
-#: ../ppdippstr.py:106
-msgid "Labels"
+msgid "Middle Tray"
 msgstr ""
 
 #: ../ppdippstr.py:107
 #, fuzzy
+msgid "Media Type"
+msgstr "Tulostusmateriaalin lähde"
+
+#: ../ppdippstr.py:108
+msgid "Bond"
+msgstr ""
+
+#: ../ppdippstr.py:109
+msgid "Color"
+msgstr ""
+
+#: ../ppdippstr.py:110
+#, fuzzy
+msgid "Envelope"
+msgstr "Kirjekuorien syötin"
+
+#: ../ppdippstr.py:111
+msgid "Labels"
+msgstr ""
+
+#: ../ppdippstr.py:112
+#, fuzzy
 msgid "Standard Paper"
 msgstr "Tavallinen"
 
-#: ../ppdippstr.py:108
+#: ../ppdippstr.py:113
+msgid "Heavy"
+msgstr ""
+
+#: ../ppdippstr.py:114
+#, fuzzy
+msgid "Light"
+msgstr "Yö"
+
+#: ../ppdippstr.py:115
+msgid "Recycled"
+msgstr ""
+
+#: ../ppdippstr.py:117
 #, fuzzy
 msgid "Print Density"
 msgstr "Tulostuslaatu:"
 
-#: ../ppdippstr.py:110
+#: ../ppdippstr.py:118
+msgid "Extra Light(1)"
+msgstr ""
+
+#: ../ppdippstr.py:119
+msgid "Light (2)"
+msgstr ""
+
+#: ../ppdippstr.py:120
+msgid "Medium (3)"
+msgstr ""
+
+#: ../ppdippstr.py:121
+msgid "Dark (4)"
+msgstr ""
+
+#: ../ppdippstr.py:122
+msgid "Extra Dark (5)"
+msgstr ""
+
+#: ../ppdippstr.py:123
+#, fuzzy
+msgid "Copies"
+msgstr "Kopioita:"
+
+#: ../ppdippstr.py:125
 #, fuzzy
 msgid "Adjustment"
 msgstr "Sävynsäätö:"
 
+#: ../ppdippstr.py:126
+#, fuzzy
+msgid "Halftone Algorithm"
+msgstr "Patentoituja algoritmeja"
+
+#: ../ppdippstr.py:129
+msgid "Miscellaneous"
+msgstr ""
+
+#. Epson xp serie
+#: ../ppdippstr.py:132
+#, fuzzy
+msgid "_Media Size"
+msgstr "Tulostusmateriaalin lähde"
+
+#: ../ppdippstr.py:133
+msgid "_Grayscale"
+msgstr ""
+
+#: ../ppdippstr.py:134
+#, fuzzy
+msgid "_Brightness"
+msgstr "Kirkkaus:"
+
+#: ../ppdippstr.py:135
+msgid "_Contrast"
+msgstr ""
+
+#: ../ppdippstr.py:136
+#, fuzzy
+msgid "_Saturation"
+msgstr "Värikylläisyys:"
+
+#: ../ppdippstr.py:137 ../ppdippstr.py:186
+msgid "Off"
+msgstr "Pois"
+
+#: ../ppdippstr.py:138
+msgid "On"
+msgstr ""
+
 #. HPIJS options
-#: ../ppdippstr.py:113
+#: ../ppdippstr.py:141
 msgid "Printout mode"
 msgstr "Tulostustila"
 
-#: ../ppdippstr.py:115
+#: ../ppdippstr.py:143
 msgid "Draft (auto-detect-paper type)"
 msgstr "Vedos (automaattisesti tunnistettu paperin tyyppi)"
 
-#: ../ppdippstr.py:117
+#: ../ppdippstr.py:145
 msgid "Draft grayscale (auto-detect-paper type)"
 msgstr "Mustavalkovedos (automaattisesti tunnistettu paperin tyyppi)"
 
-#: ../ppdippstr.py:119
+#: ../ppdippstr.py:147
 msgid "Normal (auto-detect-paper type)"
 msgstr "Tavallinen (automaattisesti tunnistettu paperin tyyppi)"
 
-#: ../ppdippstr.py:121
+#: ../ppdippstr.py:149
 msgid "Normal grayscale (auto-detect-paper type)"
 msgstr ""
 "Tavallinen mustavalkotuloste (automaattisesti tunnistettu paperin tyyppi)"
 
-#: ../ppdippstr.py:123
+#: ../ppdippstr.py:151
 msgid "High quality (auto-detect-paper type)"
 msgstr "Korkealaatuinen (automaattisesti tunnistettu paperin tyyppi)"
 
-#: ../ppdippstr.py:125
+#: ../ppdippstr.py:153
 msgid "High quality grayscale (auto-detect-paper type)"
 msgstr ""
 "Korkealaatuinen mustavalkotuloste (automaattisesti tunnistettu paperin "
 "tyyppi)"
 
-#: ../ppdippstr.py:126
+#: ../ppdippstr.py:154
 msgid "Photo (on photo paper)"
 msgstr "Valokuva (valokuvapaperille)"
 
-#: ../ppdippstr.py:128
+#: ../ppdippstr.py:156
 msgid "Best quality (color on photo paper)"
 msgstr "Paras laatu (värituloste valokuvapaperille)"
 
-#: ../ppdippstr.py:130
+#: ../ppdippstr.py:158
 msgid "Normal quality (color on photo paper)"
 msgstr "Tavallinen laatu (värituloste valokuvapaperille)"
 
-#: ../ppdippstr.py:132
+#: ../ppdippstr.py:160
 msgid "Media source"
 msgstr "Tulostusmateriaalin lähde"
 
-#: ../ppdippstr.py:133
+#: ../ppdippstr.py:161
 msgid "Printer default"
 msgstr "Tulostimen oletus"
 
-#: ../ppdippstr.py:134
+#: ../ppdippstr.py:162
 msgid "Photo tray"
 msgstr "Valokuvateline"
 
-#: ../ppdippstr.py:135
+#: ../ppdippstr.py:163
 msgid "Upper tray"
 msgstr "Ylempi teline"
 
-#: ../ppdippstr.py:136
+#: ../ppdippstr.py:164
 msgid "Lower tray"
 msgstr "Alempi teline"
 
-#: ../ppdippstr.py:137
+#: ../ppdippstr.py:165
 msgid "CD or DVD tray"
 msgstr "CD- tai DVD-teline"
 
-#: ../ppdippstr.py:138
+#: ../ppdippstr.py:166
 msgid "Envelope feeder"
 msgstr "Kirjekuorien syötin"
 
-#: ../ppdippstr.py:139
+#: ../ppdippstr.py:167
 msgid "Large capacity tray"
 msgstr "Suuren kapasiteetin teline"
 
-#: ../ppdippstr.py:140
+#: ../ppdippstr.py:168
 msgid "Manual feeder"
 msgstr "Manuaalinen syötin"
 
-#: ../ppdippstr.py:141
+#: ../ppdippstr.py:169
 msgid "Multi-purpose tray"
 msgstr "Yleisteline"
 
-#: ../ppdippstr.py:143
+#: ../ppdippstr.py:171
 msgid "Page size"
 msgstr "Sivun koko"
 
-#: ../ppdippstr.py:144
+#: ../ppdippstr.py:172
 msgid "Custom"
 msgstr "Mukautettu"
 
-#: ../ppdippstr.py:145
+#: ../ppdippstr.py:173
 msgid "Letter"
 msgstr ""
 
-#: ../ppdippstr.py:146
+#: ../ppdippstr.py:174
 msgid "Photo or 4x6 inch index card"
 msgstr "Valokuva tai 4×6 tuuman kortistokortti"
 
-#: ../ppdippstr.py:147
+#: ../ppdippstr.py:175
 msgid "Photo or 5x7 inch index card"
 msgstr "Valokuva tai 5×7 tuuman kortistokortti"
 
-#: ../ppdippstr.py:148
+#: ../ppdippstr.py:176
 msgid "Photo with tear-off tab"
 msgstr "Valokuva irrotusreunalla"
 
-#: ../ppdippstr.py:149
+#: ../ppdippstr.py:177
 msgid "3x5 inch index card"
 msgstr "3×5 tuuman kortistokortti"
 
-#: ../ppdippstr.py:150
+#: ../ppdippstr.py:178
 msgid "5x8 inch index card"
 msgstr "5×8 tuuman kortistokortti"
 
-#: ../ppdippstr.py:151
+#: ../ppdippstr.py:179
 msgid "A6 with tear-off tab"
 msgstr "A6 irrotusreunalla"
 
-#: ../ppdippstr.py:152
+#: ../ppdippstr.py:180
 msgid "CD or DVD 80mm"
 msgstr "80 mm CD tai DVD"
 
-#: ../ppdippstr.py:153
+#: ../ppdippstr.py:181
 msgid "CD or DVD 120mm"
 msgstr "120 mm CD tai DVD"
 
-#: ../ppdippstr.py:155
+#: ../ppdippstr.py:183
 msgid "Double-sided printing"
 msgstr "Kaksipuolinen tulostus"
 
-#: ../ppdippstr.py:156
+#: ../ppdippstr.py:184
 msgid "Long edge (standard)"
 msgstr "Pitkä reuna (tavallinen)"
 
-#: ../ppdippstr.py:157
+#: ../ppdippstr.py:185
 msgid "Short edge (flip)"
 msgstr "Lyhyt reuna (käännettävä)"
 
-#: ../ppdippstr.py:158
-msgid "Off"
-msgstr "Pois"
-
-#: ../ppdippstr.py:161
+#: ../ppdippstr.py:189
 msgid "Resolution, quality, ink type, media type"
 msgstr "Resoluutio, laatu, musteen tyyppi, median tyyppi"
 
-#: ../ppdippstr.py:162
+#: ../ppdippstr.py:190
 msgid "Controlled by 'Printout mode'"
 msgstr "”Tulostustilan” hallitsema"
 
-#: ../ppdippstr.py:164
+#: ../ppdippstr.py:192
 msgid "300 dpi, color, black + color cartridge"
 msgstr "300 dpi, väri, musta + väri -kasetti"
 
-#: ../ppdippstr.py:166
+#: ../ppdippstr.py:194
 msgid "300 dpi, draft, color, black + color cartridge"
 msgstr "300 dpi, vedos, väri, musta + väri -kasetti"
 
-#: ../ppdippstr.py:168
+#: ../ppdippstr.py:196
 msgid "300 dpi, draft, grayscale, black + color cartridge"
 msgstr "300 dpi, vedos, mustavalkoinen, musta + väri -kasetti"
 
-#: ../ppdippstr.py:170
+#: ../ppdippstr.py:198
 msgid "300 dpi, grayscale, black + color cartridge"
 msgstr "300 dpi, mustavalkoinen, musta + väri -kasetti"
 
-#: ../ppdippstr.py:172
+#: ../ppdippstr.py:200
 msgid "600 dpi, color, black + color cartridge"
 msgstr "600 dpi, väri, musta + väri -kasetti"
 
-#: ../ppdippstr.py:174
+#: ../ppdippstr.py:202
 msgid "600 dpi, grayscale, black + color cartridge"
 msgstr "600 dpi, mustavalkoinen, musta + väri -kasetti"
 
-#: ../ppdippstr.py:176
+#: ../ppdippstr.py:204
 msgid "600 dpi, photo, black + color cartridge, photo paper"
 msgstr "600 dpi, valokuva, musta + väri -kasetti, valokuvapaperi"
 
-#: ../ppdippstr.py:178
+#: ../ppdippstr.py:206
 msgid "600 dpi, color, black + color cartridge, photo paper, normal"
 msgstr "600 dpi, väri, musta + väri -kasetti, valokuvapaperi, tavallinen"
 
-#: ../ppdippstr.py:180
+#: ../ppdippstr.py:208
 msgid "1200 dpi, photo, black + color cartridge, photo paper"
 msgstr "1200 dpi, valokuva, musta + väri -kasetti, valokuvapaperi"
 
-#: ../ppdippstr.py:187
+#: ../ppdippstr.py:215
 msgid "Internet Printing Protocol (ipp)"
 msgstr "Internet Printing Protocol (ipp)"
 
-#: ../ppdippstr.py:189
+#: ../ppdippstr.py:217
 msgid "Internet Printing Protocol (http)"
 msgstr "Internet Printing Protocol (http)"
 
-#: ../ppdippstr.py:191
+#: ../ppdippstr.py:219
 msgid "Internet Printing Protocol (https)"
 msgstr "Internet Printing Protocol (https)"
 
-#: ../ppdippstr.py:193
+#: ../ppdippstr.py:221
 msgid "LPD/LPR Host or Printer"
 msgstr "LPD/LPR-palvelin tai -tulostin"
 
-#: ../ppdippstr.py:197
+#: ../ppdippstr.py:225
 msgid "Serial Port #1"
 msgstr "Sarjaportti 1"
 
-#: ../ppdippstr.py:199
+#: ../ppdippstr.py:227
 msgid "LPT #1"
 msgstr "LPT 1"
 

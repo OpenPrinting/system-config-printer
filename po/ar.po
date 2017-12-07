@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2017-12-05 14:57+0100\n"
+"POT-Creation-Date: 2017-12-07 16:23+0100\n"
 "PO-Revision-Date: 2014-12-16 02:31-0500\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Arabic (http://www.transifex.com/projects/p/system-config-"
@@ -512,7 +512,7 @@ msgstr ""
 "الحماية الآن؟ "
 
 #: ../newprinter.py:358 ../newprinter.py:369 ../newprinter.py:375
-#: ../newprinter.py:380
+#: ../newprinter.py:380 ../ppdippstr.py:127
 msgid "Default"
 msgstr "افتراضي"
 
@@ -656,7 +656,7 @@ msgstr "طابعة شبكة"
 msgid "Find Network Printer"
 msgstr "ابحث عن طابعة شبكة"
 
-#: ../newprinter.py:2247 ../newprinter.py:3070 ../ppdippstr.py:201
+#: ../newprinter.py:2247 ../newprinter.py:3070 ../ppdippstr.py:229
 msgid "Windows Printer via SAMBA"
 msgstr "طابعة ويندوز عن طريق سامبا"
 
@@ -746,7 +746,7 @@ msgstr "رسوميات وطباعة إتش‌بي لينكس (HPLIP)"
 msgid "Hardware Abstraction Layer (HAL)"
 msgstr "طبقة تجريد العتاد (HAL)"
 
-#: ../newprinter.py:3055 ../ppdippstr.py:195
+#: ../newprinter.py:3055 ../ppdippstr.py:223
 msgid "AppSocket/HP JetDirect"
 msgstr "AppSocket/HP JetDirect"
 
@@ -1024,275 +1024,368 @@ msgstr "عام"
 msgid "Print Quality"
 msgstr "جودة الطباعة:"
 
-#: ../ppdippstr.py:96 ../printerproperties.py:324
+#: ../ppdippstr.py:96
+#, fuzzy
+msgid "Printing Quality"
+msgstr "جودة الطباعة:"
+
+#: ../ppdippstr.py:97 ../printerproperties.py:324
 msgid "Draft"
 msgstr "مسودة"
 
-#: ../ppdippstr.py:97 ../printerproperties.py:320 ../printerproperties.py:325
+#: ../ppdippstr.py:98 ../printerproperties.py:320 ../printerproperties.py:325
 msgid "Normal"
 msgstr "عادي"
 
-#: ../ppdippstr.py:98
+#: ../ppdippstr.py:99
 #, fuzzy
 msgid "Resolution"
 msgstr "دقة الطباعة:"
 
-#: ../ppdippstr.py:99
+#: ../ppdippstr.py:100
 msgid "Color Mode"
 msgstr ""
 
-#: ../ppdippstr.py:100
+#: ../ppdippstr.py:101
 msgid "Quality"
 msgstr ""
 
-#: ../ppdippstr.py:101
+#: ../ppdippstr.py:102
 #, fuzzy
 msgid "Paper source"
 msgstr "مصدر الأوراق"
 
-#: ../ppdippstr.py:102
-#, fuzzy
-msgid "Media Type"
-msgstr "مصدر الأوراق"
-
 #: ../ppdippstr.py:103
-msgid "Bond"
+msgid "Auto Source"
 msgstr ""
 
 #: ../ppdippstr.py:104
-msgid "Color"
-msgstr ""
+#, fuzzy
+msgid "Manual Feed"
+msgstr "التغذية اليدوية"
 
 #: ../ppdippstr.py:105
-#, fuzzy
-msgid "Envelope"
-msgstr "مغذي الظروف"
-
-#: ../ppdippstr.py:106
-msgid "Labels"
+msgid "Middle Tray"
 msgstr ""
 
 #: ../ppdippstr.py:107
 #, fuzzy
+msgid "Media Type"
+msgstr "مصدر الأوراق"
+
+#: ../ppdippstr.py:108
+msgid "Bond"
+msgstr ""
+
+#: ../ppdippstr.py:109
+msgid "Color"
+msgstr ""
+
+#: ../ppdippstr.py:110
+#, fuzzy
+msgid "Envelope"
+msgstr "مغذي الظروف"
+
+#: ../ppdippstr.py:111
+msgid "Labels"
+msgstr ""
+
+#: ../ppdippstr.py:112
+#, fuzzy
 msgid "Standard Paper"
 msgstr "قياسي"
 
-#: ../ppdippstr.py:108
+#: ../ppdippstr.py:113
+msgid "Heavy"
+msgstr ""
+
+#: ../ppdippstr.py:114
+#, fuzzy
+msgid "Light"
+msgstr "المساء"
+
+#: ../ppdippstr.py:115
+msgid "Recycled"
+msgstr ""
+
+#: ../ppdippstr.py:117
 #, fuzzy
 msgid "Print Density"
 msgstr "جودة الطباعة:"
 
-#: ../ppdippstr.py:110
+#: ../ppdippstr.py:118
+msgid "Extra Light(1)"
+msgstr ""
+
+#: ../ppdippstr.py:119
+msgid "Light (2)"
+msgstr ""
+
+#: ../ppdippstr.py:120
+msgid "Medium (3)"
+msgstr ""
+
+#: ../ppdippstr.py:121
+msgid "Dark (4)"
+msgstr ""
+
+#: ../ppdippstr.py:122
+msgid "Extra Dark (5)"
+msgstr ""
+
+#: ../ppdippstr.py:123
+#, fuzzy
+msgid "Copies"
+msgstr "النسخ:"
+
+#: ../ppdippstr.py:125
 #, fuzzy
 msgid "Adjustment"
 msgstr "ضبط تدرج الألوان:"
 
-#. HPIJS options
-#: ../ppdippstr.py:113
-msgid "Printout mode"
-msgstr "نمط الطباعة"
-
-#: ../ppdippstr.py:115
-msgid "Draft (auto-detect-paper type)"
-msgstr "مسودة (اكتشف نوع الورق تلقائيا)"
-
-#: ../ppdippstr.py:117
-msgid "Draft grayscale (auto-detect-paper type)"
-msgstr "مسودة أبيض وأسود (اكتشف نوع الورق تلقائيا)"
-
-#: ../ppdippstr.py:119
-msgid "Normal (auto-detect-paper type)"
-msgstr "عادي (اكتشف نوع الورق تلقائيا)"
-
-#: ../ppdippstr.py:121
-msgid "Normal grayscale (auto-detect-paper type)"
-msgstr "عادي أبيض وأسود (اكتشف نوع الورق تلقائيا)"
-
-#: ../ppdippstr.py:123
-msgid "High quality (auto-detect-paper type)"
-msgstr "عالي الجودة (اكتشف نوع الورق تلقائيا)"
-
-#: ../ppdippstr.py:125
-msgid "High quality grayscale (auto-detect-paper type)"
-msgstr "عالي الجودة أبيض وأسود (اكتشف نوع الورق تلقائيا)"
-
 #: ../ppdippstr.py:126
-msgid "Photo (on photo paper)"
-msgstr "صورة (على ورق صور)"
+#, fuzzy
+msgid "Halftone Algorithm"
+msgstr "خوارزمية عليها برائة اختراع"
 
-#: ../ppdippstr.py:128
-msgid "Best quality (color on photo paper)"
-msgstr "أفضل جودة (ملون على ورق صور)"
+#: ../ppdippstr.py:129
+msgid "Miscellaneous"
+msgstr ""
 
-#: ../ppdippstr.py:130
-msgid "Normal quality (color on photo paper)"
-msgstr "جودة عادية (ملون على ورق صور)"
-
+#. Epson xp serie
 #: ../ppdippstr.py:132
-msgid "Media source"
+#, fuzzy
+msgid "_Media Size"
 msgstr "مصدر الأوراق"
 
 #: ../ppdippstr.py:133
-msgid "Printer default"
-msgstr "افتراضي الطابعة"
-
-#: ../ppdippstr.py:134
-msgid "Photo tray"
-msgstr "رف الصور"
-
-#: ../ppdippstr.py:135
-msgid "Upper tray"
-msgstr "الرف العلوي"
-
-#: ../ppdippstr.py:136
-msgid "Lower tray"
-msgstr "الرف السفلي"
-
-#: ../ppdippstr.py:137
-msgid "CD or DVD tray"
-msgstr "رف الاسطوانات أو دي‌ڤي‌دي"
-
-#: ../ppdippstr.py:138
-msgid "Envelope feeder"
-msgstr "مغذي الظروف"
-
-#: ../ppdippstr.py:139
-msgid "Large capacity tray"
-msgstr "رف عالي السعة"
-
-#: ../ppdippstr.py:140
-msgid "Manual feeder"
-msgstr "التغذية اليدوية"
-
-#: ../ppdippstr.py:141
-msgid "Multi-purpose tray"
-msgstr "رف متعدد الاستخدامات"
-
-#: ../ppdippstr.py:143
-msgid "Page size"
-msgstr "مقاس الورق"
-
-#: ../ppdippstr.py:144
-msgid "Custom"
-msgstr "مخصّص"
-
-#: ../ppdippstr.py:145
-msgid "Letter"
+msgid "_Grayscale"
 msgstr ""
 
-#: ../ppdippstr.py:146
-msgid "Photo or 4x6 inch index card"
-msgstr "صورة أو بطاقة فهرسة 4×6 بوصة"
+#: ../ppdippstr.py:134
+#, fuzzy
+msgid "_Brightness"
+msgstr "السطوع:"
 
-#: ../ppdippstr.py:147
-msgid "Photo or 5x7 inch index card"
-msgstr "صورة أو بطاقة فهرسة 5×7 بوصة"
+#: ../ppdippstr.py:135
+msgid "_Contrast"
+msgstr ""
 
-#: ../ppdippstr.py:148
-msgid "Photo with tear-off tab"
-msgstr "صورة مع أشرطة تقطيع"
+#: ../ppdippstr.py:136
+#, fuzzy
+msgid "_Saturation"
+msgstr "التشبع:"
 
-#: ../ppdippstr.py:149
-msgid "3x5 inch index card"
-msgstr "بطاقة فهرسة 3×5 بوصة"
-
-#: ../ppdippstr.py:150
-msgid "5x8 inch index card"
-msgstr "بطاقة فهرسة 5×8 بوصة"
-
-#: ../ppdippstr.py:151
-msgid "A6 with tear-off tab"
-msgstr "‏A6 مع أشرطة تقطيع"
-
-#: ../ppdippstr.py:152
-msgid "CD or DVD 80mm"
-msgstr "اسطوانة أو دي ‌ڤي ‌دي 80 ملم "
-
-#: ../ppdippstr.py:153
-msgid "CD or DVD 120mm"
-msgstr "اسطوانة أو دي‌ڤي‌دي 120 ملم"
-
-#: ../ppdippstr.py:155
-msgid "Double-sided printing"
-msgstr "الطباعة على الوجهين"
-
-#: ../ppdippstr.py:156
-msgid "Long edge (standard)"
-msgstr "حد طويل (قياسي)"
-
-#: ../ppdippstr.py:157
-msgid "Short edge (flip)"
-msgstr "حد قصير (قلب)"
-
-#: ../ppdippstr.py:158
+#: ../ppdippstr.py:137 ../ppdippstr.py:186
 msgid "Off"
 msgstr "مغلق"
 
+#: ../ppdippstr.py:138
+msgid "On"
+msgstr ""
+
+#. HPIJS options
+#: ../ppdippstr.py:141
+msgid "Printout mode"
+msgstr "نمط الطباعة"
+
+#: ../ppdippstr.py:143
+msgid "Draft (auto-detect-paper type)"
+msgstr "مسودة (اكتشف نوع الورق تلقائيا)"
+
+#: ../ppdippstr.py:145
+msgid "Draft grayscale (auto-detect-paper type)"
+msgstr "مسودة أبيض وأسود (اكتشف نوع الورق تلقائيا)"
+
+#: ../ppdippstr.py:147
+msgid "Normal (auto-detect-paper type)"
+msgstr "عادي (اكتشف نوع الورق تلقائيا)"
+
+#: ../ppdippstr.py:149
+msgid "Normal grayscale (auto-detect-paper type)"
+msgstr "عادي أبيض وأسود (اكتشف نوع الورق تلقائيا)"
+
+#: ../ppdippstr.py:151
+msgid "High quality (auto-detect-paper type)"
+msgstr "عالي الجودة (اكتشف نوع الورق تلقائيا)"
+
+#: ../ppdippstr.py:153
+msgid "High quality grayscale (auto-detect-paper type)"
+msgstr "عالي الجودة أبيض وأسود (اكتشف نوع الورق تلقائيا)"
+
+#: ../ppdippstr.py:154
+msgid "Photo (on photo paper)"
+msgstr "صورة (على ورق صور)"
+
+#: ../ppdippstr.py:156
+msgid "Best quality (color on photo paper)"
+msgstr "أفضل جودة (ملون على ورق صور)"
+
+#: ../ppdippstr.py:158
+msgid "Normal quality (color on photo paper)"
+msgstr "جودة عادية (ملون على ورق صور)"
+
+#: ../ppdippstr.py:160
+msgid "Media source"
+msgstr "مصدر الأوراق"
+
 #: ../ppdippstr.py:161
+msgid "Printer default"
+msgstr "افتراضي الطابعة"
+
+#: ../ppdippstr.py:162
+msgid "Photo tray"
+msgstr "رف الصور"
+
+#: ../ppdippstr.py:163
+msgid "Upper tray"
+msgstr "الرف العلوي"
+
+#: ../ppdippstr.py:164
+msgid "Lower tray"
+msgstr "الرف السفلي"
+
+#: ../ppdippstr.py:165
+msgid "CD or DVD tray"
+msgstr "رف الاسطوانات أو دي‌ڤي‌دي"
+
+#: ../ppdippstr.py:166
+msgid "Envelope feeder"
+msgstr "مغذي الظروف"
+
+#: ../ppdippstr.py:167
+msgid "Large capacity tray"
+msgstr "رف عالي السعة"
+
+#: ../ppdippstr.py:168
+msgid "Manual feeder"
+msgstr "التغذية اليدوية"
+
+#: ../ppdippstr.py:169
+msgid "Multi-purpose tray"
+msgstr "رف متعدد الاستخدامات"
+
+#: ../ppdippstr.py:171
+msgid "Page size"
+msgstr "مقاس الورق"
+
+#: ../ppdippstr.py:172
+msgid "Custom"
+msgstr "مخصّص"
+
+#: ../ppdippstr.py:173
+msgid "Letter"
+msgstr ""
+
+#: ../ppdippstr.py:174
+msgid "Photo or 4x6 inch index card"
+msgstr "صورة أو بطاقة فهرسة 4×6 بوصة"
+
+#: ../ppdippstr.py:175
+msgid "Photo or 5x7 inch index card"
+msgstr "صورة أو بطاقة فهرسة 5×7 بوصة"
+
+#: ../ppdippstr.py:176
+msgid "Photo with tear-off tab"
+msgstr "صورة مع أشرطة تقطيع"
+
+#: ../ppdippstr.py:177
+msgid "3x5 inch index card"
+msgstr "بطاقة فهرسة 3×5 بوصة"
+
+#: ../ppdippstr.py:178
+msgid "5x8 inch index card"
+msgstr "بطاقة فهرسة 5×8 بوصة"
+
+#: ../ppdippstr.py:179
+msgid "A6 with tear-off tab"
+msgstr "‏A6 مع أشرطة تقطيع"
+
+#: ../ppdippstr.py:180
+msgid "CD or DVD 80mm"
+msgstr "اسطوانة أو دي ‌ڤي ‌دي 80 ملم "
+
+#: ../ppdippstr.py:181
+msgid "CD or DVD 120mm"
+msgstr "اسطوانة أو دي‌ڤي‌دي 120 ملم"
+
+#: ../ppdippstr.py:183
+msgid "Double-sided printing"
+msgstr "الطباعة على الوجهين"
+
+#: ../ppdippstr.py:184
+msgid "Long edge (standard)"
+msgstr "حد طويل (قياسي)"
+
+#: ../ppdippstr.py:185
+msgid "Short edge (flip)"
+msgstr "حد قصير (قلب)"
+
+#: ../ppdippstr.py:189
 msgid "Resolution, quality, ink type, media type"
 msgstr "الدقة، الجودة، نوع الحبر، نوع الورق"
 
-#: ../ppdippstr.py:162
+#: ../ppdippstr.py:190
 msgid "Controlled by 'Printout mode'"
 msgstr "متحكم به بواسطة 'نمط الطباعة'"
 
-#: ../ppdippstr.py:164
+#: ../ppdippstr.py:192
 msgid "300 dpi, color, black + color cartridge"
 msgstr "خرطوش 300 نقطة/بوصة، ملون، أسود + ملون"
 
-#: ../ppdippstr.py:166
+#: ../ppdippstr.py:194
 msgid "300 dpi, draft, color, black + color cartridge"
 msgstr "خرطوش 300 نقطة/بوصة، مسودة، ملون، أسود + ملون"
 
-#: ../ppdippstr.py:168
+#: ../ppdippstr.py:196
 msgid "300 dpi, draft, grayscale, black + color cartridge"
 msgstr "خرطوش 300 نقطة/بوصة، مسودة، تدرج الرمادي، أسود + ملون"
 
-#: ../ppdippstr.py:170
+#: ../ppdippstr.py:198
 msgid "300 dpi, grayscale, black + color cartridge"
 msgstr "خرطوش 300 نقطة/بوصة، تدرج رمادي، أسود + ملون"
 
-#: ../ppdippstr.py:172
+#: ../ppdippstr.py:200
 msgid "600 dpi, color, black + color cartridge"
 msgstr "خرطوش 600 نقطة/بوصة، ملون، أسود + ملون"
 
-#: ../ppdippstr.py:174
+#: ../ppdippstr.py:202
 msgid "600 dpi, grayscale, black + color cartridge"
 msgstr "خرطوش 600 نقطة/بوصة، تدرج رمادي، أسود + ملون"
 
-#: ../ppdippstr.py:176
+#: ../ppdippstr.py:204
 msgid "600 dpi, photo, black + color cartridge, photo paper"
 msgstr "خرطوش 600 نقطة/بوصة، صورة، أسود + ملون، ورق صور"
 
-#: ../ppdippstr.py:178
+#: ../ppdippstr.py:206
 msgid "600 dpi, color, black + color cartridge, photo paper, normal"
 msgstr "خرطوش 600 نقطة/بوصة، ملون، أسود + ملون، ورق صور، عادي"
 
-#: ../ppdippstr.py:180
+#: ../ppdippstr.py:208
 msgid "1200 dpi, photo, black + color cartridge, photo paper"
 msgstr "خرطوش 1200 نقطة/بوصة، صور، أسود + ملون، ورق صور"
 
-#: ../ppdippstr.py:187
+#: ../ppdippstr.py:215
 msgid "Internet Printing Protocol (ipp)"
 msgstr "برتوكول طباعة الإنترنت (ipp)"
 
-#: ../ppdippstr.py:189
+#: ../ppdippstr.py:217
 msgid "Internet Printing Protocol (http)"
 msgstr "برتوكول طباعة الإنترنت (http)"
 
-#: ../ppdippstr.py:191
+#: ../ppdippstr.py:219
 msgid "Internet Printing Protocol (https)"
 msgstr "برتوكول طباعة الإنترنت (https) الإنترنت"
 
-#: ../ppdippstr.py:193
+#: ../ppdippstr.py:221
 msgid "LPD/LPR Host or Printer"
 msgstr "طابعة بوست سكربت"
 
-#: ../ppdippstr.py:197
+#: ../ppdippstr.py:225
 msgid "Serial Port #1"
 msgstr "منفذ تسلسلي #1"
 
-#: ../ppdippstr.py:199
+#: ../ppdippstr.py:227
 msgid "LPT #1"
 msgstr "LPT #1"
 

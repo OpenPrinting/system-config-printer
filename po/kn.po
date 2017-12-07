@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2017-12-05 14:57+0100\n"
+"POT-Creation-Date: 2017-12-07 16:23+0100\n"
 "PO-Revision-Date: 2014-12-16 04:02-0500\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Kannada (http://www.transifex.com/projects/p/system-config-"
@@ -506,7 +506,7 @@ msgstr ""
 "ಫೈರ್ವಾಲನ್ನು ಈಗಲೆ ಸರಿಹೊಂದಿಸಬೇಕೆ?"
 
 #: ../newprinter.py:358 ../newprinter.py:369 ../newprinter.py:375
-#: ../newprinter.py:380
+#: ../newprinter.py:380 ../ppdippstr.py:127
 msgid "Default"
 msgstr "ಪೂರ್ವನಿಯೋಜಿತ"
 
@@ -652,7 +652,7 @@ msgstr "ಜಾಲಬಂಧ ಮುದ್ರಕ"
 msgid "Find Network Printer"
 msgstr "ಜಾಲಬಂಧ ಮುದ್ರಕವನ್ನು ಹುಡುಕು"
 
-#: ../newprinter.py:2247 ../newprinter.py:3070 ../ppdippstr.py:201
+#: ../newprinter.py:2247 ../newprinter.py:3070 ../ppdippstr.py:229
 msgid "Windows Printer via SAMBA"
 msgstr "SAMBA ದ ಮೂಲಕದ Windows ಮುದ್ರಕ"
 
@@ -742,7 +742,7 @@ msgstr "HP ಲಿನಕ್ಸ್‌ ಇಮೇಜಿಂಗ್ ಹಾಗು ಮು
 msgid "Hardware Abstraction Layer (HAL)"
 msgstr "ಯಂತ್ರಾಂಶ ಅಬ್‌ಸ್ಟ್ರಾಕ್ಶನ್ ಪದರ (HAL)"
 
-#: ../newprinter.py:3055 ../ppdippstr.py:195
+#: ../newprinter.py:3055 ../ppdippstr.py:223
 msgid "AppSocket/HP JetDirect"
 msgstr "AppSocket/HP JetDirect"
 
@@ -1024,275 +1024,368 @@ msgstr "ಸಾಮಾನ್ಯ"
 msgid "Print Quality"
 msgstr "ಮುದ್ರಣದ ಗುಣಮಟ್ಟ:"
 
-#: ../ppdippstr.py:96 ../printerproperties.py:324
+#: ../ppdippstr.py:96
+#, fuzzy
+msgid "Printing Quality"
+msgstr "ಮುದ್ರಣದ ಗುಣಮಟ್ಟ:"
+
+#: ../ppdippstr.py:97 ../printerproperties.py:324
 msgid "Draft"
 msgstr "ಕರಡು"
 
-#: ../ppdippstr.py:97 ../printerproperties.py:320 ../printerproperties.py:325
+#: ../ppdippstr.py:98 ../printerproperties.py:320 ../printerproperties.py:325
 msgid "Normal"
 msgstr "ಸಾಮಾನ್ಯ"
 
-#: ../ppdippstr.py:98
+#: ../ppdippstr.py:99
 #, fuzzy
 msgid "Resolution"
 msgstr "ಮುದ್ರಕದ ರೆಸಲ್ಯೂಶನ್:"
 
-#: ../ppdippstr.py:99
+#: ../ppdippstr.py:100
 msgid "Color Mode"
 msgstr ""
 
-#: ../ppdippstr.py:100
+#: ../ppdippstr.py:101
 msgid "Quality"
 msgstr ""
 
-#: ../ppdippstr.py:101
+#: ../ppdippstr.py:102
 #, fuzzy
 msgid "Paper source"
 msgstr "ಮಾಧ್ಯಮದ ಆಕರ"
 
-#: ../ppdippstr.py:102
-#, fuzzy
-msgid "Media Type"
-msgstr "ಮಾಧ್ಯಮದ ಆಕರ"
-
 #: ../ppdippstr.py:103
-msgid "Bond"
+msgid "Auto Source"
 msgstr ""
 
 #: ../ppdippstr.py:104
-msgid "Color"
-msgstr ""
+#, fuzzy
+msgid "Manual Feed"
+msgstr "ಮಾನವಕೃತ(ಮ್ಯಾನುವಲ್) ಫೀಡರ್"
 
 #: ../ppdippstr.py:105
-#, fuzzy
-msgid "Envelope"
-msgstr "ಲಕೋಟೆ ಫೀಡರ್"
-
-#: ../ppdippstr.py:106
-msgid "Labels"
+msgid "Middle Tray"
 msgstr ""
 
 #: ../ppdippstr.py:107
 #, fuzzy
+msgid "Media Type"
+msgstr "ಮಾಧ್ಯಮದ ಆಕರ"
+
+#: ../ppdippstr.py:108
+msgid "Bond"
+msgstr ""
+
+#: ../ppdippstr.py:109
+msgid "Color"
+msgstr ""
+
+#: ../ppdippstr.py:110
+#, fuzzy
+msgid "Envelope"
+msgstr "ಲಕೋಟೆ ಫೀಡರ್"
+
+#: ../ppdippstr.py:111
+msgid "Labels"
+msgstr ""
+
+#: ../ppdippstr.py:112
+#, fuzzy
 msgid "Standard Paper"
 msgstr "ಶಿಷ್ಟ"
 
-#: ../ppdippstr.py:108
+#: ../ppdippstr.py:113
+msgid "Heavy"
+msgstr ""
+
+#: ../ppdippstr.py:114
+#, fuzzy
+msgid "Light"
+msgstr "ರಾತ್ರಿ"
+
+#: ../ppdippstr.py:115
+msgid "Recycled"
+msgstr ""
+
+#: ../ppdippstr.py:117
 #, fuzzy
 msgid "Print Density"
 msgstr "ಮುದ್ರಣದ ಗುಣಮಟ್ಟ:"
 
-#: ../ppdippstr.py:110
+#: ../ppdippstr.py:118
+msgid "Extra Light(1)"
+msgstr ""
+
+#: ../ppdippstr.py:119
+msgid "Light (2)"
+msgstr ""
+
+#: ../ppdippstr.py:120
+msgid "Medium (3)"
+msgstr ""
+
+#: ../ppdippstr.py:121
+msgid "Dark (4)"
+msgstr ""
+
+#: ../ppdippstr.py:122
+msgid "Extra Dark (5)"
+msgstr ""
+
+#: ../ppdippstr.py:123
+#, fuzzy
+msgid "Copies"
+msgstr "ಪ್ರತಿಗಳು:"
+
+#: ../ppdippstr.py:125
 #, fuzzy
 msgid "Adjustment"
 msgstr "ಬಣ್ಣದ ವ್ಯವಸ್ಥಾಪನೆ:"
 
-#. HPIJS options
-#: ../ppdippstr.py:113
-msgid "Printout mode"
-msgstr "ಮುದ್ರಿತ ಉತ್ಪನ್ನದ ಕ್ರಮ"
-
-#: ../ppdippstr.py:115
-msgid "Draft (auto-detect-paper type)"
-msgstr "ಡ್ರಾಫ್ಟ್‌ (ಸ್ವಯಂ-ಪತ್ತೆ-ಕಾಗದದ ಬಗೆ)"
-
-#: ../ppdippstr.py:117
-msgid "Draft grayscale (auto-detect-paper type)"
-msgstr "ಡ್ರಾಫ್ಟ್‌ ಗ್ರೇಸ್ಕೇಲ್ (ಸ್ವಯಂ-ಪತ್ತೆ-ಕಾಗದದ ಬಗೆ)"
-
-#: ../ppdippstr.py:119
-msgid "Normal (auto-detect-paper type)"
-msgstr "ಸಾಧಾರಣ (ಸ್ವಯಂ-ಪತ್ತೆ-ಕಾಗದದ ಬಗೆ)"
-
-#: ../ppdippstr.py:121
-msgid "Normal grayscale (auto-detect-paper type)"
-msgstr "ಸಾಧಾರಣ ಗ್ರೇಸ್ಕೇಲ್ (ಸ್ವಯಂ-ಪತ್ತೆ-ಕಾಗದದ ಬಗೆ)"
-
-#: ../ppdippstr.py:123
-msgid "High quality (auto-detect-paper type)"
-msgstr "ಉತ್ತಮ ಗುಣಮಟ್ಟ (ಸ್ವಯಂ-ಪತ್ತೆ-ಕಾಗದದ ಬಗೆ)"
-
-#: ../ppdippstr.py:125
-msgid "High quality grayscale (auto-detect-paper type)"
-msgstr "ಉತ್ತಮ ಗುಣಮಟ್ಟ ಗ್ರೇಸ್ಕೇಲ್ (ಸ್ವಯಂ-ಪತ್ತೆ-ಕಾಗದದ ಬಗೆ)"
-
 #: ../ppdippstr.py:126
-msgid "Photo (on photo paper)"
-msgstr "ಫೋಟೊ (ಫೋಟೋ ಕಾಗದದಲ್ಲಿ)"
+#, fuzzy
+msgid "Halftone Algorithm"
+msgstr "ಪೇಟೆಂಟ್ ಮಾಡಲಾದ ಅಲ್ಗಾರಿತಮ್‌ಗಳು"
 
-#: ../ppdippstr.py:128
-msgid "Best quality (color on photo paper)"
-msgstr "ಉತ್ತಮ ಗುಣಮಟ್ಟ (ಫೋಟೋ ಕಾಗದದಲ್ಲಿ ಬಣ್ಣದೊಂದಿಗೆ)"
+#: ../ppdippstr.py:129
+msgid "Miscellaneous"
+msgstr ""
 
-#: ../ppdippstr.py:130
-msgid "Normal quality (color on photo paper)"
-msgstr "ಸಾಧಾರಣ ಗುಣಮಟ್ಟ (ಫೋಟೋ ಕಾಗದದಲ್ಲಿ ಬಣ್ಣದೊಂದಿಗೆ)"
-
+#. Epson xp serie
 #: ../ppdippstr.py:132
-msgid "Media source"
+#, fuzzy
+msgid "_Media Size"
 msgstr "ಮಾಧ್ಯಮದ ಆಕರ"
 
 #: ../ppdippstr.py:133
-msgid "Printer default"
-msgstr "ಮುದ್ರಕದ ಪೂರ್ವನಿಯೋಜಿತ"
-
-#: ../ppdippstr.py:134
-msgid "Photo tray"
-msgstr "ಫೋಟೋ ಟ್ರೇ"
-
-#: ../ppdippstr.py:135
-msgid "Upper tray"
-msgstr "ಮೇಲಿನ ಟ್ರೇ"
-
-#: ../ppdippstr.py:136
-msgid "Lower tray"
-msgstr "ಕೆಳಗಿನ ಟ್ರೇ"
-
-#: ../ppdippstr.py:137
-msgid "CD or DVD tray"
-msgstr "CD ಅಥವ DVD ಟ್ರೇ"
-
-#: ../ppdippstr.py:138
-msgid "Envelope feeder"
-msgstr "ಲಕೋಟೆ ಫೀಡರ್"
-
-#: ../ppdippstr.py:139
-msgid "Large capacity tray"
-msgstr "ಹೆಚ್ಚು ಸಾಮರ್ಥ್ಯದ ಟ್ರೇ"
-
-#: ../ppdippstr.py:140
-msgid "Manual feeder"
-msgstr "ಮಾನವಕೃತ(ಮ್ಯಾನುವಲ್) ಫೀಡರ್"
-
-#: ../ppdippstr.py:141
-msgid "Multi-purpose tray"
-msgstr "ವಿವಿಧೋದ್ದೇಶ ಟ್ರೇ"
-
-#: ../ppdippstr.py:143
-msgid "Page size"
-msgstr "ಪುಟದ ಗಾತ್ರ"
-
-#: ../ppdippstr.py:144
-msgid "Custom"
-msgstr "ಇಚ್ಛೆಯ"
-
-#: ../ppdippstr.py:145
-msgid "Letter"
+msgid "_Grayscale"
 msgstr ""
 
-#: ../ppdippstr.py:146
-msgid "Photo or 4x6 inch index card"
-msgstr "ಫೋಟೊ ಅಥವ ೪x೬ ಇಂಚಿನ ಸೂಚಿ ಕಾರ್ಡು"
+#: ../ppdippstr.py:134
+#, fuzzy
+msgid "_Brightness"
+msgstr "ಪ್ರಕಾಶ:"
 
-#: ../ppdippstr.py:147
-msgid "Photo or 5x7 inch index card"
-msgstr "ಫೋಟೊ ಅಥವ ೫x೭ ಇಂಚಿನ ಸೂಚಿ ಕಾರ್ಡು"
+#: ../ppdippstr.py:135
+msgid "_Contrast"
+msgstr ""
 
-#: ../ppdippstr.py:148
-msgid "Photo with tear-off tab"
-msgstr "ಹರಿದು ಹಾಕಬಹುದಾದ ಟ್ಯಾಬ್ ಅನ್ನು ಹೊಂದಿರುವ ಫೋಟೊ"
+#: ../ppdippstr.py:136
+#, fuzzy
+msgid "_Saturation"
+msgstr "ಪರಿಪೂರ್ಣತೆ:"
 
-#: ../ppdippstr.py:149
-msgid "3x5 inch index card"
-msgstr "೩x೫ ಇಂಚಿನ ಸೂಚಿ ಕಾರ್ಡು"
-
-#: ../ppdippstr.py:150
-msgid "5x8 inch index card"
-msgstr "೫x೮ ಇಂಚಿನ ಸೂಚಿ ಕಾರ್ಡು"
-
-#: ../ppdippstr.py:151
-msgid "A6 with tear-off tab"
-msgstr "ಹರಿದು ಹಾಕಬಹುದಾದ ಟ್ಯಾಬ್‌ನೊಂದಿಗಿನ A6"
-
-#: ../ppdippstr.py:152
-msgid "CD or DVD 80mm"
-msgstr "CD ಅಥವ DVD 80mm"
-
-#: ../ppdippstr.py:153
-msgid "CD or DVD 120mm"
-msgstr "CD ಅಥವ DVD 120mm"
-
-#: ../ppdippstr.py:155
-msgid "Double-sided printing"
-msgstr "ಎರಡೂ-ಬದಿಯ ಮುದ್ರಣ"
-
-#: ../ppdippstr.py:156
-msgid "Long edge (standard)"
-msgstr "ಉದ್ದನೆಯ ತುದಿ (ಶಿಷ್ಟ)"
-
-#: ../ppdippstr.py:157
-msgid "Short edge (flip)"
-msgstr "ಚಿಕ್ಕ ತುದಿ (ಮಗುಚುವ)"
-
-#: ../ppdippstr.py:158
+#: ../ppdippstr.py:137 ../ppdippstr.py:186
 msgid "Off"
 msgstr "ಜಡ"
 
+#: ../ppdippstr.py:138
+msgid "On"
+msgstr ""
+
+#. HPIJS options
+#: ../ppdippstr.py:141
+msgid "Printout mode"
+msgstr "ಮುದ್ರಿತ ಉತ್ಪನ್ನದ ಕ್ರಮ"
+
+#: ../ppdippstr.py:143
+msgid "Draft (auto-detect-paper type)"
+msgstr "ಡ್ರಾಫ್ಟ್‌ (ಸ್ವಯಂ-ಪತ್ತೆ-ಕಾಗದದ ಬಗೆ)"
+
+#: ../ppdippstr.py:145
+msgid "Draft grayscale (auto-detect-paper type)"
+msgstr "ಡ್ರಾಫ್ಟ್‌ ಗ್ರೇಸ್ಕೇಲ್ (ಸ್ವಯಂ-ಪತ್ತೆ-ಕಾಗದದ ಬಗೆ)"
+
+#: ../ppdippstr.py:147
+msgid "Normal (auto-detect-paper type)"
+msgstr "ಸಾಧಾರಣ (ಸ್ವಯಂ-ಪತ್ತೆ-ಕಾಗದದ ಬಗೆ)"
+
+#: ../ppdippstr.py:149
+msgid "Normal grayscale (auto-detect-paper type)"
+msgstr "ಸಾಧಾರಣ ಗ್ರೇಸ್ಕೇಲ್ (ಸ್ವಯಂ-ಪತ್ತೆ-ಕಾಗದದ ಬಗೆ)"
+
+#: ../ppdippstr.py:151
+msgid "High quality (auto-detect-paper type)"
+msgstr "ಉತ್ತಮ ಗುಣಮಟ್ಟ (ಸ್ವಯಂ-ಪತ್ತೆ-ಕಾಗದದ ಬಗೆ)"
+
+#: ../ppdippstr.py:153
+msgid "High quality grayscale (auto-detect-paper type)"
+msgstr "ಉತ್ತಮ ಗುಣಮಟ್ಟ ಗ್ರೇಸ್ಕೇಲ್ (ಸ್ವಯಂ-ಪತ್ತೆ-ಕಾಗದದ ಬಗೆ)"
+
+#: ../ppdippstr.py:154
+msgid "Photo (on photo paper)"
+msgstr "ಫೋಟೊ (ಫೋಟೋ ಕಾಗದದಲ್ಲಿ)"
+
+#: ../ppdippstr.py:156
+msgid "Best quality (color on photo paper)"
+msgstr "ಉತ್ತಮ ಗುಣಮಟ್ಟ (ಫೋಟೋ ಕಾಗದದಲ್ಲಿ ಬಣ್ಣದೊಂದಿಗೆ)"
+
+#: ../ppdippstr.py:158
+msgid "Normal quality (color on photo paper)"
+msgstr "ಸಾಧಾರಣ ಗುಣಮಟ್ಟ (ಫೋಟೋ ಕಾಗದದಲ್ಲಿ ಬಣ್ಣದೊಂದಿಗೆ)"
+
+#: ../ppdippstr.py:160
+msgid "Media source"
+msgstr "ಮಾಧ್ಯಮದ ಆಕರ"
+
 #: ../ppdippstr.py:161
+msgid "Printer default"
+msgstr "ಮುದ್ರಕದ ಪೂರ್ವನಿಯೋಜಿತ"
+
+#: ../ppdippstr.py:162
+msgid "Photo tray"
+msgstr "ಫೋಟೋ ಟ್ರೇ"
+
+#: ../ppdippstr.py:163
+msgid "Upper tray"
+msgstr "ಮೇಲಿನ ಟ್ರೇ"
+
+#: ../ppdippstr.py:164
+msgid "Lower tray"
+msgstr "ಕೆಳಗಿನ ಟ್ರೇ"
+
+#: ../ppdippstr.py:165
+msgid "CD or DVD tray"
+msgstr "CD ಅಥವ DVD ಟ್ರೇ"
+
+#: ../ppdippstr.py:166
+msgid "Envelope feeder"
+msgstr "ಲಕೋಟೆ ಫೀಡರ್"
+
+#: ../ppdippstr.py:167
+msgid "Large capacity tray"
+msgstr "ಹೆಚ್ಚು ಸಾಮರ್ಥ್ಯದ ಟ್ರೇ"
+
+#: ../ppdippstr.py:168
+msgid "Manual feeder"
+msgstr "ಮಾನವಕೃತ(ಮ್ಯಾನುವಲ್) ಫೀಡರ್"
+
+#: ../ppdippstr.py:169
+msgid "Multi-purpose tray"
+msgstr "ವಿವಿಧೋದ್ದೇಶ ಟ್ರೇ"
+
+#: ../ppdippstr.py:171
+msgid "Page size"
+msgstr "ಪುಟದ ಗಾತ್ರ"
+
+#: ../ppdippstr.py:172
+msgid "Custom"
+msgstr "ಇಚ್ಛೆಯ"
+
+#: ../ppdippstr.py:173
+msgid "Letter"
+msgstr ""
+
+#: ../ppdippstr.py:174
+msgid "Photo or 4x6 inch index card"
+msgstr "ಫೋಟೊ ಅಥವ ೪x೬ ಇಂಚಿನ ಸೂಚಿ ಕಾರ್ಡು"
+
+#: ../ppdippstr.py:175
+msgid "Photo or 5x7 inch index card"
+msgstr "ಫೋಟೊ ಅಥವ ೫x೭ ಇಂಚಿನ ಸೂಚಿ ಕಾರ್ಡು"
+
+#: ../ppdippstr.py:176
+msgid "Photo with tear-off tab"
+msgstr "ಹರಿದು ಹಾಕಬಹುದಾದ ಟ್ಯಾಬ್ ಅನ್ನು ಹೊಂದಿರುವ ಫೋಟೊ"
+
+#: ../ppdippstr.py:177
+msgid "3x5 inch index card"
+msgstr "೩x೫ ಇಂಚಿನ ಸೂಚಿ ಕಾರ್ಡು"
+
+#: ../ppdippstr.py:178
+msgid "5x8 inch index card"
+msgstr "೫x೮ ಇಂಚಿನ ಸೂಚಿ ಕಾರ್ಡು"
+
+#: ../ppdippstr.py:179
+msgid "A6 with tear-off tab"
+msgstr "ಹರಿದು ಹಾಕಬಹುದಾದ ಟ್ಯಾಬ್‌ನೊಂದಿಗಿನ A6"
+
+#: ../ppdippstr.py:180
+msgid "CD or DVD 80mm"
+msgstr "CD ಅಥವ DVD 80mm"
+
+#: ../ppdippstr.py:181
+msgid "CD or DVD 120mm"
+msgstr "CD ಅಥವ DVD 120mm"
+
+#: ../ppdippstr.py:183
+msgid "Double-sided printing"
+msgstr "ಎರಡೂ-ಬದಿಯ ಮುದ್ರಣ"
+
+#: ../ppdippstr.py:184
+msgid "Long edge (standard)"
+msgstr "ಉದ್ದನೆಯ ತುದಿ (ಶಿಷ್ಟ)"
+
+#: ../ppdippstr.py:185
+msgid "Short edge (flip)"
+msgstr "ಚಿಕ್ಕ ತುದಿ (ಮಗುಚುವ)"
+
+#: ../ppdippstr.py:189
 msgid "Resolution, quality, ink type, media type"
 msgstr "ರೆಸಲ್ಯೂಶನ್, ಗುಣಮಟ್ಟ, ಶಾಯಿಯ ಬಗೆ, ಮಾಧ್ಯಮದ ಬಗೆ"
 
-#: ../ppdippstr.py:162
+#: ../ppdippstr.py:190
 msgid "Controlled by 'Printout mode'"
 msgstr "'ಮುದ್ರಿತ ಉತ್ಪನ್ನದ ಕ್ರಮ'ದಿಂದ ನಿಯಂತ್ರಿಸಲಾಗಿದೆ"
 
-#: ../ppdippstr.py:164
+#: ../ppdippstr.py:192
 msgid "300 dpi, color, black + color cartridge"
 msgstr "೩೦೦ dpi, ಬಣ್ಣ, ಕಪ್ಪು + ಬಣ್ಣದ ಮಸಿನಳಿಗೆ (ಕಾರ್ಟ್ರಿಡ್ಜ್‌)"
 
-#: ../ppdippstr.py:166
+#: ../ppdippstr.py:194
 msgid "300 dpi, draft, color, black + color cartridge"
 msgstr "೩೦೦ dpi, ಡ್ರಾಫ್ಟ್‌, ಬಣ್ಣ, ಕಪ್ಪು + ಬಣ್ಣದ ಮಸಿನಳಿಗೆ (ಕಾರ್ಟ್ರಿಡ್ಜ್‌)"
 
-#: ../ppdippstr.py:168
+#: ../ppdippstr.py:196
 msgid "300 dpi, draft, grayscale, black + color cartridge"
 msgstr "೩೦೦ dpi, ಡ್ರಾಫ್ಟ್‌, ಗ್ರೇಸ್ಕೇಲ್ ಬಣ್ಣ, ಕಪ್ಪು + ಬಣ್ಣದ ಮಸಿನಳಿಗೆ (ಕಾರ್ಟ್ರಿಡ್ಜ್‌)"
 
-#: ../ppdippstr.py:170
+#: ../ppdippstr.py:198
 msgid "300 dpi, grayscale, black + color cartridge"
 msgstr "೩೦೦ dpi, ಡ್ರಾಫ್ಟ್‌, ಗ್ರೇಸ್ಕೇಲ್, ಕಪ್ಪು + ಬಣ್ಣದ ಮಸಿನಳಿಗೆ (ಕಾರ್ಟ್ರಿಡ್ಜ್‌)"
 
-#: ../ppdippstr.py:172
+#: ../ppdippstr.py:200
 msgid "600 dpi, color, black + color cartridge"
 msgstr "೬೦೦ dpi, ಬಣ್ಣ, ಕಪ್ಪು + ಬಣ್ಣದ ಮಸಿನಳಿಗೆ (ಕಾರ್ಟ್ರಿಡ್ಜ್‌)"
 
-#: ../ppdippstr.py:174
+#: ../ppdippstr.py:202
 msgid "600 dpi, grayscale, black + color cartridge"
 msgstr "೬೦೦ dpi, ಡ್ರಾಫ್ಟ್‌, ಗ್ರೇಸ್ಕೇಲ್, ಕಪ್ಪು + ಬಣ್ಣದ ಮಸಿನಳಿಗೆ (ಕಾರ್ಟ್ರಿಡ್ಜ್‌)"
 
-#: ../ppdippstr.py:176
+#: ../ppdippstr.py:204
 msgid "600 dpi, photo, black + color cartridge, photo paper"
 msgstr "೬೦೦ dpi, ಫೋಟೊ, ಕಪ್ಪು + ಬಣ್ಣದ ಮಸಿನಳಿಗೆ (ಕಾರ್ಟ್ರಿಡ್ಜ್‌). ಫೋಟೊ ಕಾಗದ"
 
-#: ../ppdippstr.py:178
+#: ../ppdippstr.py:206
 msgid "600 dpi, color, black + color cartridge, photo paper, normal"
 msgstr "೬೦೦ dpi, ಬಣ್ಣ, ಕಪ್ಪು + ಬಣ್ಣದ ಮಸಿನಳಿಗೆ (ಕಾರ್ಟ್ರಿಡ್ಜ್‌). ಫೋಟೊ ಕಾಗದ, ಸಾಮಾನ್ಯ"
 
-#: ../ppdippstr.py:180
+#: ../ppdippstr.py:208
 msgid "1200 dpi, photo, black + color cartridge, photo paper"
 msgstr "೧೨೦೦ dpi, ಫೋಟೊ, ಕಪ್ಪು + ಬಣ್ಣದ ಮಸಿನಳಿಗೆ (ಕಾರ್ಟ್ರಿಡ್ಜ್‌). ಫೋಟೊ ಕಾಗದ"
 
-#: ../ppdippstr.py:187
+#: ../ppdippstr.py:215
 msgid "Internet Printing Protocol (ipp)"
 msgstr "ಇಂಟರ್ನೆಟ್ ಪ್ರಿಂಟಿಂಗ್ ಪ್ರೊಟೊಕಾಲ್ (ipp)"
 
-#: ../ppdippstr.py:189
+#: ../ppdippstr.py:217
 msgid "Internet Printing Protocol (http)"
 msgstr "ಇಂಟರ್ನೆಟ್ ಪ್ರಿಂಟಿಂಗ್ ಪ್ರೊಟೊಕಾಲ್ (http)"
 
-#: ../ppdippstr.py:191
+#: ../ppdippstr.py:219
 msgid "Internet Printing Protocol (https)"
 msgstr "ಇಂಟರ್ನೆಟ್ ಪ್ರಿಂಟಿಂಗ್ ಪ್ರೊಟೊಕಾಲ್ (https)"
 
-#: ../ppdippstr.py:193
+#: ../ppdippstr.py:221
 msgid "LPD/LPR Host or Printer"
 msgstr "LPD/LPR ಆತಿಥೇಯ ಅಥವ ಮುದ್ರಕ"
 
-#: ../ppdippstr.py:197
+#: ../ppdippstr.py:225
 msgid "Serial Port #1"
 msgstr "ಸರಣಿ ಸಂಪರ್ಕಸ್ಥಾನ #1"
 
-#: ../ppdippstr.py:199
+#: ../ppdippstr.py:227
 msgid "LPT #1"
 msgstr "LPT #1"
 

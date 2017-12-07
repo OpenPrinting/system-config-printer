@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: system-config-printer master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2017-12-05 14:57+0100\n"
+"POT-Creation-Date: 2017-12-07 16:23+0100\n"
 "PO-Revision-Date: 2017-09-11 14:41+0300\n"
 "Last-Translator: Ömer ÇAKMAK <farukomercakmak@gmail.com>\n"
 "Language-Team: Türkçe <gnome-turk@gnome.org>\n"
@@ -506,7 +506,7 @@ msgstr ""
 "gerekebilir. Güvenlik duvarını şimdi ayarlamak ister misiniz?"
 
 #: ../newprinter.py:358 ../newprinter.py:369 ../newprinter.py:375
-#: ../newprinter.py:380
+#: ../newprinter.py:380 ../ppdippstr.py:127
 msgid "Default"
 msgstr "Ön Tanımlı"
 
@@ -652,7 +652,7 @@ msgstr "Ağ Yazıcısı"
 msgid "Find Network Printer"
 msgstr "Ağ Yazıcısı Bul"
 
-#: ../newprinter.py:2247 ../newprinter.py:3070 ../ppdippstr.py:201
+#: ../newprinter.py:2247 ../newprinter.py:3070 ../ppdippstr.py:229
 msgid "Windows Printer via SAMBA"
 msgstr "SAMBA üzerinden Windows Yazıcısı"
 
@@ -743,7 +743,7 @@ msgstr "HP Linux Görüntüleme ve Baskı (HPLIP)"
 msgid "Hardware Abstraction Layer (HAL)"
 msgstr "Donanım Soyutlama Katmanı (HAL)"
 
-#: ../newprinter.py:3055 ../ppdippstr.py:195
+#: ../newprinter.py:3055 ../ppdippstr.py:223
 msgid "AppSocket/HP JetDirect"
 msgstr "AppSocket/HP JetDirect"
 
@@ -1021,275 +1021,368 @@ msgstr "Genel"
 msgid "Print Quality"
 msgstr "Baskı kalitesi:"
 
-#: ../ppdippstr.py:96 ../printerproperties.py:324
+#: ../ppdippstr.py:96
+#, fuzzy
+msgid "Printing Quality"
+msgstr "Baskı kalitesi:"
+
+#: ../ppdippstr.py:97 ../printerproperties.py:324
 msgid "Draft"
 msgstr "Taslak"
 
-#: ../ppdippstr.py:97 ../printerproperties.py:320 ../printerproperties.py:325
+#: ../ppdippstr.py:98 ../printerproperties.py:320 ../printerproperties.py:325
 msgid "Normal"
 msgstr "Normal"
 
-#: ../ppdippstr.py:98
+#: ../ppdippstr.py:99
 #, fuzzy
 msgid "Resolution"
 msgstr "Baskı çözünürlüğü:"
 
-#: ../ppdippstr.py:99
+#: ../ppdippstr.py:100
 msgid "Color Mode"
 msgstr ""
 
-#: ../ppdippstr.py:100
+#: ../ppdippstr.py:101
 msgid "Quality"
 msgstr ""
 
-#: ../ppdippstr.py:101
+#: ../ppdippstr.py:102
 #, fuzzy
 msgid "Paper source"
 msgstr "Ortam kaynağı"
 
-#: ../ppdippstr.py:102
-#, fuzzy
-msgid "Media Type"
-msgstr "Ortam kaynağı"
-
 #: ../ppdippstr.py:103
-msgid "Bond"
+msgid "Auto Source"
 msgstr ""
 
 #: ../ppdippstr.py:104
-msgid "Color"
-msgstr ""
+#, fuzzy
+msgid "Manual Feed"
+msgstr "Elle besleyici"
 
 #: ../ppdippstr.py:105
-#, fuzzy
-msgid "Envelope"
-msgstr "Zarf besleyici"
-
-#: ../ppdippstr.py:106
-msgid "Labels"
+msgid "Middle Tray"
 msgstr ""
 
 #: ../ppdippstr.py:107
 #, fuzzy
+msgid "Media Type"
+msgstr "Ortam kaynağı"
+
+#: ../ppdippstr.py:108
+msgid "Bond"
+msgstr ""
+
+#: ../ppdippstr.py:109
+msgid "Color"
+msgstr ""
+
+#: ../ppdippstr.py:110
+#, fuzzy
+msgid "Envelope"
+msgstr "Zarf besleyici"
+
+#: ../ppdippstr.py:111
+msgid "Labels"
+msgstr ""
+
+#: ../ppdippstr.py:112
+#, fuzzy
 msgid "Standard Paper"
 msgstr "Standart"
 
-#: ../ppdippstr.py:108
+#: ../ppdippstr.py:113
+msgid "Heavy"
+msgstr ""
+
+#: ../ppdippstr.py:114
+#, fuzzy
+msgid "Light"
+msgstr "Gece"
+
+#: ../ppdippstr.py:115
+msgid "Recycled"
+msgstr ""
+
+#: ../ppdippstr.py:117
 #, fuzzy
 msgid "Print Density"
 msgstr "Baskı kalitesi:"
 
-#: ../ppdippstr.py:110
+#: ../ppdippstr.py:118
+msgid "Extra Light(1)"
+msgstr ""
+
+#: ../ppdippstr.py:119
+msgid "Light (2)"
+msgstr ""
+
+#: ../ppdippstr.py:120
+msgid "Medium (3)"
+msgstr ""
+
+#: ../ppdippstr.py:121
+msgid "Dark (4)"
+msgstr ""
+
+#: ../ppdippstr.py:122
+msgid "Extra Dark (5)"
+msgstr ""
+
+#: ../ppdippstr.py:123
+#, fuzzy
+msgid "Copies"
+msgstr "Kopya Sayısı:"
+
+#: ../ppdippstr.py:125
 #, fuzzy
 msgid "Adjustment"
 msgstr "Renk tonu ayarlama:"
 
-#. HPIJS options
-#: ../ppdippstr.py:113
-msgid "Printout mode"
-msgstr "Çıktı kipi"
-
-#: ../ppdippstr.py:115
-msgid "Draft (auto-detect-paper type)"
-msgstr "Taslak (kağıt türünü otomatik algıla)"
-
-#: ../ppdippstr.py:117
-msgid "Draft grayscale (auto-detect-paper type)"
-msgstr "Taslak gri tonlamalı (kağıt türünü otomatik algıla)"
-
-#: ../ppdippstr.py:119
-msgid "Normal (auto-detect-paper type)"
-msgstr "Normal (kağıt türünü otomatik algıla)"
-
-#: ../ppdippstr.py:121
-msgid "Normal grayscale (auto-detect-paper type)"
-msgstr "Normal gri tonlamalı (kağıt türünü otomatik algıla)"
-
-#: ../ppdippstr.py:123
-msgid "High quality (auto-detect-paper type)"
-msgstr "Yüksek kalite (kağıt türünü otomatik algıla)"
-
-#: ../ppdippstr.py:125
-msgid "High quality grayscale (auto-detect-paper type)"
-msgstr "Yüksek kalite gri tonlamalı (kağıt türünü otomatik algıla)"
-
 #: ../ppdippstr.py:126
-msgid "Photo (on photo paper)"
-msgstr "Fotoğraf (fotoğraf kağıdına)"
+#, fuzzy
+msgid "Halftone Algorithm"
+msgstr "Patentli algoritmalar"
 
-#: ../ppdippstr.py:128
-msgid "Best quality (color on photo paper)"
-msgstr "En iyi kalite (fotoğraf kağıdına renkli)"
+#: ../ppdippstr.py:129
+msgid "Miscellaneous"
+msgstr ""
 
-#: ../ppdippstr.py:130
-msgid "Normal quality (color on photo paper)"
-msgstr "Normal kalite (fotoğraf kağıdına renkli)"
-
+#. Epson xp serie
 #: ../ppdippstr.py:132
-msgid "Media source"
+#, fuzzy
+msgid "_Media Size"
 msgstr "Ortam kaynağı"
 
 #: ../ppdippstr.py:133
-msgid "Printer default"
-msgstr "Yazıcı varsayılanı"
-
-#: ../ppdippstr.py:134
-msgid "Photo tray"
-msgstr "Fotoğraf tepsisi"
-
-#: ../ppdippstr.py:135
-msgid "Upper tray"
-msgstr "Üst tepsi"
-
-#: ../ppdippstr.py:136
-msgid "Lower tray"
-msgstr "Alt tepsi"
-
-#: ../ppdippstr.py:137
-msgid "CD or DVD tray"
-msgstr "CD veya DVD tepsisi"
-
-#: ../ppdippstr.py:138
-msgid "Envelope feeder"
-msgstr "Zarf besleyici"
-
-#: ../ppdippstr.py:139
-msgid "Large capacity tray"
-msgstr "Geniş hacimli tepsi"
-
-#: ../ppdippstr.py:140
-msgid "Manual feeder"
-msgstr "Elle besleyici"
-
-#: ../ppdippstr.py:141
-msgid "Multi-purpose tray"
-msgstr "Çok amaçlı tepsi"
-
-#: ../ppdippstr.py:143
-msgid "Page size"
-msgstr "Sayfa ebadı"
-
-#: ../ppdippstr.py:144
-msgid "Custom"
-msgstr "Özel"
-
-#: ../ppdippstr.py:145
-msgid "Letter"
+msgid "_Grayscale"
 msgstr ""
 
-#: ../ppdippstr.py:146
-msgid "Photo or 4x6 inch index card"
-msgstr "Fotoğraf veya 10x15 cm fihrist kartı"
+#: ../ppdippstr.py:134
+#, fuzzy
+msgid "_Brightness"
+msgstr "Parlaklık:"
 
-#: ../ppdippstr.py:147
-msgid "Photo or 5x7 inch index card"
-msgstr "Photo or 13x18 cm fihrist kartı"
+#: ../ppdippstr.py:135
+msgid "_Contrast"
+msgstr ""
 
-#: ../ppdippstr.py:148
-msgid "Photo with tear-off tab"
-msgstr "Koparılabilen uçlu Fotoğraf"
+#: ../ppdippstr.py:136
+#, fuzzy
+msgid "_Saturation"
+msgstr "Doygunluk:"
 
-#: ../ppdippstr.py:149
-msgid "3x5 inch index card"
-msgstr "3x5 inç fihrist kartı"
-
-#: ../ppdippstr.py:150
-msgid "5x8 inch index card"
-msgstr "5x8 inç fihrist kartı"
-
-#: ../ppdippstr.py:151
-msgid "A6 with tear-off tab"
-msgstr "Koparılabilen uçlu A6"
-
-#: ../ppdippstr.py:152
-msgid "CD or DVD 80mm"
-msgstr "CD veya DVD 80mm"
-
-#: ../ppdippstr.py:153
-msgid "CD or DVD 120mm"
-msgstr "CD veya DVD 120mm"
-
-#: ../ppdippstr.py:155
-msgid "Double-sided printing"
-msgstr "Çift taraflı yazdırma"
-
-#: ../ppdippstr.py:156
-msgid "Long edge (standard)"
-msgstr "Uzun köşe (standart)"
-
-#: ../ppdippstr.py:157
-msgid "Short edge (flip)"
-msgstr "Kısa köşe (çevirmek)"
-
-#: ../ppdippstr.py:158
+#: ../ppdippstr.py:137 ../ppdippstr.py:186
 msgid "Off"
 msgstr "Kapalı"
 
+#: ../ppdippstr.py:138
+msgid "On"
+msgstr ""
+
+#. HPIJS options
+#: ../ppdippstr.py:141
+msgid "Printout mode"
+msgstr "Çıktı kipi"
+
+#: ../ppdippstr.py:143
+msgid "Draft (auto-detect-paper type)"
+msgstr "Taslak (kağıt türünü otomatik algıla)"
+
+#: ../ppdippstr.py:145
+msgid "Draft grayscale (auto-detect-paper type)"
+msgstr "Taslak gri tonlamalı (kağıt türünü otomatik algıla)"
+
+#: ../ppdippstr.py:147
+msgid "Normal (auto-detect-paper type)"
+msgstr "Normal (kağıt türünü otomatik algıla)"
+
+#: ../ppdippstr.py:149
+msgid "Normal grayscale (auto-detect-paper type)"
+msgstr "Normal gri tonlamalı (kağıt türünü otomatik algıla)"
+
+#: ../ppdippstr.py:151
+msgid "High quality (auto-detect-paper type)"
+msgstr "Yüksek kalite (kağıt türünü otomatik algıla)"
+
+#: ../ppdippstr.py:153
+msgid "High quality grayscale (auto-detect-paper type)"
+msgstr "Yüksek kalite gri tonlamalı (kağıt türünü otomatik algıla)"
+
+#: ../ppdippstr.py:154
+msgid "Photo (on photo paper)"
+msgstr "Fotoğraf (fotoğraf kağıdına)"
+
+#: ../ppdippstr.py:156
+msgid "Best quality (color on photo paper)"
+msgstr "En iyi kalite (fotoğraf kağıdına renkli)"
+
+#: ../ppdippstr.py:158
+msgid "Normal quality (color on photo paper)"
+msgstr "Normal kalite (fotoğraf kağıdına renkli)"
+
+#: ../ppdippstr.py:160
+msgid "Media source"
+msgstr "Ortam kaynağı"
+
 #: ../ppdippstr.py:161
+msgid "Printer default"
+msgstr "Yazıcı varsayılanı"
+
+#: ../ppdippstr.py:162
+msgid "Photo tray"
+msgstr "Fotoğraf tepsisi"
+
+#: ../ppdippstr.py:163
+msgid "Upper tray"
+msgstr "Üst tepsi"
+
+#: ../ppdippstr.py:164
+msgid "Lower tray"
+msgstr "Alt tepsi"
+
+#: ../ppdippstr.py:165
+msgid "CD or DVD tray"
+msgstr "CD veya DVD tepsisi"
+
+#: ../ppdippstr.py:166
+msgid "Envelope feeder"
+msgstr "Zarf besleyici"
+
+#: ../ppdippstr.py:167
+msgid "Large capacity tray"
+msgstr "Geniş hacimli tepsi"
+
+#: ../ppdippstr.py:168
+msgid "Manual feeder"
+msgstr "Elle besleyici"
+
+#: ../ppdippstr.py:169
+msgid "Multi-purpose tray"
+msgstr "Çok amaçlı tepsi"
+
+#: ../ppdippstr.py:171
+msgid "Page size"
+msgstr "Sayfa ebadı"
+
+#: ../ppdippstr.py:172
+msgid "Custom"
+msgstr "Özel"
+
+#: ../ppdippstr.py:173
+msgid "Letter"
+msgstr ""
+
+#: ../ppdippstr.py:174
+msgid "Photo or 4x6 inch index card"
+msgstr "Fotoğraf veya 10x15 cm fihrist kartı"
+
+#: ../ppdippstr.py:175
+msgid "Photo or 5x7 inch index card"
+msgstr "Photo or 13x18 cm fihrist kartı"
+
+#: ../ppdippstr.py:176
+msgid "Photo with tear-off tab"
+msgstr "Koparılabilen uçlu Fotoğraf"
+
+#: ../ppdippstr.py:177
+msgid "3x5 inch index card"
+msgstr "3x5 inç fihrist kartı"
+
+#: ../ppdippstr.py:178
+msgid "5x8 inch index card"
+msgstr "5x8 inç fihrist kartı"
+
+#: ../ppdippstr.py:179
+msgid "A6 with tear-off tab"
+msgstr "Koparılabilen uçlu A6"
+
+#: ../ppdippstr.py:180
+msgid "CD or DVD 80mm"
+msgstr "CD veya DVD 80mm"
+
+#: ../ppdippstr.py:181
+msgid "CD or DVD 120mm"
+msgstr "CD veya DVD 120mm"
+
+#: ../ppdippstr.py:183
+msgid "Double-sided printing"
+msgstr "Çift taraflı yazdırma"
+
+#: ../ppdippstr.py:184
+msgid "Long edge (standard)"
+msgstr "Uzun köşe (standart)"
+
+#: ../ppdippstr.py:185
+msgid "Short edge (flip)"
+msgstr "Kısa köşe (çevirmek)"
+
+#: ../ppdippstr.py:189
 msgid "Resolution, quality, ink type, media type"
 msgstr "Çözünürlük, kalite, mürekkep tipi, ortam tipi"
 
-#: ../ppdippstr.py:162
+#: ../ppdippstr.py:190
 msgid "Controlled by 'Printout mode'"
 msgstr "'Çıktı Kipi' tarafından kontrol ediliyor"
 
-#: ../ppdippstr.py:164
+#: ../ppdippstr.py:192
 msgid "300 dpi, color, black + color cartridge"
 msgstr "300 dpi, renkli, siyah + renkli kartuş"
 
-#: ../ppdippstr.py:166
+#: ../ppdippstr.py:194
 msgid "300 dpi, draft, color, black + color cartridge"
 msgstr "300 dpi, taslak, renkli, siyah + renkli kartuş"
 
-#: ../ppdippstr.py:168
+#: ../ppdippstr.py:196
 msgid "300 dpi, draft, grayscale, black + color cartridge"
 msgstr "300 dpi, taslak, gri tonlama, siyah + renkli kartuş"
 
-#: ../ppdippstr.py:170
+#: ../ppdippstr.py:198
 msgid "300 dpi, grayscale, black + color cartridge"
 msgstr "300 dpi, gri tonlama, siyah + renkli kartuş"
 
-#: ../ppdippstr.py:172
+#: ../ppdippstr.py:200
 msgid "600 dpi, color, black + color cartridge"
 msgstr "600 dpi, renkli, siyah + renkli kartuş"
 
-#: ../ppdippstr.py:174
+#: ../ppdippstr.py:202
 msgid "600 dpi, grayscale, black + color cartridge"
 msgstr "600 dpi, gri tonlama, siyah + renkli kartuş"
 
-#: ../ppdippstr.py:176
+#: ../ppdippstr.py:204
 msgid "600 dpi, photo, black + color cartridge, photo paper"
 msgstr "600 dpi, fotoğraf, siyah + renkli kartuş, fotoğraf kağıdı"
 
-#: ../ppdippstr.py:178
+#: ../ppdippstr.py:206
 msgid "600 dpi, color, black + color cartridge, photo paper, normal"
 msgstr "600 dpi, renkli, siyah + renkli kartuş, fotoğraf kağıdı, normal"
 
-#: ../ppdippstr.py:180
+#: ../ppdippstr.py:208
 msgid "1200 dpi, photo, black + color cartridge, photo paper"
 msgstr "1200 dpi, fotoğraf, siyah + renkli kartuş, fotoğraf kağıdı"
 
-#: ../ppdippstr.py:187
+#: ../ppdippstr.py:215
 msgid "Internet Printing Protocol (ipp)"
 msgstr "Internet Yazdırma Protokolü (ipp)"
 
-#: ../ppdippstr.py:189
+#: ../ppdippstr.py:217
 msgid "Internet Printing Protocol (http)"
 msgstr "Internet Yazdırma Protokolü (http)"
 
-#: ../ppdippstr.py:191
+#: ../ppdippstr.py:219
 msgid "Internet Printing Protocol (https)"
 msgstr "Internet Yazdırma Protokolü (https)"
 
-#: ../ppdippstr.py:193
+#: ../ppdippstr.py:221
 msgid "LPD/LPR Host or Printer"
 msgstr "LPD/LPR Host veya Yazıcı"
 
-#: ../ppdippstr.py:197
+#: ../ppdippstr.py:225
 msgid "Serial Port #1"
 msgstr "Seri Port #1"
 
-#: ../ppdippstr.py:199
+#: ../ppdippstr.py:227
 msgid "LPT #1"
 msgstr "LPT #1"
 

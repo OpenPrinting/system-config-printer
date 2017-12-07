@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2017-12-05 14:57+0100\n"
+"POT-Creation-Date: 2017-12-07 16:23+0100\n"
 "PO-Revision-Date: 2014-12-16 02:34-0500\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Bengali (http://www.transifex.com/projects/p/system-config-"
@@ -509,7 +509,7 @@ msgstr ""
 "দিতে পারে।  ফায়ারওয়ালের বৈশিষ্ট্য এখন পরিবর্তন করা হবে কি?"
 
 #: ../newprinter.py:358 ../newprinter.py:369 ../newprinter.py:375
-#: ../newprinter.py:380
+#: ../newprinter.py:380 ../ppdippstr.py:127
 msgid "Default"
 msgstr "ডিফল্ট"
 
@@ -655,7 +655,7 @@ msgstr "নেটওয়ার্ক প্রিন্টার"
 msgid "Find Network Printer"
 msgstr "নেটওয়ার্ক প্রিন্টার অনুসন্ধান"
 
-#: ../newprinter.py:2247 ../newprinter.py:3070 ../ppdippstr.py:201
+#: ../newprinter.py:2247 ../newprinter.py:3070 ../ppdippstr.py:229
 msgid "Windows Printer via SAMBA"
 msgstr "SAMBA-র মাধ্যমে ব্যবহারযোগ্য Windows প্রিন্টার"
 
@@ -745,7 +745,7 @@ msgstr "HP Linux Imaging and Printing (HPLIP)"
 msgid "Hardware Abstraction Layer (HAL)"
 msgstr "হার্ডওয়্যার অ্যাবস্ট্র্যাকশান লেয়ার (HAL)"
 
-#: ../newprinter.py:3055 ../ppdippstr.py:195
+#: ../newprinter.py:3055 ../ppdippstr.py:223
 msgid "AppSocket/HP JetDirect"
 msgstr "AppSocket/HP JetDirect"
 
@@ -1020,275 +1020,368 @@ msgstr "সাধারণ"
 msgid "Print Quality"
 msgstr "প্রিন্টের গুণমান:"
 
-#: ../ppdippstr.py:96 ../printerproperties.py:324
+#: ../ppdippstr.py:96
+#, fuzzy
+msgid "Printing Quality"
+msgstr "প্রিন্টের গুণমান:"
+
+#: ../ppdippstr.py:97 ../printerproperties.py:324
 msgid "Draft"
 msgstr "খসড়া"
 
-#: ../ppdippstr.py:97 ../printerproperties.py:320 ../printerproperties.py:325
+#: ../ppdippstr.py:98 ../printerproperties.py:320 ../printerproperties.py:325
 msgid "Normal"
 msgstr "স্বাভাবিক"
 
-#: ../ppdippstr.py:98
+#: ../ppdippstr.py:99
 #, fuzzy
 msgid "Resolution"
 msgstr "প্রিন্টারের রেসোলিউশন:"
 
-#: ../ppdippstr.py:99
+#: ../ppdippstr.py:100
 msgid "Color Mode"
 msgstr ""
 
-#: ../ppdippstr.py:100
+#: ../ppdippstr.py:101
 msgid "Quality"
 msgstr ""
 
-#: ../ppdippstr.py:101
+#: ../ppdippstr.py:102
 #, fuzzy
 msgid "Paper source"
 msgstr "মিডিয়ার উৎস"
 
-#: ../ppdippstr.py:102
-#, fuzzy
-msgid "Media Type"
-msgstr "মিডিয়ার উৎস"
-
 #: ../ppdippstr.py:103
-msgid "Bond"
+msgid "Auto Source"
 msgstr ""
 
 #: ../ppdippstr.py:104
-msgid "Color"
-msgstr ""
+#, fuzzy
+msgid "Manual Feed"
+msgstr "ব্যবহারকারী দ্বারা পূরণ ব্যবস্থা"
 
 #: ../ppdippstr.py:105
-#, fuzzy
-msgid "Envelope"
-msgstr "খাম পূরণ ব্যবস্থা"
-
-#: ../ppdippstr.py:106
-msgid "Labels"
+msgid "Middle Tray"
 msgstr ""
 
 #: ../ppdippstr.py:107
 #, fuzzy
+msgid "Media Type"
+msgstr "মিডিয়ার উৎস"
+
+#: ../ppdippstr.py:108
+msgid "Bond"
+msgstr ""
+
+#: ../ppdippstr.py:109
+msgid "Color"
+msgstr ""
+
+#: ../ppdippstr.py:110
+#, fuzzy
+msgid "Envelope"
+msgstr "খাম পূরণ ব্যবস্থা"
+
+#: ../ppdippstr.py:111
+msgid "Labels"
+msgstr ""
+
+#: ../ppdippstr.py:112
+#, fuzzy
 msgid "Standard Paper"
 msgstr "প্রমিত"
 
-#: ../ppdippstr.py:108
+#: ../ppdippstr.py:113
+msgid "Heavy"
+msgstr ""
+
+#: ../ppdippstr.py:114
+#, fuzzy
+msgid "Light"
+msgstr "রাত্রী বেলা"
+
+#: ../ppdippstr.py:115
+msgid "Recycled"
+msgstr ""
+
+#: ../ppdippstr.py:117
 #, fuzzy
 msgid "Print Density"
 msgstr "প্রিন্টের গুণমান:"
 
-#: ../ppdippstr.py:110
+#: ../ppdippstr.py:118
+msgid "Extra Light(1)"
+msgstr ""
+
+#: ../ppdippstr.py:119
+msgid "Light (2)"
+msgstr ""
+
+#: ../ppdippstr.py:120
+msgid "Medium (3)"
+msgstr ""
+
+#: ../ppdippstr.py:121
+msgid "Dark (4)"
+msgstr ""
+
+#: ../ppdippstr.py:122
+msgid "Extra Dark (5)"
+msgstr ""
+
+#: ../ppdippstr.py:123
+#, fuzzy
+msgid "Copies"
+msgstr "প্রতিলিপি:"
+
+#: ../ppdippstr.py:125
 #, fuzzy
 msgid "Adjustment"
 msgstr "হিউ পরিবর্তন:"
 
-#. HPIJS options
-#: ../ppdippstr.py:113
-msgid "Printout mode"
-msgstr "প্রিন্টের মোড"
-
-#: ../ppdippstr.py:115
-msgid "Draft (auto-detect-paper type)"
-msgstr "খসড়া (auto-detect-paper ধরন)"
-
-#: ../ppdippstr.py:117
-msgid "Draft grayscale (auto-detect-paper type)"
-msgstr "সাদাকালো খসড়া (auto-detect-paper ধরন)"
-
-#: ../ppdippstr.py:119
-msgid "Normal (auto-detect-paper type)"
-msgstr "স্বাভাবিক (auto-detect-paper ধরন)"
-
-#: ../ppdippstr.py:121
-msgid "Normal grayscale (auto-detect-paper type)"
-msgstr "সাদাকালো স্বাভাবিক (auto-detect-paper ধরন)"
-
-#: ../ppdippstr.py:123
-msgid "High quality (auto-detect-paper type)"
-msgstr "উচ্চ গুণমান (auto-detect-paper ধরন)"
-
-#: ../ppdippstr.py:125
-msgid "High quality grayscale (auto-detect-paper type)"
-msgstr "উচ্চ গুণমানের সাদাকালো (auto-detect-paper ধরন)"
-
 #: ../ppdippstr.py:126
-msgid "Photo (on photo paper)"
-msgstr "ফটো (ফটোর কাগজে)"
+#, fuzzy
+msgid "Halftone Algorithm"
+msgstr "প্যাটেন্ট করা অ্যালগোরিদম"
 
-#: ../ppdippstr.py:128
-msgid "Best quality (color on photo paper)"
-msgstr "সর্বোত্তম গুণমান (ফটোর কাগজে রঙীণ)"
+#: ../ppdippstr.py:129
+msgid "Miscellaneous"
+msgstr ""
 
-#: ../ppdippstr.py:130
-msgid "Normal quality (color on photo paper)"
-msgstr "স্বাভাবিক গুণমান (ফটোর কাগজে রঙীণ)"
-
+#. Epson xp serie
 #: ../ppdippstr.py:132
-msgid "Media source"
+#, fuzzy
+msgid "_Media Size"
 msgstr "মিডিয়ার উৎস"
 
 #: ../ppdippstr.py:133
-msgid "Printer default"
-msgstr "প্রিন্টারের ডিফল্ট"
-
-#: ../ppdippstr.py:134
-msgid "Photo tray"
-msgstr "ফটোর ট্রে"
-
-#: ../ppdippstr.py:135
-msgid "Upper tray"
-msgstr "উপরের ট্রে"
-
-#: ../ppdippstr.py:136
-msgid "Lower tray"
-msgstr "নীচের ট্রে"
-
-#: ../ppdippstr.py:137
-msgid "CD or DVD tray"
-msgstr "CD অথবা DVD ট্রে"
-
-#: ../ppdippstr.py:138
-msgid "Envelope feeder"
-msgstr "খাম পূরণ ব্যবস্থা"
-
-#: ../ppdippstr.py:139
-msgid "Large capacity tray"
-msgstr "বেশি ধারণক্ষমতাসম্পন্ন ট্রে"
-
-#: ../ppdippstr.py:140
-msgid "Manual feeder"
-msgstr "ব্যবহারকারী দ্বারা পূরণ ব্যবস্থা"
-
-#: ../ppdippstr.py:141
-msgid "Multi-purpose tray"
-msgstr "বিবিধ কাজের ট্রে"
-
-#: ../ppdippstr.py:143
-msgid "Page size"
-msgstr "পৃষ্ঠার মাপ"
-
-#: ../ppdippstr.py:144
-msgid "Custom"
-msgstr "স্বনির্বাচিত"
-
-#: ../ppdippstr.py:145
-msgid "Letter"
+msgid "_Grayscale"
 msgstr ""
 
-#: ../ppdippstr.py:146
-msgid "Photo or 4x6 inch index card"
-msgstr "ফটো অথবা ৪x৬ ইঞ্চির ইন্ডেক্স কার্ড"
+#: ../ppdippstr.py:134
+#, fuzzy
+msgid "_Brightness"
+msgstr "উজ্জ্বলতা:"
 
-#: ../ppdippstr.py:147
-msgid "Photo or 5x7 inch index card"
-msgstr "ফটো অথবা ৫x৭ ইঞ্চির ইন্ডেক্স কার্ড"
+#: ../ppdippstr.py:135
+msgid "_Contrast"
+msgstr ""
 
-#: ../ppdippstr.py:148
-msgid "Photo with tear-off tab"
-msgstr "টিয়ার-অফ ট্যাব বিশিষ্ট ফটো"
+#: ../ppdippstr.py:136
+#, fuzzy
+msgid "_Saturation"
+msgstr "স্যাচুরেশন:"
 
-#: ../ppdippstr.py:149
-msgid "3x5 inch index card"
-msgstr "৩x৫ ইঞ্চি মাপের ইন্ডেক্স কার্ড"
-
-#: ../ppdippstr.py:150
-msgid "5x8 inch index card"
-msgstr "৫x৮ ইঞ্চি মাপের ইন্ডেক্স কার্ড"
-
-#: ../ppdippstr.py:151
-msgid "A6 with tear-off tab"
-msgstr "টিয়ার-অফ ট্যাব বিশিষ্ট A6"
-
-#: ../ppdippstr.py:152
-msgid "CD or DVD 80mm"
-msgstr "CD অথবা DVD ৮০মিমি"
-
-#: ../ppdippstr.py:153
-msgid "CD or DVD 120mm"
-msgstr "CD অথবা DVD ১২০মিমি"
-
-#: ../ppdippstr.py:155
-msgid "Double-sided printing"
-msgstr "উভয়-পৃষ্ঠের প্রিন্ট"
-
-#: ../ppdippstr.py:156
-msgid "Long edge (standard)"
-msgstr "দৈর্ঘ্যের প্রান্ত (প্রমিত)"
-
-#: ../ppdippstr.py:157
-msgid "Short edge (flip)"
-msgstr "প্রস্থের প্রান্ত (দিক বদল)"
-
-#: ../ppdippstr.py:158
+#: ../ppdippstr.py:137 ../ppdippstr.py:186
 msgid "Off"
 msgstr "বন্ধ"
 
+#: ../ppdippstr.py:138
+msgid "On"
+msgstr ""
+
+#. HPIJS options
+#: ../ppdippstr.py:141
+msgid "Printout mode"
+msgstr "প্রিন্টের মোড"
+
+#: ../ppdippstr.py:143
+msgid "Draft (auto-detect-paper type)"
+msgstr "খসড়া (auto-detect-paper ধরন)"
+
+#: ../ppdippstr.py:145
+msgid "Draft grayscale (auto-detect-paper type)"
+msgstr "সাদাকালো খসড়া (auto-detect-paper ধরন)"
+
+#: ../ppdippstr.py:147
+msgid "Normal (auto-detect-paper type)"
+msgstr "স্বাভাবিক (auto-detect-paper ধরন)"
+
+#: ../ppdippstr.py:149
+msgid "Normal grayscale (auto-detect-paper type)"
+msgstr "সাদাকালো স্বাভাবিক (auto-detect-paper ধরন)"
+
+#: ../ppdippstr.py:151
+msgid "High quality (auto-detect-paper type)"
+msgstr "উচ্চ গুণমান (auto-detect-paper ধরন)"
+
+#: ../ppdippstr.py:153
+msgid "High quality grayscale (auto-detect-paper type)"
+msgstr "উচ্চ গুণমানের সাদাকালো (auto-detect-paper ধরন)"
+
+#: ../ppdippstr.py:154
+msgid "Photo (on photo paper)"
+msgstr "ফটো (ফটোর কাগজে)"
+
+#: ../ppdippstr.py:156
+msgid "Best quality (color on photo paper)"
+msgstr "সর্বোত্তম গুণমান (ফটোর কাগজে রঙীণ)"
+
+#: ../ppdippstr.py:158
+msgid "Normal quality (color on photo paper)"
+msgstr "স্বাভাবিক গুণমান (ফটোর কাগজে রঙীণ)"
+
+#: ../ppdippstr.py:160
+msgid "Media source"
+msgstr "মিডিয়ার উৎস"
+
 #: ../ppdippstr.py:161
+msgid "Printer default"
+msgstr "প্রিন্টারের ডিফল্ট"
+
+#: ../ppdippstr.py:162
+msgid "Photo tray"
+msgstr "ফটোর ট্রে"
+
+#: ../ppdippstr.py:163
+msgid "Upper tray"
+msgstr "উপরের ট্রে"
+
+#: ../ppdippstr.py:164
+msgid "Lower tray"
+msgstr "নীচের ট্রে"
+
+#: ../ppdippstr.py:165
+msgid "CD or DVD tray"
+msgstr "CD অথবা DVD ট্রে"
+
+#: ../ppdippstr.py:166
+msgid "Envelope feeder"
+msgstr "খাম পূরণ ব্যবস্থা"
+
+#: ../ppdippstr.py:167
+msgid "Large capacity tray"
+msgstr "বেশি ধারণক্ষমতাসম্পন্ন ট্রে"
+
+#: ../ppdippstr.py:168
+msgid "Manual feeder"
+msgstr "ব্যবহারকারী দ্বারা পূরণ ব্যবস্থা"
+
+#: ../ppdippstr.py:169
+msgid "Multi-purpose tray"
+msgstr "বিবিধ কাজের ট্রে"
+
+#: ../ppdippstr.py:171
+msgid "Page size"
+msgstr "পৃষ্ঠার মাপ"
+
+#: ../ppdippstr.py:172
+msgid "Custom"
+msgstr "স্বনির্বাচিত"
+
+#: ../ppdippstr.py:173
+msgid "Letter"
+msgstr ""
+
+#: ../ppdippstr.py:174
+msgid "Photo or 4x6 inch index card"
+msgstr "ফটো অথবা ৪x৬ ইঞ্চির ইন্ডেক্স কার্ড"
+
+#: ../ppdippstr.py:175
+msgid "Photo or 5x7 inch index card"
+msgstr "ফটো অথবা ৫x৭ ইঞ্চির ইন্ডেক্স কার্ড"
+
+#: ../ppdippstr.py:176
+msgid "Photo with tear-off tab"
+msgstr "টিয়ার-অফ ট্যাব বিশিষ্ট ফটো"
+
+#: ../ppdippstr.py:177
+msgid "3x5 inch index card"
+msgstr "৩x৫ ইঞ্চি মাপের ইন্ডেক্স কার্ড"
+
+#: ../ppdippstr.py:178
+msgid "5x8 inch index card"
+msgstr "৫x৮ ইঞ্চি মাপের ইন্ডেক্স কার্ড"
+
+#: ../ppdippstr.py:179
+msgid "A6 with tear-off tab"
+msgstr "টিয়ার-অফ ট্যাব বিশিষ্ট A6"
+
+#: ../ppdippstr.py:180
+msgid "CD or DVD 80mm"
+msgstr "CD অথবা DVD ৮০মিমি"
+
+#: ../ppdippstr.py:181
+msgid "CD or DVD 120mm"
+msgstr "CD অথবা DVD ১২০মিমি"
+
+#: ../ppdippstr.py:183
+msgid "Double-sided printing"
+msgstr "উভয়-পৃষ্ঠের প্রিন্ট"
+
+#: ../ppdippstr.py:184
+msgid "Long edge (standard)"
+msgstr "দৈর্ঘ্যের প্রান্ত (প্রমিত)"
+
+#: ../ppdippstr.py:185
+msgid "Short edge (flip)"
+msgstr "প্রস্থের প্রান্ত (দিক বদল)"
+
+#: ../ppdippstr.py:189
 msgid "Resolution, quality, ink type, media type"
 msgstr "রেসোলিউশন, গুণমান, কালির ধরন, মিডিয়ার ধরন"
 
-#: ../ppdippstr.py:162
+#: ../ppdippstr.py:190
 msgid "Controlled by 'Printout mode'"
 msgstr "'প্রিন্টের মোড' দ্বারা নিয়ন্ত্রিত"
 
-#: ../ppdippstr.py:164
+#: ../ppdippstr.py:192
 msgid "300 dpi, color, black + color cartridge"
 msgstr "৩০০ dpi, রঙীণ, কালো + রঙীণ কার্টরিজ"
 
-#: ../ppdippstr.py:166
+#: ../ppdippstr.py:194
 msgid "300 dpi, draft, color, black + color cartridge"
 msgstr "৩০০ dpi, খসড়া, কালো + রঙীণ কার্টরিজ"
 
-#: ../ppdippstr.py:168
+#: ../ppdippstr.py:196
 msgid "300 dpi, draft, grayscale, black + color cartridge"
 msgstr "৩০০ dpi, খসড়া, সাদাকালো, কালো + রঙীণ কার্টরিজ"
 
-#: ../ppdippstr.py:170
+#: ../ppdippstr.py:198
 msgid "300 dpi, grayscale, black + color cartridge"
 msgstr "৩০০ dpi, সাদাকালো, কালো + রঙীণ কার্টরিজ"
 
-#: ../ppdippstr.py:172
+#: ../ppdippstr.py:200
 msgid "600 dpi, color, black + color cartridge"
 msgstr "৬০০ dpi, রঙীণ, কালো + রঙীণ কার্টরিজ"
 
-#: ../ppdippstr.py:174
+#: ../ppdippstr.py:202
 msgid "600 dpi, grayscale, black + color cartridge"
 msgstr "৬০০ dpi, সাদাকালো, কালো + রঙীণ কার্টরিজ"
 
-#: ../ppdippstr.py:176
+#: ../ppdippstr.py:204
 msgid "600 dpi, photo, black + color cartridge, photo paper"
 msgstr "৬০০ dpi, ফটো, কালো + রঙীণ কার্টরিজ, ফটোর কাগজ"
 
-#: ../ppdippstr.py:178
+#: ../ppdippstr.py:206
 msgid "600 dpi, color, black + color cartridge, photo paper, normal"
 msgstr "৬০০ dpi, রঙীণ, সাদাকালো, কালো + রঙীণ কার্টরিজ"
 
-#: ../ppdippstr.py:180
+#: ../ppdippstr.py:208
 msgid "1200 dpi, photo, black + color cartridge, photo paper"
 msgstr "১২০০ dpi, ফটো, সাদাকালো, কালো + রঙীণ কার্টরিজ, ফটোর কাগজ"
 
-#: ../ppdippstr.py:187
+#: ../ppdippstr.py:215
 msgid "Internet Printing Protocol (ipp)"
 msgstr "ইন্টারনেট প্রিন্টিং প্রোটোকল (ipp)"
 
-#: ../ppdippstr.py:189
+#: ../ppdippstr.py:217
 msgid "Internet Printing Protocol (http)"
 msgstr "ইন্টারনেট প্রিন্টিং প্রোটোকল (http)"
 
-#: ../ppdippstr.py:191
+#: ../ppdippstr.py:219
 msgid "Internet Printing Protocol (https)"
 msgstr "ইন্টারনেট প্রিন্টিং প্রোটোকল (https)"
 
-#: ../ppdippstr.py:193
+#: ../ppdippstr.py:221
 msgid "LPD/LPR Host or Printer"
 msgstr "LPD/LPR হোস্ট অথবা প্রিন্টার"
 
-#: ../ppdippstr.py:197
+#: ../ppdippstr.py:225
 msgid "Serial Port #1"
 msgstr "সিরিয়াল পোর্ট #১"
 
-#: ../ppdippstr.py:199
+#: ../ppdippstr.py:227
 msgid "LPT #1"
 msgstr "LPT #১"
 
