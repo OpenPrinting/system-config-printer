@@ -110,7 +110,8 @@ def init ():
 
 	    "Installed Cartridges": _("Installed Cartridges"),
 		"Black Only": _("Fast Only"),
-		"TriColor Only": _("Fast Only"),		   	   	"Photo Only": _("Photo Only"),
+		"TriColor Only": _("Fast Only"),
+		"Photo Only": _("Photo Only"),
 		"Black and TriColor": _("Black and TriColor"),
 		"Photo and TriColor": _("Photo and TriColor"),
 		   
