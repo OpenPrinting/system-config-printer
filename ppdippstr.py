@@ -164,7 +164,7 @@ def init ():
             "Miscellaneous": _("Miscellaneous"),
            	"N-up Orientation": _("N-up Orientation"),
             	"N-up Printing": _("N-up Printing"),
-         	"Lanscape": _("Lanscape"),
+         	"Landscape": _("Landscape"),
          	"Seascape": _("Seascape"),
             "Media Size": _("Media Size"),
             "Output Mode": _("Output Mode"),
