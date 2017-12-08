@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2017-12-07 16:23+0100\n"
+"POT-Creation-Date: 2017-12-08 08:24+0100\n"
 "PO-Revision-Date: 2014-12-16 06:21-0500\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Thai (http://www.transifex.com/projects/p/system-config-"
@@ -500,14 +500,14 @@ msgid ""
 msgstr ""
 
 #: ../newprinter.py:358 ../newprinter.py:369 ../newprinter.py:375
-#: ../newprinter.py:380 ../ppdippstr.py:127
+#: ../newprinter.py:380 ../ppdippstr.py:162
 msgid "Default"
 msgstr ""
 
 #. See section 4.2.6 of this document for explanation of finishing types:
 #. ftp://ftp.pwg.org/pub/pwg/candidates/cs-ippfinishings10-20010205-5100.1.pdf
 #: ../newprinter.py:370 ../newprinter.py:381 ../newprinter.py:4067
-#: ../ppdippstr.py:65 ../printerproperties.py:281
+#: ../ppdippstr.py:65 ../ppdippstr.py:223 ../printerproperties.py:281
 msgid "None"
 msgstr "ไม่มี"
 
@@ -646,7 +646,7 @@ msgstr "เครื่องพิมพ์บนเครือข่าย"
 msgid "Find Network Printer"
 msgstr "ค้นหาเครื่องพิมพ์บนเครือข่าย"
 
-#: ../newprinter.py:2247 ../newprinter.py:3070 ../ppdippstr.py:229
+#: ../newprinter.py:2247 ../newprinter.py:3070 ../ppdippstr.py:363
 msgid "Windows Printer via SAMBA"
 msgstr "เครื่องพิมพ์ Windows ผ่าน SAMBA"
 
@@ -736,7 +736,7 @@ msgstr "การพิมพ์และการบันทึกภาพบ
 msgid "Hardware Abstraction Layer (HAL)"
 msgstr "Hardware Abstraction Layer (HAL)"
 
-#: ../newprinter.py:3055 ../ppdippstr.py:223
+#: ../newprinter.py:3055 ../ppdippstr.py:357
 msgid "AppSocket/HP JetDirect"
 msgstr "AppSocket/HP JetDirect"
 
@@ -1009,371 +1009,842 @@ msgstr ""
 msgid "General"
 msgstr "ทั่วไป"
 
-#: ../ppdippstr.py:95
+#. HP
+#: ../ppdippstr.py:97
 #, fuzzy
 msgid "Print Quality"
 msgstr "แอพเพลตคิวพิมพ์"
 
-#: ../ppdippstr.py:96
+#: ../ppdippstr.py:98
+msgid "Automatic"
+msgstr ""
+
+#: ../ppdippstr.py:100
 #, fuzzy
 msgid "Printing Quality"
 msgstr "แอพเพลตคิวพิมพ์"
 
-#: ../ppdippstr.py:97 ../printerproperties.py:324
+#: ../ppdippstr.py:101 ../printerproperties.py:324
 msgid "Draft"
 msgstr ""
 
-#: ../ppdippstr.py:98 ../printerproperties.py:320 ../printerproperties.py:325
+#: ../ppdippstr.py:102 ../printerproperties.py:320 ../printerproperties.py:325
 msgid "Normal"
 msgstr ""
 
-#: ../ppdippstr.py:99
+#: ../ppdippstr.py:103
+msgid "Normal Color"
+msgstr ""
+
+#: ../ppdippstr.py:104
+msgid "Normal Grayscale"
+msgstr ""
+
+#: ../ppdippstr.py:105
+msgid "Draft Color"
+msgstr ""
+
+#: ../ppdippstr.py:106
+msgid "Draft Grayscale"
+msgstr ""
+
+#: ../ppdippstr.py:107
+msgid "Best"
+msgstr ""
+
+#: ../ppdippstr.py:108
+msgid "High-Resolution Photo"
+msgstr ""
+
+#: ../ppdippstr.py:109
+msgid "Fast Draft"
+msgstr ""
+
+#: ../ppdippstr.py:111
+#, fuzzy
+msgid "Installed Cartridges"
+msgstr "ตัวเลือกที่ติดตั้งได้"
+
+#: ../ppdippstr.py:112 ../ppdippstr.py:113
+msgid "Fast Only"
+msgstr ""
+
+#: ../ppdippstr.py:114
+#, fuzzy
+msgid "Photo Only"
+msgstr "ถาดภาพ"
+
+#: ../ppdippstr.py:115
+msgid "Black and TriColor"
+msgstr ""
+
+#: ../ppdippstr.py:116
+msgid "Photo and TriColor"
+msgstr ""
+
+#: ../ppdippstr.py:118
 msgid "Resolution"
 msgstr ""
 
-#: ../ppdippstr.py:100
+#: ../ppdippstr.py:120
 msgid "Color Mode"
 msgstr ""
 
-#: ../ppdippstr.py:101
+#: ../ppdippstr.py:121
+msgid "Hight Quality Grayscale"
+msgstr ""
+
+#: ../ppdippstr.py:122
+msgid "Black Only Grayscale"
+msgstr ""
+
+#: ../ppdippstr.py:124
 msgid "Quality"
 msgstr ""
 
-#: ../ppdippstr.py:102
+#: ../ppdippstr.py:125
+msgid "High Resolution"
+msgstr ""
+
+#: ../ppdippstr.py:126
 #, fuzzy
 msgid "Paper source"
 msgstr "แหล่งสื่อ"
 
-#: ../ppdippstr.py:103
+#: ../ppdippstr.py:127
 msgid "Auto Source"
 msgstr ""
 
-#: ../ppdippstr.py:104
+#: ../ppdippstr.py:128
 #, fuzzy
 msgid "Manual Feed"
 msgstr "ป้อนเอง"
 
-#: ../ppdippstr.py:105
+#: ../ppdippstr.py:129
 msgid "Middle Tray"
 msgstr ""
 
-#: ../ppdippstr.py:107
+#: ../ppdippstr.py:130
+msgid "Upper or Only One InputSlot"
+msgstr ""
+
+#: ../ppdippstr.py:131
+#, fuzzy
+msgid "Multi-purpose Tray"
+msgstr "ถาดอเนกประสงค์"
+
+#: ../ppdippstr.py:132
+msgid "Drawer 1"
+msgstr ""
+
+#: ../ppdippstr.py:133
+msgid "Drawer 2"
+msgstr ""
+
+#: ../ppdippstr.py:134
+msgid "Tray 1"
+msgstr ""
+
+#: ../ppdippstr.py:135
+msgid "Auto Select"
+msgstr ""
+
+#: ../ppdippstr.py:137
 #, fuzzy
 msgid "Media Type"
 msgstr "แหล่งสื่อ"
 
-#: ../ppdippstr.py:108
+#: ../ppdippstr.py:138
 msgid "Bond"
 msgstr ""
 
-#: ../ppdippstr.py:109
+#: ../ppdippstr.py:139
 msgid "Color"
 msgstr ""
 
-#: ../ppdippstr.py:110
+#: ../ppdippstr.py:140
 #, fuzzy
 msgid "Envelope"
 msgstr "อุปกรณ์ป้อนซองจดหมาย"
 
-#: ../ppdippstr.py:111
+#: ../ppdippstr.py:141
 msgid "Labels"
 msgstr ""
 
-#: ../ppdippstr.py:112
+#: ../ppdippstr.py:142
 #, fuzzy
 msgid "Standard Paper"
 msgstr "มาตราฐาน"
 
-#: ../ppdippstr.py:113
+#: ../ppdippstr.py:143
 msgid "Heavy"
 msgstr ""
 
-#: ../ppdippstr.py:114
+#: ../ppdippstr.py:144
 msgid "Light"
 msgstr ""
 
-#: ../ppdippstr.py:115
+#: ../ppdippstr.py:145
 msgid "Recycled"
 msgstr ""
 
-#: ../ppdippstr.py:117
+#: ../ppdippstr.py:146
+msgid "Transparency"
+msgstr ""
+
+#: ../ppdippstr.py:147
+#, fuzzy
+msgid "Plain Paper"
+msgstr "มาตราฐาน"
+
+#: ../ppdippstr.py:148
+msgid "Plain"
+msgstr ""
+
+#: ../ppdippstr.py:149
+#, fuzzy
+msgid "Photo Paper)"
+msgstr "ภาพถ่าย (บนกระดาษภาพถ่าย)"
+
+#: ../ppdippstr.py:150
+msgid "Transparency Film"
+msgstr ""
+
+#: ../ppdippstr.py:151
+#, fuzzy
+msgid "CD or DVD Media"
+msgstr "ถาด CD หรือ DVD"
+
+#: ../ppdippstr.py:152
 #, fuzzy
 msgid "Print Density"
 msgstr "พิมพ์หน้าทดสอบ"
 
-#: ../ppdippstr.py:118
-msgid "Extra Light(1)"
+#: ../ppdippstr.py:153
+msgid "Extra Light (1)"
 msgstr ""
 
-#: ../ppdippstr.py:119
+#: ../ppdippstr.py:154
 msgid "Light (2)"
 msgstr ""
 
-#: ../ppdippstr.py:120
+#: ../ppdippstr.py:155
 msgid "Medium (3)"
 msgstr ""
 
-#: ../ppdippstr.py:121
+#: ../ppdippstr.py:156
 msgid "Dark (4)"
 msgstr ""
 
-#: ../ppdippstr.py:122
+#: ../ppdippstr.py:157
 msgid "Extra Dark (5)"
 msgstr ""
 
-#: ../ppdippstr.py:123
+#: ../ppdippstr.py:158
 #, fuzzy
 msgid "Copies"
 msgstr "สำเนา:"
 
-#: ../ppdippstr.py:125
+#: ../ppdippstr.py:160
 #, fuzzy
 msgid "Adjustment"
 msgstr "ปรับความเข้มสี:"
 
-#: ../ppdippstr.py:126
+#: ../ppdippstr.py:161
 #, fuzzy
 msgid "Halftone Algorithm"
 msgstr "อัลกอริธึมที่จดสิทธิบัตรไว้"
 
-#: ../ppdippstr.py:129
+#: ../ppdippstr.py:164
 msgid "Miscellaneous"
 msgstr ""
 
+#: ../ppdippstr.py:165
+#, fuzzy
+msgid "N-up Orientation"
+msgstr "การวางแนว:"
+
+#: ../ppdippstr.py:166
+#, fuzzy
+msgid "N-up Printing"
+msgstr "OpenPrinting"
+
+#: ../ppdippstr.py:167
+msgid "Landscape"
+msgstr ""
+
+#: ../ppdippstr.py:168
+msgid "Seascape"
+msgstr ""
+
+#: ../ppdippstr.py:169
+#, fuzzy
+msgid "Media Size"
+msgstr "แหล่งสื่อ"
+
+#: ../ppdippstr.py:170
+msgid "Output Mode"
+msgstr ""
+
+#: ../ppdippstr.py:171
+msgid "Grayscale"
+msgstr ""
+
+#. Brother
+#: ../ppdippstr.py:174
+msgid "Two-Sided"
+msgstr ""
+
+#: ../ppdippstr.py:175 ../system-config-printer.desktop.in.h:1
+#: ../system-config-printer.appdata.xml.in.h:1
+msgid "Print Settings"
+msgstr ""
+
+#: ../ppdippstr.py:176
+#, fuzzy
+msgid "Print Settings  (Advanced)"
+msgstr "ผลลัพท์การวินิจฉัย (ขั้นสูง)"
+
+#: ../ppdippstr.py:177
+#, fuzzy
+msgid "Color Settings"
+msgstr "ตั้งค่า"
+
+#: ../ppdippstr.py:178
+#, fuzzy
+msgid "Color Settings (Advanced)"
+msgstr "<b>ตัวเลือกอื่นๆ (ขั้นสูง)</b>"
+
+#: ../ppdippstr.py:179
+#, fuzzy
+msgid "Brightness"
+msgstr "ความสว่าง:"
+
+#: ../ppdippstr.py:180
+msgid "Contrast"
+msgstr ""
+
+#: ../ppdippstr.py:181
+msgid "Red"
+msgstr ""
+
+#: ../ppdippstr.py:182
+msgid "Green"
+msgstr ""
+
+#: ../ppdippstr.py:183
+msgid "Blue"
+msgstr ""
+
 #. Epson xp serie
-#: ../ppdippstr.py:132
+#: ../ppdippstr.py:186
 #, fuzzy
 msgid "_Media Size"
 msgstr "แหล่งสื่อ"
 
-#: ../ppdippstr.py:133
+#: ../ppdippstr.py:187
 msgid "_Grayscale"
 msgstr ""
 
-#: ../ppdippstr.py:134
+#: ../ppdippstr.py:188
 #, fuzzy
 msgid "_Brightness"
 msgstr "ความสว่าง:"
 
-#: ../ppdippstr.py:135
+#: ../ppdippstr.py:189
 msgid "_Contrast"
 msgstr ""
 
-#: ../ppdippstr.py:136
+#: ../ppdippstr.py:190
 #, fuzzy
 msgid "_Saturation"
 msgstr "ความเข้ม:"
 
-#: ../ppdippstr.py:137 ../ppdippstr.py:186
-msgid "Off"
-msgstr "ปิด"
-
-#: ../ppdippstr.py:138
+#: ../ppdippstr.py:191
 msgid "On"
 msgstr ""
 
-#. HPIJS options
-#: ../ppdippstr.py:141
-msgid "Printout mode"
-msgstr "โหมดการพิมพ์"
-
-#: ../ppdippstr.py:143
-msgid "Draft (auto-detect-paper type)"
-msgstr "ร่าง (ตรวจชนิดกระดาษอัตโนมัติ)"
-
-#: ../ppdippstr.py:145
-msgid "Draft grayscale (auto-detect-paper type)"
-msgstr "ร่างขาวดำ (ตรวจชนิดกระดาษอัตโนมัติ)"
-
-#: ../ppdippstr.py:147
-msgid "Normal (auto-detect-paper type)"
-msgstr "ปกติ (ตรวจชนิดกระดาษอัตโนมัติ)"
-
-#: ../ppdippstr.py:149
-msgid "Normal grayscale (auto-detect-paper type)"
-msgstr "ปกติขาวดำ (ตรวจชนิดกระดาษอัตโนมัติ)"
-
-#: ../ppdippstr.py:151
-msgid "High quality (auto-detect-paper type)"
-msgstr "คุณภาพสูง (ตรวจชนิดกระดาษอัตโนมัติ)"
-
-#: ../ppdippstr.py:153
-msgid "High quality grayscale (auto-detect-paper type)"
-msgstr "คุณภาพสูง ขาวดำ (ตรวจชนิดกระดาษอัตโนมัติ)"
-
-#: ../ppdippstr.py:154
-msgid "Photo (on photo paper)"
-msgstr "ภาพถ่าย (บนกระดาษภาพถ่าย)"
-
-#: ../ppdippstr.py:156
-msgid "Best quality (color on photo paper)"
-msgstr "คุณภาพสูงสุด (สีบนกระดาษภาพถ่าย)"
-
-#: ../ppdippstr.py:158
-msgid "Normal quality (color on photo paper)"
-msgstr "คุณภาพปกติ (สีบนกระดาษภาพถ่าย)"
-
-#: ../ppdippstr.py:160
-msgid "Media source"
-msgstr "แหล่งสื่อ"
-
-#: ../ppdippstr.py:161
-msgid "Printer default"
-msgstr "ค่าปริยายของเครื่องพิมพ์"
-
-#: ../ppdippstr.py:162
-msgid "Photo tray"
-msgstr "ถาดภาพ"
-
-#: ../ppdippstr.py:163
-msgid "Upper tray"
-msgstr "ถาดบน"
-
-#: ../ppdippstr.py:164
-msgid "Lower tray"
-msgstr "ถาดล่าง"
-
-#: ../ppdippstr.py:165
-msgid "CD or DVD tray"
-msgstr "ถาด CD หรือ DVD"
-
-#: ../ppdippstr.py:166
-msgid "Envelope feeder"
-msgstr "อุปกรณ์ป้อนซองจดหมาย"
-
-#: ../ppdippstr.py:167
-msgid "Large capacity tray"
-msgstr "ถาดความจุสูง"
-
-#: ../ppdippstr.py:168
-msgid "Manual feeder"
-msgstr "ป้อนเอง"
-
-#: ../ppdippstr.py:169
-msgid "Multi-purpose tray"
-msgstr "ถาดอเนกประสงค์"
-
-#: ../ppdippstr.py:171
-msgid "Page size"
-msgstr "ขนาดหน้ากระดาษ"
-
-#: ../ppdippstr.py:172
-msgid "Custom"
-msgstr "กำหนดเอง"
-
-#: ../ppdippstr.py:173
-msgid "Letter"
-msgstr ""
-
-#: ../ppdippstr.py:174
-msgid "Photo or 4x6 inch index card"
-msgstr "ภาพถ่ายหรือการ์ด 4x6 นิ้ว"
-
-#: ../ppdippstr.py:175
-msgid "Photo or 5x7 inch index card"
-msgstr "ภาพถ่ายหรือการ์ด 5x7 นิ้ว"
-
-#: ../ppdippstr.py:176
-msgid "Photo with tear-off tab"
-msgstr ""
-
-#: ../ppdippstr.py:177
-msgid "3x5 inch index card"
-msgstr "การ์ด 3x5 นิ้ว"
-
-#: ../ppdippstr.py:178
-msgid "5x8 inch index card"
-msgstr "การ์ด 5x8 นิ้ว"
-
-#: ../ppdippstr.py:179
-msgid "A6 with tear-off tab"
-msgstr "A6 ที่มีแถบฉีกข้าง"
-
-#: ../ppdippstr.py:180
-msgid "CD or DVD 80mm"
-msgstr "CD หรือ DVD 80มม"
-
-#: ../ppdippstr.py:181
-msgid "CD or DVD 120mm"
-msgstr "CD หรือ DVD 120มม"
-
-#: ../ppdippstr.py:183
-msgid "Double-sided printing"
-msgstr "พิมพ์สองด้าน"
-
-#: ../ppdippstr.py:184
-msgid "Long edge (standard)"
-msgstr "ขอบยาว (มาตราฐาน)"
-
-#: ../ppdippstr.py:185
-msgid "Short edge (flip)"
-msgstr "ขอบสั้น (กลับด้าน)"
-
-#: ../ppdippstr.py:189
-msgid "Resolution, quality, ink type, media type"
-msgstr "ความละเอียด, คุณภาพ, ชนิดหมึก, ชนิดสื่อ"
-
-#: ../ppdippstr.py:190
-msgid "Controlled by 'Printout mode'"
-msgstr "ควบคุมโดย 'โหมดการพิมพ์'"
-
-#: ../ppdippstr.py:192
-msgid "300 dpi, color, black + color cartridge"
-msgstr "300 dpi, สี, ตลับดำ+สี"
+#. Options
+#: ../ppdippstr.py:193 ../printerproperties.py:964
+msgid "Installable Options"
+msgstr "ตัวเลือกที่ติดตั้งได้"
 
 #: ../ppdippstr.py:194
-msgid "300 dpi, draft, color, black + color cartridge"
-msgstr "300 dpi, ร่าง, สี, ตลับดำ+สี"
-
-#: ../ppdippstr.py:196
-msgid "300 dpi, draft, grayscale, black + color cartridge"
-msgstr "300 dpi, ร่าง, ขาวดำ, ตลับดำ+สี"
-
-#: ../ppdippstr.py:198
-msgid "300 dpi, grayscale, black + color cartridge"
-msgstr "300 dpi, ขาวดำ, ตลับดำ+สี"
-
-#: ../ppdippstr.py:200
-msgid "600 dpi, color, black + color cartridge"
-msgstr "600 dpi, สี, ตลับดำ+สี"
-
-#: ../ppdippstr.py:202
-msgid "600 dpi, grayscale, black + color cartridge"
-msgstr "600 dpi, ขาวดำ, ตลับดำ+สี"
-
-#: ../ppdippstr.py:204
-msgid "600 dpi, photo, black + color cartridge, photo paper"
-msgstr "600 dpi, ภาพถ่าย, ตลับดำ+สี, กระดาษพิมพ์ภาพ"
-
-#: ../ppdippstr.py:206
-msgid "600 dpi, color, black + color cartridge, photo paper, normal"
-msgstr "600 dpi, สี, ตลับดำ+สี, กระดาษพิมพ์ภาพ, ปกติ"
-
-#: ../ppdippstr.py:208
-msgid "1200 dpi, photo, black + color cartridge, photo paper"
-msgstr "1200 dpi, ภาพถ่าย, ตลับดำ+สี, กระดาษพิมพ์ภาพ"
-
-#: ../ppdippstr.py:215
-msgid "Internet Printing Protocol (ipp)"
+msgid "Duplexer Installed"
 msgstr ""
 
+#. Canon
+#: ../ppdippstr.py:197
+msgid "Color Model"
+msgstr ""
+
+#: ../ppdippstr.py:198
+msgid "Color Precision"
+msgstr ""
+
+#: ../ppdippstr.py:199
+msgid "Resolution "
+msgstr ""
+
+#: ../ppdippstr.py:200
+#, fuzzy
+msgid "Printer Features Common"
+msgstr "ตำแหน่งเครื่องพิมพ์"
+
+#: ../ppdippstr.py:201
+msgid "CD Hub Size"
+msgstr ""
+
+#: ../ppdippstr.py:202
+msgid "Ink Type"
+msgstr ""
+
+#: ../ppdippstr.py:203
+#, fuzzy
+msgid "Toner Save "
+msgstr "โทเนอร์หมด"
+
+#: ../ppdippstr.py:204
+msgid "ON"
+msgstr ""
+
+#: ../ppdippstr.py:205
+#, fuzzy
+msgid "Toner Density"
+msgstr "โทเนอร์หมด"
+
+#: ../ppdippstr.py:206
+#, fuzzy
+msgid "Media Type "
+msgstr "แหล่งสื่อ"
+
+#: ../ppdippstr.py:207
+msgid "Collate "
+msgstr ""
+
+#: ../ppdippstr.py:208
+msgid "Image Refinement "
+msgstr ""
+
+#: ../ppdippstr.py:209
+#, fuzzy
+msgid "Halftones "
+msgstr "อัลกอริธึมที่จดสิทธิบัตรไว้"
+
+#: ../ppdippstr.py:210
+msgid "Duplex"
+msgstr ""
+
+#: ../ppdippstr.py:211
+msgid "OFF"
+msgstr ""
+
+#: ../ppdippstr.py:212
+msgid "ON (Long-edged Binding)"
+msgstr ""
+
+#: ../ppdippstr.py:213
+msgid "ON (Short-edged Binding)"
+msgstr ""
+
+#. Samsung
+#: ../ppdippstr.py:215
+#, fuzzy
+msgid "Paper Size"
+msgstr "หน้าต่อด้าน:"
+
+#: ../ppdippstr.py:216
+#, fuzzy
+msgid "Paper Type"
+msgstr "แหล่งสื่อ"
+
 #: ../ppdippstr.py:217
-msgid "Internet Printing Protocol (http)"
+msgid "Thin"
+msgstr ""
+
+#: ../ppdippstr.py:218
+msgid "Thick"
 msgstr ""
 
 #: ../ppdippstr.py:219
-msgid "Internet Printing Protocol (https)"
+msgid "Thicker"
+msgstr ""
+
+#: ../ppdippstr.py:220
+msgid "Edge Enhance"
 msgstr ""
 
 #: ../ppdippstr.py:221
+msgid "Skip Blank Pages"
+msgstr ""
+
+#: ../ppdippstr.py:222
+#, fuzzy
+msgid "Double-sided Printing"
+msgstr "พิมพ์สองด้าน"
+
+#: ../ppdippstr.py:224
+msgid "Reverse Duplex Printing"
+msgstr ""
+
+#: ../ppdippstr.py:225 ../ppdippstr.py:228
+msgid "Long Edge"
+msgstr ""
+
+#: ../ppdippstr.py:226 ../ppdippstr.py:229
+#, fuzzy
+msgid "Short Edge"
+msgstr "ขอบสั้น (กลับด้าน)"
+
+#: ../ppdippstr.py:227
+msgid "Two-sided"
+msgstr ""
+
+#. Ricoh
+#: ../ppdippstr.py:232
+msgid "Finisher"
+msgstr ""
+
+#: ../ppdippstr.py:233
+msgid "Option Tray"
+msgstr ""
+
+#: ../ppdippstr.py:234
+msgid "External Tray"
+msgstr ""
+
+#: ../ppdippstr.py:235
+msgid "Internal Tray"
+msgstr ""
+
+#: ../ppdippstr.py:236
+msgid "Internal Tray 2"
+msgstr ""
+
+#: ../ppdippstr.py:237
+msgid "Internal Shift Tray"
+msgstr ""
+
+#: ../ppdippstr.py:238
+#, fuzzy
+msgid "Not Installed"
+msgstr "ติดตั้ง"
+
+#: ../ppdippstr.py:239
+#, fuzzy
+msgid "Installed"
+msgstr "ติดตั้ง"
+
+#: ../ppdippstr.py:240
+#, fuzzy
+msgid "PageSize"
+msgstr "ขนาดหน้ากระดาษ"
+
+#: ../ppdippstr.py:241
+msgid "InputSlot"
+msgstr ""
+
+#: ../ppdippstr.py:242
+msgid "Tray 2"
+msgstr ""
+
+#: ../ppdippstr.py:243
+msgid "Tray 3"
+msgstr ""
+
+#: ../ppdippstr.py:244
+msgid "Tray 4"
+msgstr ""
+
+#: ../ppdippstr.py:245
+msgid "Bypass Tray"
+msgstr ""
+
+#: ../ppdippstr.py:246
+#, fuzzy
+msgid "Destination"
+msgstr "รายละเอียด"
+
+#: ../ppdippstr.py:247 ../printerproperties.py:282
+msgid "Staple"
+msgstr ""
+
+#: ../ppdippstr.py:248 ../printerproperties.py:283
+msgid "Punch"
+msgstr ""
+
+#: ../ppdippstr.py:249
+msgid "Toner Saving"
+msgstr ""
+
+#: ../ppdippstr.py:250
+#, fuzzy
+msgid "Gradation"
+msgstr "ความเข้ม:"
+
+#: ../ppdippstr.py:251
+msgid "Fast"
+msgstr ""
+
+#. HPIJS options
+#: ../ppdippstr.py:254
+msgid "Printout mode"
+msgstr "โหมดการพิมพ์"
+
+#: ../ppdippstr.py:256
+msgid "Draft (auto-detect-paper type)"
+msgstr "ร่าง (ตรวจชนิดกระดาษอัตโนมัติ)"
+
+#: ../ppdippstr.py:258
+msgid "Draft (Color cartridge)"
+msgstr ""
+
+#: ../ppdippstr.py:260
+#, fuzzy
+msgid "Draft grayscale (Black cartridge)"
+msgstr "300 dpi, ร่าง, ขาวดำ, ตลับดำ+สี"
+
+#: ../ppdippstr.py:262
+msgid "Draft grayscale (auto-detect-paper type)"
+msgstr "ร่างขาวดำ (ตรวจชนิดกระดาษอัตโนมัติ)"
+
+#: ../ppdippstr.py:264
+msgid "Normal (Color cartridge)"
+msgstr ""
+
+#: ../ppdippstr.py:266
+#, fuzzy
+msgid "Normal grayscale (Black cartridge)"
+msgstr "ปกติขาวดำ (ตรวจชนิดกระดาษอัตโนมัติ)"
+
+#: ../ppdippstr.py:268
+msgid "Normal (auto-detect-paper type)"
+msgstr "ปกติ (ตรวจชนิดกระดาษอัตโนมัติ)"
+
+#: ../ppdippstr.py:270
+msgid "Normal grayscale (auto-detect-paper type)"
+msgstr "ปกติขาวดำ (ตรวจชนิดกระดาษอัตโนมัติ)"
+
+#: ../ppdippstr.py:272
+msgid "High quality (auto-detect-paper type)"
+msgstr "คุณภาพสูง (ตรวจชนิดกระดาษอัตโนมัติ)"
+
+#: ../ppdippstr.py:274
+msgid "High quality grayscale (auto-detect-paper type)"
+msgstr "คุณภาพสูง ขาวดำ (ตรวจชนิดกระดาษอัตโนมัติ)"
+
+#: ../ppdippstr.py:276
+#, fuzzy
+msgid "High quality (Color cartridge)"
+msgstr "คุณภาพสูง (ตรวจชนิดกระดาษอัตโนมัติ)"
+
+#: ../ppdippstr.py:278
+#, fuzzy
+msgid "High quality grayscale (Black cartridge)"
+msgstr "คุณภาพสูง ขาวดำ (ตรวจชนิดกระดาษอัตโนมัติ)"
+
+#: ../ppdippstr.py:279
+msgid "Photo (on photo paper)"
+msgstr "ภาพถ่าย (บนกระดาษภาพถ่าย)"
+
+#: ../ppdippstr.py:280
+#, fuzzy
+msgid "Photo (Color cartridge, on photo paper)"
+msgstr "ภาพถ่าย (บนกระดาษภาพถ่าย)"
+
+#: ../ppdippstr.py:282
+msgid "Best quality (color on photo paper)"
+msgstr "คุณภาพสูงสุด (สีบนกระดาษภาพถ่าย)"
+
+#: ../ppdippstr.py:284
+msgid "Normal quality (color on photo paper)"
+msgstr "คุณภาพปกติ (สีบนกระดาษภาพถ่าย)"
+
+#: ../ppdippstr.py:286
+msgid "Media source"
+msgstr "แหล่งสื่อ"
+
+#: ../ppdippstr.py:287
+msgid "Printer default"
+msgstr "ค่าปริยายของเครื่องพิมพ์"
+
+#: ../ppdippstr.py:288
+msgid "Photo tray"
+msgstr "ถาดภาพ"
+
+#: ../ppdippstr.py:289
+msgid "Upper tray"
+msgstr "ถาดบน"
+
+#: ../ppdippstr.py:290
+msgid "Lower tray"
+msgstr "ถาดล่าง"
+
+#: ../ppdippstr.py:291
+msgid "CD or DVD tray"
+msgstr "ถาด CD หรือ DVD"
+
+#: ../ppdippstr.py:292
+msgid "Envelope feeder"
+msgstr "อุปกรณ์ป้อนซองจดหมาย"
+
+#: ../ppdippstr.py:293
+msgid "Large capacity tray"
+msgstr "ถาดความจุสูง"
+
+#: ../ppdippstr.py:294
+msgid "Manual feeder"
+msgstr "ป้อนเอง"
+
+#: ../ppdippstr.py:295
+msgid "Multi-purpose tray"
+msgstr "ถาดอเนกประสงค์"
+
+#: ../ppdippstr.py:297
+msgid "Page size"
+msgstr "ขนาดหน้ากระดาษ"
+
+#: ../ppdippstr.py:298
+msgid "Custom"
+msgstr "กำหนดเอง"
+
+#: ../ppdippstr.py:299
+msgid "Letter"
+msgstr ""
+
+#: ../ppdippstr.py:300
+msgid "Photo or 4x6 inch index card"
+msgstr "ภาพถ่ายหรือการ์ด 4x6 นิ้ว"
+
+#: ../ppdippstr.py:301
+msgid "Photo or 5x7 inch index card"
+msgstr "ภาพถ่ายหรือการ์ด 5x7 นิ้ว"
+
+#: ../ppdippstr.py:302
+msgid "Photo with tear-off tab"
+msgstr ""
+
+#: ../ppdippstr.py:303
+msgid "3x5 inch index card"
+msgstr "การ์ด 3x5 นิ้ว"
+
+#: ../ppdippstr.py:304
+msgid "5x8 inch index card"
+msgstr "การ์ด 5x8 นิ้ว"
+
+#: ../ppdippstr.py:305
+msgid "A6 with tear-off tab"
+msgstr "A6 ที่มีแถบฉีกข้าง"
+
+#: ../ppdippstr.py:306
+msgid "CD or DVD 80mm"
+msgstr "CD หรือ DVD 80มม"
+
+#: ../ppdippstr.py:307
+msgid "CD or DVD 120mm"
+msgstr "CD หรือ DVD 120มม"
+
+#: ../ppdippstr.py:309
+msgid "Double-sided printing"
+msgstr "พิมพ์สองด้าน"
+
+#: ../ppdippstr.py:310
+msgid "Long edge (standard)"
+msgstr "ขอบยาว (มาตราฐาน)"
+
+#: ../ppdippstr.py:311
+msgid "Short edge (flip)"
+msgstr "ขอบสั้น (กลับด้าน)"
+
+#: ../ppdippstr.py:312
+msgid "Off"
+msgstr "ปิด"
+
+#: ../ppdippstr.py:315
+msgid "Resolution, quality, ink type, media type"
+msgstr "ความละเอียด, คุณภาพ, ชนิดหมึก, ชนิดสื่อ"
+
+#: ../ppdippstr.py:316
+msgid "Controlled by 'Printout mode'"
+msgstr "ควบคุมโดย 'โหมดการพิมพ์'"
+
+#: ../ppdippstr.py:318
+#, fuzzy
+msgid "300 dpi, Color, Color Cartr."
+msgstr "300 dpi, สี, ตลับดำ+สี"
+
+#: ../ppdippstr.py:320
+msgid "300 dpi, color, black + color cartridge"
+msgstr "300 dpi, สี, ตลับดำ+สี"
+
+#: ../ppdippstr.py:322
+#, fuzzy
+msgid "300 dpi, Draft, Color, Color Cartr."
+msgstr "300 dpi, ร่าง, สี, ตลับดำ+สี"
+
+#: ../ppdippstr.py:324
+msgid "300 dpi, draft, color, black + color cartridge"
+msgstr "300 dpi, ร่าง, สี, ตลับดำ+สี"
+
+#: ../ppdippstr.py:326
+#, fuzzy
+msgid "300 dpi, Draft, Grayscale, Black Cartr."
+msgstr "300 dpi, ร่าง, ขาวดำ, ตลับดำ+สี"
+
+#: ../ppdippstr.py:328
+#, fuzzy
+msgid "300 dpi, Grayscale, Black Cartr."
+msgstr "300 dpi, ขาวดำ, ตลับดำ+สี"
+
+#: ../ppdippstr.py:330
+msgid "300 dpi, draft, grayscale, black + color cartridge"
+msgstr "300 dpi, ร่าง, ขาวดำ, ตลับดำ+สี"
+
+#: ../ppdippstr.py:332
+msgid "300 dpi, grayscale, black + color cartridge"
+msgstr "300 dpi, ขาวดำ, ตลับดำ+สี"
+
+#: ../ppdippstr.py:334
+msgid "600 dpi, color, black + color cartridge"
+msgstr "600 dpi, สี, ตลับดำ+สี"
+
+#: ../ppdippstr.py:336
+msgid "600 dpi, grayscale, black + color cartridge"
+msgstr "600 dpi, ขาวดำ, ตลับดำ+สี"
+
+#: ../ppdippstr.py:338
+msgid "600 dpi, photo, black + color cartridge, photo paper"
+msgstr "600 dpi, ภาพถ่าย, ตลับดำ+สี, กระดาษพิมพ์ภาพ"
+
+#: ../ppdippstr.py:340
+msgid "600 dpi, color, black + color cartridge, photo paper, normal"
+msgstr "600 dpi, สี, ตลับดำ+สี, กระดาษพิมพ์ภาพ, ปกติ"
+
+#: ../ppdippstr.py:342
+msgid "1200 dpi, photo, black + color cartridge, photo paper"
+msgstr "1200 dpi, ภาพถ่าย, ตลับดำ+สี, กระดาษพิมพ์ภาพ"
+
+#: ../ppdippstr.py:349
+msgid "Internet Printing Protocol (ipp)"
+msgstr ""
+
+#: ../ppdippstr.py:351
+msgid "Internet Printing Protocol (http)"
+msgstr ""
+
+#: ../ppdippstr.py:353
+msgid "Internet Printing Protocol (https)"
+msgstr ""
+
+#: ../ppdippstr.py:355
 msgid "LPD/LPR Host or Printer"
 msgstr ""
 
-#: ../ppdippstr.py:225
+#: ../ppdippstr.py:359
 msgid "Serial Port #1"
 msgstr ""
 
-#: ../ppdippstr.py:227
+#: ../ppdippstr.py:361
 msgid "LPT #1"
 msgstr ""
 
@@ -1444,14 +1915,6 @@ msgstr ""
 
 #: ../printerproperties.py:276
 msgid "Bottom to top, right to left"
-msgstr ""
-
-#: ../printerproperties.py:282
-msgid "Staple"
-msgstr ""
-
-#: ../printerproperties.py:283
-msgid "Punch"
 msgstr ""
 
 #: ../printerproperties.py:284
@@ -1603,10 +2066,6 @@ msgstr ""
 "มีตัวเลือกที่ขัดแย้งกัน\n"
 "สามารถเปลี่ยนแปลงค่าได้ก็ต่อเมื่อ\n"
 "ได้แก้ไขตัวเลือกเหล่านั้นแล้ว"
-
-#: ../printerproperties.py:964
-msgid "Installable Options"
-msgstr "ตัวเลือกที่ติดตั้งได้"
 
 #: ../printerproperties.py:965 ../ui/PrinterPropertiesDialog.ui.h:48
 msgid "Printer Options"
@@ -2896,11 +3355,6 @@ msgstr ""
 #: ../ui/WaitWindow.ui.h:1
 msgid "Please Wait"
 msgstr "โปรดรอ"
-
-#: ../system-config-printer.desktop.in.h:1
-#: ../system-config-printer.appdata.xml.in.h:1
-msgid "Print Settings"
-msgstr ""
 
 #: ../system-config-printer.desktop.in.h:2
 msgid "Configure printers"
