@@ -122,15 +122,15 @@ def init ():
             "Black Only Grayscale": _("Black Only Grayscale"),
             
             "Quality": _("Quality"),
-            "High Resolution": _("High Resolution"),
+            "High Resolution ": _("High Resolution "),
             "Paper Source": _("Paper source"),
                 "Auto Source": _("Auto Source"),
                 "Manual Feed": _("Manual Feed"),
                 "Middle Tray": _("Middle Tray"),
                 "Upper or Only One InputSlot": _("Upper or Only One InputSlot"),
                 "Multi-purpose Tray": _("Multi-purpose Tray"),
-                "Drawer 1": _("Drawer 1"),
-                "Drawer 2": _("Drawer 2"),
+                "Drawer 1 ": _("Drawer 1 "),
+                "Drawer 2 ": _("Drawer 2 "),
                 "Tray 1": _("Tray 1"),
                 "Auto Select": _("Auto Select"),
                     
@@ -147,7 +147,7 @@ def init ():
                 "Plain Paper": _("Plain Paper"),
                 "Plain": _("Plain"),
                 "Photo Paper)": _("Photo Paper)"),
-                "Transparency Film": _("Transparency Film"),             
+                "Transparency Film": _("Transparency Film"),
                 "CD or DVD Media": _("CD or DVD Media"),
             "Print Density": _("Print Density"),
             "Extra Light (1)": _("Extra Light (1)"),
@@ -155,17 +155,17 @@ def init ():
             "Medium (3)": _("Medium (3)"),
             "Dark (4)": _("Dark (4)"),
             "Extra Dark (5)": _("Extra Dark (5)"),
-            "Copies":_("Copies")
+            "Copies": _("Copies"),
             
             "Adjustment": _("Adjustment"),
-            "Halftone Algorithm": _("Halftone Algorithm")
-            "Default":_("Default"),
+            "Halftone Algorithm": _("Halftone Algorithm"),
+            "Default": _("Default"),
             
             "Miscellaneous": _("Miscellaneous"),
-           "N-up Orientation": _("N-up Orientation"),
-           "N-up Printing": _("N-up Printing"),
-         "Landscape": _("Landscape"),
-         "Seascape": _("Seascape"),
+            "N-up Orientation": _("N-up Orientation"),
+            "N-up Printing": _("N-up Printing"),
+            "Landscape": _("Landscape"),
+            "Seascape": _("Seascape"),
             "Media Size": _("Media Size"),
             "Output Mode": _("Output Mode"),
                  "Grayscale": _("Grayscale"),
@@ -241,10 +241,10 @@ def init ():
             "InputSlot": _("InputSlot"),
                 "Tray 2": _("Tray 2"),
                 "Tray 3": _("Tray 3"),
-            "Tray 4": _("Tray 4"),                    
+            "Tray 4": _("Tray 4"),        
                 "Bypass Tray": _("Bypass Tray"),        
             "Destination": _("Destination"),
-            "Staple": _("Staple"),                
+            "Staple": _("Staple"),    
             "Punch": _("Punch"),
             "Toner Saving": _("Toner Saving"),
             "Gradation": _("Gradation"),
@@ -255,7 +255,7 @@ def init ():
             "Draft (auto-detect paper type)":
                 _("Draft (auto-detect-paper type)"),
             "Draft (Color cartridge)":
-                _("Draft (Color cartridge)"),                
+                _("Draft (Color cartridge)"),    
             "Draft Grayscale (Black cartridge)":
                 _("Draft grayscale (Black cartridge)"),
             "Draft Grayscale (auto-detect paper type)":
@@ -292,7 +292,7 @@ def init ():
             "Envelope Feeder": _("Envelope feeder"),
             "Large Capacity Tray": _("Large capacity tray"),
             "Manual Feeder": _("Manual feeder"),
-            "Multi Purpose Tray": _("Multi-purpose tray"),
+            "Multi Purpose Tray ": _("Multi-purpose tray "),
 
             "Page Size": _("Page size"),
             "Custom": _("Custom"),
