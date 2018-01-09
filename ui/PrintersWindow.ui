@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.18.3 -->
+<!-- Generated with glade 3.20.0 -->
 <interface>
   <requires lib="gtk+" version="3.0"/>
   <object class="GtkWindow" id="PrintersWindow">
@@ -84,6 +84,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="use_underline">True</property>
+                            <property name="use_stock">False</property>
                             <signal name="activate" handler="on_troubleshoot_activate" swapped="no"/>
                             <accelerator key="F1" signal="activate"/>
                           </object>
@@ -91,11 +92,11 @@
                         <child>
                           <object class="GtkImageMenuItem" id="about">
                             <property name="label" translatable="yes">About</property>
-                            <property name="use_underline">True</property>
                             <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="use_underline">True</property>
+                            <property name="use_stock">False</property>
                             <signal name="activate" handler="on_about_activate" swapped="no"/>
                           </object>
                         </child>
@@ -181,6 +182,7 @@
                   <object class="GtkLabel" id="label3">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="halign">center</property>
                     <property name="margin_start">12</property>
                     <property name="margin_top">6</property>
                     <property name="label" translatable="yes">There are no printers configured yet.</property>
@@ -195,14 +197,16 @@
                   <object class="GtkBox" id="hbox1">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="halign">center</property>
                     <child>
                       <object class="GtkButton" id="btnAddFirstPrinter">
                         <property name="label" translatable="yes">Add</property>
-                        <property name="use_underline">True</property>
                         <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <property name="halign">center</property>
+                        <property name="use_underline">True</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -256,9 +260,10 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkHButtonBox" id="hbuttonbox1">
+                  <object class="GtkButtonBox" id="hbuttonbox1">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="halign">center</property>
                     <property name="spacing">12</property>
                     <property name="layout_style">start</property>
                     <child>
@@ -278,11 +283,11 @@
                     <child>
                       <object class="GtkButton" id="btnConnectNoService">
                         <property name="label" translatable="yes">Connect</property>
-                        <property name="use_underline">True</property>
                         <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <property name="use_underline">True</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
