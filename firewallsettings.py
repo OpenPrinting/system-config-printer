@@ -118,7 +118,13 @@ class FirewallD:
         if not self._get_fw_data ():
             return
 
-        self._fw_data.addService (service)
+        from firewall.errors import FirewallError
+        import firewall.errors
+        try:
+            self._fw_data.addService (service)
+        except FirewallError as e:
+            if e.code is firewall.errors.ALREADY_ENABLED:
+                pass
 
     def check_ipp_client_allowed (self):
         if not self._get_fw_data ():
