@@ -2306,7 +2306,9 @@ class NewPrinterGUI(GtkGUI):
     def adjust_firewall_response (self, dialog, response):
         dialog.destroy ()
         if response == Gtk.ResponseType.YES:
-            self.firewall.add_service (firewallsettings.IPP_SERVER_SERVICE)
+            ipp_server_allowed = self.firewall.check_ipp_server_allowed ()
+            if not ipp_server_allowed:
+                self.firewall.add_service (firewallsettings.IPP_SERVER_SERVICE)
             self.firewall.write ()
 
         debugprint ("Fetching network devices after firewall dialog response")

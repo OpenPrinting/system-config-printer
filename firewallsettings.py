@@ -125,6 +125,8 @@ class FirewallD:
         except FirewallError as e:
             if e.code is firewall.errors.ALREADY_ENABLED:
                 pass
+            else:
+                raise FirewallError (e.code, e.msg)
 
     def check_ipp_client_allowed (self):
         if not self._get_fw_data ():
