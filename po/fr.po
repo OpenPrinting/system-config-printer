@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # Alain PORTAL <aportal@univ-montp2.fr>, 2007
 # Audrey Simons <asimons@redhat.com>, 2003
@@ -20,25 +20,26 @@
 # Kévin Raymond <shaiton@fedoraproject.org>, 2011-2012
 # LuyaTshimbalanga <luya@fedoraproject.org>, 2009
 # Mathieu Schopfer <mat.schopfer@bluewin.ch>, 2008
-# Olivier Humbert <trebmuh@tuxfamily.org>, 2017
 # Pablo Martin-Gomez <pablo.martin-gomez@laposte.net>, 2010
 # Stephane Raimbault <stephane.raimbault@free.fr>, 2004
 # Julie Carbone <jcarbone@redhat.com>, 2016. #zanata
+# Zdenek Dohnal <zdohnal@redhat.com>, 2016. #zanata
+# Zdenek Dohnal <zdohnal@redhat.com>, 2018. #zanata
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2017-12-11 15:15+0100\n"
-"PO-Revision-Date: 2017-12-11 15:20+0100\n"
-"Last-Translator: L'Africain\n"
-"Language-Team: French (http://www.transifex.com/projects/p/system-config-"
-"printer/language/fr/)\n"
-"Language: fr\n"
+"POT-Creation-Date: 2017-12-08 08:24+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2018-01-04 09:09-0500\n"
+"Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
+"Language-Team: French (http://www.transifex.com/projects/p/system-config-"
+"printer/language/fr/)\n"
+"Language: fr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 1.8.7.1\n"
+"X-Generator: Zanata 3.9.6\n"
 
 #: ../asyncipp.py:473 ../authconn.py:451 ../authconn.py:453
 #: ../errordialogs.py:63 ../pysmb.py:90 ../pysmb.py:92
@@ -527,14 +528,14 @@ msgstr ""
 "réseaux. Ajuster le pare-feu maintenant?"
 
 #: ../newprinter.py:358 ../newprinter.py:369 ../newprinter.py:375
-#: ../newprinter.py:380 ../ppdippstr.py:163
+#: ../newprinter.py:380 ../ppdippstr.py:162
 msgid "Default"
 msgstr "Défaut"
 
 #. See section 4.2.6 of this document for explanation of finishing types:
 #. ftp://ftp.pwg.org/pub/pwg/candidates/cs-ippfinishings10-20010205-5100.1.pdf
 #: ../newprinter.py:370 ../newprinter.py:381 ../newprinter.py:4067
-#: ../ppdippstr.py:65 ../ppdippstr.py:252 ../printerproperties.py:281
+#: ../ppdippstr.py:65 ../ppdippstr.py:223 ../printerproperties.py:281
 msgid "None"
 msgstr "Aucun"
 
@@ -673,7 +674,7 @@ msgstr "Imprimante réseau"
 msgid "Find Network Printer"
 msgstr "Rechercher une imprimante réseau"
 
-#: ../newprinter.py:2247 ../newprinter.py:3070 ../ppdippstr.py:371
+#: ../newprinter.py:2247 ../newprinter.py:3070 ../ppdippstr.py:363
 msgid "Windows Printer via SAMBA"
 msgstr "Imprimante Windows via SAMBA"
 
@@ -765,7 +766,7 @@ msgstr ""
 msgid "Hardware Abstraction Layer (HAL)"
 msgstr "Couche d'abstraction matérielle (HAL, Hardware Abstraction Layer)."
 
-#: ../newprinter.py:3055 ../ppdippstr.py:368
+#: ../newprinter.py:3055 ../ppdippstr.py:357
 msgid "AppSocket/HP JetDirect"
 msgstr "AppSocket/HP JetDirect"
 
@@ -883,11 +884,9 @@ msgstr ", "
 
 #: ../newprinter.py:4109
 #, python-format
-msgid ""
-"\n"
+msgid "\n"
 "(%s)"
-msgstr ""
-"\n"
+msgstr "\n"
 "(%s)"
 
 #: ../newprinter.py:4114
@@ -906,7 +905,8 @@ msgstr "Erreur dans la base de données"
 #: ../newprinter.py:4177
 #, python-format
 msgid "The '%s' driver cannot be used with printer '%s %s'."
-msgstr "Le pilote « %s » ne peut pas être utilisé avec l'imprimante « %s %s »."
+msgstr ""
+"Le pilote « %s » ne peut pas être utilisé avec l'imprimante « %s %s »."
 
 #. This printer references some XML that is not
 #. installed by default.  Point the user at the
@@ -1684,7 +1684,7 @@ msgstr "Économie de toner "
 
 #: ../ppdippstr.py:281
 msgid "Gradation"
-msgstr "Gradation "
+msgstr "Saturation "
 
 #: ../ppdippstr.py:282
 msgid "Fast"
@@ -2496,7 +2496,8 @@ msgstr "Installer un pilote"
 
 #: ../system-config-printer.py:2123 ../troubleshoot/CheckPPDSanity.py:136
 #, python-format
-msgid "Printer '%s' requires the %s package but it is not currently installed."
+msgid ""
+"Printer '%s' requires the %s package but it is not currently installed."
 msgstr ""
 "L'imprimante « %s » a besoin du paquet %s mais celui-ci n'est pas installé."
 
@@ -2658,8 +2659,7 @@ msgstr "<b>Emplacement</b> (optionnel)"
 
 #: ../ui/NewPrinterWindow.ui.h:10
 msgid "<span weight=\"bold\" size=\"larger\">Select Device</span>"
-msgstr ""
-"<span weight=\"bold\" size=\"larger\">Choisissez le périphérique</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">Choisissez le périphérique</span>"
 
 #: ../ui/NewPrinterWindow.ui.h:11
 msgid "Device description."
@@ -2866,7 +2866,8 @@ msgstr "Commentaires..."
 #: ../ui/NewPrinterWindow.ui.h:61
 msgid "<span weight=\"bold\" size=\"larger\">Choose Class Members</span>"
 msgstr ""
-"<span weight=\"bold\" size=\"larger\">Choisissez la classe des membres</span>"
+"<span weight=\"bold\" size=\"larger\">Choisissez la classe des membres</"
+"span>"
 
 #: ../ui/NewPrinterWindow.ui.h:62 ../ui/PrinterPropertiesDialog.ui.h:44
 msgid "move left"
@@ -3137,11 +3138,9 @@ msgid "Shared"
 msgstr "Partagée"
 
 #: ../ui/PrinterPropertiesDialog.ui.h:27
-msgid ""
-"<i>Not published\n"
+msgid "<i>Not published\n"
 "See server settings</i>"
-msgstr ""
-"<i>Non publié\n"
+msgstr "<i>Non publié\n"
 "Consultez les paramètres du serveur</i>"
 
 #: ../ui/PrinterPropertiesDialog.ui.h:29
@@ -3150,7 +3149,7 @@ msgstr "<b>État</b>"
 
 #: ../ui/PrinterPropertiesDialog.ui.h:30
 msgid "Error Policy:"
-msgstr "Politique d'erreur : \t"
+msgstr "Politique d'erreur : 	"
 
 #: ../ui/PrinterPropertiesDialog.ui.h:31
 msgid "Operation Policy:"
@@ -3902,6 +3901,14 @@ msgid "Did the marked print jobs print correctly?"
 msgstr ""
 "Les tâches d'impression sélectionnées ont-elles été correctement imprimées ?"
 
+#: ../troubleshoot/PrintTestPage.py:120
+msgid "Yes"
+msgstr "Oui"
+
+#: ../troubleshoot/PrintTestPage.py:121
+msgid "No"
+msgstr "Non"
+
 #: ../troubleshoot/PrintTestPage.py:144
 #, python-format
 msgid "Remember to load paper of type '%s' into the printer first."
@@ -4141,23 +4148,3 @@ msgstr ""
 "défaut et d'autres options de pilote, ainsi que consulter les niveaux "
 "d'encre et les messages de statut."
 
-#~ msgid "Internal Tray"
-#~ msgstr "Bac d'alimentation interne "
-
-#~ msgid "Double-sided printing"
-#~ msgstr "Impression recto-verso "
-
-#~ msgid "Browsing not available (pysmbc not installed)"
-#~ msgstr "Navigation non disponible (pysmbc non installé)"
-
-#~ msgid "Verification requires the %s module"
-#~ msgstr "La vérification nécessite le module %s"
-
-#~ msgid "Cancel"
-#~ msgstr "Annuler"
-
-#~ msgid "Delete"
-#~ msgstr "Supprimer"
-
-#~ msgid "System-Config-Printer"
-#~ msgstr "System-Config-Printer"
