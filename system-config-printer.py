@@ -37,9 +37,9 @@ except:
 gi.require_version('GdkPixbuf', '2.0')
 from gi.repository import GdkPixbuf
 try:
-    gi.require_version('Gdk', '4.0')
+    gi.require_version('Gdk', '3.0')
     from gi.repository import Gdk
-    gi.require_version('Gtk', '4.0')
+    gi.require_version('Gtk', '3.0')
     from gi.repository import Gtk
     Gtk.init (sys.argv)
 except RuntimeError as e:

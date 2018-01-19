@@ -23,9 +23,9 @@ import cups
 import cupspk
 import gi
 from gi.repository import GLib
-gi.require_version('Gdk', '4.0')
+gi.require_version('Gdk', '3.0')
 from gi.repository import Gdk
-gi.require_version('Gtk', '4.0')
+gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 import os
 from errordialogs import *
