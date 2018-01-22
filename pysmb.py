@@ -83,7 +83,7 @@ class AuthContext:
         self.auth_called = False
 
         if self.dialog_shown:
-            d = Gtk.MessageDialog (parent=self.parent,
+            d = Gtk.MessageDialog (transient_for=self.parent,
                                    modal=True, destroy_with_parent=True,
                                    message_type=Gtk.MessageType.ERROR,
                                    buttons=Gtk.ButtonsType.CLOSE)

@@ -308,7 +308,7 @@ class Connection:
         except IndexError:
             msg = _("CUPS server error")
 
-        d = Gtk.MessageDialog (parent=self._parent,
+        d = Gtk.MessageDialog (transient_for=self._parent,
                                modal=True, destroy_with_parent=True,
                                message_type=Gtk.MessageType.ERROR,
                                buttons=Gtk.ButtonsType.NONE,
@@ -449,7 +449,7 @@ class Connection:
     def _show_not_authorized_dialog (self):
         if self._lock:
             Gdk.threads_enter ()
-        d = Gtk.MessageDialog (parent=self._parent,
+        d = Gtk.MessageDialog (transient_for=self._parent,
                                modal=True, destroy_with_parent=True,
                                message_type=Gtk.MessageType.ERROR,
                                buttons=Gtk.ButtonsType.CLOSE)
