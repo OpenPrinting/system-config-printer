@@ -59,6 +59,7 @@ class TimedSubprocess(Timed):
         for f in [self.subp.stdout, self.subp.stderr]:
             if f is not None:
                 source = GLib.io_add_watch (f,
+                                            GLib.PRIORITY_DEFAULT,
                                             GLib.IO_IN |
                                             GLib.IO_HUP |
                                             GLib.IO_ERR,
