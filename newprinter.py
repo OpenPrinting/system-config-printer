@@ -4262,29 +4262,28 @@ class NewPrinterGUI(GtkGUI):
             if group.name != "InstallableOptions":
                 continue
             self.installable_options = True
-            table = Gtk.Table(n_rows=1, n_columns=3, homogeneous=False)
-            table.set_col_spacings(6)
-            table.set_row_spacings(6)
-            container.add(table)
+            grid = Gtk.Grid()
+            grid.set_column_spacing(6)
+            grid.set_row_spacing(6)
+            container.add(grid)
             rows = 0
 
             for nr, option in enumerate(group.options):
                 if option.keyword == "PageRegion":
                     continue
                 rows += 1
-                table.resize (rows, 3)
                 o = OptionWidget(option, self.ppd, self)
-                table.attach(o.conflictIcon, 0, 1, nr, nr+1, 0, 0, 0, 0)
+                grid.attach(o.conflictIcon, 0, nr, 1, 1)
 
-                hbox = Gtk.HBox()
+                hbox = Gtk.Box()
                 if o.label:
                     a = Gtk.Alignment.new (0.5, 0.5, 1.0, 1.0)
                     a.set_padding (0, 0, 0, 6)
                     a.add (o.label)
-                    table.attach(a, 1, 2, nr, nr+1, Gtk.AttachOptions.FILL, 0, 0, 0)
-                    table.attach(hbox, 2, 3, nr, nr+1, Gtk.AttachOptions.FILL, 0, 0, 0)
+                    grid.attach(a, 1, nr, 1, 1)
+                    grid.attach(hbox, 2, nr, 1, 1)
                 else:
-                    table.attach(hbox, 1, 3, nr, nr+1, Gtk.AttachOptions.FILL, 0, 0, 0)
+                    grid.attach(hbox, 1, nr, 2, 1)
                 hbox.pack_start(o.selector, False, False, 0)
                 self.options[option.keyword] = o
         if not self.installable_options:

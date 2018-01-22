@@ -33,24 +33,22 @@ class Locale(Question):
                                     "not the printer's default page size.  "
                                     "If this is not intentional it may cause "
                                     "alignment problems."))
-        table = Gtk.Table (n_rows=2, n_columns=2)
-        table.set_row_spacings (6)
-        table.set_col_spacings (6)
-        page.pack_start (table, False, False, 0)
+        grid = Gtk.Grid()
+        grid.set_row_spacing (6)
+        grid.set_column_spacing (6)
+        page.pack_start (grid, False, False, 0)
         self.printer_page_size = Gtk.Label ()
         self.printer_page_size.set_alignment (0, 0)
         self.job_page_size = Gtk.Label ()
         self.job_page_size.set_alignment (0, 0)
         label = Gtk.Label(label=_("Print job page size:"))
         label.set_alignment (0, 0)
-        table.attach (label, 0, 1, 0, 1, xoptions=Gtk.AttachOptions.FILL, yoptions=0)
-        table.attach (self.job_page_size, 1, 2, 0, 1,
-                      xoptions=Gtk.AttachOptions.FILL, yoptions=0)
+        grid.attach (label, 0, 0, 1, 1)
+        grid.attach (self.job_page_size, 1, 0, 1, 1)
         label = Gtk.Label(label=_("Printer page size:"))
         label.set_alignment (0, 0)
-        table.attach (label, 0, 1, 1, 2, xoptions=Gtk.AttachOptions.FILL, yoptions=0)
-        table.attach (self.printer_page_size, 1, 2, 1, 2,
-                      xoptions=Gtk.AttachOptions.FILL, yoptions=0)
+        grid.attach (label, 0, 1, 1, 1)
+        grid.attach (self.printer_page_size, 1, 1, 1, 1)
         troubleshooter.new_page (page, self)
 
     def display (self):

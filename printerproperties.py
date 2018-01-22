@@ -809,19 +809,14 @@ class PrinterPropertiesDialog(GtkGUI):
             self.tblJOOther.hide()
             return
 
-        self.tblJOOther.resize (n, 3)
         children = self.tblJOOther.get_children ()
         for child in children:
             self.tblJOOther.remove (child)
         i = 0
         for opt in self.other_job_options:
-            self.tblJOOther.attach (opt.label, 0, 1, i, i + 1,
-                                    xoptions=Gtk.AttachOptions.FILL,
-                                    yoptions=Gtk.AttachOptions.FILL)
+            self.tblJOOther.attach (opt.label, 0, i, 1, 1)
             opt.label.set_alignment (0.0, 0.5)
-            self.tblJOOther.attach (opt.selector, 1, 2, i, i + 1,
-                                    xoptions=Gtk.AttachOptions.FILL,
-                                    yoptions=0)
+            self.tblJOOther.attach (opt.selector, 1, i, 1, 1)
             opt.selector.set_sensitive (editable)
 
             btn = Gtk.Button.new_from_icon_name (Gtk.STOCK_REMOVE,
@@ -829,9 +824,7 @@ class PrinterPropertiesDialog(GtkGUI):
             btn.connect("clicked", self.on_btnJOOtherRemove_clicked)
             btn.pyobject = opt
             btn.set_sensitive (editable)
-            self.tblJOOther.attach(btn, 2, 3, i, i + 1,
-                                   xoptions=0,
-                                   yoptions=0)
+            self.tblJOOther.attach(btn, 2, i, 1, 1)
             i += 1
 
         self.tblJOOther.show_all ()
@@ -1567,12 +1560,12 @@ class PrinterPropertiesDialog(GtkGUI):
             rows = 1 + (cols - 1) / 4
             if cols > 4:
                 cols = 4
-            table = Gtk.Table (n_rows=round(rows),
-                               n_columns=cols,
-                               homogeneous=True)
-            table.set_col_spacings (6)
-            table.set_row_spacings (12)
-            self.vboxMarkerLevels.pack_start (table, False, False, 0)
+            grid = Gtk.Grid()
+            grid.set_column_homogeneous(True)
+            grid.set_row_homogeneous(True)
+            grid.set_column_spacing (6)
+            grid.set_row_spacing (12)
+            self.vboxMarkerLevels.pack_start (grid, False, False, 0)
             for color, name, marker_type, level in markers:
                 if name is None:
                     name = ''
@@ -1584,8 +1577,8 @@ class PrinterPropertiesDialog(GtkGUI):
                 row = num_markers / 4
                 col = num_markers % 4
 
-                vbox = Gtk.VBox (spacing=6)
-                subhbox = Gtk.HBox ()
+                vbox = Gtk.Box (spacing=6)
+                subhbox = Gtk.Box ()
                 inklevel = gtkinklevel.GtkInkLevel (color, level)
                 inklevel.set_tooltip_text ("%d%%" % level)
                 subhbox.pack_start (inklevel, True, False, 0)
@@ -1594,7 +1587,7 @@ class PrinterPropertiesDialog(GtkGUI):
                 label.set_width_chars (10)
                 label.set_line_wrap (True)
                 vbox.pack_start (label, False, False, 0)
-                table.attach (vbox, col, col + 1, row, row + 1)
+                grid.attach (vbox, col, row, 1, 1)
                 num_markers += 1
 
         self.vboxMarkerLevels.show_all ()
@@ -1747,10 +1740,10 @@ class PrinterPropertiesDialog(GtkGUI):
                 frame.add (container)
                 tab_label = self.lblPOptions
 
-            table = Gtk.Table(n_rows=1, n_columns=3, homogeneous=False)
-            table.set_col_spacings(6)
-            table.set_row_spacings(6)
-            container.add(table)
+            grid = Gtk.Grid()
+            grid.set_column_spacing(6)
+            grid.set_row_spacing(6)
+            container.add(grid)
 
             rows = 0
 
@@ -1765,19 +1758,18 @@ class PrinterPropertiesDialog(GtkGUI):
                 if option.keyword == "PageRegion":
                     continue
                 rows += 1
-                table.resize (rows, 3)
                 o = OptionWidget(option, ppd, self, tab_label=tab_label)
-                table.attach(o.conflictIcon, 0, 1, nr, nr+1, 0, 0, 0, 0)
+                grid.attach(o.conflictIcon, 0, nr, 1, 1)
 
-                hbox = Gtk.HBox()
+                hbox = Gtk.Box()
                 if o.label:
                     a = Gtk.Alignment.new(0.5, 0.5, 1.0, 1.0)
                     a.set_padding (0, 0, 0, 6)
                     a.add (o.label)
-                    table.attach(a, 1, 2, nr, nr+1, Gtk.AttachOptions.FILL, 0, 0, 0)
-                    table.attach(hbox, 2, 3, nr, nr+1, Gtk.AttachOptions.FILL, 0, 0, 0)
+                    grid.attach(a, 1, nr, 1, 1)
+                    grid.attach(hbox, 2, nr, 1, 1)
                 else:
-                    table.attach(hbox, 1, 3, nr, nr+1, Gtk.AttachOptions.FILL, 0, 0, 0)
+                    grid.attach(hbox, 1, nr, 2, 1)
                 hbox.pack_start(o.selector, False, False, 0)
                 self.options[option.keyword] = o
                 o.selector.set_sensitive(editable)

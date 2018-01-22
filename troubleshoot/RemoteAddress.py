@@ -29,24 +29,24 @@ class RemoteAddress(Question):
                                   _("Please enter as many details as you "
                                     "can about the network address of this "
                                     "printer."))
-        table = Gtk.Table (n_rows=2, n_columns=2)
-        table.set_row_spacings (6)
-        table.set_col_spacings (6)
-        page.pack_start (table, False, False, 0)
+        grid = Gtk.Grid()
+        grid.set_row_spacing (6)
+        grid.set_column_spacing (6)
+        page.pack_start (grid, False, False, 0)
 
         label = Gtk.Label(label=_("Server name:"))
         label.set_alignment (0, 0)
-        table.attach (label, 0, 1, 0, 1)
+        grid.attach (label, 0, 0, 1, 1)
         self.server_name = Gtk.Entry ()
         self.server_name.set_activates_default (True)
-        table.attach (self.server_name, 1, 2, 0, 1)
+        grid.attach (self.server_name, 1, 0, 1, 1)
 
         label = Gtk.Label(label=_("Server IP address:"))
         label.set_alignment (0, 0)
-        table.attach (label, 0, 1, 1, 2)
+        grid.attach (label, 0, 1, 1, 1)
         self.server_ipaddr = Gtk.Entry ()
         self.server_ipaddr.set_activates_default (True)
-        table.attach (self.server_ipaddr, 1, 2, 1, 2)
+        grid.attach (self.server_ipaddr, 1, 1, 1, 1)
 
         troubleshooter.new_page (page, self)
 
