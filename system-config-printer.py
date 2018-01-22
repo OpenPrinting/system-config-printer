@@ -104,6 +104,9 @@ sys.path.append (pkgdata)
 PlugWindow = None
 PlugWindowId = None
 
+#set program name
+GLib.set_prgname("system-config-printer")
+
 def CUPS_server_hostname ():
     host = cups.getServer ()
     if host[0] == '/':
