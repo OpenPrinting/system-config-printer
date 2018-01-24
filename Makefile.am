@@ -179,7 +179,7 @@ cupshelpersdir=$(sysconfdir)/cupshelpers
 cupshelpers_DATA=\
 	xml/preferreddrivers.xml
 
-bin_SCRIPTS=					\
+nodist_bin_SCRIPTS=					\
 	system-config-printer			\
 	install-printerdriver			\
 	system-config-printer-applet		\
