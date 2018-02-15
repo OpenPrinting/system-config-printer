@@ -78,11 +78,9 @@ class AuthDialog(Gtk.Dialog):
             field = auth_info_required[i]
             label = Gtk.Label (label=_(self.AUTH_FIELD.get (field, field)))
             label.set_alignment (0, 0.5)
-            grid.attach (label, 0, 1, i, i + 1)
             grid.attach (label, 0, i, 1, 1)
             entry = Gtk.Entry ()
             entry.set_visibility (field != 'password')
-            grid.attach (entry, 1, 2, i, i + 1, 0, 0)
             grid.attach (entry, 1, i, 1, 1)
             self.field_entry.append (entry)
 
