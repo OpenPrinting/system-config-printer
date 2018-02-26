@@ -21,9 +21,12 @@
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 import dbus.service
+import gi
 from gi.repository import GObject
 from gi.repository import GLib
+gi.require_version('Gdk', '3.0')
 from gi.repository import Gdk
+gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 import sys
 
