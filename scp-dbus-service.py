@@ -20,8 +20,8 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-import dbus.service
 import gi
+import dbus.service
 from gi.repository import GObject
 from gi.repository import GLib
 gi.require_version('Gdk', '3.0')
@@ -54,6 +54,9 @@ CONFIG_JOBVIEWER_IFACE=CONFIG_IFACE + ".JobViewer"
 
 g_ppds = None
 g_killtimer = None
+
+#set program name
+GLib.set_prgname("system-config-printer")
 
 class FetchedPPDs(GObject.GObject):
     __gsignals__ = {
