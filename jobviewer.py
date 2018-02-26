@@ -57,7 +57,7 @@ try:
     gi.require_version('Secret', '1')
     from gi.repository import Secret
     USE_SECRET=True
-except ImportError:
+except ValueError:
     USE_SECRET=False
 
 import gettext
