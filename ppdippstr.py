@@ -118,7 +118,7 @@ def init ():
             "Resolution": _("Resolution"),
             
             "Color Mode": _("Color Mode"),
-            "Hight Quality Grayscale": _("Hight Quality Grayscale"),
+            "High Quality Grayscale": _("High Quality Grayscale"),
             "Black Only Grayscale": _("Black Only Grayscale"),
             
             "Quality": _("Quality"),
@@ -146,7 +146,7 @@ def init ():
                 "Transparency": _("Transparency"),
                 "Plain Paper": _("Plain Paper"),
                 "Plain": _("Plain"),
-                "Photo Paper)": _("Photo Paper)"),
+                "Photo Paper": _("Photo Paper"),
                 "Transparency Film": _("Transparency Film"),
                 "CD or DVD Media": _("CD or DVD Media"),
             "Print Density": _("Print Density"),
