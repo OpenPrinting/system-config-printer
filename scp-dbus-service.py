@@ -471,6 +471,8 @@ class ConfigPrinting(dbus.service.Object):
         self._jobappletpath = None
         self._ppds = None
         self._language = locale.getlocale (locale.LC_MESSAGES)[0]
+        if not self._language:
+            self._language = locale.getlocale (locale.LC_CTYPE)[0]
 
     def destroy (self):
         self._cupsconn.destroy ()
@@ -511,7 +513,7 @@ class ConfigPrinting(dbus.service.Object):
     def GetBestDrivers(self, device_id, device_make_and_model, device_uri,
                    reply_handler, error_handler):
         GetBestDriversRequest (device_id, device_make_and_model, device_uri,
-                               self._cupsconn, self._language[0],
+                               self._cupsconn, self._language,
                                reply_handler, error_handler)
 
     @dbus.service.method(dbus_interface=CONFIG_IFACE,
