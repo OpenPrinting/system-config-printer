@@ -859,7 +859,7 @@ def missingExecutables(ppd):
         os.unlink (tmpfname)
         ppd.writeFd (tmpfd)
         os.lseek (tmpfd, 0, os.SEEK_SET)
-        f = os.fdopen (tmpfd, "rt")
+        f = os.fdopen (tmpfd, "rt", encoding="utf-8")
         search = "*cupsFilter:"
         for line in f:
             if line.startswith (search):
