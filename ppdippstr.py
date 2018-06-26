@@ -93,7 +93,7 @@ def init ():
     ppd = TranslationDict ({
             "General": _("General"),
            
-            #HP et foo2zjs
+            #HP and foo2zjs
             "Print Quality": _("Print Quality"),
             "Automatic": _("Automatic"),
            
