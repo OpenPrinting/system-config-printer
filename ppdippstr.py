@@ -93,7 +93,7 @@ def init ():
     ppd = TranslationDict ({
             "General": _("General"),
            
-           #HP
+            #HP and foo2zjs
             "Print Quality": _("Print Quality"),
             "Automatic": _("Automatic"),
            
@@ -155,6 +155,7 @@ def init ():
             "Medium (3)": _("Medium (3)"),
             "Dark (4)": _("Dark (4)"),
             "Extra Dark (5)": _("Extra Dark (5)"),
+            "Duplex Printing": _("Duplex Printing"),
             "Copies": _("Copies"),
             
             "Adjustment": _("Adjustment"),
@@ -170,10 +171,14 @@ def init ():
             "Output Mode": _("Output Mode"),
                  "Grayscale": _("Grayscale"),
             
-            #Brother      
+            #Brother
+            "Toner save mode": _("Toner save mode"),
+            	"Tray1": _("Tray1"),
+                "Tray2": _("Tray2"),
+                "Tray3": _("Tray3"),
             "Two-Sided": _("Two-Sided"),
             "Print Settings": _("Print Settings"),
-            "Print Settings (Advanced)": _("Print Settings  (Advanced)"),
+            "Print Settings (Advanced)": _("Print Settings (Advanced)"),
             "Color Settings": _("Color Settings"),
             "Color Settings (Advanced)": _("Color Settings (Advanced)"),                     
             "Brightness": _("Brightness"),
@@ -189,6 +194,24 @@ def init ():
             "_Contrast": _("_Contrast"),
             "_Saturation": _("_Saturation"),
             "On": _("On"),
+
+            #Gutenprint
+            "2-Sided Printing": _("2-Sided Printing"),
+            "Shrink Page If Necessary to Fit Borders": _("Shrink Page If Necessary to Fit Borders"),
+         	  "Shrink (print the whole page)": _("Shrink (print the whole page)"),
+           	  "Crop (preserve dimensions)": _("Crop (preserve dimensions)"),
+         	  "Expand (use maximum page area)": _("Expand (use maximum page area)"),
+            "Borderless": _("Borderless"),
+            	"No": _("No"),
+            	"Yes": _("Yes"),
+            "Output Control Common": _("Output Control Common"),
+            "Color Correction": _("Color Correction"),
+            "Brightness Fine Adjustment": _("Brightness Fine Adjustment"),
+            "Contrast Fine Adjustment": _("Contrast Fine Adjustment"),
+            "Saturation Fine Adjustment": _("Saturation Fine Adjustment"),
+            "Image Type": _("Image Type"),            
+            #Foomatic
+	    "Bidirectional printing": _("Bidirectional printing"),
             # Options 
             "Installable Options": _("Installable Options"),
             "Duplexer Installed": _("Duplexer Installed"),
@@ -201,22 +224,28 @@ def init ():
             "CD Hub Size": _("CD Hub Size"),
             "Ink Type": _("Ink Type"),
             "Toner Save ": _("Toner Save "),
-            "ON": _("ON"),      
-            "Toner Density": _("Toner Density"),
+            "ON": _("ON"),
+            "Toner Density ": _("Toner Density "),
             "Media Type ": _("Media Type "),
             "Collate ": _("Collate "),
             "Image Refinement ": _("Image Refinement "),
+            "Image Refinement": _("Image Refinement"),
             "Halftones ": _("Halftones "),
             "Duplex": _("Duplex"),
             "OFF": _("OFF"),
             "ON (Long-edged Binding)": _("ON (Long-edged Binding)"),
             "ON (Short-edged Binding)": _("ON (Short-edged Binding)"),
+            	"High Quality": _("High Quality"),
+            	"High Quality Grayscale": _("High Quality Grayscale"),
+            "Controlled by 'Print Quality'": _("Controlled by 'Print Quality'"),
+           "Paper Destination": _("Paper Destination"),
+            
             #Samsung
             "Paper Size": _("Paper Size"),
             "Paper Type": _("Paper Type"),
             "Thin": _("Thin"),
             "Thick": _("Thick"),
-            "Thicker": _("Thicker") ,     
+            "Thicker": _("Thicker") ,
             "Edge Enhance": _("Edge Enhance"),
             "Skip Blank Pages": _("Skip Blank Pages"),
             "Double-sided Printing": _("Double-sided Printing"),
@@ -227,12 +256,13 @@ def init ():
             "Two-sided": _("Two-sided"),
             "Long Edge": _("Long Edge"),
             "Short Edge": _("Short Edge"),
+            "Toner Save": _("Toner Save"),
       
             #Ricoh
             "Finisher": _("Finisher"),
             "Option Tray": _("Option Tray"),
             "External Tray": _("External Tray"),
-            "Internal Tray": _("Internal Tray"),
+            "Internal Tray 1": _("Internal Tray 1"),
             "Internal Tray 2": _("Internal Tray 2"),
             "Internal Shift Tray": _("Internal Shift Tray"),
             "Not Installed": _("Not Installed"),
@@ -241,10 +271,11 @@ def init ():
             "InputSlot": _("InputSlot"),
                 "Tray 2": _("Tray 2"),
                 "Tray 3": _("Tray 3"),
-            "Tray 4": _("Tray 4"),        
-                "Bypass Tray": _("Bypass Tray"),        
+                "Tray 4": _("Tray 4"),
+                "Bypass Tray": _("Bypass Tray"),
+            "Collate": _("Collate"),
             "Destination": _("Destination"),
-            "Staple": _("Staple"),    
+            "Staple": _("Staple"),
             "Punch": _("Punch"),
             "Toner Saving": _("Toner Saving"),
             "Gradation": _("Gradation"),
@@ -255,7 +286,7 @@ def init ():
             "Draft (auto-detect paper type)":
                 _("Draft (auto-detect-paper type)"),
             "Draft (Color cartridge)":
-                _("Draft (Color cartridge)"),    
+                _("Draft (Color cartridge)"),
             "Draft Grayscale (Black cartridge)":
                 _("Draft grayscale (Black cartridge)"),
             "Draft Grayscale (auto-detect paper type)":
@@ -278,13 +309,11 @@ def init ():
                 _("High quality grayscale (Black cartridge)"),
             "Photo (on photo paper)": _("Photo (on photo paper)"),
             "Photo (Color cartridge, on photo paper)": _("Photo (Color cartridge, on photo paper)"),
-            "Best Quality (color on photo paper)":
-                _("Best quality (color on photo paper)"),
-            "Normal Quality (color on photo paper)":
-                _("Normal quality (color on photo paper)"),
+            "Best Quality (color on photo paper)": _("Best quality (color on photo paper)"),
+            "Normal Quality (color on photo paper)": _("Normal quality (color on photo paper)"),
 
             "Media Source": _("Media source"),
-            "Printer default": _("Printer default"),
+            "Printer Default": _("Printer Default"),
             "Photo Tray": _("Photo tray"),
             "Upper Tray": _("Upper tray"),
             "Lower Tray": _("Lower tray"),
@@ -292,7 +321,8 @@ def init ():
             "Envelope Feeder": _("Envelope feeder"),
             "Large Capacity Tray": _("Large capacity tray"),
             "Manual Feeder": _("Manual feeder"),
-            "Multi Purpose Tray ": _("Multi-purpose tray "),
+            "Multi-purpose Tray ": _("Multi-purpose tray "),
+            "Multipurpose Tray": _("Multipurpose tray"),
 
             "Page Size": _("Page size"),
             "Custom": _("Custom"),
@@ -306,59 +336,37 @@ def init ():
             "CD or DVD 80 mm": _("CD or DVD 80mm"),
             "CD or DVD 120 mm": _("CD or DVD 120mm"),
 
-            "Double-Sided Printing": _("Double-sided printing"),
+            "Double-Sided Printing": _("Double-sided Printing"),
             "Long Edge (Standard)": _("Long edge (standard)"),
             "Short Edge (Flip)": _("Short edge (flip)"),
             "Off": _("Off"),
 
-            "Resolution, Quality, Ink Type, Media Type":
-                _("Resolution, quality, ink type, media type"),
+            "Resolution, Quality, Ink Type, Media Type": _("Resolution, quality, ink type, media type"),
             "Controlled by 'Printout Mode'": _("Controlled by 'Printout mode'"),
-            "300 dpi, Color, Color Cartr.":
-                _("300 dpi, Color, Color Cartr."),
-            "300 dpi, Color, Black + Color Cartr.":
-                _("300 dpi, color, black + color cartridge"),
-            "300 dpi, Draft, Color, Color Cartr.":
-                _("300 dpi, Draft, Color, Color Cartr."),
-            "300 dpi, Draft, Color, Black + Color Cartr.":
-                _("300 dpi, draft, color, black + color cartridge"),
-            "300 dpi, Draft, Grayscale, Black Cartr.":
-                _("300 dpi, Draft, Grayscale, Black Cartr."),
-            "300 dpi, Grayscale, Black Cartr.":
-                _("300 dpi, Grayscale, Black Cartr."),
-            "300 dpi, Draft, Grayscale, Black + Color Cartr.":
-                _("300 dpi, draft, grayscale, black + color cartridge"),
-            "300 dpi, Grayscale, Black + Color Cartr.":
-                _("300 dpi, grayscale, black + color cartridge"),
-            "600 dpi, Color, Black + Color Cartr.":
-                _("600 dpi, color, black + color cartridge"),
-            "600 dpi, Grayscale, Black + Color Cartr.":
-                _("600 dpi, grayscale, black + color cartridge"),
-            "600 dpi, Photo, Black + Color Cartr., Photo Paper":
-                _("600 dpi, photo, black + color cartridge, photo paper"),
-            "600 dpi, Color, Black + Color Cartr., Photo Paper, Normal":
-                _("600 dpi, color, black + color cartridge, photo paper, normal"),
-            "1200 dpi, Photo, Black + Color Cartr., Photo Paper":
-                _("1200 dpi, photo, black + color cartridge, photo paper"),
+            "300 dpi, Color, Color Cartr.": _("300 dpi, Color, Color Cartr."),
+            "300 dpi, Color, Black + Color Cartr.": _("300 dpi, color, black + color cartridge"),
+            "300 dpi, Draft, Color, Color Cartr.": _("300 dpi, Draft, Color, Color Cartr."),
+            "300 dpi, Draft, Color, Black + Color Cartr.": _("300 dpi, draft, color, black + color cartridge"),
+            "300 dpi, Draft, Grayscale, Black Cartr.": _("300 dpi, Draft, Grayscale, Black Cartr."),
+            "300 dpi, Grayscale, Black Cartr.": _("300 dpi, Grayscale, Black Cartr."),
+            "300 dpi, Draft, Grayscale, Black + Color Cartr.": _("300 dpi, draft, grayscale, black + color cartridge"),
+            "300 dpi, Grayscale, Black + Color Cartr.": _("300 dpi, grayscale, black + color cartridge"),
+            "600 dpi, Color, Black + Color Cartr.": _("600 dpi, color, black + color cartridge"),
+            "600 dpi, Grayscale, Black + Color Cartr.": _("600 dpi, grayscale, black + color cartridge"),
+            "600 dpi, Photo, Black + Color Cartr., Photo Paper": _("600 dpi, photo, black + color cartridge, photo paper"),
+            "600 dpi, Color, Black + Color Cartr., Photo Paper, Normal": _("600 dpi, color, black + color cartridge, photo paper, normal"),
+            "1200 dpi, Photo, Black + Color Cartr., Photo Paper": _("1200 dpi, photo, black + color cartridge, photo paper"),
             })
 
     ## Common backend descriptions
     global backends
     backends = TranslationDict ({
-            "Internet Printing Protocol (ipp)":
-                _("Internet Printing Protocol (ipp)"),
-            "Internet Printing Protocol (http)":
-                _("Internet Printing Protocol (http)"),
-            "Internet Printing Protocol (https)":
-                _("Internet Printing Protocol (https)"),
-            "LPD/LPR Host or Printer":
-                _("LPD/LPR Host or Printer"),
-            "AppSocket/HP JetDirect":
-                _("AppSocket/HP JetDirect"),
-            "Serial Port #1":
-                _("Serial Port #1"),
-            "LPT #1":
-                _("LPT #1"),
-            "Windows Printer via SAMBA":
-                _("Windows Printer via SAMBA"),
+            "Internet Printing Protocol (ipp)": _("Internet Printing Protocol (ipp)"),
+            "Internet Printing Protocol (http)": _("Internet Printing Protocol (http)"),
+            "Internet Printing Protocol (https)": _("Internet Printing Protocol (https)"),
+            "LPD/LPR Host or Printer": _("LPD/LPR Host or Printer"),
+            "AppSocket/HP JetDirect": _("AppSocket/HP JetDirect"),
+            "Serial Port #1": _("Serial Port #1"),
+            "LPT #1": _("LPT #1"),
+            "Windows Printer via SAMBA": _("Windows Printer via SAMBA"),
             })
