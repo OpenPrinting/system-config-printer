@@ -1049,7 +1049,7 @@ class NewPrinterGUI(GtkGUI):
             debugprint('No packages for driver')
             return None
         if len(arches) > 1:
-            debugprint('Returned more than one matching architecture, please report this as a bug: %s', repr (arches))
+            debugprint('Returned more than one matching architecture, please report this as a bug: %s' % repr (arches))
             return None
 
         pkgs = pkgs[arches[0]]
