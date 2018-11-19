@@ -23,6 +23,8 @@ from gi.repository import Gdk
 from gi.repository import Gtk
 import pprint
 import sys
+import datetime
+import time
 import traceback
 
 if __name__ == "__main__":
@@ -102,7 +104,9 @@ class Troubleshooter:
 
         self.questions = []
         self.question_answers = []
-        self.answers = {}
+        # timestamp should be accessible through whole troubleshoot
+        now = datetime.datetime.fromtimestamp (time.time ())
+        self.answers = {'error_log_timestamp': now.strftime ("%F %T")}
         self.moving_backwards = False
 
         main.show_all ()
