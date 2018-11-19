@@ -233,6 +233,10 @@ class Connection:
 
     def _authloop (self, fname, fn, *args, **kwds):
         self._passes = 0
+        # remove signature if dbus is not being used and signature is provided
+        if not self._using_polkit():
+            kwds.pop('signature', None)
+
         c = self._connection
         retry = False
         while True:
