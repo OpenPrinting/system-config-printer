@@ -134,28 +134,28 @@ class ErrorLogCheckpoint(Question):
         if 'error_log_checkpoint' in self.answers:
             return self.answers
 
-        with NamedTemporaryFile () as tmpf:
-            try:
-                self.op = TimedOperation (self.authconn.getFile,
-                                          args=('/admin/log/error_log',
-                                                tmpf.file),
-                                          parent=parent)
-                self.op.run ()
-            except (RuntimeError, cups.IPPError) as e:
-                self.answers['error_log_checkpoint_exc'] = e
-            except cups.HTTPError as e:
-                self.answers['error_log_checkpoint_exc'] = e
+        tmpf = NamedTemporaryFile()
+        try:
+            self.op = TimedOperation (self.authconn.getFile,
+                                        args=["/admin/log/error_log"],
+                                        kwargs={'file': tmpf},
+                                        parent=parent)
+            self.op.run ()
+        except (RuntimeError, cups.IPPError) as e:
+            self.answers['error_log_checkpoint_exc'] = e
+        except cups.HTTPError as e:
+            self.answers['error_log_checkpoint_exc'] = e
 
-                # Abandon the CUPS connection and make another.
-                answers = self.troubleshooter.answers
-                factory = answers['_authenticated_connection_factory']
-                self.authconn = factory.get_connection ()
-                self.answers['_authenticated_connection'] = self.authconn
+            # Abandon the CUPS connection and make another.
+            answers = self.troubleshooter.answers
+            factory = answers['_authenticated_connection_factory']
+            self.authconn = factory.get_connection ()
+            self.answers['_authenticated_connection'] = self.authconn
 
-            try:
-                statbuf = os.stat (tmpf.file)
-            except OSError:
-                statbuf = [0, 0, 0, 0, 0, 0, 0]
+        try:
+            statbuf = os.stat (tmpf.name)
+        except OSError:
+            statbuf = [0, 0, 0, 0, 0, 0, 0]
 
         self.answers['error_log_checkpoint'] = statbuf[6]
         self.persistent_answers['error_log_checkpoint'] = statbuf[6]

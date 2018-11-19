@@ -86,6 +86,7 @@ class DeviceListed(Question):
             self.authconn = answers['_authenticated_connection']
             try:
                 self.op = TimedOperation (self.authconn.getDevices,
+                                          kwargs={'signature': 'iiasas'},
                                           parent=parent)
                 devices = self.op.run ()
                 devices_list = []

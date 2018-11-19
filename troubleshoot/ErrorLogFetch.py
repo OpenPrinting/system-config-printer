@@ -69,11 +69,11 @@ class ErrorLogFetch(Question):
             with NamedTemporaryFile (delete=False) as tmpf:
                 success = False
                 try:
-                    c.getFile ('/admin/log/error_log', tmpf.file)
+                    c.getFile ('/admin/log/error_log', file = tmpf)
                     success = True
                 except cups.HTTPError:
                     try:
-                        os.remove (tmpf.file)
+                        os.remove (tmpf.name)
                     except OSError:
                         pass
 

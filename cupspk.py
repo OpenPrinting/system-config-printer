@@ -99,6 +99,8 @@ class Connection:
 
     def _call_with_pk_and_fallback(self, use_fallback, pk_function_name, pk_args, fallback_function, *args, **kwds):
         pk_function = None
+        # take signature from kwds if is provided
+        dbus_args_signature = kwds.pop('signature', None)
 
         if not use_fallback:
             cups_pk = self._get_cups_pk()
@@ -116,7 +118,7 @@ class Connection:
         while True:
             try:
                 # FIXME: async call or not?
-                pk_retval = pk_function(*pk_args)
+                pk_retval = pk_function(*pk_args, signature = dbus_args_signature)
 
                 # if the PK call has more than one return values, we pop the
                 # first one as the error message
