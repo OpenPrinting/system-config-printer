@@ -1630,6 +1630,8 @@ do_add (const char *cmd, const char *devaddr)
   if (!id.mfg || !id.mdl)
     {
       clear_device_id (&id);
+      free (map);
+      free (usb_device_devpath);
       return 1;
     }
 
@@ -1653,6 +1655,7 @@ do_add (const char *cmd, const char *devaddr)
     {
       syslog (LOG_ERR, "no corresponding CUPS device found");
       clear_device_id (&id);
+      free (map);
       return 0;
     }
 
@@ -1706,6 +1709,7 @@ do_add (const char *cmd, const char *devaddr)
 
   clear_device_id (&id);
   free_device_uris (&device_uris);
+  free (map);
   return 0;
 }
 
