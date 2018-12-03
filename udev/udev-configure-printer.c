@@ -1512,6 +1512,8 @@ for_each_matching_queue (struct device_uris *device_uris,
       firstqueue = 0;
 
     skip:
+      free(device_uri_n);
+      free(this_device_uri_n);
       if (!attr)
 	break;
     }
