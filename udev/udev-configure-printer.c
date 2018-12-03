@@ -824,6 +824,7 @@ device_id_from_devpath (struct udev *udev, const char *devpath,
        */
       syslog (LOG_DEBUG, "Device already handled");
       free (usb_device_devpath);
+      free (devicefilepath);
       return NULL;
     }
 
@@ -845,6 +846,7 @@ device_id_from_devpath (struct udev *udev, const char *devpath,
     parse_device_id (device_id, id);
 
   udev_device_unref (dev);
+  free (devicefilepath);
   return usb_device_devpath;
 }
 
