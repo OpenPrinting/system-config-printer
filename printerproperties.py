@@ -1430,12 +1430,7 @@ class PrinterPropertiesDialog(GtkGUI):
                 except:
                     nonfatalException()
                     option_editable = False
-                    show_error_dialog (_("Error"),
-                                       _("Option '%s' has value '%s' and "
-                                         "cannot be edited.") %
-                                       (option.name,
-                                        value),
-                                       self.parent)
+                    debugprint ("Option '%s' has value '%s' and cannot be edited." % (option.name, value))
             option.widget.set_sensitive (option_editable)
             if not editable:
                 option.button.set_sensitive (False)
