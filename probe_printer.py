@@ -18,19 +18,19 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-import cupshelpers
-from debug import *
 import errno
-import socket, time
-from gi.repository import Gdk
-from gi.repository import Gtk
-from timedops import TimedOperation
+import socket
 import subprocess
 import threading
+import time
+
+from gi.repository import Gdk, GLib, GObject, Gtk
 import cups
-from gi.repository import GObject
-from gi.repository import GLib
+
+import cupshelpers
 import smburi
+from debug import *
+from timedops import TimedOperation
 
 try:
     import pysmb
@@ -98,8 +98,12 @@ def open_socket(hostname, port):
 
     s = None
     try:
-        ai = socket.getaddrinfo(host, port, socket.AF_UNSPEC,
-                                socket.SOCK_STREAM)
+        ai = socket.getaddrinfo(
+            host,
+            port,
+            socket.AF_UNSPEC,
+            socket.SOCK_STREAM,
+        )
     except (socket.gaierror, socket.error):
         ai = []
 
@@ -241,17 +245,18 @@ class PrinterFinder:
 
     def _do_find (self):
         self._cached_attributes = dict()
-        for fn in [self._probe_hplip,
-                   self._probe_jetdirect,
-                   self._probe_ipp,
-                   self._probe_snmp,
-                   self._probe_lpd,
-                   self._probe_smb]:
+        for finder in [
+            self._probe_hplip,
+            self._probe_jetdirect,
+            self._probe_ipp,
+            self._probe_snmp,
+            self._probe_lpd,
+            self._probe_smb,
+        ]:
             if self.quit:
-                return
-
+                return None
             try:
-                fn ()
+                finder ()
             except Exception:
                 nonfatalException ()
 
@@ -260,10 +265,12 @@ class PrinterFinder:
             self.callback_fn (None)
 
     def _new_device (self, uri, info, location = None):
-        device_dict = { 'device-class': 'network',
-                        'device-info': "%s" % info }
+        device_dict = {
+            'device-class': 'network',
+            'device-info': "%s" % info,
+        }
         if location:
-            device_dict['device-location']=location
+            device_dict['device-location'] = location
         device_dict.update (self._cached_attributes)
         new_device = cupshelpers.Device (uri, **device_dict)
         debugprint ("Device found: %s" % uri)
@@ -282,18 +289,18 @@ class PrinterFinder:
         except OSError as e:
             debugprint ("snmp: no good")
             if e.errno == errno.ENOENT:
-                return
+                return None
 
             raise
 
         (stdout, stderr) = p.communicate ()
         if p.returncode != 0:
             debugprint ("snmp: no good (return code %d)" % p.returncode)
-            return
+            return None
 
         if self.quit:
             debugprint ("snmp: no good")
-            return
+            return None
 
         for line in stdout.decode ().split ('\n'):
             words = wordsep (line)
@@ -335,7 +342,7 @@ class PrinterFinder:
         for name in lpd.get_possible_queue_names ():
             if self.quit:
                 debugprint ("lpd: no good")
-                return
+                return None
 
             found = lpd.probe_queue (name, [])
             if found is None:
@@ -361,7 +368,7 @@ class PrinterFinder:
             not self._cached_attributes['device-make-and-model'].lower ().startswith ("hewlett")):
             debugprint ("hplip: no good (Non-HP printer: %s)" %
                         self._cached_attributes['device-make-and-model'])
-            return
+            return None
 
         try:
             debugprint ("hplip: trying")
@@ -372,18 +379,18 @@ class PrinterFinder:
                                   stderr=subprocess.DEVNULL)
         except OSError as e:
             if e.errno == errno.ENOENT:
-                return
+                return None
 
             raise
 
         (stdout, stderr) = p.communicate ()
         if p.returncode != 0:
             debugprint ("hplip: no good (return code %d)" % p.returncode)
-            return
+            return None
 
         if self.quit:
             debugprint ("hplip: no good")
-            return
+            return None
 
         uri = stdout.decode ().strip ()
         debugprint ("hplip: uri is %s" % uri)
@@ -455,27 +462,30 @@ class PrinterFinder:
     def _probe_ipp (self):
         debugprint ("ipp: trying")
         try:
-            ai = socket.getaddrinfo(self.hostname, 631, socket.AF_UNSPEC,
-                                    socket.SOCK_STREAM)
+            ai = socket.getaddrinfo(
+                self.hostname,
+                631,
+                socket.AF_UNSPEC,
+                socket.SOCK_STREAM,
+            )
         except socket.gaierror:
             debugprint ("ipp: can't resolve %s" % self.hostname)
             debugprint ("ipp: no good")
-            return
+            return None
         for res in ai:
             af, socktype, proto, canonname, sa = res
-            if (af == socket.AF_INET and sa[0] == '127.0.0.1' or
-                af == socket.AF_INET6 and sa[0] == '::1'):
+            is_localhost_v4 = (af == socket.AF_INET and sa[0] == '127.0.0.1')
+            is_localhost_v6 = (af == socket.AF_INET6 and sa[0] == '::1')
+            if (is_localhost_v4 or is_localhost_v6) 
                 debugprint ("ipp: do not probe local cups server")
                 debugprint ("ipp: no good")
-                return
-
+                return None
         try:
             c = cups.Connection (host = self.hostname)
         except RuntimeError:
             debugprint ("ipp: can't connect to server/printer")
             debugprint ("ipp: no good")
-            return
-
+            return None
         try:
             printers = c.getPrinters ()
         except cups.IPPError:
@@ -485,7 +495,7 @@ class PrinterFinder:
             info = "IPP (%s)" % self.hostname
             self._new_device(uri, info)
             debugprint ("ipp: done")
-            return
+            return None
 
         for name, queue in printers.items ():
             uri = queue['printer-uri-supported']
@@ -494,6 +504,7 @@ class PrinterFinder:
             self._new_device(uri, info, location)
 
         debugprint ("ipp: done")
+        return None
 
 if __name__ == '__main__':
     import sys
