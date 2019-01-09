@@ -363,10 +363,14 @@ class PrinterFinder:
         debugprint ("lpd: done")
 
     def _probe_hplip (self):
-        if ('device-make-and-model' in self._cached_attributes and \
-            self._cached_attributes['device-make-and-model'] != "Unknown" and \
-            not self._cached_attributes['device-make-and-model'].lower ().startswith ("hp") and \
-            not self._cached_attributes['device-make-and-model'].lower ().startswith ("hewlett")):
+        printer_exists = ('device-make-and-model' in self._cached_attributes)
+        printer_model_known = (self._cached_attributes['device-make-and-model'] != "Unknown")
+        is_hp_printer = (
+            self._cached_attributes['device-make-and-model'].lower().startswith("hp")
+            or self._cached_attributes['device-make-and-model'].lower().startswith("hewlett")
+        )
+
+        if (printer_exists and printer_model_known and not is_hp_printer):
             debugprint ("hplip: no good (Non-HP printer: %s)" %
                         self._cached_attributes['device-make-and-model'])
             return None
