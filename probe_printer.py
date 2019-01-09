@@ -280,12 +280,13 @@ class PrinterFinder:
         # Run the CUPS SNMP backend, pointing it at the host.
         try:
             debugprint ("snmp: trying")
-            p = subprocess.Popen (args=["/usr/lib/cups/backend/snmp",
-                                        self.hostname],
-                                  close_fds=True,
-                                  stdin=subprocess.DEVNULL,
-                                  stdout=subprocess.PIPE,
-                                  stderr=subprocess.DEVNULL)
+            p = subprocess.Popen (
+                    args=["/usr/lib/cups/backend/snmp", self.hostname],
+                    close_fds=True,
+                    stdin=subprocess.DEVNULL,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.DEVNULL
+            )
         except OSError as e:
             debugprint ("snmp: no good")
             if e.errno == errno.ENOENT:
@@ -372,15 +373,16 @@ class PrinterFinder:
 
         try:
             debugprint ("hplip: trying")
-            p = subprocess.Popen (args=["hp-makeuri", "-c", self.hostname],
-                                  close_fds=True,
-                                  stdin=subprocess.DEVNULL,
-                                  stdout=subprocess.PIPE,
-                                  stderr=subprocess.DEVNULL)
+            p = subprocess.Popen (
+                args=["hp-makeuri", "-c", self.hostname],
+                close_fds=True,
+                stdin=subprocess.DEVNULL,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.DEVNULL
+            )
         except OSError as e:
             if e.errno == errno.ENOENT:
                 return None
-
             raise
 
         (stdout, stderr) = p.communicate ()
@@ -401,7 +403,7 @@ class PrinterFinder:
 
     def _probe_smb (self):
         if not PYSMB_AVAILABLE:
-            return
+            return None
 
         smbc_auth = BackgroundSmbAuthContext ()
         debug = 0
@@ -416,7 +418,7 @@ class PrinterFinder:
             while smbc_auth.perform_authentication () > 0:
                 if self.quit:
                     debugprint ("smb: no good")
-                    return
+                    return None
 
                 try:
                     entries = ctx.opendir (uri).getdents ()
@@ -431,7 +433,7 @@ class PrinterFinder:
 
         if self.quit:
             debugprint ("smb: no good")
-            return
+            return None
 
         for entry in entries:
             if entry.smbc_type == pysmb.smbc.PRINTER_SHARE:
