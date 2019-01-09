@@ -25,11 +25,11 @@ import threading
 import time
 
 from gi.repository import Gdk, GLib, GObject, Gtk
-import cups
 
+import cups
 import cupshelpers
 import smburi
-from debug import *
+from debug import debugprint, nonfatalException, set_debugging
 from timedops import TimedOperation
 
 try:
