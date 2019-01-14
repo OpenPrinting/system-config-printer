@@ -448,7 +448,7 @@ class Connection:
             if fd is not None:
                 os.lseek (fd, 0, os.SEEK_SET)
                 buf = os.read (fd, 512)
-                while buf != '':
+                while buf != '' and buf != b'':
                     os.write (tmpfd, buf)
                     buf = os.read (fd, 512)
             else:
