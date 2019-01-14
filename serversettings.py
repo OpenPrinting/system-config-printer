@@ -440,6 +440,9 @@ class ServerSettings(GtkGUI):
                 has_browsepoll = True
                 break
 
+        # Return to the start of file
+        f.seek(0)
+
         for line in f:
             line = line.decode('UTF-8')
             l = line.lower ().strip ()
