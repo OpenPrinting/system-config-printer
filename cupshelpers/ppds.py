@@ -268,6 +268,9 @@ def normalize (strin):
     - Epson PM A820 -> epson pm a 820
     - HP PhotoSmart C 8100 -> hp photosmart c 8100
     - hp Photosmart C8100  -> hp photosmart c 8100
+
+    @type strin: string that can be the make or the model
+    @return: a normalized lowercase string in which punctuations have been replaced with spaces.
     """
     lstrin = strin.strip ().lower ()
     normalized = ""
