@@ -249,24 +249,26 @@ def ppdMakeModelSplit (ppd_make_and_model):
     return (make, model)
 
 def normalize (strin):
-    # This function normalizes manufacturer and model names for comparing.
-    # The string is turned to lower case and leading and trailing white
-    # space is removed. After that each sequence of non-alphanumeric
-    # characters (including white space) is replaced by a single space and
-    # also at each change between letters and numbers a single space is added.
-    # This makes the comparison only done by alphanumeric characters and the
-    # words formed from them. So mostly two strings which sound the same when
-    # you pronounce them are considered equal. Printer manufacturers do not
-    # market two models whose names sound the same but differ only by
-    # upper/lower case, spaces, dashes, ..., but in printer drivers names can
-    # be easily supplied with these details of the name written in the wrong
-    # way, especially if the IEEE-1284 device ID of the printer is not known.
-    # This way we get a very reliable matching of printer model names.
-    # Examples:
-    # - Epson PM-A820 -> epson pm a 820
-    # - Epson PM A820 -> epson pm a 820
-    # - HP PhotoSmart C 8100 -> hp photosmart c 8100
-    # - hp Photosmart C8100  -> hp photosmart c 8100
+    """
+    This function normalizes manufacturer and model names for comparing.
+    The string is turned to lower case and leading and trailing white
+    space is removed. After that each sequence of non-alphanumeric
+    characters (including white space) is replaced by a single space and
+    also at each change between letters and numbers a single space is added.
+    This makes the comparison only done by alphanumeric characters and the
+    words formed from them. So mostly two strings which sound the same when
+    you pronounce them are considered equal. Printer manufacturers do not
+    market two models whose names sound the same but differ only by
+    upper/lower case, spaces, dashes, ..., but in printer drivers names can
+    be easily supplied with these details of the name written in the wrong
+    way, especially if the IEEE-1284 device ID of the printer is not known.
+    This way we get a very reliable matching of printer model names.
+    Examples:
+    - Epson PM-A820 -> epson pm a 820
+    - Epson PM A820 -> epson pm a 820
+    - HP PhotoSmart C 8100 -> hp photosmart c 8100
+    - hp Photosmart C8100  -> hp photosmart c 8100
+    """
     lstrin = strin.strip ().lower ()
     normalized = ""
 
