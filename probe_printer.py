@@ -130,14 +130,14 @@ class LpdServer:
         s = open_socket(self.hostname, 515)
         if not s:
             return None
-        print(name)
+        debugprint(name)
         
         try:
             s.send(('\2%s\n' % name).encode('UTF-8'))  # cmd send job to queue
             data = s.recv(1024).decode('UTF-8')  # receive status
-            print(repr(data))
+            debugprint(repr(data))
         except socket.error as msg:
-            print(msg)
+            debugprint(msg)
             try:
                 s.close ()
             except:
