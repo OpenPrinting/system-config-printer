@@ -1454,11 +1454,22 @@ class NewPrinterGUI(GtkGUI):
             else:
                 port = 631
             try:
+                debugprint('Download ppd file from remote server')
                 conn = http.client.HTTPConnection(resg[0], port)
                 conn.request("GET", "/printers/%s.ppd" % resg[2])
                 resp = conn.getresponse()
                 if resp.status == 200:
                     self.remotecupsqueue = resg[2]
+
+                ppdcontent = resp.read()
+
+                with tempfile.NamedTemporaryFile () as tmpf:
+                    tmpf.write(ppdcontent)
+                    tmpf.flush()
+                    try:
+                        ppd = cups.PPD(tmpf.name)
+                    except (cups.IPPError, RuntimeError):
+                        raise IOError("Server's ppd file is corrupted.")
             except:
                 pass
 
@@ -1549,8 +1560,9 @@ class NewPrinterGUI(GtkGUI):
             elif self.remotecupsqueue:
                 # We have a remote CUPS queue, let the client queue
                 # stay raw so that the driver on the server gets used
-                ppdname = 'raw'
-                self.ppd = ppdname
+                if self.ppd is None:
+                    ppdname = 'raw'
+                    self.ppd = ppdname
                 name = self.remotecupsqueue
                 name = self.makeNameUnique (name)
                 self.entNPName.set_text (name)
