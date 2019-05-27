@@ -60,8 +60,8 @@ GLib.set_prgname("system-config-printer")
 
 class FetchedPPDs(GObject.GObject):
     __gsignals__ = {
-        'ready': (GObject.SIGNAL_RUN_LAST, None, ()),
-        'error': (GObject.SIGNAL_RUN_LAST, None,
+        'ready': (GObject.SignalFlags.RUN_LAST, None, ()),
+        'error': (GObject.SignalFlags.RUN_LAST, None,
                   (GObject.TYPE_PYOBJECT,))
         }
 
