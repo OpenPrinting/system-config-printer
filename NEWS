@@ -1,56 +1,56 @@
 1.5.12 changes
 --------------
-- when you use different component id, add provide for old name (https://github.com/zdohnal/system-config-printer/issues/99)
+- when you use different component id, add provide for old name (issues/99)
 - fix other issues in system-config-printer.appdata.xml to be completely valid 
   for new format
-- make the appstream file validate with version >= 0.6 (https://github.com/zdohnal/system-config-printer/issues/97)
-- fixes for scp-dbus-services (https://github.com/zdohnal/system-config-printer/pull/96)
-- use ValueError instead of ImportError (https://github.com/zdohnal/system-config-printer/pull/95)
-- fix constructing the auth dialog (https://github.com/zdohnal/system-config-printer/pull/93)
-- update da.po (https://github.com/zdohnal/system-config-printer/pull/102)
-- use utf-8 in fdopen() (https://github.com/zdohnal/system-config-printer/pull/112)
-- Fallback to using LC_CTYPE if LC_MESSAGES is empty and fix _language use (https://github.com/zdohnal/system-config-printer/pull/108)
-- Update de.po (https://github.com/zdohnal/system-config-printer/pull/106)
-- Fix TypeError raised by debugprint call (https://github.com/zdohnal/system-config-printer/pull/121)
-- dbus: remove deprecated at_console statement (https://github.com/zdohnal/system-config-printer/pull/123)
+- make the appstream file validate with version >= 0.6 (issues/97)
+- fixes for scp-dbus-services (pull/96)
+- use ValueError instead of ImportError (pull/95)
+- fix constructing the auth dialog (pull/93)
+- update da.po (pull/102)
+- use utf-8 in fdopen() (pull/112)
+- Fallback to using LC_CTYPE if LC_MESSAGES is empty and fix _language use (pull/108)
+- Update de.po (pull/106)
+- Fix TypeError raised by debugprint call (pull/121)
+- dbus: remove deprecated at_console statement (pull/123)
 - fixed several memory leaks reported by Coverity scan
-- temporary fix for error pop up message for IPP2.0+ attributes (https://github.com/zdohnal/system-config-printer/issues/122)
-- lpd queue names printed on the console (https://github.com/zdohnal/system-config-printer/issues/132)
-- use proper docstring (https://github.com/zdohnal/system-config-printer/pull/130)
-- remove deprecated SIGNAL_RUN_LAST (https://github.com/zdohnal/system-config-printer/pull/134)
-- use remote ppd for CUPS shared queues (https://github.com/zdohnal/system-config-printer/pull/137)
+- temporary fix for error pop up message for IPP2.0+ attributes (issues/122)
+- lpd queue names printed on the console (issues/132)
+- use proper docstring (pull/130)
+- remove deprecated SIGNAL_RUN_LAST (pull/134)
+- use remote ppd for CUPS shared queues (pull/137)
 
 1.5.10 changes
 --------------
 
 - printer couldn't be add ( https://bugzilla.redhat.com/show_bug.cgi?id=1419175 ) 
-- changes from Ubuntu by Till Kamppeter (https://github.com/zdohnal/system-config-printer/pull/64)
-- .travis.yml: switch from precise to trusty (https://github.com/zdohnal/system-config-printer/pull/63)
-- Replace icons deprecated by GTK 3.0 by non-deprecated ones (https://github.com/zdohnal/system-config-printer/pull/62)
-- Add a StartService for systemd based systems (https://github.com/zdohnal/system-config-printer/pull/56)
-- French translation update (https://github.com/zdohnal/system-config-printer/pull/57) 
-- Spelling fixes (https://github.com/zdohnal/system-config-printer/pull/58)
-- Syntax fixes (https://github.com/zdohnal/system-config-printer/pull/59)
-- Python 3.6 invalid escape sequence deprecation fixes (https://github.com/zdohnal/system-config-printer/pull/60)
-- Adds printer properties dialog vertical expansion (https://github.com/zdohnal/system-config-printer/pull/61)
-- Replace icons deprecated by GTK 3.0 by non-deprecated ones (https://github.com/zdohnal/system-config-printer/pull/62) 
-- Improvements of discovered devices/conection type lists in new-printer wizard, more debug output (https://github.com/zdohnal/system-config-printer/pull/65)
-- replace libgnome-keyring by libsecret (https://github.com/zdohnal/system-config-printer/issues/51)
-- Do not start the applet on GNOME and Cinnamon desktops (https://github.com/zdohnal/system-config-printer/pull/41)
-- Do not notify on 'cups-waiting-for-job-completed' because it's not an… (https://github.com/zdohnal/system-config-printer/pull/71)
-- Updated Turkish translation (https://github.com/zdohnal/system-config-printer/pull/74)
-- Update tr.po (https://github.com/zdohnal/system-config-printer/pull/73)
-- TypeError on <dict>.update call (https://github.com/zdohnal/system-config-printer/issues/76)
-- build: Install appstream metadata to non-deprecated location #77 (https://github.com/zdohnal/system-config-printer/pull/77)
-- Addition of some strings for i18n (https://github.com/zdohnal/system-config-printer/pull/81)
+- changes from Ubuntu by Till Kamppeter (pull/64)
+- .travis.yml: switch from precise to trusty (pull/63)
+- Replace icons deprecated by GTK 3.0 by non-deprecated ones (pull/62)
+- Add a StartService for systemd based systems (pull/56)
+- French translation update (pull/57) 
+- Spelling fixes (pull/58)
+- Syntax fixes (pull/59)
+- Python 3.6 invalid escape sequence deprecation fixes (pull/60)
+- Adds printer properties dialog vertical expansion (pull/61)
+- Replace icons deprecated by GTK 3.0 by non-deprecated ones (pull/62) 
+- Improvements of discovered devices/conection type lists in new-printer wizard, more debug output (pull/65)
+- replace libgnome-keyring by libsecret (issues/51)
+- Do not start the applet on GNOME and Cinnamon desktops (pull/41)
+- Do not notify on 'cups-waiting-for-job-completed' because it's not an… (pull/71)
+- Updated Turkish translation (pull/74)
+- Update tr.po (pull/73)
+- TypeError on <dict>.update call (issues/76)
+- build: Install appstream metadata to non-deprecated location #77 (pull/77)
+- Addition of some strings for i18n (pull/81)
 - Update .po and .pot files
-- added GenericName and X-GNOME-FullName to system-config-printer.desktop.in (https://github.com/zdohnal/system-config-printer/issues/20)
+- added GenericName and X-GNOME-FullName to system-config-printer.desktop.in (issues/20)
 - removed some deprecated parts of gui
 - updated translations by files from Zanata
 - s-c-p doesn't react on ALREADY_ENABLED exception from firewalld
 - removed deprecated Gtk objects
 - another deprecated issues - GLib
 - parent attribute in Gtk.Dialog is deprecated - use transient_for
-- system-config-printer.py doesn't have program name (https://github.com/zdohnal/system-config-printer/issues/53)
+- system-config-printer.py doesn't have program name (issues/53)
 - removed macedonian localization because of low rate of translated strings
 - don't ship pre-configured scripts
