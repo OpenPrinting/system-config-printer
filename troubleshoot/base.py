@@ -21,12 +21,14 @@
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 from gi.repository import Gtk
-from gettext import gettext as _
 N_ = lambda x: x
 from debug import *
 
-__all__ = [ '_',
-            'debugprint', 'get_debugging', 'set_debugging',
+import config
+import gettext
+gettext.install(domain=config.PACKAGE, localedir=config.localedir)
+
+__all__ = [ 'debugprint', 'get_debugging', 'set_debugging',
             'Question',
             'Multichoice',
             'TEXT_start_print_admin_tool' ]
