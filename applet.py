@@ -24,8 +24,13 @@ import sys
 from debug import *
 
 import dbus
-import dbus.glib
+
+# set up global default main loop
+from dbus.mainloop.glib import DBusGMainLoop
+DBusGMainLoop(set_as_default=True)
+
 import dbus.service
+import gi
 from gi.repository import GObject
 from gi.repository import GLib
 import time
@@ -42,6 +47,7 @@ except locale.Error as e:
     os.environ['LC_ALL'] = 'C'
     locale.setlocale (locale.LC_ALL, "")
 
+gi.require_version('Notify', '0.7')
 from gi.repository import Notify
 
 APPDIR="/usr/share/system-config-printer"
@@ -453,7 +459,7 @@ if __name__ == '__main__':
         except:
             pass
 
-    loop = GObject.MainLoop ()
+    loop = GLib.MainLoop ()
     runloop = RunLoop (session_bus, system_bus, loop)
     try:
         runloop.run ()
