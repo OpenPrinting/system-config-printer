@@ -1112,7 +1112,12 @@ class JobViewer (GtkGUI):
 
     def display_auth_info_dialog (self, job, keyring_attrs=None):
         data = self.jobs[job]
-        auth_info_required = data['auth-info-required']
+        try:
+            auth_info_required = data['auth-info-required']
+        except KeyError:
+            debugprint ("No auth-info-required attribute; "
+                        "guessing instead")
+            auth_info_required = ['username', 'password']
         dialog = authconn.AuthDialog (auth_info_required=auth_info_required,
                                       allow_remember=USE_SECRET)
         dialog.keyring_attrs = keyring_attrs
