@@ -17,8 +17,18 @@ def progress(progress, type, user_data):
 
 set_debugging (True)
 
-package = sys.argv[1]
-repo = sys.argv[2]
+try:
+    package = sys.argv[1]
+except:
+    debugprint("Missing package name to install.")
+    sys.exit(1)
+
+try:
+    repo = sys.argv[2]
+except:
+    debugprint("Missing name of repo.")
+    sys.exit(1)
+
 try:
     repo_gpg_id = sys.argv[3]
 except:
