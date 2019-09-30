@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 
+import gi
+gi.require_version('PackageKitGlib', '1.0')
 from gi.repository import GLib, PackageKitGlib
 import sys
 from debug import *
