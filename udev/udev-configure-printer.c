@@ -1285,7 +1285,8 @@ normalize_device_uri(const char *str_orig)
 {
   int i, j;
   int havespace = 0;
-  char *str;
+  char *str = NULL;
+  char *cropped_str = NULL;
 
   if (str_orig == NULL)
     return NULL;
@@ -1333,7 +1334,11 @@ normalize_device_uri(const char *str_orig)
 	 (strstr(str, "packard ") == str) ||
 	 (strstr(str, "apollo ") == str) ||
 	 (strstr(str, "usb ") == str))
-    str = strchr(str, ' ') + 1;
+  {
+    cropped_str = strdup(strchr(str, ' ') + 1);
+    free(str);
+    str = cropped_str;
+  }
 
   return str;
 }
@@ -1448,8 +1453,6 @@ for_each_matching_queue (struct device_uris *device_uris,
       for (i = 0; i < device_uris->n_uris; i++)
 	{
 	  device_uri_n = normalize_device_uri(device_uris->uri[i]);
-          if (this_device_uri_n == NULL || device_uri_n == NULL)
-            goto skip;
 	  /* As for the same device different URIs can come out when the
 	     device is accessed via the usblp kernel module or via low-
 	     level USB (libusb) we cannot simply compare URIs, must
@@ -1509,17 +1512,21 @@ for_each_matching_queue (struct device_uris *device_uris,
 		  break;
 		}
 	    }
+          if (device_uri_n != NULL)
+          {
+            free(device_uri_n);
+            device_uri_n = NULL;
+          }
 	}
 
       firstqueue = 0;
 
     skip:
-      if (device_uri_n != NULL)
-        free(device_uri_n);
-        device_uri_n = NULL;
       if (this_device_uri_n != NULL)
+      {
         free(this_device_uri_n);
         this_device_uri_n = NULL;
+      }
       if (!attr)
 	break;
     }
