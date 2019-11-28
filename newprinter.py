@@ -4183,7 +4183,7 @@ class NewPrinterGUI(GtkGUI):
                                 tmpf.flush ()
                                 ppd = cups.PPD(tmpf.name)
 
-        except RuntimeError as e:
+        except (RuntimeError, urllib.error.HTTPError) as e:
             debugprint ("RuntimeError: " + repr (e))
             if self.rbtnNPFoomatic.get_active():
                 # Foomatic database problem of some sort.
