@@ -175,44 +175,43 @@ class _IPPConnectionThread(threading.Thread):
 
     def _auth (self, prompt, conn=None, method=None, resource=None):
         def prompt_auth (prompt):
-            Gdk.threads_enter ()
             if conn is None:
                 self._auth_handler (prompt, self._conn)
             else:
                 self._auth_handler (prompt, self._conn, method, resource)
-
-            Gdk.threads_leave ()
             return False
 
         if self._auth_handler is None:
             return ""
 
-        GLib.idle_add (prompt_auth, prompt)
+        GLib.idle_add (prompt_auth, prompt, priority=config.gui_events_priority)
         password = self._auth_queue.get ()
         return password
 
     def _reply (self, result):
         def send_reply (handler, result):
             if not self._destroyed:
-                Gdk.threads_enter ()
                 handler (self._conn, result)
-                Gdk.threads_leave ()
             return False
 
         if not self._destroyed and self._reply_handler:
-            GLib.idle_add (send_reply, self._reply_handler, result)
+            GLib.idle_add (send_reply,
+                           self._reply_handler,
+                           result,
+                           priority=config.gui_events_priority)
 
     def _error (self, exc):
         def send_error (handler, exc):
             if not self._destroyed:
-                Gdk.threads_enter ()
                 handler (self._conn, exc)
-                Gdk.threads_leave ()
             return False
 
         if not self._destroyed and self._error_handler:
             debugprint ("Add %s to idle" % self._error_handler)
-            GLib.idle_add (send_error, self._error_handler, exc)
+            GLib.idle_add (send_error,
+                           self._error_handler,
+                           exc,
+                           priority=config.gui_events_priority)
 
 ###
 ### This is the user-visible class.  Although it does not inherit from

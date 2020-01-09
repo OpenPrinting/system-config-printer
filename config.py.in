@@ -18,6 +18,8 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+from gi.repository import GLib
+
 prefix="@prefix@"
 datadir="@datadir@"
 localedir="@localedir@"
@@ -28,3 +30,4 @@ DOWNLOADABLE_ONLYPPD=True
 DOWNLOADABLE_ONLYFREE=True
 DOWNLOADABLE_PKG_ONLYSIGNED=True
 packagesystem = None # discovered at runtime
+gui_events_priority=GLib.PRIORITY_DEFAULT_IDLE

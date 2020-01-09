@@ -2244,7 +2244,11 @@ if __name__ == "__main__":
     try:
         opts, args = getopt.gnu_getopt (sys.argv[1:], '',
                                         ['embedded=',
-                                            'debug', 'show-jobs='])
+                                         'debug',
+                                         'show-jobs=',
+                                         'prioritize-glib-events'
+                                        ]
+                                       )
     except getopt.GetoptError:
         show_help ()
         sys.exit (1)
@@ -2260,5 +2264,8 @@ if __name__ == "__main__":
 
         if opt == "--embedded":
             PlugWindowId = int(optarg)
+
+        if opt == "--prioritize-glib-events":
+            config.gui_events_priority=GLib.PRIORITY_HIGH_IDLE
 
     main(show_jobs)

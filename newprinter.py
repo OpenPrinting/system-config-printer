@@ -3466,7 +3466,9 @@ class NewPrinterGUI(GtkGUI):
             if self.printer_finder is None:
                 return
 
-            GLib.idle_add (self.found_network_printer_callback, new_device)
+            GLib.idle_add (self.found_network_printer_callback,
+                           new_device,
+                           priority=config.gui_events_priority)
 
         self.btnNetworkFind.set_sensitive (False)
         self.entNPTNetworkHostname.set_sensitive (False)

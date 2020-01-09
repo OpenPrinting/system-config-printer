@@ -28,6 +28,8 @@ from shutil import copyfileobj
 from tempfile import NamedTemporaryFile
 from debug import *
 
+import config
+
 cups.require ("1.9.50")
 
 class PPDCache:
@@ -180,7 +182,12 @@ class PPDCache:
             Gdk.threads_leave ()
             return False
 
-        GLib.idle_add (cb_func, callback, name, result, exc)
+        GLib.idle_add (cb_func,
+                       callback,
+                       name,
+                       result,
+                       exc,
+                       priority=config.gui_events_priority)
 
 if __name__ == "__main__":
     import sys

@@ -286,8 +286,9 @@ class Monitor(GObject.GObject):
                 if tuple not in self.reasons_seen:
                     # New reason.
                     GLib.idle_add (lambda x:
-                                       self.emit ('state-reason-added', x),
-                                   reason)
+                                   self.emit ('state-reason-added', x),
+                                   reason,
+                                   priority=config.gui_events_priority)
                     self.reasons_seen[tuple] = reason
 
                 if (reason.get_reason () == "connecting-to-device" and
@@ -324,7 +325,8 @@ class Monitor(GObject.GObject):
                 reason = self.reasons_seen[tuple]
                 del self.reasons_seen[tuple]
                 GLib.idle_add (lambda x: self.emit ('state-reason-removed', x),
-                               reason)
+                               reason,
+                               priority=config.gui_events_priority)
 
     def get_notifications(self):
         if self.update_timer:
@@ -515,7 +517,9 @@ class Monitor(GObject.GObject):
                                  port=self.port,
                                  encryption=self.encryption)
         except RuntimeError:
-            GLib.idle_add (self.emit, 'cups-connection-error')
+            GLib.idle_add (self.emit,
+                           'cups-connection-error',
+                           priority=config.gui_events_priority)
             cups.setUser (user)
             return
 
@@ -525,7 +529,7 @@ class Monitor(GObject.GObject):
             except cups.IPPError as e:
                 (e, m) = e.args
                 GLib.idle_add (lambda e, m: self.emit ('cups-ipp-error', e, m),
-                               e, m)
+                               e, m, priority=config.gui_events_priority)
 
             if self.update_timer:
                 GLib.source_remove (self.update_timer)
@@ -556,7 +560,7 @@ class Monitor(GObject.GObject):
         except cups.IPPError as e:
             (e, m) = e.args
             GLib.idle_add (lambda e, m: self.emit ('cups-ipp-error', e, m),
-                           e, m)
+                           e, m, priority=config.gui_events_priority)
 
         cups.setUser (user)
 
@@ -597,10 +601,10 @@ class Monitor(GObject.GObject):
         except cups.IPPError as e:
             (e, m) = e.args
             GLib.idle_add (lambda e, m: self.emit ('cups-ipp-error', e, m),
-                           e, m)
+                           e, m, priority=config.gui_events_priority)
             return
         except RuntimeError:
-            GLib.idle_add (self.emit, 'cups-connection-error')
+            GLib.idle_add (self.emit, 'cups-connection-error', priority=config.gui_events_priority)
             return
 
         if self.specific_dests is not None:
@@ -613,11 +617,14 @@ class Monitor(GObject.GObject):
 
         self.set_process_pending (False)
         for printer in self.printers:
-            GLib.idle_add (lambda x: self.emit ('printer-added', x), printer)
+            GLib.idle_add (lambda x: self.emit ('printer-added', x),
+                           printer,
+                           priority=config.gui_events_priority)
         for jobid, job in jobs.items ():
-            GLib.idle_add (lambda jobid, job:
-                                  self.emit ('job-added', jobid, '', {}, job),
-                           jobid, job)
+            GLib.idle_add (lambda jobid, job: self.emit ('job-added', jobid, '', {}, job),
+                           jobid,
+                           job,
+                           priority=config.gui_events_priority)
         self.update_jobs (jobs)
         self.jobs = jobs
         self.set_process_pending (True)
