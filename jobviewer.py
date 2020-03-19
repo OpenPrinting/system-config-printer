@@ -1049,20 +1049,10 @@ class JobViewer (GtkGUI):
                     if items:
                         auth_info = ['' for x in auth_info_required]
                         ind = auth_info_required.index ('username')
-
-                        for attr in items[0].attributes:
-                            # It might be safe to assume here that the
-                            # user element is always the second item in a
-                            # NETWORK_PASSWORD element but lets make sure.
-                            if attr.name == 'user':
-                                auth_info[ind] = attr.get_string()
-                                break
-                        else:
-                            debugprint ("Did not find username keyring "
-                                        "attributes.")
+                        auth_info[ind] = items[0].get_attributes().get("user")
 
                         ind = auth_info_required.index ('password')
-                        auth_info[ind] = items[0].secret
+                        auth_info[ind] = items[0].get_secret().get().decode()
                         break
                 else:
                     debugprint ("Failed to find secret in keyring.")
