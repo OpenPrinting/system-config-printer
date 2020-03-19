@@ -92,8 +92,8 @@ if USE_SECRET:
         service = Secret.Service()
     
         def __init__(self):
-            self.service = Secret.Service.get(0,
-                                              None)
+            self.service = Secret.Service.get_sync(0,
+                                                   None)
     
         def get_service(self):
             return self.service
