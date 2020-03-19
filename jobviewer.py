@@ -91,36 +91,26 @@ if USE_SECRET:
     class ServiceGet:
         service = Secret.Service()
     
-        def on_get_service(self, source, result, unused):
-            service = Secret.Service.get_finish(result)
-    
         def __init__(self):
-            Secret.Service.get(0,
-                               None,
-                               self.on_get_service,
-                               None)
+            self.service = Secret.Service.get(0,
+                                              None)
     
         def get_service(self):
-            return ServiceGet.service
+            return self.service
     
     
     class ItemSearch:
         items = list()
     
-        def on_search_item(self, source, result, unused):
-            items = Secret.Service.search_finish(None, result)
-    
         def __init__(self, service, attrs):
-            Secret.Service.search(service,
-                                  NETWORK_PASSWORD,
-                                  attrs,
-                                  Secret.SearchFlags.LOAD_SECRETS,
-                                  None,
-                                  self.on_search_item,
-                                  None)
+            self.items = Secret.Service.search_sync(service,
+                                                    NETWORK_PASSWORD,
+                                                    attrs,
+                                                    Secret.SearchFlags.LOAD_SECRETS,
+                                                    None)
     
         def get_items(self):
-            return ItemSearch.items
+            return self.items
     
     
     class PasswordStore:
