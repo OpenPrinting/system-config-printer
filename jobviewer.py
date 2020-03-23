@@ -91,36 +91,26 @@ if USE_SECRET:
     class ServiceGet:
         service = Secret.Service()
     
-        def on_get_service(self, source, result, unused):
-            service = Secret.Service.get_finish(result)
-    
         def __init__(self):
-            Secret.Service.get(0,
-                               None,
-                               self.on_get_service,
-                               None)
+            self.service = Secret.Service.get_sync(0,
+                                                   None)
     
         def get_service(self):
-            return ServiceGet.service
+            return self.service
     
     
     class ItemSearch:
         items = list()
     
-        def on_search_item(self, source, result, unused):
-            items = Secret.Service.search_finish(None, result)
-    
         def __init__(self, service, attrs):
-            Secret.Service.search(service,
-                                  NETWORK_PASSWORD,
-                                  attrs,
-                                  Secret.SearchFlags.LOAD_SECRETS,
-                                  None,
-                                  self.on_search_item,
-                                  None)
+            self.items = Secret.Service.search_sync(service,
+                                                    NETWORK_PASSWORD,
+                                                    attrs,
+                                                    Secret.SearchFlags.LOAD_SECRETS,
+                                                    None)
     
         def get_items(self):
-            return ItemSearch.items
+            return self.items
     
     
     class PasswordStore:
@@ -1059,20 +1049,10 @@ class JobViewer (GtkGUI):
                     if items:
                         auth_info = ['' for x in auth_info_required]
                         ind = auth_info_required.index ('username')
-
-                        for attr in items[0].attributes:
-                            # It might be safe to assume here that the
-                            # user element is always the second item in a
-                            # NETWORK_PASSWORD element but lets make sure.
-                            if attr.name == 'user':
-                                auth_info[ind] = attr.get_string()
-                                break
-                        else:
-                            debugprint ("Did not find username keyring "
-                                        "attributes.")
+                        auth_info[ind] = items[0].get_attributes().get("user")
 
                         ind = auth_info_required.index ('password')
-                        auth_info[ind] = items[0].secret
+                        auth_info[ind] = items[0].get_secret().get().decode()
                         break
                 else:
                     debugprint ("Failed to find secret in keyring.")
