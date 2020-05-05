@@ -485,6 +485,9 @@ class NewPrinterGUI(GtkGUI):
         # SMB browser
         self.smb_store = Gtk.TreeStore (GObject.TYPE_PYOBJECT)
         self.btnSMBBrowse.set_sensitive (True)
+        if not PYSMB_AVAILABLE:
+            self.btnSMBBrowse.set_tooltip_text (_("Browsing requires pysmbc "
+                                                  "module"))
         self.tvSMBBrowser.set_model (self.smb_store)
 
         # SMB list columns
@@ -2501,21 +2504,31 @@ class NewPrinterGUI(GtkGUI):
         global PYSMB_AVAILABLE
         global pysmb # Make the import of pysmb globally available
         # Does the SMB client library  need to be installed?
-        if not PYSMB_AVAILABLE:
-            debugprint ("No SMB client library present so attempting install")
-            try:
-                pk = installpackage.PackageKit ()
-                # The following call means a blocking, synchronous, D-Bus call
-                pk.InstallPackageName (0, 0, "python3-smbc")
-                try:
-                    import pysmb
-                    PYSMB_AVAILABLE=True
-                    debugprint ("SMB client successfully installed and set up.")
-                except:
-                    debugprint ("SMB client setup failed.")
-            except:
-                debugprint ("Error during installation/setup of SMB client.")
-        return PYSMB_AVAILABLE
+        if PYSMB_AVAILABLE:
+            return True
+
+        debugprint ("No SMB client library present so attempting install")
+
+        try:
+            pk = installpackage.PackageKit ()
+            # The following call means a blocking, synchronous, D-Bus call
+            pk.InstallPackageName (0, 0, "python3-smbc")
+        except DBusException as e:
+            debugprint ("Error during installation/setup of SMB client.")
+            debugprint("{}".format(e))
+            return False
+
+        try:
+            import pysmb
+            PYSMB_AVAILABLE=True
+        except ModuleNotFoundError as e:
+            debugprint ("SMB client setup failed.")
+            debugprint("{}".format(e))
+            return False
+
+        debugprint ("SMB client successfully installed and set up.")
+
+        return True
 
     def browse_smb_hosts(self):
         """Initialise the SMB tree store."""
@@ -2723,6 +2736,9 @@ class NewPrinterGUI(GtkGUI):
 
     def set_btnSMBVerify_sensitivity (self, on):
         self.btnSMBVerify.set_sensitive (on)
+        if not PYSMB_AVAILABLE or not on:
+            self.btnSMBVerify.set_tooltip_text (_("Verification requires the "
+                                                  "%s module") % "pysmbc")
 
     def on_entSMBURI_changed (self, ent):
         allowed_chars = string.ascii_letters+string.digits+'_-./:%[]@'
@@ -2760,7 +2776,8 @@ class NewPrinterGUI(GtkGUI):
     def on_btnSMBBrowse_clicked(self, button):
         """Check whether the needed SMB client library is available and"""
         """install it if needed"""
-        if not self.install_python3_smbc_if_needed(): return
+        if not self.install_python3_smbc_if_needed():
+            return
 
         self.btnSMBBrowseOk.set_sensitive(False)
 
@@ -2838,7 +2855,8 @@ class NewPrinterGUI(GtkGUI):
     def on_btnSMBVerify_clicked(self, button):
         """Check whether the needed SMB client library is available and"""
         """install it if needed"""
-        if not self.install_python3_smbc_if_needed(): return
+        if not self.install_python3_smbc_if_needed():
+            return
 
         uri = self.entSMBURI.get_text ()
         (group, host, share, u, p) = SMBURI (uri=uri).separate ()
