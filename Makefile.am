@@ -57,6 +57,11 @@ dbus/org.fedoraproject.Config.Printing.service: dbus/org.fedoraproject.Config.Pr
 	-e "s|\@bindir\@|$(bindir)|" \
 	$< >$@
 
+print-applet.service: print-applet.service.in $(top_builddir)/config.status Makefile
+	sed \
+	-e "s|\@bindir\@|$(bindir)|" \
+	$< >$@
+
 # Use distutils to build the module.
 all-local: .stamp-distutils-in-builddir config.py cupshelpers/config.py
 	$(PYTHON) setup.py build
@@ -195,16 +200,17 @@ udev_PROGRAMS=\
 	udev/udev-configure-printer
 udev_SCRIPTS=\
 	udev/udev-add-printer
-else
-systemd_CLEANFILES=
 endif
 
 if HAVE_SYSTEMD
-systemdsystemunit_DATA = \
 if UDEV_RULES
+systemdsystemunit_DATA = \
 	udev/configure-printer@.service \
-endif
 	print-applet.service
+else
+systemdsystemunit_DATA = \
+	print-applet.service
+endif
 systemd_CLEANFILES = \
 	$(systemdsystemunit_DATA)
 else
