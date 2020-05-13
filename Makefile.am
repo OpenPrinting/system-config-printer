@@ -195,16 +195,18 @@ udev_PROGRAMS=\
 	udev/udev-configure-printer
 udev_SCRIPTS=\
 	udev/udev-add-printer
-
-if HAVE_SYSTEMD
-systemdsystemunit_DATA = \
-	udev/configure-printer@.service
-systemd_CLEANFILES = \
-	$(systemdsystemunit_DATA)
 else
 systemd_CLEANFILES=
 endif
 
+if HAVE_SYSTEMD
+systemdsystemunit_DATA = \
+if UDEV_RULES
+	udev/configure-printer@.service \
+endif
+	print-applet.service
+systemd_CLEANFILES = \
+	$(systemdsystemunit_DATA)
 else
 systemd_CLEANFILES=
 endif
@@ -229,8 +231,7 @@ dbusservicesdir = $(datadir)/dbus-1/services/
 @INTLTOOL_DESKTOP_RULE@
 
 desktop_DATA =\
-	system-config-printer.desktop \
-	print-applet.desktop
+	system-config-printer.desktop
 desktopdir = $(datadir)/applications/
 autostartdir = $(sysconfdir)/xdg/autostart/
 
@@ -248,16 +249,9 @@ install-desktopDATA: $(desktop_DATA)
 	  --add-category Printing		\
 	  --add-category GTK			\
 	  system-config-printer.desktop
-	desktop-file-install $(DESKTOP_VENDOR)	\
-	  --dir $(DESTDIR)$(autostartdir)	\
-	  --add-category System			\
-	  --add-category Monitor		\
-	  --add-category GTK			\
-	  print-applet.desktop
 
 uninstall-desktopDATA:
 	rm -f $(DESTDIR)$(desktopdir)/$(DESKTOP_PREFIX)system-config-printer.desktop
-	rm -f $(DESTDIR)$(autostartdir)/$(DESKTOP_PREFIX)print-applet.desktop
 
 desktop_in_files = $(desktop_DATA:.desktop=.desktop.in)
 
@@ -291,6 +285,7 @@ EXTRA_DIST=\
 	udev/udev-add-printer \
 	udev/70-printers.rules \
 	udev/configure-printer@.service.in \
+	print-applet.service.in \
 	dbus/org.fedoraproject.Config.Printing.service.in \
 	xml/preferreddrivers.xml \
 	test_PhysicalDevice.py \

@@ -1,0 +1,11 @@
+[Unit]
+Description=Print Queue Applet
+After=cups.socket
+Requires=cups.socket
+
+[Service]
+Type=simple
+ExecStart=@bindir@/system-config-printer-applet
+
+[Install]
+WantedBy=graphical.target
