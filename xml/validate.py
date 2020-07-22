@@ -35,23 +35,23 @@ class Validator:
         filename = self._filename
         print ("Validating %s" % filename)
         preferreddrivers = xml.etree.ElementTree.XML (open (filename).read ())
-        (drivertypes, preferenceorder) = preferreddrivers.getchildren ()
+        (drivertypes, preferenceorder) = list(preferreddrivers)
         validates = True
 
         names = set()
-        for drivertype in drivertypes.getchildren ():
+        for drivertype in list(drivertypes):
             name = drivertype.get ("name")
             names.add (name)
 
-        for printer in preferenceorder.getchildren ():
+        for printer in list(preferenceorder):
             types = []
             drivers = printer.find ("drivers")
             if drivers is not None:
-                types.extend (drivers.getchildren ())
+                types.extend (list(drivers))
 
             blacklist = printer.find ("blacklist")
             if blacklist is not None:
-                types.extend (blacklist.getchildren ())
+                types.extend (list(blacklist))
 
             for drivertype in types:
                 pattern = drivertype.text.strip ()

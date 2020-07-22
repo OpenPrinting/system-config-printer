@@ -338,7 +338,7 @@ class OpenPrinting:
                     packages = {}
                     container = driver.find ('packages')
                     if container is not None:
-                        for arch in container.getchildren ():
+                        for arch in list(container):
                             rpms = {}
                             for package in arch.findall ('package'):
                                 rpm = {}
@@ -351,7 +351,7 @@ class OpenPrinting:
 
                                 repositories = package.find ('repositories')
                                 if repositories is not None:
-                                    for pkgsys in repositories.getchildren ():
+                                    for pkgsys in list(repositories):
                                         rpm.setdefault('repositories', {})[pkgsys.tag] = pkgsys.text
 
                                 rpms[package.attrib['file']] = rpm
@@ -363,7 +363,7 @@ class OpenPrinting:
                     ppds = []
                     container = driver.find ('ppds')
                     if container is not None:
-                        for each in container.getchildren ():
+                        for each in list(container):
                             ppds.append (each.text)
 
                     if ppds:

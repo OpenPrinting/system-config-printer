@@ -27,7 +27,7 @@ from .cupshelpers import parseDeviceID
 
 def PreferredDrivers (filename):
     preferreddrivers = xml.etree.ElementTree.XML (open (filename).read ())
-    return preferreddrivers.getchildren()
+    return list(preferreddrivers)
 
 class DeviceIDMatch:
     """
@@ -227,10 +227,10 @@ class DriverTypes:
         """
 
         types = []
-        for drivertype in drivertypes.getchildren ():
+        for drivertype in list(drivertypes):
             t = DriverType (drivertype.attrib["name"])
 
-            for child in drivertype.getchildren ():
+            for child in list(drivertype):
                 if child.tag == "ppdname":
                     t.add_ppd_name (child.attrib["match"])
                 elif child.tag == "attribute":
@@ -238,7 +238,7 @@ class DriverTypes:
                                      child.attrib["match"])
                 elif child.tag == "deviceid":
                     deviceid_match = DeviceIDMatch ()
-                    for field in child.getchildren ():
+                    for field in list(child):
                         if field.tag == "field":
                             deviceid_match.add_field (field.attrib["name"],
                                                       field.attrib["match"])
@@ -414,29 +414,29 @@ class PreferenceOrder:
         Load the policy from an XML file.
         """
 
-        for printer in preferreddrivers.getchildren ():
+        for printer in list(preferreddrivers):
             ptype = PrinterType ()
-            for child in printer.getchildren ():
+            for child in list(printer):
                 if child.tag == "make-and-model":
                     ptype.add_make_and_model (child.attrib["match"])
                 elif child.tag == "deviceid":
                     deviceid_match = DeviceIDMatch ()
-                    for field in child.getchildren ():
+                    for field in list(child):
                         if field.tag == "field":
                             deviceid_match.add_field (field.attrib["name"],
                                                       field.attrib["match"])
                     ptype.add_deviceid_match (deviceid_match)
 
                 elif child.tag == "drivers":
-                    for drivertype in child.getchildren ():
+                    for drivertype in list(child):
                         ptype.add_drivertype_pattern (drivertype.text)
 
                 elif child.tag == "avoid":
-                    for drivertype in child.getchildren ():
+                    for drivertype in list(child):
                         ptype.add_avoidtype_pattern (drivertype.text)
 
                 elif child.tag == "blacklist":
-                    for drivertype in child.getchildren ():
+                    for drivertype in list(child):
                         ptype.add_blacklisted (drivertype.text)
 
             self.ptypes.append (ptype)
