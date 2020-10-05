@@ -269,7 +269,7 @@ class IPPConnection:
         for binding in self.bindings:
             delattr (self, binding)
 
-        if self.thread.isAlive ():
+        if self.thread.is_alive ():
             debugprint ("Stopping worker thread")
             self.thread.stop ()
             GLib.timeout_add_seconds (1, self._reap_thread)

@@ -157,7 +157,7 @@ class OperationThread(threading.Thread):
             self.exception = e
 
     def collect_result (self):
-        if self.isAlive ():
+        if self.is_alive ():
             # We've been canceled.
             raise OperationCanceled()
 
@@ -212,7 +212,7 @@ class TimedOperation(Timed):
         return self.thread.collect_result ()
 
     def _check_thread (self):
-        if self.thread.isAlive ():
+        if self.thread.is_alive ():
             # Thread still running.
             return True
 
