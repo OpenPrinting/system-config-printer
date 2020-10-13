@@ -1791,38 +1791,29 @@ disable_queue (const char *printer_uri, void *context)
   ippDelete (answer);
   httpClose (cups);
 }
-static int  
-compare_usb_uri(char *uri_store, char *uri_uevent)
+
+static int
+device_exists(char *device_path)
 {
-  int index = 0;
-  int subset = 1;
-  int exist = -1; 
-  char *full_path = NULL;
+  char full_path[100];
   struct stat buffer;
-
-  if (strlen(uri_uevent) < strlen(uri_store))
-    return -1; 
-
-  // check whether it's a substring
-  full_path = (char *) malloc(strlen(uri_store) + 4); 
-  memset(full_path, 0, sizeof(full_path));
-  strcpy(full_path, "/sys");
-  strcat(full_path, uri_store);
-  while (uri_store[index] != '\0'){
-    if (uri_store[index] != uri_uevent[index]){
-      subset = -1; 
-      break;
-    }   
-    index++;
-  }
+  int exist = -1;
+  int path_length=strlen(device_path);
+  // 5 is the length of "/sys" + null
+  snprintf(full_path, path_length + 5, "%s%s", "/sys", device_path);
 
   // check the exist of this device
-  if (subset == 1 && stat(full_path, &buffer) == 0){ 
-   exist = 1;  
+  if (stat(full_path, &buffer) == 0){
+    exist = 1;
   }
 
-  free(full_path);
   return exist;
+}
+
+static char*
+compare_usb_uri(char *uri_store, char *uri_uevent)
+{
+  return strstr(uri_uevent, uri_store);
 }
 
 static int
@@ -1864,7 +1855,7 @@ do_remove (const char *devaddr)
   prev = &map->entries;
   for (entry = map->entries; entry; entry = entry->next)
   {
-      if (compare_usb_uri(entry->devpath, devpath))
+ if (compare_usb_uri(entry->devpath, devpath) !=NULL && device_exists(entry->devpath) == -1)
 	{
 	  uris = &entry->uris;
 	  break;
