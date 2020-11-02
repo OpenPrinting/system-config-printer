@@ -1793,6 +1793,30 @@ disable_queue (const char *printer_uri, void *context)
 }
 
 static int
+device_exists(char *device_path)
+{
+  char full_path[100];
+  struct stat buffer;
+  int exist = -1;
+  int path_length=strlen(device_path);
+  // 5 is the length of "/sys" + null
+  snprintf(full_path, path_length + 5, "%s%s", "/sys", device_path);
+
+  // check the exist of this device
+  if (stat(full_path, &buffer) == 0){
+    exist = 1;
+  }
+
+  return exist;
+}
+
+static char*
+compare_usb_uri(char *uri_store, char *uri_uevent)
+{
+  return strstr(uri_uevent, uri_store);
+}
+
+static int
 do_remove (const char *devaddr)
 {
   struct usb_uri_map *map;
@@ -1830,8 +1854,8 @@ do_remove (const char *devaddr)
   map = read_usb_uri_map ();
   prev = &map->entries;
   for (entry = map->entries; entry; entry = entry->next)
-    {
-      if (!strcmp (entry->devpath, devpath))
+  {
+ if (compare_usb_uri(entry->devpath, devpath) !=NULL && device_exists(entry->devpath) == -1)
 	{
 	  uris = &entry->uris;
 	  break;
