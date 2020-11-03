@@ -1,4 +1,11 @@
+# UDEV rules for USB devices - ENV variables can be monitored
+# via 'sudo udevadm monitor --udev --subsystem-match=usb --property'
 # Low-level USB device add trigger
 ACTION=="add", SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ENV{ID_USB_INTERFACES}=="*:0701??:*", TAG+="systemd", ENV{SYSTEMD_WANTS}="configure-printer@usb-$env{BUSNUM}-$env{DEVNUM}.service"
 # Low-level USB device remove trigger
+# Interface types:
+# 7/1/1 - device with unidirectional USB, managed by usb backend
+# 7/1/2 - device with bidirectional USB, managed by usb backend
+# 7/1/3 - device with special USB protocol, managed by hp backend
+# 7/1/4 - device with IPP over USB protocol, managed by ipp-usb daemon
 ACTION=="remove", SUBSYSTEM=="usb", ENV{INTERFACE}=="7/1/*", RUN+="udev-configure-printer remove %p"

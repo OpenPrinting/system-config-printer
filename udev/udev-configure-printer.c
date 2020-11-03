@@ -1792,28 +1792,25 @@ disable_queue (const char *printer_uri, void *context)
   httpClose (cups);
 }
 
-static int
-device_exists(char *device_path)
+/*
+ * 'device_exists()' - Checks if the device really exists within filesystem.
+ */
+
+static int                          /* 0 if not found, 1 if found*/
+device_exists(
+    char *device_path)              /* I - string representing device path of USB device*/
 {
   char full_path[100];
   struct stat buffer;
-  int exist = -1;
-  int path_length=strlen(device_path);
-  // 5 is the length of "/sys" + null
-  snprintf(full_path, path_length + 5, "%s%s", "/sys", device_path);
+
+  // create a full path
+  snprintf(full_path, sizeof(full_path), "%s%s", "/sys", device_path);
 
   // check the exist of this device
-  if (stat(full_path, &buffer) == 0){
-    exist = 1;
-  }
+  if (stat(full_path, &buffer) == 0)
+    return 1;
 
-  return exist;
-}
-
-static char*
-compare_usb_uri(char *uri_store, char *uri_uevent)
-{
-  return strstr(uri_uevent, uri_store);
+  return 0;
 }
 
 static int
@@ -1855,7 +1852,19 @@ do_remove (const char *devaddr)
   prev = &map->entries;
   for (entry = map->entries; entry; entry = entry->next)
   {
- if (compare_usb_uri(entry->devpath, devpath) !=NULL && device_exists(entry->devpath) == -1)
+    /* devpath is a string obtained from USB 'remove' event
+     * and it is usually longer or the same as the string
+     * from the main USB 'add' event, when the device is added.
+     *
+     * Both strings represent device paths in filesystem without '/sys':
+     * f.e.:
+     * /devices/pci0000:00/0000:00:14.0/usb3/3-2
+     *
+     * When we are disabling the queue, we check if the string from 'add'
+     * event is a substring of string from 'remove' event and the actual
+     * device doesn't exist anymore.
+     */
+    if (strstr(devpath, entry->devpath) != NULL && !device_exists(entry->devpath))
 	{
 	  uris = &entry->uris;
 	  break;
