@@ -163,6 +163,10 @@
       <ppdname match=".*splix"/>
     </drivertype>
 
+    <drivertype name="dlw400">
+      <ppdname match="drv:///sample.drv/dymo.ppd" />
+    </drivertype>
+
     <drivertype name="turboprint">
       <ppdname match=".*turboprint"/>
     </drivertype>
@@ -291,6 +295,17 @@
         <drivertype>gutenprint-expert</drivertype>
         <drivertype>foomatic-gutenprint</drivertype>
       </avoid>
+    </printer>
+
+    <printer>
+      <make-and-model match="DYMO LabelWriter 400" />
+      <deviceid>
+        <field name="MFG" match="DYMO" />
+        <field name="MDL" match="LabelWriter 400" />
+      </deviceid>
+      <drivers>
+        <drivertype>dlw400</drivertype>
+      </drivers>
     </printer>
 
     <printer>
