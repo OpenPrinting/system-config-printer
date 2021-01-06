@@ -281,6 +281,7 @@ EXTRA_DIST=\
 	bootstrap \
 	mkinstalldirs \
 	ChangeLog-OLD \
+	README \
 	$(desktop_in_files) \
 	intltool-extract.in \
 	intltool-merge.in \
