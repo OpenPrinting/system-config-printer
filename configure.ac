@@ -2,6 +2,7 @@ AC_INIT(system-config-printer, 1.5.14)
 AC_CONFIG_SRCDIR(system-config-printer.py)
 AM_INIT_AUTOMAKE([dist-xz dist-bzip2 subdir-objects 1.6])
 IT_PROG_INTLTOOL
+AM_GNU_GETTEXT_VERSION([0.18.3])
 AM_GNU_GETTEXT([external])
 AM_PATH_PYTHON([3])
 PACKAGE="AC_PACKAGE_NAME"
