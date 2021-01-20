@@ -6,7 +6,7 @@ This is a graphical tool for CUPS administration. It uses IPP to
 configure a CUPS server.
 
 Build requirements:
-===================
+-------------------
 
 - development packages for:
   - cups
@@ -23,7 +23,7 @@ Build requirements:
   - xmlto
   
 Runtime requirements:
-=====================
+---------------------
 
 - any desktop notification daemon
 - dbus-x11
@@ -40,6 +40,6 @@ Runtime requirements:
 - (optional) python3-smbc
 
 How to compile and install:
-===========================
+---------------------------
 
 Please check INSTALL file.
