@@ -42,12 +42,16 @@ Runtime requirements:
 How to compile and install:
 ---------------------------
 
+```
 $ ./bootstrap
 $ ./configure
 $ make
 $ sudo make install
+```
 
 How to uninstall:
 -----------------
 
+```
 $ sudo make uninstall
+```
