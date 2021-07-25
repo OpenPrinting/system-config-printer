@@ -209,9 +209,11 @@ else
 systemd_CLEANFILES=
 endif
 
+if XMLTO
 man_MANS=					\
 	man/system-config-printer.1		\
 	man/system-config-printer-applet.1
+endif
 
 dbus_DATA =					\
 	dbus/com.redhat.NewPrinterNotification.conf		\
@@ -274,7 +276,6 @@ EXTRA_DIST=\
 	$(bin_SCRIPTS) \
 	setup.py \
 	$(EXPORT_MODULES) \
-	man/system-config-printer.xml \
 	$(dbus_DATA) \
 	$(dbusinterfaces_DATA) \
 	$(dbusservices_DATA) \
@@ -297,12 +298,16 @@ EXTRA_DIST=\
 	test_PhysicalDevice.py \
 	$(appdata_in_files)
 
+if XMLTO
+EXTRA_DIST+=man/system-config-printer.xml
+
 # The man pages are generated from DocBook XML.
 .stamp-man-pages-built: $(top_srcdir)/man/system-config-printer.xml
 	xmlto man -o man $<
 	touch .stamp-man-pages-built
 
 $(man_MANS): .stamp-man-pages-built
+endif
 
 html:	$(EXPORT_MODULES) $(EXPORT_MODULES_GEN)
 	rm -rf html

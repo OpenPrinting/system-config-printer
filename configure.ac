@@ -75,6 +75,11 @@ if test "x$with_systemdsystemunitdir" != xno; then
 fi
 AM_CONDITIONAL(HAVE_SYSTEMD, [test -n "$with_systemdsystemunitdir" -a "x$with_systemdsystemunitdir" != xno ])
 
+AC_ARG_WITH(xmlto,
+        [AC_HELP_STRING([--with-xmlto],
+                [Enable xmlto manual generation @<:@default=yes@:>@])])
+AM_CONDITIONAL([XMLTO], [test x$with_xmlto != xno])
+
 ALL_LINGUAS="ar as ast bg bn bn_IN br bs ca cs cy da de el en_GB es et fa fi fr fur gu he hi hr hu id is it ja kn ko lt lv mai ml mr ms nb nds nl nn oc or pa pl pt pt_BR ro ru si sk sl sr sr@latin sv ta te th tr uk vi zh_CN zh_TW"
 AC_CONFIG_FILES([
 Makefile
