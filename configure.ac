@@ -33,7 +33,11 @@ fi
 AC_SUBST(DESKTOPVENDOR)
 AC_SUBST(DESKTOPPREFIX)
 
-cupsserverbindir="`cups-config --serverbin`"
+AC_ARG_WITH([cups-config],
+            [AC_HELP_STRING([--with-cups-config], [Specify the path of cups-config])],,
+            [with_cups_config=cups-config])
+
+cupsserverbindir="`${with_cups_config} --serverbin`"
 AC_SUBST(cupsserverbindir)
 
 PKG_CHECK_MODULES(GLIB, glib-2.0, has_glib=yes, has_glib=no)
