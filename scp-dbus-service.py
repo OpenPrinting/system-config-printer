@@ -380,7 +380,7 @@ class ConfigPrintingNewPrinterDialog(dbus.service.Object):
     def on_printer_modified(self, obj, name, ppd_has_changed):
         debugprint ("%s: printer modified" % self)
         g_killtimer.remove_hold ()
-        self.PrinterModifed (name, ppd_has_changed)
+        self.PrinterModified (name, ppd_has_changed)
         self.remove_handles ()
         self.remove_from_connection ()
 
