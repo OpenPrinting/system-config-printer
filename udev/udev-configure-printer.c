@@ -205,6 +205,12 @@ add_device_uri (struct device_uris *uris,
       uris->n_uris = 1;
       uris->uri[0] = uri_copy;
     }
+    else
+    {
+      syslog (LOG_ERR, "out of memory");
+      free (uri_copy);
+      return;
+    }
   }
   else
   {
@@ -847,6 +853,7 @@ device_id_from_devpath (struct udev *udev, const char *devpath,
 
   udev_device_unref (dev);
   free (devicefilepath);
+  g_free(device_id);
   return usb_device_devpath;
 }
 
@@ -1274,7 +1281,6 @@ find_matching_device_uris (struct device_id *id,
   {
     add_usb_uri_mapping (&map, devpath, uris);
     write_usb_uri_map (map);
-    free_usb_uri_map (map);
   }
 
   return uris->n_uris;
@@ -1527,6 +1533,11 @@ skip:
       free(this_device_uri_n);
       this_device_uri_n = NULL;
     }
+    if (device_uri_n != NULL)
+    {
+      free(device_uri_n);
+      device_uri_n = NULL;
+    }
     if (!attr)
       break;
   }
@@ -1625,6 +1636,7 @@ do_add (const char *cmd, const char *devaddr)
     if (udev == NULL)
     {
       syslog (LOG_ERR, "udev_new failed");
+      free_usb_uri_map (map);
       exit (1);
     }
 
@@ -1643,7 +1655,7 @@ do_add (const char *cmd, const char *devaddr)
   if (!id.mfg || !id.mdl)
   {
     clear_device_id (&id);
-    free (map);
+    free_usb_uri_map (map);
     free (usb_device_devpath);
     return 1;
   }
@@ -1668,7 +1680,7 @@ do_add (const char *cmd, const char *devaddr)
   {
     syslog (LOG_ERR, "no corresponding CUPS device found");
     clear_device_id (&id);
-    free (map);
+    free_usb_uri_map (map);
     return 0;
   }
 
@@ -1722,7 +1734,7 @@ do_add (const char *cmd, const char *devaddr)
 
   clear_device_id (&id);
   free_device_uris (&device_uris);
-  free (map);
+  free_usb_uri_map (map);
   return 0;
 }
 
