@@ -1,0 +1,12 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+# Copyright (C) 2021 Iñigo Martinez <inigomartinez@gmail.com>
+
+option('udev', type: 'feature', value: 'auto', description: 'enable udev support')
+option('udevdir', type: 'string', value: '', description: 'udev base directory')
+option('udev_rules', type: 'boolean', value: false, description: 'enable automatic USB print queue configuration')
+
+option('systemdsystemunitdir', type: 'string', value: '', description: 'systemd system units directory')
+
+option('desktop_vendor', type: 'string', value: '', description: 'Specify the vendor for use in calls to desktop-file-install')
+
+option('xmlto', type: 'feature', value: 'auto', description: 'enable xmlto manual generation')
