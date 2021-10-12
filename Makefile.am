@@ -315,30 +315,8 @@ html:	$(EXPORT_MODULES) $(EXPORT_MODULES_GEN)
 
 distcheck-hook: update-po missing-imports
 
-# Generate Zanata locales list from ALL_LINGUAS
-zanata.xml:	zanata.xml.in
-	LOCALES=$$(echo $(ALL_LINGUAS) | sed -e 's, ,\n,g' | \
-	(NL="\\\\\n"; printf "/\@LOCALES\@/i"; while read ll; do \
-	  nomap="$${ll##*_*}"; \
-	  if [ -z "$$nomap" ]; then \
-	    printf "$$NL    <locale map-from=\"$$ll\">$${ll%_*}-$${ll#*_}</locale>";\
-	  else \
-	    printf "$$NL    <locale>$$ll</locale>"; \
-	  fi; \
-	 done; \
-	 printf "\n") \
-	); \
-	sed -e 's,\@PACKAGE\@,$(PACKAGE),g' \
-	    -e "$$LOCALES" -e '/\@LOCALES\@/d' $< > $@
-
 update-po: missing-languages
 	$(MAKE) -C po update-po
-
-pull-translations: zanata.xml
-	zanata-cli -B pull --src-dir=$(top_srcdir)/po --trans-dir=$(top_srcdir)/po
-
-push-translations: zanata.xml
-	zanata-cli -B push --src-dir=$(top_srcdir)/po --trans-dir=$(top_srcdir)/po
 
 missing-languages:
 	bash -c '\
