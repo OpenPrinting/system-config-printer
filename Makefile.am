@@ -1,4 +1,4 @@
-SUBDIRS=po
+SUBDIRS=. po
 
 EXPORT_MODULES=					\
 	cupshelpers/__init__.py			\
@@ -228,13 +228,17 @@ nodist_dbusservices_DATA =				\
 	dbus/org.fedoraproject.Config.Printing.service
 dbusservicesdir = $(datadir)/dbus-1/services/
 
-@INTLTOOL_DESKTOP_RULE@
-
 desktop_DATA =\
 	system-config-printer.desktop \
 	print-applet.desktop
 desktopdir = $(datadir)/applications/
 autostartdir = $(sysconfdir)/xdg/autostart/
+
+system-config-printer.desktop: system-config-printer.desktop.in
+	$(AM_V_GEN)$(MSGFMT) --desktop --keyword=Name --keyword=GenericName --keyword=Comment --keyword=X-GNOME-FullName --template $< -d $(top_srcdir)/po -o $@
+
+print-applet.desktop: print-applet.desktop.in
+	$(AM_V_GEN)$(MSGFMT) --desktop --template $< -d $(top_srcdir)/po -o $@
 
 DESKTOP_VENDOR=@DESKTOPVENDOR@
 DESKTOP_PREFIX=@DESKTOPPREFIX@
@@ -263,11 +267,12 @@ uninstall-desktopDATA:
 
 desktop_in_files = $(desktop_DATA:.desktop=.desktop.in)
 
-@INTLTOOL_XML_RULE@
-
 appdatadir = $(datadir)/metainfo
 appdata_in_files = system-config-printer.appdata.xml.in
 appdata_DATA = $(appdata_in_files:.xml.in=.xml)
+
+system-config-printer.appdata.xml: system-config-printer.appdata.xml.in
+	$(AM_V_GEN)$(MSGFMT) --xml --template $< -d $(top_srcdir)/po -o $@
 
 EXTRA_DIST=\
 	$(nobase_pkgdata_SCRIPTS) \
@@ -284,9 +289,6 @@ EXTRA_DIST=\
 	ChangeLog-OLD \
 	README \
 	$(desktop_in_files) \
-	intltool-extract.in \
-	intltool-merge.in \
-	intltool-update.in \
 	config.py.in \
 	cupshelpers/config.py.in \
 	profile-ppds.py \
@@ -320,8 +322,7 @@ update-po: missing-languages
 
 missing-languages:
 	bash -c '\
-	eval $$(grep ALL_LINGUAS configure.ac); \
-	diff -u <(echo $$ALL_LINGUAS | xargs -rn1 echo) \
+	diff -u <(cat po/LINGUAS) \
 		<(cd po; ls -1 *.po | sed -e "s,\.po$$,,")'
 
 missing-imports:
@@ -385,11 +386,11 @@ TESTS = test-xml-validity.sh py.test.sh
 
 CLEANFILES=			\
 	$(systemd_CLEANFILES)	\
+	$(desktop_DATA)		\
 	$(appdata_DATA)
 
 DISTCLEANFILES=*.pyc *.pyo *~ *.bak \
 	troubleshoot/*.pyc troubleshoot/*.pyo troubleshoot/*~ \
-	intltool-extract intltool-merge intltool-update \
 	*.desktop man/*.1 \
 	test-ppd-module.sh test-xml-validity.sh py.test.sh pickled-ppds \
 	config.py cupshelpers/config.py zanata.xml \
