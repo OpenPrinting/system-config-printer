@@ -373,6 +373,9 @@
                                 <property name="margin_bottom">6</property>
                                 <property name="label" translatable="yes">Printer State:</property>
                                 <property name="use_markup">True</property>
+                                <accessibility>
+                                  <relation type="label-for" target="entPState"/>
+                                </accessibility>
                               </object>
                               <packing>
                                 <property name="left_attach">0</property>
@@ -390,6 +393,9 @@
                                 <property name="margin_bottom">6</property>
                                 <property name="label" translatable="yes">Make and Model:</property>
                                 <property name="use_markup">True</property>
+                                <accessibility>
+                                  <relation type="label-for" target="entPMakeModel"/>
+                                </accessibility>
                               </object>
                               <packing>
                                 <property name="left_attach">0</property>
@@ -455,11 +461,9 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="editable">False</property>
-                                    <child internal-child="accessible">
-                                      <object class="AtkObject" id="entPMakeModel-atkobject">
-                                        <property name="AtkObject::accessible-description" translatable="yes">make and model</property>
-                                      </object>
-                                    </child>
+                                    <accessibility>
+                                      <relation type="labelled-by" target="lblPMakeModel2"/>
+                                    </accessibility>
                                   </object>
                                   <packing>
                                     <property name="expand">True</property>
@@ -498,11 +502,9 @@
                                 <property name="margin_bottom">6</property>
                                 <property name="hexpand">True</property>
                                 <property name="editable">False</property>
-                                <child internal-child="accessible">
-                                  <object class="AtkObject" id="entPState-atkobject">
-                                    <property name="AtkObject::accessible-description" translatable="yes">printer state</property>
-                                  </object>
-                                </child>
+                                <accessibility>
+                                  <relation type="labelled-by" target="lblPState2"/>
+                                </accessibility>
                               </object>
                               <packing>
                                 <property name="left_attach">1</property>
@@ -1580,6 +1582,9 @@ See server settings&lt;/i&gt;</property>
                                                 <property name="margin_top">6</property>
                                                 <property name="margin_bottom">6</property>
                                                 <property name="label" translatable="yes">Media:</property>
+                                                <accessibility>
+                                                  <relation type="label-for" target="cmbJOMedia"/>
+                                                </accessibility>
                                               </object>
                                               <packing>
                                                 <property name="left_attach">0</property>
@@ -1615,6 +1620,9 @@ See server settings&lt;/i&gt;</property>
                                                 <property name="margin_top">6</property>
                                                 <property name="margin_bottom">6</property>
                                                 <property name="label" translatable="yes">Hold until:</property>
+                                                <accessibility>
+                                                  <relation type="label-for" target="cmbJOHoldUntil"/>
+                                                </accessibility>
                                               </object>
                                               <packing>
                                                 <property name="left_attach">0</property>
@@ -1631,6 +1639,9 @@ See server settings&lt;/i&gt;</property>
                                                 <property name="margin_top">6</property>
                                                 <property name="margin_bottom">6</property>
                                                 <property name="label" translatable="yes">Output order:</property>
+                                                <accessibility>
+                                                  <relation type="label-for" target="cmbJOOutputOrder"/>
+                                                </accessibility>
                                               </object>
                                               <packing>
                                                 <property name="left_attach">0</property>
@@ -1647,6 +1658,9 @@ See server settings&lt;/i&gt;</property>
                                                 <property name="margin_top">6</property>
                                                 <property name="margin_bottom">6</property>
                                                 <property name="label" translatable="yes">Print quality:</property>
+                                                <accessibility>
+                                                  <relation type="label-for" target="cmbJOPrintQuality"/>
+                                                </accessibility>
                                               </object>
                                               <packing>
                                                 <property name="left_attach">0</property>
@@ -1663,6 +1677,9 @@ See server settings&lt;/i&gt;</property>
                                                 <property name="margin_top">6</property>
                                                 <property name="margin_bottom">6</property>
                                                 <property name="label" translatable="yes">Printer resolution:</property>
+                                                <accessibility>
+                                                  <relation type="label-for" target="cmbJOPrinterResolution"/>
+                                                </accessibility>
                                               </object>
                                               <packing>
                                                 <property name="left_attach">0</property>
@@ -1679,6 +1696,9 @@ See server settings&lt;/i&gt;</property>
                                                 <property name="margin_top">6</property>
                                                 <property name="margin_bottom">6</property>
                                                 <property name="label" translatable="yes">Output bin:</property>
+                                                <accessibility>
+                                                  <relation type="label-for" target="cmbJOOutputBin"/>
+                                                </accessibility>
                                               </object>
                                               <packing>
                                                 <property name="left_attach">0</property>
@@ -1724,6 +1744,11 @@ See server settings&lt;/i&gt;</property>
                                                     <accessibility>
                                                       <relation type="labelled-by" target="label168"/>
                                                     </accessibility>
+                                                    <child internal-child="accessible">
+                                                      <object class="AtkObject" id="sbJOBrightness-atkobject">
+                                                        <property name="AtkObject::accessible-description" translatable="yes">%</property>
+                                                      </object>
+                                                    </child>
                                                   </object>
                                                   <packing>
                                                     <property name="expand">True</property>
@@ -1798,6 +1823,9 @@ See server settings&lt;/i&gt;</property>
                                                 <property name="margin_top">6</property>
                                                 <property name="margin_bottom">6</property>
                                                 <signal name="changed" handler="on_job_option_changed" swapped="no"/>
+                                                <accessibility>
+                                                  <relation type="labelled-by" target="label178"/>
+                                                </accessibility>
                                               </object>
                                               <packing>
                                                 <property name="left_attach">1</property>
@@ -1831,6 +1859,9 @@ See server settings&lt;/i&gt;</property>
                                                 <property name="margin_top">6</property>
                                                 <property name="margin_bottom">6</property>
                                                 <signal name="changed" handler="on_job_option_changed" swapped="no"/>
+                                                <accessibility>
+                                                  <relation type="labelled-by" target="label180"/>
+                                                </accessibility>
                                               </object>
                                               <packing>
                                                 <property name="left_attach">1</property>
@@ -1846,6 +1877,9 @@ See server settings&lt;/i&gt;</property>
                                                 <property name="margin_top">6</property>
                                                 <property name="margin_bottom">6</property>
                                                 <signal name="changed" handler="on_job_option_changed" swapped="no"/>
+                                                <accessibility>
+                                                  <relation type="labelled-by" target="label2"/>
+                                                </accessibility>
                                               </object>
                                               <packing>
                                                 <property name="left_attach">1</property>
@@ -1861,6 +1895,9 @@ See server settings&lt;/i&gt;</property>
                                                 <property name="margin_top">6</property>
                                                 <property name="margin_bottom">6</property>
                                                 <signal name="changed" handler="on_job_option_changed" swapped="no"/>
+                                                <accessibility>
+                                                  <relation type="labelled-by" target="label4"/>
+                                                </accessibility>
                                               </object>
                                               <packing>
                                                 <property name="left_attach">1</property>
@@ -1876,6 +1913,9 @@ See server settings&lt;/i&gt;</property>
                                                 <property name="margin_top">6</property>
                                                 <property name="margin_bottom">6</property>
                                                 <signal name="changed" handler="on_job_option_changed" swapped="no"/>
+                                                <accessibility>
+                                                  <relation type="labelled-by" target="label5"/>
+                                                </accessibility>
                                               </object>
                                               <packing>
                                                 <property name="left_attach">1</property>
@@ -1891,6 +1931,9 @@ See server settings&lt;/i&gt;</property>
                                                 <property name="margin_top">6</property>
                                                 <property name="margin_bottom">6</property>
                                                 <signal name="changed" handler="on_job_option_changed" swapped="no"/>
+                                                <accessibility>
+                                                  <relation type="labelled-by" target="label6"/>
+                                                </accessibility>
                                               </object>
                                               <packing>
                                                 <property name="left_attach">1</property>
@@ -2125,6 +2168,9 @@ See server settings&lt;/i&gt;</property>
                                         <property name="numeric">True</property>
                                         <property name="value">1</property>
                                         <signal name="changed" handler="on_job_option_changed" swapped="no"/>
+                                        <accessibility>
+                                          <relation type="labelled-by" target="label138"/>
+                                        </accessibility>
                                       </object>
                                       <packing>
                                         <property name="left_attach">1</property>
@@ -2140,6 +2186,9 @@ See server settings&lt;/i&gt;</property>
                                         <property name="margin_top">6</property>
                                         <property name="margin_bottom">6</property>
                                         <signal name="changed" handler="on_job_option_changed" swapped="no"/>
+                                        <accessibility>
+                                          <relation type="labelled-by" target="label139"/>
+                                        </accessibility>
                                       </object>
                                       <packing>
                                         <property name="left_attach">1</property>
@@ -2155,6 +2204,9 @@ See server settings&lt;/i&gt;</property>
                                         <property name="margin_top">6</property>
                                         <property name="margin_bottom">6</property>
                                         <signal name="changed" handler="on_job_option_changed" swapped="no"/>
+                                        <accessibility>
+                                          <relation type="labelled-by" target="label141"/>
+                                        </accessibility>
                                       </object>
                                       <packing>
                                         <property name="left_attach">1</property>
@@ -2388,6 +2440,11 @@ See server settings&lt;/i&gt;</property>
                                                     <accessibility>
                                                       <relation type="labelled-by" target="label170"/>
                                                     </accessibility>
+                                                    <child internal-child="accessible">
+                                                      <object class="AtkObject" id="sbJOSaturation-atkobject">
+                                                        <property name="AtkObject::accessible-description" translatable="yes">%</property>
+                                                      </object>
+                                                    </child>
                                                   </object>
                                                   <packing>
                                                     <property name="expand">True</property>
@@ -2434,6 +2491,11 @@ See server settings&lt;/i&gt;</property>
                                                     <accessibility>
                                                       <relation type="labelled-by" target="label172"/>
                                                     </accessibility>
+                                                    <child internal-child="accessible">
+                                                      <object class="AtkObject" id="sbJOHue-atkobject">
+                                                        <property name="AtkObject::accessible-description" translatable="yes">°</property>
+                                                      </object>
+                                                    </child>
                                                   </object>
                                                   <packing>
                                                     <property name="expand">True</property>
@@ -2570,6 +2632,14 @@ See server settings&lt;/i&gt;</property>
                                             <property name="climb_rate">1</property>
                                             <property name="value">100</property>
                                             <signal name="changed" handler="on_job_option_changed" swapped="no"/>
+                                            <accessibility>
+                                              <relation type="labelled-by" target="label144"/>
+                                            </accessibility>
+                                            <child internal-child="accessible">
+                                              <object class="AtkObject" id="sbJOScaling-atkobject">
+                                                <property name="AtkObject::accessible-description" translatable="yes">%</property>
+                                              </object>
+                                            </child>
                                           </object>
                                           <packing>
                                             <property name="expand">True</property>
@@ -2955,6 +3025,9 @@ See server settings&lt;/i&gt;</property>
                                             <property name="digits">2</property>
                                             <property name="value">10</property>
                                             <signal name="changed" handler="on_job_option_changed" swapped="no"/>
+                                            <accessibility>
+                                              <relation type="labelled-by" target="label150"/>
+                                            </accessibility>
                                           </object>
                                           <packing>
                                             <property name="expand">True</property>
@@ -2999,6 +3072,9 @@ See server settings&lt;/i&gt;</property>
                                             <property name="digits">2</property>
                                             <property name="value">6.3999999999999986</property>
                                             <signal name="changed" handler="on_job_option_changed" swapped="no"/>
+                                            <accessibility>
+                                              <relation type="labelled-by" target="label151"/>
+                                            </accessibility>
                                           </object>
                                           <packing>
                                             <property name="expand">True</property>
@@ -3041,6 +3117,14 @@ See server settings&lt;/i&gt;</property>
                                             <property name="adjustment">adjustment10</property>
                                             <property name="climb_rate">1</property>
                                             <signal name="changed" handler="on_job_option_changed" swapped="no"/>
+                                            <accessibility>
+                                              <relation type="labelled-by" target="label154"/>
+                                            </accessibility>
+                                            <child internal-child="accessible">
+                                              <object class="AtkObject" id="sbJOPageLeft-atkobject">
+                                                <property name="AtkObject::accessible-description" translatable="yes">points</property>
+                                              </object>
+                                            </child>
                                           </object>
                                           <packing>
                                             <property name="expand">True</property>
@@ -3085,6 +3169,14 @@ See server settings&lt;/i&gt;</property>
                                             <property name="adjustment">adjustment11</property>
                                             <property name="climb_rate">1</property>
                                             <signal name="changed" handler="on_job_option_changed" swapped="no"/>
+                                            <accessibility>
+                                              <relation type="labelled-by" target="label156"/>
+                                            </accessibility>
+                                            <child internal-child="accessible">
+                                              <object class="AtkObject" id="sbJOPageRight-atkobject">
+                                                <property name="AtkObject::accessible-description" translatable="yes">points</property>
+                                              </object>
+                                            </child>
                                           </object>
                                           <packing>
                                             <property name="expand">True</property>
@@ -3129,6 +3221,14 @@ See server settings&lt;/i&gt;</property>
                                             <property name="adjustment">adjustment12</property>
                                             <property name="climb_rate">1</property>
                                             <signal name="changed" handler="on_job_option_changed" swapped="no"/>
+                                            <accessibility>
+                                              <relation type="labelled-by" target="label158"/>
+                                            </accessibility>
+                                            <child internal-child="accessible">
+                                              <object class="AtkObject" id="sbJOPageTop-atkobject">
+                                                <property name="AtkObject::accessible-description" translatable="yes">points</property>
+                                              </object>
+                                            </child>
                                           </object>
                                           <packing>
                                             <property name="expand">True</property>
@@ -3173,6 +3273,14 @@ See server settings&lt;/i&gt;</property>
                                             <property name="adjustment">adjustment13</property>
                                             <property name="climb_rate">1</property>
                                             <signal name="changed" handler="on_job_option_changed" swapped="no"/>
+                                            <accessibility>
+                                              <relation type="labelled-by" target="label160"/>
+                                            </accessibility>
+                                            <child internal-child="accessible">
+                                              <object class="AtkObject" id="sbJOPageBottom-atkobject">
+                                                <property name="AtkObject::accessible-description" translatable="yes">points</property>
+                                              </object>
+                                            </child>
                                           </object>
                                           <packing>
                                             <property name="expand">True</property>

@@ -547,6 +547,9 @@ ipp://printer.mydomain/ipp</property>
                                         <property name="margin_top">6</property>
                                         <property name="margin_bottom">6</property>
                                         <property name="label" translatable="yes">Host:</property>
+                                        <accessibility>
+                                          <relation type="label-for" target="entNPTLpdHost"/>
+                                        </accessibility>
                                       </object>
                                       <packing>
                                         <property name="left_attach">0</property>
@@ -564,6 +567,9 @@ ipp://printer.mydomain/ipp</property>
                                         <property name="margin_top">6</property>
                                         <property name="margin_bottom">6</property>
                                         <property name="label" translatable="yes">Queue:</property>
+                                        <accessibility>
+                                          <relation type="label-for" target="entNPTLpdQueue"/>
+                                        </accessibility>
                                       </object>
                                       <packing>
                                         <property name="left_attach">0</property>
@@ -635,6 +641,9 @@ ipp://printer.mydomain/ipp</property>
                                         <property name="primary_icon_activatable">False</property>
                                         <property name="secondary_icon_activatable">False</property>
                                         <signal name="changed" handler="on_entNPTLpdHost_changed" swapped="no"/>
+                                        <accessibility>
+                                          <relation type="labelled-by" target="label200"/>
+                                        </accessibility>
                                       </object>
                                       <packing>
                                         <property name="left_attach">1</property>
@@ -656,6 +665,9 @@ ipp://printer.mydomain/ipp</property>
                                         <property name="primary_icon_activatable">False</property>
                                         <property name="secondary_icon_activatable">False</property>
                                         <signal name="changed" handler="on_entNPTLpdQueue_changed" swapped="no"/>
+                                        <accessibility>
+                                          <relation type="labelled-by" target="label201"/>
+                                        </accessibility>
                                       </object>
                                       <packing>
                                         <property name="left_attach">1</property>
@@ -744,6 +756,9 @@ ipp://printer.mydomain/ipp</property>
                                         <property name="margin_top">6</property>
                                         <property name="margin_bottom">6</property>
                                         <property name="label" translatable="yes">Baud Rate</property>
+                                        <accessibility>
+                                          <relation type="label-for" target="cmbNPTSerialBaud"/>
+                                        </accessibility>
                                       </object>
                                       <packing>
                                         <property name="left_attach">0</property>
@@ -760,6 +775,9 @@ ipp://printer.mydomain/ipp</property>
                                         <property name="margin_top">6</property>
                                         <property name="margin_bottom">6</property>
                                         <property name="label" translatable="yes">Parity</property>
+                                        <accessibility>
+                                          <relation type="label-for" target="cmbNPTSerialParity"/>
+                                        </accessibility>
                                       </object>
                                       <packing>
                                         <property name="left_attach">0</property>
@@ -776,6 +794,9 @@ ipp://printer.mydomain/ipp</property>
                                         <property name="margin_top">6</property>
                                         <property name="margin_bottom">6</property>
                                         <property name="label" translatable="yes">Data Bits</property>
+                                        <accessibility>
+                                          <relation type="label-for" target="cmbNPTSerialBits"/>
+                                        </accessibility>
                                       </object>
                                       <packing>
                                         <property name="left_attach">0</property>
@@ -792,6 +813,9 @@ ipp://printer.mydomain/ipp</property>
                                         <property name="margin_top">6</property>
                                         <property name="margin_bottom">6</property>
                                         <property name="label" translatable="yes">Flow Control</property>
+                                        <accessibility>
+                                          <relation type="label-for" target="cmbNPTSerialFlow"/>
+                                        </accessibility>
                                       </object>
                                       <packing>
                                         <property name="left_attach">0</property>
@@ -806,6 +830,9 @@ ipp://printer.mydomain/ipp</property>
                                         <property name="margin_right">12</property>
                                         <property name="margin_top">6</property>
                                         <property name="margin_bottom">6</property>
+                                        <accessibility>
+                                          <relation type="labelled-by" target="label43"/>
+                                        </accessibility>
                                       </object>
                                       <packing>
                                         <property name="left_attach">1</property>
@@ -820,6 +847,9 @@ ipp://printer.mydomain/ipp</property>
                                         <property name="margin_right">12</property>
                                         <property name="margin_top">6</property>
                                         <property name="margin_bottom">6</property>
+                                        <accessibility>
+                                          <relation type="labelled-by" target="label44"/>
+                                        </accessibility>
                                       </object>
                                       <packing>
                                         <property name="left_attach">1</property>
@@ -834,6 +864,9 @@ ipp://printer.mydomain/ipp</property>
                                         <property name="margin_right">12</property>
                                         <property name="margin_top">6</property>
                                         <property name="margin_bottom">6</property>
+                                        <accessibility>
+                                          <relation type="labelled-by" target="label45"/>
+                                        </accessibility>
                                       </object>
                                       <packing>
                                         <property name="left_attach">1</property>
@@ -848,6 +881,9 @@ ipp://printer.mydomain/ipp</property>
                                         <property name="margin_right">12</property>
                                         <property name="margin_top">6</property>
                                         <property name="margin_bottom">6</property>
+                                        <accessibility>
+                                          <relation type="labelled-by" target="label46"/>
+                                        </accessibility>
                                       </object>
                                       <packing>
                                         <property name="left_attach">1</property>
@@ -1241,6 +1277,9 @@ ipp://printer.mydomain/ipp</property>
                                             <property name="margin_top">6</property>
                                             <property name="margin_bottom">6</property>
                                             <property name="label" translatable="yes">Host:</property>
+                                            <accessibility>
+                                              <relation type="label-for" target="entNPTNetworkHostname"/>
+                                            </accessibility>
                                           </object>
                                           <packing>
                                             <property name="left_attach">0</property>
@@ -1259,6 +1298,9 @@ ipp://printer.mydomain/ipp</property>
                                             <property name="primary_icon_activatable">False</property>
                                             <property name="secondary_icon_activatable">False</property>
                                             <signal name="changed" handler="on_entNPTNetworkHostname_changed" swapped="no"/>
+                                            <accessibility>
+                                              <relation type="labelled-by" target="label2235"/>
+                                            </accessibility>
                                           </object>
                                           <packing>
                                             <property name="left_attach">1</property>
@@ -1650,6 +1692,9 @@ ipp://printer.mydomain/ipp</property>
                                 <property name="margin_top">6</property>
                                 <property name="margin_bottom">6</property>
                                 <property name="label" translatable="yes">Make and model:</property>
+                                <accessibility>
+                                  <relation type="label-for" target="entNPDownloadableDriverSearch"/>
+                                </accessibility>
                               </object>
                               <packing>
                                 <property name="left_attach">0</property>
@@ -1676,6 +1721,9 @@ ipp://printer.mydomain/ipp</property>
                                     <property name="secondary_icon_activatable">False</property>
                                     <signal name="activate" handler="on_btnNPDownloadableDriverSearch_clicked" object="btnNPDownloadableDriverSearch" swapped="yes"/>
                                     <accelerator key="Return" signal="activate"/>
+                                    <accessibility>
+                                      <relation type="labelled-by" target="label206"/>
+                                    </accessibility>
                                   </object>
                                   <packing>
                                     <property name="expand">True</property>
@@ -1748,6 +1796,9 @@ ipp://printer.mydomain/ipp</property>
                                 <property name="margin_top">6</property>
                                 <property name="margin_bottom">6</property>
                                 <property name="label" translatable="yes">Printer model:</property>
+                                <accessibility>
+                                  <relation type="label-for" target="cmbNPDownloadableDriverFoundPrinters"/>
+                                </accessibility>
                               </object>
                               <packing>
                                 <property name="left_attach">0</property>
@@ -1763,6 +1814,9 @@ ipp://printer.mydomain/ipp</property>
                                 <property name="margin_right">12</property>
                                 <property name="margin_top">6</property>
                                 <property name="margin_bottom">6</property>
+                                <accessibility>
+                                  <relation type="labelled-by" target="label208"/>
+                                </accessibility>
                               </object>
                               <packing>
                                 <property name="left_attach">1</property>
@@ -2547,6 +2601,9 @@ ipp://printer.mydomain/ipp</property>
                                         <property name="margin_top">6</property>
                                         <property name="margin_bottom">6</property>
                                         <property name="label" translatable="yes">Description:</property>
+                                        <accessibility>
+                                          <relation type="label-for" target="lblNPDownloadableDriverDescription"/>
+                                        </accessibility>
                                       </object>
                                       <packing>
                                         <property name="left_attach">0</property>
@@ -2563,6 +2620,9 @@ ipp://printer.mydomain/ipp</property>
                                         <property name="margin_top">6</property>
                                         <property name="margin_bottom">6</property>
                                         <property name="label" translatable="yes">License:</property>
+                                        <accessibility>
+                                          <relation type="label-for" target="lblNPDownloadableDriverLicense"/>
+                                        </accessibility>
                                       </object>
                                       <packing>
                                         <property name="left_attach">0</property>
@@ -2579,6 +2639,9 @@ ipp://printer.mydomain/ipp</property>
                                         <property name="margin_top">6</property>
                                         <property name="margin_bottom">6</property>
                                         <property name="label" translatable="yes">Supplier:</property>
+                                        <accessibility>
+                                          <relation type="label-for" target="lblNPDownloadableDriverSupplier"/>
+                                        </accessibility>
                                       </object>
                                       <packing>
                                         <property name="left_attach">0</property>
@@ -2588,7 +2651,7 @@ ipp://printer.mydomain/ipp</property>
                                     <child>
                                       <object class="GtkLabel" id="lblNPDownloadableDriverLicense">
                                         <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
+                                        <property name="can_focus">True</property>
                                         <property name="halign">start</property>
                                         <property name="margin_right">12</property>
                                         <property name="margin_top">6</property>
@@ -2596,6 +2659,9 @@ ipp://printer.mydomain/ipp</property>
                                         <property name="label" translatable="yes">license</property>
                                         <property name="wrap">True</property>
                                         <property name="selectable">True</property>
+                                        <accessibility>
+                                          <relation type="labelled-by" target="label222"/>
+                                        </accessibility>
                                       </object>
                                       <packing>
                                         <property name="left_attach">1</property>
@@ -2605,7 +2671,7 @@ ipp://printer.mydomain/ipp</property>
                                     <child>
                                       <object class="GtkLabel" id="lblNPDownloadableDriverDescription">
                                         <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
+                                        <property name="can_focus">True</property>
                                         <property name="halign">start</property>
                                         <property name="margin_right">12</property>
                                         <property name="margin_top">6</property>
@@ -2614,6 +2680,9 @@ ipp://printer.mydomain/ipp</property>
                                         <property name="use_markup">True</property>
                                         <property name="wrap">True</property>
                                         <property name="selectable">True</property>
+                                        <accessibility>
+                                          <relation type="labelled-by" target="label225"/>
+                                        </accessibility>
                                       </object>
                                       <packing>
                                         <property name="left_attach">1</property>
@@ -2643,7 +2712,7 @@ ipp://printer.mydomain/ipp</property>
                                     <child>
                                       <object class="GtkLabel" id="lblNPDownloadableDriverSupplier">
                                         <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
+                                        <property name="can_focus">True</property>
                                         <property name="halign">start</property>
                                         <property name="margin_right">12</property>
                                         <property name="margin_top">6</property>
@@ -2652,6 +2721,9 @@ ipp://printer.mydomain/ipp</property>
                                         <property name="use_markup">True</property>
                                         <property name="wrap">True</property>
                                         <property name="selectable">True</property>
+                                        <accessibility>
+                                          <relation type="labelled-by" target="label221"/>
+                                        </accessibility>
                                       </object>
                                       <packing>
                                         <property name="left_attach">1</property>
@@ -2707,6 +2779,9 @@ ipp://printer.mydomain/ipp</property>
                                         <property name="margin_top">6</property>
                                         <property name="margin_bottom">6</property>
                                         <property name="label" translatable="yes">Support:</property>
+                                        <accessibility>
+                                          <relation type="label-for" target="lblNPDownloadableDriverSupportContacts"/>
+                                        </accessibility>
                                       </object>
                                       <packing>
                                         <property name="left_attach">0</property>
@@ -2716,13 +2791,16 @@ ipp://printer.mydomain/ipp</property>
                                     <child>
                                       <object class="GtkLabel" id="lblNPDownloadableDriverSupportContacts">
                                         <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
+                                        <property name="can_focus">True</property>
                                         <property name="halign">start</property>
                                         <property name="margin_top">6</property>
                                         <property name="margin_bottom">6</property>
                                         <property name="label" translatable="yes">support contacts</property>
                                         <property name="wrap">True</property>
                                         <property name="selectable">True</property>
+                                        <accessibility>
+                                          <relation type="labelled-by" target="label2212"/>
+                                        </accessibility>
                                       </object>
                                       <packing>
                                         <property name="left_attach">1</property>
@@ -2762,6 +2840,9 @@ ipp://printer.mydomain/ipp</property>
                                                 <property name="margin_top">6</property>
                                                 <property name="margin_bottom">6</property>
                                                 <property name="label" translatable="yes">Text:</property>
+                                                <accessibility>
+                                                  <relation type="label-for" target="hsDownloadableDriverPerfText"/>
+                                                </accessibility>
                                               </object>
                                               <packing>
                                                 <property name="left_attach">0</property>
@@ -2778,6 +2859,9 @@ ipp://printer.mydomain/ipp</property>
                                                 <property name="margin_top">6</property>
                                                 <property name="margin_bottom">6</property>
                                                 <property name="label" translatable="yes">Line art:</property>
+                                                <accessibility>
+                                                  <relation type="label-for" target="hsDownloadableDriverPerfLineArt"/>
+                                                </accessibility>
                                               </object>
                                               <packing>
                                                 <property name="left_attach">0</property>
@@ -2800,6 +2884,9 @@ ipp://printer.mydomain/ipp</property>
                                                     <property name="round_digits">0</property>
                                                     <property name="digits">0</property>
                                                     <property name="value_pos">left</property>
+                                                    <accessibility>
+                                                      <relation type="labelled-by" target="label2215"/>
+                                                    </accessibility>
                                                   </object>
                                                   <packing>
                                                     <property name="expand">True</property>
@@ -2841,6 +2928,9 @@ ipp://printer.mydomain/ipp</property>
                                                     <property name="round_digits">0</property>
                                                     <property name="digits">0</property>
                                                     <property name="value_pos">left</property>
+                                                    <accessibility>
+                                                      <relation type="labelled-by" target="label2216"/>
+                                                    </accessibility>
                                                   </object>
                                                   <packing>
                                                     <property name="expand">True</property>
@@ -2893,6 +2983,9 @@ ipp://printer.mydomain/ipp</property>
                                                     <property name="round_digits">0</property>
                                                     <property name="digits">0</property>
                                                     <property name="value_pos">left</property>
+                                                    <accessibility>
+                                                      <relation type="labelled-by" target="label2217"/>
+                                                    </accessibility>
                                                   </object>
                                                   <packing>
                                                     <property name="expand">True</property>
@@ -2928,6 +3021,9 @@ ipp://printer.mydomain/ipp</property>
                                                 <property name="margin_top">6</property>
                                                 <property name="margin_bottom">6</property>
                                                 <property name="label" translatable="yes">Graphics:</property>
+                                                <accessibility>
+                                                  <relation type="label-for" target="hsDownloadableDriverPerfGraphics"/>
+                                                </accessibility>
                                               </object>
                                               <packing>
                                                 <property name="left_attach">0</property>
@@ -2950,6 +3046,9 @@ ipp://printer.mydomain/ipp</property>
                                                     <property name="round_digits">0</property>
                                                     <property name="digits">0</property>
                                                     <property name="value_pos">left</property>
+                                                    <accessibility>
+                                                      <relation type="labelled-by" target="label2224"/>
+                                                    </accessibility>
                                                   </object>
                                                   <packing>
                                                     <property name="expand">True</property>
@@ -2985,6 +3084,9 @@ ipp://printer.mydomain/ipp</property>
                                                 <property name="margin_top">6</property>
                                                 <property name="margin_bottom">6</property>
                                                 <property name="label" translatable="yes">Photo:</property>
+                                                <accessibility>
+                                                  <relation type="label-for" target="hsDownloadableDriverPerfPhoto"/>
+                                                </accessibility>
                                               </object>
                                               <packing>
                                                 <property name="left_attach">0</property>
