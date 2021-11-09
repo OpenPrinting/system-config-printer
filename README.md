@@ -37,7 +37,6 @@ Runtime requirements:
 - python3-firewall
 - python3-gobject
 - python3-pycurl
-- python3-requests
 - (optional) python3-smbc
 
 How to compile and install:

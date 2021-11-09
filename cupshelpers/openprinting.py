@@ -19,13 +19,15 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-import requests, urllib.request, urllib.parse, urllib.error, platform, threading, tempfile, traceback
-import os, sys
+import urllib.request, urllib.parse, urllib.error, platform, threading, traceback
+import sys
 from xml.etree.ElementTree import XML
 from . import Device
 from . import _debugprint
 
 __all__ = ['OpenPrinting']
+
+HTTPS_TIMEOUT = 15.0
 
 def _normalize_space (text):
     result = text.strip ()
@@ -64,17 +66,15 @@ class _QueryThread (threading.Thread):
                    self.parent.language[0]))
         self.url = "https://%s%s?%s" % (self.parent.base_url, query_command, params)
         # Send request
-        result = None
         self.result = b''
         status = 1
         try:
-            req = requests.get(self.url, verify=True)
-            self.result = req.content
-            status = 0
-        except:
-            self.result = sys.exc_info ()
-            if status is None:
+            req = urllib.request(self.url, headers=headers)
+            with urllib.request.urlopen(req, timeout=HTTPS_TIMEOUT) as resp:
+                self.result = resp.read()
                 status = 0
+        except:
+            self.result = sys.exc_info()
 
         _debugprint ("%s: query complete" % self)
         if self.callback is not None:
@@ -287,9 +287,8 @@ class OpenPrinting:
                             license_url = element.text
                             if license_url is not None:
                                 try:
-                                    req = requests.get(license_url, verify=True)
-                                    dict['licensetext'] = \
-                                        req.content.decode("utf-8")
+                                    with urllib.request.urlopen(license_url, timeout=HTTPS_TIMEOUT) as resp:
+                                        dict['licensetext'] = resp.read().decode('utf-8')
                                 except:
                                     _debugprint('Cannot retrieve %s' %
                                                 license_url)
