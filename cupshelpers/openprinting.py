@@ -69,7 +69,7 @@ class _QueryThread (threading.Thread):
         self.result = b''
         status = 1
         try:
-            req = urllib.request(self.url, headers=headers)
+            req = urllib.request.Request(self.url, headers=headers)
             with urllib.request.urlopen(req, timeout=HTTPS_TIMEOUT) as resp:
                 self.result = resp.read()
                 status = 0
