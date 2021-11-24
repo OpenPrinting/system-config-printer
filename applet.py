@@ -21,6 +21,8 @@ import cups
 from functools import reduce
 cups.require ("1.9.42")
 import sys
+import socket
+import getpass
 from debug import *
 
 import dbus
@@ -458,6 +460,16 @@ if __name__ == '__main__':
                                   "%s" % (PROGRAM_NAME, e)), file=sys.stderr)
         except:
             pass
+
+    try:
+        sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+        # Create an abstract socket, by prefixing it with null.
+        sock.bind("\0printer-applet-lock-user-" + getpass.getuser()) 
+    except socket.error as err:
+        error_code = err.args[0]
+        error_string = err.args[1]
+        print("Process already running ({0}:{1}). Exiting.".format(error_code, error_string))
+        sys.exit(0)
 
     loop = GLib.MainLoop ()
     runloop = RunLoop (session_bus, system_bus, loop)
