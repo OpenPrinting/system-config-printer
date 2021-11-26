@@ -1,8 +1,5 @@
 # system-config-printer
 
-[![Build Status](https://travis-ci.org/OpenPrinting/system-config-printer.svg?branch=master)](https://travis-ci.org/OpenPrinting/system-config-printer)
-
-This is a graphical tool for CUPS administration - system-config-printer (s-c-p).
 It uses IPP to configure a CUPS server. Additionally it provides dBUS interface
 for several operations which aren't directly available in cupsd, and automatic USB
 printer installation daemon for non-IPP-over-USB printers.
