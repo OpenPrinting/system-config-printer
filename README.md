@@ -8,7 +8,7 @@ The alternatives for the graphical configuration tool are CUPS Web
 interface, desktop control-center or lpadmin command line tool if you need
 to install printer manually which may not be needed in recent cases.
 
-WHEN I DO NOT NEED PRINTER SETUP TOOL AS S-C-P?
+When I do not need printer setup tool as S-C-P?
 -----------------------------------------------
 
 If the application where you print from has an up-to-date print dialog
@@ -27,7 +27,7 @@ From the dialogs I'm aware of the temporary queues are currently supported in an
 based application (evince, gvim, gedit, firefox if you are on GNOME and choose system
 dialog for printing...) and in Libreoffice.
 
-FUTURE WITH CUPS 3.0:
+Future with CUPS 3.0:
 ---------------------
 
 CUPS 3.0 will divide the current CUPS in several modules - command line tools, library,
@@ -41,7 +41,7 @@ with IPP services which are on localhost (USB devices, printer applications and 
 queues from CUPS Sharing server if installed as well), in local network or defined by printer profiles,
 if system-config-printer should work with CUPS 3.0.
 
-IS S-C-P REQUIRED IN SYSTEM WITH CUPS 3.0?
+Is S-C-P required in system with CUPS 3.0?
 ------------------------------------------
 
 Regarding printer setup tools OpenPrinting current plans are to integrate printer setup dialog into
