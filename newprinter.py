@@ -155,8 +155,8 @@ def download_gpg_fingerprint(url):
         with urllib.request.urlopen(url, timeout=HTTPS_TIMEOUT) as resp:
             if resp.status == 200:
                 content = resp.read().decode('utf-8')
-    except:
-        pass
+    except Exception as e:
+        debugprint('Cannot retrieve %s: %s' % (url, e))
 
     if content is None:
         debugprint('Cannot retrieve %s' % url)
