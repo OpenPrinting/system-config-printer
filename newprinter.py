@@ -29,7 +29,7 @@ import cupshelpers
 from OpenPrintingRequest import OpenPrintingRequest
 
 import errno
-import sys, os, tempfile, time, traceback, re, http.client
+import sys, os, tempfile, time, re, http.client
 import locale
 import string
 import subprocess
@@ -37,7 +37,6 @@ from timedops import *
 import dbus
 from gi.repository import Gdk
 from gi.repository import Gtk
-import requests
 import functools
 
 import cups
@@ -68,6 +67,7 @@ import installpackage
 import gettext
 gettext.install(domain=config.PACKAGE, localedir=config.localedir)
 
+HTTPS_TIMEOUT = 15.0
 
 TEXT_adjust_firewall = _("The firewall may need adjusting in order to "
                          "detect network printers.  Adjust the "
@@ -150,39 +150,15 @@ def download_gpg_fingerprint(url):
         debugprint('Not a https fingerprint URL: %s, ignoring driver' % url)
         return None
 
-    # Possible paths of a file with a set of SSL certificates which are
-    # considered trustworthy. The first one that exists will be used.
-    # This is used for downloading GPG key fingerprints for
-    # openprinting.org driver packages.
-    ssl_cert_file_paths = [
-        # Debian/Ubuntu use the ca-certificates package:
-        '/etc/ssl/certs/ca-certificates.crt',
-
-        # Fedora place the certificates in different locations:
-        '/etc/ssl/certs/ca-bundle.crt',
-        '/etc/pki/tls/certs/ca-bundle.crt'
-        ]
-
-    # default GPG key server
-    # this is the generally recommended DNS round-robin, but usually very
-    # slow:
-    #gpg_key_server = 'keys.gnupg.net'
-    gpg_key_server = 'hkp://keyserver.ubuntu.com:80'
-
-    cert = None
-    for f in ssl_cert_file_paths:
-        if os.path.exists(f):
-            cert = f
-            break;
-
-    if not cert:
-        debugprint('No system SSL certificates available for trust checking')
-        return None
-
+    content = None
     try:
-        req = requests.get(url, verify=cert)
-        content = req.content.decode("utf-8")
-    except:
+        with urllib.request.urlopen(url, timeout=HTTPS_TIMEOUT) as resp:
+            if resp.status == 200:
+                content = resp.read().decode('utf-8')
+    except Exception as e:
+        debugprint('Cannot retrieve %s: %s' % (url, e))
+
+    if content is None:
         debugprint('Cannot retrieve %s' % url)
         return None
 
