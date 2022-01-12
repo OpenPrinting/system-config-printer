@@ -153,7 +153,7 @@ class ServerSettings(GtkGUI):
             raise RuntimeError
 
         preserve_job_history = True
-        preserve_job_files = False
+        preserve_job_files = True
         browsing = True
         self.browse_poll = []
         f.seek (0)
@@ -421,9 +421,9 @@ class ServerSettings(GtkGUI):
         if not preserve_job_history:
             job_history_line = "PreserveJobHistory No\n"
 
-        # Default is not to preserve job files.
-        if preserve_job_files:
-            job_files_line = "PreserveJobFiles Yes\n"
+        # Default is to preserve job files.
+        if not preserve_job_files:
+            job_files_line = "PreserveJobFiles No\n"
 
         for server in browse_poll:
             browsepoll_lines += "BrowsePoll %s\n" % server
