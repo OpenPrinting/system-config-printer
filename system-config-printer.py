@@ -47,6 +47,16 @@ except RuntimeError as e:
     print ("This is a graphical application and requires DISPLAY to be set.")
     sys.exit (1)
 
+# Optional dependency, requires libhandy >= 1.5
+gi.require_version('Handy', '1')
+try:
+    from gi.repository import Handy
+    Handy.init()
+    # Support GNOME 42 dark mode
+    Handy.StyleManager.get_default().set_color_scheme(Handy.ColorScheme.PREFER_LIGHT)
+except:
+    pass
+
 def show_help():
     print ("\nThis is system-config-printer, " \
            "a CUPS server configuration program.\n\n"
