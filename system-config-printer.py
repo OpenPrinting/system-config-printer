@@ -973,23 +973,23 @@ class GUI(GtkGUI):
                 elif object.is_class:
                     type = 'local-class'
                 else:
-                    (scheme, rest) = urllib.parse.splittype (object.device_uri)
-                    if scheme in ['ipp', 'ipps']:
-                        if rest.startswith("//localhost"): # IPP-over-USB
+                    parsed = urllib.parse.urlparse (object.device_uri)
+                    if parsed.scheme in ['ipp', 'ipps']:
+                        if parsed.netloc.startswith("localhost"): # IPP-over-USB
                             type = 'local-printer'
                         else: # IPP network printer
                             type = 'ipp-printer'
-                    elif scheme == 'smb':
+                    elif parsed.scheme == 'smb':
                         type = 'smb-printer'
-                    elif scheme == 'hpfax':
+                    elif parsed.scheme == 'hpfax':
                         type = 'local-fax'
-                    elif scheme in ['socket', 'lpd', 'dnssd']:
+                    elif parsed.scheme in ['socket', 'lpd', 'dnssd']:
                         type = 'network-printer'
                     elif object.device_uri.startswith('hp:/net/'):
                         type = 'network-printer'
                     elif object.device_uri.startswith('hpfax:/net/'):
                         type = 'network-printer'
-                    elif scheme == 'implicitclass': # cups-browsed-discovered
+                    elif parsed.scheme == 'implicitclass': # cups-browsed-discovered
                         type = 'discovered-printer'
 
                 (tip, icon) = PRINTER_TYPE[type]
