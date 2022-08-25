@@ -746,6 +746,12 @@ class GUI(GtkGUI):
         else:
             nonfatalException ()
 
+    def dests_iconview_set_accessible_names (self):
+        iv_acc = self.dests_iconview.get_accessible ()
+        for i in range (iv_acc.get_n_accessible_children ()):
+            acc = iv_acc.ref_accessible_child (i)
+            acc.set_name (acc.get_text (0, -1))
+
     def on_server_settings_activate (self, menuitem):
         try:
             self.serverSettings = ServerSettings (host=self.connect_server,
@@ -1135,6 +1141,7 @@ class GUI(GtkGUI):
             self.btnStartService.set_tooltip_text (tooltip_text)
 
         self.dests_notebook.set_current_page (page)
+        self.dests_iconview_set_accessible_names ()
 
     # Connect to Server
 
