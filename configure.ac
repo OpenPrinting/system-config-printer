@@ -33,7 +33,31 @@ fi
 AC_SUBST(DESKTOPVENDOR)
 AC_SUBST(DESKTOPPREFIX)
 
-cupsserverbindir="`cups-config --serverbin`"
+PKG_PROG_PKG_CONFIG
+
+dnl Allow manual definition for CUPS SERVERBIN, if not defined, use value from pkg-config...
+AC_MSG_CHECKING([for CUPS SERVERBIN dir])
+AC_ARG_WITH([cups_serverbin_dir],
+  AS_HELP_STRING([--with-cups-serverbin-dir], [set CUPS SERVERBIN dir, default=value from pkg-config]), [
+    cupsserverbindir="$withval"
+    AC_MSG_RESULT([$withval])
+  ], [
+    AS_IF([test "x$PKG_CONFIG" != x], [
+      AS_IF([$PKG_CONFIG --exists cups], [
+          cupsserverbindir=$($PKG_CONFIG --variable=cups_serverbin cups)
+          AC_MSG_RESULT([$cupsserverbindir])
+        ], [
+          AC_MSG_ERROR([No CUPS pkgconfig file present and no CUPS SERVERBIN dir defined in configure options.])
+        ])
+    ], [
+      AC_MSG_ERROR([No pkg-config present and no CUPS SERVERBIN dir defined in configure options.])
+    ])
+])
+
+AS_IF([test "x$cupsserverbindir" = x], [
+  AC_MSG_ERROR([No CUPS SERVERBIN dir defined in CUPS pkgconfig file or configure options.])
+])
+
 AC_SUBST(cupsserverbindir)
 
 PKG_CHECK_MODULES(GLIB, glib-2.0, has_glib=yes, has_glib=no)
@@ -66,7 +90,6 @@ if test "x$with_udev_rules" != xno -a "x$with_udevdir" != xno; then
    AM_PROG_CC_C_O
 fi
 
-PKG_PROG_PKG_CONFIG
 AC_ARG_WITH([systemdsystemunitdir],
         AS_HELP_STRING([--with-systemdsystemunitdir=DIR], [Directory for systemd service files]),
         [], [with_systemdsystemunitdir=$($PKG_CONFIG --variable=systemdsystemunitdir systemd)])
