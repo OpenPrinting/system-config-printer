@@ -71,6 +71,7 @@ install-exec-local: .stamp-distutils-in-builddir
 uninstall-local:
 	rm -f $(DESTDIR)/$(pythondir)/cupshelpers*.egg-info
 	rm -rf $(DESTDIR)/$(pythondir)/cupshelpers/__pycache__
+	rm -rf $(DESTDIR)/$(pythondir)/cupshelpers*.egg
 	for file in $(EXPORT_MODULES) $(EXPORT_MODULES_GEN); do	\
 		rm -f $(DESTDIR)/$(pythondir)/$$file*;		\
 	done
@@ -399,5 +400,7 @@ DISTCLEANFILES=*.pyc *.pyo *~ *.bak \
 distclean-local:
 	rm -rf html
 	rm -rf cupshelpers/__pycache__
+	rm -rf cupshelpers.egg-info/
+	rm -rf dist/cupshelpers*.egg
 
 .PHONY: update-po missing-languages run help FORCE
