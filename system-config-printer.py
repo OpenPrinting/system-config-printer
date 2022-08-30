@@ -47,9 +47,9 @@ except RuntimeError as e:
     print ("This is a graphical application and requires DISPLAY to be set.")
     sys.exit (1)
 
-# Optional dependency, requires libhandy >= 1.5
-gi.require_version('Handy', '1')
 try:
+    # Optional dependency, requires libhandy >= 1.5
+    gi.require_version('Handy', '1')
     from gi.repository import Handy
     Handy.init()
     # Support GNOME 42 dark mode
