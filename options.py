@@ -423,7 +423,7 @@ class OptionSelectOne(Option):
             debugprint("Unknown value for %s: %s" % (name, value))
             debugprint("Choices: %s" % (supported))
             if len(supported) > 0:
-                debugprint("Selecting from choices:", supported[0])
+                debugprint("Selecting from choices: %s" % supported[0])
                 self.selector.set_active(0)
         self.selector.connect("changed", self.changed)
 
