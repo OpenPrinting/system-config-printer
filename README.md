@@ -102,7 +102,6 @@ Runtime requirements:
 - python3-dbus
 - python3-firewall
 - python3-gobject
-- python3-pycurl
 - (optional) python3-smbc
 
 How to compile and install:
