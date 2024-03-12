@@ -806,7 +806,7 @@ device_id_from_devpath (struct udev *udev, const char *devpath,
   {
     udev_device_unref (dev);
     syslog (LOG_ERR, "unable to access %s", syspath);
-    return NULL;
+    exit (1);
   }
 
   usb_device_devpath = strdup (udev_device_get_devpath (dev));
@@ -831,7 +831,7 @@ device_id_from_devpath (struct udev *udev, const char *devpath,
     syslog (LOG_DEBUG, "Device already handled");
     free (usb_device_devpath);
     free (devicefilepath);
-    return NULL;
+    exit (0);
   }
 
   serial = udev_device_get_sysattr_value (dev, "serial");
