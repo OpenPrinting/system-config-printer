@@ -1196,7 +1196,7 @@ class JobViewer (GtkGUI):
                     password_obj = PasswordStore(attrs,
                                                  name,
                                                  secret)
-                    debugprint ("keyring: created id %d for %s" % (id, name))
+                    debugprint ("keyring: password object created for {}".format(name))
             except:
                 nonfatalException ()
 
