@@ -59,11 +59,11 @@ dbus/org.fedoraproject.Config.Printing.service: dbus/org.fedoraproject.Config.Pr
 
 # Use distutils to build the module.
 all-local: .stamp-distutils-in-builddir config.py cupshelpers/config.py
-	$(PYTHON) setup.py build
+	$(PYTHON) -m build
 
 # Use distutils to install the module.
 install-exec-local: .stamp-distutils-in-builddir
-	$(PYTHON) setup.py install --root $(DESTDIR) --prefix=$(prefix)
+	$(PYTHON) -m pip install --root $(DESTDIR) --prefix=$(prefix) .
 
 # Uninstall the module, crossing our fingers that we know enough
 # about how distutils works to do this.  Unfortunately, distutils

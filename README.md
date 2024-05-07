@@ -88,6 +88,9 @@ Build requirements:
   - desktop-file-install
   - intltool
   - xmlto
+  - gcc
+  - python3-setuptools
+  - python3-build
   
 Runtime requirements:
 ---------------------
