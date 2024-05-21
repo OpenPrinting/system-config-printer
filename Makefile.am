@@ -63,17 +63,20 @@ all-local: .stamp-distutils-in-builddir config.py cupshelpers/config.py
 
 # Use distutils to install the module.
 install-exec-local: .stamp-distutils-in-builddir
-	$(PYTHON) -m pip install --root $(DESTDIR) --prefix=$(prefix) .
+	$(PYTHON) -m pip install .
 
 # Uninstall the module, crossing our fingers that we know enough
 # about how distutils works to do this.  Unfortunately, distutils
 # doesn't provide a way to do this itself.
 uninstall-local:
-	rm -f $(DESTDIR)/$(pythondir)/cupshelpers*.egg-info
-	rm -rf $(DESTDIR)/$(pythondir)/cupshelpers/__pycache__
-	rm -rf $(DESTDIR)/$(pythondir)/cupshelpers*.egg
+	echo $(pythondir)
+	echo $(DESTDIR)
+	echo $(prefix)
+	rm -f $(pythondir)/cupshelpers*.egg-info
+	rm -rf $(pythondir)/cupshelpers/__pycache__
+	rm -rf $(pythondir)/cupshelpers*
 	for file in $(EXPORT_MODULES) $(EXPORT_MODULES_GEN); do	\
-		rm -f $(DESTDIR)/$(pythondir)/$$file*;		\
+		rm -f $(pythondir)/$$file*;		\
 	done
 
 # Tell distutils to clean up.
@@ -288,7 +291,7 @@ EXTRA_DIST=\
 	bootstrap \
 	mkinstalldirs \
 	ChangeLog-OLD \
-	README \
+	README.md \
 	$(desktop_in_files) \
 	config.py.in \
 	cupshelpers/config.py.in \
@@ -299,6 +302,7 @@ EXTRA_DIST=\
 	dbus/org.fedoraproject.Config.Printing.service.in \
 	xml/preferreddrivers.xml \
 	test_PhysicalDevice.py \
+	pyproject.toml \
 	$(appdata_in_files)
 
 if XMLTO
@@ -401,6 +405,8 @@ distclean-local:
 	rm -rf html
 	rm -rf cupshelpers/__pycache__
 	rm -rf cupshelpers.egg-info/
-	rm -rf dist/cupshelpers*.egg
+	rm -rf usr
+	rm -f dist/cupshelpers*.whl
+	rm -f dist/cupshelpers*.tar.gz
 
 .PHONY: update-po missing-languages run help FORCE
