@@ -13,11 +13,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2020-05-05 14:10+0200\n"
+"POT-Creation-Date: 2024-05-22 16:51+0200\n"
 "PO-Revision-Date: 2024-04-23 01:36+0000\n"
 "Last-Translator: 김인수 <simmon@nplob.com>\n"
-"Language-Team: Korean <https://translate.fedoraproject.org/projects/"
-"system-config-printer/master/ko/>\n"
+"Language-Team: Korean <https://translate.fedoraproject.org/projects/system-"
+"config-printer/master/ko/>\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -25,478 +25,545 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 5.4\n"
 
-#: ../asyncipp.py:473 ../authconn.py:458 ../authconn.py:460
-#: ../errordialogs.py:63 ../pysmb.py:90 ../pysmb.py:92
+#: applet.py:92
+msgid "Configuring new printer"
+msgstr "새 프린터 설정"
+
+#: applet.py:93
+msgid "Please wait..."
+msgstr "잠시만 기다리십시오..."
+
+#. name is a URI, no queue was generated, because no suitable
+#. driver was found
+#: applet.py:122 applet.py:175
+msgid "Missing printer driver"
+msgstr "프린터 드라이버가 없음"
+
+#: applet.py:129
+#, python-format
+msgid "No printer driver for %s."
+msgstr "%s의 프린터 드라이버가 없음."
+
+#: applet.py:131
+msgid "No driver for this printer."
+msgstr "프린터 드라이버가 없음."
+
+#: applet.py:136 newprinter.py:646 newprinter.py:1716 newprinter.py:3604
+#: newprinter.py:3664 newprinter.py:3716
+msgid "Search"
+msgstr "검색"
+
+#: applet.py:173
+msgid "Printer added"
+msgstr "프린터 추가됨"
+
+#: applet.py:179
+msgid "Install printer driver"
+msgstr "프린터 드라이버 설치"
+
+#: applet.py:180
+#, python-format
+msgid "`%s' requires driver installation: %s."
+msgstr "`%s' 드라이버 설치가 필요합니다: %s."
+
+#: applet.py:188 troubleshoot/CheckPPDSanity.py:48
+msgid "Install"
+msgstr "설치"
+
+#: applet.py:204
+#, python-format
+msgid "`%s' is ready for printing."
+msgstr "`%s'이(가) 인쇄할 준비가 되어 있습니다."
+
+#: applet.py:208 applet.py:220
+msgid "Print test page"
+msgstr "시험 종이 인쇄"
+
+#: applet.py:211
+msgid "Configure"
+msgstr "설정"
+
+#: applet.py:215
+#, python-format
+msgid "`%s' has been added, using the `%s' driver."
+msgstr "`%s' 가 추가되었습니다, `%s' 드라이버를 사용합니다."
+
+#: applet.py:223
+msgid "Find driver"
+msgstr "드라이버 찾기"
+
+#: asyncipp.py:473 authconn.py:458 authconn.py:460 errordialogs.py:63
+#: pysmb.py:90 pysmb.py:92
 msgid "Not authorized"
 msgstr "권한이 없습니다"
 
-#: ../asyncipp.py:474 ../authconn.py:461 ../pysmb.py:93
+#: asyncipp.py:474 authconn.py:461 pysmb.py:93
 msgid "The password may be incorrect."
 msgstr "비밀번호가 일치하지 않습니다."
 
-#: ../asyncipp.py:485 ../authconn.py:482
+#: asyncipp.py:485 authconn.py:482
 #, python-format
 msgid "Authentication (%s)"
 msgstr "인증 (%s)"
 
-#: ../asyncipp.py:560 ../authconn.py:311 ../errordialogs.py:54
-#: ../errordialogs.py:68
+#: asyncipp.py:560 authconn.py:311 errordialogs.py:54 errordialogs.py:68
 msgid "CUPS server error"
 msgstr "CUPS 서버 오류"
 
-#: ../asyncipp.py:562 ../authconn.py:309
+#: asyncipp.py:562 authconn.py:309
 #, python-format
 msgid "CUPS server error (%s)"
 msgstr "CUPS 서버 오류 (%s)"
 
-#: ../asyncipp.py:578 ../authconn.py:319 ../errordialogs.py:55
-#: ../troubleshoot/PrintTestPage.py:431
+#: asyncipp.py:578 authconn.py:319 errordialogs.py:55
+#: troubleshoot/PrintTestPage.py:431
 #, python-format
 msgid "There was an error during the CUPS operation: '%s'."
 msgstr "CUPS 가동 도중 오류가 발생했습니다:'%s'."
 
-#: ../asyncipp.py:581 ../authconn.py:322
+#: asyncipp.py:581 authconn.py:322
 msgid "Retry"
 msgstr "다시 시도"
 
-#: ../asyncipp.py:598 ../authconn.py:265 ../authconn.py:291
+#: asyncipp.py:598 authconn.py:265 authconn.py:291
 msgid "Operation canceled"
 msgstr "작업 취소"
 
-#: ../authconn.py:39 ../pysmb.py:125 ../ui/NewPrinterWindow.ui.h:40
+#: authconn.py:39 pysmb.py:125 ui/NewPrinterWindow.ui:1120
 msgid "Username:"
 msgstr "사용자 이름:"
 
-#: ../authconn.py:40 ../pysmb.py:131 ../ui/NewPrinterWindow.ui.h:39
+#: authconn.py:40 pysmb.py:131 ui/NewPrinterWindow.ui:1101
 msgid "Password:"
 msgstr "비밀번호:"
 
-#: ../authconn.py:41 ../pysmb.py:128
+#: authconn.py:41 pysmb.py:128
 msgid "Domain:"
 msgstr "도메인:"
 
 #. After that, prompt
-#: ../authconn.py:50 ../authconn.py:484 ../pysmb.py:98
+#: authconn.py:50 authconn.py:484 pysmb.py:98
 msgid "Authentication"
 msgstr "인증"
 
-#: ../authconn.py:93
+#: authconn.py:93
 msgid "Remember password"
 msgstr "비밀번호 기억"
 
-#: ../errordialogs.py:64
+#: errordialogs.py:64
 msgid ""
 "The password may be incorrect, or the server may be configured to deny "
 "remote administration."
-msgstr "비밀번호가 틀렸거나, 서버에서 원격 관리를 거부하도록 설정되었을 수 있습니다."
+msgstr ""
+"비밀번호가 틀렸거나, 서버에서 원격 관리를 거부하도록 설정되었을 수 있습니다."
 
-#: ../errordialogs.py:70
+#: errordialogs.py:70
 msgid "Bad request"
 msgstr "잘못된 요청"
 
-#: ../errordialogs.py:72
+#: errordialogs.py:72
 msgid "Not found"
 msgstr "찾을 수 없음"
 
-#: ../errordialogs.py:74
+#: errordialogs.py:74
 msgid "Request timeout"
 msgstr "요청 시간 초과"
 
-#: ../errordialogs.py:76
+#: errordialogs.py:76
 msgid "Upgrade required"
 msgstr "향상 필요"
 
-#: ../errordialogs.py:78
+#: errordialogs.py:78
 msgid "Server error"
 msgstr "서버 오류"
 
-#: ../errordialogs.py:80 ../system-config-printer.py:761
+#: errordialogs.py:80 system-config-printer.py:777
 msgid "Not connected"
 msgstr "연결되지 않음"
 
-#: ../errordialogs.py:82
+#: errordialogs.py:82
 #, python-format
 msgid "status %s"
 msgstr "상태 %s"
 
-#: ../errordialogs.py:84
+#: errordialogs.py:84
 #, python-format
 msgid "There was an HTTP error: %s."
 msgstr "HTTP 오류가 발생했습니다: %s."
 
-#: ../jobviewer.py:246
+#: jobviewer.py:246
 msgid "Delete Jobs"
 msgstr "작업 삭제"
 
-#: ../jobviewer.py:247
+#: jobviewer.py:247
 msgid "Do you really want to delete these jobs?"
 msgstr "정말로 이 작업을 삭제하시겠습니까?"
 
-#: ../jobviewer.py:249
+#: jobviewer.py:249
 msgid "Delete Job"
 msgstr "인쇄 작업 삭제"
 
-#: ../jobviewer.py:250
+#: jobviewer.py:250
 msgid "Do you really want to delete this job?"
 msgstr "정말로 이 인쇄 작업을 삭제하시겠습니까?"
 
-#: ../jobviewer.py:253
+#: jobviewer.py:253
 msgid "Cancel Jobs"
 msgstr "인쇄 작업 취소"
 
-#: ../jobviewer.py:254
+#: jobviewer.py:254
 msgid "Do you really want to cancel these jobs?"
 msgstr "정말로 이 인쇄 작업을 취소하시겠습니까?"
 
-#: ../jobviewer.py:256
+#: jobviewer.py:256
 msgid "Cancel Job"
 msgstr "작업 취소"
 
-#: ../jobviewer.py:257
+#: jobviewer.py:257
 msgid "Do you really want to cancel this job?"
 msgstr "정말로 작업을 취소하시겠습니까?"
 
-#: ../jobviewer.py:261
+#: jobviewer.py:261
 msgid "Keep Printing"
 msgstr "계속 인쇄"
 
-#: ../jobviewer.py:328
+#: jobviewer.py:328
 msgid "deleting job"
 msgstr "인쇄 작업 취소 중"
 
-#: ../jobviewer.py:330
+#: jobviewer.py:330
 msgid "canceling job"
 msgstr "작업 취소 중"
 
-#: ../jobviewer.py:428 ../system-config-printer.py:1710
-#: ../ui/ConnectDialog.ui.h:2 ../ui/ConnectingDialog.ui.h:2
-#: ../ui/NewPrinterName.ui.h:2 ../ui/NewPrinterWindow.ui.h:104
-#: ../ui/PrinterPropertiesDialog.ui.h:4 ../ui/ServerSettingsDialog.ui.h:2
-#: ../ui/SMBBrowseDialog.ui.h:3
+#: jobviewer.py:428 system-config-printer.py:1727 ui/ConnectDialog.ui:27
+#: ui/ConnectingDialog.ui:26 ui/NewPrinterName.ui:24
+#: ui/NewPrinterWindow.ui:3313 ui/PrinterPropertiesDialog.ui:167
+#: ui/ServerSettingsDialog.ui:25 ui/SMBBrowseDialog.ui:77
 msgid "_Cancel"
 msgstr "취소(_C)"
 
-#: ../jobviewer.py:429
+#: jobviewer.py:429
 msgid "Cancel selected jobs"
 msgstr "선택한 인쇄 작업 취소"
 
-#: ../jobviewer.py:430 ../system-config-printer.py:1711
-#: ../ui/PrinterPropertiesDialog.ui.h:40
+#: jobviewer.py:430 system-config-printer.py:1728
+#: ui/PrinterPropertiesDialog.ui:1059
 msgid "_Delete"
 msgstr "삭제(_D)"
 
-#: ../jobviewer.py:431
+#: jobviewer.py:431
 msgid "Delete selected jobs"
 msgstr "선택한 인쇄 작업 취소"
 
-#: ../jobviewer.py:432
+#: jobviewer.py:432
 msgid "_Hold"
 msgstr "대기(_H)"
 
-#: ../jobviewer.py:433
+#: jobviewer.py:433
 msgid "Hold selected jobs"
 msgstr "선택한 인쇄 작업 보류"
 
-#: ../jobviewer.py:434
+#: jobviewer.py:434
 msgid "_Release"
 msgstr "해제(_R)"
 
-#: ../jobviewer.py:435
+#: jobviewer.py:435
 msgid "Release selected jobs"
 msgstr "선택한 인쇄 작업 해제"
 
-#: ../jobviewer.py:436
+#: jobviewer.py:436
 msgid "Re_print"
 msgstr "다시 인쇄(_P)"
 
-#: ../jobviewer.py:437
+#: jobviewer.py:437
 msgid "Reprint selected jobs"
 msgstr "선택한 작업 다시 인쇄"
 
-#: ../jobviewer.py:438
+#: jobviewer.py:438
 msgid "Re_trieve"
 msgstr "검색(_T)"
 
-#: ../jobviewer.py:439
+#: jobviewer.py:439
 msgid "Retrieve selected jobs"
 msgstr "선택한 인쇄 작업 검색"
 
-#: ../jobviewer.py:440
+#: jobviewer.py:440
 msgid "_Move To"
 msgstr "이동(_M)"
 
-#: ../jobviewer.py:441
+#: jobviewer.py:441
 msgid "_Authenticate"
 msgstr "인증(_A)"
 
-#: ../jobviewer.py:443
+#: jobviewer.py:443
 msgid "_View Attributes"
 msgstr "속성 보기(_V)"
 
-#: ../jobviewer.py:446 ../jobviewer.py:656
+#: jobviewer.py:446 jobviewer.py:656
 msgid "Close this window"
 msgstr "이 창 닫기"
 
-#: ../jobviewer.py:509 ../troubleshoot/PrintTestPage.py:84
+#: jobviewer.py:509 troubleshoot/PrintTestPage.py:84
 msgid "Job"
 msgstr "작업"
 
-#: ../jobviewer.py:510
+#: jobviewer.py:510
 msgid "User"
 msgstr "사용자"
 
-#: ../jobviewer.py:511 ../troubleshoot/PrintTestPage.py:88
+#: jobviewer.py:511 troubleshoot/PrintTestPage.py:88
 msgid "Document"
 msgstr "문서"
 
-#: ../jobviewer.py:512 ../system-config-printer.py:941
-#: ../troubleshoot/PrintTestPage.py:86
+#: jobviewer.py:512 system-config-printer.py:957
+#: troubleshoot/PrintTestPage.py:86
 msgid "Printer"
 msgstr "프린터"
 
-#: ../jobviewer.py:513
+#: jobviewer.py:513
 msgid "Size"
 msgstr "크기"
 
-#: ../jobviewer.py:529
+#: jobviewer.py:529
 msgid "Time submitted"
 msgstr "입력된 시간"
 
-#: ../jobviewer.py:533 ../troubleshoot/PrintTestPage.py:89
+#: jobviewer.py:533 troubleshoot/PrintTestPage.py:89
 msgid "Status"
 msgstr "상태"
 
-#: ../jobviewer.py:563
+#: jobviewer.py:563
 #, python-format
 msgid "my jobs on %s"
 msgstr "%s에서의 내 작업"
 
-#: ../jobviewer.py:565
+#: jobviewer.py:565
 msgid "my jobs"
 msgstr "내 작업"
 
-#: ../jobviewer.py:570
+#: jobviewer.py:570
 msgid "all jobs"
 msgstr "모든 작업"
 
-#: ../jobviewer.py:571
+#: jobviewer.py:571
 #, python-format
 msgid "Document Print Status (%s)"
 msgstr "문서 인쇄 상태 (%s)"
 
-#: ../jobviewer.py:646
+#: jobviewer.py:646
 msgid "Job attributes"
 msgstr "인쇄 작업 속성"
 
-#: ../jobviewer.py:781 ../jobviewer.py:1128 ../jobviewer.py:1907
-#: ../jobviewer.py:1937 ../jobviewer.py:2330 ../jobviewer.py:2339
-#: ../jobviewer.py:2361 ../jobviewer.py:2445 ../printerproperties.py:1638
-#: ../ui/NewPrinterWindow.ui.h:94 ../troubleshoot/ChooseNetworkPrinter.py:102
-#: ../troubleshoot/ChooseNetworkPrinter.py:103
-#: ../troubleshoot/ChooseNetworkPrinter.py:106
-#: ../troubleshoot/ChooseNetworkPrinter.py:107
-#: ../troubleshoot/ChoosePrinter.py:94 ../troubleshoot/ChoosePrinter.py:95
-#: ../troubleshoot/ChoosePrinter.py:98 ../troubleshoot/ChoosePrinter.py:99
-#: ../troubleshoot/DeviceListed.py:100 ../troubleshoot/DeviceListed.py:101
+#: jobviewer.py:781 jobviewer.py:1128 jobviewer.py:1907 jobviewer.py:1937
+#: jobviewer.py:2330 jobviewer.py:2339 jobviewer.py:2361 jobviewer.py:2445
+#: printerproperties.py:1638 troubleshoot/ChooseNetworkPrinter.py:102
+#: troubleshoot/ChooseNetworkPrinter.py:103
+#: troubleshoot/ChooseNetworkPrinter.py:106
+#: troubleshoot/ChooseNetworkPrinter.py:107 troubleshoot/ChoosePrinter.py:94
+#: troubleshoot/ChoosePrinter.py:95 troubleshoot/ChoosePrinter.py:98
+#: troubleshoot/ChoosePrinter.py:99 troubleshoot/DeviceListed.py:100
+#: troubleshoot/DeviceListed.py:101 ui/NewPrinterWindow.ui:2901
+#: ui/NewPrinterWindow.ui:2945 ui/NewPrinterWindow.ui:3000
+#: ui/NewPrinterWindow.ui:3063
 msgid "Unknown"
 msgstr "알 수 없음"
 
-#: ../jobviewer.py:787
+#: jobviewer.py:787
 msgid "a minute ago"
 msgstr "1분 전"
 
-#: ../jobviewer.py:790
+#: jobviewer.py:790
 #, python-format
 msgid "%d minutes ago"
 msgstr "%d 분 전"
 
-#: ../jobviewer.py:794
+#: jobviewer.py:794
 msgid "an hour ago"
 msgstr "1 시간 전"
 
-#: ../jobviewer.py:796
+#: jobviewer.py:796
 #, python-format
 msgid "%d hours ago"
 msgstr "%d 시간 전"
 
-#: ../jobviewer.py:800
+#: jobviewer.py:800
 msgid "yesterday"
 msgstr "어제"
 
-#: ../jobviewer.py:802
+#: jobviewer.py:802
 #, python-format
 msgid "%d days ago"
 msgstr "%d 일 전"
 
-#: ../jobviewer.py:806
+#: jobviewer.py:806
 msgid "last week"
 msgstr "지난 주"
 
-#: ../jobviewer.py:808
+#: jobviewer.py:808
 #, python-format
 msgid "%d weeks ago"
 msgstr "%d 주 전"
 
-#: ../jobviewer.py:1071 ../jobviewer.py:1160
+#: jobviewer.py:1071 jobviewer.py:1160
 msgid "authenticating job"
 msgstr "인증 작업"
 
-#: ../jobviewer.py:1126
+#: jobviewer.py:1126
 #, python-format
 msgid "Authentication required for printing document `%s' (job %d)"
 msgstr "출력 문서 `%s' (작업 %d)를 위해 인증 필요"
 
-#: ../jobviewer.py:1420
+#: jobviewer.py:1420
 msgid "holding job"
 msgstr "작업 대기 중"
 
-#: ../jobviewer.py:1446
+#: jobviewer.py:1446
 msgid "releasing job"
 msgstr "작업 개시 중"
 
 #. give the default filename some meaningful name
-#: ../jobviewer.py:1508
+#: jobviewer.py:1508
 msgid "retrieved"
 msgstr "검색됨"
 
-#: ../jobviewer.py:1518
+#: jobviewer.py:1518
 msgid "Save File"
 msgstr "파일 저장"
 
-#: ../jobviewer.py:1633 ../system-config-printer.py:310
-#: ../ui/NewPrinterWindow.ui.h:9 ../troubleshoot/ChooseNetworkPrinter.py:37
-#: ../troubleshoot/ChoosePrinter.py:43 ../troubleshoot/DeviceListed.py:43
+#: jobviewer.py:1633 system-config-printer.py:320
+#: troubleshoot/ChooseNetworkPrinter.py:37 troubleshoot/ChoosePrinter.py:43
+#: troubleshoot/DeviceListed.py:43 ui/NewPrinterWindow.ui:235
 msgid "Name"
 msgstr "이름"
 
-#: ../jobviewer.py:1636
+#: jobviewer.py:1636
 msgid "Value"
 msgstr "값"
 
-#: ../jobviewer.py:1760
+#: jobviewer.py:1760
 msgid "No documents queued"
 msgstr "대기 상태에 있는 문서가 없음"
 
-#: ../jobviewer.py:1762
+#: jobviewer.py:1762
 msgid "1 document queued"
 msgstr "1개의 문서가 대기 상태에 있음"
 
-#: ../jobviewer.py:1764
+#: jobviewer.py:1764
 #, python-format
 msgid "%d documents queued"
 msgstr "%d 문서가 대기 상태에 있음"
 
-#: ../jobviewer.py:1820
+#: jobviewer.py:1820
 #, python-format
 msgid "processing / pending:   %d / %d"
 msgstr "처리 중 / 보류 중: %d / %d"
 
-#: ../jobviewer.py:1938
+#: jobviewer.py:1938
 msgid "Document printed"
 msgstr "인쇄된 문서"
 
-#: ../jobviewer.py:1939
+#: jobviewer.py:1939
 #, python-format
 msgid "Document `%s' has been sent to `%s' for printing."
 msgstr "문서 `%s'이(가) 인쇄를 위해 `%s'로 전송되었습니다."
 
-#: ../jobviewer.py:2101
+#: jobviewer.py:2101
 #, python-format
 msgid "There was a problem sending document `%s' (job %d) to the printer."
 msgstr "`%s' 문서 (작업 %d)를 프린터로 보내는 도중 문제가 발생했습니다."
 
-#: ../jobviewer.py:2105
+#: jobviewer.py:2105
 #, python-format
 msgid "There was a problem processing document `%s' (job %d)."
 msgstr "`%s' 문서 (작업 %d)를 처리하는 도중 문제가 발생했습니다."
 
 #. Give up and use the provided message untranslated.
-#: ../jobviewer.py:2112
+#: jobviewer.py:2112
 #, python-format
 msgid "There was a problem printing document `%s' (job %d): `%s'."
 msgstr "`%s' 문서 (작업 %d)를 인쇄하는 도중 문제가 발생했습니다: `%s'."
 
-#: ../jobviewer.py:2119 ../jobviewer.py:2136
+#: jobviewer.py:2119 jobviewer.py:2136
 msgid "Print Error"
 msgstr "인쇄 오류"
 
-#: ../jobviewer.py:2121
+#: jobviewer.py:2121
 msgid "_Diagnose"
 msgstr "진단(_D)"
 
-#: ../jobviewer.py:2142
+#: jobviewer.py:2142
 #, python-format
 msgid "The printer called `%s' has been disabled."
 msgstr "`%s'(이)라는 프린터는 비활성화되었습니다."
 
-#: ../jobviewer.py:2349
+#: jobviewer.py:2349
 msgid "disabled"
 msgstr "비활성화됨"
 
-#: ../jobviewer.py:2379
+#: jobviewer.py:2379
 msgid "Held for authentication"
 msgstr "인증 대기"
 
-#: ../jobviewer.py:2381 ../troubleshoot/PrintTestPage.py:44
+#: jobviewer.py:2381 troubleshoot/PrintTestPage.py:44
 msgid "Held"
 msgstr "대기"
 
-#: ../jobviewer.py:2417
+#: jobviewer.py:2417
 #, python-format
 msgid "Held until %s"
 msgstr "%s 까지 대기"
 
-#: ../jobviewer.py:2422
+#: jobviewer.py:2422
 msgid "Held until day-time"
 msgstr "낮 시간 까지 대기"
 
-#: ../jobviewer.py:2424
+#: jobviewer.py:2424
 msgid "Held until evening"
 msgstr "저녁 까지 대기"
 
-#: ../jobviewer.py:2426
+#: jobviewer.py:2426
 msgid "Held until night-time"
 msgstr "저녁-시간 까지 대기"
 
-#: ../jobviewer.py:2428
+#: jobviewer.py:2428
 msgid "Held until second shift"
 msgstr "두 번째 교체 까지 대기"
 
-#: ../jobviewer.py:2430
+#: jobviewer.py:2430
 msgid "Held until third shift"
 msgstr "세 번째 교체 까지 대기"
 
-#: ../jobviewer.py:2432
+#: jobviewer.py:2432
 msgid "Held until weekend"
 msgstr "주말 까지 대기"
 
-#: ../jobviewer.py:2435 ../troubleshoot/PrintTestPage.py:43
+#: jobviewer.py:2435 troubleshoot/PrintTestPage.py:43
 msgid "Pending"
 msgstr "보류"
 
-#: ../jobviewer.py:2436 ../printerproperties.py:73
-#: ../system-config-printer.py:163 ../troubleshoot/PrintTestPage.py:45
+#: jobviewer.py:2436 printerproperties.py:73 system-config-printer.py:173
+#: troubleshoot/PrintTestPage.py:45
 msgid "Processing"
 msgstr "처리중"
 
-#: ../jobviewer.py:2437 ../printerproperties.py:77
-#: ../system-config-printer.py:165 ../troubleshoot/PrintTestPage.py:46
+#: jobviewer.py:2437 printerproperties.py:77 system-config-printer.py:175
+#: troubleshoot/PrintTestPage.py:46
 msgid "Stopped"
 msgstr "정지됨"
 
-#: ../jobviewer.py:2438 ../troubleshoot/PrintTestPage.py:47
+#: jobviewer.py:2438 troubleshoot/PrintTestPage.py:47
 msgid "Canceled"
 msgstr "취소"
 
-#: ../jobviewer.py:2439 ../troubleshoot/PrintTestPage.py:48
+#: jobviewer.py:2439 troubleshoot/PrintTestPage.py:48
 msgid "Aborted"
 msgstr "중지"
 
-#: ../jobviewer.py:2440 ../troubleshoot/PrintTestPage.py:49
+#: jobviewer.py:2440 troubleshoot/PrintTestPage.py:49
 msgid "Completed"
 msgstr "완료"
 
-#: ../newprinter.py:72
+#: newprinter.py:72
 msgid ""
 "The firewall may need adjusting in order to detect network printers.  Adjust "
 "the firewall now?"
@@ -504,357 +571,353 @@ msgstr ""
 "네트워크 프린터를 검색하려면 방화벽을 조절해야 할 수 도 있습니다. 지금 방화벽"
 "을 조절하시겠습니까?"
 
-#: ../newprinter.py:358 ../newprinter.py:369 ../newprinter.py:375
-#: ../newprinter.py:380 ../ppdippstr.py:163
+#: newprinter.py:334 newprinter.py:345 newprinter.py:351 newprinter.py:356
+#: ppdippstr.py:163
 msgid "Default"
 msgstr "디폴트"
 
 #. See section 4.2.6 of this document for explanation of finishing types:
 #. ftp://ftp.pwg.org/pub/pwg/candidates/cs-ippfinishings10-20010205-5100.1.pdf
-#: ../newprinter.py:370 ../newprinter.py:381 ../newprinter.py:4099
-#: ../ppdippstr.py:65 ../ppdippstr.py:252 ../printerproperties.py:281
+#: newprinter.py:346 newprinter.py:357 newprinter.py:4075 ppdippstr.py:65
+#: ppdippstr.py:252 printerproperties.py:281
 msgid "None"
 msgstr "없음"
 
-#: ../newprinter.py:371
+#: newprinter.py:347
 msgid "Odd"
 msgstr "홀수 쪽"
 
-#: ../newprinter.py:372
+#: newprinter.py:348
 msgid "Even"
 msgstr "짝수 쪽"
 
-#: ../newprinter.py:382
+#: newprinter.py:358
 msgid "XON/XOFF (Software)"
 msgstr "XON/XOFF (소프트웨어)"
 
-#: ../newprinter.py:383
+#: newprinter.py:359
 msgid "RTS/CTS (Hardware)"
 msgstr "RTS/CTS (하드웨어)"
 
-#: ../newprinter.py:384
+#: newprinter.py:360
 msgid "DTR/DSR (Hardware)"
 msgstr "DTR/DSR (하드웨어)"
 
-#: ../newprinter.py:402 ../printerproperties.py:235
+#: newprinter.py:378 printerproperties.py:235
 msgid "Members of this class"
 msgstr "이 등급의 구성원"
 
-#: ../newprinter.py:404 ../printerproperties.py:236
+#: newprinter.py:380 printerproperties.py:236
 msgid "Others"
 msgstr "기타"
 
-#: ../newprinter.py:405
+#: newprinter.py:381
 msgid "Devices"
 msgstr "장치"
 
-#: ../newprinter.py:406
+#: newprinter.py:382
 msgid "Connections"
 msgstr "연결"
 
-#: ../newprinter.py:407
+#: newprinter.py:383
 msgid "Makes"
 msgstr "제조회사"
 
-#: ../newprinter.py:408
+#: newprinter.py:384
 msgid "Models"
 msgstr "모델"
 
-#: ../newprinter.py:409
+#: newprinter.py:385
 msgid "Drivers"
 msgstr "드라이버"
 
-#: ../newprinter.py:410 ../ui/NewPrinterWindow.ui.h:102
+#: newprinter.py:386 ui/NewPrinterWindow.ui:3260
 msgid "Downloadable Drivers"
 msgstr "내려받기 가능한 드라이버"
 
-#: ../newprinter.py:489
+#: newprinter.py:465
 msgid "Browsing requires pysmbc module"
 msgstr "찾아 보기에는 psymbc 모듈이 필요합니다"
 
 #. SMB list columns
-#: ../newprinter.py:494
+#: newprinter.py:470
 msgid "Share"
 msgstr "공유"
 
-#: ../newprinter.py:500
+#: newprinter.py:476
 msgid "Comment"
 msgstr "주석"
 
-#: ../newprinter.py:515
+#: newprinter.py:491
 msgid ""
 "PostScript Printer Description files (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *."
 "PPD.GZ)"
 msgstr "프린터 드라이버 파일 (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *.PPD.GZ)"
 
-#: ../newprinter.py:524
+#: newprinter.py:500
 msgid "All files (*)"
 msgstr "모든 파일 (*)"
 
-#: ../newprinter.py:670 ../newprinter.py:1740 ../newprinter.py:3628
-#: ../newprinter.py:3688 ../newprinter.py:3740 ../applet.py:134
-msgid "Search"
-msgstr "검색"
-
-#: ../newprinter.py:709
+#: newprinter.py:685
 msgid "New Class"
 msgstr "새로운 등급"
 
-#: ../newprinter.py:718 ../newprinter.py:735 ../ui/NewPrinterWindow.ui.h:1
+#: newprinter.py:694 newprinter.py:711 ui/NewPrinterWindow.ui:7
 msgid "New Printer"
 msgstr "새 프린터"
 
-#: ../newprinter.py:727
+#: newprinter.py:703
 msgid "Change Device URI"
 msgstr "URI 장치 변경"
 
-#: ../newprinter.py:746
+#: newprinter.py:722
 msgid "Download Printer Driver"
 msgstr "프린터 드라이버 내려받기"
 
-#: ../newprinter.py:755
+#: newprinter.py:731
 msgid "Change Driver"
 msgstr "드라이버 변경"
 
-#: ../newprinter.py:764 ../newprinter.py:2331 ../newprinter.py:2336
+#: newprinter.py:740 newprinter.py:2307 newprinter.py:2312
 msgid "fetching device list"
 msgstr "장치 목록 가져오는 중"
 
-#: ../newprinter.py:959
+#: newprinter.py:935
 #, python-format
 msgid "Installing driver %s"
 msgstr "%s 드라이버 설치"
 
-#: ../newprinter.py:966
+#: newprinter.py:942
 msgid "Installing ..."
 msgstr "설치 중..."
 
-#: ../newprinter.py:1693 ../newprinter.py:3430 ../newprinter.py:3658
-#: ../ppdsloader.py:86
+#: newprinter.py:1669 newprinter.py:3406 newprinter.py:3634 ppdsloader.py:86
 msgid "Searching"
 msgstr "검색 중"
 
-#: ../newprinter.py:1703 ../ppdsloader.py:93
+#: newprinter.py:1679 ppdsloader.py:93
 msgid "Searching for drivers"
 msgstr "드라이버 검색 중"
 
 #. device-info
 #. PhysicalDevice obj
 #. Separator?
-#: ../newprinter.py:2246
+#: newprinter.py:2222
 msgid "Enter URI"
 msgstr "URI 입력"
 
-#: ../newprinter.py:2251
+#: newprinter.py:2227
 msgid "Network Printer"
 msgstr "네트워크 프린터"
 
-#: ../newprinter.py:2255
+#: newprinter.py:2231
 msgid "Find Network Printer"
 msgstr "네트워크 프린터 찾기"
 
-#: ../newprinter.py:2262 ../newprinter.py:3102 ../ppdippstr.py:371
+#: newprinter.py:2238 newprinter.py:3078 ppdippstr.py:371
 msgid "Windows Printer via SAMBA"
 msgstr "SAMBA를 통한 윈도우 프린터"
 
-#: ../newprinter.py:2294
+#: newprinter.py:2270
 msgid "Allow all incoming IPP Browse packets"
 msgstr "들어오는 모든 IPP Browse 패킷 허용"
 
-#: ../newprinter.py:2299
+#: newprinter.py:2275
 msgid "Allow all incoming mDNS traffic"
 msgstr "들어오는 모든 mDNS 트래픽 허용"
 
-#: ../newprinter.py:2309 ../newprinter.py:2312 ../newprinter.py:2797
-#: ../newprinter.py:2803 ../serversettings.py:566 ../serversettings.py:571
+#: newprinter.py:2285 newprinter.py:2288 newprinter.py:2773 newprinter.py:2779
+#: serversettings.py:566 serversettings.py:571
 msgid "Adjust Firewall"
 msgstr "방화벽 조절"
 
-#: ../newprinter.py:2311 ../newprinter.py:2802
+#: newprinter.py:2287 newprinter.py:2778
 msgid "Do It Later"
 msgstr "나중에 실행"
 
-#: ../newprinter.py:2442 ../newprinter.py:3992
+#: newprinter.py:2418 newprinter.py:3968
 msgid " (Current)"
 msgstr " (현재)"
 
-#: ../newprinter.py:2542
+#: newprinter.py:2518
 msgid "Scanning..."
 msgstr "검사 중..."
 
-#: ../newprinter.py:2598
+#: newprinter.py:2574
 msgid "No Print Shares"
 msgstr "인쇄 공유를 하지 않음"
 
-#: ../newprinter.py:2599
+#: newprinter.py:2575
 msgid ""
 "There were no print shares found.  Please check that the Samba service is "
 "marked as trusted in your firewall configuration."
-msgstr "인쇄 공유를 찾을 수 없습니다. 삼바 서비스가 방화벽 설정에서 '신뢰'로 표시되어 있는 지를 확인하십시오."
+msgstr ""
+"인쇄 공유를 찾을 수 없습니다. 삼바 서비스가 방화벽 설정에서 '신뢰'로 표시되"
+"어 있는 지를 확인하십시오."
 
-#: ../newprinter.py:2740
+#: newprinter.py:2716
 #, python-format
 msgid "Verification requires the %s module"
 msgstr "확인 하려면 %s 모듈이 필요합니다"
 
-#: ../newprinter.py:2799
+#: newprinter.py:2775
 msgid "Allow all incoming SMB/CIFS browse packets"
 msgstr "들어오는 모든 SMB/CIFS 브라우저 패킷 허용"
 
-#: ../newprinter.py:2920
+#: newprinter.py:2896
 msgid "Print Share Verified"
 msgstr "인쇄 공유 확인"
 
-#: ../newprinter.py:2921
+#: newprinter.py:2897
 msgid "This print share is accessible."
 msgstr "프린터 공유를 접근 할 수 있습니다."
 
-#: ../newprinter.py:2926
+#: newprinter.py:2902
 msgid "This print share is not accessible."
 msgstr "공유된 프린터를 접근 할 수 없습니다."
 
-#: ../newprinter.py:2929
+#: newprinter.py:2905
 msgid "Print Share Inaccessible"
 msgstr "인쇄 공유 접근 불가능"
 
-#: ../newprinter.py:3068
+#: newprinter.py:3044
 msgid "Parallel Port"
 msgstr "병렬 포트"
 
-#: ../newprinter.py:3070
+#: newprinter.py:3046
 msgid "Serial Port"
 msgstr "직렬 포트"
 
-#: ../newprinter.py:3074 ../newprinter.py:3082 ../newprinter.py:3227
-#: ../newprinter.py:3229 ../newprinter.py:3276 ../system-config-printer.py:944
+#: newprinter.py:3050 newprinter.py:3058 newprinter.py:3203 newprinter.py:3205
+#: newprinter.py:3252 system-config-printer.py:960
 msgid "Fax"
 msgstr "팩스"
 
-#: ../newprinter.py:3074 ../newprinter.py:3076 ../newprinter.py:3276
+#: newprinter.py:3050 newprinter.py:3052 newprinter.py:3252
 msgid "USB"
 msgstr "USB"
 
-#: ../newprinter.py:3078
+#: newprinter.py:3054
 msgid "Bluetooth"
 msgstr "블루투스"
 
-#: ../newprinter.py:3080 ../newprinter.py:3083
+#: newprinter.py:3056 newprinter.py:3059
 msgid "HP Linux Imaging and Printing (HPLIP)"
 msgstr "HPLIP (HP Linux Imaging and Printing)"
 
-#: ../newprinter.py:3085
+#: newprinter.py:3061
 msgid "Hardware Abstraction Layer (HAL)"
 msgstr "HAL (Hardware Abstraction Layer)"
 
-#: ../newprinter.py:3087 ../ppdippstr.py:368
+#: newprinter.py:3063 ppdippstr.py:368
 msgid "AppSocket/HP JetDirect"
 msgstr "AppSocket/HP JetDirect"
 
-#: ../newprinter.py:3096
+#: newprinter.py:3072
 #, python-format
 msgid "LPD/LPR queue '%s'"
 msgstr "LPD/LPR 대기열 '%s'"
 
-#: ../newprinter.py:3099
+#: newprinter.py:3075
 msgid "LPD/LPR queue"
 msgstr "LPD/LPR 대기열"
 
-#: ../newprinter.py:3118 ../newprinter.py:3121
+#: newprinter.py:3094 newprinter.py:3097
 msgid "IPP"
 msgstr "IPP"
 
-#: ../newprinter.py:3123
+#: newprinter.py:3099
 msgid "HTTP"
 msgstr "HTTP"
 
-#: ../newprinter.py:3131 ../newprinter.py:3300
+#: newprinter.py:3107 newprinter.py:3276
 msgid "Remote CUPS printer via DNS-SD"
 msgstr "DNS-SD를 통한 원격 CUPS 프린터"
 
-#: ../newprinter.py:3143 ../newprinter.py:3310
+#: newprinter.py:3119 newprinter.py:3286
 #, python-format
 msgid "%s network printer via DNS-SD"
 msgstr "DNS-SD를 통한 %s 네트워크 프린터"
 
-#: ../newprinter.py:3147 ../newprinter.py:3312
+#: newprinter.py:3123 newprinter.py:3288
 msgid "Network printer via DNS-SD"
 msgstr "DNS-SD를 통한 네트워크 프린터"
 
-#: ../newprinter.py:3272
+#: newprinter.py:3248
 msgid "A printer connected to the parallel port."
 msgstr "프린터가 병렬 포트에 연결되어 있습니다."
 
-#: ../newprinter.py:3277
+#: newprinter.py:3253
 msgid ""
 "A fax machine or the fax function of a multi-function device connected to a "
 "USB port."
 msgstr "USB 포트에 연결된 복합기의 팩스기 또는 팩스 기능."
 
-#: ../newprinter.py:3281
+#: newprinter.py:3257
 msgid "A printer connected to a USB port."
 msgstr "프린터가 USB 포트에 연결되어 있습니다."
 
-#: ../newprinter.py:3283
+#: newprinter.py:3259
 msgid "A printer connected via Bluetooth."
 msgstr "Bluetooth를 통해 연결된 프린터."
 
-#: ../newprinter.py:3285
+#: newprinter.py:3261
 msgid ""
 "HPLIP software driving a printer, or the printer function of a multi-"
 "function device."
 msgstr "프린터를 다루는 HPLIP 소프트웨어, 또는 다중 기능 장치의 프린터 기능."
 
-#: ../newprinter.py:3288
+#: newprinter.py:3264
 msgid ""
 "HPLIP software driving a fax machine, or the fax function of a multi-"
 "function device."
 msgstr "팩스기를 다루는 HPLIP 소프트웨어, 또는 다중 기능 장치의 팩스 기능."
 
-#: ../newprinter.py:3291
+#: newprinter.py:3267
 msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
 msgstr "HAL (Hardware Abstraction Layer)에 의해 검색된 로컬 프린터."
 
-#: ../newprinter.py:3431
+#: newprinter.py:3407
 msgid "Searching for printers"
 msgstr "프린터 검색 중"
 
-#: ../newprinter.py:3537 ../ui/NewPrinterWindow.ui.h:46
+#: newprinter.py:3513 ui/NewPrinterWindow.ui:1359
 msgid "No printer was found at that address."
 msgstr "주소에서 프린터를 찾을 수 없습니다."
 
-#: ../newprinter.py:3693
+#: newprinter.py:3669
 msgid "-- Select from search results --"
 msgstr "-- 검색 결과에서 선택 --"
 
-#: ../newprinter.py:3695
+#: newprinter.py:3671
 msgid "-- No matches found --"
 msgstr "-- 일치하는 항목이 없음 --"
 
-#: ../newprinter.py:3807 ../ui/NewPrinterWindow.ui.h:80
+#: newprinter.py:3783 ui/NewPrinterWindow.ui:2577
 msgid "Local Driver"
 msgstr "로컬 드라이버"
 
-#: ../newprinter.py:3840 ../newprinter.py:3903 ../newprinter.py:4001
+#: newprinter.py:3816 newprinter.py:3879 newprinter.py:3977
 msgid " (recommended)"
 msgstr " (권장사항)"
 
-#: ../newprinter.py:4033
+#: newprinter.py:4009
 msgid "This PPD is generated by foomatic."
 msgstr "이 PPD는 foomatic에 의하여 생성됩니다."
 
-#: ../newprinter.py:4081
+#: newprinter.py:4057
 msgid "OpenPrinting"
 msgstr "인쇄열기"
 
-#: ../newprinter.py:4092
+#: newprinter.py:4068
 msgid "Distributable"
 msgstr "분산 가능"
 
-#: ../newprinter.py:4136
+#: newprinter.py:4112
 msgid ", "
 msgstr ", "
 
-#: ../newprinter.py:4141
+#: newprinter.py:4117
 #, python-format
 msgid ""
 "\n"
@@ -863,20 +926,20 @@ msgstr ""
 "\n"
 "(%s)"
 
-#: ../newprinter.py:4146
+#: newprinter.py:4122
 msgid "No support contacts known"
 msgstr "지원 연락처를 알 수 없습니다"
 
-#: ../newprinter.py:4150 ../newprinter.py:4163
+#: newprinter.py:4126 newprinter.py:4139
 msgid "Not specified."
 msgstr "지정되지 않음."
 
 #. Foomatic database problem of some sort.
-#: ../newprinter.py:4208
+#: newprinter.py:4184
 msgid "Database error"
 msgstr "데이터베이스 오류"
 
-#: ../newprinter.py:4209
+#: newprinter.py:4185
 #, python-format
 msgid "The '%s' driver cannot be used with printer '%s %s'."
 msgstr "'%s' 드라이버는 프린터 '%s %s'와 함께 사용할 수 없습니다."
@@ -884,1229 +947,1238 @@ msgstr "'%s' 드라이버는 프린터 '%s %s'와 함께 사용할 수 없습니
 #. This printer references some XML that is not
 #. installed by default.  Point the user at the
 #. package they need to install.
-#: ../newprinter.py:4219
+#: newprinter.py:4195
 #, python-format
 msgid "You will need to install the '%s' package in order to use this driver."
 msgstr "이 드라이버를 사용하기 위해 '%s' 꾸러미를 설치해야 합니다."
 
 #. This error came from trying to open the PPD file.
-#: ../newprinter.py:4226
+#: newprinter.py:4202
 msgid "PPD error"
 msgstr "PPD 오류"
 
-#: ../newprinter.py:4228
+#: newprinter.py:4204
 msgid "Failed to read PPD file.  Possible reason follows:"
 msgstr "다음과 같은 이유로 PPD 파일 읽기를 실패했습니다:"
 
 #. Failed to get PPD downloaded from OpenPrinting XXX
-#: ../newprinter.py:4246
+#: newprinter.py:4222
 msgid "Downloadable drivers"
 msgstr "내려받기 가능한 드라이버"
 
-#: ../newprinter.py:4247
+#: newprinter.py:4223
 msgid "Failed to download PPD."
 msgstr "PPD 내려받기 실패."
 
-#: ../newprinter.py:4255
+#: newprinter.py:4231
 msgid "fetching PPD"
 msgstr "PPD 가져오는 중"
 
-#: ../newprinter.py:4284 ../newprinter.py:4320
+#: newprinter.py:4260 newprinter.py:4296
 msgid "No Installable Options"
 msgstr "설치 가능한 옵션이 없음"
 
-#: ../newprinter.py:4384
+#: newprinter.py:4360
 #, python-format
 msgid "adding printer %s"
 msgstr "%s 프린터 추가 중"
 
-#: ../newprinter.py:4413 ../newprinter.py:4425 ../newprinter.py:4443
-#: ../printerproperties.py:996 ../system-config-printer.py:1746
-#: ../system-config-printer.py:1776
+#: newprinter.py:4389 newprinter.py:4401 newprinter.py:4419
+#: printerproperties.py:996 system-config-printer.py:1763
+#: system-config-printer.py:1793
 #, python-format
 msgid "modifying printer %s"
 msgstr "%s 프린터 수정"
 
-#: ../optionwidgets.py:131
+#: optionwidgets.py:131
 msgid "Conflicts with:"
 msgstr "충돌:"
 
-#: ../ppdippstr.py:49
+#: ppdippstr.py:49
 msgid "Abort job"
 msgstr "작업 중지"
 
-#: ../ppdippstr.py:50
+#: ppdippstr.py:50
 msgid "Retry current job"
 msgstr "현재 작업 재시도"
 
-#: ../ppdippstr.py:51
+#: ppdippstr.py:51
 msgid "Retry job"
 msgstr "작업 재시도"
 
-#: ../ppdippstr.py:52
+#: ppdippstr.py:52
 msgid "Stop printer"
 msgstr "프린터 중지"
 
-#: ../ppdippstr.py:58
+#: ppdippstr.py:58
 msgid "Default behavior"
 msgstr "기본 동작"
 
-#: ../ppdippstr.py:59
+#: ppdippstr.py:59
 msgid "Authenticated"
 msgstr "인증됨"
 
-#: ../ppdippstr.py:66
+#: ppdippstr.py:66
 msgid "Classified"
 msgstr "분류"
 
-#: ../ppdippstr.py:67
+#: ppdippstr.py:67
 msgid "Confidential"
 msgstr "기밀"
 
-#: ../ppdippstr.py:68
+#: ppdippstr.py:68
 msgid "Secret"
 msgstr "비밀"
 
-#: ../ppdippstr.py:69
+#: ppdippstr.py:69
 msgid "Standard"
 msgstr "표준"
 
-#: ../ppdippstr.py:70
+#: ppdippstr.py:70
 msgid "Top secret"
 msgstr "일급 비밀"
 
-#: ../ppdippstr.py:71
+#: ppdippstr.py:71
 msgid "Unclassified"
 msgstr "분류되지 않음"
 
-#: ../ppdippstr.py:77
+#: ppdippstr.py:77
 msgid "No hold"
 msgstr "대기할 수 없음"
 
-#: ../ppdippstr.py:78
+#: ppdippstr.py:78
 msgid "Indefinite"
 msgstr "정의되지 않음"
 
-#: ../ppdippstr.py:79
+#: ppdippstr.py:79
 msgid "Daytime"
 msgstr "낮"
 
-#: ../ppdippstr.py:80
+#: ppdippstr.py:80
 msgid "Evening"
 msgstr "저녁"
 
-#: ../ppdippstr.py:81
+#: ppdippstr.py:81
 msgid "Night"
 msgstr "밤"
 
-#: ../ppdippstr.py:82
+#: ppdippstr.py:82
 msgid "Second shift"
 msgstr "두 번째 교체"
 
-#: ../ppdippstr.py:83
+#: ppdippstr.py:83
 msgid "Third shift"
 msgstr "세 번째 교체"
 
-#: ../ppdippstr.py:84
+#: ppdippstr.py:84
 msgid "Weekend"
 msgstr "주말"
 
-#: ../ppdippstr.py:94
+#: ppdippstr.py:94
 msgid "General"
 msgstr "일반"
 
 #. HP and foo2zjs
-#: ../ppdippstr.py:97
+#: ppdippstr.py:97
 msgid "Print Quality"
 msgstr "인쇄 품질"
 
-#: ../ppdippstr.py:98
+#: ppdippstr.py:98
 msgid "Automatic"
 msgstr "자동"
 
-#: ../ppdippstr.py:100
+#: ppdippstr.py:100
 msgid "Printing Quality"
 msgstr "출력 품질"
 
-#: ../ppdippstr.py:101 ../printerproperties.py:324
+#: ppdippstr.py:101 printerproperties.py:324
 msgid "Draft"
 msgstr "낮은품질"
 
-#: ../ppdippstr.py:102 ../printerproperties.py:320 ../printerproperties.py:325
+#: ppdippstr.py:102 printerproperties.py:320 printerproperties.py:325
 msgid "Normal"
 msgstr "일반"
 
-#: ../ppdippstr.py:103
+#: ppdippstr.py:103
 msgid "Normal Color"
 msgstr "일반 색상"
 
-#: ../ppdippstr.py:104
+#: ppdippstr.py:104
 msgid "Normal Grayscale"
 msgstr "일반 회색조"
 
-#: ../ppdippstr.py:105
+#: ppdippstr.py:105
 msgid "Draft Color"
 msgstr "낮은품질 색상"
 
-#: ../ppdippstr.py:106
+#: ppdippstr.py:106
 msgid "Draft Grayscale"
 msgstr "낮은품질 회색조"
 
-#: ../ppdippstr.py:107
+#: ppdippstr.py:107
 msgid "Best"
 msgstr "최고 품질"
 
-#: ../ppdippstr.py:108
+#: ppdippstr.py:108
 msgid "High-Resolution Photo"
 msgstr "고해상도 사진"
 
-#: ../ppdippstr.py:109
+#: ppdippstr.py:109
 msgid "Fast Draft"
 msgstr "저해상도 빠른인쇄"
 
-#: ../ppdippstr.py:111
+#: ppdippstr.py:111
 msgid "Installed Cartridges"
 msgstr "카트리지 설치"
 
-#: ../ppdippstr.py:112 ../ppdippstr.py:113
+#: ppdippstr.py:112 ppdippstr.py:113
 msgid "Fast Only"
 msgstr "고속 전용"
 
-#: ../ppdippstr.py:114
+#: ppdippstr.py:114
 msgid "Photo Only"
 msgstr "사진 전용"
 
-#: ../ppdippstr.py:115
+#: ppdippstr.py:115
 msgid "Black and TriColor"
 msgstr "검정색과 삼원색"
 
-#: ../ppdippstr.py:116
+#: ppdippstr.py:116
 msgid "Photo and TriColor"
 msgstr "사진과 삼원색"
 
-#: ../ppdippstr.py:118
+#: ppdippstr.py:118
 msgid "Resolution"
 msgstr "해상도"
 
-#: ../ppdippstr.py:120
+#: ppdippstr.py:120
 msgid "Color Mode"
 msgstr "컬러 모드"
 
-#: ../ppdippstr.py:121 ../ppdippstr.py:239
+#: ppdippstr.py:121 ppdippstr.py:239
 msgid "High Quality Grayscale"
 msgstr "고 해상도 회색조"
 
-#: ../ppdippstr.py:122
+#: ppdippstr.py:122
 msgid "Black Only Grayscale"
 msgstr "검정색만 회색조"
 
-#: ../ppdippstr.py:124
+#: ppdippstr.py:124
 msgid "Quality"
 msgstr "품질"
 
-#: ../ppdippstr.py:125
+#: ppdippstr.py:125
 msgid "High Resolution "
 msgstr "고 해상도 "
 
-#: ../ppdippstr.py:126
+#: ppdippstr.py:126
 msgid "Paper source"
 msgstr "용지 공급"
 
-#: ../ppdippstr.py:127
+#: ppdippstr.py:127
 msgid "Auto Source"
 msgstr "자동 공급"
 
-#: ../ppdippstr.py:128
+#: ppdippstr.py:128
 msgid "Manual Feed"
 msgstr "수동 급지"
 
-#: ../ppdippstr.py:129
+#: ppdippstr.py:129
 msgid "Middle Tray"
 msgstr "중간 트레이"
 
-#: ../ppdippstr.py:130
+#: ppdippstr.py:130
 msgid "Upper or Only One InputSlot"
 msgstr "상단 또는 하나의 트레이"
 
-#: ../ppdippstr.py:131
+#: ppdippstr.py:131
 msgid "Multi-purpose Tray"
 msgstr "다목적 트레이"
 
-#: ../ppdippstr.py:132
+#: ppdippstr.py:132
 msgid "Drawer 1 "
 msgstr "Drawer 1 "
 
-#: ../ppdippstr.py:133
+#: ppdippstr.py:133
 msgid "Drawer 2 "
 msgstr "Drawer 2 "
 
-#: ../ppdippstr.py:134
+#: ppdippstr.py:134
 msgid "Tray 1"
 msgstr "트레이 1"
 
-#: ../ppdippstr.py:135
+#: ppdippstr.py:135
 msgid "Auto Select"
 msgstr "자동 선택"
 
-#: ../ppdippstr.py:137
+#: ppdippstr.py:137
 msgid "Media Type"
 msgstr "미디어 형식"
 
-#: ../ppdippstr.py:138
+#: ppdippstr.py:138
 msgid "Bond"
 msgstr "Bond"
 
-#: ../ppdippstr.py:139
+#: ppdippstr.py:139
 msgid "Color"
 msgstr "컬러"
 
-#: ../ppdippstr.py:140
+#: ppdippstr.py:140
 msgid "Envelope"
 msgstr "봉투"
 
-#: ../ppdippstr.py:141
+#: ppdippstr.py:141
 msgid "Labels"
 msgstr "레이블"
 
-#: ../ppdippstr.py:142
+#: ppdippstr.py:142
 msgid "Standard Paper"
 msgstr "표준 용지"
 
-#: ../ppdippstr.py:143
+#: ppdippstr.py:143
 msgid "Heavy"
 msgstr "무거운"
 
-#: ../ppdippstr.py:144
+#: ppdippstr.py:144
 msgid "Light"
 msgstr "경량"
 
-#: ../ppdippstr.py:145
+#: ppdippstr.py:145
 msgid "Recycled"
 msgstr "재생"
 
-#: ../ppdippstr.py:146
+#: ppdippstr.py:146
 msgid "Transparency"
 msgstr "투명도"
 
-#: ../ppdippstr.py:147
+#: ppdippstr.py:147
 msgid "Plain Paper"
 msgstr "일반 용지"
 
-#: ../ppdippstr.py:148
+#: ppdippstr.py:148
 msgid "Plain"
 msgstr "일반"
 
-#: ../ppdippstr.py:149
+#: ppdippstr.py:149
 msgid "Photo Paper"
 msgstr "사진 용지"
 
-#: ../ppdippstr.py:150
+#: ppdippstr.py:150
 msgid "Transparency Film"
 msgstr "투명 필름"
 
-#: ../ppdippstr.py:151
+#: ppdippstr.py:151
 msgid "CD or DVD Media"
 msgstr "CD 또는 DVD 미디어"
 
-#: ../ppdippstr.py:152
+#: ppdippstr.py:152
 msgid "Print Density"
 msgstr "인쇄 밀도"
 
-#: ../ppdippstr.py:153
+#: ppdippstr.py:153
 msgid "Extra Light (1)"
 msgstr "Extra Light (1)"
 
-#: ../ppdippstr.py:154
+#: ppdippstr.py:154
 msgid "Light (2)"
 msgstr "Light (2)"
 
-#: ../ppdippstr.py:155
+#: ppdippstr.py:155
 msgid "Medium (3)"
 msgstr "Medium (3)"
 
-#: ../ppdippstr.py:156
+#: ppdippstr.py:156
 msgid "Dark (4)"
 msgstr "트레이 4"
 
-#: ../ppdippstr.py:157
+#: ppdippstr.py:157
 msgid "Extra Dark (5)"
 msgstr "Extra Dark (5)"
 
-#: ../ppdippstr.py:158
+#: ppdippstr.py:158
 msgid "Duplex Printing"
 msgstr "양면 인쇄"
 
-#: ../ppdippstr.py:159
+#: ppdippstr.py:159
 msgid "Copies"
 msgstr "복사 매수"
 
-#: ../ppdippstr.py:161
+#: ppdippstr.py:161
 msgid "Adjustment"
 msgstr "조정"
 
-#: ../ppdippstr.py:162
+#: ppdippstr.py:162
 msgid "Halftone Algorithm"
 msgstr "하프톤 알고리즘"
 
-#: ../ppdippstr.py:165
+#: ppdippstr.py:165
 msgid "Miscellaneous"
 msgstr "기타"
 
-#: ../ppdippstr.py:166
+#: ppdippstr.py:166
 msgid "N-up Orientation"
 msgstr "용지 방향"
 
-#: ../ppdippstr.py:167
+#: ppdippstr.py:167
 msgid "N-up Printing"
 msgstr "계속 인쇄"
 
-#: ../ppdippstr.py:168
+#: ppdippstr.py:168
 msgid "Landscape"
 msgstr "가로방향"
 
-#: ../ppdippstr.py:169
+#: ppdippstr.py:169
 msgid "Seascape"
 msgstr "세로방향"
 
-#: ../ppdippstr.py:170
+#: ppdippstr.py:170
 msgid "Media Size"
 msgstr "미디어 크기"
 
-#: ../ppdippstr.py:171
+#: ppdippstr.py:171
 msgid "Output Mode"
 msgstr "출력 모드"
 
-#: ../ppdippstr.py:172
+#: ppdippstr.py:172
 msgid "Grayscale"
 msgstr "회색조"
 
 #. Brother
-#: ../ppdippstr.py:175
+#: ppdippstr.py:175
 msgid "Toner save mode"
 msgstr "토너 절약 방법"
 
-#: ../ppdippstr.py:176
+#: ppdippstr.py:176
 msgid "Tray1"
 msgstr "트레이1"
 
-#: ../ppdippstr.py:177
+#: ppdippstr.py:177
 msgid "Tray2"
 msgstr "트레이2"
 
-#: ../ppdippstr.py:178
+#: ppdippstr.py:178
 msgid "Tray3"
 msgstr "트레이3"
 
-#: ../ppdippstr.py:179
+#: ppdippstr.py:179
 msgid "Two-Sided"
 msgstr "양면"
 
-#: ../ppdippstr.py:180 ../system-config-printer.desktop.in.h:1
+#: ppdippstr.py:180 system-config-printer.appdata.xml.in:6
+#: system-config-printer.desktop.in:3 system-config-printer.desktop.in:4
 msgid "Print Settings"
 msgstr "인쇄 설정"
 
-#: ../ppdippstr.py:181
+#: ppdippstr.py:181
 msgid "Print Settings (Advanced)"
 msgstr "프린터 설정(고급)"
 
-#: ../ppdippstr.py:182
+#: ppdippstr.py:182
 msgid "Color Settings"
 msgstr "컬러 설정"
 
-#: ../ppdippstr.py:183
+#: ppdippstr.py:183
 msgid "Color Settings (Advanced)"
 msgstr "컬러 설정 (고급)"
 
-#: ../ppdippstr.py:184
+#: ppdippstr.py:184
 msgid "Brightness"
 msgstr "명도"
 
-#: ../ppdippstr.py:185
+#: ppdippstr.py:185
 msgid "Contrast"
 msgstr "대비"
 
-#: ../ppdippstr.py:186
+#: ppdippstr.py:186
 msgid "Red"
 msgstr "빨감"
 
-#: ../ppdippstr.py:187
+#: ppdippstr.py:187
 msgid "Green"
 msgstr "초록"
 
-#: ../ppdippstr.py:188
+#: ppdippstr.py:188
 msgid "Blue"
 msgstr "파랑"
 
 #. Epson xp serie
-#: ../ppdippstr.py:191
+#: ppdippstr.py:191
 msgid "_Media Size"
 msgstr "미디어 크기"
 
-#: ../ppdippstr.py:192
+#: ppdippstr.py:192
 msgid "_Grayscale"
 msgstr "회색조"
 
-#: ../ppdippstr.py:193
+#: ppdippstr.py:193
 msgid "_Brightness"
 msgstr "명도"
 
-#: ../ppdippstr.py:194
+#: ppdippstr.py:194
 msgid "_Contrast"
 msgstr "대비"
 
-#: ../ppdippstr.py:195
+#: ppdippstr.py:195
 msgid "_Saturation"
 msgstr "채도"
 
-#: ../ppdippstr.py:196
+#: ppdippstr.py:196
 msgid "On"
 msgstr "켜기"
 
 #. Gutenprint
-#: ../ppdippstr.py:199
+#: ppdippstr.py:199
 msgid "2-Sided Printing"
 msgstr "양면 인쇄"
 
-#: ../ppdippstr.py:200
+#: ppdippstr.py:200
 msgid "Shrink Page If Necessary to Fit Borders"
 msgstr "테두리에 맞게 필요시 테두리 축소"
 
-#: ../ppdippstr.py:201
+#: ppdippstr.py:201
 msgid "Shrink (print the whole page)"
 msgstr "축소 (전체 쪽 인쇄)"
 
-#: ../ppdippstr.py:202
+#: ppdippstr.py:202
 msgid "Crop (preserve dimensions)"
 msgstr "자르기 (치수 유지)"
 
-#: ../ppdippstr.py:203
+#: ppdippstr.py:203
 msgid "Expand (use maximum page area)"
 msgstr "확장 (최대 쪽 영역 사용)"
 
-#: ../ppdippstr.py:204
+#: ppdippstr.py:204
 msgid "Borderless"
 msgstr "경계 없는"
 
-#: ../ppdippstr.py:205 ../troubleshoot/PrintTestPage.py:121
+#: ppdippstr.py:205 troubleshoot/PrintTestPage.py:121
 msgid "No"
 msgstr "아니오"
 
-#: ../ppdippstr.py:206 ../troubleshoot/PrintTestPage.py:120
+#: ppdippstr.py:206 troubleshoot/PrintTestPage.py:120
 msgid "Yes"
 msgstr "예"
 
-#: ../ppdippstr.py:207
+#: ppdippstr.py:207
 msgid "Output Control Common"
 msgstr "출력 제어 공통"
 
-#: ../ppdippstr.py:208
+#: ppdippstr.py:208
 msgid "Color Correction"
 msgstr "색상 보정"
 
-#: ../ppdippstr.py:209
+#: ppdippstr.py:209
 msgid "Brightness Fine Adjustment"
 msgstr "밝기 미세 조정"
 
-#: ../ppdippstr.py:210
+#: ppdippstr.py:210
 msgid "Contrast Fine Adjustment"
 msgstr "대비 미세 조정"
 
-#: ../ppdippstr.py:211
+#: ppdippstr.py:211
 msgid "Saturation Fine Adjustment"
 msgstr "채도 미세 조정"
 
-#: ../ppdippstr.py:212
+#: ppdippstr.py:212
 msgid "Image Type"
 msgstr "이미지 종류"
 
 #. Foomatic
-#: ../ppdippstr.py:214
+#: ppdippstr.py:214
 msgid "Bidirectional printing"
 msgstr "양방향 인쇄"
 
 #. Options
-#: ../ppdippstr.py:216 ../printerproperties.py:957
+#: ppdippstr.py:216 printerproperties.py:957
 msgid "Installable Options"
 msgstr "설치 가능한 옵션"
 
-#: ../ppdippstr.py:217
+#: ppdippstr.py:217
 msgid "Duplexer Installed"
 msgstr "양면인쇄 설치되었습니다"
 
 #. Canon
-#: ../ppdippstr.py:220
+#: ppdippstr.py:220
 msgid "Color Model"
 msgstr "색상 모델"
 
-#: ../ppdippstr.py:221
+#: ppdippstr.py:221
 msgid "Color Precision"
 msgstr "색상 정밀도"
 
-#: ../ppdippstr.py:222
+#: ppdippstr.py:222
 msgid "Resolution "
 msgstr "해상도 "
 
-#: ../ppdippstr.py:223
+#: ppdippstr.py:223
 msgid "Printer Features Common"
 msgstr "일반 프린터 기능들"
 
-#: ../ppdippstr.py:224
+#: ppdippstr.py:224
 msgid "CD Hub Size"
 msgstr "CD or DVD Media"
 
-#: ../ppdippstr.py:225
+#: ppdippstr.py:225
 msgid "Ink Type"
 msgstr "잉크 종류"
 
-#: ../ppdippstr.py:226
+#: ppdippstr.py:226
 msgid "Toner Save "
 msgstr "토너 절약 "
 
-#: ../ppdippstr.py:227
+#: ppdippstr.py:227
 msgid "ON"
 msgstr "켜기"
 
-#: ../ppdippstr.py:228
+#: ppdippstr.py:228
 msgid "Toner Density "
 msgstr "토너 농도 "
 
-#: ../ppdippstr.py:229
+#: ppdippstr.py:229
 msgid "Media Type "
 msgstr "미디어 형식 "
 
-#: ../ppdippstr.py:230
+#: ppdippstr.py:230
 msgid "Collate "
 msgstr "병합 "
 
-#: ../ppdippstr.py:231
+#: ppdippstr.py:231
 msgid "Image Refinement "
 msgstr "이미지 개선 "
 
-#: ../ppdippstr.py:232
+#: ppdippstr.py:232
 msgid "Image Refinement"
 msgstr "이미지 개선"
 
-#: ../ppdippstr.py:233
+#: ppdippstr.py:233
 msgid "Halftones "
 msgstr "하프톤 "
 
-#: ../ppdippstr.py:234
+#: ppdippstr.py:234
 msgid "Duplex"
 msgstr "양면"
 
-#: ../ppdippstr.py:235
+#: ppdippstr.py:235
 msgid "OFF"
 msgstr "끄기"
 
-#: ../ppdippstr.py:236
+#: ppdippstr.py:236
 msgid "ON (Long-edged Binding)"
 msgstr "양면 (옆으로 넘김)"
 
-#: ../ppdippstr.py:237
+#: ppdippstr.py:237
 msgid "ON (Short-edged Binding)"
 msgstr "간단한 설명"
 
-#: ../ppdippstr.py:238
+#: ppdippstr.py:238
 msgid "High Quality"
 msgstr "높은 품질"
 
-#: ../ppdippstr.py:240
+#: ppdippstr.py:240
 msgid "Controlled by 'Print Quality'"
 msgstr "'인쇄 품질'에 의해 제어"
 
-#: ../ppdippstr.py:241
+#: ppdippstr.py:241
 msgid "Paper Destination"
 msgstr "종이 목적지"
 
 #. Samsung
-#: ../ppdippstr.py:244
+#: ppdippstr.py:244
 msgid "Paper Size"
 msgstr "용지 크기"
 
-#: ../ppdippstr.py:245
+#: ppdippstr.py:245
 msgid "Paper Type"
 msgstr "용지 종류"
 
-#: ../ppdippstr.py:246
+#: ppdippstr.py:246
 msgid "Thin"
 msgstr "얇은"
 
-#: ../ppdippstr.py:247
+#: ppdippstr.py:247
 msgid "Thick"
 msgstr "두꺼운"
 
-#: ../ppdippstr.py:248
+#: ppdippstr.py:248
 msgid "Thicker"
 msgstr "더 두꺼운"
 
-#: ../ppdippstr.py:249
+#: ppdippstr.py:249
 msgid "Edge Enhance"
 msgstr "가장자리 철하기"
 
-#: ../ppdippstr.py:250
+#: ppdippstr.py:250
 msgid "Skip Blank Pages"
 msgstr "빈 쪽 제외"
 
-#: ../ppdippstr.py:251 ../ppdippstr.py:339
+#: ppdippstr.py:251 ppdippstr.py:339
 msgid "Double-sided Printing"
 msgstr "양면 인쇄"
 
-#: ../ppdippstr.py:253
+#: ppdippstr.py:253
 msgid "Reverse Duplex Printing"
 msgstr "반전 양면 인쇄"
 
-#: ../ppdippstr.py:254 ../ppdippstr.py:257
+#: ppdippstr.py:254 ppdippstr.py:257
 msgid "Long Edge"
 msgstr "긴 축"
 
-#: ../ppdippstr.py:255 ../ppdippstr.py:258
+#: ppdippstr.py:255 ppdippstr.py:258
 msgid "Short Edge"
 msgstr "짧은 축"
 
-#: ../ppdippstr.py:256
+#: ppdippstr.py:256
 msgid "Two-sided"
 msgstr "양면"
 
-#: ../ppdippstr.py:259
+#: ppdippstr.py:259
 msgid "Toner Save"
 msgstr "토너 절약"
 
 #. Ricoh
-#: ../ppdippstr.py:262
+#: ppdippstr.py:262
 msgid "Finisher"
 msgstr "Ricoh"
 
-#: ../ppdippstr.py:263
+#: ppdippstr.py:263
 msgid "Option Tray"
 msgstr "트레이 옵션"
 
-#: ../ppdippstr.py:264
+#: ppdippstr.py:264
 msgid "External Tray"
 msgstr "외부 트레이"
 
-#: ../ppdippstr.py:265
+#: ppdippstr.py:265
 msgid "Internal Tray 1"
 msgstr "내부 트레이 1"
 
-#: ../ppdippstr.py:266
+#: ppdippstr.py:266
 msgid "Internal Tray 2"
 msgstr "내부 트레이 2"
 
-#: ../ppdippstr.py:267
+#: ppdippstr.py:267
 msgid "Internal Shift Tray"
 msgstr "내부 교체식 트레이"
 
-#: ../ppdippstr.py:268
+#: ppdippstr.py:268
 msgid "Not Installed"
 msgstr "설치되지 않음"
 
-#: ../ppdippstr.py:269
+#: ppdippstr.py:269
 msgid "Installed"
 msgstr "설치되었습니다"
 
-#: ../ppdippstr.py:270
+#: ppdippstr.py:270
 msgid "PageSize"
 msgstr "용지크기"
 
-#: ../ppdippstr.py:271
+#: ppdippstr.py:271
 msgid "InputSlot"
 msgstr "공급슬롯"
 
-#: ../ppdippstr.py:272
+#: ppdippstr.py:272
 msgid "Tray 2"
 msgstr "트레이 2"
 
-#: ../ppdippstr.py:273
+#: ppdippstr.py:273
 msgid "Tray 3"
 msgstr "트레이 3"
 
-#: ../ppdippstr.py:274
+#: ppdippstr.py:274
 msgid "Tray 4"
 msgstr "트레이 4"
 
-#: ../ppdippstr.py:275
+#: ppdippstr.py:275
 msgid "Bypass Tray"
 msgstr "수동 트레이"
 
-#: ../ppdippstr.py:276
+#: ppdippstr.py:276
 msgid "Collate"
 msgstr "병합"
 
-#: ../ppdippstr.py:277
+#: ppdippstr.py:277
 msgid "Destination"
 msgstr "목적지"
 
-#: ../ppdippstr.py:278 ../printerproperties.py:282
+#: ppdippstr.py:278 printerproperties.py:282
 msgid "Staple"
 msgstr "스테이플"
 
-#: ../ppdippstr.py:279 ../printerproperties.py:283
+#: ppdippstr.py:279 printerproperties.py:283
 msgid "Punch"
 msgstr "펀치"
 
-#: ../ppdippstr.py:280
+#: ppdippstr.py:280
 msgid "Toner Saving"
 msgstr "토너 절약"
 
-#: ../ppdippstr.py:281
+#: ppdippstr.py:281
 msgid "Gradation"
 msgstr "그라디에이션"
 
-#: ../ppdippstr.py:282
+#: ppdippstr.py:282
 msgid "Fast"
 msgstr "고속"
 
 #. HPIJS options
-#: ../ppdippstr.py:285
+#: ppdippstr.py:285
 msgid "Printout mode"
 msgstr "인쇄 모드"
 
-#: ../ppdippstr.py:287
+#: ppdippstr.py:287
 msgid "Draft (auto-detect-paper type)"
 msgstr "낮은품질 (종이 유형 자동 감지)"
 
-#: ../ppdippstr.py:289
+#: ppdippstr.py:289
 msgid "Draft (Color cartridge)"
 msgstr "낮은품질 (컬러 카트리지)"
 
-#: ../ppdippstr.py:291
+#: ppdippstr.py:291
 msgid "Draft grayscale (Black cartridge)"
 msgstr "낮은품질, 회색조, 블랙 카트리지"
 
-#: ../ppdippstr.py:293
+#: ppdippstr.py:293
 msgid "Draft grayscale (auto-detect-paper type)"
 msgstr "낮은품질 회색조 (종이 유형 자동 감지)"
 
-#: ../ppdippstr.py:295
+#: ppdippstr.py:295
 msgid "Normal (Color cartridge)"
 msgstr "일반 (컬러 카트리지)"
 
-#: ../ppdippstr.py:297
+#: ppdippstr.py:297
 msgid "Normal grayscale (Black cartridge)"
 msgstr "일반 회색조, 블랙 카트리지"
 
-#: ../ppdippstr.py:299
+#: ppdippstr.py:299
 msgid "Normal (auto-detect-paper type)"
 msgstr "일반 (종이 유형 자동 감지)"
 
-#: ../ppdippstr.py:301
+#: ppdippstr.py:301
 msgid "Normal grayscale (auto-detect-paper type)"
 msgstr "일반 회색조 (종이 유형 자동 감지)"
 
-#: ../ppdippstr.py:303
+#: ppdippstr.py:303
 msgid "High quality (auto-detect-paper type)"
 msgstr "고품질 (종이 유형 자동 감지)"
 
-#: ../ppdippstr.py:305
+#: ppdippstr.py:305
 msgid "High quality grayscale (auto-detect-paper type)"
 msgstr "고품질 회색조 (종이 유형 자동 감지)"
 
-#: ../ppdippstr.py:307
+#: ppdippstr.py:307
 msgid "High quality (Color cartridge)"
 msgstr "고품질 (종이 유형 자동 감지)"
 
-#: ../ppdippstr.py:309
+#: ppdippstr.py:309
 msgid "High quality grayscale (Black cartridge)"
 msgstr "고품질 회색조, 블랙 카트리지"
 
-#: ../ppdippstr.py:310
+#: ppdippstr.py:310
 msgid "Photo (on photo paper)"
 msgstr "사진 (사진용 용지)"
 
-#: ../ppdippstr.py:311
+#: ppdippstr.py:311
 msgid "Photo (Color cartridge, on photo paper)"
 msgstr "사진, 컬러 카트리지, 사진 용지"
 
-#: ../ppdippstr.py:312
+#: ppdippstr.py:312
 msgid "Best quality (color on photo paper)"
 msgstr "고품질 (사진 종이 용 컬러)"
 
-#: ../ppdippstr.py:313
+#: ppdippstr.py:313
 msgid "Normal quality (color on photo paper)"
 msgstr "일반 품질 (사진 종이 용 컬러)"
 
-#: ../ppdippstr.py:315
+#: ppdippstr.py:315
 msgid "Media source"
 msgstr "미디어 소스"
 
-#: ../ppdippstr.py:316
+#: ppdippstr.py:316
 msgid "Printer Default"
 msgstr "프린터 기본설정"
 
-#: ../ppdippstr.py:317
+#: ppdippstr.py:317
 msgid "Photo tray"
 msgstr "포토 트레이"
 
-#: ../ppdippstr.py:318
+#: ppdippstr.py:318
 msgid "Upper tray"
 msgstr "상단 용지함"
 
-#: ../ppdippstr.py:319
+#: ppdippstr.py:319
 msgid "Lower tray"
 msgstr "하단 용지함"
 
-#: ../ppdippstr.py:320
+#: ppdippstr.py:320
 msgid "CD or DVD tray"
 msgstr "CD 또는 DVD 트레이"
 
-#: ../ppdippstr.py:321
+#: ppdippstr.py:321
 msgid "Envelope feeder"
 msgstr "봉투 공급 장치"
 
-#: ../ppdippstr.py:322
+#: ppdippstr.py:322
 msgid "Large capacity tray"
 msgstr "대용량 트레이"
 
-#: ../ppdippstr.py:323
+#: ppdippstr.py:323
 msgid "Manual feeder"
 msgstr "수동 공급 장치"
 
-#: ../ppdippstr.py:324
+#: ppdippstr.py:324
 msgid "Multi-purpose tray "
 msgstr "다목적 트레이 "
 
-#: ../ppdippstr.py:325
+#: ppdippstr.py:325
 msgid "Multipurpose tray"
 msgstr "다목적 트레이"
 
-#: ../ppdippstr.py:327
+#: ppdippstr.py:327
 msgid "Page size"
 msgstr "용지 크기"
 
-#: ../ppdippstr.py:328
+#: ppdippstr.py:328
 msgid "Custom"
 msgstr "사용자 설정"
 
-#: ../ppdippstr.py:329
+#: ppdippstr.py:329
 msgid "Letter"
 msgstr "편지지"
 
-#: ../ppdippstr.py:330
+#: ppdippstr.py:330
 msgid "Photo or 4x6 inch index card"
 msgstr "사진 또는 4x6 인치 인덱스 카드"
 
-#: ../ppdippstr.py:331
+#: ppdippstr.py:331
 msgid "Photo or 5x7 inch index card"
 msgstr "사진 또는 5x7 인치 인덱스 카드"
 
-#: ../ppdippstr.py:332
+#: ppdippstr.py:332
 msgid "Photo with tear-off tab"
 msgstr "잘라내기 탭이 있는 포토"
 
-#: ../ppdippstr.py:333
+#: ppdippstr.py:333
 msgid "3x5 inch index card"
 msgstr "3x5 인치 인덱스 카드"
 
-#: ../ppdippstr.py:334
+#: ppdippstr.py:334
 msgid "5x8 inch index card"
 msgstr "5x8 인치 인덱스 카드"
 
-#: ../ppdippstr.py:335
+#: ppdippstr.py:335
 msgid "A6 with tear-off tab"
 msgstr "잘라내기 탭이 있는 A6"
 
-#: ../ppdippstr.py:336
+#: ppdippstr.py:336
 msgid "CD or DVD 80mm"
 msgstr "CD 또는 DVD 80mm"
 
-#: ../ppdippstr.py:337
+#: ppdippstr.py:337
 msgid "CD or DVD 120mm"
 msgstr "CD 또는 DVD 120mm"
 
-#: ../ppdippstr.py:340
+#: ppdippstr.py:340
 msgid "Long edge (standard)"
 msgstr "옆으로 넘김 (표준)"
 
-#: ../ppdippstr.py:341
+#: ppdippstr.py:341
 msgid "Short edge (flip)"
 msgstr "위로 넘김 (플립)"
 
-#: ../ppdippstr.py:342
+#: ppdippstr.py:342
 msgid "Off"
 msgstr "끄기"
 
-#: ../ppdippstr.py:344
+#: ppdippstr.py:344
 msgid "Resolution, quality, ink type, media type"
 msgstr "해상도, 품질, 잉크 유형, 미디어 유형"
 
-#: ../ppdippstr.py:345
+#: ppdippstr.py:345
 msgid "Controlled by 'Printout mode'"
 msgstr "'인쇄 모드'에 의해 제어"
 
-#: ../ppdippstr.py:346
+#: ppdippstr.py:346
 msgid "300 dpi, Color, Color Cartr."
 msgstr "300 dpi, 컬러, 컬러 카트리지."
 
-#: ../ppdippstr.py:347
+#: ppdippstr.py:347
 msgid "300 dpi, color, black + color cartridge"
 msgstr "300 dpi, 컬러, 블랙 + 컬러 카트리지"
 
-#: ../ppdippstr.py:348
+#: ppdippstr.py:348
 msgid "300 dpi, Draft, Color, Color Cartr."
 msgstr "300 dpi, 낮은품질, 컬러, 컬러 카트리지."
 
-#: ../ppdippstr.py:349
+#: ppdippstr.py:349
 msgid "300 dpi, draft, color, black + color cartridge"
 msgstr "300 dpi, 낮은품질, 컬러, 블랙 + 컬러 카트리지"
 
-#: ../ppdippstr.py:350
+#: ppdippstr.py:350
 msgid "300 dpi, Draft, Grayscale, Black Cartr."
 msgstr "300 dpi, 낮은품질, 회색조, 블랙 + 컬러 카트리지."
 
-#: ../ppdippstr.py:351
+#: ppdippstr.py:351
 msgid "300 dpi, Grayscale, Black Cartr."
 msgstr "300 dpi, 회색조, 블랙 카트리지."
 
-#: ../ppdippstr.py:352
+#: ppdippstr.py:352
 msgid "300 dpi, draft, grayscale, black + color cartridge"
 msgstr "300 dpi, 낮은품질, 회색조, 블랙 + 컬러 카트리지"
 
-#: ../ppdippstr.py:353
+#: ppdippstr.py:353
 msgid "300 dpi, grayscale, black + color cartridge"
 msgstr "300 dpi, 회색조, 블랙 + 컬러 카트리지"
 
-#: ../ppdippstr.py:354
+#: ppdippstr.py:354
 msgid "600 dpi, color, black + color cartridge"
 msgstr "600 dpi, 컬러, 블랙 + 컬러 카트리지"
 
-#: ../ppdippstr.py:355
+#: ppdippstr.py:355
 msgid "600 dpi, grayscale, black + color cartridge"
 msgstr "600 dpi, 회색조, 블랙 + 컬러 카트리지"
 
-#: ../ppdippstr.py:356
+#: ppdippstr.py:356
 msgid "600 dpi, photo, black + color cartridge, photo paper"
 msgstr "600 dpi, 사진, 블랙 + 컬러 카트리지, 사진 용지"
 
-#: ../ppdippstr.py:357
+#: ppdippstr.py:357
 msgid "600 dpi, color, black + color cartridge, photo paper, normal"
 msgstr "600 dpi, 컬러, 블랙 + 컬러 카트리지, 사진 용지, 일반"
 
-#: ../ppdippstr.py:358
+#: ppdippstr.py:358
 msgid "1200 dpi, photo, black + color cartridge, photo paper"
 msgstr "1200 dpi, 사진, 블랙 + 컬러 카트리지, 사진 용지"
 
-#: ../ppdippstr.py:364
+#: ppdippstr.py:364
 msgid "Internet Printing Protocol (ipp)"
 msgstr "인터넷 출력 통신규약 (ipp)"
 
-#: ../ppdippstr.py:365
+#: ppdippstr.py:365
 msgid "Internet Printing Protocol (http)"
 msgstr "인터넷 출력 통신규약 (http)"
 
-#: ../ppdippstr.py:366
+#: ppdippstr.py:366
 msgid "Internet Printing Protocol (https)"
 msgstr "인터넷 출력 통신규약 (https)"
 
-#: ../ppdippstr.py:367
+#: ppdippstr.py:367
 msgid "LPD/LPR Host or Printer"
 msgstr "LPD/LPR 호스트 또는 프린터"
 
-#: ../ppdippstr.py:369
+#: ppdippstr.py:369
 msgid "Serial Port #1"
 msgstr "직렬 포트 #1"
 
-#: ../ppdippstr.py:370
+#: ppdippstr.py:370
 msgid "LPT #1"
 msgstr "LPT #1"
 
-#: ../ppdsloader.py:159
+#: ppdsloader.py:159
 msgid "fetching PPDs"
 msgstr "PPD를 가져오는 중"
 
-#: ../printerproperties.py:71 ../system-config-printer.py:162
+#: print-applet.desktop.in:3
+msgid "Print Queue Applet"
+msgstr "인쇄 대기 상태 애플릿"
+
+#: print-applet.desktop.in:4
+msgid "System tray icon for managing print jobs"
+msgstr "인쇄 작업 관리를 위한 시스템 트레이 아이콘"
+
+#: printerproperties.py:71 system-config-printer.py:172
 msgid "Idle"
 msgstr "유휴"
 
-#: ../printerproperties.py:75 ../system-config-printer.py:164
+#: printerproperties.py:75 system-config-printer.py:174
 msgid "Busy"
 msgstr "작업중"
 
 #. Printer state reasons list
-#: ../printerproperties.py:215
+#: printerproperties.py:215
 msgid "Message"
 msgstr "메세지"
 
-#: ../printerproperties.py:237
+#: printerproperties.py:237
 msgid "Users"
 msgstr "사용자"
 
-#: ../printerproperties.py:260
+#: printerproperties.py:260
 msgid "Portrait (no rotation)"
 msgstr "세로 방향 (회전 없음)"
 
-#: ../printerproperties.py:261
+#: printerproperties.py:261
 msgid "Landscape (90 degrees)"
 msgstr "가로 방향 (90도 회전)"
 
-#: ../printerproperties.py:262
+#: printerproperties.py:262
 msgid "Reverse landscape (270 degrees)"
 msgstr "역 가로방향 (270도 회전)"
 
-#: ../printerproperties.py:263
+#: printerproperties.py:263
 msgid "Reverse portrait (180 degrees)"
 msgstr "역 세로 방향 (180도 회전)"
 
-#: ../printerproperties.py:269
+#: printerproperties.py:269
 msgid "Left to right, top to bottom"
 msgstr "왼쪽에서 오른쪽으로, 위에서 아래로"
 
-#: ../printerproperties.py:270
+#: printerproperties.py:270
 msgid "Left to right, bottom to top"
 msgstr "왼쪽에서 오른쪽으로, 아래서 위로"
 
-#: ../printerproperties.py:271
+#: printerproperties.py:271
 msgid "Right to left, top to bottom"
 msgstr "오른쪽에서 왼쪽으로, 위에서 아래로"
 
-#: ../printerproperties.py:272
+#: printerproperties.py:272
 msgid "Right to left, bottom to top"
 msgstr "오른쪽에서 왼쪽으로, 아래서 위로"
 
-#: ../printerproperties.py:273
+#: printerproperties.py:273
 msgid "Top to bottom, left to right"
 msgstr "위에서 아래로, 왼쪽에서 오른쪽으로"
 
-#: ../printerproperties.py:274
+#: printerproperties.py:274
 msgid "Top to bottom, right to left"
 msgstr "위에서 아래로, 오른쪽에서 왼쪽으로"
 
-#: ../printerproperties.py:275
+#: printerproperties.py:275
 msgid "Bottom to top, left to right"
 msgstr "아래서 위로, 왼쪽에서 오른쪽으로"
 
-#: ../printerproperties.py:276
+#: printerproperties.py:276
 msgid "Bottom to top, right to left"
 msgstr "아래에서 위로, 오른쪽에서 왼쪽으로"
 
-#: ../printerproperties.py:284
+#: printerproperties.py:284
 msgid "Cover"
 msgstr "커버"
 
-#: ../printerproperties.py:285
+#: printerproperties.py:285
 msgid "Bind"
 msgstr "제본"
 
-#: ../printerproperties.py:286
+#: printerproperties.py:286
 msgid "Saddle stitch"
 msgstr "중철"
 
-#: ../printerproperties.py:287
+#: printerproperties.py:287
 msgid "Edge stitch"
 msgstr "가장자리 철하기"
 
-#: ../printerproperties.py:288
+#: printerproperties.py:288
 msgid "Fold"
 msgstr "접기"
 
-#: ../printerproperties.py:289
+#: printerproperties.py:289
 msgid "Trim"
 msgstr "트림"
 
-#: ../printerproperties.py:290
+#: printerproperties.py:290
 msgid "Bale"
 msgstr "베일"
 
-#: ../printerproperties.py:291
+#: printerproperties.py:291
 msgid "Booklet maker"
 msgstr "소책자 만들기"
 
-#: ../printerproperties.py:292
+#: printerproperties.py:292
 msgid "Job offset"
 msgstr "작업 오프셋"
 
-#: ../printerproperties.py:293
+#: printerproperties.py:293
 msgid "Staple (top left)"
 msgstr "스테이플 (왼쪽 상단)"
 
-#: ../printerproperties.py:294
+#: printerproperties.py:294
 msgid "Staple (bottom left)"
 msgstr "스테이플 (왼쪽 하단)"
 
-#: ../printerproperties.py:295
+#: printerproperties.py:295
 msgid "Staple (top right)"
 msgstr "스테이플 (오른쪽 상단)"
 
-#: ../printerproperties.py:296
+#: printerproperties.py:296
 msgid "Staple (bottom right)"
 msgstr "스테이플 (오른쪽 하단)"
 
-#: ../printerproperties.py:297
+#: printerproperties.py:297
 msgid "Edge stitch (left)"
 msgstr "가장자리 철하기 (왼쪽)"
 
-#: ../printerproperties.py:298
+#: printerproperties.py:298
 msgid "Edge stitch (top)"
 msgstr "가장자리 철하기 (상단)"
 
-#: ../printerproperties.py:299
+#: printerproperties.py:299
 msgid "Edge stitch (right)"
 msgstr "가장자리 철하기 (오른쪽)"
 
-#: ../printerproperties.py:300
+#: printerproperties.py:300
 msgid "Edge stitch (bottom)"
 msgstr "가장자리 철하기 (하단)"
 
-#: ../printerproperties.py:301
+#: printerproperties.py:301
 msgid "Staple dual (left)"
 msgstr "이중 스테이플 (왼쪽)"
 
-#: ../printerproperties.py:302
+#: printerproperties.py:302
 msgid "Staple dual (top)"
 msgstr "이중 스테이플 (상단)"
 
-#: ../printerproperties.py:303
+#: printerproperties.py:303
 msgid "Staple dual (right)"
 msgstr "이중 스테이플 (오른쪽)"
 
-#: ../printerproperties.py:304
+#: printerproperties.py:304
 msgid "Staple dual (bottom)"
 msgstr "이중 스테이플 (하단)"
 
-#: ../printerproperties.py:305
+#: printerproperties.py:305
 msgid "Bind (left)"
 msgstr "제본 (왼쪽)"
 
-#: ../printerproperties.py:306
+#: printerproperties.py:306
 msgid "Bind (top)"
 msgstr "제본 (위)"
 
-#: ../printerproperties.py:307
+#: printerproperties.py:307
 msgid "Bind (right)"
 msgstr "제본 (오른쪽)"
 
-#: ../printerproperties.py:308
+#: printerproperties.py:308
 msgid "Bind (bottom)"
 msgstr "제본 (아래)"
 
-#: ../printerproperties.py:313
+#: printerproperties.py:313
 msgid "One-sided"
 msgstr "단면"
 
-#: ../printerproperties.py:314
+#: printerproperties.py:314
 msgid "Two-sided (long edge)"
 msgstr "양면 (옆으로 넘김)"
 
-#: ../printerproperties.py:315
+#: printerproperties.py:315
 msgid "Two-sided (short edge)"
 msgstr "양면 (위로 넘김)"
 
-#: ../printerproperties.py:321
+#: printerproperties.py:321
 msgid "Reverse"
 msgstr "역방향"
 
-#: ../printerproperties.py:326
+#: printerproperties.py:326
 msgid "High"
 msgstr "고품질"
 
-#: ../printerproperties.py:348
+#: printerproperties.py:348
 msgid "Automatic rotation"
 msgstr "자동 회전"
 
-#: ../printerproperties.py:595
+#: printerproperties.py:595
 msgid "CUPS test page"
 msgstr "CUPS 시험 부분"
 
-#: ../printerproperties.py:596
+#: printerproperties.py:596
 msgid ""
 "Typically shows whether all jets on a print head are functioning and that "
 "the print feed mechanisms are working properly."
@@ -2114,13 +2186,13 @@ msgstr ""
 "프린트 헤드의 모든 분사구가 제대록 작동하고 있는지와 인쇄 공급 장치가 제대로"
 "작동하고 있는지를 보여줍니다."
 
-#: ../printerproperties.py:603
+#: printerproperties.py:603
 #, python-format
 msgid "Printer Properties - '%s' on %s"
 msgstr "프린터 등록 정보 - %s에 '%s'"
 
 #. The Conflict button was pressed.
-#: ../printerproperties.py:613
+#: printerproperties.py:613
 msgid ""
 "There are conflicting options.\n"
 "Changes can only be applied after\n"
@@ -2130,20 +2202,20 @@ msgstr ""
 "충돌이 해결된 후에\n"
 "변경할 수 있습니다."
 
-#: ../printerproperties.py:958 ../ui/PrinterPropertiesDialog.ui.h:48
+#: printerproperties.py:958 ui/PrinterPropertiesDialog.ui:1365
 msgid "Printer Options"
 msgstr "프린터 옵션"
 
-#: ../printerproperties.py:994
+#: printerproperties.py:994
 #, python-format
 msgid "modifying class %s"
 msgstr "%s 등급 수정 중"
 
-#: ../printerproperties.py:1012
+#: printerproperties.py:1012
 msgid "This will delete this class!"
 msgstr "이는 등급을 삭제하게 됩니다!"
 
-#: ../printerproperties.py:1013
+#: printerproperties.py:1013
 msgid "Proceed anyway?"
 msgstr "계속 진행하시겠습니까?"
 
@@ -2151,281 +2223,436 @@ msgstr "계속 진행하시겠습니까?"
 #. but we have never fetched the server settings to see whether
 #. the server is publishing shared printers.  Fetch the settings
 #. now so that we can update the "not published" label if necessary.
-#: ../printerproperties.py:1106 ../serversettings.py:200
+#: printerproperties.py:1106 serversettings.py:200
 msgid "fetching server settings"
 msgstr "<b>서버 설정을 가져오는 중</b>"
 
-#: ../printerproperties.py:1189
+#: printerproperties.py:1189
 msgid "printing test page"
 msgstr "시험 용지 인쇄 중"
 
-#: ../printerproperties.py:1203 ../printerproperties.py:1244
+#: printerproperties.py:1203 printerproperties.py:1244
 msgid "Not possible"
 msgstr "불가능"
 
-#: ../printerproperties.py:1204 ../printerproperties.py:1245
+#: printerproperties.py:1204 printerproperties.py:1245
 msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
 msgstr "프린터가 공유되지 않아 원격서버를 통해 인쇄 작업을 실행할 수 없습니다."
 
-#: ../printerproperties.py:1216 ../printerproperties.py:1236
+#: printerproperties.py:1216 printerproperties.py:1236
 msgid "Submitted"
 msgstr "입력됨"
 
-#: ../printerproperties.py:1217
+#: printerproperties.py:1217
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr "시험 부분는 %d 작업으로 입력되었습니다"
 
-#: ../printerproperties.py:1229
+#: printerproperties.py:1229
 msgid "sending maintenance command"
 msgstr "유지 보수 명령을 전송 중"
 
-#: ../printerproperties.py:1237
+#: printerproperties.py:1237
 #, python-format
 msgid "Maintenance command submitted as job %d"
 msgstr "%d 작업으로 유지 보수 명령이 제출됨"
 
-#: ../printerproperties.py:1318
+#: printerproperties.py:1318
 msgid "Raw Queue"
 msgstr "입력 대기열"
 
-#: ../printerproperties.py:1319
+#: printerproperties.py:1319
 msgid "Unable to get queue details. Treating queue as raw."
 msgstr "대기열 세부 정보를 가져올 수 없습니다."
 
-#: ../printerproperties.py:1331 ../printerproperties.py:1336
+#: printerproperties.py:1331 printerproperties.py:1336
 msgid "Error"
 msgstr "오류"
 
-#: ../printerproperties.py:1332
+#: printerproperties.py:1332
 msgid "The PPD file for this queue is damaged."
 msgstr "이 인쇄 대기열에 있는 PPD 파일이 손상되었습니다."
 
-#: ../printerproperties.py:1337
+#: printerproperties.py:1337
 msgid "There was a problem connecting to the CUPS server."
 msgstr "CUPS 서버로 연결하는 도중 오류가 발생했습니다."
 
-#: ../printerproperties.py:1547
+#: printerproperties.py:1547
 msgid "Marker levels are not reported for this printer."
 msgstr "이 프린터에 대해 마커 레벨이 보고되어 있지 않습니다."
 
-#: ../pysmb.py:114
+#: pysmb.py:114
 #, python-format
 msgid "You must log in to access %s."
 msgstr "%s에 액세스하려면 로그인해야 합니다."
 
-#: ../serversettings.py:93
+#: serversettings.py:93
 msgid "Problems?"
 msgstr "문제가 있습니까?"
 
-#: ../serversettings.py:273
+#: serversettings.py:273
 msgid "Enter hostname"
 msgstr "호스트 이름 입력"
 
-#: ../serversettings.py:527
+#: serversettings.py:527
 msgid "modifying server settings"
 msgstr "서버 설정 수정 중"
 
-#: ../serversettings.py:567
+#: serversettings.py:567
 msgid "Adjust the firewall now to allow all incoming IPP connections?"
 msgstr "들어오는 모든 IPP 연결을 허용하기 위해 지금 방화벽을 조절하시겠습니까?"
 
-#: ../system-config-printer.py:275
+#: statereason.py:109
+msgid "Toner low"
+msgstr "토너 부족"
+
+#: statereason.py:110
+#, python-format
+msgid "Printer '%s' is low on toner."
+msgstr "프린터 '%s'의 토너가 부족합니다."
+
+#: statereason.py:111
+msgid "Toner empty"
+msgstr "토너 없음"
+
+#: statereason.py:112
+#, python-format
+msgid "Printer '%s' has no toner left."
+msgstr "프린터 '%s'에 토너가 없습니다."
+
+#: statereason.py:113
+msgid "Cover open"
+msgstr "덮개가 열려 있음"
+
+#: statereason.py:114
+#, python-format
+msgid "The cover is open on printer '%s'."
+msgstr "프린터 '%s'의 덮개가 열려 있습니다."
+
+#: statereason.py:115
+msgid "Door open"
+msgstr "뚜껑이 열려 있음"
+
+#: statereason.py:116
+#, python-format
+msgid "The door is open on printer '%s'."
+msgstr "프린터 '%s'의 뚜껑이 열려있습니다."
+
+#: statereason.py:117
+msgid "Paper low"
+msgstr "용지 부족"
+
+#: statereason.py:118
+#, python-format
+msgid "Printer '%s' is low on paper."
+msgstr "프린터 '%s'에 용지가 부족합니다."
+
+#: statereason.py:119
+msgid "Out of paper"
+msgstr "용지 없음"
+
+#: statereason.py:120
+#, python-format
+msgid "Printer '%s' is out of paper."
+msgstr "프린터 '%s'에 용지가 없습니다."
+
+#: statereason.py:121
+msgid "Ink low"
+msgstr "잉크 부족"
+
+#: statereason.py:122
+#, python-format
+msgid "Printer '%s' is low on ink."
+msgstr "프린터 '%s'에 잉크가 부족합니다."
+
+#: statereason.py:123
+msgid "Ink empty"
+msgstr "잉크 없음"
+
+#: statereason.py:124
+#, python-format
+msgid "Printer '%s' has no ink left."
+msgstr "프린터 '%s'에 잉크가 없습니다."
+
+#: statereason.py:125
+msgid "Printer off-line"
+msgstr "프린터 오프라인"
+
+#: statereason.py:126
+#, python-format
+msgid "Printer '%s' is currently off-line."
+msgstr "현재 `%s' 프린터는 오프라인 상태입니다."
+
+#: statereason.py:127
+msgid "Not connected?"
+msgstr "접속되지 않음?"
+
+#: statereason.py:128
+#, python-format
+msgid "Printer '%s' may not be connected."
+msgstr "프린터 '%s'이(가) 연결되어 있지 않습니다."
+
+#: statereason.py:129 statereason.py:149
+msgid "Printer error"
+msgstr "프린터 오류"
+
+#: statereason.py:130
+#, python-format
+msgid "There is a problem on printer '%s'."
+msgstr "`%s' 프린터에 문제가 있습니다."
+
+#: statereason.py:132
+msgid "Printer configuration error"
+msgstr "프린터 설정 오류"
+
+#: statereason.py:133
+#, python-format
+msgid "There is a missing print filter for printer '%s'."
+msgstr "프린터 '%s'의 프린터 필터가 없습니다."
+
+#: statereason.py:145
+msgid "Printer report"
+msgstr "프린터 상태 보고"
+
+#: statereason.py:147
+msgid "Printer warning"
+msgstr "프린터 경고"
+
+#: statereason.py:166
+#, python-format
+msgid "Printer '%s': '%s'."
+msgstr "프린터 '%s': '%s'."
+
+#: system-config-printer.appdata.xml.in:7
+msgid "Configure printer queues"
+msgstr "프린터 대기열 설정"
+
+#: system-config-printer.appdata.xml.in:10
+msgid ""
+"With system-config-printer you can add, edit and delete printer queues. It "
+"allows you to choose the connection method and the printer driver."
+msgstr ""
+"system-config-printer를 사용하면 프린터 대기열을 추가, 편집 및 삭제할 수 있습"
+"니다. 연결 방법과 프린터 드라이버를 선택할 수 있습니다."
+
+#: system-config-printer.appdata.xml.in:14
+msgid ""
+"For each queue, you can adjust the default page size and other driver "
+"options, as well as seeing ink/toner levels and status messages."
+msgstr ""
+"각 대기열에 대해 기본 페이지 크기 및 기타 드라이버 옵션을 조정하고 잉크 / 토"
+"너 잔량 및 상태 메시지를 볼 수 있습니다."
+
+#: system-config-printer.appdata.xml.in:21
+msgid "Main window"
+msgstr ""
+
+#: system-config-printer.appdata.xml.in:25
+#, fuzzy
+#| msgid "Printer Properties"
+msgid "Printer properties"
+msgstr "프린터 환경 설정"
+
+#: system-config-printer.desktop.in:6
+msgid "Configure printers"
+msgstr "프린터 설정"
+
+#: system-config-printer.py:285
 msgid "_Connect..."
 msgstr "연결(_C)..."
 
-#: ../system-config-printer.py:276
+#: system-config-printer.py:286
 msgid "Choose a different CUPS server"
 msgstr "다른 CUPS 서버 선택"
 
-#: ../system-config-printer.py:278
+#: system-config-printer.py:288
 msgid "_Settings..."
 msgstr "설정(_S)..."
 
-#: ../system-config-printer.py:279
+#: system-config-printer.py:289
 msgid "Adjust server settings"
 msgstr "서버 설정 조정"
 
-#: ../system-config-printer.py:281 ../ui/PrintersWindow.ui.h:2
+#: system-config-printer.py:291 ui/PrintersWindow.ui:41
 msgid "_Printer"
 msgstr "프린터(_P)"
 
-#: ../system-config-printer.py:283
+#: system-config-printer.py:293
 msgid "_Class"
 msgstr "_등급"
 
-#: ../system-config-printer.py:288
+#: system-config-printer.py:298
 msgid "_Rename"
 msgstr "이름 변경(_R)"
 
-#: ../system-config-printer.py:290
+#: system-config-printer.py:300
 msgid "_Duplicate"
 msgstr "복제(_D)"
 
-#: ../system-config-printer.py:294
+#: system-config-printer.py:304
 msgid "Set As De_fault"
 msgstr "기본 설정(_F)"
 
-#: ../system-config-printer.py:298
+#: system-config-printer.py:308
 msgid "_Create class"
 msgstr "_등급 생성"
 
-#: ../system-config-printer.py:300
+#: system-config-printer.py:310
 msgid "View Print _Queue"
 msgstr "인쇄 대기열 보기(_Q)"
 
-#: ../system-config-printer.py:304
+#: system-config-printer.py:314
 msgid "E_nabled"
 msgstr "활성화(_N)"
 
-#: ../system-config-printer.py:306
+#: system-config-printer.py:316
 msgid "_Shared"
 msgstr "공유(_S)"
 
-#: ../system-config-printer.py:311
+#: system-config-printer.py:321
 msgid "Description"
 msgstr "설명"
 
-#: ../system-config-printer.py:312 ../troubleshoot/ChooseNetworkPrinter.py:39
-#: ../troubleshoot/ChoosePrinter.py:45
+#: system-config-printer.py:322 troubleshoot/ChooseNetworkPrinter.py:39
+#: troubleshoot/ChoosePrinter.py:45
 msgid "Location"
 msgstr "위치"
 
-#: ../system-config-printer.py:313
+#: system-config-printer.py:323
 msgid "Manufacturer / Model"
 msgstr "제조 업체 / 모델"
 
-#: ../system-config-printer.py:360 ../ui/PrinterPropertiesDialog.ui.h:93
-#: ../ui/PrintersWindow.ui.h:9 ../ui/ServerSettingsDialog.ui.h:15
+#: system-config-printer.py:370 ui/PrinterPropertiesDialog.ui:3530
+#: ui/PrintersWindow.ui:203 ui/ServerSettingsDialog.ui:336
 msgid "Add"
 msgstr "추가하기"
 
-#: ../system-config-printer.py:377 ../ui/PrinterPropertiesDialog.ui.h:96
+#: system-config-printer.py:387 ui/PrinterPropertiesDialog.ui:3652
 msgid "Refresh"
 msgstr "새로고침(_R)"
 
-#: ../system-config-printer.py:391
+#: system-config-printer.py:401
 msgid "_New"
 msgstr "새로 만들기(_N)"
 
-#: ../system-config-printer.py:756
+#: system-config-printer.py:772
 #, python-format
 msgid "Print Settings - %s"
 msgstr "인쇄 설정 - %s"
 
-#: ../system-config-printer.py:759
+#: system-config-printer.py:775
 #, python-format
 msgid "Connected to %s"
 msgstr "%s에 접속됨"
 
-#: ../system-config-printer.py:846
+#: system-config-printer.py:862
 msgid "obtaining queue details"
 msgstr "대기열 정보 얻기"
 
-#: ../system-config-printer.py:935
+#: system-config-printer.py:951
 msgid "Network printer (discovered)"
 msgstr "네트워크 프린터 (검색)"
 
-#: ../system-config-printer.py:938
+#: system-config-printer.py:954
 msgid "Network class (discovered)"
 msgstr "네트워크 등급(검색)"
 
-#: ../system-config-printer.py:947
+#: system-config-printer.py:963
 msgid "Class"
 msgstr "등급"
 
-#: ../system-config-printer.py:950 ../system-config-printer.py:956
-#: ../troubleshoot/LocalOrRemote.py:30
+#: system-config-printer.py:966 system-config-printer.py:972
+#: troubleshoot/LocalOrRemote.py:30
 msgid "Network printer"
 msgstr "네트워크 프린터"
 
-#: ../system-config-printer.py:953
+#: system-config-printer.py:969
 msgid "Network print share"
 msgstr "네트워크 프린터 공유"
 
-#: ../system-config-printer.py:1120
+#: system-config-printer.py:1136
 msgid "Service framework not available"
 msgstr "서비스 프레임 워크가 사용 불가능함"
 
-#: ../system-config-printer.py:1122
+#: system-config-printer.py:1138
 msgid "Cannot start service on remote server"
 msgstr "원격 서버에서 서비스를 시작할 수 없음"
 
-#: ../system-config-printer.py:1170 ../ui/ConnectingDialog.ui.h:5
-#, no-c-format, python-format
+#: system-config-printer.py:1187 ui/ConnectingDialog.ui:84
+#, python-format
 msgid "<i>Opening connection to %s</i>"
 msgstr "<i>%s로의 연결 오픈</i>"
 
-#: ../system-config-printer.py:1333
+#: system-config-printer.py:1350
 msgid "Set Default Printer"
 msgstr "기본 프린터 설정"
 
-#: ../system-config-printer.py:1335
+#: system-config-printer.py:1352
 msgid "Do you want to set this as the system-wide default printer?"
 msgstr "이를 시스템 전역 기본값 프린터로 설정하시겠습니까?"
 
-#: ../system-config-printer.py:1337
+#: system-config-printer.py:1354
 msgid "Set as the _system-wide default printer"
 msgstr "시스템-전역 기본값 프린터로 설정(_S)"
 
-#: ../system-config-printer.py:1339
+#: system-config-printer.py:1356
 msgid "_Clear my personal default setting"
 msgstr "개인의 기본 설정을 제거(_C)"
 
-#: ../system-config-printer.py:1340
+#: system-config-printer.py:1357
 msgid "Set as my _personal default printer"
 msgstr "개인 기본 프린터 설정(_P)"
 
-#: ../system-config-printer.py:1345
+#: system-config-printer.py:1362
 msgid "setting default printer"
 msgstr "기본 프린터 설정 중"
 
-#: ../system-config-printer.py:1398
+#: system-config-printer.py:1415
 msgid "Cannot Rename"
 msgstr "다시 이름 지정할 수 없음"
 
-#: ../system-config-printer.py:1399
+#: system-config-printer.py:1416
 msgid "There are queued jobs."
 msgstr "대기열 작업이 있습니다."
 
-#: ../system-config-printer.py:1416
+#: system-config-printer.py:1433
 msgid "Renaming will lose history"
 msgstr "이름을 변경하면 기록이 손실됩니다"
 
-#: ../system-config-printer.py:1418
+#: system-config-printer.py:1435
 msgid "Completed jobs will no longer be available for re-printing."
 msgstr "완료된 작업은 다시 인쇄할 수 없습니다."
 
-#: ../system-config-printer.py:1531
+#: system-config-printer.py:1548
 msgid "renaming printer"
 msgstr "프린터 이름 다시 지정 중"
 
-#: ../system-config-printer.py:1694
+#: system-config-printer.py:1711
 #, python-format
 msgid "Really delete class '%s'?"
 msgstr "정말로 등급 '%s'을 삭제하시겠습니까?"
 
-#: ../system-config-printer.py:1696
+#: system-config-printer.py:1713
 #, python-format
 msgid "Really delete printer '%s'?"
 msgstr "정말로 프린터 '%s'(을)를 삭제하시겠습니까?"
 
-#: ../system-config-printer.py:1700
+#: system-config-printer.py:1717
 msgid "Really delete selected destinations?"
 msgstr "정말로 선택한 수신지를 삭제하시겠습니까?"
 
-#: ../system-config-printer.py:1721
+#: system-config-printer.py:1738
 #, python-format
 msgid "deleting printer %s"
 msgstr "%s 프린터 삭제 중"
 
-#: ../system-config-printer.py:1812
+#: system-config-printer.py:1829
 msgid "Publish Shared Printers"
 msgstr "공유 프린터 게시"
 
-#: ../system-config-printer.py:1813
+#: system-config-printer.py:1830
 msgid ""
 "Shared printers are not available to other people unless the 'Publish shared "
 "printers' option is enabled in the server settings."
@@ -2433,30 +2660,30 @@ msgstr ""
 "서버 설정에서 '공유 프린터 게시' 옵션이 활성화되어 있지 않을 경우 다른 사람"
 "이 공유 프린터를 사용할 수 없습니다."
 
-#: ../system-config-printer.py:2031
+#: system-config-printer.py:2048
 msgid "Would you like to print a test page?"
 msgstr "시험 부분를 인쇄하시겠습니까?"
 
 #. Not more than 25 characters
-#: ../system-config-printer.py:2033 ../ui/PrinterPropertiesDialog.ui.h:17
-#: ../troubleshoot/PrintTestPage.py:74
+#: system-config-printer.py:2050 troubleshoot/PrintTestPage.py:74
+#: ui/PrinterPropertiesDialog.ui:547
 msgid "Print Test Page"
 msgstr "시험 부분 인쇄"
 
-#: ../system-config-printer.py:2125
+#: system-config-printer.py:2142
 msgid "Install driver"
 msgstr "드라이버 설치"
 
-#: ../system-config-printer.py:2126 ../troubleshoot/CheckPPDSanity.py:136
+#: system-config-printer.py:2143 troubleshoot/CheckPPDSanity.py:136
 #, python-format
 msgid "Printer '%s' requires the %s package but it is not currently installed."
 msgstr "프린터 '%s'는 %s 꾸러미가 필요하나 이는 현재 설치되어 있지 않습니다."
 
-#: ../system-config-printer.py:2141
+#: system-config-printer.py:2158
 msgid "Missing driver"
 msgstr "드라이버가 없음"
 
-#: ../system-config-printer.py:2142
+#: system-config-printer.py:2159
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "
@@ -2465,15 +2692,408 @@ msgstr ""
 "프린터 '%s'는 %s 프로그램이 필요하나 이는 현재 설치되어 있지 않습니다.  프린"
 "터를 사용하시기 전에 프로그램을 설치하시기 바랍니다."
 
-#: ../ui/AboutDialog.ui.h:1
+#: timedops.py:116 timedops.py:195
+msgid "Please wait"
+msgstr "잠시만 기다려 주십시오"
+
+#: timedops.py:122 timedops.py:202
+msgid "Gathering information"
+msgstr "정보 수집"
+
+#: ToolbarSearchEntry.py:74
+msgid "_Filter:"
+msgstr "검색(_F):"
+
+#: troubleshoot/base.py:36
+msgid ""
+"To start this tool, select System->Administration->Print Settings from the "
+"main menu."
+msgstr "이 도구를 시작하려면 주 메뉴에서 시스템->관리->인쇄 설정을 선택합니다."
+
+#: troubleshoot/CheckLocalServerPublishing.py:28
+msgid "Server Not Exporting Printers"
+msgstr "서버가 프린터를 내보내기하지 않습니다"
+
+#: troubleshoot/CheckLocalServerPublishing.py:29
+msgid ""
+"Although one or more printers are marked as being shared, this print server "
+"is not exporting shared printers to the network."
+msgstr ""
+"하나 이상의 프린터가 공유되도록 표시되어 있지만, 이 인쇄 서버는 네트워크에 공"
+"유 프린터를 내보내기하지 않습니다."
+
+#: troubleshoot/CheckLocalServerPublishing.py:33
+msgid ""
+"Enable the 'Publish shared printers connected to this system' option in the "
+"server settings using the printing administration tool."
+msgstr ""
+"인쇄 관리 도구를 사용하여 서버 설정에서 '시스템에 연결된 공유 프린터 게시' 옵"
+"션을 활성화합니다."
+
+#: troubleshoot/CheckPPDSanity.py:100
+msgid "Invalid PPD File"
+msgstr "잘못된 PPD 파일"
+
+#: troubleshoot/CheckPPDSanity.py:111
+#, python-format
+msgid ""
+"The PPD file for printer '%s' does not conform to the specification.  "
+"Possible reason follows:"
+msgstr ""
+"'%s' 프린터에 대한 PPD 파일은 사양에 적합하지 않습니다. 이유는 다음과 같습니"
+"다:"
+
+#. Perhaps cupstestppd is not in the path.
+#: troubleshoot/CheckPPDSanity.py:117
+#, python-format
+msgid "There is a problem with the PPD file for printer '%s'."
+msgstr "`%s' 프린터의 PPD 파일에 문제가 있습니다."
+
+#: troubleshoot/CheckPPDSanity.py:127
+msgid "Missing Printer Driver"
+msgstr "프린터 드라이버가 없음"
+
+#: troubleshoot/CheckPPDSanity.py:141
+#, python-format
+msgid ""
+"Printer '%s' requires the '%s' program but it is not currently installed."
+msgstr ""
+"'%s' 프린터는 '%s' 프로그램이 필요하나 이는 현재 설치되어 있지 않습니다."
+
+#: troubleshoot/ChooseNetworkPrinter.py:31
+msgid "Choose Network Printer"
+msgstr "네트워크 프린터 선택"
+
+#: troubleshoot/ChooseNetworkPrinter.py:32
+msgid ""
+"Please select the network printer you are trying to use from the list below. "
+"If it does not appear in the list, select 'Not listed'."
+msgstr ""
+"아래의 목록에서 사용하려는 네트워크 프린터를 선택합니다. 목록에 없을 경우,'목"
+"록에 없음'을 선택합니다."
+
+#: troubleshoot/ChooseNetworkPrinter.py:41 troubleshoot/ChoosePrinter.py:47
+#: troubleshoot/DeviceListed.py:45
+msgid "Information"
+msgstr "정보"
+
+#: troubleshoot/ChooseNetworkPrinter.py:75 troubleshoot/ChoosePrinter.py:71
+#: troubleshoot/DeviceListed.py:77
+msgid "Not listed"
+msgstr "목록에 없음"
+
+#: troubleshoot/ChoosePrinter.py:37
+msgid "Choose Printer"
+msgstr "프린터 선택"
+
+#: troubleshoot/ChoosePrinter.py:38
+msgid ""
+"Please select the printer you are trying to use from the list below. If it "
+"does not appear in the list, select 'Not listed'."
+msgstr ""
+"아래의 목록에서 사용하려는 프린터를 선택합니다. 목록에 없을 경우, '목록에 없"
+"음'을 선택합니다."
+
+#: troubleshoot/DeviceListed.py:37
+msgid "Choose Device"
+msgstr "장치 선택"
+
+#: troubleshoot/DeviceListed.py:38
+msgid ""
+"Please select the device you want to use from the list below. If it does not "
+"appear in the list, select 'Not listed'."
+msgstr ""
+"아래의 목록에서 사용하려는 장치를 선택합니다. 목록에 없을 경우, '목록에 없"
+"음'을 선택합니다."
+
+#: troubleshoot/DeviceListed.py:47 ui/NewPrinterWindow.ui:411
+msgid "Device URI"
+msgstr "장치 URI"
+
+#: troubleshoot/ErrorLogCheckpoint.py:40
+msgid "Debugging"
+msgstr "디버깅"
+
+#: troubleshoot/ErrorLogCheckpoint.py:41
+msgid ""
+"This step will enable debugging output from the CUPS scheduler.  This may "
+"cause the scheduler to restart.  Click the button below to enable debugging."
+msgstr ""
+"이 단계는 CUPS 스케줄러에서 디버그 출력을 활성화합니다. 이는 스케줄러가 다시 "
+"시작하게 될 수 있습니다. 아래의 누름단추를눌러서 디버깅 기능을 활성화합니다."
+
+#: troubleshoot/ErrorLogCheckpoint.py:45
+msgid "Enable Debugging"
+msgstr "디버깅 활성화"
+
+#: troubleshoot/ErrorLogCheckpoint.py:236
+msgid "Debug logging enabled."
+msgstr "디버그 로깅 활성화됨."
+
+#: troubleshoot/ErrorLogCheckpoint.py:238
+msgid "Debug logging was already enabled."
+msgstr "디버그 로깅이 이미 활성화되어 있습니다."
+
+#: troubleshoot/ErrorLogFetch.py:41
+msgid "Retrieve Journal Entries"
+msgstr "로그 검색"
+
+#: troubleshoot/ErrorLogFetch.py:42
+msgid ""
+"No system journal entries were found. This may be because you are not an "
+"administrator. To fetch journal entries please run this command:"
+msgstr ""
+"시스템 로그 항목이 없습니다. 관리자가 아니기 때문일 수 있습니다. 확인하려면 "
+"다음 명령을 실행하십시오:"
+
+#: troubleshoot/ErrorLogParse.py:32
+msgid "Error log messages"
+msgstr "오류 로그 메세지"
+
+#: troubleshoot/ErrorLogParse.py:33
+msgid "There are messages in the error log."
+msgstr "오류 로그에 메세지가 있습니다."
+
+#: troubleshoot/__init__.py:57
+msgid "Printing troubleshooter"
+msgstr "인쇄 문제 해결"
+
+#: troubleshoot/Locale.py:31
+msgid "Incorrect Page Size"
+msgstr "잘못된 용지 크기"
+
+#: troubleshoot/Locale.py:32
+msgid ""
+"The page size for the print job was not the printer's default page size.  If "
+"this is not intentional it may cause alignment problems."
+msgstr ""
+"인쇄 용 부분 크기는 프린터의 기본 값 용지 크기가 아닙니다. 의도한 목적이 아"
+"닐 경우 정렬 문제의 원인이 될 수 있습니다."
+
+#: troubleshoot/Locale.py:44
+msgid "Print job page size:"
+msgstr "인쇄 작업 부분 크기:"
+
+#: troubleshoot/Locale.py:48
+msgid "Printer page size:"
+msgstr "프린터 용지 크기:"
+
+#: troubleshoot/LocalOrRemote.py:26
+msgid "Printer Location"
+msgstr "프린터 위치"
+
+#: troubleshoot/LocalOrRemote.py:27
+msgid "Is the printer connected to this computer or available on the network?"
+msgstr ""
+"프린터가 컴퓨터에 연결되어 있습니까 아니면 네트워크에서 사용 가능합니까?"
+
+#: troubleshoot/LocalOrRemote.py:29
+msgid "Locally connected printer"
+msgstr "로컬로 연결된 프린터"
+
+#: troubleshoot/NetworkCUPSPrinterShared.py:28
+msgid "Queue Not Shared"
+msgstr "대기열이 공유되지 않음"
+
+#: troubleshoot/NetworkCUPSPrinterShared.py:29
+msgid "The CUPS printer on the server is not shared."
+msgstr "서버 상의 CUPS 프린터는 공유되지 않습니다."
+
+#: troubleshoot/PrinterStateReasons.py:34
+msgid "Status Messages"
+msgstr "상태 메세지"
+
+#: troubleshoot/PrinterStateReasons.py:35
+msgid "There are status messages associated with this queue."
+msgstr "대기열과 관련된 상태 메세지가 있습니다."
+
+#: troubleshoot/PrinterStateReasons.py:65
+#, python-format
+msgid "The printer's state message is: '%s'."
+msgstr "프린터 상태 메세지: `%s'."
+
+#: troubleshoot/PrinterStateReasons.py:90
+msgid "Errors are listed below:"
+msgstr "오류 목록은 아래와 같습니다:"
+
+#: troubleshoot/PrinterStateReasons.py:95
+msgid "Warnings are listed below:"
+msgstr "경고 목록은 아래와 같습니다:"
+
+#: troubleshoot/PrintTestPage.py:64
+msgid "Test Page"
+msgstr "시험 부분"
+
+#: troubleshoot/PrintTestPage.py:65
+msgid ""
+"Now print a test page.  If you are having problems printing a specific "
+"document, print that document now and mark the print job below."
+msgstr ""
+"시험 부분를 인쇄합니다. 특정 문서 인쇄에 문제가 있을 경우, 해당 문서를 지금 "
+"인쇄하고 아래에 인쇄 작업을 표시합니다."
+
+#: troubleshoot/PrintTestPage.py:77
+msgid "Cancel All Jobs"
+msgstr "모든 작업 취소"
+
+#: troubleshoot/PrintTestPage.py:83
+msgid "Test"
+msgstr "시험"
+
+#: troubleshoot/PrintTestPage.py:113
+msgid "Did the marked print jobs print correctly?"
+msgstr "표시된 인쇄 작업이 올바르게 인쇄되었습니까?"
+
+#: troubleshoot/PrintTestPage.py:144
+#, python-format
+msgid "Remember to load paper of type '%s' into the printer first."
+msgstr "'%s' 종이 유형을 프린터로 먼저 읽어오는 것을 잊지 마십시오."
+
+#: troubleshoot/PrintTestPage.py:430
+msgid "Error submitting test page"
+msgstr "시험 부분을 제출하는 도중 오류 발생"
+
+#: troubleshoot/QueueNotEnabled.py:58 troubleshoot/QueueRejectingJobs.py:68
+#, python-format
+msgid "The reason given is: '%s'."
+msgstr "이유: '%s'."
+
+#: troubleshoot/QueueNotEnabled.py:60
+msgid "This may be due to the printer being disconnected or switched off."
+msgstr "프린터 연결이 해제되거나 전원이 꺼져있을 수 있습니다."
+
+#: troubleshoot/QueueNotEnabled.py:64
+msgid "Queue Not Enabled"
+msgstr "대기열이 활성화되어 있지 않음"
+
+#: troubleshoot/QueueNotEnabled.py:65
+#, python-format
+msgid "The queue '%s' is not enabled."
+msgstr "'%s' 대기열이 활성화되어 있지 않습니다."
+
+#: troubleshoot/QueueNotEnabled.py:73
+msgid ""
+"To enable it, select the 'Enabled' checkbox in the 'Policies' tab for the "
+"printer in the printer administration tool."
+msgstr ""
+"이를 활성화하려면, 프린터 관리 도구에서 해당 프린터의 '정책' 탭에 있는 체크박"
+"스를 '활성화'로 선택합니다."
+
+#: troubleshoot/QueueRejectingJobs.py:33
+msgid "Queue Rejecting Jobs"
+msgstr "대기열이 작업을 거부"
+
+#: troubleshoot/QueueRejectingJobs.py:65
+#, python-format
+msgid "The queue '%s' is rejecting jobs."
+msgstr "'%s' 대기열이 작업을 거부합니다."
+
+#: troubleshoot/QueueRejectingJobs.py:72
+msgid ""
+"To make the queue accept jobs, select the 'Accepting Jobs' checkbox in the "
+"'Policies' tab for the printer in the printer administration tool."
+msgstr ""
+"대기열이 작업을 허용하게 하려면, 프린터 관리 도구에서 '정책' 탭에 있는 '작업"
+"허용' 체크박스를 선택합니다."
+
+#: troubleshoot/RemoteAddress.py:28
+msgid "Remote Address"
+msgstr "원격 주소"
+
+#: troubleshoot/RemoteAddress.py:29
+msgid ""
+"Please enter as many details as you can about the network address of this "
+"printer."
+msgstr "프린터의 네트워크 주소에 관해 가능한 많은 정보를 입력해 주십시오."
+
+#: troubleshoot/RemoteAddress.py:37
+msgid "Server name:"
+msgstr "서버 이름:"
+
+#: troubleshoot/RemoteAddress.py:44
+msgid "Server IP address:"
+msgstr "서버 IP 주소:"
+
+#: troubleshoot/SchedulerNotRunning.py:28
+msgid "CUPS Service Stopped"
+msgstr "CUPS 서비스 중지"
+
+#: troubleshoot/SchedulerNotRunning.py:29
+msgid ""
+"The CUPS print spooler does not appear to be running.  To correct this, "
+"choose System->Administration->Services from the main menu and look for the "
+"'cups' service."
+msgstr ""
+"CUPS 프린트 스플러가 작동 중이라고 나타나지 않습니다. 이를 해결하려면, 주 메"
+"뉴에서 시스템->관리->서비스를 선택하고 'cups'서비스를 찾습니다."
+
+#: troubleshoot/ServerFirewalled.py:28
+msgid "Check Server Firewall"
+msgstr "서버의 방화벽 확인"
+
+#: troubleshoot/ServerFirewalled.py:29
+msgid "It is not possible to connect to the server."
+msgstr "서버로 연결할 수 없습니다."
+
+#: troubleshoot/ServerFirewalled.py:44
+#, python-format
+msgid ""
+"Please check to see if a firewall or router configuration is blocking TCP "
+"port %d on server '%s'."
+msgstr ""
+"방화벽 또는 라우터 설정이 TCP 포트 %d 서버 '%s'에서 차단하고 있는지 확인하십"
+"시오."
+
+#: troubleshoot/Shrug.py:28
+msgid "Sorry!"
+msgstr "죄송합니다!"
+
+#: troubleshoot/Shrug.py:29
+msgid ""
+"There is no obvious solution to this problem.  Your answers have been "
+"collected together with other useful information.  If you would like to "
+"report a bug, please include this information."
+msgstr ""
+"이 문제에 대한 확실한 해결첵이 없습니다. 문제에 대한 답변은 다른 유용한 정보"
+"와 함께 수집되었습니다. 버그를 보고하시려면 이 정보를 버그 보고에 포함합니다."
+
+#: troubleshoot/Shrug.py:36
+msgid "Diagnostic Output (Advanced)"
+msgstr "진단 출력 (고급)"
+
+#: troubleshoot/Shrug.py:93
+msgid "Error saving file"
+msgstr "파일을 저장하는 도중 오류 발생"
+
+#: troubleshoot/Shrug.py:94
+msgid "There was an error saving the file:"
+msgstr "파일을 저장하는 도중 오류가 발생했습니다:"
+
+#: troubleshoot/Welcome.py:45
+msgid "Trouble-shooting Printing"
+msgstr "인쇄 문제 해결"
+
+#: troubleshoot/Welcome.py:47
+msgid ""
+"The next few screens will contain some questions about your problem with "
+"printing. Based on your answers a solution may be suggested."
+msgstr ""
+"다음 화면에서는 인쇄 중 발생하는 문제에 대한 질문이 있습니다. 질문에 대한 대"
+"답에 따라 해결책이 제시될 수 있습니다."
+
+#: troubleshoot/Welcome.py:51
+msgid "Click 'Forward' to begin."
+msgstr "'다음'을 눌러 시작합니다."
+
+#: ui/AboutDialog.ui:9
 msgid "Copyright © 2006-2012 Red Hat, Inc."
 msgstr "Copyright © 2006-2012 Red Hat, Inc."
 
-#: ../ui/AboutDialog.ui.h:2
+#: ui/AboutDialog.ui:10
 msgid "A CUPS configuration tool."
 msgstr "CUPS 설정 도구."
 
-#: ../ui/AboutDialog.ui.h:3
+#: ui/AboutDialog.ui:12
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -2504,120 +3124,120 @@ msgstr ""
 "Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 
 #. TRANSLATORS: Replace this string with your names, one name per line.  Thank you very much for your effort on translating system-config-printer and all our other tools!
-#: ../ui/AboutDialog.ui.h:9
+#: ui/AboutDialog.ui:21
 msgid "translator-credits"
 msgstr "simmon <simmon@nplob.com>"
 
-#: ../ui/ConnectDialog.ui.h:1
+#: ui/ConnectDialog.ui:8
 msgid "Connect to CUPS server"
 msgstr "CUPS 서버에 접속"
 
-#: ../ui/ConnectDialog.ui.h:3 ../ui/PrintersWindow.ui.h:12
+#: ui/ConnectDialog.ui:42 ui/PrintersWindow.ui:285
 msgid "Connect"
 msgstr "연결"
 
-#: ../ui/ConnectDialog.ui.h:4
+#: ui/ConnectDialog.ui:78
 msgid "CUPS _server:"
 msgstr "CUPS_서버:"
 
-#: ../ui/ConnectDialog.ui.h:5
+#: ui/ConnectDialog.ui:116
 msgid "Require _encryption"
 msgstr "암호화_필요"
 
-#: ../ui/ConnectingDialog.ui.h:1
+#: ui/ConnectingDialog.ui:8
 msgid "Connecting to CUPS server"
 msgstr "CUPS 서버로 연결 중"
 
-#: ../ui/ConnectingDialog.ui.h:3
+#: ui/ConnectingDialog.ui:59
 msgid "<span weight=\"bold\" size=\"larger\">Connecting to CUPS server</span>"
 msgstr "<span weight=\"bold\" size=\"larger\">CUPS 서버로 연결 중</span>"
 
-#: ../ui/InstallDialog.ui.h:1
+#: ui/InstallDialog.ui:24
 msgid "Close"
 msgstr "닫기"
 
-#: ../ui/InstallDialog.ui.h:2
+#: ui/InstallDialog.ui:64
 msgid "_Install"
 msgstr "설치(_I)"
 
-#: ../ui/JobsWindow.ui.h:1
+#: ui/JobsWindow.ui:24
 msgid "Refresh job list"
 msgstr "인쇄 작업 목록을 새로 고침"
 
-#: ../ui/JobsWindow.ui.h:2 ../ui/SMBBrowseDialog.ui.h:2
+#: ui/JobsWindow.ui:25 ui/SMBBrowseDialog.ui:61
 msgid "_Refresh"
 msgstr "재생(_R)"
 
-#: ../ui/JobsWindow.ui.h:3
+#: ui/JobsWindow.ui:41
 msgid "Show completed jobs"
 msgstr "완료된 인쇄 작업 보기"
 
-#: ../ui/JobsWindow.ui.h:4
+#: ui/JobsWindow.ui:42
 msgid "Show _completed jobs"
 msgstr "완료된 작업 보기(_C)"
 
-#: ../ui/NewPrinterName.ui.h:1
+#: ui/NewPrinterName.ui:7
 msgid "Duplicate Printer"
 msgstr "프린터 복제"
 
-#: ../ui/NewPrinterName.ui.h:3 ../ui/PrinterPropertiesDialog.ui.h:5
-#: ../ui/ServerSettingsDialog.ui.h:3 ../ui/SMBBrowseDialog.ui.h:4
+#: ui/NewPrinterName.ui:38 ui/PrinterPropertiesDialog.ui:182
+#: ui/ServerSettingsDialog.ui:40 ui/SMBBrowseDialog.ui:93
 msgid "_OK"
 msgstr "확인(_O)"
 
-#: ../ui/NewPrinterName.ui.h:4
+#: ui/NewPrinterName.ui:64
 msgid "New name for the printer"
 msgstr "새 프린터 이름"
 
-#: ../ui/NewPrinterWindow.ui.h:2
+#: ui/NewPrinterWindow.ui:34
 msgid "<span weight=\"bold\" size=\"larger\">Describe Printer</span>"
 msgstr "<span weight=\"bold\" size=\"larger\">프린터 설명</span>"
 
-#: ../ui/NewPrinterWindow.ui.h:3
+#: ui/NewPrinterWindow.ui:69
 msgid "Short name for this printer such as \"laserjet\""
 msgstr "\"laserjet\"과 같이 프린터에 대한 간단한 이름"
 
-#: ../ui/NewPrinterWindow.ui.h:4
+#: ui/NewPrinterWindow.ui:97
 msgid "<b>Printer Name</b>"
 msgstr "<b>프린터 이름</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:5
+#: ui/NewPrinterWindow.ui:127
 msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
 msgstr "\"HP LaserJet with Duplexer\"와 같이 읽기 쉬운 설명"
 
-#: ../ui/NewPrinterWindow.ui.h:6
+#: ui/NewPrinterWindow.ui:154
 msgid "<b>Description</b> (optional)"
 msgstr "<b>설명</b> (옵션)"
 
-#: ../ui/NewPrinterWindow.ui.h:7
+#: ui/NewPrinterWindow.ui:184
 msgid "Human-readable location such as \"Lab 1\""
 msgstr "\"Lab 1\"와 같이 읽기 쉬운 위치"
 
-#: ../ui/NewPrinterWindow.ui.h:8
+#: ui/NewPrinterWindow.ui:211
 msgid "<b>Location</b> (optional)"
 msgstr "<b>위치</b> (옵션)"
 
-#: ../ui/NewPrinterWindow.ui.h:10
+#: ui/NewPrinterWindow.ui:253
 msgid "<span weight=\"bold\" size=\"larger\">Select Device</span>"
 msgstr "<span weight=\"bold\" size=\"larger\">장치 선택</span>"
 
-#: ../ui/NewPrinterWindow.ui.h:11
+#: ui/NewPrinterWindow.ui:320
 msgid "Device description."
 msgstr "장치 설명."
 
-#: ../ui/NewPrinterWindow.ui.h:12
+#: ui/NewPrinterWindow.ui:328
 msgid "<b>Description</b>"
 msgstr "<b>설명</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:13
+#: ui/NewPrinterWindow.ui:345
 msgid "Empty"
 msgstr "비어있음"
 
-#: ../ui/NewPrinterWindow.ui.h:14
+#: ui/NewPrinterWindow.ui:377
 msgid "<b>Enter device URI</b>"
 msgstr "<b>장치 URI 입력</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:15
+#: ui/NewPrinterWindow.ui:392
 msgid ""
 "For example:\n"
 "ipp://cups-server/printers/printer-queue\n"
@@ -2627,143 +3247,141 @@ msgstr ""
 "ipp://cups-server/printers/printer-queue\n"
 "ipp://printer.mydomain/ipp"
 
-#: ../ui/NewPrinterWindow.ui.h:18 ../troubleshoot/DeviceListed.py:47
-msgid "Device URI"
-msgstr "장치 URI"
-
-#: ../ui/NewPrinterWindow.ui.h:19
+#: ui/NewPrinterWindow.ui:437 ui/NewPrinterWindow.ui:549
+#: ui/NewPrinterWindow.ui:1279
 msgid "Host:"
 msgstr "호스트:"
 
-#: ../ui/NewPrinterWindow.ui.h:20
+#: ui/NewPrinterWindow.ui:453
 msgid "Port number:"
 msgstr "포트 번호:"
 
-#: ../ui/NewPrinterWindow.ui.h:21
+#: ui/NewPrinterWindow.ui:509
 msgid "<b>Location of the network printer</b>"
 msgstr "<b>네트워크 프린터의 위치</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:22
+#: ui/NewPrinterWindow.ui:522
 msgid "JetDirect"
 msgstr "JetDirect"
 
-#: ../ui/NewPrinterWindow.ui.h:23
+#: ui/NewPrinterWindow.ui:569
 msgid "Queue:"
 msgstr "대기열:"
 
-#: ../ui/NewPrinterWindow.ui.h:24
+#: ui/NewPrinterWindow.ui:612
 msgid "Probe"
 msgstr "추적"
 
-#: ../ui/NewPrinterWindow.ui.h:25
+#: ui/NewPrinterWindow.ui:686
 msgid "<b>Location of the LPD network printer</b>"
 msgstr "<b>LPD 네트워크 프린터의 위치</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:26
+#: ui/NewPrinterWindow.ui:699
 msgid "LPD"
 msgstr "LPD"
 
-#: ../ui/NewPrinterWindow.ui.h:27
+#: ui/NewPrinterWindow.ui:731
 msgid "SCSI"
 msgstr "SCSI"
 
-#: ../ui/NewPrinterWindow.ui.h:28
+#: ui/NewPrinterWindow.ui:758
 msgid "Baud Rate"
 msgstr "보레이트"
 
-#: ../ui/NewPrinterWindow.ui.h:29
+#: ui/NewPrinterWindow.ui:777
 msgid "Parity"
 msgstr "패리티"
 
-#: ../ui/NewPrinterWindow.ui.h:30
+#: ui/NewPrinterWindow.ui:796
 msgid "Data Bits"
 msgstr "데이타 비트"
 
-#: ../ui/NewPrinterWindow.ui.h:31
+#: ui/NewPrinterWindow.ui:815
 msgid "Flow Control"
 msgstr "흐름 제어"
 
-#: ../ui/NewPrinterWindow.ui.h:32
+#: ui/NewPrinterWindow.ui:899
 msgid "<b>Settings of the serial port</b>"
 msgstr "<b>직렬 포트 설정</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:33
+#: ui/NewPrinterWindow.ui:912
 msgid "Serial"
 msgstr "직렬"
 
-#: ../ui/NewPrinterWindow.ui.h:34
+#: ui/NewPrinterWindow.ui:980
 msgid "Browse..."
 msgstr "검색..."
 
-#: ../ui/NewPrinterWindow.ui.h:35
+#: ui/NewPrinterWindow.ui:1005
 msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
 msgstr "<i>smb://[workgroup/]server[:port]/printer</i>"
 
-#: ../ui/NewPrinterWindow.ui.h:36
+#: ui/NewPrinterWindow.ui:1020
 msgid "<b>SMB Printer</b>"
 msgstr "<b>SMB 프린터</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:37
+#: ui/NewPrinterWindow.ui:1049
 msgid "Prompt user if authentication is required"
 msgstr "인증이 필요한 경우 사용자에게 요청합니다"
 
-#: ../ui/NewPrinterWindow.ui.h:38
+#: ui/NewPrinterWindow.ui:1071
 msgid "Set authentication details now"
 msgstr "지금 인증 정보를 설정합니다"
 
-#: ../ui/NewPrinterWindow.ui.h:41
+#: ui/NewPrinterWindow.ui:1189
 msgid "<b>Authentication</b>"
 msgstr "<b>인증</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:42
+#: ui/NewPrinterWindow.ui:1215
 msgid "_Verify..."
 msgstr "_확인..."
 
-#: ../ui/NewPrinterWindow.ui.h:43
+#: ui/NewPrinterWindow.ui:1242
 msgid "SMB"
 msgstr "SMB"
 
-#: ../ui/NewPrinterWindow.ui.h:44
+#: ui/NewPrinterWindow.ui:1312
 msgid "Find"
 msgstr "검색"
 
-#: ../ui/NewPrinterWindow.ui.h:45
+#: ui/NewPrinterWindow.ui:1347
 msgid "Searching..."
 msgstr "검색 중.."
 
-#: ../ui/NewPrinterWindow.ui.h:47
+#: ui/NewPrinterWindow.ui:1381
 msgid "<b>Network Printer</b>"
 msgstr "<b>네트워크 프린터</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:48
+#: ui/NewPrinterWindow.ui:1395
 msgid "Network"
 msgstr "네트워크"
 
-#: ../ui/NewPrinterWindow.ui.h:49
+#: ui/NewPrinterWindow.ui:1437
 msgid "Connection"
 msgstr "연결"
 
-#: ../ui/NewPrinterWindow.ui.h:50
+#: ui/NewPrinterWindow.ui:1471
 msgid "Device"
 msgstr "장치"
 
-#: ../ui/NewPrinterWindow.ui.h:51
+#: ui/NewPrinterWindow.ui:1491 ui/NewPrinterWindow.ui:1885
+#: ui/NewPrinterWindow.ui:2431
 msgid "<span weight=\"bold\" size=\"larger\">Choose Driver</span>"
 msgstr "<span weight=\"bold\" size=\"larger\">드라이버 선택</span>"
 
-#: ../ui/NewPrinterWindow.ui.h:52
+#: ui/NewPrinterWindow.ui:1509
 msgid "Select printer from database"
 msgstr "데이터 베이스에서 프린터 선택"
 
-#: ../ui/NewPrinterWindow.ui.h:53
+#: ui/NewPrinterWindow.ui:1527
 msgid "Provide PPD file"
 msgstr "PPD 파일 제공"
 
-#: ../ui/NewPrinterWindow.ui.h:54
+#: ui/NewPrinterWindow.ui:1544
 msgid "Search for a printer driver to download"
 msgstr "내려받기 할 프린터 드라이버 검색"
 
-#: ../ui/NewPrinterWindow.ui.h:55
+#: ui/NewPrinterWindow.ui:1576
 msgid ""
 "The foomatic printer database contains various manufacturer provided "
 "PostScript Printer Description (PPD) files and also can generate PPD files "
@@ -2776,7 +3394,7 @@ msgstr ""
 "일을 생성할 수 있습니다. 그러나 일반 제조업자에 의하여 제공되는 PPD 파일은 프"
 "린터의 특정한 특징에 더 나은 액세스를 제공합니다."
 
-#: ../ui/NewPrinterWindow.ui.h:56
+#: ui/NewPrinterWindow.ui:1631
 msgid ""
 "PostScript Printer Description (PPD) files can often be found on the driver "
 "disk that comes with the printer. For PostScript printers they are often "
@@ -2786,51 +3404,51 @@ msgstr ""
 "이버 디스크에 들어 있습니다. PostScript 프린터의 경우 Windows<sup>®</sup> 드"
 "라이버의 일부인 경우가 많습니다."
 
-#: ../ui/NewPrinterWindow.ui.h:57
+#: ui/NewPrinterWindow.ui:1694
 msgid "Make and model:"
 msgstr "제조업체 및 모델:"
 
-#: ../ui/NewPrinterWindow.ui.h:58
+#: ui/NewPrinterWindow.ui:1765
 msgid "_Search"
 msgstr "검색(_S)"
 
-#: ../ui/NewPrinterWindow.ui.h:59
+#: ui/NewPrinterWindow.ui:1798
 msgid "Printer model:"
 msgstr "프린터 모델:"
 
-#: ../ui/NewPrinterWindow.ui.h:60
+#: ui/NewPrinterWindow.ui:1957
 msgid "Comments..."
 msgstr "설명..."
 
-#: ../ui/NewPrinterWindow.ui.h:61
+#: ui/NewPrinterWindow.ui:2018
 msgid "<span weight=\"bold\" size=\"larger\">Choose Class Members</span>"
 msgstr "<span weight=\"bold\" size=\"larger\">등급 구성원 선택</span>"
 
-#: ../ui/NewPrinterWindow.ui.h:62 ../ui/PrinterPropertiesDialog.ui.h:44
+#: ui/NewPrinterWindow.ui:2079 ui/PrinterPropertiesDialog.ui:1193
 msgid "move left"
 msgstr "왼쪽으로 이동"
 
-#: ../ui/NewPrinterWindow.ui.h:63 ../ui/PrinterPropertiesDialog.ui.h:45
+#: ui/NewPrinterWindow.ui:2106 ui/PrinterPropertiesDialog.ui:1219
 msgid "move right"
 msgstr "오른쪽으로 이동"
 
-#: ../ui/NewPrinterWindow.ui.h:64
+#: ui/NewPrinterWindow.ui:2161
 msgid "Class Members"
 msgstr "등급 구성원"
 
-#: ../ui/NewPrinterWindow.ui.h:65
+#: ui/NewPrinterWindow.ui:2180
 msgid "<span weight=\"bold\" size=\"larger\">Existing Settings</span>"
 msgstr "<span weight=\"bold\" size=\"larger\">기존 설정</span>"
 
-#: ../ui/NewPrinterWindow.ui.h:66
+#: ui/NewPrinterWindow.ui:2201
 msgid "Try to transfer the current settings"
 msgstr "현재 설정 전송 시도"
 
-#: ../ui/NewPrinterWindow.ui.h:67
+#: ui/NewPrinterWindow.ui:2211
 msgid "Use the new PPD (Postscript Printer Description) as is."
 msgstr "새 PPD (Postscript Printer Description) 사용."
 
-#: ../ui/NewPrinterWindow.ui.h:68
+#: ui/NewPrinterWindow.ui:2231
 msgid ""
 "This way all current option settings will be lost. The default settings of "
 "the new PPD will be used. "
@@ -2838,11 +3456,11 @@ msgstr ""
 "현재 모든 옵션 설정이 손실될 수 있습니다. 새 PPD에 대해 기본 설정을 사용해야"
 "합니다. "
 
-#: ../ui/NewPrinterWindow.ui.h:69
+#: ui/NewPrinterWindow.ui:2242
 msgid "Try to copy the option settings over from the old PPD. "
 msgstr "이전 PPD에서 옵션 설정을 복사해 보십시오. "
 
-#: ../ui/NewPrinterWindow.ui.h:70
+#: ui/NewPrinterWindow.ui:2262
 msgid ""
 "This is done by assuming that options with the same name do have the same "
 "meaning. Settings of options that are not present in the new PPD will be "
@@ -2851,220 +3469,215 @@ msgstr ""
 "이름이 같은 옵션은 같은 의미를 가지고 있다고 간주합니다. 새 PPD에서 제시되지"
 "않는 옵션의 설정은 손실되며 새 PPD에서 제시된 옵션만이 기본으로 설정됩니다."
 
-#: ../ui/NewPrinterWindow.ui.h:71
+#: ui/NewPrinterWindow.ui:2287
 msgid "Change PPD"
 msgstr "PPD 변경"
 
-#: ../ui/NewPrinterWindow.ui.h:72
+#: ui/NewPrinterWindow.ui:2314
 msgid "<span weight=\"bold\" size=\"larger\">Installable Options</span>"
 msgstr "<span weight=\"bold\" size=\"larger\">설치 가능 옵션</span>"
 
-#: ../ui/NewPrinterWindow.ui.h:73
+#: ui/NewPrinterWindow.ui:2334
 msgid ""
 "This driver supports additional hardware that may be installed in the "
 "printer."
 msgstr "이 드라이버는 프린터에 설치된 추가 하드웨어를 지원합니다."
 
-#: ../ui/NewPrinterWindow.ui.h:74 ../ui/PrinterPropertiesDialog.ui.h:47
+#: ui/NewPrinterWindow.ui:2412 ui/PrinterPropertiesDialog.ui:1319
 msgid "Installed Options"
 msgstr "설치된 옵션"
 
-#: ../ui/NewPrinterWindow.ui.h:75
+#: ui/NewPrinterWindow.ui:2458
 msgid ""
 "For the printer you have selected there are drivers available for download."
 msgstr "선택한 프린터에 대해 내려받기 할 수 있는 드라이버가 있습니다."
 
-#: ../ui/NewPrinterWindow.ui.h:76
+#: ui/NewPrinterWindow.ui:2478
 msgid ""
 "These drivers do not come from your operating system supplier and will not "
 "be covered by their commercial support.  See the support and license terms "
 "of the driver's supplier."
 msgstr ""
-"이 드라이버는 운영 체제 공급 업체에서 배포된 것이 아니며 이의 상업적 지원에 의해 보호되지 않습니다. 드라이버 공급 업체의 지원 및 "
-"저작권 조항을 확인하십시오. 이 드라이버는 운영 체제 공급 업체에서 배포하는 것이 아니라 그 상용 지원은 포함되지 않습니다. 드라이버 "
-"공급 업체의 지원에 저작권 조항을 확인하십시오."
+"이 드라이버는 운영 체제 공급 업체에서 배포된 것이 아니며 이의 상업적 지원에 "
+"의해 보호되지 않습니다. 드라이버 공급 업체의 지원 및 저작권 조항을 확인하십시"
+"오. 이 드라이버는 운영 체제 공급 업체에서 배포하는 것이 아니라 그 상용 지원"
+"은 포함되지 않습니다. 드라이버 공급 업체의 지원에 저작권 조항을 확인하십시오."
 
-#: ../ui/NewPrinterWindow.ui.h:77
+#: ui/NewPrinterWindow.ui:2486
 msgid "<b>Note</b>"
 msgstr "<b>알림</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:78
+#: ui/NewPrinterWindow.ui:2519
 msgid "<b>Select Driver</b>"
 msgstr "<b>드라이버 선택</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:79
+#: ui/NewPrinterWindow.ui:2566
 msgid ""
 "With this choice no driver download will be performed. In the next steps a "
 "locally installed driver will be selected."
-msgstr "이러한 선택에서 내려받기가 실행되지 않습니다. 다음 단계에서 로컬로 설치된 드라이버를 선택합니다."
+msgstr ""
+"이러한 선택에서 내려받기가 실행되지 않습니다. 다음 단계에서 로컬로 설치된 드"
+"라이버를 선택합니다."
 
-#: ../ui/NewPrinterWindow.ui.h:81 ../ui/PrinterPropertiesDialog.ui.h:7
+#: ui/NewPrinterWindow.ui:2603 ui/PrinterPropertiesDialog.ui:278
 msgid "Description:"
 msgstr "설명:"
 
-#: ../ui/NewPrinterWindow.ui.h:82
+#: ui/NewPrinterWindow.ui:2622
 msgid "License:"
 msgstr "저작권:"
 
-#: ../ui/NewPrinterWindow.ui.h:83
+#: ui/NewPrinterWindow.ui:2641
 msgid "Supplier:"
 msgstr "공급 업체:"
 
-#: ../ui/NewPrinterWindow.ui.h:84
+#: ui/NewPrinterWindow.ui:2659
 msgid "license"
 msgstr "저작권"
 
-#: ../ui/NewPrinterWindow.ui.h:85
+#: ui/NewPrinterWindow.ui:2679
 msgid "short description"
 msgstr "간단한 설명"
 
-#: ../ui/NewPrinterWindow.ui.h:86
+#: ui/NewPrinterWindow.ui:2695
 msgid "Manufacturer"
 msgstr "제조업체"
 
-#: ../ui/NewPrinterWindow.ui.h:87
+#: ui/NewPrinterWindow.ui:2720
 msgid "supplier"
 msgstr "공급 업체"
 
-#: ../ui/NewPrinterWindow.ui.h:88
+#: ui/NewPrinterWindow.ui:2736
 msgid "Free software"
 msgstr "자유 소프트웨어"
 
-#: ../ui/NewPrinterWindow.ui.h:89
+#: ui/NewPrinterWindow.ui:2755
 msgid "Patented algorithms"
 msgstr "특허된 알고리즘"
 
-#: ../ui/NewPrinterWindow.ui.h:90
+#: ui/NewPrinterWindow.ui:2781
 msgid "Support:"
 msgstr "지원:"
 
-#: ../ui/NewPrinterWindow.ui.h:91
+#: ui/NewPrinterWindow.ui:2798
 msgid "support contacts"
 msgstr "지원 문의"
 
-#: ../ui/NewPrinterWindow.ui.h:92
+#: ui/NewPrinterWindow.ui:2842
 msgid "Text:"
 msgstr "텍스트:"
 
-#: ../ui/NewPrinterWindow.ui.h:93
+#: ui/NewPrinterWindow.ui:2861
 msgid "Line art:"
 msgstr "라인 아트:"
 
-#: ../ui/NewPrinterWindow.ui.h:95
+#: ui/NewPrinterWindow.ui:3023
 msgid "Graphics:"
 msgstr "그래픽:"
 
-#: ../ui/NewPrinterWindow.ui.h:96
+#: ui/NewPrinterWindow.ui:3086
 msgid "Photo:"
 msgstr "사진:"
 
-#: ../ui/NewPrinterWindow.ui.h:97
+#: ui/NewPrinterWindow.ui:3109
 msgid "<b>Output Quality</b>"
 msgstr "<b>출력 품질</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:98
+#: ui/NewPrinterWindow.ui:3160
 msgid "Yes, I accept this license"
 msgstr "예, 이 저작권에 동의합니다"
 
-#: ../ui/NewPrinterWindow.ui.h:99
+#: ui/NewPrinterWindow.ui:3176
 msgid "No, I do not accept this license"
 msgstr "아니오, 이 저작권(license)에 동의하지 않습니다"
 
-#: ../ui/NewPrinterWindow.ui.h:100
+#: ui/NewPrinterWindow.ui:3203
 msgid "<b>License Terms</b>"
 msgstr "<b>저작권 계약</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:101
+#: ui/NewPrinterWindow.ui:3223
 msgid "Driver details"
 msgstr "드라이버 설명"
 
-#: ../ui/NewPrinterWindow.ui.h:103
+#: ui/NewPrinterWindow.ui:3297
 msgid "_Back"
 msgstr "뒤로"
 
-#: ../ui/NewPrinterWindow.ui.h:105 ../ui/PrinterPropertiesDialog.ui.h:3
+#: ui/NewPrinterWindow.ui:3329 ui/PrinterPropertiesDialog.ui:152
 msgid "_Apply"
 msgstr "적용(_A)"
 
-#: ../ui/NewPrinterWindow.ui.h:106
+#: ui/NewPrinterWindow.ui:3345
 msgid "_Forward"
 msgstr "다음"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:1
+#: ui/PrinterPropertiesDialog.ui:92
 msgid "Printer Properties"
 msgstr "프린터 환경 설정"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:2
+#: ui/PrinterPropertiesDialog.ui:132
 msgid "Co_nflicts"
 msgstr "충돌(_N)"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:6
+#: ui/PrinterPropertiesDialog.ui:197
 msgid "_Close"
 msgstr "닫기(_C)"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:8
+#: ui/PrinterPropertiesDialog.ui:298
 msgid "Location:"
 msgstr "위치:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:9
+#: ui/PrinterPropertiesDialog.ui:354
 msgid "Device URI:"
 msgstr "URI 장치:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:10
+#: ui/PrinterPropertiesDialog.ui:374
 msgid "Printer State:"
 msgstr "프린터 관련사항:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:11
+#: ui/PrinterPropertiesDialog.ui:394
 msgid "Make and Model:"
 msgstr "제조회사 및 모델명:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:12
+#: ui/PrinterPropertiesDialog.ui:431 ui/PrinterPropertiesDialog.ui:476
 msgid "Change..."
 msgstr "변경..."
 
-#: ../ui/PrinterPropertiesDialog.ui.h:13
-msgid "make and model"
-msgstr "제조업체 및 모델"
-
-#: ../ui/PrinterPropertiesDialog.ui.h:14
-msgid "printer state"
-msgstr "프린터 관련사항"
-
-#: ../ui/PrinterPropertiesDialog.ui.h:15
+#: ui/PrinterPropertiesDialog.ui:520
 msgid "<b>Settings</b>"
 msgstr "<b>설정</b>"
 
 #. Not more than 25 characters
-#: ../ui/PrinterPropertiesDialog.ui.h:19
+#: ui/PrinterPropertiesDialog.ui:562
 msgid "Print Self-Test Page"
 msgstr "자기-점검 부분 인쇄"
 
 #. Not more than 25 characters
-#: ../ui/PrinterPropertiesDialog.ui.h:21
+#: ui/PrinterPropertiesDialog.ui:577
 msgid "Clean Print Heads"
 msgstr "프린트 헤드 청소"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:22
+#: ui/PrinterPropertiesDialog.ui:596
 msgid "<b>Tests and Maintenance</b>"
 msgstr "<b>시험 및 유지 관리</b>"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:23
+#: ui/PrinterPropertiesDialog.ui:613
 msgid "Settings"
 msgstr "설정"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:24
+#: ui/PrinterPropertiesDialog.ui:646
 msgid "Enabled"
 msgstr "활성화"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:25
+#: ui/PrinterPropertiesDialog.ui:663
 msgid "Accepting jobs"
 msgstr "작업 수신"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:26
+#: ui/PrinterPropertiesDialog.ui:679
 msgid "Shared"
 msgstr "공유"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:27
+#: ui/PrinterPropertiesDialog.ui:705
 msgid ""
 "<i>Not published\n"
 "See server settings</i>"
@@ -3072,67 +3685,67 @@ msgstr ""
 "<i>공유되지 않음\n"
 "서버 설정 확인</i>"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:29
+#: ui/PrinterPropertiesDialog.ui:722
 msgid "<b>State</b>"
 msgstr "<b>상태</b>"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:30
+#: ui/PrinterPropertiesDialog.ui:752
 msgid "Error Policy:"
 msgstr "정책 오류:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:31
+#: ui/PrinterPropertiesDialog.ui:771
 msgid "Operation Policy:"
 msgstr "정책 작업:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:32
+#: ui/PrinterPropertiesDialog.ui:825
 msgid "<b>Policies</b>"
 msgstr "<b>정책</b>"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:33
+#: ui/PrinterPropertiesDialog.ui:855
 msgid "Starting Banner:"
 msgstr "배너 시작:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:34
+#: ui/PrinterPropertiesDialog.ui:874
 msgid "Ending Banner:"
 msgstr "배너 종료:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:35
+#: ui/PrinterPropertiesDialog.ui:928
 msgid "<b>Banner</b>"
 msgstr "<b>배너</b>"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:36
+#: ui/PrinterPropertiesDialog.ui:948
 msgid "Policies"
 msgstr "정책"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:37
+#: ui/PrinterPropertiesDialog.ui:964
 msgid "Allow printing for everyone except these users:"
 msgstr "다음의 사용자를 제외하고 모두 인쇄할 수 있습니다:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:38
+#: ui/PrinterPropertiesDialog.ui:980
 msgid "Deny printing for everyone except these users:"
 msgstr "다음의 사용자를 제외하고 모두 인쇄할 수 없습니다:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:39
+#: ui/PrinterPropertiesDialog.ui:1012
 msgid "user"
 msgstr "사용자"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:41
+#: ui/PrinterPropertiesDialog.ui:1080
 msgid "_Add"
 msgstr "추가(_A)"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:42
+#: ui/PrinterPropertiesDialog.ui:1118
 msgid "Access Control"
 msgstr "액세스 제어"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:43
+#: ui/PrinterPropertiesDialog.ui:1137
 msgid "Add or Remove Members"
 msgstr "멤버 추가 또는 삭제"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:46
+#: ui/PrinterPropertiesDialog.ui:1273
 msgid "Members"
 msgstr "멤버"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:49
+#: ui/PrinterPropertiesDialog.ui:1393
 msgid ""
 "Specify the default job options for this printer.  Jobs arriving at this "
 "print server will have these options added if they are not already set by "
@@ -3141,232 +3754,270 @@ msgstr ""
 "프린터의 기본 작업 옵션을 설정합니다. 응용 프로그램에서 이 옵션을 설정하지 않"
 "았을 경우 프린트 서버에 도착한 인쇄 작업에 이 옵션이 추가됩니다."
 
-#: ../ui/PrinterPropertiesDialog.ui.h:50
+#: ui/PrinterPropertiesDialog.ui:1421
 msgid "Copies:"
 msgstr "매수:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:51
+#: ui/PrinterPropertiesDialog.ui:1440
 msgid "Orientation:"
 msgstr "용지 방향:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:52
+#: ui/PrinterPropertiesDialog.ui:1452
 msgid "Scale to fit"
 msgstr "용지에 맞게 조절"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:53
+#: ui/PrinterPropertiesDialog.ui:1479
 msgid "Pages per side:"
 msgstr "한 면에 인쇄할 쪽 수:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:54
+#: ui/PrinterPropertiesDialog.ui:1508
 msgid "Pages per side layout:"
 msgstr "한 면에 인쇄할 쪽 수:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:55
+#: ui/PrinterPropertiesDialog.ui:1527
 msgid "Brightness:"
 msgstr "명도:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:56
+#: ui/PrinterPropertiesDialog.ui:1546
 msgid "Finishings:"
 msgstr "완료:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:57
+#: ui/PrinterPropertiesDialog.ui:1565
 msgid "Job priority:"
 msgstr "작업 우선 순위:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:58
+#: ui/PrinterPropertiesDialog.ui:1584
 msgid "Media:"
 msgstr "미디어:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:59
+#: ui/PrinterPropertiesDialog.ui:1603
 msgid "Sides:"
 msgstr "인쇄면:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:60
+#: ui/PrinterPropertiesDialog.ui:1622
 msgid "Hold until:"
 msgstr "대기 (만료 시간):"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:61
+#: ui/PrinterPropertiesDialog.ui:1641
 msgid "Output order:"
 msgstr "출력 순서:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:62
+#: ui/PrinterPropertiesDialog.ui:1660
 msgid "Print quality:"
 msgstr "인쇄 품질:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:63
+#: ui/PrinterPropertiesDialog.ui:1679
 msgid "Printer resolution:"
 msgstr "프린터 해상도:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:64
+#: ui/PrinterPropertiesDialog.ui:1698
 msgid "Output bin:"
 msgstr "출력함:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:65
+#: ui/PrinterPropertiesDialog.ui:1739 ui/PrinterPropertiesDialog.ui:2435
+#: ui/PrinterPropertiesDialog.ui:2630
 msgid "100"
 msgstr "100"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:66
+#: ui/PrinterPropertiesDialog.ui:1749 ui/PrinterPropertiesDialog.ui:2445
+#: ui/PrinterPropertiesDialog.ui:2640
+msgid "%"
+msgstr ""
+
+#: ui/PrinterPropertiesDialog.ui:1803
 msgid "50"
 msgstr "50"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:67
+#: ui/PrinterPropertiesDialog.ui:1945 ui/PrinterPropertiesDialog.ui:1963
+#: ui/PrinterPropertiesDialog.ui:1981 ui/PrinterPropertiesDialog.ui:1999
+#: ui/PrinterPropertiesDialog.ui:2017 ui/PrinterPropertiesDialog.ui:2035
+#: ui/PrinterPropertiesDialog.ui:2053 ui/PrinterPropertiesDialog.ui:2071
+#: ui/PrinterPropertiesDialog.ui:2089 ui/PrinterPropertiesDialog.ui:2107
+#: ui/PrinterPropertiesDialog.ui:2125 ui/PrinterPropertiesDialog.ui:2218
+#: ui/PrinterPropertiesDialog.ui:2236 ui/PrinterPropertiesDialog.ui:2254
+#: ui/PrinterPropertiesDialog.ui:2272 ui/PrinterPropertiesDialog.ui:2549
+#: ui/PrinterPropertiesDialog.ui:2567 ui/PrinterPropertiesDialog.ui:2585
+#: ui/PrinterPropertiesDialog.ui:2671 ui/PrinterPropertiesDialog.ui:2689
+#: ui/PrinterPropertiesDialog.ui:2940 ui/PrinterPropertiesDialog.ui:2958
+#: ui/PrinterPropertiesDialog.ui:2976 ui/PrinterPropertiesDialog.ui:3312
+#: ui/PrinterPropertiesDialog.ui:3330 ui/PrinterPropertiesDialog.ui:3348
+#: ui/PrinterPropertiesDialog.ui:3366 ui/PrinterPropertiesDialog.ui:3384
+#: ui/PrinterPropertiesDialog.ui:3402
 msgid "Reset"
 msgstr "다시 설정"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:68
+#: ui/PrinterPropertiesDialog.ui:2147 ui/PrinterPropertiesDialog.ui:2607
+#: ui/PrinterPropertiesDialog.ui:2998
 msgid "More"
 msgstr "기타"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:69
+#: ui/PrinterPropertiesDialog.ui:2165 ui/PrinterPropertiesDialog.ui:2923
 msgid "1"
 msgstr "1"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:70
+#: ui/PrinterPropertiesDialog.ui:2294
 msgid "<b>Common Options</b>"
 msgstr "<b>일반 옵션</b>"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:71
+#: ui/PrinterPropertiesDialog.ui:2317
 msgid "Mirror"
 msgstr "미러"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:72
+#: ui/PrinterPropertiesDialog.ui:2345
 msgid "Scaling:"
 msgstr "비례 축소:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:73
+#: ui/PrinterPropertiesDialog.ui:2374
 msgid "Saturation:"
 msgstr "채도:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:74
+#: ui/PrinterPropertiesDialog.ui:2393
 msgid "Hue adjustment:"
 msgstr "색조 조절:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:75
+#: ui/PrinterPropertiesDialog.ui:2412
 msgid "Gamma:"
 msgstr "감마:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:76
+#: ui/PrinterPropertiesDialog.ui:2487 ui/PrinterPropertiesDialog.ui:3116
+#: ui/PrinterPropertiesDialog.ui:3168 ui/PrinterPropertiesDialog.ui:3220
+#: ui/PrinterPropertiesDialog.ui:3272
 msgid "0"
 msgstr "0"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:77
+#: ui/PrinterPropertiesDialog.ui:2496
+msgid "°"
+msgstr ""
+
+#: ui/PrinterPropertiesDialog.ui:2533
 msgid "1000"
 msgstr "1000"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:78
+#: ui/PrinterPropertiesDialog.ui:2711
 msgid "<b>Image Options</b>"
 msgstr "<b>이미지 옵션</b>"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:79
+#: ui/PrinterPropertiesDialog.ui:2741
 msgid "Characters per inch:"
 msgstr "인치 당 글자수:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:80
+#: ui/PrinterPropertiesDialog.ui:2760
 msgid "Lines per inch:"
 msgstr "인치 당 줄:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:81
+#: ui/PrinterPropertiesDialog.ui:2779
 msgid "Left margin:"
 msgstr "왼쪽 여백:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:82
+#: ui/PrinterPropertiesDialog.ui:2798
 msgid "Right margin:"
 msgstr "오른쪽 여백:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:83
+#: ui/PrinterPropertiesDialog.ui:2817
 msgid "Top margin:"
 msgstr "위 여백:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:84
+#: ui/PrinterPropertiesDialog.ui:2836
 msgid "Bottom margin:"
 msgstr "아래 여백:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:85
+#: ui/PrinterPropertiesDialog.ui:2858
 msgid "Pretty print"
 msgstr "예쁘게 인쇄"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:86
+#: ui/PrinterPropertiesDialog.ui:2878
 msgid "Word wrap"
 msgstr "단어 넘김"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:87
+#: ui/PrinterPropertiesDialog.ui:2905
 msgid "Columns:"
 msgstr "행:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:88
+#: ui/PrinterPropertiesDialog.ui:3022
 msgid "10.00"
 msgstr "10.00"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:89
+#: ui/PrinterPropertiesDialog.ui:3069
 msgid "6.40"
 msgstr "6.40"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:90
+#: ui/PrinterPropertiesDialog.ui:3125 ui/PrinterPropertiesDialog.ui:3140
+#: ui/PrinterPropertiesDialog.ui:3177 ui/PrinterPropertiesDialog.ui:3192
+#: ui/PrinterPropertiesDialog.ui:3229 ui/PrinterPropertiesDialog.ui:3244
+#: ui/PrinterPropertiesDialog.ui:3281 ui/PrinterPropertiesDialog.ui:3296
 msgid "points"
 msgstr "포인트"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:91
+#: ui/PrinterPropertiesDialog.ui:3424
 msgid "<b>Text Options</b>"
 msgstr "<b>텍스트 옵션</b>"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:92
+#: ui/PrinterPropertiesDialog.ui:3501
 msgid "To add a new option, enter its name in the box below and click to add."
 msgstr ""
 "새 옵션을 추가하려면 아래 박스에 옵션 이름을 입력하고 추가 버튼을 클릭합니다."
 
-#: ../ui/PrinterPropertiesDialog.ui.h:94
+#: ui/PrinterPropertiesDialog.ui:3563
 msgid "<b>Other Options (Advanced)</b>"
 msgstr "<b>기타 옵션 (고급)</b>"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:95
+#: ui/PrinterPropertiesDialog.ui:3587
 msgid "Job Options"
 msgstr "작업 옵션"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:97
+#: ui/PrinterPropertiesDialog.ui:3678
 msgid "<b>Ink/Toner Levels</b>"
 msgstr "<b>잉크/토너 레벨</b>"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:98
+#: ui/PrinterPropertiesDialog.ui:3708
 msgid "There are no status messages for this printer."
 msgstr "이 프린터의 상태 메세지가 없습니다."
 
-#: ../ui/PrinterPropertiesDialog.ui.h:99
+#: ui/PrinterPropertiesDialog.ui:3715
+msgid "label229"
+msgstr ""
+
+#: ui/PrinterPropertiesDialog.ui:3745
+msgid "label230"
+msgstr ""
+
+#: ui/PrinterPropertiesDialog.ui:3758
 msgid "<b>Status Messages</b>"
 msgstr "<b>상태 메세지</b>"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:100
+#: ui/PrinterPropertiesDialog.ui:3778
 msgid "Ink/Toner Levels"
 msgstr "잉크/토너 레벨"
 
-#: ../ui/PrintersWindow.ui.h:1
+#: ui/PrintersWindow.ui:32
 msgid "_Server"
 msgstr "서버(_S)"
 
-#: ../ui/PrintersWindow.ui.h:3
+#: ui/PrintersWindow.ui:50
 msgid "_View"
 msgstr "보기(_V)"
 
-#: ../ui/PrintersWindow.ui.h:4
+#: ui/PrintersWindow.ui:60
 msgid "_Discovered Printers"
 msgstr "발견된 프린터(_D)"
 
-#: ../ui/PrintersWindow.ui.h:5
+#: ui/PrintersWindow.ui:75
 msgid "_Help"
 msgstr "도움말(_H)"
 
-#: ../ui/PrintersWindow.ui.h:6
+#: ui/PrintersWindow.ui:82
 msgid "_Troubleshoot"
 msgstr "문제 해결(_T)"
 
-#: ../ui/PrintersWindow.ui.h:7
+#: ui/PrintersWindow.ui:94
 msgid "About"
 msgstr "정보"
 
-#: ../ui/PrintersWindow.ui.h:8
+#: ui/PrintersWindow.ui:188
 msgid "There are no printers configured yet."
 msgstr "아직 설정된 프린터가 없습니다."
 
-#: ../ui/PrintersWindow.ui.h:10
+#: ui/PrintersWindow.ui:253
 msgid ""
 "Printing service not available.  Start the service on this computer or "
 "connect to another server."
@@ -3374,55 +4025,55 @@ msgstr ""
 "인쇄 서비스를 사용할 수 없습니다. 이 컴퓨터에 있는 서비스를 시작하거나 다른 "
 "서버로 연결합니다."
 
-#: ../ui/PrintersWindow.ui.h:11
+#: ui/PrintersWindow.ui:271
 msgid "Start Service"
 msgstr "서비스 시작"
 
-#: ../ui/ServerSettingsDialog.ui.h:1
+#: ui/ServerSettingsDialog.ui:8
 msgid "Server Settings"
 msgstr "서버 설정"
 
-#: ../ui/ServerSettingsDialog.ui.h:4
+#: ui/ServerSettingsDialog.ui:83
 msgid "_Show printers shared by other systems"
 msgstr "다른 시스템에 의해 공유된 프린터 보기(_S)"
 
-#: ../ui/ServerSettingsDialog.ui.h:5
+#: ui/ServerSettingsDialog.ui:110
 msgid "_Publish shared printers connected to this system"
 msgstr "이 시스템에 연결된 공유 프린터 게시(_P)"
 
-#: ../ui/ServerSettingsDialog.ui.h:6
+#: ui/ServerSettingsDialog.ui:126
 msgid "Allow printing from the _Internet"
 msgstr "인터넷에서 인쇄 허용(_I)"
 
-#: ../ui/ServerSettingsDialog.ui.h:7
+#: ui/ServerSettingsDialog.ui:143
 msgid "Allow _remote administration"
 msgstr "원격 관리 허용(_R)"
 
-#: ../ui/ServerSettingsDialog.ui.h:8
+#: ui/ServerSettingsDialog.ui:159
 msgid "Allow _users to cancel any job (not just their own)"
 msgstr "사용자에게 (자신의 작업뿐 만 아니라) 모든 작업의 취소를 허용(_U)"
 
-#: ../ui/ServerSettingsDialog.ui.h:9
+#: ui/ServerSettingsDialog.ui:175
 msgid "Save _debugging information for troubleshooting"
 msgstr "문제 해결을 위해 디버깅 정보 저장(_D)"
 
-#: ../ui/ServerSettingsDialog.ui.h:10
+#: ui/ServerSettingsDialog.ui:213
 msgid "Do not preserve job history"
 msgstr "작업 기록을 보관하지 않습니다"
 
-#: ../ui/ServerSettingsDialog.ui.h:11
+#: ui/ServerSettingsDialog.ui:228
 msgid "Preserve job history but not files"
 msgstr "파일을 제외하고 작업 기록만 보관합니다"
 
-#: ../ui/ServerSettingsDialog.ui.h:12
+#: ui/ServerSettingsDialog.ui:244
 msgid "Preserve job files (allow reprinting)"
 msgstr "작업 파일을 보관합니다 (다시 인쇄하기 허용)"
 
-#: ../ui/ServerSettingsDialog.ui.h:13
+#: ui/ServerSettingsDialog.ui:264
 msgid "<b>Job history</b>"
 msgstr "<b>인쇄 작업 기록</b>"
 
-#: ../ui/ServerSettingsDialog.ui.h:14
+#: ui/ServerSettingsDialog.ui:292
 msgid ""
 "Usually print servers broadcast their queues. Specify print servers below to "
 "periodically ask for queues instead."
@@ -3430,622 +4081,47 @@ msgstr ""
 "일반적으로 프린터 서버는 인쇄 대기열을 알립니다. 정기적으로 인쇄 대기열을 요"
 "청하게 하려면 아래의 인쇄 서버를 지정합니다."
 
-#: ../ui/ServerSettingsDialog.ui.h:16
+#: ui/ServerSettingsDialog.ui:351
 msgid "Remove"
 msgstr "제거"
 
-#: ../ui/ServerSettingsDialog.ui.h:17
+#: ui/ServerSettingsDialog.ui:385
 msgid "<b>Browse servers</b>"
 msgstr "<b>서버 검색</b>"
 
-#: ../ui/ServerSettingsDialog.ui.h:18
+#: ui/ServerSettingsDialog.ui:402
 msgid "Advanced Server Settings"
 msgstr "고급 서버 설정"
 
-#: ../ui/ServerSettingsDialog.ui.h:19
+#: ui/ServerSettingsDialog.ui:421
 msgid "<b>Basic Server Settings</b>"
 msgstr "<b>기본 서버 세팅</b>"
 
-#: ../ui/SMBBrowseDialog.ui.h:1
+#: ui/SMBBrowseDialog.ui:7
 msgid "SMB Browser"
 msgstr "SMB 브라우저"
 
-#: ../ui/statusicon_popupmenu.ui.h:1
+#: ui/statusicon_popupmenu.ui:11
 msgid "_Hide"
 msgstr "숨기기(_H)"
 
-#: ../ui/statusicon_popupmenu.ui.h:2
+#: ui/statusicon_popupmenu.ui:18
 msgid "_Configure Printers"
 msgstr "프린터 설정(_C)"
 
-#: ../ui/statusicon_popupmenu.ui.h:3
+#: ui/statusicon_popupmenu.ui:33
 msgid "_Quit"
 msgstr "종료"
 
-#: ../ui/WaitWindow.ui.h:1
+#: ui/WaitWindow.ui:7
 msgid "Please Wait"
 msgstr "잠시만 기다려 주십시오"
 
-#: ../system-config-printer.desktop.in.h:2
-msgid "Configure printers"
-msgstr "프린터 설정"
-
-#: ../statereason.py:109
-msgid "Toner low"
-msgstr "토너 부족"
-
-#: ../statereason.py:110
-#, python-format
-msgid "Printer '%s' is low on toner."
-msgstr "프린터 '%s'의 토너가 부족합니다."
-
-#: ../statereason.py:111
-msgid "Toner empty"
-msgstr "토너 없음"
-
-#: ../statereason.py:112
-#, python-format
-msgid "Printer '%s' has no toner left."
-msgstr "프린터 '%s'에 토너가 없습니다."
-
-#: ../statereason.py:113
-msgid "Cover open"
-msgstr "덮개가 열려 있음"
-
-#: ../statereason.py:114
-#, python-format
-msgid "The cover is open on printer '%s'."
-msgstr "프린터 '%s'의 덮개가 열려 있습니다."
-
-#: ../statereason.py:115
-msgid "Door open"
-msgstr "뚜껑이 열려 있음"
-
-#: ../statereason.py:116
-#, python-format
-msgid "The door is open on printer '%s'."
-msgstr "프린터 '%s'의 뚜껑이 열려있습니다."
-
-#: ../statereason.py:117
-msgid "Paper low"
-msgstr "용지 부족"
-
-#: ../statereason.py:118
-#, python-format
-msgid "Printer '%s' is low on paper."
-msgstr "프린터 '%s'에 용지가 부족합니다."
-
-#: ../statereason.py:119
-msgid "Out of paper"
-msgstr "용지 없음"
-
-#: ../statereason.py:120
-#, python-format
-msgid "Printer '%s' is out of paper."
-msgstr "프린터 '%s'에 용지가 없습니다."
-
-#: ../statereason.py:121
-msgid "Ink low"
-msgstr "잉크 부족"
-
-#: ../statereason.py:122
-#, python-format
-msgid "Printer '%s' is low on ink."
-msgstr "프린터 '%s'에 잉크가 부족합니다."
-
-#: ../statereason.py:123
-msgid "Ink empty"
-msgstr "잉크 없음"
-
-#: ../statereason.py:124
-#, python-format
-msgid "Printer '%s' has no ink left."
-msgstr "프린터 '%s'에 잉크가 없습니다."
-
-#: ../statereason.py:125
-msgid "Printer off-line"
-msgstr "프린터 오프라인"
-
-#: ../statereason.py:126
-#, python-format
-msgid "Printer '%s' is currently off-line."
-msgstr "현재 `%s' 프린터는 오프라인 상태입니다."
-
-#: ../statereason.py:127
-msgid "Not connected?"
-msgstr "접속되지 않음?"
-
-#: ../statereason.py:128
-#, python-format
-msgid "Printer '%s' may not be connected."
-msgstr "프린터 '%s'이(가) 연결되어 있지 않습니다."
-
-#: ../statereason.py:129 ../statereason.py:149
-msgid "Printer error"
-msgstr "프린터 오류"
-
-#: ../statereason.py:130
-#, python-format
-msgid "There is a problem on printer '%s'."
-msgstr "`%s' 프린터에 문제가 있습니다."
-
-#: ../statereason.py:132
-msgid "Printer configuration error"
-msgstr "프린터 설정 오류"
-
-#: ../statereason.py:133
-#, python-format
-msgid "There is a missing print filter for printer '%s'."
-msgstr "프린터 '%s'의 프린터 필터가 없습니다."
-
-#: ../statereason.py:145
-msgid "Printer report"
-msgstr "프린터 상태 보고"
-
-#: ../statereason.py:147
-msgid "Printer warning"
-msgstr "프린터 경고"
-
-#: ../statereason.py:166
-#, python-format
-msgid "Printer '%s': '%s'."
-msgstr "프린터 '%s': '%s'."
-
-#: ../timedops.py:116 ../timedops.py:195
-msgid "Please wait"
-msgstr "잠시만 기다려 주십시오"
-
-#: ../timedops.py:122 ../timedops.py:202
-msgid "Gathering information"
-msgstr "정보 수집"
-
-#: ../ToolbarSearchEntry.py:74
-msgid "_Filter:"
-msgstr "검색(_F):"
-
-#: ../troubleshoot/__init__.py:57
-msgid "Printing troubleshooter"
-msgstr "인쇄 문제 해결"
-
-#: ../troubleshoot/base.py:36
-msgid ""
-"To start this tool, select System->Administration->Print Settings from the "
-"main menu."
-msgstr "이 도구를 시작하려면 주 메뉴에서 시스템->관리->인쇄 설정을 선택합니다."
-
-#: ../troubleshoot/CheckLocalServerPublishing.py:28
-msgid "Server Not Exporting Printers"
-msgstr "서버가 프린터를 내보내기하지 않습니다"
-
-#: ../troubleshoot/CheckLocalServerPublishing.py:29
-msgid ""
-"Although one or more printers are marked as being shared, this print server "
-"is not exporting shared printers to the network."
-msgstr ""
-"하나 이상의 프린터가 공유되도록 표시되어 있지만, 이 인쇄 서버는 네트워크에 공"
-"유 프린터를 내보내기하지 않습니다."
-
-#: ../troubleshoot/CheckLocalServerPublishing.py:33
-msgid ""
-"Enable the 'Publish shared printers connected to this system' option in the "
-"server settings using the printing administration tool."
-msgstr ""
-"인쇄 관리 도구를 사용하여 서버 설정에서 '시스템에 연결된 공유 프린터 게시' 옵"
-"션을 활성화합니다."
-
-#: ../troubleshoot/CheckPPDSanity.py:48 ../applet.py:186
-msgid "Install"
-msgstr "설치"
-
-#: ../troubleshoot/CheckPPDSanity.py:100
-msgid "Invalid PPD File"
-msgstr "잘못된 PPD 파일"
-
-#: ../troubleshoot/CheckPPDSanity.py:111
-#, python-format
-msgid ""
-"The PPD file for printer '%s' does not conform to the specification.  "
-"Possible reason follows:"
-msgstr ""
-"'%s' 프린터에 대한 PPD 파일은 사양에 적합하지 않습니다. 이유는 다음과 같습니"
-"다:"
-
-#. Perhaps cupstestppd is not in the path.
-#: ../troubleshoot/CheckPPDSanity.py:117
-#, python-format
-msgid "There is a problem with the PPD file for printer '%s'."
-msgstr "`%s' 프린터의 PPD 파일에 문제가 있습니다."
-
-#: ../troubleshoot/CheckPPDSanity.py:127
-msgid "Missing Printer Driver"
-msgstr "프린터 드라이버가 없음"
-
-#: ../troubleshoot/CheckPPDSanity.py:141
-#, python-format
-msgid ""
-"Printer '%s' requires the '%s' program but it is not currently installed."
-msgstr ""
-"'%s' 프린터는 '%s' 프로그램이 필요하나 이는 현재 설치되어 있지 않습니다."
-
-#: ../troubleshoot/ChooseNetworkPrinter.py:31
-msgid "Choose Network Printer"
-msgstr "네트워크 프린터 선택"
-
-#: ../troubleshoot/ChooseNetworkPrinter.py:32
-msgid ""
-"Please select the network printer you are trying to use from the list below. "
-"If it does not appear in the list, select 'Not listed'."
-msgstr ""
-"아래의 목록에서 사용하려는 네트워크 프린터를 선택합니다. 목록에 없을 경우,'목"
-"록에 없음'을 선택합니다."
-
-#: ../troubleshoot/ChooseNetworkPrinter.py:41
-#: ../troubleshoot/ChoosePrinter.py:47 ../troubleshoot/DeviceListed.py:45
-msgid "Information"
-msgstr "정보"
-
-#: ../troubleshoot/ChooseNetworkPrinter.py:75
-#: ../troubleshoot/ChoosePrinter.py:71 ../troubleshoot/DeviceListed.py:77
-msgid "Not listed"
-msgstr "목록에 없음"
-
-#: ../troubleshoot/ChoosePrinter.py:37
-msgid "Choose Printer"
-msgstr "프린터 선택"
-
-#: ../troubleshoot/ChoosePrinter.py:38
-msgid ""
-"Please select the printer you are trying to use from the list below. If it "
-"does not appear in the list, select 'Not listed'."
-msgstr ""
-"아래의 목록에서 사용하려는 프린터를 선택합니다. 목록에 없을 경우, '목록에 없"
-"음'을 선택합니다."
-
-#: ../troubleshoot/DeviceListed.py:37
-msgid "Choose Device"
-msgstr "장치 선택"
-
-#: ../troubleshoot/DeviceListed.py:38
-msgid ""
-"Please select the device you want to use from the list below. If it does not "
-"appear in the list, select 'Not listed'."
-msgstr ""
-"아래의 목록에서 사용하려는 장치를 선택합니다. 목록에 없을 경우, '목록에 없"
-"음'을 선택합니다."
-
-#: ../troubleshoot/ErrorLogCheckpoint.py:40
-msgid "Debugging"
-msgstr "디버깅"
-
-#: ../troubleshoot/ErrorLogCheckpoint.py:41
-msgid ""
-"This step will enable debugging output from the CUPS scheduler.  This may "
-"cause the scheduler to restart.  Click the button below to enable debugging."
-msgstr ""
-"이 단계는 CUPS 스케줄러에서 디버그 출력을 활성화합니다. 이는 스케줄러가 다시 시작하게 될 수 있습니다. 아래의 누름단추를눌러서 "
-"디버깅 기능을 활성화합니다."
-
-#: ../troubleshoot/ErrorLogCheckpoint.py:45
-msgid "Enable Debugging"
-msgstr "디버깅 활성화"
-
-#: ../troubleshoot/ErrorLogCheckpoint.py:236
-msgid "Debug logging enabled."
-msgstr "디버그 로깅 활성화됨."
-
-#: ../troubleshoot/ErrorLogCheckpoint.py:238
-msgid "Debug logging was already enabled."
-msgstr "디버그 로깅이 이미 활성화되어 있습니다."
-
-#: ../troubleshoot/ErrorLogFetch.py:41
-msgid "Retrieve Journal Entries"
-msgstr "로그 검색"
-
-#: ../troubleshoot/ErrorLogFetch.py:42
-msgid ""
-"No system journal entries were found. This may be because you are not an "
-"administrator. To fetch journal entries please run this command:"
-msgstr ""
-"시스템 로그 항목이 없습니다. 관리자가 아니기 때문일 수 있습니다. 확인하려면 "
-"다음 명령을 실행하십시오:"
-
-#: ../troubleshoot/ErrorLogParse.py:32
-msgid "Error log messages"
-msgstr "오류 로그 메세지"
-
-#: ../troubleshoot/ErrorLogParse.py:33
-msgid "There are messages in the error log."
-msgstr "오류 로그에 메세지가 있습니다."
-
-#: ../troubleshoot/Locale.py:31
-msgid "Incorrect Page Size"
-msgstr "잘못된 용지 크기"
-
-#: ../troubleshoot/Locale.py:32
-msgid ""
-"The page size for the print job was not the printer's default page size.  If "
-"this is not intentional it may cause alignment problems."
-msgstr "인쇄 용 부분 크기는 프린터의 기본 값 용지 크기가 아닙니다. 의도한 목적이 아닐 경우 정렬 문제의 원인이 될 수 있습니다."
-
-#: ../troubleshoot/Locale.py:44
-msgid "Print job page size:"
-msgstr "인쇄 작업 부분 크기:"
-
-#: ../troubleshoot/Locale.py:48
-msgid "Printer page size:"
-msgstr "프린터 용지 크기:"
-
-#: ../troubleshoot/LocalOrRemote.py:26
-msgid "Printer Location"
-msgstr "프린터 위치"
-
-#: ../troubleshoot/LocalOrRemote.py:27
-msgid "Is the printer connected to this computer or available on the network?"
-msgstr ""
-"프린터가 컴퓨터에 연결되어 있습니까 아니면 네트워크에서 사용 가능합니까?"
-
-#: ../troubleshoot/LocalOrRemote.py:29
-msgid "Locally connected printer"
-msgstr "로컬로 연결된 프린터"
-
-#: ../troubleshoot/NetworkCUPSPrinterShared.py:28
-msgid "Queue Not Shared"
-msgstr "대기열이 공유되지 않음"
-
-#: ../troubleshoot/NetworkCUPSPrinterShared.py:29
-msgid "The CUPS printer on the server is not shared."
-msgstr "서버 상의 CUPS 프린터는 공유되지 않습니다."
-
-#: ../troubleshoot/PrinterStateReasons.py:34
-msgid "Status Messages"
-msgstr "상태 메세지"
-
-#: ../troubleshoot/PrinterStateReasons.py:35
-msgid "There are status messages associated with this queue."
-msgstr "대기열과 관련된 상태 메세지가 있습니다."
-
-#: ../troubleshoot/PrinterStateReasons.py:65
-#, python-format
-msgid "The printer's state message is: '%s'."
-msgstr "프린터 상태 메세지: `%s'."
-
-#: ../troubleshoot/PrinterStateReasons.py:90
-msgid "Errors are listed below:"
-msgstr "오류 목록은 아래와 같습니다:"
-
-#: ../troubleshoot/PrinterStateReasons.py:95
-msgid "Warnings are listed below:"
-msgstr "경고 목록은 아래와 같습니다:"
-
-#: ../troubleshoot/PrintTestPage.py:64
-msgid "Test Page"
-msgstr "시험 부분"
-
-#: ../troubleshoot/PrintTestPage.py:65
-msgid ""
-"Now print a test page.  If you are having problems printing a specific "
-"document, print that document now and mark the print job below."
-msgstr "시험 부분를 인쇄합니다. 특정 문서 인쇄에 문제가 있을 경우, 해당 문서를 지금 인쇄하고 아래에 인쇄 작업을 표시합니다."
-
-#: ../troubleshoot/PrintTestPage.py:77
-msgid "Cancel All Jobs"
-msgstr "모든 작업 취소"
-
-#: ../troubleshoot/PrintTestPage.py:83
-msgid "Test"
-msgstr "시험"
-
-#: ../troubleshoot/PrintTestPage.py:113
-msgid "Did the marked print jobs print correctly?"
-msgstr "표시된 인쇄 작업이 올바르게 인쇄되었습니까?"
-
-#: ../troubleshoot/PrintTestPage.py:144
-#, python-format
-msgid "Remember to load paper of type '%s' into the printer first."
-msgstr "'%s' 종이 유형을 프린터로 먼저 읽어오는 것을 잊지 마십시오."
-
-#: ../troubleshoot/PrintTestPage.py:430
-msgid "Error submitting test page"
-msgstr "시험 부분을 제출하는 도중 오류 발생"
-
-#: ../troubleshoot/QueueNotEnabled.py:58
-#: ../troubleshoot/QueueRejectingJobs.py:68
-#, python-format
-msgid "The reason given is: '%s'."
-msgstr "이유: '%s'."
-
-#: ../troubleshoot/QueueNotEnabled.py:60
-msgid "This may be due to the printer being disconnected or switched off."
-msgstr "프린터 연결이 해제되거나 전원이 꺼져있을 수 있습니다."
-
-#: ../troubleshoot/QueueNotEnabled.py:64
-msgid "Queue Not Enabled"
-msgstr "대기열이 활성화되어 있지 않음"
-
-#: ../troubleshoot/QueueNotEnabled.py:65
-#, python-format
-msgid "The queue '%s' is not enabled."
-msgstr "'%s' 대기열이 활성화되어 있지 않습니다."
-
-#: ../troubleshoot/QueueNotEnabled.py:73
-msgid ""
-"To enable it, select the 'Enabled' checkbox in the 'Policies' tab for the "
-"printer in the printer administration tool."
-msgstr ""
-"이를 활성화하려면, 프린터 관리 도구에서 해당 프린터의 '정책' 탭에 있는 체크박"
-"스를 '활성화'로 선택합니다."
-
-#: ../troubleshoot/QueueRejectingJobs.py:33
-msgid "Queue Rejecting Jobs"
-msgstr "대기열이 작업을 거부"
-
-#: ../troubleshoot/QueueRejectingJobs.py:65
-#, python-format
-msgid "The queue '%s' is rejecting jobs."
-msgstr "'%s' 대기열이 작업을 거부합니다."
-
-#: ../troubleshoot/QueueRejectingJobs.py:72
-msgid ""
-"To make the queue accept jobs, select the 'Accepting Jobs' checkbox in the "
-"'Policies' tab for the printer in the printer administration tool."
-msgstr ""
-"대기열이 작업을 허용하게 하려면, 프린터 관리 도구에서 '정책' 탭에 있는 '작업"
-"허용' 체크박스를 선택합니다."
-
-#: ../troubleshoot/RemoteAddress.py:28
-msgid "Remote Address"
-msgstr "원격 주소"
-
-#: ../troubleshoot/RemoteAddress.py:29
-msgid ""
-"Please enter as many details as you can about the network address of this "
-"printer."
-msgstr "프린터의 네트워크 주소에 관해 가능한 많은 정보를 입력해 주십시오."
-
-#: ../troubleshoot/RemoteAddress.py:37
-msgid "Server name:"
-msgstr "서버 이름:"
-
-#: ../troubleshoot/RemoteAddress.py:44
-msgid "Server IP address:"
-msgstr "서버 IP 주소:"
-
-#: ../troubleshoot/SchedulerNotRunning.py:28
-msgid "CUPS Service Stopped"
-msgstr "CUPS 서비스 중지"
-
-#: ../troubleshoot/SchedulerNotRunning.py:29
-msgid ""
-"The CUPS print spooler does not appear to be running.  To correct this, "
-"choose System->Administration->Services from the main menu and look for the "
-"'cups' service."
-msgstr ""
-"CUPS 프린트 스플러가 작동 중이라고 나타나지 않습니다. 이를 해결하려면, 주 메"
-"뉴에서 시스템->관리->서비스를 선택하고 'cups'서비스를 찾습니다."
-
-#: ../troubleshoot/ServerFirewalled.py:28
-msgid "Check Server Firewall"
-msgstr "서버의 방화벽 확인"
-
-#: ../troubleshoot/ServerFirewalled.py:29
-msgid "It is not possible to connect to the server."
-msgstr "서버로 연결할 수 없습니다."
-
-#: ../troubleshoot/ServerFirewalled.py:44
-#, python-format
-msgid ""
-"Please check to see if a firewall or router configuration is blocking TCP "
-"port %d on server '%s'."
-msgstr ""
-"방화벽 또는 라우터 설정이 TCP 포트 %d 서버 '%s'에서 차단하고 있는지 확인하십"
-"시오."
-
-#: ../troubleshoot/Shrug.py:28
-msgid "Sorry!"
-msgstr "죄송합니다!"
-
-#: ../troubleshoot/Shrug.py:29
-msgid ""
-"There is no obvious solution to this problem.  Your answers have been "
-"collected together with other useful information.  If you would like to "
-"report a bug, please include this information."
-msgstr ""
-"이 문제에 대한 확실한 해결첵이 없습니다. 문제에 대한 답변은 다른 유용한 정보"
-"와 함께 수집되었습니다. 버그를 보고하시려면 이 정보를 버그 보고에 포함합니다."
-
-#: ../troubleshoot/Shrug.py:36
-msgid "Diagnostic Output (Advanced)"
-msgstr "진단 출력 (고급)"
-
-#: ../troubleshoot/Shrug.py:93
-msgid "Error saving file"
-msgstr "파일을 저장하는 도중 오류 발생"
-
-#: ../troubleshoot/Shrug.py:94
-msgid "There was an error saving the file:"
-msgstr "파일을 저장하는 도중 오류가 발생했습니다:"
-
-#: ../troubleshoot/Welcome.py:45
-msgid "Trouble-shooting Printing"
-msgstr "인쇄 문제 해결"
-
-#: ../troubleshoot/Welcome.py:47
-msgid ""
-"The next few screens will contain some questions about your problem with "
-"printing. Based on your answers a solution may be suggested."
-msgstr ""
-"다음 화면에서는 인쇄 중 발생하는 문제에 대한 질문이 있습니다. 질문에 대한 대"
-"답에 따라 해결책이 제시될 수 있습니다."
-
-#: ../troubleshoot/Welcome.py:51
-msgid "Click 'Forward' to begin."
-msgstr "'다음'을 눌러 시작합니다."
-
-#: ../applet.py:90
-msgid "Configuring new printer"
-msgstr "새 프린터 설정"
-
-#: ../applet.py:91
-msgid "Please wait..."
-msgstr "잠시만 기다리십시오..."
-
-#. name is a URI, no queue was generated, because no suitable
-#. driver was found
-#: ../applet.py:120 ../applet.py:173
-msgid "Missing printer driver"
-msgstr "프린터 드라이버가 없음"
-
-#: ../applet.py:127
-#, python-format
-msgid "No printer driver for %s."
-msgstr "%s의 프린터 드라이버가 없음."
-
-#: ../applet.py:129
-msgid "No driver for this printer."
-msgstr "프린터 드라이버가 없음."
-
-#: ../applet.py:171
-msgid "Printer added"
-msgstr "프린터 추가됨"
-
-#: ../applet.py:177
-msgid "Install printer driver"
-msgstr "프린터 드라이버 설치"
-
-#: ../applet.py:178
-#, python-format
-msgid "`%s' requires driver installation: %s."
-msgstr "`%s' 드라이버 설치가 필요합니다: %s."
-
-#: ../applet.py:202
-#, python-format
-msgid "`%s' is ready for printing."
-msgstr "`%s'이(가) 인쇄할 준비가 되어 있습니다."
-
-#: ../applet.py:206 ../applet.py:218
-msgid "Print test page"
-msgstr "시험 종이 인쇄"
-
-#: ../applet.py:209
-msgid "Configure"
-msgstr "설정"
-
-#: ../applet.py:213
-#, python-format
-msgid "`%s' has been added, using the `%s' driver."
-msgstr "`%s' 가 추가되었습니다, `%s' 드라이버를 사용합니다."
-
-#: ../applet.py:221
-msgid "Find driver"
-msgstr "드라이버 찾기"
-
-#: ../print-applet.desktop.in.h:1
-msgid "Print Queue Applet"
-msgstr "인쇄 대기 상태 애플릿"
-
-#: ../print-applet.desktop.in.h:2
-msgid "System tray icon for managing print jobs"
-msgstr "인쇄 작업 관리를 위한 시스템 트레이 아이콘"
+#~ msgid "make and model"
+#~ msgstr "제조업체 및 모델"
+
+#~ msgid "printer state"
+#~ msgstr "프린터 관련사항"
 
 #~ msgid "Internal Tray"
 #~ msgstr "내부 트레이"
@@ -4055,20 +4131,3 @@ msgstr "인쇄 작업 관리를 위한 시스템 트레이 아이콘"
 
 #~ msgid "Option '%s' has value '%s' and cannot be edited."
 #~ msgstr "'%s' 옵션은 '%s' 값을 갖으며 편집될 수 없습니다."
-
-#~ msgid "Configure printer queues"
-#~ msgstr "프린터 대기열 설정"
-
-#~ msgid ""
-#~ "With system-config-printer you can add, edit and delete printer queues. "
-#~ "It allows you to choose the connection method and the printer driver."
-#~ msgstr ""
-#~ "system-config-printer를 사용하면 프린터 대기열을 추가, 편집 및 삭제할 수 "
-#~ "있습니다. 연결 방법과 프린터 드라이버를 선택할 수 있습니다."
-
-#~ msgid ""
-#~ "For each queue, you can adjust the default page size and other driver "
-#~ "options, as well as seeing ink/toner levels and status messages."
-#~ msgstr ""
-#~ "각 대기열에 대해 기본 페이지 크기 및 기타 드라이버 옵션을 조정하고 잉크 / "
-#~ "토너 잔량 및 상태 메시지를 볼 수 있습니다."

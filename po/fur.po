@@ -6,11 +6,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2020-05-05 14:10+0200\n"
+"POT-Creation-Date: 2024-05-22 16:51+0200\n"
 "PO-Revision-Date: 2021-11-08 00:48+0000\n"
 "Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
-"Language-Team: Friulian <https://translate.fedoraproject.org/projects/"
-"system-config-printer/master/fur/>\n"
+"Language-Team: Friulian <https://translate.fedoraproject.org/projects/system-"
+"config-printer/master/fur/>\n"
 "Language: fur\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,66 +18,132 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 4.8\n"
 
-#: ../asyncipp.py:473 ../authconn.py:458 ../authconn.py:460
-#: ../errordialogs.py:63 ../pysmb.py:90 ../pysmb.py:92
+#: applet.py:92
+msgid "Configuring new printer"
+msgstr "Daûr a configurâ une gnove stampadore"
+
+#: applet.py:93
+msgid "Please wait..."
+msgstr "Spiete un moment par plasê..."
+
+#. name is a URI, no queue was generated, because no suitable
+#. driver was found
+#: applet.py:122 applet.py:175
+msgid "Missing printer driver"
+msgstr "Al mancje il driver de stampadore"
+
+#: applet.py:129
+#, python-format
+msgid "No printer driver for %s."
+msgstr "Nissun driver di stampadore par %s."
+
+#: applet.py:131
+msgid "No driver for this printer."
+msgstr "Nissun driver par cheste stampadore."
+
+#: applet.py:136 newprinter.py:646 newprinter.py:1716 newprinter.py:3604
+#: newprinter.py:3664 newprinter.py:3716
+msgid "Search"
+msgstr "Cîr"
+
+#: applet.py:173
+msgid "Printer added"
+msgstr "Stampadore zontade"
+
+#: applet.py:179
+msgid "Install printer driver"
+msgstr "Instalazion driver di stampadore"
+
+#: applet.py:180
+#, python-format
+msgid "`%s' requires driver installation: %s."
+msgstr "`%s' e à bisugne de instalazion dal driver: %s."
+
+#: applet.py:188 troubleshoot/CheckPPDSanity.py:48
+msgid "Install"
+msgstr "Instalazion"
+
+#: applet.py:204
+#, python-format
+msgid "`%s' is ready for printing."
+msgstr "`%s' e je pronte par stampâ."
+
+#: applet.py:208 applet.py:220
+msgid "Print test page"
+msgstr "Stampe pagjine di prove"
+
+#: applet.py:211
+msgid "Configure"
+msgstr "Configure"
+
+#: applet.py:215
+#, python-format
+msgid "`%s' has been added, using the `%s' driver."
+msgstr "`%s' e je stade zontade, doprant il driver `%s'."
+
+#: applet.py:223
+msgid "Find driver"
+msgstr "Cjate il driver"
+
+#: asyncipp.py:473 authconn.py:458 authconn.py:460 errordialogs.py:63
+#: pysmb.py:90 pysmb.py:92
 msgid "Not authorized"
 msgstr "No autorizât"
 
-#: ../asyncipp.py:474 ../authconn.py:461 ../pysmb.py:93
+#: asyncipp.py:474 authconn.py:461 pysmb.py:93
 msgid "The password may be incorrect."
 msgstr "La password e podarès jessi sbaliade."
 
-#: ../asyncipp.py:485 ../authconn.py:482
+#: asyncipp.py:485 authconn.py:482
 #, python-format
 msgid "Authentication (%s)"
 msgstr "Autenticazion (%s)"
 
-#: ../asyncipp.py:560 ../authconn.py:311 ../errordialogs.py:54
-#: ../errordialogs.py:68
+#: asyncipp.py:560 authconn.py:311 errordialogs.py:54 errordialogs.py:68
 msgid "CUPS server error"
 msgstr "Erôr dal servidôr CUPS"
 
-#: ../asyncipp.py:562 ../authconn.py:309
+#: asyncipp.py:562 authconn.py:309
 #, python-format
 msgid "CUPS server error (%s)"
 msgstr "Erôr dal servidôr CUPS (%s)"
 
-#: ../asyncipp.py:578 ../authconn.py:319 ../errordialogs.py:55
-#: ../troubleshoot/PrintTestPage.py:431
+#: asyncipp.py:578 authconn.py:319 errordialogs.py:55
+#: troubleshoot/PrintTestPage.py:431
 #, python-format
 msgid "There was an error during the CUPS operation: '%s'."
 msgstr "Si è verificât un erôr dilunc la operazion di CUPS: '%s'."
 
-#: ../asyncipp.py:581 ../authconn.py:322
+#: asyncipp.py:581 authconn.py:322
 msgid "Retry"
 msgstr "Torne prove"
 
-#: ../asyncipp.py:598 ../authconn.py:265 ../authconn.py:291
+#: asyncipp.py:598 authconn.py:265 authconn.py:291
 msgid "Operation canceled"
 msgstr "Operazion anulade"
 
-#: ../authconn.py:39 ../pysmb.py:125 ../ui/NewPrinterWindow.ui.h:40
+#: authconn.py:39 pysmb.py:125 ui/NewPrinterWindow.ui:1120
 msgid "Username:"
 msgstr "Non utent:"
 
-#: ../authconn.py:40 ../pysmb.py:131 ../ui/NewPrinterWindow.ui.h:39
+#: authconn.py:40 pysmb.py:131 ui/NewPrinterWindow.ui:1101
 msgid "Password:"
 msgstr "Password:"
 
-#: ../authconn.py:41 ../pysmb.py:128
+#: authconn.py:41 pysmb.py:128
 msgid "Domain:"
 msgstr "Domini:"
 
 #. After that, prompt
-#: ../authconn.py:50 ../authconn.py:484 ../pysmb.py:98
+#: authconn.py:50 authconn.py:484 pysmb.py:98
 msgid "Authentication"
 msgstr "Autenticazion"
 
-#: ../authconn.py:93
+#: authconn.py:93
 msgid "Remember password"
 msgstr "Visâsi password"
 
-#: ../errordialogs.py:64
+#: errordialogs.py:64
 msgid ""
 "The password may be incorrect, or the server may be configured to deny "
 "remote administration."
@@ -85,416 +151,416 @@ msgstr ""
 "La password e podarès jessi sbaliade o il servidôr al podarès jessi "
 "configurât par dineâ la aministrazion di rimot."
 
-#: ../errordialogs.py:70
+#: errordialogs.py:70
 msgid "Bad request"
 msgstr "Richieste no valide"
 
-#: ../errordialogs.py:72
+#: errordialogs.py:72
 msgid "Not found"
 msgstr "No cjatât"
 
-#: ../errordialogs.py:74
+#: errordialogs.py:74
 msgid "Request timeout"
 msgstr "Richieste scjadude"
 
-#: ../errordialogs.py:76
+#: errordialogs.py:76
 msgid "Upgrade required"
 msgstr "Inzornament necessari"
 
-#: ../errordialogs.py:78
+#: errordialogs.py:78
 msgid "Server error"
 msgstr "Erôr dal servidôr"
 
-#: ../errordialogs.py:80 ../system-config-printer.py:761
+#: errordialogs.py:80 system-config-printer.py:777
 msgid "Not connected"
 msgstr "No conetût"
 
-#: ../errordialogs.py:82
+#: errordialogs.py:82
 #, python-format
 msgid "status %s"
 msgstr "stât %s"
 
-#: ../errordialogs.py:84
+#: errordialogs.py:84
 #, python-format
 msgid "There was an HTTP error: %s."
 msgstr "Si è verificât un erôr HTTP: %s."
 
-#: ../jobviewer.py:246
+#: jobviewer.py:246
 msgid "Delete Jobs"
 msgstr "Elimine lavôrs"
 
-#: ../jobviewer.py:247
+#: jobviewer.py:247
 msgid "Do you really want to delete these jobs?"
 msgstr "Eliminâ pardabon chescj lavôrs?"
 
-#: ../jobviewer.py:249
+#: jobviewer.py:249
 msgid "Delete Job"
 msgstr "Elimine lavôr"
 
-#: ../jobviewer.py:250
+#: jobviewer.py:250
 msgid "Do you really want to delete this job?"
 msgstr "Eliminâ pardabon chest lavôr?"
 
-#: ../jobviewer.py:253
+#: jobviewer.py:253
 msgid "Cancel Jobs"
 msgstr "Anule lavôrs"
 
-#: ../jobviewer.py:254
+#: jobviewer.py:254
 msgid "Do you really want to cancel these jobs?"
 msgstr "Anulâ pardabon chescj lavôrs?"
 
-#: ../jobviewer.py:256
+#: jobviewer.py:256
 msgid "Cancel Job"
 msgstr "Anule lavôr"
 
-#: ../jobviewer.py:257
+#: jobviewer.py:257
 msgid "Do you really want to cancel this job?"
 msgstr "Anulâ pardabon chest lavôr?"
 
-#: ../jobviewer.py:261
+#: jobviewer.py:261
 msgid "Keep Printing"
 msgstr "Ten in stampe"
 
-#: ../jobviewer.py:328
+#: jobviewer.py:328
 msgid "deleting job"
 msgstr "eliminazion lavôr"
 
-#: ../jobviewer.py:330
+#: jobviewer.py:330
 msgid "canceling job"
 msgstr "anulament lavôr"
 
-#: ../jobviewer.py:428 ../system-config-printer.py:1710
-#: ../ui/ConnectDialog.ui.h:2 ../ui/ConnectingDialog.ui.h:2
-#: ../ui/NewPrinterName.ui.h:2 ../ui/NewPrinterWindow.ui.h:104
-#: ../ui/PrinterPropertiesDialog.ui.h:4 ../ui/ServerSettingsDialog.ui.h:2
-#: ../ui/SMBBrowseDialog.ui.h:3
+#: jobviewer.py:428 system-config-printer.py:1727 ui/ConnectDialog.ui:27
+#: ui/ConnectingDialog.ui:26 ui/NewPrinterName.ui:24
+#: ui/NewPrinterWindow.ui:3313 ui/PrinterPropertiesDialog.ui:167
+#: ui/ServerSettingsDialog.ui:25 ui/SMBBrowseDialog.ui:77
 msgid "_Cancel"
 msgstr "_Anule"
 
-#: ../jobviewer.py:429
+#: jobviewer.py:429
 msgid "Cancel selected jobs"
 msgstr "Anule i lavôrs selezionâts"
 
-#: ../jobviewer.py:430 ../system-config-printer.py:1711
-#: ../ui/PrinterPropertiesDialog.ui.h:40
+#: jobviewer.py:430 system-config-printer.py:1728
+#: ui/PrinterPropertiesDialog.ui:1059
 msgid "_Delete"
 msgstr "_Elimine"
 
-#: ../jobviewer.py:431
+#: jobviewer.py:431
 msgid "Delete selected jobs"
 msgstr "Elimine i lavôrs selezionâts"
 
-#: ../jobviewer.py:432
+#: jobviewer.py:432
 msgid "_Hold"
 msgstr "_Sospint"
 
-#: ../jobviewer.py:433
+#: jobviewer.py:433
 msgid "Hold selected jobs"
 msgstr "Sospint i lavôrs selezionâts"
 
-#: ../jobviewer.py:434
+#: jobviewer.py:434
 msgid "_Release"
 msgstr "_Lasse cori"
 
-#: ../jobviewer.py:435
+#: jobviewer.py:435
 msgid "Release selected jobs"
 msgstr "Lasse cori i lavôrs selezionâts"
 
-#: ../jobviewer.py:436
+#: jobviewer.py:436
 msgid "Re_print"
 msgstr "Torne stam_pe"
 
-#: ../jobviewer.py:437
+#: jobviewer.py:437
 msgid "Reprint selected jobs"
 msgstr "Torne stampe i lavôrs selezionâts"
 
-#: ../jobviewer.py:438
+#: jobviewer.py:438
 msgid "Re_trieve"
 msgstr "Rec_upere"
 
-#: ../jobviewer.py:439
+#: jobviewer.py:439
 msgid "Retrieve selected jobs"
 msgstr "Recupere i lavôrs selezionâts"
 
-#: ../jobviewer.py:440
+#: jobviewer.py:440
 msgid "_Move To"
 msgstr "_Sposte in"
 
-#: ../jobviewer.py:441
+#: jobviewer.py:441
 msgid "_Authenticate"
 msgstr "_Autenticâ"
 
-#: ../jobviewer.py:443
+#: jobviewer.py:443
 msgid "_View Attributes"
 msgstr "_Visualize atribûts"
 
-#: ../jobviewer.py:446 ../jobviewer.py:656
+#: jobviewer.py:446 jobviewer.py:656
 msgid "Close this window"
 msgstr "Siere chest barcon"
 
-#: ../jobviewer.py:509 ../troubleshoot/PrintTestPage.py:84
+#: jobviewer.py:509 troubleshoot/PrintTestPage.py:84
 msgid "Job"
 msgstr "Lavôr"
 
-#: ../jobviewer.py:510
+#: jobviewer.py:510
 msgid "User"
 msgstr "Utent"
 
-#: ../jobviewer.py:511 ../troubleshoot/PrintTestPage.py:88
+#: jobviewer.py:511 troubleshoot/PrintTestPage.py:88
 msgid "Document"
 msgstr "Document"
 
-#: ../jobviewer.py:512 ../system-config-printer.py:941
-#: ../troubleshoot/PrintTestPage.py:86
+#: jobviewer.py:512 system-config-printer.py:957
+#: troubleshoot/PrintTestPage.py:86
 msgid "Printer"
 msgstr "Stampadore"
 
-#: ../jobviewer.py:513
+#: jobviewer.py:513
 msgid "Size"
 msgstr "Dimension"
 
-#: ../jobviewer.py:529
+#: jobviewer.py:529
 msgid "Time submitted"
 msgstr "Ore di inviament"
 
-#: ../jobviewer.py:533 ../troubleshoot/PrintTestPage.py:89
+#: jobviewer.py:533 troubleshoot/PrintTestPage.py:89
 msgid "Status"
 msgstr "Stât"
 
-#: ../jobviewer.py:563
+#: jobviewer.py:563
 #, python-format
 msgid "my jobs on %s"
 msgstr "i miei lavôrs su %s"
 
-#: ../jobviewer.py:565
+#: jobviewer.py:565
 msgid "my jobs"
 msgstr "i miei lavôrs"
 
-#: ../jobviewer.py:570
+#: jobviewer.py:570
 msgid "all jobs"
 msgstr "ducj i lavôrs"
 
-#: ../jobviewer.py:571
+#: jobviewer.py:571
 #, python-format
 msgid "Document Print Status (%s)"
 msgstr "Stât di stampe dal document (%s)"
 
-#: ../jobviewer.py:646
+#: jobviewer.py:646
 msgid "Job attributes"
 msgstr "Atribûts dal lavôr"
 
-#: ../jobviewer.py:781 ../jobviewer.py:1128 ../jobviewer.py:1907
-#: ../jobviewer.py:1937 ../jobviewer.py:2330 ../jobviewer.py:2339
-#: ../jobviewer.py:2361 ../jobviewer.py:2445 ../printerproperties.py:1638
-#: ../ui/NewPrinterWindow.ui.h:94 ../troubleshoot/ChooseNetworkPrinter.py:102
-#: ../troubleshoot/ChooseNetworkPrinter.py:103
-#: ../troubleshoot/ChooseNetworkPrinter.py:106
-#: ../troubleshoot/ChooseNetworkPrinter.py:107
-#: ../troubleshoot/ChoosePrinter.py:94 ../troubleshoot/ChoosePrinter.py:95
-#: ../troubleshoot/ChoosePrinter.py:98 ../troubleshoot/ChoosePrinter.py:99
-#: ../troubleshoot/DeviceListed.py:100 ../troubleshoot/DeviceListed.py:101
+#: jobviewer.py:781 jobviewer.py:1128 jobviewer.py:1907 jobviewer.py:1937
+#: jobviewer.py:2330 jobviewer.py:2339 jobviewer.py:2361 jobviewer.py:2445
+#: printerproperties.py:1638 troubleshoot/ChooseNetworkPrinter.py:102
+#: troubleshoot/ChooseNetworkPrinter.py:103
+#: troubleshoot/ChooseNetworkPrinter.py:106
+#: troubleshoot/ChooseNetworkPrinter.py:107 troubleshoot/ChoosePrinter.py:94
+#: troubleshoot/ChoosePrinter.py:95 troubleshoot/ChoosePrinter.py:98
+#: troubleshoot/ChoosePrinter.py:99 troubleshoot/DeviceListed.py:100
+#: troubleshoot/DeviceListed.py:101 ui/NewPrinterWindow.ui:2901
+#: ui/NewPrinterWindow.ui:2945 ui/NewPrinterWindow.ui:3000
+#: ui/NewPrinterWindow.ui:3063
 msgid "Unknown"
 msgstr "No cognossût"
 
-#: ../jobviewer.py:787
+#: jobviewer.py:787
 msgid "a minute ago"
 msgstr "un minût indaûr"
 
-#: ../jobviewer.py:790
+#: jobviewer.py:790
 #, python-format
 msgid "%d minutes ago"
 msgstr "%d minûts indaûr"
 
-#: ../jobviewer.py:794
+#: jobviewer.py:794
 msgid "an hour ago"
 msgstr "une ore indaûr"
 
-#: ../jobviewer.py:796
+#: jobviewer.py:796
 #, python-format
 msgid "%d hours ago"
 msgstr "%d oris indaûr"
 
-#: ../jobviewer.py:800
+#: jobviewer.py:800
 msgid "yesterday"
 msgstr "îr"
 
-#: ../jobviewer.py:802
+#: jobviewer.py:802
 #, python-format
 msgid "%d days ago"
 msgstr "%d dîs indaûr"
 
-#: ../jobviewer.py:806
+#: jobviewer.py:806
 msgid "last week"
 msgstr "la setemane passade"
 
-#: ../jobviewer.py:808
+#: jobviewer.py:808
 #, python-format
 msgid "%d weeks ago"
 msgstr "%d setemanis indaûr"
 
-#: ../jobviewer.py:1071 ../jobviewer.py:1160
+#: jobviewer.py:1071 jobviewer.py:1160
 msgid "authenticating job"
 msgstr "lavôr di autenticazion"
 
-#: ../jobviewer.py:1126
+#: jobviewer.py:1126
 #, python-format
 msgid "Authentication required for printing document `%s' (job %d)"
 msgstr "Autenticazion necessarie pe stampe dal document `%s' (lavôr %d)"
 
-#: ../jobviewer.py:1420
+#: jobviewer.py:1420
 msgid "holding job"
 msgstr "sospension lavôr"
 
-#: ../jobviewer.py:1446
+#: jobviewer.py:1446
 msgid "releasing job"
 msgstr "si lasse cori il lavôr"
 
 #. give the default filename some meaningful name
-#: ../jobviewer.py:1508
+#: jobviewer.py:1508
 msgid "retrieved"
 msgstr "recuperât"
 
-#: ../jobviewer.py:1518
+#: jobviewer.py:1518
 msgid "Save File"
 msgstr "Salve file"
 
-#: ../jobviewer.py:1633 ../system-config-printer.py:310
-#: ../ui/NewPrinterWindow.ui.h:9 ../troubleshoot/ChooseNetworkPrinter.py:37
-#: ../troubleshoot/ChoosePrinter.py:43 ../troubleshoot/DeviceListed.py:43
+#: jobviewer.py:1633 system-config-printer.py:320
+#: troubleshoot/ChooseNetworkPrinter.py:37 troubleshoot/ChoosePrinter.py:43
+#: troubleshoot/DeviceListed.py:43 ui/NewPrinterWindow.ui:235
 msgid "Name"
 msgstr "Non"
 
-#: ../jobviewer.py:1636
+#: jobviewer.py:1636
 msgid "Value"
 msgstr "Valôr"
 
-#: ../jobviewer.py:1760
+#: jobviewer.py:1760
 msgid "No documents queued"
 msgstr "Nissun document te code di stampe"
 
-#: ../jobviewer.py:1762
+#: jobviewer.py:1762
 msgid "1 document queued"
 msgstr "1 document te code di stampe"
 
-#: ../jobviewer.py:1764
+#: jobviewer.py:1764
 #, python-format
 msgid "%d documents queued"
 msgstr "%d documents te code di stampe"
 
-#: ../jobviewer.py:1820
+#: jobviewer.py:1820
 #, python-format
 msgid "processing / pending:   %d / %d"
 msgstr "in elaborazion / in spiete:   %d / %d"
 
-#: ../jobviewer.py:1938
+#: jobviewer.py:1938
 msgid "Document printed"
 msgstr "Document stampât"
 
-#: ../jobviewer.py:1939
+#: jobviewer.py:1939
 #, python-format
 msgid "Document `%s' has been sent to `%s' for printing."
 msgstr "Il document `%s' al è stât inviât a `%s' pe stampe."
 
-#: ../jobviewer.py:2101
+#: jobviewer.py:2101
 #, python-format
 msgid "There was a problem sending document `%s' (job %d) to the printer."
 msgstr ""
 "Si è verificât un probleme intant che si inviave il document `%s' (lavôr %d) "
 "ae stampadore."
 
-#: ../jobviewer.py:2105
+#: jobviewer.py:2105
 #, python-format
 msgid "There was a problem processing document `%s' (job %d)."
 msgstr "Si è verificât un probleme tal elaborâ il document `%s' (lavôr %d)."
 
 #. Give up and use the provided message untranslated.
-#: ../jobviewer.py:2112
+#: jobviewer.py:2112
 #, python-format
 msgid "There was a problem printing document `%s' (job %d): `%s'."
 msgstr ""
 "Si è verificât un probleme tal stampâ il document `%s' (lavôr %d): `%s'."
 
-#: ../jobviewer.py:2119 ../jobviewer.py:2136
+#: jobviewer.py:2119 jobviewer.py:2136
 msgid "Print Error"
 msgstr "Erôr di stampe"
 
-#: ../jobviewer.py:2121
+#: jobviewer.py:2121
 msgid "_Diagnose"
 msgstr "_Diagnostiche"
 
-#: ../jobviewer.py:2142
+#: jobviewer.py:2142
 #, python-format
 msgid "The printer called `%s' has been disabled."
 msgstr "La stampadore clamade `%s' e je stade disabilitade."
 
-#: ../jobviewer.py:2349
+#: jobviewer.py:2349
 msgid "disabled"
 msgstr "disabilitât"
 
-#: ../jobviewer.py:2379
+#: jobviewer.py:2379
 msgid "Held for authentication"
 msgstr "Sospindude pe autenticazion"
 
-#: ../jobviewer.py:2381 ../troubleshoot/PrintTestPage.py:44
+#: jobviewer.py:2381 troubleshoot/PrintTestPage.py:44
 msgid "Held"
 msgstr "Sospindût"
 
-#: ../jobviewer.py:2417
+#: jobviewer.py:2417
 #, python-format
 msgid "Held until %s"
 msgstr "Sospint fintremai %s"
 
-#: ../jobviewer.py:2422
+#: jobviewer.py:2422
 msgid "Held until day-time"
 msgstr "Sospint fin buinore"
 
-#: ../jobviewer.py:2424
+#: jobviewer.py:2424
 msgid "Held until evening"
 msgstr "Sospint sin sere"
 
-#: ../jobviewer.py:2426
+#: jobviewer.py:2426
 msgid "Held until night-time"
 msgstr "Sospint sin sot gnot"
 
-#: ../jobviewer.py:2428
+#: jobviewer.py:2428
 msgid "Held until second shift"
 msgstr "Sospint sin tal secont turni"
 
-#: ../jobviewer.py:2430
+#: jobviewer.py:2430
 msgid "Held until third shift"
 msgstr "Sospint sin tal tierç turni"
 
-#: ../jobviewer.py:2432
+#: jobviewer.py:2432
 msgid "Held until weekend"
 msgstr "Sospint sin ae fin de setemane"
 
-#: ../jobviewer.py:2435 ../troubleshoot/PrintTestPage.py:43
+#: jobviewer.py:2435 troubleshoot/PrintTestPage.py:43
 msgid "Pending"
 msgstr "In spiete"
 
-#: ../jobviewer.py:2436 ../printerproperties.py:73
-#: ../system-config-printer.py:163 ../troubleshoot/PrintTestPage.py:45
+#: jobviewer.py:2436 printerproperties.py:73 system-config-printer.py:173
+#: troubleshoot/PrintTestPage.py:45
 msgid "Processing"
 msgstr "In elaborazion"
 
-#: ../jobviewer.py:2437 ../printerproperties.py:77
-#: ../system-config-printer.py:165 ../troubleshoot/PrintTestPage.py:46
+#: jobviewer.py:2437 printerproperties.py:77 system-config-printer.py:175
+#: troubleshoot/PrintTestPage.py:46
 msgid "Stopped"
 msgstr "Fermade"
 
-#: ../jobviewer.py:2438 ../troubleshoot/PrintTestPage.py:47
+#: jobviewer.py:2438 troubleshoot/PrintTestPage.py:47
 msgid "Canceled"
 msgstr "Anulade"
 
-#: ../jobviewer.py:2439 ../troubleshoot/PrintTestPage.py:48
+#: jobviewer.py:2439 troubleshoot/PrintTestPage.py:48
 msgid "Aborted"
 msgstr "Interote"
 
-#: ../jobviewer.py:2440 ../troubleshoot/PrintTestPage.py:49
+#: jobviewer.py:2440 troubleshoot/PrintTestPage.py:49
 msgid "Completed"
 msgstr "Completade"
 
-#: ../newprinter.py:72
+#: newprinter.py:72
 msgid ""
 "The firewall may need adjusting in order to detect network printers.  Adjust "
 "the firewall now?"
@@ -502,190 +568,184 @@ msgstr ""
 "Al podarès coventâ di sestâ il firewall par podê rilevâ lis stampadoris di "
 "rêt.  Regolâ il firewall cumò?"
 
-#: ../newprinter.py:358 ../newprinter.py:369 ../newprinter.py:375
-#: ../newprinter.py:380 ../ppdippstr.py:163
+#: newprinter.py:334 newprinter.py:345 newprinter.py:351 newprinter.py:356
+#: ppdippstr.py:163
 msgid "Default"
 msgstr "Predefinît"
 
 #. See section 4.2.6 of this document for explanation of finishing types:
 #. ftp://ftp.pwg.org/pub/pwg/candidates/cs-ippfinishings10-20010205-5100.1.pdf
-#: ../newprinter.py:370 ../newprinter.py:381 ../newprinter.py:4099
-#: ../ppdippstr.py:65 ../ppdippstr.py:252 ../printerproperties.py:281
+#: newprinter.py:346 newprinter.py:357 newprinter.py:4075 ppdippstr.py:65
+#: ppdippstr.py:252 printerproperties.py:281
 msgid "None"
 msgstr "Nissune"
 
-#: ../newprinter.py:371
+#: newprinter.py:347
 msgid "Odd"
 msgstr "Dispar"
 
-#: ../newprinter.py:372
+#: newprinter.py:348
 msgid "Even"
 msgstr "Pâr"
 
-#: ../newprinter.py:382
+#: newprinter.py:358
 msgid "XON/XOFF (Software)"
 msgstr "XON/XOFF (Software)"
 
-#: ../newprinter.py:383
+#: newprinter.py:359
 msgid "RTS/CTS (Hardware)"
 msgstr "RTS/CTS (Hardware)"
 
-#: ../newprinter.py:384
+#: newprinter.py:360
 msgid "DTR/DSR (Hardware)"
 msgstr "DTR/DSR (Hardware)"
 
-#: ../newprinter.py:402 ../printerproperties.py:235
+#: newprinter.py:378 printerproperties.py:235
 msgid "Members of this class"
 msgstr "Elements di cheste classe"
 
-#: ../newprinter.py:404 ../printerproperties.py:236
+#: newprinter.py:380 printerproperties.py:236
 msgid "Others"
 msgstr "Altris"
 
-#: ../newprinter.py:405
+#: newprinter.py:381
 msgid "Devices"
 msgstr "Dispositîfs"
 
-#: ../newprinter.py:406
+#: newprinter.py:382
 msgid "Connections"
 msgstr "Conessions"
 
-#: ../newprinter.py:407
+#: newprinter.py:383
 msgid "Makes"
 msgstr "Produtôrs"
 
-#: ../newprinter.py:408
+#: newprinter.py:384
 msgid "Models"
 msgstr "Modei"
 
-#: ../newprinter.py:409
+#: newprinter.py:385
 msgid "Drivers"
 msgstr "Driver"
 
-#: ../newprinter.py:410 ../ui/NewPrinterWindow.ui.h:102
+#: newprinter.py:386 ui/NewPrinterWindow.ui:3260
 msgid "Downloadable Drivers"
 msgstr "Driver che si puedin discjariâ"
 
-#: ../newprinter.py:489
+#: newprinter.py:465
 msgid "Browsing requires pysmbc module"
 msgstr "La navigazion e domande il modul pysmbc"
 
 #. SMB list columns
-#: ../newprinter.py:494
+#: newprinter.py:470
 msgid "Share"
 msgstr "Condivision"
 
-#: ../newprinter.py:500
+#: newprinter.py:476
 msgid "Comment"
 msgstr "Coment"
 
-#: ../newprinter.py:515
+#: newprinter.py:491
 msgid ""
 "PostScript Printer Description files (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *."
 "PPD.GZ)"
 msgstr ""
 "Descrizion stampadore PostScript (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *.PPD.GZ)"
 
-#: ../newprinter.py:524
+#: newprinter.py:500
 msgid "All files (*)"
 msgstr "Ducj i files (*)"
 
-#: ../newprinter.py:670 ../newprinter.py:1740 ../newprinter.py:3628
-#: ../newprinter.py:3688 ../newprinter.py:3740 ../applet.py:134
-msgid "Search"
-msgstr "Cîr"
-
-#: ../newprinter.py:709
+#: newprinter.py:685
 msgid "New Class"
 msgstr "Gnove classe"
 
-#: ../newprinter.py:718 ../newprinter.py:735 ../ui/NewPrinterWindow.ui.h:1
+#: newprinter.py:694 newprinter.py:711 ui/NewPrinterWindow.ui:7
 msgid "New Printer"
 msgstr "Gnove stampadore"
 
-#: ../newprinter.py:727
+#: newprinter.py:703
 msgid "Change Device URI"
 msgstr "Cambie URI dal dispositîf"
 
-#: ../newprinter.py:746
+#: newprinter.py:722
 msgid "Download Printer Driver"
 msgstr "Discjarie driver de sstampadore"
 
-#: ../newprinter.py:755
+#: newprinter.py:731
 msgid "Change Driver"
 msgstr "Cambie driver"
 
-#: ../newprinter.py:764 ../newprinter.py:2331 ../newprinter.py:2336
+#: newprinter.py:740 newprinter.py:2307 newprinter.py:2312
 msgid "fetching device list"
 msgstr "daûr a recuperâ la liste dai dispositîfs"
 
-#: ../newprinter.py:959
+#: newprinter.py:935
 #, python-format
 msgid "Installing driver %s"
 msgstr "Daûr a instalâ il driver %s"
 
-#: ../newprinter.py:966
+#: newprinter.py:942
 msgid "Installing ..."
 msgstr "Instalazion ..."
 
-#: ../newprinter.py:1693 ../newprinter.py:3430 ../newprinter.py:3658
-#: ../ppdsloader.py:86
+#: newprinter.py:1669 newprinter.py:3406 newprinter.py:3634 ppdsloader.py:86
 msgid "Searching"
 msgstr "Daûr a cirî"
 
-#: ../newprinter.py:1703 ../ppdsloader.py:93
+#: newprinter.py:1679 ppdsloader.py:93
 msgid "Searching for drivers"
 msgstr "Daûr a cirî drivers"
 
 #. device-info
 #. PhysicalDevice obj
 #. Separator?
-#: ../newprinter.py:2246
+#: newprinter.py:2222
 msgid "Enter URI"
 msgstr "Inserî URI"
 
-#: ../newprinter.py:2251
+#: newprinter.py:2227
 msgid "Network Printer"
 msgstr "Stampadore di rêt"
 
-#: ../newprinter.py:2255
+#: newprinter.py:2231
 msgid "Find Network Printer"
 msgstr "Cjate une stampadore di rêt"
 
-#: ../newprinter.py:2262 ../newprinter.py:3102 ../ppdippstr.py:371
+#: newprinter.py:2238 newprinter.py:3078 ppdippstr.py:371
 msgid "Windows Printer via SAMBA"
 msgstr "Stampadore Windows vie SAMBA"
 
-#: ../newprinter.py:2294
+#: newprinter.py:2270
 msgid "Allow all incoming IPP Browse packets"
 msgstr "Permet ducj i pachets di esplorazion IPP in jentrade"
 
-#: ../newprinter.py:2299
+#: newprinter.py:2275
 msgid "Allow all incoming mDNS traffic"
 msgstr "Permet dut il trafic mDNS in jentrade"
 
-#: ../newprinter.py:2309 ../newprinter.py:2312 ../newprinter.py:2797
-#: ../newprinter.py:2803 ../serversettings.py:566 ../serversettings.py:571
+#: newprinter.py:2285 newprinter.py:2288 newprinter.py:2773 newprinter.py:2779
+#: serversettings.py:566 serversettings.py:571
 msgid "Adjust Firewall"
 msgstr "Sestâ il firewall"
 
-#: ../newprinter.py:2311 ../newprinter.py:2802
+#: newprinter.py:2287 newprinter.py:2778
 msgid "Do It Later"
 msgstr "Fâlu plui indenant"
 
-#: ../newprinter.py:2442 ../newprinter.py:3992
+#: newprinter.py:2418 newprinter.py:3968
 msgid " (Current)"
 msgstr " (Cumò)"
 
-#: ../newprinter.py:2542
+#: newprinter.py:2518
 msgid "Scanning..."
 msgstr "Scansion in cors..."
 
-#: ../newprinter.py:2598
+#: newprinter.py:2574
 msgid "No Print Shares"
 msgstr "Nissune condivision di stampe"
 
-#: ../newprinter.py:2599
+#: newprinter.py:2575
 msgid ""
 "There were no print shares found.  Please check that the Samba service is "
 "marked as trusted in your firewall configuration."
@@ -693,99 +753,99 @@ msgstr ""
 "Nissune condivision di stampe cjatade.  Controle che il servizi Samba al "
 "sedi stât segnât come fidât te configurazion dal firewall."
 
-#: ../newprinter.py:2740
+#: newprinter.py:2716
 #, python-format
 msgid "Verification requires the %s module"
 msgstr "La verifiche e domande il modul %s"
 
-#: ../newprinter.py:2799
+#: newprinter.py:2775
 msgid "Allow all incoming SMB/CIFS browse packets"
 msgstr "Permet ducj i pachets di esplorazion SMB/CIFS in jentrade"
 
-#: ../newprinter.py:2920
+#: newprinter.py:2896
 msgid "Print Share Verified"
 msgstr "Condivision di stampe verificade"
 
-#: ../newprinter.py:2921
+#: newprinter.py:2897
 msgid "This print share is accessible."
 msgstr "Cheste condivision di stampe e je acessibile."
 
-#: ../newprinter.py:2926
+#: newprinter.py:2902
 msgid "This print share is not accessible."
 msgstr "Cheste condivision di stampe no je acessibile."
 
-#: ../newprinter.py:2929
+#: newprinter.py:2905
 msgid "Print Share Inaccessible"
 msgstr "Condivision di stampe no acessibile"
 
-#: ../newprinter.py:3068
+#: newprinter.py:3044
 msgid "Parallel Port"
 msgstr "Puarte paralele"
 
-#: ../newprinter.py:3070
+#: newprinter.py:3046
 msgid "Serial Port"
 msgstr "Puarte seriâl"
 
-#: ../newprinter.py:3074 ../newprinter.py:3082 ../newprinter.py:3227
-#: ../newprinter.py:3229 ../newprinter.py:3276 ../system-config-printer.py:944
+#: newprinter.py:3050 newprinter.py:3058 newprinter.py:3203 newprinter.py:3205
+#: newprinter.py:3252 system-config-printer.py:960
 msgid "Fax"
 msgstr "Fax"
 
-#: ../newprinter.py:3074 ../newprinter.py:3076 ../newprinter.py:3276
+#: newprinter.py:3050 newprinter.py:3052 newprinter.py:3252
 msgid "USB"
 msgstr "USB"
 
-#: ../newprinter.py:3078
+#: newprinter.py:3054
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: ../newprinter.py:3080 ../newprinter.py:3083
+#: newprinter.py:3056 newprinter.py:3059
 msgid "HP Linux Imaging and Printing (HPLIP)"
 msgstr "HP Linux Imaging and Printing (HPLIP)"
 
-#: ../newprinter.py:3085
+#: newprinter.py:3061
 msgid "Hardware Abstraction Layer (HAL)"
 msgstr "Hardware Abstraction Layer (HAL)"
 
-#: ../newprinter.py:3087 ../ppdippstr.py:368
+#: newprinter.py:3063 ppdippstr.py:368
 msgid "AppSocket/HP JetDirect"
 msgstr "AppSocket/HP JetDirect"
 
-#: ../newprinter.py:3096
+#: newprinter.py:3072
 #, python-format
 msgid "LPD/LPR queue '%s'"
 msgstr "Code LPD/LPR '%s'"
 
-#: ../newprinter.py:3099
+#: newprinter.py:3075
 msgid "LPD/LPR queue"
 msgstr "Code LPD/LPR"
 
-#: ../newprinter.py:3118 ../newprinter.py:3121
+#: newprinter.py:3094 newprinter.py:3097
 msgid "IPP"
 msgstr "IPP"
 
-#: ../newprinter.py:3123
+#: newprinter.py:3099
 msgid "HTTP"
 msgstr "HTTP"
 
-#: ../newprinter.py:3131 ../newprinter.py:3300
+#: newprinter.py:3107 newprinter.py:3276
 msgid "Remote CUPS printer via DNS-SD"
 msgstr "Stampadore CUPS rimote vie DNS-SD"
 
-#: ../newprinter.py:3143 ../newprinter.py:3310
+#: newprinter.py:3119 newprinter.py:3286
 #, python-format
 msgid "%s network printer via DNS-SD"
 msgstr "Stampadore di rêt %s vie DNS-SD"
 
-#: ../newprinter.py:3147 ../newprinter.py:3312
+#: newprinter.py:3123 newprinter.py:3288
 msgid "Network printer via DNS-SD"
 msgstr "Stampadore di rêt vie DNS-SD"
 
-#: ../newprinter.py:3272
+#: newprinter.py:3248
 msgid "A printer connected to the parallel port."
 msgstr "Une stampadore conetude ae puarte paralele."
 
-#: ../newprinter.py:3277
+#: newprinter.py:3253
 msgid ""
 "A fax machine or the fax function of a multi-function device connected to a "
 "USB port."
@@ -793,15 +853,15 @@ msgstr ""
 "Un Fax o une funzion fax di un dispositîf multi-funzion conetût a une puarte "
 "USB."
 
-#: ../newprinter.py:3281
+#: newprinter.py:3257
 msgid "A printer connected to a USB port."
 msgstr "Une stampadore conetude a une puarte USB."
 
-#: ../newprinter.py:3283
+#: newprinter.py:3259
 msgid "A printer connected via Bluetooth."
 msgstr "Une stampadore conetude vie Bluetooth."
 
-#: ../newprinter.py:3285
+#: newprinter.py:3261
 msgid ""
 "HPLIP software driving a printer, or the printer function of a multi-"
 "function device."
@@ -809,7 +869,7 @@ msgstr ""
 "Il software HPLIP al gjestìs une stampadore o lis funzions di stampe di une "
 "dispositîf multi-funzion."
 
-#: ../newprinter.py:3288
+#: newprinter.py:3264
 msgid ""
 "HPLIP software driving a fax machine, or the fax function of a multi-"
 "function device."
@@ -817,51 +877,51 @@ msgstr ""
 "Il software HPLIP al veicole un fax o lis funzionalitâts fax di un "
 "dispositîf multi-funzion."
 
-#: ../newprinter.py:3291
+#: newprinter.py:3267
 msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
 msgstr "Stampadore locâl individuade dal Hardware Abstraction Layer (HAL)."
 
-#: ../newprinter.py:3431
+#: newprinter.py:3407
 msgid "Searching for printers"
 msgstr "Daûr a cirî stampadoris"
 
-#: ../newprinter.py:3537 ../ui/NewPrinterWindow.ui.h:46
+#: newprinter.py:3513 ui/NewPrinterWindow.ui:1359
 msgid "No printer was found at that address."
 msgstr "A chê direzion no je stade cjatade nissune stampadore."
 
-#: ../newprinter.py:3693
+#: newprinter.py:3669
 msgid "-- Select from search results --"
 msgstr "-- Sielzi dai risultâts de ricercje --"
 
-#: ../newprinter.py:3695
+#: newprinter.py:3671
 msgid "-- No matches found --"
 msgstr "-- Nissune corispondence cjatade --"
 
-#: ../newprinter.py:3807 ../ui/NewPrinterWindow.ui.h:80
+#: newprinter.py:3783 ui/NewPrinterWindow.ui:2577
 msgid "Local Driver"
 msgstr "Driver locâl"
 
-#: ../newprinter.py:3840 ../newprinter.py:3903 ../newprinter.py:4001
+#: newprinter.py:3816 newprinter.py:3879 newprinter.py:3977
 msgid " (recommended)"
 msgstr " (conseât)"
 
-#: ../newprinter.py:4033
+#: newprinter.py:4009
 msgid "This PPD is generated by foomatic."
 msgstr "Chest PPD al è gjenerât di foomatic."
 
-#: ../newprinter.py:4081
+#: newprinter.py:4057
 msgid "OpenPrinting"
 msgstr "OpenPrinting"
 
-#: ../newprinter.py:4092
+#: newprinter.py:4068
 msgid "Distributable"
 msgstr "Distribuibil"
 
-#: ../newprinter.py:4136
+#: newprinter.py:4112
 msgid ", "
 msgstr ", "
 
-#: ../newprinter.py:4141
+#: newprinter.py:4117
 #, python-format
 msgid ""
 "\n"
@@ -870,20 +930,20 @@ msgstr ""
 "\n"
 "(%s)"
 
-#: ../newprinter.py:4146
+#: newprinter.py:4122
 msgid "No support contacts known"
 msgstr "Nissun contat di supuart cognossût"
 
-#: ../newprinter.py:4150 ../newprinter.py:4163
+#: newprinter.py:4126 newprinter.py:4139
 msgid "Not specified."
 msgstr "No specificade."
 
 #. Foomatic database problem of some sort.
-#: ../newprinter.py:4208
+#: newprinter.py:4184
 msgid "Database error"
 msgstr "Erôr de base di dâts"
 
-#: ../newprinter.py:4209
+#: newprinter.py:4185
 #, python-format
 msgid "The '%s' driver cannot be used with printer '%s %s'."
 msgstr "Il driver '%s' nol pues jessi doprât cu la stampadore '%s %s'."
@@ -891,1229 +951,1238 @@ msgstr "Il driver '%s' nol pues jessi doprât cu la stampadore '%s %s'."
 #. This printer references some XML that is not
 #. installed by default.  Point the user at the
 #. package they need to install.
-#: ../newprinter.py:4219
+#: newprinter.py:4195
 #, python-format
 msgid "You will need to install the '%s' package in order to use this driver."
 msgstr "Par podê doprâ chest driver si scugne instalâ il pachet '%s'."
 
 #. This error came from trying to open the PPD file.
-#: ../newprinter.py:4226
+#: newprinter.py:4202
 msgid "PPD error"
 msgstr "Erôr PPD"
 
-#: ../newprinter.py:4228
+#: newprinter.py:4204
 msgid "Failed to read PPD file.  Possible reason follows:"
 msgstr "Leture dal file PPD falide.  Chi sot lis pussibilis resons:"
 
 #. Failed to get PPD downloaded from OpenPrinting XXX
-#: ../newprinter.py:4246
+#: newprinter.py:4222
 msgid "Downloadable drivers"
 msgstr "Driver che si puedin discjariâ"
 
-#: ../newprinter.py:4247
+#: newprinter.py:4223
 msgid "Failed to download PPD."
 msgstr "No si è rivâts a discjariâ il PPD."
 
-#: ../newprinter.py:4255
+#: newprinter.py:4231
 msgid "fetching PPD"
 msgstr "recupar PPD"
 
-#: ../newprinter.py:4284 ../newprinter.py:4320
+#: newprinter.py:4260 newprinter.py:4296
 msgid "No Installable Options"
 msgstr "Nissune opzion che si pues instalâ"
 
-#: ../newprinter.py:4384
+#: newprinter.py:4360
 #, python-format
 msgid "adding printer %s"
 msgstr "zonte de stampadore %s"
 
-#: ../newprinter.py:4413 ../newprinter.py:4425 ../newprinter.py:4443
-#: ../printerproperties.py:996 ../system-config-printer.py:1746
-#: ../system-config-printer.py:1776
+#: newprinter.py:4389 newprinter.py:4401 newprinter.py:4419
+#: printerproperties.py:996 system-config-printer.py:1763
+#: system-config-printer.py:1793
 #, python-format
 msgid "modifying printer %s"
 msgstr "modifiche de stampadore %s"
 
-#: ../optionwidgets.py:131
+#: optionwidgets.py:131
 msgid "Conflicts with:"
 msgstr "Al va in conflit cun:"
 
-#: ../ppdippstr.py:49
+#: ppdippstr.py:49
 msgid "Abort job"
 msgstr "Interomp lavôr"
 
-#: ../ppdippstr.py:50
+#: ppdippstr.py:50
 msgid "Retry current job"
 msgstr "Torne prove il lavôr atuâl"
 
-#: ../ppdippstr.py:51
+#: ppdippstr.py:51
 msgid "Retry job"
 msgstr "Torne prove il lavôr"
 
-#: ../ppdippstr.py:52
+#: ppdippstr.py:52
 msgid "Stop printer"
 msgstr "Ferme la stampadore"
 
-#: ../ppdippstr.py:58
+#: ppdippstr.py:58
 msgid "Default behavior"
 msgstr "Compuartament predefinît"
 
-#: ../ppdippstr.py:59
+#: ppdippstr.py:59
 msgid "Authenticated"
 msgstr "Autenticât"
 
-#: ../ppdippstr.py:66
+#: ppdippstr.py:66
 msgid "Classified"
 msgstr "Classificât"
 
-#: ../ppdippstr.py:67
+#: ppdippstr.py:67
 msgid "Confidential"
 msgstr "Confidenziâl"
 
-#: ../ppdippstr.py:68
+#: ppdippstr.py:68
 msgid "Secret"
 msgstr "Segret"
 
-#: ../ppdippstr.py:69
+#: ppdippstr.py:69
 msgid "Standard"
 msgstr "Standard"
 
-#: ../ppdippstr.py:70
+#: ppdippstr.py:70
 msgid "Top secret"
 msgstr "Segretece massime"
 
-#: ../ppdippstr.py:71
+#: ppdippstr.py:71
 msgid "Unclassified"
 msgstr "No classificât"
 
-#: ../ppdippstr.py:77
+#: ppdippstr.py:77
 msgid "No hold"
 msgstr "No conservâ"
 
-#: ../ppdippstr.py:78
+#: ppdippstr.py:78
 msgid "Indefinite"
 msgstr "Indefinît"
 
-#: ../ppdippstr.py:79
+#: ppdippstr.py:79
 msgid "Daytime"
 msgstr "Dute la mari dal dì"
 
-#: ../ppdippstr.py:80
+#: ppdippstr.py:80
 msgid "Evening"
 msgstr "Sere"
 
-#: ../ppdippstr.py:81
+#: ppdippstr.py:81
 msgid "Night"
 msgstr "Gnot"
 
-#: ../ppdippstr.py:82
+#: ppdippstr.py:82
 msgid "Second shift"
 msgstr "Secont turni"
 
-#: ../ppdippstr.py:83
+#: ppdippstr.py:83
 msgid "Third shift"
 msgstr "Tierç turni"
 
-#: ../ppdippstr.py:84
+#: ppdippstr.py:84
 msgid "Weekend"
 msgstr "Fin setemane"
 
-#: ../ppdippstr.py:94
+#: ppdippstr.py:94
 msgid "General"
 msgstr "Gjenerâl"
 
 #. HP and foo2zjs
-#: ../ppdippstr.py:97
+#: ppdippstr.py:97
 msgid "Print Quality"
 msgstr "Cualitât di stampe"
 
-#: ../ppdippstr.py:98
+#: ppdippstr.py:98
 msgid "Automatic"
 msgstr "Automatiche"
 
-#: ../ppdippstr.py:100
+#: ppdippstr.py:100
 msgid "Printing Quality"
 msgstr "Cualitât di stampe"
 
-#: ../ppdippstr.py:101 ../printerproperties.py:324
+#: ppdippstr.py:101 printerproperties.py:324
 msgid "Draft"
 msgstr "Stampon"
 
-#: ../ppdippstr.py:102 ../printerproperties.py:320 ../printerproperties.py:325
+#: ppdippstr.py:102 printerproperties.py:320 printerproperties.py:325
 msgid "Normal"
 msgstr "Normâl"
 
-#: ../ppdippstr.py:103
+#: ppdippstr.py:103
 msgid "Normal Color"
 msgstr "Colôr normâl"
 
-#: ../ppdippstr.py:104
+#: ppdippstr.py:104
 msgid "Normal Grayscale"
 msgstr "Scjale di grîs normâl"
 
-#: ../ppdippstr.py:105
+#: ppdippstr.py:105
 msgid "Draft Color"
 msgstr "Colôr, stampon"
 
-#: ../ppdippstr.py:106
+#: ppdippstr.py:106
 msgid "Draft Grayscale"
 msgstr "Scjale di grîs, stampon"
 
-#: ../ppdippstr.py:107
+#: ppdippstr.py:107
 msgid "Best"
 msgstr "Miôr"
 
-#: ../ppdippstr.py:108
+#: ppdippstr.py:108
 msgid "High-Resolution Photo"
 msgstr "Foto a alte risoluzion"
 
-#: ../ppdippstr.py:109
+#: ppdippstr.py:109
 msgid "Fast Draft"
 msgstr "Stampon svelt"
 
-#: ../ppdippstr.py:111
+#: ppdippstr.py:111
 msgid "Installed Cartridges"
 msgstr "Cartucjis instaladis"
 
-#: ../ppdippstr.py:112 ../ppdippstr.py:113
+#: ppdippstr.py:112 ppdippstr.py:113
 msgid "Fast Only"
 msgstr "Dome svelt"
 
-#: ../ppdippstr.py:114
+#: ppdippstr.py:114
 msgid "Photo Only"
 msgstr "Dome foto"
 
-#: ../ppdippstr.py:115
+#: ppdippstr.py:115
 msgid "Black and TriColor"
 msgstr "Neri e TriColôr"
 
-#: ../ppdippstr.py:116
+#: ppdippstr.py:116
 msgid "Photo and TriColor"
 msgstr "Foto e TriColôr"
 
-#: ../ppdippstr.py:118
+#: ppdippstr.py:118
 msgid "Resolution"
 msgstr "Risoluzion"
 
-#: ../ppdippstr.py:120
+#: ppdippstr.py:120
 msgid "Color Mode"
 msgstr "Modalitât colôr"
 
-#: ../ppdippstr.py:121 ../ppdippstr.py:239
+#: ppdippstr.py:121 ppdippstr.py:239
 msgid "High Quality Grayscale"
 msgstr "Scjale di grîs a alte cualitât"
 
-#: ../ppdippstr.py:122
+#: ppdippstr.py:122
 msgid "Black Only Grayscale"
 msgstr "Scjale di grîs dome neri"
 
-#: ../ppdippstr.py:124
+#: ppdippstr.py:124
 msgid "Quality"
 msgstr "Cualitât"
 
-#: ../ppdippstr.py:125
+#: ppdippstr.py:125
 msgid "High Resolution "
 msgstr "Alte risoluzion "
 
-#: ../ppdippstr.py:126
+#: ppdippstr.py:126
 msgid "Paper source"
 msgstr "Sorzint de cjarte"
 
-#: ../ppdippstr.py:127
+#: ppdippstr.py:127
 msgid "Auto Source"
 msgstr "Sorzint automatiche"
 
-#: ../ppdippstr.py:128
+#: ppdippstr.py:128
 msgid "Manual Feed"
 msgstr "Cjariament manuâl"
 
-#: ../ppdippstr.py:129
+#: ppdippstr.py:129
 msgid "Middle Tray"
 msgstr "Scansel centrâl"
 
-#: ../ppdippstr.py:130
+#: ppdippstr.py:130
 msgid "Upper or Only One InputSlot"
 msgstr "Spazi di inseriment superiôr o dome un"
 
-#: ../ppdippstr.py:131
+#: ppdippstr.py:131
 msgid "Multi-purpose Tray"
 msgstr "Scansel multiûs"
 
-#: ../ppdippstr.py:132
+#: ppdippstr.py:132
 msgid "Drawer 1 "
 msgstr "Scansel 1 "
 
-#: ../ppdippstr.py:133
+#: ppdippstr.py:133
 msgid "Drawer 2 "
 msgstr "Scansel 2 "
 
-#: ../ppdippstr.py:134
+#: ppdippstr.py:134
 msgid "Tray 1"
 msgstr "Scansel 1"
 
-#: ../ppdippstr.py:135
+#: ppdippstr.py:135
 msgid "Auto Select"
 msgstr "Selezion automatiche"
 
-#: ../ppdippstr.py:137
+#: ppdippstr.py:137
 msgid "Media Type"
 msgstr "Gjenar di supuart"
 
-#: ../ppdippstr.py:138
+#: ppdippstr.py:138
 msgid "Bond"
 msgstr "Leât"
 
-#: ../ppdippstr.py:139
+#: ppdippstr.py:139
 msgid "Color"
 msgstr "Colôr"
 
-#: ../ppdippstr.py:140
+#: ppdippstr.py:140
 msgid "Envelope"
 msgstr "Buste"
 
-#: ../ppdippstr.py:141
+#: ppdippstr.py:141
 msgid "Labels"
 msgstr "Etichetis"
 
-#: ../ppdippstr.py:142
+#: ppdippstr.py:142
 msgid "Standard Paper"
 msgstr "Cjarte standard"
 
-#: ../ppdippstr.py:143
+#: ppdippstr.py:143
 msgid "Heavy"
 msgstr "Penze"
 
-#: ../ppdippstr.py:144
+#: ppdippstr.py:144
 msgid "Light"
 msgstr "Lizere"
 
-#: ../ppdippstr.py:145
+#: ppdippstr.py:145
 msgid "Recycled"
 msgstr "Riciclade"
 
-#: ../ppdippstr.py:146
+#: ppdippstr.py:146
 msgid "Transparency"
 msgstr "Trasparence"
 
-#: ../ppdippstr.py:147
+#: ppdippstr.py:147
 msgid "Plain Paper"
 msgstr "Cjarte semplice"
 
-#: ../ppdippstr.py:148
+#: ppdippstr.py:148
 msgid "Plain"
 msgstr "Semplice"
 
-#: ../ppdippstr.py:149
+#: ppdippstr.py:149
 msgid "Photo Paper"
 msgstr "Cjarte fotografiche"
 
-#: ../ppdippstr.py:150
+#: ppdippstr.py:150
 msgid "Transparency Film"
 msgstr "Pelicule trasparente"
 
-#: ../ppdippstr.py:151
+#: ppdippstr.py:151
 msgid "CD or DVD Media"
 msgstr "Supuart CD o DVD"
 
-#: ../ppdippstr.py:152
+#: ppdippstr.py:152
 msgid "Print Density"
 msgstr "Densitât di stampe"
 
-#: ../ppdippstr.py:153
+#: ppdippstr.py:153
 msgid "Extra Light (1)"
 msgstr "Une vore clare (1)"
 
-#: ../ppdippstr.py:154
+#: ppdippstr.py:154
 msgid "Light (2)"
 msgstr "Clare (2)"
 
-#: ../ppdippstr.py:155
+#: ppdippstr.py:155
 msgid "Medium (3)"
 msgstr "Medie (3)"
 
-#: ../ppdippstr.py:156
+#: ppdippstr.py:156
 msgid "Dark (4)"
 msgstr "Scure (4)"
 
-#: ../ppdippstr.py:157
+#: ppdippstr.py:157
 msgid "Extra Dark (5)"
 msgstr "Une vore scure (5)"
 
-#: ../ppdippstr.py:158
+#: ppdippstr.py:158
 msgid "Duplex Printing"
 msgstr "Stampe denant e daûr"
 
-#: ../ppdippstr.py:159
+#: ppdippstr.py:159
 msgid "Copies"
 msgstr "Copiis"
 
-#: ../ppdippstr.py:161
+#: ppdippstr.py:161
 msgid "Adjustment"
 msgstr "Adatament"
 
-#: ../ppdippstr.py:162
+#: ppdippstr.py:162
 msgid "Halftone Algorithm"
 msgstr "Algoritmi di semiton"
 
-#: ../ppdippstr.py:165
+#: ppdippstr.py:165
 msgid "Miscellaneous"
 msgstr "Variis"
 
-#: ../ppdippstr.py:166
+#: ppdippstr.py:166
 msgid "N-up Orientation"
 msgstr "Orientament N-sù"
 
-#: ../ppdippstr.py:167
+#: ppdippstr.py:167
 msgid "N-up Printing"
 msgstr "Stampe N-sù"
 
-#: ../ppdippstr.py:168
+#: ppdippstr.py:168
 msgid "Landscape"
 msgstr "Orizontâl, 90°"
 
-#: ../ppdippstr.py:169
+#: ppdippstr.py:169
 msgid "Seascape"
 msgstr "Orizontâl, 270°"
 
-#: ../ppdippstr.py:170
+#: ppdippstr.py:170
 msgid "Media Size"
 msgstr "Dimension dal supuart"
 
-#: ../ppdippstr.py:171
+#: ppdippstr.py:171
 msgid "Output Mode"
 msgstr "Modalitât di jessude"
 
-#: ../ppdippstr.py:172
+#: ppdippstr.py:172
 msgid "Grayscale"
 msgstr "Scjale di grîs"
 
 #. Brother
-#: ../ppdippstr.py:175
+#: ppdippstr.py:175
 msgid "Toner save mode"
 msgstr "Modalitât sparagn dal toner"
 
-#: ../ppdippstr.py:176
+#: ppdippstr.py:176
 msgid "Tray1"
 msgstr "Scansel1"
 
-#: ../ppdippstr.py:177
+#: ppdippstr.py:177
 msgid "Tray2"
 msgstr "Scansel2"
 
-#: ../ppdippstr.py:178
+#: ppdippstr.py:178
 msgid "Tray3"
 msgstr "Scansel3"
 
-#: ../ppdippstr.py:179
+#: ppdippstr.py:179
 msgid "Two-Sided"
 msgstr "Dôs bandis"
 
-#: ../ppdippstr.py:180 ../system-config-printer.desktop.in.h:1
+#: ppdippstr.py:180 system-config-printer.appdata.xml.in:6
+#: system-config-printer.desktop.in:3 system-config-printer.desktop.in:4
 msgid "Print Settings"
 msgstr "Impostazions di stampe"
 
-#: ../ppdippstr.py:181
+#: ppdippstr.py:181
 msgid "Print Settings (Advanced)"
 msgstr "Impostazions di stampe (avanzadis)"
 
-#: ../ppdippstr.py:182
+#: ppdippstr.py:182
 msgid "Color Settings"
 msgstr "Impostazions colôr"
 
-#: ../ppdippstr.py:183
+#: ppdippstr.py:183
 msgid "Color Settings (Advanced)"
 msgstr "Impostazions colôr (avanzadis)"
 
-#: ../ppdippstr.py:184
+#: ppdippstr.py:184
 msgid "Brightness"
 msgstr "Luminositât"
 
-#: ../ppdippstr.py:185
+#: ppdippstr.py:185
 msgid "Contrast"
 msgstr "Contrast"
 
-#: ../ppdippstr.py:186
+#: ppdippstr.py:186
 msgid "Red"
 msgstr "Ros"
 
-#: ../ppdippstr.py:187
+#: ppdippstr.py:187
 msgid "Green"
 msgstr "Vert"
 
-#: ../ppdippstr.py:188
+#: ppdippstr.py:188
 msgid "Blue"
 msgstr "Blu"
 
 #. Epson xp serie
-#: ../ppdippstr.py:191
+#: ppdippstr.py:191
 msgid "_Media Size"
 msgstr "Dimension _supuart"
 
-#: ../ppdippstr.py:192
+#: ppdippstr.py:192
 msgid "_Grayscale"
 msgstr "Scjale di _grîs"
 
-#: ../ppdippstr.py:193
+#: ppdippstr.py:193
 msgid "_Brightness"
 msgstr "_Luminositât"
 
-#: ../ppdippstr.py:194
+#: ppdippstr.py:194
 msgid "_Contrast"
 msgstr "_Contrast"
 
-#: ../ppdippstr.py:195
+#: ppdippstr.py:195
 msgid "_Saturation"
 msgstr "_Saturazion"
 
-#: ../ppdippstr.py:196
+#: ppdippstr.py:196
 msgid "On"
 msgstr "Ativât"
 
 #. Gutenprint
-#: ../ppdippstr.py:199
+#: ppdippstr.py:199
 msgid "2-Sided Printing"
 msgstr "Stampe dutis dôs lis bandis"
 
-#: ../ppdippstr.py:200
+#: ppdippstr.py:200
 msgid "Shrink Page If Necessary to Fit Borders"
 msgstr "Ridûs la pagjine se necessari par stâ tai ôrs"
 
-#: ../ppdippstr.py:201
+#: ppdippstr.py:201
 msgid "Shrink (print the whole page)"
 msgstr "Ridûs (stampe dute la pagjine)"
 
-#: ../ppdippstr.py:202
+#: ppdippstr.py:202
 msgid "Crop (preserve dimensions)"
 msgstr "Taie (manten lis dimensions)"
 
-#: ../ppdippstr.py:203
+#: ppdippstr.py:203
 msgid "Expand (use maximum page area)"
 msgstr "Slargje (dopre la massime aree de pagjine)"
 
-#: ../ppdippstr.py:204
+#: ppdippstr.py:204
 msgid "Borderless"
 msgstr "Cence ôrs"
 
-#: ../ppdippstr.py:205 ../troubleshoot/PrintTestPage.py:121
+#: ppdippstr.py:205 troubleshoot/PrintTestPage.py:121
 msgid "No"
 msgstr "No"
 
-#: ../ppdippstr.py:206 ../troubleshoot/PrintTestPage.py:120
+#: ppdippstr.py:206 troubleshoot/PrintTestPage.py:120
 msgid "Yes"
 msgstr "Sì"
 
-#: ../ppdippstr.py:207
+#: ppdippstr.py:207
 msgid "Output Control Common"
 msgstr "Control di jessude comun"
 
-#: ../ppdippstr.py:208
+#: ppdippstr.py:208
 msgid "Color Correction"
 msgstr "Corezion dai colôrs"
 
-#: ../ppdippstr.py:209
+#: ppdippstr.py:209
 msgid "Brightness Fine Adjustment"
 msgstr "Justament fin de luminositât"
 
-#: ../ppdippstr.py:210
+#: ppdippstr.py:210
 msgid "Contrast Fine Adjustment"
 msgstr "Justament fin dal contrast"
 
-#: ../ppdippstr.py:211
+#: ppdippstr.py:211
 msgid "Saturation Fine Adjustment"
 msgstr "Justament fin de saturazion"
 
-#: ../ppdippstr.py:212
+#: ppdippstr.py:212
 msgid "Image Type"
 msgstr "Gjenar di imagjin"
 
 #. Foomatic
-#: ../ppdippstr.py:214
+#: ppdippstr.py:214
 msgid "Bidirectional printing"
 msgstr "Stampe bidirezionâl"
 
 #. Options
-#: ../ppdippstr.py:216 ../printerproperties.py:957
+#: ppdippstr.py:216 printerproperties.py:957
 msgid "Installable Options"
 msgstr "Opzions che si puedin instalâ"
 
-#: ../ppdippstr.py:217
+#: ppdippstr.py:217
 msgid "Duplexer Installed"
 msgstr "Duplexer instalât"
 
 #. Canon
-#: ../ppdippstr.py:220
+#: ppdippstr.py:220
 msgid "Color Model"
 msgstr "Model di colôrs"
 
-#: ../ppdippstr.py:221
+#: ppdippstr.py:221
 msgid "Color Precision"
 msgstr "Precision di colôrs"
 
-#: ../ppdippstr.py:222
+#: ppdippstr.py:222
 msgid "Resolution "
 msgstr "Risoluzion "
 
-#: ../ppdippstr.py:223
+#: ppdippstr.py:223
 msgid "Printer Features Common"
 msgstr "Funzionalitâts di stampadore comuns"
 
-#: ../ppdippstr.py:224
+#: ppdippstr.py:224
 msgid "CD Hub Size"
 msgstr "Dimension dal çoc dal CD"
 
-#: ../ppdippstr.py:225
+#: ppdippstr.py:225
 msgid "Ink Type"
 msgstr "Gjenar di ingjustri"
 
-#: ../ppdippstr.py:226
+#: ppdippstr.py:226
 msgid "Toner Save "
 msgstr "Sparagn toner "
 
-#: ../ppdippstr.py:227
+#: ppdippstr.py:227
 msgid "ON"
 msgstr "Ativât"
 
-#: ../ppdippstr.py:228
+#: ppdippstr.py:228
 msgid "Toner Density "
 msgstr "Densitât dal toner "
 
-#: ../ppdippstr.py:229
+#: ppdippstr.py:229
 msgid "Media Type "
 msgstr "Gjenar di supuart "
 
-#: ../ppdippstr.py:230
+#: ppdippstr.py:230
 msgid "Collate "
 msgstr "Fassicolâ "
 
-#: ../ppdippstr.py:231
+#: ppdippstr.py:231
 msgid "Image Refinement "
 msgstr "Miorament imagjin "
 
-#: ../ppdippstr.py:232
+#: ppdippstr.py:232
 msgid "Image Refinement"
 msgstr "Miorament de imagjin"
 
-#: ../ppdippstr.py:233
+#: ppdippstr.py:233
 msgid "Halftones "
 msgstr "Mieçs tons "
 
-#: ../ppdippstr.py:234
+#: ppdippstr.py:234
 msgid "Duplex"
 msgstr "Denant e daûr"
 
-#: ../ppdippstr.py:235
+#: ppdippstr.py:235
 msgid "OFF"
 msgstr "Disativât"
 
-#: ../ppdippstr.py:236
+#: ppdippstr.py:236
 msgid "ON (Long-edged Binding)"
 msgstr "Ativât (leadure ôr lunc)"
 
-#: ../ppdippstr.py:237
+#: ppdippstr.py:237
 msgid "ON (Short-edged Binding)"
 msgstr "Ativât (leadure ôr curt)"
 
-#: ../ppdippstr.py:238
+#: ppdippstr.py:238
 msgid "High Quality"
 msgstr "Alte cualitât"
 
-#: ../ppdippstr.py:240
+#: ppdippstr.py:240
 msgid "Controlled by 'Print Quality'"
 msgstr "Controlât di “Cualitât di stampe”"
 
-#: ../ppdippstr.py:241
+#: ppdippstr.py:241
 msgid "Paper Destination"
 msgstr "Destinazion de cjarte"
 
 #. Samsung
-#: ../ppdippstr.py:244
+#: ppdippstr.py:244
 msgid "Paper Size"
 msgstr "Dimension cjarte"
 
-#: ../ppdippstr.py:245
+#: ppdippstr.py:245
 msgid "Paper Type"
 msgstr "Gjenar di cjarte"
 
-#: ../ppdippstr.py:246
+#: ppdippstr.py:246
 msgid "Thin"
 msgstr "Fine"
 
-#: ../ppdippstr.py:247
+#: ppdippstr.py:247
 msgid "Thick"
 msgstr "Gruesse"
 
-#: ../ppdippstr.py:248
+#: ppdippstr.py:248
 msgid "Thicker"
 msgstr "Plui gruesse"
 
-#: ../ppdippstr.py:249
+#: ppdippstr.py:249
 msgid "Edge Enhance"
 msgstr "Miorament ôr"
 
-#: ../ppdippstr.py:250
+#: ppdippstr.py:250
 msgid "Skip Blank Pages"
 msgstr "Salte pagjinis blancjis"
 
-#: ../ppdippstr.py:251 ../ppdippstr.py:339
+#: ppdippstr.py:251 ppdippstr.py:339
 msgid "Double-sided Printing"
 msgstr "Stampe denant e daûr"
 
-#: ../ppdippstr.py:253
+#: ppdippstr.py:253
 msgid "Reverse Duplex Printing"
 msgstr "Stampe denant e daûr invertide"
 
-#: ../ppdippstr.py:254 ../ppdippstr.py:257
+#: ppdippstr.py:254 ppdippstr.py:257
 msgid "Long Edge"
 msgstr "Ôr lunc"
 
-#: ../ppdippstr.py:255 ../ppdippstr.py:258
+#: ppdippstr.py:255 ppdippstr.py:258
 msgid "Short Edge"
 msgstr "Ôr curt"
 
-#: ../ppdippstr.py:256
+#: ppdippstr.py:256
 msgid "Two-sided"
 msgstr "Denant e daûr"
 
-#: ../ppdippstr.py:259
+#: ppdippstr.py:259
 msgid "Toner Save"
 msgstr "Sparagn dal toner"
 
 #. Ricoh
-#: ../ppdippstr.py:262
+#: ppdippstr.py:262
 msgid "Finisher"
 msgstr "Finidure"
 
-#: ../ppdippstr.py:263
+#: ppdippstr.py:263
 msgid "Option Tray"
 msgstr "Scansel opzionâl"
 
-#: ../ppdippstr.py:264
+#: ppdippstr.py:264
 msgid "External Tray"
 msgstr "Scansel esterni"
 
-#: ../ppdippstr.py:265
+#: ppdippstr.py:265
 msgid "Internal Tray 1"
 msgstr "Scansel interni 1"
 
-#: ../ppdippstr.py:266
+#: ppdippstr.py:266
 msgid "Internal Tray 2"
 msgstr "Scansel interni 2"
 
-#: ../ppdippstr.py:267
+#: ppdippstr.py:267
 msgid "Internal Shift Tray"
 msgstr "Scansel basculant interni"
 
-#: ../ppdippstr.py:268
+#: ppdippstr.py:268
 msgid "Not Installed"
 msgstr "No instalât"
 
-#: ../ppdippstr.py:269
+#: ppdippstr.py:269
 msgid "Installed"
 msgstr "Instalât"
 
-#: ../ppdippstr.py:270
+#: ppdippstr.py:270
 msgid "PageSize"
 msgstr "Dimension pagjine"
 
-#: ../ppdippstr.py:271
+#: ppdippstr.py:271
 msgid "InputSlot"
 msgstr "Spazi di inseriment"
 
-#: ../ppdippstr.py:272
+#: ppdippstr.py:272
 msgid "Tray 2"
 msgstr "Scansel 2"
 
-#: ../ppdippstr.py:273
+#: ppdippstr.py:273
 msgid "Tray 3"
 msgstr "Scansel 3"
 
-#: ../ppdippstr.py:274
+#: ppdippstr.py:274
 msgid "Tray 4"
 msgstr "Scansel 4"
 
-#: ../ppdippstr.py:275
+#: ppdippstr.py:275
 msgid "Bypass Tray"
 msgstr "Scansel di passament"
 
-#: ../ppdippstr.py:276
+#: ppdippstr.py:276
 msgid "Collate"
 msgstr "Fassicolâ"
 
-#: ../ppdippstr.py:277
+#: ppdippstr.py:277
 msgid "Destination"
 msgstr "Destinazion"
 
-#: ../ppdippstr.py:278 ../printerproperties.py:282
+#: ppdippstr.py:278 printerproperties.py:282
 msgid "Staple"
 msgstr "Pont/clanfute"
 
-#: ../ppdippstr.py:279 ../printerproperties.py:283
+#: ppdippstr.py:279 printerproperties.py:283
 msgid "Punch"
 msgstr "Traforadôr"
 
-#: ../ppdippstr.py:280
+#: ppdippstr.py:280
 msgid "Toner Saving"
 msgstr "Sparagn toner"
 
-#: ../ppdippstr.py:281
+#: ppdippstr.py:281
 msgid "Gradation"
 msgstr "Gradazion"
 
-#: ../ppdippstr.py:282
+#: ppdippstr.py:282
 msgid "Fast"
 msgstr "Svelte"
 
 #. HPIJS options
-#: ../ppdippstr.py:285
+#: ppdippstr.py:285
 msgid "Printout mode"
 msgstr "Modalitât di stampe"
 
-#: ../ppdippstr.py:287
+#: ppdippstr.py:287
 msgid "Draft (auto-detect-paper type)"
 msgstr "Stampon (rilevazion-automatiche-gjenar di cjarte)"
 
-#: ../ppdippstr.py:289
+#: ppdippstr.py:289
 msgid "Draft (Color cartridge)"
 msgstr "Stampon (cartucje colôr)"
 
-#: ../ppdippstr.py:291
+#: ppdippstr.py:291
 msgid "Draft grayscale (Black cartridge)"
 msgstr "Stampon scjale di grîs (cartucje neri)"
 
-#: ../ppdippstr.py:293
+#: ppdippstr.py:293
 msgid "Draft grayscale (auto-detect-paper type)"
 msgstr "Stampon scjale di grîs (rilevazion-automatiche-gjenar di cjarte)"
 
-#: ../ppdippstr.py:295
+#: ppdippstr.py:295
 msgid "Normal (Color cartridge)"
 msgstr "Normâl (cartucje colôr)"
 
-#: ../ppdippstr.py:297
+#: ppdippstr.py:297
 msgid "Normal grayscale (Black cartridge)"
 msgstr "Scjale di grîs normâl (cartucje neri)"
 
-#: ../ppdippstr.py:299
+#: ppdippstr.py:299
 msgid "Normal (auto-detect-paper type)"
 msgstr "Normâl (rilevazion-automatiche-gjenar di cjarte)"
 
-#: ../ppdippstr.py:301
+#: ppdippstr.py:301
 msgid "Normal grayscale (auto-detect-paper type)"
 msgstr "Normâl scjale di grîs (rilevazion-automatiche-gjenar di cjarte)"
 
-#: ../ppdippstr.py:303
+#: ppdippstr.py:303
 msgid "High quality (auto-detect-paper type)"
 msgstr "Alte cualitât (rilevazion-automatiche-gjenar di cjarte)"
 
-#: ../ppdippstr.py:305
+#: ppdippstr.py:305
 msgid "High quality grayscale (auto-detect-paper type)"
 msgstr "Alte cualitât scjale di grîs (rilevazion-automatiche-gjenar di cjarte)"
 
-#: ../ppdippstr.py:307
+#: ppdippstr.py:307
 msgid "High quality (Color cartridge)"
 msgstr "Alte cualitât (cartucje colôr)"
 
-#: ../ppdippstr.py:309
+#: ppdippstr.py:309
 msgid "High quality grayscale (Black cartridge)"
 msgstr "Alte cualitât scjale di grîs (cartucje neri)"
 
-#: ../ppdippstr.py:310
+#: ppdippstr.py:310
 msgid "Photo (on photo paper)"
 msgstr "Foto (su cjarte fotografiche)"
 
-#: ../ppdippstr.py:311
+#: ppdippstr.py:311
 msgid "Photo (Color cartridge, on photo paper)"
 msgstr "Foto (cartucje colôr su cjarte fotografiche)"
 
-#: ../ppdippstr.py:312
+#: ppdippstr.py:312
 msgid "Best quality (color on photo paper)"
 msgstr "Cualitât miôr (colôr su cjarte fotografiche)"
 
-#: ../ppdippstr.py:313
+#: ppdippstr.py:313
 msgid "Normal quality (color on photo paper)"
 msgstr "Cualitât normâl (colôr su cjarte fotografiche)"
 
-#: ../ppdippstr.py:315
+#: ppdippstr.py:315
 msgid "Media source"
 msgstr "Sorzint supuart"
 
-#: ../ppdippstr.py:316
+#: ppdippstr.py:316
 msgid "Printer Default"
 msgstr "Impostazion predefinide stampadore"
 
-#: ../ppdippstr.py:317
+#: ppdippstr.py:317
 msgid "Photo tray"
 msgstr "Scansel fotos"
 
-#: ../ppdippstr.py:318
+#: ppdippstr.py:318
 msgid "Upper tray"
 msgstr "Scansel superiôr"
 
-#: ../ppdippstr.py:319
+#: ppdippstr.py:319
 msgid "Lower tray"
 msgstr "Scansel inferiôr"
 
-#: ../ppdippstr.py:320
+#: ppdippstr.py:320
 msgid "CD or DVD tray"
 msgstr "Scansel CD o DVD"
 
-#: ../ppdippstr.py:321
+#: ppdippstr.py:321
 msgid "Envelope feeder"
 msgstr "Cjariadôr bustis"
 
-#: ../ppdippstr.py:322
+#: ppdippstr.py:322
 msgid "Large capacity tray"
 msgstr "Cjariadôr di grande capacitât"
 
-#: ../ppdippstr.py:323
+#: ppdippstr.py:323
 msgid "Manual feeder"
 msgstr "Cjariadôr manuâl"
 
-#: ../ppdippstr.py:324
+#: ppdippstr.py:324
 msgid "Multi-purpose tray "
 msgstr "Scansel multi-ûs "
 
-#: ../ppdippstr.py:325
+#: ppdippstr.py:325
 msgid "Multipurpose tray"
 msgstr "Scansel multi-ûs"
 
-#: ../ppdippstr.py:327
+#: ppdippstr.py:327
 msgid "Page size"
 msgstr "Dimension pagjine"
 
-#: ../ppdippstr.py:328
+#: ppdippstr.py:328
 msgid "Custom"
 msgstr "Personalizazion"
 
-#: ../ppdippstr.py:329
+#: ppdippstr.py:329
 msgid "Letter"
 msgstr "Letare"
 
-#: ../ppdippstr.py:330
+#: ppdippstr.py:330
 msgid "Photo or 4x6 inch index card"
 msgstr "Foto o cartuline di 4×6 oncis"
 
-#: ../ppdippstr.py:331
+#: ppdippstr.py:331
 msgid "Photo or 5x7 inch index card"
 msgstr "Foto o cartuline di 5×7 oncis"
 
-#: ../ppdippstr.py:332
+#: ppdippstr.py:332
 msgid "Photo with tear-off tab"
 msgstr "Foto cun lenghete a tirade"
 
-#: ../ppdippstr.py:333
+#: ppdippstr.py:333
 msgid "3x5 inch index card"
 msgstr "Cartuline 3×5 oncis"
 
-#: ../ppdippstr.py:334
+#: ppdippstr.py:334
 msgid "5x8 inch index card"
 msgstr "Cartuline 5×8 oncis"
 
-#: ../ppdippstr.py:335
+#: ppdippstr.py:335
 msgid "A6 with tear-off tab"
 msgstr "A6 cun lenghete a tirade"
 
-#: ../ppdippstr.py:336
+#: ppdippstr.py:336
 msgid "CD or DVD 80mm"
 msgstr "CD o DVD 80mm"
 
-#: ../ppdippstr.py:337
+#: ppdippstr.py:337
 msgid "CD or DVD 120mm"
 msgstr "CD o DVD 120mm"
 
-#: ../ppdippstr.py:340
+#: ppdippstr.py:340
 msgid "Long edge (standard)"
 msgstr "Ôr lunc (standard)"
 
-#: ../ppdippstr.py:341
+#: ppdippstr.py:341
 msgid "Short edge (flip)"
 msgstr "Ôr curt (flip)"
 
-#: ../ppdippstr.py:342
+#: ppdippstr.py:342
 msgid "Off"
 msgstr "Off"
 
-#: ../ppdippstr.py:344
+#: ppdippstr.py:344
 msgid "Resolution, quality, ink type, media type"
 msgstr "Risoluzion, cualitât, gjenar di ingjustri, gjenar di supuart"
 
-#: ../ppdippstr.py:345
+#: ppdippstr.py:345
 msgid "Controlled by 'Printout mode'"
 msgstr "Controlât di “Modalitât di stampe”"
 
-#: ../ppdippstr.py:346
+#: ppdippstr.py:346
 msgid "300 dpi, Color, Color Cartr."
 msgstr "300 dpi, colôr, cart. colôrs"
 
-#: ../ppdippstr.py:347
+#: ppdippstr.py:347
 msgid "300 dpi, color, black + color cartridge"
 msgstr "300 dpi, colôr, cartucje neri + colôrs"
 
-#: ../ppdippstr.py:348
+#: ppdippstr.py:348
 msgid "300 dpi, Draft, Color, Color Cartr."
 msgstr "300 dpi, stampon, colôr, cart. colôrs"
 
-#: ../ppdippstr.py:349
+#: ppdippstr.py:349
 msgid "300 dpi, draft, color, black + color cartridge"
 msgstr "300 dpi, stampon, colôr, cartucje neri + colôrs"
 
-#: ../ppdippstr.py:350
+#: ppdippstr.py:350
 msgid "300 dpi, Draft, Grayscale, Black Cartr."
 msgstr "300 dpi, stampon, scjale di grîs. cart. neri"
 
-#: ../ppdippstr.py:351
+#: ppdippstr.py:351
 msgid "300 dpi, Grayscale, Black Cartr."
 msgstr "300 dpi, scjale di grîs, cart. neri"
 
-#: ../ppdippstr.py:352
+#: ppdippstr.py:352
 msgid "300 dpi, draft, grayscale, black + color cartridge"
 msgstr "300 dpi, stampon, scjale di grîs, cartucje neri + colôrs"
 
-#: ../ppdippstr.py:353
+#: ppdippstr.py:353
 msgid "300 dpi, grayscale, black + color cartridge"
 msgstr "300 dpi, scjale di grîs, cartucje neri + colôrs"
 
-#: ../ppdippstr.py:354
+#: ppdippstr.py:354
 msgid "600 dpi, color, black + color cartridge"
 msgstr "600 dpi, colôr, cartucje neri + colôrs"
 
-#: ../ppdippstr.py:355
+#: ppdippstr.py:355
 msgid "600 dpi, grayscale, black + color cartridge"
 msgstr "600 dpi, scjale di grîs, cartucje neri + colôrs"
 
-#: ../ppdippstr.py:356
+#: ppdippstr.py:356
 msgid "600 dpi, photo, black + color cartridge, photo paper"
 msgstr "600 dpi, foto, cartucje neri + colôrs, cjarte fotografiche"
 
-#: ../ppdippstr.py:357
+#: ppdippstr.py:357
 msgid "600 dpi, color, black + color cartridge, photo paper, normal"
 msgstr "600 dpi, colôr, cartucje neri + colôrs, cjarte fotografiche, normâl"
 
-#: ../ppdippstr.py:358
+#: ppdippstr.py:358
 msgid "1200 dpi, photo, black + color cartridge, photo paper"
 msgstr "1200 dpi, foto, cartucje neri + colôrs, cjarte fotografiche"
 
-#: ../ppdippstr.py:364
+#: ppdippstr.py:364
 msgid "Internet Printing Protocol (ipp)"
 msgstr "Internet Printing Protocol (ipp)"
 
-#: ../ppdippstr.py:365
+#: ppdippstr.py:365
 msgid "Internet Printing Protocol (http)"
 msgstr "Internet Printing Protocol (http)"
 
-#: ../ppdippstr.py:366
+#: ppdippstr.py:366
 msgid "Internet Printing Protocol (https)"
 msgstr "Internet Printing Protocol (https)"
 
-#: ../ppdippstr.py:367
+#: ppdippstr.py:367
 msgid "LPD/LPR Host or Printer"
 msgstr "Host LPD/LPR o stampadore"
 
-#: ../ppdippstr.py:369
+#: ppdippstr.py:369
 msgid "Serial Port #1"
 msgstr "Puarte seriâl #1"
 
-#: ../ppdippstr.py:370
+#: ppdippstr.py:370
 msgid "LPT #1"
 msgstr "LPT #1"
 
-#: ../ppdsloader.py:159
+#: ppdsloader.py:159
 msgid "fetching PPDs"
 msgstr "Daûr a recuperâ i PPD"
 
-#: ../printerproperties.py:71 ../system-config-printer.py:162
+#: print-applet.desktop.in:3
+msgid "Print Queue Applet"
+msgstr "Applet pe code di stampe"
+
+#: print-applet.desktop.in:4
+msgid "System tray icon for managing print jobs"
+msgstr "Icone de guantiere di sisteme par gjestî i lavôrs di stampe"
+
+#: printerproperties.py:71 system-config-printer.py:172
 msgid "Idle"
 msgstr "In spiete"
 
-#: ../printerproperties.py:75 ../system-config-printer.py:164
+#: printerproperties.py:75 system-config-printer.py:174
 msgid "Busy"
 msgstr "Ocupade"
 
 #. Printer state reasons list
-#: ../printerproperties.py:215
+#: printerproperties.py:215
 msgid "Message"
 msgstr "Messaç"
 
-#: ../printerproperties.py:237
+#: printerproperties.py:237
 msgid "Users"
 msgstr "Utents"
 
-#: ../printerproperties.py:260
+#: printerproperties.py:260
 msgid "Portrait (no rotation)"
 msgstr "Ritrat (nissune rotazion)"
 
-#: ../printerproperties.py:261
+#: printerproperties.py:261
 msgid "Landscape (90 degrees)"
 msgstr "Panorame (90°)"
 
-#: ../printerproperties.py:262
+#: printerproperties.py:262
 msgid "Reverse landscape (270 degrees)"
 msgstr "Panorame invertît (270°)"
 
-#: ../printerproperties.py:263
+#: printerproperties.py:263
 msgid "Reverse portrait (180 degrees)"
 msgstr "Ritrat invertît (180°)"
 
-#: ../printerproperties.py:269
+#: printerproperties.py:269
 msgid "Left to right, top to bottom"
 msgstr "Di çampe a diestre, dal alt al bas"
 
-#: ../printerproperties.py:270
+#: printerproperties.py:270
 msgid "Left to right, bottom to top"
 msgstr "Di çampe a diestre, dal bas al alt"
 
-#: ../printerproperties.py:271
+#: printerproperties.py:271
 msgid "Right to left, top to bottom"
 msgstr "Di diestre a çampe, dal alt al bas"
 
-#: ../printerproperties.py:272
+#: printerproperties.py:272
 msgid "Right to left, bottom to top"
 msgstr "Di diestre a çampe, dal bas al alt"
 
-#: ../printerproperties.py:273
+#: printerproperties.py:273
 msgid "Top to bottom, left to right"
 msgstr "Dal alt al bas, di çampe a diestre"
 
-#: ../printerproperties.py:274
+#: printerproperties.py:274
 msgid "Top to bottom, right to left"
 msgstr "Dal alt al bas, di diestre a çampe"
 
-#: ../printerproperties.py:275
+#: printerproperties.py:275
 msgid "Bottom to top, left to right"
 msgstr "Dal bas al alt, di çampe a diestre"
 
-#: ../printerproperties.py:276
+#: printerproperties.py:276
 msgid "Bottom to top, right to left"
 msgstr "Dal bas al alt, di diestre a çampe"
 
-#: ../printerproperties.py:284
+#: printerproperties.py:284
 msgid "Cover"
 msgstr "Cuvierte"
 
-#: ../printerproperties.py:285
+#: printerproperties.py:285
 msgid "Bind"
 msgstr "Leadure"
 
-#: ../printerproperties.py:286
+#: printerproperties.py:286
 msgid "Saddle stitch"
 msgstr "Pontâ tal mieç"
 
-#: ../printerproperties.py:287
+#: printerproperties.py:287
 msgid "Edge stitch"
 msgstr "Pontâ tai ôrs"
 
-#: ../printerproperties.py:288
+#: printerproperties.py:288
 msgid "Fold"
 msgstr "Pleât"
 
-#: ../printerproperties.py:289
+#: printerproperties.py:289
 msgid "Trim"
 msgstr "Taiât"
 
-#: ../printerproperties.py:290
+#: printerproperties.py:290
 msgid "Bale"
 msgstr "Bale"
 
-#: ../printerproperties.py:291
+#: printerproperties.py:291
 msgid "Booklet maker"
 msgstr "Costrutôr di opuscui"
 
-#: ../printerproperties.py:292
+#: printerproperties.py:292
 msgid "Job offset"
 msgstr "Scostament dal lavôr"
 
-#: ../printerproperties.py:293
+#: printerproperties.py:293
 msgid "Staple (top left)"
 msgstr "Clanfute (in alt a çampe)"
 
-#: ../printerproperties.py:294
+#: printerproperties.py:294
 msgid "Staple (bottom left)"
 msgstr "Clanfute (in bas a çampe)"
 
-#: ../printerproperties.py:295
+#: printerproperties.py:295
 msgid "Staple (top right)"
 msgstr "Clanfute (in alt a diestre)"
 
-#: ../printerproperties.py:296
+#: printerproperties.py:296
 msgid "Staple (bottom right)"
 msgstr "Clanfute (in bas a diestre)"
 
-#: ../printerproperties.py:297
+#: printerproperties.py:297
 msgid "Edge stitch (left)"
 msgstr "Pontâ tai ôrs (a çampe)"
 
-#: ../printerproperties.py:298
+#: printerproperties.py:298
 msgid "Edge stitch (top)"
 msgstr "Pontâ tai ôrs (in alt)"
 
-#: ../printerproperties.py:299
+#: printerproperties.py:299
 msgid "Edge stitch (right)"
 msgstr "Pontâ tai ôrs (a diestre)"
 
-#: ../printerproperties.py:300
+#: printerproperties.py:300
 msgid "Edge stitch (bottom)"
 msgstr "Pontâ tai ôrs (in bas)"
 
-#: ../printerproperties.py:301
+#: printerproperties.py:301
 msgid "Staple dual (left)"
 msgstr "Dople pontadure (a çampe)"
 
-#: ../printerproperties.py:302
+#: printerproperties.py:302
 msgid "Staple dual (top)"
 msgstr "Dople pontadure (in alt)"
 
-#: ../printerproperties.py:303
+#: printerproperties.py:303
 msgid "Staple dual (right)"
 msgstr "Dople pontadure (a diestre)"
 
-#: ../printerproperties.py:304
+#: printerproperties.py:304
 msgid "Staple dual (bottom)"
 msgstr "Dople pontadure (in bas)"
 
-#: ../printerproperties.py:305
+#: printerproperties.py:305
 msgid "Bind (left)"
 msgstr "Leadure (a çampe)"
 
-#: ../printerproperties.py:306
+#: printerproperties.py:306
 msgid "Bind (top)"
 msgstr "Leadure (in alt)"
 
-#: ../printerproperties.py:307
+#: printerproperties.py:307
 msgid "Bind (right)"
 msgstr "Leadure (a diestre)"
 
-#: ../printerproperties.py:308
+#: printerproperties.py:308
 msgid "Bind (bottom)"
 msgstr "Leadure (in bas)"
 
-#: ../printerproperties.py:313
+#: printerproperties.py:313
 msgid "One-sided"
 msgstr "Une bande"
 
-#: ../printerproperties.py:314
+#: printerproperties.py:314
 msgid "Two-sided (long edge)"
 msgstr "Denant e daûr (ôr lunc)"
 
-#: ../printerproperties.py:315
+#: printerproperties.py:315
 msgid "Two-sided (short edge)"
 msgstr "Denant e daûr (ôr curt)"
 
-#: ../printerproperties.py:321
+#: printerproperties.py:321
 msgid "Reverse"
 msgstr "Invertît"
 
-#: ../printerproperties.py:326
+#: printerproperties.py:326
 msgid "High"
 msgstr "Alt"
 
-#: ../printerproperties.py:348
+#: printerproperties.py:348
 msgid "Automatic rotation"
 msgstr "Rotazion automatiche"
 
-#: ../printerproperties.py:595
+#: printerproperties.py:595
 msgid "CUPS test page"
 msgstr "Pagjine di prove CUPS"
 
-#: ../printerproperties.py:596
+#: printerproperties.py:596
 msgid ""
 "Typically shows whether all jets on a print head are functioning and that "
 "the print feed mechanisms are working properly."
@@ -2121,13 +2190,13 @@ msgstr ""
 "Di solit al mostre se dutis lis butadis su la testine di stampe a funzionin "
 "ben e che i mecanisims di cjariament di stampe a funzionin ben."
 
-#: ../printerproperties.py:603
+#: printerproperties.py:603
 #, python-format
 msgid "Printer Properties - '%s' on %s"
 msgstr "Proprietâts de stampadore - '%s' su %s"
 
 #. The Conflict button was pressed.
-#: ../printerproperties.py:613
+#: printerproperties.py:613
 msgid ""
 "There are conflicting options.\n"
 "Changes can only be applied after\n"
@@ -2137,20 +2206,20 @@ msgstr ""
 "Al è pussibil aplicâ lis modifichis dome\n"
 "dopo la risoluzion dai conflits."
 
-#: ../printerproperties.py:958 ../ui/PrinterPropertiesDialog.ui.h:48
+#: printerproperties.py:958 ui/PrinterPropertiesDialog.ui:1365
 msgid "Printer Options"
 msgstr "Opzions de stampadore"
 
-#: ../printerproperties.py:994
+#: printerproperties.py:994
 #, python-format
 msgid "modifying class %s"
 msgstr "modifiche de classe %s"
 
-#: ../printerproperties.py:1012
+#: printerproperties.py:1012
 msgid "This will delete this class!"
 msgstr "Chest al eliminarà cheste classe!"
 
-#: ../printerproperties.py:1013
+#: printerproperties.py:1013
 msgid "Proceed anyway?"
 msgstr "Continuâ distès?"
 
@@ -2158,19 +2227,19 @@ msgstr "Continuâ distès?"
 #. but we have never fetched the server settings to see whether
 #. the server is publishing shared printers.  Fetch the settings
 #. now so that we can update the "not published" label if necessary.
-#: ../printerproperties.py:1106 ../serversettings.py:200
+#: printerproperties.py:1106 serversettings.py:200
 msgid "fetching server settings"
 msgstr "recupar des impostazions dal servidôr"
 
-#: ../printerproperties.py:1189
+#: printerproperties.py:1189
 msgid "printing test page"
 msgstr "stampe de pagjine di prove"
 
-#: ../printerproperties.py:1203 ../printerproperties.py:1244
+#: printerproperties.py:1203 printerproperties.py:1244
 msgid "Not possible"
 msgstr "Impussibil"
 
-#: ../printerproperties.py:1204 ../printerproperties.py:1245
+#: printerproperties.py:1204 printerproperties.py:1245
 msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
@@ -2178,267 +2247,420 @@ msgstr ""
 "Il servidôr lontan nol acete il lavôr di stampe, al è facil che al sedi "
 "parcè che la stampadore no je condividude."
 
-#: ../printerproperties.py:1216 ../printerproperties.py:1236
+#: printerproperties.py:1216 printerproperties.py:1236
 msgid "Submitted"
 msgstr "Inviât"
 
-#: ../printerproperties.py:1217
+#: printerproperties.py:1217
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr "Pagjine di prove inviade come lavôr %d"
 
-#: ../printerproperties.py:1229
+#: printerproperties.py:1229
 msgid "sending maintenance command"
 msgstr "daûr a mandâ il comant di manutenzion"
 
-#: ../printerproperties.py:1237
+#: printerproperties.py:1237
 #, python-format
 msgid "Maintenance command submitted as job %d"
 msgstr "Comant di manutenzion inviât come lavôr %d"
 
-#: ../printerproperties.py:1318
+#: printerproperties.py:1318
 msgid "Raw Queue"
 msgstr "Code grese"
 
-#: ../printerproperties.py:1319
+#: printerproperties.py:1319
 msgid "Unable to get queue details. Treating queue as raw."
 msgstr ""
 "Impussibil otignî i detais de code. La code e vignarà tratade tant che grese."
 
-#: ../printerproperties.py:1331 ../printerproperties.py:1336
+#: printerproperties.py:1331 printerproperties.py:1336
 msgid "Error"
 msgstr "Erôr"
 
-#: ../printerproperties.py:1332
+#: printerproperties.py:1332
 msgid "The PPD file for this queue is damaged."
 msgstr "Il file PPD par cheste code al è ruvinât."
 
-#: ../printerproperties.py:1337
+#: printerproperties.py:1337
 msgid "There was a problem connecting to the CUPS server."
 msgstr "Al è vignût fûr un probleme tal conetisi al servidôr CUPS."
 
-#: ../printerproperties.py:1547
+#: printerproperties.py:1547
 msgid "Marker levels are not reported for this printer."
 msgstr "I indicadôrs dai nivei no vegnin ripuartâts par cheste stampadore."
 
-#: ../pysmb.py:114
+#: pysmb.py:114
 #, python-format
 msgid "You must log in to access %s."
 msgstr "Tu scugnis jentrâ par acedi a %s."
 
-#: ../serversettings.py:93
+#: serversettings.py:93
 msgid "Problems?"
 msgstr "Problemis?"
 
-#: ../serversettings.py:273
+#: serversettings.py:273
 msgid "Enter hostname"
 msgstr "Inserî il non dal host"
 
-#: ../serversettings.py:527
+#: serversettings.py:527
 msgid "modifying server settings"
 msgstr "modifiche des impostazions dal servidôr"
 
-#: ../serversettings.py:567
+#: serversettings.py:567
 msgid "Adjust the firewall now to allow all incoming IPP connections?"
 msgstr ""
 "Justâ il firewall cumò par permeti dutis lis conessions IPP in jentrade?"
 
-#: ../system-config-printer.py:275
+#: statereason.py:109
+msgid "Toner low"
+msgstr "Toner in esauriment"
+
+#: statereason.py:110
+#, python-format
+msgid "Printer '%s' is low on toner."
+msgstr "Il toner de stampadore '%s' al è cuasi finît."
+
+#: statereason.py:111
+msgid "Toner empty"
+msgstr "Toner finît"
+
+#: statereason.py:112
+#, python-format
+msgid "Printer '%s' has no toner left."
+msgstr "Il toner de stampadore '%s' al è finît."
+
+#: statereason.py:113
+msgid "Cover open"
+msgstr "Tapon viert"
+
+#: statereason.py:114
+#, python-format
+msgid "The cover is open on printer '%s'."
+msgstr "Il tapon de stampadore '%s' al è viert."
+
+#: statereason.py:115
+msgid "Door open"
+msgstr "Portel viert"
+
+#: statereason.py:116
+#, python-format
+msgid "The door is open on printer '%s'."
+msgstr "Il portel de stampadore '%s' al è viert."
+
+#: statereason.py:117
+msgid "Paper low"
+msgstr "Cjarte in esauriment"
+
+#: statereason.py:118
+#, python-format
+msgid "Printer '%s' is low on paper."
+msgstr "La cjarte te stampadore '%s' e je cuasi finide."
+
+#: statereason.py:119
+msgid "Out of paper"
+msgstr "Cjarte finide"
+
+#: statereason.py:120
+#, python-format
+msgid "Printer '%s' is out of paper."
+msgstr "La stampadore '%s' e à finît la cjarte."
+
+#: statereason.py:121
+msgid "Ink low"
+msgstr "Ingjustri in esauriment"
+
+#: statereason.py:122
+#, python-format
+msgid "Printer '%s' is low on ink."
+msgstr "L'ingjustri de stampadore '%s' al sta par finî."
+
+#: statereason.py:123
+msgid "Ink empty"
+msgstr "Ingjustri finît"
+
+#: statereason.py:124
+#, python-format
+msgid "Printer '%s' has no ink left."
+msgstr "L'ingjustri de stampadore '%s' al è finît."
+
+#: statereason.py:125
+msgid "Printer off-line"
+msgstr "Stampadore fûr colegament"
+
+#: statereason.py:126
+#, python-format
+msgid "Printer '%s' is currently off-line."
+msgstr "In chest moment la stampadore '%s' e je fûr colegament."
+
+#: statereason.py:127
+msgid "Not connected?"
+msgstr "No conetût?"
+
+#: statereason.py:128
+#, python-format
+msgid "Printer '%s' may not be connected."
+msgstr "Al podarès jessi che la stampadore '%s' no sedi conetude."
+
+#: statereason.py:129 statereason.py:149
+msgid "Printer error"
+msgstr "Erôr de stampadore"
+
+#: statereason.py:130
+#, python-format
+msgid "There is a problem on printer '%s'."
+msgstr "Al è vignût fûr un erôr su la stampadore '%s'."
+
+#: statereason.py:132
+msgid "Printer configuration error"
+msgstr "Erôr di configurazion de stampadore"
+
+#: statereason.py:133
+#, python-format
+msgid "There is a missing print filter for printer '%s'."
+msgstr "Al mancje un filtri di stampe pe stampadore '%s'."
+
+#: statereason.py:145
+msgid "Printer report"
+msgstr "Rapuart de stampadore"
+
+#: statereason.py:147
+msgid "Printer warning"
+msgstr "Avîs de stampadore"
+
+#: statereason.py:166
+#, python-format
+msgid "Printer '%s': '%s'."
+msgstr "Stampadore '%s': '%s'."
+
+#: system-config-printer.appdata.xml.in:7
+#, fuzzy
+#| msgid "Configure printers"
+msgid "Configure printer queues"
+msgstr "Configure lis stampadoris"
+
+#: system-config-printer.appdata.xml.in:10
+msgid ""
+"With system-config-printer you can add, edit and delete printer queues. It "
+"allows you to choose the connection method and the printer driver."
+msgstr ""
+
+#: system-config-printer.appdata.xml.in:14
+msgid ""
+"For each queue, you can adjust the default page size and other driver "
+"options, as well as seeing ink/toner levels and status messages."
+msgstr ""
+
+#: system-config-printer.appdata.xml.in:21
+msgid "Main window"
+msgstr ""
+
+#: system-config-printer.appdata.xml.in:25
+#, fuzzy
+#| msgid "Printer Properties"
+msgid "Printer properties"
+msgstr "Proprietâts de stampadore"
+
+#: system-config-printer.desktop.in:6
+msgid "Configure printers"
+msgstr "Configure lis stampadoris"
+
+#: system-config-printer.py:285
 msgid "_Connect..."
 msgstr "_Conession..."
 
-#: ../system-config-printer.py:276
+#: system-config-printer.py:286
 msgid "Choose a different CUPS server"
 msgstr "Sielç un servidôr CUPS diferent"
 
-#: ../system-config-printer.py:278
+#: system-config-printer.py:288
 msgid "_Settings..."
 msgstr "_Impostazions..."
 
-#: ../system-config-printer.py:279
+#: system-config-printer.py:289
 msgid "Adjust server settings"
 msgstr "Juste lis impostazions dal servidôr"
 
-#: ../system-config-printer.py:281 ../ui/PrintersWindow.ui.h:2
+#: system-config-printer.py:291 ui/PrintersWindow.ui:41
 msgid "_Printer"
 msgstr "_Stampadore"
 
-#: ../system-config-printer.py:283
+#: system-config-printer.py:293
 msgid "_Class"
 msgstr "_Classe"
 
-#: ../system-config-printer.py:288
+#: system-config-printer.py:298
 msgid "_Rename"
 msgstr "_Cambie non"
 
-#: ../system-config-printer.py:290
+#: system-config-printer.py:300
 msgid "_Duplicate"
 msgstr "_Dupliche"
 
-#: ../system-config-printer.py:294
+#: system-config-printer.py:304
 msgid "Set As De_fault"
 msgstr "Stabilìs come _predefinide"
 
-#: ../system-config-printer.py:298
+#: system-config-printer.py:308
 msgid "_Create class"
 msgstr "_Cree classe"
 
-#: ../system-config-printer.py:300
+#: system-config-printer.py:310
 msgid "View Print _Queue"
 msgstr "Visualize _code di stampe"
 
-#: ../system-config-printer.py:304
+#: system-config-printer.py:314
 msgid "E_nabled"
 msgstr "A_bilite"
 
-#: ../system-config-printer.py:306
+#: system-config-printer.py:316
 msgid "_Shared"
 msgstr "_Condividude"
 
-#: ../system-config-printer.py:311
+#: system-config-printer.py:321
 msgid "Description"
 msgstr "Descrizion"
 
-#: ../system-config-printer.py:312 ../troubleshoot/ChooseNetworkPrinter.py:39
-#: ../troubleshoot/ChoosePrinter.py:45
+#: system-config-printer.py:322 troubleshoot/ChooseNetworkPrinter.py:39
+#: troubleshoot/ChoosePrinter.py:45
 msgid "Location"
 msgstr "Ubicazion"
 
-#: ../system-config-printer.py:313
+#: system-config-printer.py:323
 msgid "Manufacturer / Model"
 msgstr "Produtôr / Model"
 
-#: ../system-config-printer.py:360 ../ui/PrinterPropertiesDialog.ui.h:93
-#: ../ui/PrintersWindow.ui.h:9 ../ui/ServerSettingsDialog.ui.h:15
+#: system-config-printer.py:370 ui/PrinterPropertiesDialog.ui:3530
+#: ui/PrintersWindow.ui:203 ui/ServerSettingsDialog.ui:336
 msgid "Add"
 msgstr "Zonte"
 
-#: ../system-config-printer.py:377 ../ui/PrinterPropertiesDialog.ui.h:96
+#: system-config-printer.py:387 ui/PrinterPropertiesDialog.ui:3652
 msgid "Refresh"
 msgstr "Inzorne"
 
-#: ../system-config-printer.py:391
+#: system-config-printer.py:401
 msgid "_New"
 msgstr "_Gnove"
 
-#: ../system-config-printer.py:756
+#: system-config-printer.py:772
 #, python-format
 msgid "Print Settings - %s"
 msgstr "Impostazion di stampe - %s"
 
-#: ../system-config-printer.py:759
+#: system-config-printer.py:775
 #, python-format
 msgid "Connected to %s"
 msgstr "Conetût a %s"
 
-#: ../system-config-printer.py:846
+#: system-config-printer.py:862
 msgid "obtaining queue details"
 msgstr "recupar dai detais de code"
 
-#: ../system-config-printer.py:935
+#: system-config-printer.py:951
 msgid "Network printer (discovered)"
 msgstr "Stampadore di rêt (discuvierte)"
 
-#: ../system-config-printer.py:938
+#: system-config-printer.py:954
 msgid "Network class (discovered)"
 msgstr "Classe di rêt (discuvierte)"
 
-#: ../system-config-printer.py:947
+#: system-config-printer.py:963
 msgid "Class"
 msgstr "Classe"
 
-#: ../system-config-printer.py:950 ../system-config-printer.py:956
-#: ../troubleshoot/LocalOrRemote.py:30
+#: system-config-printer.py:966 system-config-printer.py:972
+#: troubleshoot/LocalOrRemote.py:30
 msgid "Network printer"
 msgstr "Stampadore di rêt"
 
-#: ../system-config-printer.py:953
+#: system-config-printer.py:969
 msgid "Network print share"
 msgstr "Condivision di stampe di rêt"
 
-#: ../system-config-printer.py:1120
+#: system-config-printer.py:1136
 msgid "Service framework not available"
 msgstr "Struture dal servizi no disponibile"
 
-#: ../system-config-printer.py:1122
+#: system-config-printer.py:1138
 msgid "Cannot start service on remote server"
 msgstr "Impussibil inviâ il servizi sul servidôr lontan"
 
-#: ../system-config-printer.py:1170 ../ui/ConnectingDialog.ui.h:5
-#, no-c-format, python-format
+#: system-config-printer.py:1187 ui/ConnectingDialog.ui:84
+#, python-format
 msgid "<i>Opening connection to %s</i>"
 msgstr "<i>Daûr a vierzi la conession a %s</i>"
 
-#: ../system-config-printer.py:1333
+#: system-config-printer.py:1350
 msgid "Set Default Printer"
 msgstr "Stabilìs stampadore predefinide"
 
-#: ../system-config-printer.py:1335
+#: system-config-printer.py:1352
 msgid "Do you want to set this as the system-wide default printer?"
 msgstr ""
 "Desideristu stabilî cheste stampadore come chê predefinide par dut il "
 "sisteme?"
 
-#: ../system-config-printer.py:1337
+#: system-config-printer.py:1354
 msgid "Set as the _system-wide default printer"
 msgstr "Stabilìs tant che stampadore predefinide par _dut il sisteme"
 
-#: ../system-config-printer.py:1339
+#: system-config-printer.py:1356
 msgid "_Clear my personal default setting"
 msgstr "_Azere lis mês impostazions predefinidis personâls"
 
-#: ../system-config-printer.py:1340
+#: system-config-printer.py:1357
 msgid "Set as my _personal default printer"
 msgstr "Stabilìs tant che stampadore predefinide _personâl"
 
-#: ../system-config-printer.py:1345
+#: system-config-printer.py:1362
 msgid "setting default printer"
 msgstr "daûr a stabilî la stampadore predefinide"
 
-#: ../system-config-printer.py:1398
+#: system-config-printer.py:1415
 msgid "Cannot Rename"
 msgstr "Impussibil cambiâ non"
 
-#: ../system-config-printer.py:1399
+#: system-config-printer.py:1416
 msgid "There are queued jobs."
 msgstr "Si à lavôrs in code."
 
-#: ../system-config-printer.py:1416
+#: system-config-printer.py:1433
 msgid "Renaming will lose history"
 msgstr "Cambiant il non si pierdarà la cronologjie"
 
-#: ../system-config-printer.py:1418
+#: system-config-printer.py:1435
 msgid "Completed jobs will no longer be available for re-printing."
 msgstr "I lavôrs completâts no saran plui disponibii pe ristampe."
 
-#: ../system-config-printer.py:1531
+#: system-config-printer.py:1548
 msgid "renaming printer"
 msgstr "daûr a cambiâ non de stampadore"
 
-#: ../system-config-printer.py:1694
+#: system-config-printer.py:1711
 #, python-format
 msgid "Really delete class '%s'?"
 msgstr "Eliminâ pardabon la classe '%s'?"
 
-#: ../system-config-printer.py:1696
+#: system-config-printer.py:1713
 #, python-format
 msgid "Really delete printer '%s'?"
 msgstr "Eliminâ pardabon la stampadore '%s'?"
 
-#: ../system-config-printer.py:1700
+#: system-config-printer.py:1717
 msgid "Really delete selected destinations?"
 msgstr "Eliminâ pardabon lis destinazions selezionadis?"
 
-#: ../system-config-printer.py:1721
+#: system-config-printer.py:1738
 #, python-format
 msgid "deleting printer %s"
 msgstr "eliminazion stampadore %s"
 
-#: ../system-config-printer.py:1812
+#: system-config-printer.py:1829
 msgid "Publish Shared Printers"
 msgstr "Publiche lis stampadoris condividudis"
 
-#: ../system-config-printer.py:1813
+#: system-config-printer.py:1830
 msgid ""
 "Shared printers are not available to other people unless the 'Publish shared "
 "printers' option is enabled in the server settings."
@@ -2447,30 +2669,30 @@ msgstr ""
 "no sedi stade abilitade la opzion 'Publiche stampadoris condividudis' tes "
 "impostazions dal servidôr."
 
-#: ../system-config-printer.py:2031
+#: system-config-printer.py:2048
 msgid "Would you like to print a test page?"
 msgstr "Desideristu stampâ une pagjine di prove?"
 
 #. Not more than 25 characters
-#: ../system-config-printer.py:2033 ../ui/PrinterPropertiesDialog.ui.h:17
-#: ../troubleshoot/PrintTestPage.py:74
+#: system-config-printer.py:2050 troubleshoot/PrintTestPage.py:74
+#: ui/PrinterPropertiesDialog.ui:547
 msgid "Print Test Page"
 msgstr "Stampe pagjine di prove"
 
-#: ../system-config-printer.py:2125
+#: system-config-printer.py:2142
 msgid "Install driver"
 msgstr "Instalazion driver"
 
-#: ../system-config-printer.py:2126 ../troubleshoot/CheckPPDSanity.py:136
+#: system-config-printer.py:2143 troubleshoot/CheckPPDSanity.py:136
 #, python-format
 msgid "Printer '%s' requires the %s package but it is not currently installed."
 msgstr "La stampadore '%s' e à bisugne de instalazion dal pachet %s."
 
-#: ../system-config-printer.py:2141
+#: system-config-printer.py:2158
 msgid "Missing driver"
 msgstr "Al mancje il driver"
 
-#: ../system-config-printer.py:2142
+#: system-config-printer.py:2159
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "
@@ -2479,15 +2701,419 @@ msgstr ""
 "La stampadore '%s' e à bisugne dal pachet '%s' che nol è ancjemò instalât.  "
 "Instalilu prime di doprâ cheste stampadore."
 
-#: ../ui/AboutDialog.ui.h:1
+#: timedops.py:116 timedops.py:195
+msgid "Please wait"
+msgstr "Spiete un moment par plasê"
+
+#: timedops.py:122 timedops.py:202
+msgid "Gathering information"
+msgstr "Recupar des informazions"
+
+#: ToolbarSearchEntry.py:74
+msgid "_Filter:"
+msgstr "_Filtri:"
+
+#: troubleshoot/base.py:36
+msgid ""
+"To start this tool, select System->Administration->Print Settings from the "
+"main menu."
+msgstr ""
+"Par eseguî chest program selezionâ dal menù principâl Sisteme->Aministrazion-"
+">Impostazions di stampe."
+
+#: troubleshoot/CheckLocalServerPublishing.py:28
+msgid "Server Not Exporting Printers"
+msgstr "Il servidôr nol espuarte stampadoris"
+
+#: troubleshoot/CheckLocalServerPublishing.py:29
+msgid ""
+"Although one or more printers are marked as being shared, this print server "
+"is not exporting shared printers to the network."
+msgstr ""
+"Ancje se cualchi stampadore e je segnade tant che condividude, chest "
+"servidôr di stampe nol espuarte chestis stampadoris su la rêt."
+
+#: troubleshoot/CheckLocalServerPublishing.py:33
+msgid ""
+"Enable the 'Publish shared printers connected to this system' option in the "
+"server settings using the printing administration tool."
+msgstr ""
+"Abilitâ la opzion 'Publicâ lis stampadoris condividudis colegadis a chest "
+"sisteme' tes impostazions dal servidôr, doprant il strument di aministrazion "
+"de stampe."
+
+#: troubleshoot/CheckPPDSanity.py:100
+msgid "Invalid PPD File"
+msgstr "File PPD no valit"
+
+#: troubleshoot/CheckPPDSanity.py:111
+#, python-format
+msgid ""
+"The PPD file for printer '%s' does not conform to the specification.  "
+"Possible reason follows:"
+msgstr ""
+"Il file PPD pe stampadore '%s' nol è conformi aes specifichis.  Chi indenant "
+"lis pussibilis resons:"
+
+#. Perhaps cupstestppd is not in the path.
+#: troubleshoot/CheckPPDSanity.py:117
+#, python-format
+msgid "There is a problem with the PPD file for printer '%s'."
+msgstr "Al è vignût fûr un erôr cul file PPD pe stampadore '%s'."
+
+#: troubleshoot/CheckPPDSanity.py:127
+msgid "Missing Printer Driver"
+msgstr "Al mancje il driver de stampadore"
+
+#: troubleshoot/CheckPPDSanity.py:141
+#, python-format
+msgid ""
+"Printer '%s' requires the '%s' program but it is not currently installed."
+msgstr ""
+"La stampadore '%s' e à bisogne dal program '%s' che in chest moment nol "
+"risulte instalât."
+
+#: troubleshoot/ChooseNetworkPrinter.py:31
+msgid "Choose Network Printer"
+msgstr "Selezionâ la stampadore di rêt"
+
+#: troubleshoot/ChooseNetworkPrinter.py:32
+msgid ""
+"Please select the network printer you are trying to use from the list below. "
+"If it does not appear in the list, select 'Not listed'."
+msgstr ""
+"Selezionâ de liste chi sot la stampadore di rêt che si vûl doprâ. Se no je "
+"te liste, selezionâ 'No in liste'."
+
+#: troubleshoot/ChooseNetworkPrinter.py:41 troubleshoot/ChoosePrinter.py:47
+#: troubleshoot/DeviceListed.py:45
+msgid "Information"
+msgstr "Informazions"
+
+#: troubleshoot/ChooseNetworkPrinter.py:75 troubleshoot/ChoosePrinter.py:71
+#: troubleshoot/DeviceListed.py:77
+msgid "Not listed"
+msgstr "No in liste"
+
+#: troubleshoot/ChoosePrinter.py:37
+msgid "Choose Printer"
+msgstr "Selezionâ la stampadore"
+
+#: troubleshoot/ChoosePrinter.py:38
+msgid ""
+"Please select the printer you are trying to use from the list below. If it "
+"does not appear in the list, select 'Not listed'."
+msgstr ""
+"Selezionâ de liste chi sot la stampadore che si vûl doprâ. Se no je te "
+"liste, selezionâ 'No in liste'."
+
+#: troubleshoot/DeviceListed.py:37
+msgid "Choose Device"
+msgstr "Selezionâ il dispositîf"
+
+#: troubleshoot/DeviceListed.py:38
+msgid ""
+"Please select the device you want to use from the list below. If it does not "
+"appear in the list, select 'Not listed'."
+msgstr ""
+"Selezionâ de liste chi sot il dispositîf che si vûl doprâ. Se nol è te "
+"liste, selezionâ 'No in liste'."
+
+#: troubleshoot/DeviceListed.py:47 ui/NewPrinterWindow.ui:411
+msgid "Device URI"
+msgstr "URI dal dispositîf"
+
+#: troubleshoot/ErrorLogCheckpoint.py:40
+msgid "Debugging"
+msgstr "Debug"
+
+#: troubleshoot/ErrorLogCheckpoint.py:41
+msgid ""
+"This step will enable debugging output from the CUPS scheduler.  This may "
+"cause the scheduler to restart.  Click the button below to enable debugging."
+msgstr ""
+"Chest passaç al abilitarà lis operazions di debug de jessude dal "
+"planificadôr CUPS.  Chest al podarès fâ tornâ a inviâ il planificadôr.  Fâs "
+"clic sul boton chi sot par abilitâ il debug."
+
+#: troubleshoot/ErrorLogCheckpoint.py:45
+msgid "Enable Debugging"
+msgstr "Ativâ il debug"
+
+#: troubleshoot/ErrorLogCheckpoint.py:236
+msgid "Debug logging enabled."
+msgstr "Debug abilitât."
+
+#: troubleshoot/ErrorLogCheckpoint.py:238
+msgid "Debug logging was already enabled."
+msgstr "Il debug al è za abilitât."
+
+#: troubleshoot/ErrorLogFetch.py:41
+msgid "Retrieve Journal Entries"
+msgstr "Recupere lis vôs dal gjornâl"
+
+#: troubleshoot/ErrorLogFetch.py:42
+msgid ""
+"No system journal entries were found. This may be because you are not an "
+"administrator. To fetch journal entries please run this command:"
+msgstr ""
+"No son stadis cjatadis vôs tal gjornâl di sisteme. Chest al podarès jessi "
+"parcè che no tu sês un aministradôr. Par otignî lis vôs dal gjornâl eseguìs "
+"chest comant:"
+
+#: troubleshoot/ErrorLogParse.py:32
+msgid "Error log messages"
+msgstr "Messaçs di erôr dal regjistri"
+
+#: troubleshoot/ErrorLogParse.py:33
+msgid "There are messages in the error log."
+msgstr "Tal regjistri a son presints messaçs di erôr."
+
+#: troubleshoot/__init__.py:57
+msgid "Printing troubleshooter"
+msgstr "Risoluzion problemis di stampe"
+
+#: troubleshoot/Locale.py:31
+msgid "Incorrect Page Size"
+msgstr "Dimension pagjine sbaliade"
+
+#: troubleshoot/Locale.py:32
+msgid ""
+"The page size for the print job was not the printer's default page size.  If "
+"this is not intentional it may cause alignment problems."
+msgstr ""
+"La dimension de pagjine pal lavôr in stampe nol corispuint ae dimension "
+"predefinide pe stampadore.  Se chest nol è intenzionâl al podarès causâ "
+"problemis di inlineament."
+
+#: troubleshoot/Locale.py:44
+msgid "Print job page size:"
+msgstr "Dimension de pagjine dal lavôr di stampe:"
+
+#: troubleshoot/Locale.py:48
+msgid "Printer page size:"
+msgstr "Dimension de pagjine de stampadore:"
+
+#: troubleshoot/LocalOrRemote.py:26
+msgid "Printer Location"
+msgstr "Ubicazion de stampadore"
+
+#: troubleshoot/LocalOrRemote.py:27
+msgid "Is the printer connected to this computer or available on the network?"
+msgstr "Ise conetude la stampadore a chest computer o disponibile in rêt?"
+
+#: troubleshoot/LocalOrRemote.py:29
+msgid "Locally connected printer"
+msgstr "Stampadore colegade in locâl"
+
+#: troubleshoot/NetworkCUPSPrinterShared.py:28
+msgid "Queue Not Shared"
+msgstr "Code di stampe no condividude"
+
+#: troubleshoot/NetworkCUPSPrinterShared.py:29
+msgid "The CUPS printer on the server is not shared."
+msgstr "La stampadore CUPS sul servidôr no je condividude."
+
+#: troubleshoot/PrinterStateReasons.py:34
+msgid "Status Messages"
+msgstr "Messaçs di stât"
+
+#: troubleshoot/PrinterStateReasons.py:35
+msgid "There are status messages associated with this queue."
+msgstr "A son presints messaçs di stât associâts a cheste code di stampe."
+
+#: troubleshoot/PrinterStateReasons.py:65
+#, python-format
+msgid "The printer's state message is: '%s'."
+msgstr "Il messaçs di stât de stampadore al è: '%s'."
+
+#: troubleshoot/PrinterStateReasons.py:90
+msgid "Errors are listed below:"
+msgstr "I erôrs a son listâts chi sot:"
+
+#: troubleshoot/PrinterStateReasons.py:95
+msgid "Warnings are listed below:"
+msgstr "I avîs a son listâts chi sot:"
+
+#: troubleshoot/PrintTestPage.py:64
+msgid "Test Page"
+msgstr "Pagjine di prove"
+
+#: troubleshoot/PrintTestPage.py:65
+msgid ""
+"Now print a test page.  If you are having problems printing a specific "
+"document, print that document now and mark the print job below."
+msgstr ""
+"Cumò stampe une pagjine di prove.  Se tu âs fastidis a stampâ un specific "
+"document, stampe chel document cumò e segne il lavôr di stampe chi sot."
+
+#: troubleshoot/PrintTestPage.py:77
+msgid "Cancel All Jobs"
+msgstr "Cancele ducj i lavôrs"
+
+#: troubleshoot/PrintTestPage.py:83
+msgid "Test"
+msgstr "Prove"
+
+#: troubleshoot/PrintTestPage.py:113
+msgid "Did the marked print jobs print correctly?"
+msgstr "I lavôrs segnâts sono stâts stampâts ben?"
+
+#: troubleshoot/PrintTestPage.py:144
+#, python-format
+msgid "Remember to load paper of type '%s' into the printer first."
+msgstr "Visiti prime di cjariâ la cjarte di gjenar '%s' te stampadore."
+
+#: troubleshoot/PrintTestPage.py:430
+msgid "Error submitting test page"
+msgstr "Erôr tal inviâ la pagjine di prove"
+
+#: troubleshoot/QueueNotEnabled.py:58 troubleshoot/QueueRejectingJobs.py:68
+#, python-format
+msgid "The reason given is: '%s'."
+msgstr "La reson dade e je: '%s'."
+
+#: troubleshoot/QueueNotEnabled.py:60
+msgid "This may be due to the printer being disconnected or switched off."
+msgstr "Al podarès jessi che la stampadore e sedi scolegade o distudade."
+
+#: troubleshoot/QueueNotEnabled.py:64
+msgid "Queue Not Enabled"
+msgstr "Code di stampe no abilitade"
+
+#: troubleshoot/QueueNotEnabled.py:65
+#, python-format
+msgid "The queue '%s' is not enabled."
+msgstr "La code di stampe '%s' no je abilitade."
+
+#: troubleshoot/QueueNotEnabled.py:73
+msgid ""
+"To enable it, select the 'Enabled' checkbox in the 'Policies' tab for the "
+"printer in the printer administration tool."
+msgstr ""
+"Par abilitâ la code di stampe, selezionâ 'Abilitade' te schede 'Politichis' "
+"pe stampadore dal strument di aministrazion de stampadore."
+
+#: troubleshoot/QueueRejectingJobs.py:33
+msgid "Queue Rejecting Jobs"
+msgstr "La code e refude i lavôrs di stampe"
+
+#: troubleshoot/QueueRejectingJobs.py:65
+#, python-format
+msgid "The queue '%s' is rejecting jobs."
+msgstr "La code di stampe '%s' e refude i lavôrs."
+
+#: troubleshoot/QueueRejectingJobs.py:72
+msgid ""
+"To make the queue accept jobs, select the 'Accepting Jobs' checkbox in the "
+"'Policies' tab for the printer in the printer administration tool."
+msgstr ""
+"Par abilitâ la acetazion dai lavôrs di stampe, selezionâ 'Acetazion lavôrs' "
+"te schede 'Politichis' pe stampadore tal strument di aministrazion de "
+"stampadore."
+
+#: troubleshoot/RemoteAddress.py:28
+msgid "Remote Address"
+msgstr "Direzion esterne"
+
+#: troubleshoot/RemoteAddress.py:29
+msgid ""
+"Please enter as many details as you can about the network address of this "
+"printer."
+msgstr ""
+"Inserî dutis lis informazions che si cognossin su la direzion di rêt di "
+"cheste stampadore."
+
+#: troubleshoot/RemoteAddress.py:37
+msgid "Server name:"
+msgstr "Non dal servidôr:"
+
+#: troubleshoot/RemoteAddress.py:44
+msgid "Server IP address:"
+msgstr "Direzion IP dal servidôr:"
+
+#: troubleshoot/SchedulerNotRunning.py:28
+msgid "CUPS Service Stopped"
+msgstr "Servizi CUPS fermât"
+
+#: troubleshoot/SchedulerNotRunning.py:29
+msgid ""
+"The CUPS print spooler does not appear to be running.  To correct this, "
+"choose System->Administration->Services from the main menu and look for the "
+"'cups' service."
+msgstr ""
+"Al somee che il servizi di stampe CUPS nol sedi in esecuzion.  Par comedâ "
+"cheste situazion, selezione dal menù principâl Sisteme->Aministrazion-"
+">Servizis e cîr il servizi 'cups'."
+
+#: troubleshoot/ServerFirewalled.py:28
+msgid "Check Server Firewall"
+msgstr "Controlâ il firewall dal servidôr"
+
+#: troubleshoot/ServerFirewalled.py:29
+msgid "It is not possible to connect to the server."
+msgstr "Nol è pussibil conetisi al servidôr."
+
+#: troubleshoot/ServerFirewalled.py:44
+#, python-format
+msgid ""
+"Please check to see if a firewall or router configuration is blocking TCP "
+"port %d on server '%s'."
+msgstr ""
+"Controlâ che la configurazion di un firewall o di un router no stedi blocant "
+"la puarte TCP %d sul servidôr '%s'."
+
+#: troubleshoot/Shrug.py:28
+msgid "Sorry!"
+msgstr "Nus displâs!"
+
+#: troubleshoot/Shrug.py:29
+msgid ""
+"There is no obvious solution to this problem.  Your answers have been "
+"collected together with other useful information.  If you would like to "
+"report a bug, please include this information."
+msgstr ""
+"No esist une soluzion naturâl a chest probleme.  Lis rispuestis a son stadis "
+"metudis dongje cun altris informazions utilis.  Se tu desideris segnalâ un "
+"erôr, par plasê inclût cheste informazion."
+
+#: troubleshoot/Shrug.py:36
+msgid "Diagnostic Output (Advanced)"
+msgstr "Jessude diagnostiche (avanzade)"
+
+#: troubleshoot/Shrug.py:93
+msgid "Error saving file"
+msgstr "Erôr tal salvâ il file"
+
+#: troubleshoot/Shrug.py:94
+msgid "There was an error saving the file:"
+msgstr "Al è vignût fûr un erôr tal salvâ il file:"
+
+#: troubleshoot/Welcome.py:45
+msgid "Trouble-shooting Printing"
+msgstr "Risoluzion dai problemis di stampe"
+
+#: troubleshoot/Welcome.py:47
+msgid ""
+"The next few screens will contain some questions about your problem with "
+"printing. Based on your answers a solution may be suggested."
+msgstr ""
+"Lis prossimis videadis a contignaran cualchi domande sul probleme cjatât cul "
+"procès di stampe. In base aes rispuestis al è pussibil otignî une soluzion."
+
+#: troubleshoot/Welcome.py:51
+msgid "Click 'Forward' to begin."
+msgstr "Fâs clic su 'Indenant' par scomençâ."
+
+#: ui/AboutDialog.ui:9
 msgid "Copyright © 2006-2012 Red Hat, Inc."
 msgstr "Copyright © 2006-2012 Red Hat, Inc."
 
-#: ../ui/AboutDialog.ui.h:2
+#: ui/AboutDialog.ui:10
 msgid "A CUPS configuration tool."
 msgstr "Un strument pe configurazion di CUPS."
 
-#: ../ui/AboutDialog.ui.h:3
+#: ui/AboutDialog.ui:12
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -2517,120 +3143,121 @@ msgstr ""
 "51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA."
 
 #. TRANSLATORS: Replace this string with your names, one name per line.  Thank you very much for your effort on translating system-config-printer and all our other tools!
-#: ../ui/AboutDialog.ui.h:9
+#: ui/AboutDialog.ui:21
 msgid "translator-credits"
 msgstr "Fabio Tomat <f.t.public@gmail.com>, 2021."
 
-#: ../ui/ConnectDialog.ui.h:1
+#: ui/ConnectDialog.ui:8
 msgid "Connect to CUPS server"
 msgstr "Conession al servidôr CUPS"
 
-#: ../ui/ConnectDialog.ui.h:3 ../ui/PrintersWindow.ui.h:12
+#: ui/ConnectDialog.ui:42 ui/PrintersWindow.ui:285
 msgid "Connect"
 msgstr "Conet"
 
-#: ../ui/ConnectDialog.ui.h:4
+#: ui/ConnectDialog.ui:78
 msgid "CUPS _server:"
 msgstr "_Servidôr CUPS:"
 
-#: ../ui/ConnectDialog.ui.h:5
+#: ui/ConnectDialog.ui:116
 msgid "Require _encryption"
 msgstr "Cifradur_e domandade"
 
-#: ../ui/ConnectingDialog.ui.h:1
+#: ui/ConnectingDialog.ui:8
 msgid "Connecting to CUPS server"
 msgstr "Conession al servidôr CUPS"
 
-#: ../ui/ConnectingDialog.ui.h:3
+#: ui/ConnectingDialog.ui:59
 msgid "<span weight=\"bold\" size=\"larger\">Connecting to CUPS server</span>"
-msgstr "<span weight=\"bold\" size=\"larger\">Conession al servidôr CUPS</span>"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">Conession al servidôr CUPS</span>"
 
-#: ../ui/InstallDialog.ui.h:1
+#: ui/InstallDialog.ui:24
 msgid "Close"
 msgstr "Siere"
 
-#: ../ui/InstallDialog.ui.h:2
+#: ui/InstallDialog.ui:64
 msgid "_Install"
 msgstr "_Instale"
 
-#: ../ui/JobsWindow.ui.h:1
+#: ui/JobsWindow.ui:24
 msgid "Refresh job list"
 msgstr "Inzorne liste dai lavôrs"
 
-#: ../ui/JobsWindow.ui.h:2 ../ui/SMBBrowseDialog.ui.h:2
+#: ui/JobsWindow.ui:25 ui/SMBBrowseDialog.ui:61
 msgid "_Refresh"
 msgstr "Inzo_rne"
 
-#: ../ui/JobsWindow.ui.h:3
+#: ui/JobsWindow.ui:41
 msgid "Show completed jobs"
 msgstr "Mostre lavôrs completâts"
 
-#: ../ui/JobsWindow.ui.h:4
+#: ui/JobsWindow.ui:42
 msgid "Show _completed jobs"
 msgstr "Mostre lavôrs _completâts"
 
-#: ../ui/NewPrinterName.ui.h:1
+#: ui/NewPrinterName.ui:7
 msgid "Duplicate Printer"
 msgstr "Dupliche stampadore"
 
-#: ../ui/NewPrinterName.ui.h:3 ../ui/PrinterPropertiesDialog.ui.h:5
-#: ../ui/ServerSettingsDialog.ui.h:3 ../ui/SMBBrowseDialog.ui.h:4
+#: ui/NewPrinterName.ui:38 ui/PrinterPropertiesDialog.ui:182
+#: ui/ServerSettingsDialog.ui:40 ui/SMBBrowseDialog.ui:93
 msgid "_OK"
 msgstr "_Va ben"
 
-#: ../ui/NewPrinterName.ui.h:4
+#: ui/NewPrinterName.ui:64
 msgid "New name for the printer"
 msgstr "Gnûf non pe stampadore"
 
-#: ../ui/NewPrinterWindow.ui.h:2
+#: ui/NewPrinterWindow.ui:34
 msgid "<span weight=\"bold\" size=\"larger\">Describe Printer</span>"
 msgstr "<span weight=\"bold\" size=\"larger\">Descrîf la stampadore</span>"
 
-#: ../ui/NewPrinterWindow.ui.h:3
+#: ui/NewPrinterWindow.ui:69
 msgid "Short name for this printer such as \"laserjet\""
 msgstr "Non curt par cheste stampadore, par esempli “laserjet”"
 
-#: ../ui/NewPrinterWindow.ui.h:4
+#: ui/NewPrinterWindow.ui:97
 msgid "<b>Printer Name</b>"
 msgstr "<b>Non de stampadore</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:5
+#: ui/NewPrinterWindow.ui:127
 msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
 msgstr "Descrizion che l'om al pues lei come “HP LaserJet cun Duplexer”"
 
-#: ../ui/NewPrinterWindow.ui.h:6
+#: ui/NewPrinterWindow.ui:154
 msgid "<b>Description</b> (optional)"
 msgstr "<b>Descrizion</b> (opzionâl)"
 
-#: ../ui/NewPrinterWindow.ui.h:7
+#: ui/NewPrinterWindow.ui:184
 msgid "Human-readable location such as \"Lab 1\""
 msgstr "Ubicazion che l'om al pues lei come “Laboratori 1”"
 
-#: ../ui/NewPrinterWindow.ui.h:8
+#: ui/NewPrinterWindow.ui:211
 msgid "<b>Location</b> (optional)"
 msgstr "<b>Ubicazion</b> (opzionâl)"
 
-#: ../ui/NewPrinterWindow.ui.h:10
+#: ui/NewPrinterWindow.ui:253
 msgid "<span weight=\"bold\" size=\"larger\">Select Device</span>"
 msgstr "<span weight=\"bold\" size=\"larger\">Selezione il dispositîf</span>"
 
-#: ../ui/NewPrinterWindow.ui.h:11
+#: ui/NewPrinterWindow.ui:320
 msgid "Device description."
 msgstr "Descrizion dal dispositîf."
 
-#: ../ui/NewPrinterWindow.ui.h:12
+#: ui/NewPrinterWindow.ui:328
 msgid "<b>Description</b>"
 msgstr "<b>Descrizion</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:13
+#: ui/NewPrinterWindow.ui:345
 msgid "Empty"
 msgstr "Vueide"
 
-#: ../ui/NewPrinterWindow.ui.h:14
+#: ui/NewPrinterWindow.ui:377
 msgid "<b>Enter device URI</b>"
 msgstr "<b>Inserìs l'URI dal dispositîf</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:15
+#: ui/NewPrinterWindow.ui:392
 msgid ""
 "For example:\n"
 "ipp://cups-server/printers/printer-queue\n"
@@ -2640,143 +3267,141 @@ msgstr ""
 "ipp://cups-server/printers/printer-queue\n"
 "ipp://printer.mydomain/ipp"
 
-#: ../ui/NewPrinterWindow.ui.h:18 ../troubleshoot/DeviceListed.py:47
-msgid "Device URI"
-msgstr "URI dal dispositîf"
-
-#: ../ui/NewPrinterWindow.ui.h:19
+#: ui/NewPrinterWindow.ui:437 ui/NewPrinterWindow.ui:549
+#: ui/NewPrinterWindow.ui:1279
 msgid "Host:"
 msgstr "Host:"
 
-#: ../ui/NewPrinterWindow.ui.h:20
+#: ui/NewPrinterWindow.ui:453
 msgid "Port number:"
 msgstr "Numar di puarte:"
 
-#: ../ui/NewPrinterWindow.ui.h:21
+#: ui/NewPrinterWindow.ui:509
 msgid "<b>Location of the network printer</b>"
 msgstr "<b>Ubicazion de stampadore di rêt</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:22
+#: ui/NewPrinterWindow.ui:522
 msgid "JetDirect"
 msgstr "JetDirect"
 
-#: ../ui/NewPrinterWindow.ui.h:23
+#: ui/NewPrinterWindow.ui:569
 msgid "Queue:"
 msgstr "Code:"
 
-#: ../ui/NewPrinterWindow.ui.h:24
+#: ui/NewPrinterWindow.ui:612
 msgid "Probe"
 msgstr "Esamine"
 
-#: ../ui/NewPrinterWindow.ui.h:25
+#: ui/NewPrinterWindow.ui:686
 msgid "<b>Location of the LPD network printer</b>"
 msgstr "<b>Ubicazion de stampadore di rêt LPD</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:26
+#: ui/NewPrinterWindow.ui:699
 msgid "LPD"
 msgstr "LPD"
 
-#: ../ui/NewPrinterWindow.ui.h:27
+#: ui/NewPrinterWindow.ui:731
 msgid "SCSI"
 msgstr "SCSI"
 
-#: ../ui/NewPrinterWindow.ui.h:28
+#: ui/NewPrinterWindow.ui:758
 msgid "Baud Rate"
 msgstr "Frecuence di simbul"
 
-#: ../ui/NewPrinterWindow.ui.h:29
+#: ui/NewPrinterWindow.ui:777
 msgid "Parity"
 msgstr "Paritât"
 
-#: ../ui/NewPrinterWindow.ui.h:30
+#: ui/NewPrinterWindow.ui:796
 msgid "Data Bits"
 msgstr "Bits dai dâts"
 
-#: ../ui/NewPrinterWindow.ui.h:31
+#: ui/NewPrinterWindow.ui:815
 msgid "Flow Control"
 msgstr "Control di flus"
 
-#: ../ui/NewPrinterWindow.ui.h:32
+#: ui/NewPrinterWindow.ui:899
 msgid "<b>Settings of the serial port</b>"
 msgstr "<b>Impostazions de puarte seriâl</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:33
+#: ui/NewPrinterWindow.ui:912
 msgid "Serial"
 msgstr "Seriâl"
 
-#: ../ui/NewPrinterWindow.ui.h:34
+#: ui/NewPrinterWindow.ui:980
 msgid "Browse..."
 msgstr "Esplore..."
 
-#: ../ui/NewPrinterWindow.ui.h:35
+#: ui/NewPrinterWindow.ui:1005
 msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
 msgstr "<i>smb://[grup_di_lavôr/]servidôr[:puarte]/stampadore</i>"
 
-#: ../ui/NewPrinterWindow.ui.h:36
+#: ui/NewPrinterWindow.ui:1020
 msgid "<b>SMB Printer</b>"
 msgstr "<b>Stampadore SMB</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:37
+#: ui/NewPrinterWindow.ui:1049
 msgid "Prompt user if authentication is required"
 msgstr "Domande al utent se e covente la autenticazion"
 
-#: ../ui/NewPrinterWindow.ui.h:38
+#: ui/NewPrinterWindow.ui:1071
 msgid "Set authentication details now"
 msgstr "Stabilìs cumò i detais de autenticazion"
 
-#: ../ui/NewPrinterWindow.ui.h:41
+#: ui/NewPrinterWindow.ui:1189
 msgid "<b>Authentication</b>"
 msgstr "<b>Autenticazion</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:42
+#: ui/NewPrinterWindow.ui:1215
 msgid "_Verify..."
 msgstr "_Verifiche..."
 
-#: ../ui/NewPrinterWindow.ui.h:43
+#: ui/NewPrinterWindow.ui:1242
 msgid "SMB"
 msgstr "SMB"
 
-#: ../ui/NewPrinterWindow.ui.h:44
+#: ui/NewPrinterWindow.ui:1312
 msgid "Find"
 msgstr "Cjate"
 
-#: ../ui/NewPrinterWindow.ui.h:45
+#: ui/NewPrinterWindow.ui:1347
 msgid "Searching..."
 msgstr "Ricercje..."
 
-#: ../ui/NewPrinterWindow.ui.h:47
+#: ui/NewPrinterWindow.ui:1381
 msgid "<b>Network Printer</b>"
 msgstr "<b>Stampadore di rêt</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:48
+#: ui/NewPrinterWindow.ui:1395
 msgid "Network"
 msgstr "Rêt"
 
-#: ../ui/NewPrinterWindow.ui.h:49
+#: ui/NewPrinterWindow.ui:1437
 msgid "Connection"
 msgstr "Conession"
 
-#: ../ui/NewPrinterWindow.ui.h:50
+#: ui/NewPrinterWindow.ui:1471
 msgid "Device"
 msgstr "Dispositîf"
 
-#: ../ui/NewPrinterWindow.ui.h:51
+#: ui/NewPrinterWindow.ui:1491 ui/NewPrinterWindow.ui:1885
+#: ui/NewPrinterWindow.ui:2431
 msgid "<span weight=\"bold\" size=\"larger\">Choose Driver</span>"
 msgstr "<span weight=\"bold\" size=\"larger\">Sielç il Driver</span>"
 
-#: ../ui/NewPrinterWindow.ui.h:52
+#: ui/NewPrinterWindow.ui:1509
 msgid "Select printer from database"
 msgstr "Selezionâ la stampadore de base di dâts"
 
-#: ../ui/NewPrinterWindow.ui.h:53
+#: ui/NewPrinterWindow.ui:1527
 msgid "Provide PPD file"
 msgstr "Furnìs un file PPD"
 
-#: ../ui/NewPrinterWindow.ui.h:54
+#: ui/NewPrinterWindow.ui:1544
 msgid "Search for a printer driver to download"
 msgstr "Cîr un driver di stampadore di discjariâ"
 
-#: ../ui/NewPrinterWindow.ui.h:55
+#: ui/NewPrinterWindow.ui:1576
 msgid ""
 "The foomatic printer database contains various manufacturer provided "
 "PostScript Printer Description (PPD) files and also can generate PPD files "
@@ -2790,7 +3415,7 @@ msgstr ""
 "gjenerâl i files PPD furnîts dai produtôrs a dan un miôr acès aes "
 "funzionalitâts specifichis de stampadore."
 
-#: ../ui/NewPrinterWindow.ui.h:56
+#: ui/NewPrinterWindow.ui:1631
 msgid ""
 "PostScript Printer Description (PPD) files can often be found on the driver "
 "disk that comes with the printer. For PostScript printers they are often "
@@ -2800,52 +3425,53 @@ msgstr ""
 "disc dai drivers che a rivin cu la stampadore. Pes stampadoris PostScript "
 "chescj a son dispès part dal driver di Windows<sup>®</sup>."
 
-#: ../ui/NewPrinterWindow.ui.h:57
+#: ui/NewPrinterWindow.ui:1694
 msgid "Make and model:"
 msgstr "Marcje e model:"
 
-#: ../ui/NewPrinterWindow.ui.h:58
+#: ui/NewPrinterWindow.ui:1765
 msgid "_Search"
 msgstr "_Cîr"
 
-#: ../ui/NewPrinterWindow.ui.h:59
+#: ui/NewPrinterWindow.ui:1798
 msgid "Printer model:"
 msgstr "Model di stampadore:"
 
-#: ../ui/NewPrinterWindow.ui.h:60
+#: ui/NewPrinterWindow.ui:1957
 msgid "Comments..."
 msgstr "Coments..."
 
-#: ../ui/NewPrinterWindow.ui.h:61
+#: ui/NewPrinterWindow.ui:2018
 msgid "<span weight=\"bold\" size=\"larger\">Choose Class Members</span>"
-msgstr "<span weight=\"bold\" size=\"larger\">Sielzi i membris de classe</span>"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">Sielzi i membris de classe</span>"
 
-#: ../ui/NewPrinterWindow.ui.h:62 ../ui/PrinterPropertiesDialog.ui.h:44
+#: ui/NewPrinterWindow.ui:2079 ui/PrinterPropertiesDialog.ui:1193
 msgid "move left"
 msgstr "sposte a çampe"
 
-#: ../ui/NewPrinterWindow.ui.h:63 ../ui/PrinterPropertiesDialog.ui.h:45
+#: ui/NewPrinterWindow.ui:2106 ui/PrinterPropertiesDialog.ui:1219
 msgid "move right"
 msgstr "sposte a diestre"
 
-#: ../ui/NewPrinterWindow.ui.h:64
+#: ui/NewPrinterWindow.ui:2161
 msgid "Class Members"
 msgstr "Membris de classe"
 
-#: ../ui/NewPrinterWindow.ui.h:65
+#: ui/NewPrinterWindow.ui:2180
 msgid "<span weight=\"bold\" size=\"larger\">Existing Settings</span>"
 msgstr "<span weight=\"bold\" size=\"larger\">Impostazions esistentis</span>"
 
-#: ../ui/NewPrinterWindow.ui.h:66
+#: ui/NewPrinterWindow.ui:2201
 msgid "Try to transfer the current settings"
 msgstr "Tentatîf di trasferî lis impostazions curintis"
 
-#: ../ui/NewPrinterWindow.ui.h:67
+#: ui/NewPrinterWindow.ui:2211
 msgid "Use the new PPD (Postscript Printer Description) as is."
 msgstr ""
 "Dopre il gnûf PPD (PostScript Printer Description) cussì ce mût che al è."
 
-#: ../ui/NewPrinterWindow.ui.h:68
+#: ui/NewPrinterWindow.ui:2231
 msgid ""
 "This way all current option settings will be lost. The default settings of "
 "the new PPD will be used. "
@@ -2853,11 +3479,11 @@ msgstr ""
 "In cheste maniere dutis lis vecjis impostazions a laran pierdudis. A "
 "vignaran dopradis lis impostazions predefinidis dal gnûf PPD. "
 
-#: ../ui/NewPrinterWindow.ui.h:69
+#: ui/NewPrinterWindow.ui:2242
 msgid "Try to copy the option settings over from the old PPD. "
 msgstr "Tentatîf di copiâ lis impostazions des opzions dal vecjo PPD. "
 
-#: ../ui/NewPrinterWindow.ui.h:70
+#: ui/NewPrinterWindow.ui:2262
 msgid ""
 "This is done by assuming that options with the same name do have the same "
 "meaning. Settings of options that are not present in the new PPD will be "
@@ -2868,16 +3494,16 @@ msgstr ""
 "laran pierdudis e a vignaran stabilidis come predefinidis dome lis opzions "
 "presintis tal gnûf PPD."
 
-#: ../ui/NewPrinterWindow.ui.h:71
+#: ui/NewPrinterWindow.ui:2287
 msgid "Change PPD"
 msgstr "Cambie PPD"
 
-#: ../ui/NewPrinterWindow.ui.h:72
+#: ui/NewPrinterWindow.ui:2314
 msgid "<span weight=\"bold\" size=\"larger\">Installable Options</span>"
 msgstr ""
 "<span weight=\"bold\" size=\"larger\">Opzions che si puedin instalâ</span>"
 
-#: ../ui/NewPrinterWindow.ui.h:73
+#: ui/NewPrinterWindow.ui:2334
 msgid ""
 "This driver supports additional hardware that may be installed in the "
 "printer."
@@ -2885,16 +3511,16 @@ msgstr ""
 "Chest driver al supuarte hardware adizionâl che in câs si pues instalâ te "
 "stampadore."
 
-#: ../ui/NewPrinterWindow.ui.h:74 ../ui/PrinterPropertiesDialog.ui.h:47
+#: ui/NewPrinterWindow.ui:2412 ui/PrinterPropertiesDialog.ui:1319
 msgid "Installed Options"
 msgstr "Opzions instaladis"
 
-#: ../ui/NewPrinterWindow.ui.h:75
+#: ui/NewPrinterWindow.ui:2458
 msgid ""
 "For the printer you have selected there are drivers available for download."
 msgstr "Pe stampadore selezionade a son disponibii drivers di discjariâ."
 
-#: ../ui/NewPrinterWindow.ui.h:76
+#: ui/NewPrinterWindow.ui:2478
 msgid ""
 "These drivers do not come from your operating system supplier and will not "
 "be covered by their commercial support.  See the support and license terms "
@@ -2904,15 +3530,15 @@ msgstr ""
 "cuvierts dal lôr supuart comerciâl.  Viôt i tiermins de licence e dal "
 "supuart dal to furnidôr di driver."
 
-#: ../ui/NewPrinterWindow.ui.h:77
+#: ui/NewPrinterWindow.ui:2486
 msgid "<b>Note</b>"
 msgstr "<b>Note</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:78
+#: ui/NewPrinterWindow.ui:2519
 msgid "<b>Select Driver</b>"
 msgstr "<b>Selezionâ il driver</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:79
+#: ui/NewPrinterWindow.ui:2566
 msgid ""
 "With this choice no driver download will be performed. In the next steps a "
 "locally installed driver will be selected."
@@ -2920,173 +3546,165 @@ msgstr ""
 "Cun cheste sielte nol vignarà discjariât nissun driver. Intai prossims "
 "passaçs al vignarà selezionât un driver instalât in locâl."
 
-#: ../ui/NewPrinterWindow.ui.h:81 ../ui/PrinterPropertiesDialog.ui.h:7
+#: ui/NewPrinterWindow.ui:2603 ui/PrinterPropertiesDialog.ui:278
 msgid "Description:"
 msgstr "Descrizion:"
 
-#: ../ui/NewPrinterWindow.ui.h:82
+#: ui/NewPrinterWindow.ui:2622
 msgid "License:"
 msgstr "Licence:"
 
-#: ../ui/NewPrinterWindow.ui.h:83
+#: ui/NewPrinterWindow.ui:2641
 msgid "Supplier:"
 msgstr "Furnît di:"
 
-#: ../ui/NewPrinterWindow.ui.h:84
+#: ui/NewPrinterWindow.ui:2659
 msgid "license"
 msgstr "licence"
 
-#: ../ui/NewPrinterWindow.ui.h:85
+#: ui/NewPrinterWindow.ui:2679
 msgid "short description"
 msgstr "descrizion curte"
 
-#: ../ui/NewPrinterWindow.ui.h:86
+#: ui/NewPrinterWindow.ui:2695
 msgid "Manufacturer"
 msgstr "Produtôr"
 
-#: ../ui/NewPrinterWindow.ui.h:87
+#: ui/NewPrinterWindow.ui:2720
 msgid "supplier"
 msgstr "furnidôr"
 
-#: ../ui/NewPrinterWindow.ui.h:88
+#: ui/NewPrinterWindow.ui:2736
 msgid "Free software"
 msgstr "Software libar"
 
-#: ../ui/NewPrinterWindow.ui.h:89
+#: ui/NewPrinterWindow.ui:2755
 msgid "Patented algorithms"
 msgstr "Algoritmis proprietaris"
 
-#: ../ui/NewPrinterWindow.ui.h:90
+#: ui/NewPrinterWindow.ui:2781
 msgid "Support:"
 msgstr "Supuart:"
 
-#: ../ui/NewPrinterWindow.ui.h:91
+#: ui/NewPrinterWindow.ui:2798
 msgid "support contacts"
 msgstr "contats di supuart"
 
-#: ../ui/NewPrinterWindow.ui.h:92
+#: ui/NewPrinterWindow.ui:2842
 msgid "Text:"
 msgstr "Test:"
 
-#: ../ui/NewPrinterWindow.ui.h:93
+#: ui/NewPrinterWindow.ui:2861
 msgid "Line art:"
 msgstr "Linie artistiche:"
 
-#: ../ui/NewPrinterWindow.ui.h:95
+#: ui/NewPrinterWindow.ui:3023
 msgid "Graphics:"
 msgstr "Grafiche:"
 
-#: ../ui/NewPrinterWindow.ui.h:96
+#: ui/NewPrinterWindow.ui:3086
 msgid "Photo:"
 msgstr "Foto:"
 
-#: ../ui/NewPrinterWindow.ui.h:97
+#: ui/NewPrinterWindow.ui:3109
 msgid "<b>Output Quality</b>"
 msgstr "<b>Cualitât de jessude</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:98
+#: ui/NewPrinterWindow.ui:3160
 msgid "Yes, I accept this license"
 msgstr "Sì, o aceti cheste licence"
 
-#: ../ui/NewPrinterWindow.ui.h:99
+#: ui/NewPrinterWindow.ui:3176
 msgid "No, I do not accept this license"
 msgstr "No, no aceti cheste licence"
 
-#: ../ui/NewPrinterWindow.ui.h:100
+#: ui/NewPrinterWindow.ui:3203
 msgid "<b>License Terms</b>"
 msgstr "<b>Licence d'ûs</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:101
+#: ui/NewPrinterWindow.ui:3223
 msgid "Driver details"
 msgstr "Detais dal driver"
 
-#: ../ui/NewPrinterWindow.ui.h:103
+#: ui/NewPrinterWindow.ui:3297
 msgid "_Back"
 msgstr "I_ndaûr"
 
-#: ../ui/NewPrinterWindow.ui.h:105 ../ui/PrinterPropertiesDialog.ui.h:3
+#: ui/NewPrinterWindow.ui:3329 ui/PrinterPropertiesDialog.ui:152
 msgid "_Apply"
 msgstr "_Apliche"
 
-#: ../ui/NewPrinterWindow.ui.h:106
+#: ui/NewPrinterWindow.ui:3345
 msgid "_Forward"
 msgstr "_Indenant"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:1
+#: ui/PrinterPropertiesDialog.ui:92
 msgid "Printer Properties"
 msgstr "Proprietâts de stampadore"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:2
+#: ui/PrinterPropertiesDialog.ui:132
 msgid "Co_nflicts"
 msgstr "Co_nflits"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:6
+#: ui/PrinterPropertiesDialog.ui:197
 msgid "_Close"
 msgstr "_Siere"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:8
+#: ui/PrinterPropertiesDialog.ui:298
 msgid "Location:"
 msgstr "Ubicazion:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:9
+#: ui/PrinterPropertiesDialog.ui:354
 msgid "Device URI:"
 msgstr "URI dispositîf:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:10
+#: ui/PrinterPropertiesDialog.ui:374
 msgid "Printer State:"
 msgstr "Stât de stampadore:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:11
+#: ui/PrinterPropertiesDialog.ui:394
 msgid "Make and Model:"
 msgstr "Produtôr e model:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:12
+#: ui/PrinterPropertiesDialog.ui:431 ui/PrinterPropertiesDialog.ui:476
 msgid "Change..."
 msgstr "Cambie..."
 
-#: ../ui/PrinterPropertiesDialog.ui.h:13
-msgid "make and model"
-msgstr "produtôr e model"
-
-#: ../ui/PrinterPropertiesDialog.ui.h:14
-msgid "printer state"
-msgstr "stât de stampadore"
-
-#: ../ui/PrinterPropertiesDialog.ui.h:15
+#: ui/PrinterPropertiesDialog.ui:520
 msgid "<b>Settings</b>"
 msgstr "<b>Impostazions</b>"
 
 #. Not more than 25 characters
-#: ../ui/PrinterPropertiesDialog.ui.h:19
+#: ui/PrinterPropertiesDialog.ui:562
 msgid "Print Self-Test Page"
 msgstr "Stampe pagjine di prove"
 
 #. Not more than 25 characters
-#: ../ui/PrinterPropertiesDialog.ui.h:21
+#: ui/PrinterPropertiesDialog.ui:577
 msgid "Clean Print Heads"
 msgstr "Netisie testinis-stampe"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:22
+#: ui/PrinterPropertiesDialog.ui:596
 msgid "<b>Tests and Maintenance</b>"
 msgstr "<b>Provis e manutenzion</b>"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:23
+#: ui/PrinterPropertiesDialog.ui:613
 msgid "Settings"
 msgstr "Impostazions"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:24
+#: ui/PrinterPropertiesDialog.ui:646
 msgid "Enabled"
 msgstr "Abilitade"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:25
+#: ui/PrinterPropertiesDialog.ui:663
 msgid "Accepting jobs"
 msgstr "Acetazion lavôrs"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:26
+#: ui/PrinterPropertiesDialog.ui:679
 msgid "Shared"
 msgstr "Condividude"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:27
+#: ui/PrinterPropertiesDialog.ui:705
 msgid ""
 "<i>Not published\n"
 "See server settings</i>"
@@ -3094,67 +3712,67 @@ msgstr ""
 "<i>No publicade\n"
 "Viodi lis impostazions dal servidôr</i>"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:29
+#: ui/PrinterPropertiesDialog.ui:722
 msgid "<b>State</b>"
 msgstr "<b>Stât</b>"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:30
+#: ui/PrinterPropertiesDialog.ui:752
 msgid "Error Policy:"
 msgstr "Politiche dai erôrs:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:31
+#: ui/PrinterPropertiesDialog.ui:771
 msgid "Operation Policy:"
 msgstr "Politiche di funzionament:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:32
+#: ui/PrinterPropertiesDialog.ui:825
 msgid "<b>Policies</b>"
 msgstr "<b>Politichis</b>"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:33
+#: ui/PrinterPropertiesDialog.ui:855
 msgid "Starting Banner:"
 msgstr "Strisson di inizi:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:34
+#: ui/PrinterPropertiesDialog.ui:874
 msgid "Ending Banner:"
 msgstr "Strisson finâl:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:35
+#: ui/PrinterPropertiesDialog.ui:928
 msgid "<b>Banner</b>"
 msgstr "<b>Strisson</b>"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:36
+#: ui/PrinterPropertiesDialog.ui:948
 msgid "Policies"
 msgstr "Politichis"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:37
+#: ui/PrinterPropertiesDialog.ui:964
 msgid "Allow printing for everyone except these users:"
 msgstr "Permet la stampe a ducj fûr che chescj utents:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:38
+#: ui/PrinterPropertiesDialog.ui:980
 msgid "Deny printing for everyone except these users:"
 msgstr "Dinee la stampe a ducj fûr che chescj utents:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:39
+#: ui/PrinterPropertiesDialog.ui:1012
 msgid "user"
 msgstr "utent"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:41
+#: ui/PrinterPropertiesDialog.ui:1080
 msgid "_Add"
 msgstr "_Zonte"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:42
+#: ui/PrinterPropertiesDialog.ui:1118
 msgid "Access Control"
 msgstr "Control dai acès"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:43
+#: ui/PrinterPropertiesDialog.ui:1137
 msgid "Add or Remove Members"
 msgstr "Zonte o gjave membris"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:46
+#: ui/PrinterPropertiesDialog.ui:1273
 msgid "Members"
 msgstr "Membris"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:49
+#: ui/PrinterPropertiesDialog.ui:1393
 msgid ""
 "Specify the default job options for this printer.  Jobs arriving at this "
 "print server will have these options added if they are not already set by "
@@ -3164,233 +3782,271 @@ msgstr ""
 "lavôrs che a rivin su chest servidôr di stampe a vignaran zontadis chestis "
 "opzions se no son za stadis stabilidis de aplicazion."
 
-#: ../ui/PrinterPropertiesDialog.ui.h:50
+#: ui/PrinterPropertiesDialog.ui:1421
 msgid "Copies:"
 msgstr "Copiis:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:51
+#: ui/PrinterPropertiesDialog.ui:1440
 msgid "Orientation:"
 msgstr "Orientament:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:52
+#: ui/PrinterPropertiesDialog.ui:1452
 msgid "Scale to fit"
 msgstr "Scjalâ par jemplâ la pagjine"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:53
+#: ui/PrinterPropertiesDialog.ui:1479
 msgid "Pages per side:"
 msgstr "Pagjinis par bande:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:54
+#: ui/PrinterPropertiesDialog.ui:1508
 msgid "Pages per side layout:"
 msgstr "Disposizion pagjinis par bande:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:55
+#: ui/PrinterPropertiesDialog.ui:1527
 msgid "Brightness:"
 msgstr "Luminositât:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:56
+#: ui/PrinterPropertiesDialog.ui:1546
 msgid "Finishings:"
 msgstr "Finiduris:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:57
+#: ui/PrinterPropertiesDialog.ui:1565
 msgid "Job priority:"
 msgstr "Prioritât lavôr:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:58
+#: ui/PrinterPropertiesDialog.ui:1584
 msgid "Media:"
 msgstr "Gjenar di cjarte:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:59
+#: ui/PrinterPropertiesDialog.ui:1603
 msgid "Sides:"
 msgstr "Bandis:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:60
+#: ui/PrinterPropertiesDialog.ui:1622
 msgid "Hold until:"
 msgstr "Manten fin a:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:61
+#: ui/PrinterPropertiesDialog.ui:1641
 msgid "Output order:"
 msgstr "Ordin di jessude:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:62
+#: ui/PrinterPropertiesDialog.ui:1660
 msgid "Print quality:"
 msgstr "Cualitât de stampe:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:63
+#: ui/PrinterPropertiesDialog.ui:1679
 msgid "Printer resolution:"
 msgstr "Risoluzion de stampadore:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:64
+#: ui/PrinterPropertiesDialog.ui:1698
 msgid "Output bin:"
 msgstr "Scansel di jessude:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:65
+#: ui/PrinterPropertiesDialog.ui:1739 ui/PrinterPropertiesDialog.ui:2435
+#: ui/PrinterPropertiesDialog.ui:2630
 msgid "100"
 msgstr "100"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:66
+#: ui/PrinterPropertiesDialog.ui:1749 ui/PrinterPropertiesDialog.ui:2445
+#: ui/PrinterPropertiesDialog.ui:2640
+msgid "%"
+msgstr ""
+
+#: ui/PrinterPropertiesDialog.ui:1803
 msgid "50"
 msgstr "50"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:67
+#: ui/PrinterPropertiesDialog.ui:1945 ui/PrinterPropertiesDialog.ui:1963
+#: ui/PrinterPropertiesDialog.ui:1981 ui/PrinterPropertiesDialog.ui:1999
+#: ui/PrinterPropertiesDialog.ui:2017 ui/PrinterPropertiesDialog.ui:2035
+#: ui/PrinterPropertiesDialog.ui:2053 ui/PrinterPropertiesDialog.ui:2071
+#: ui/PrinterPropertiesDialog.ui:2089 ui/PrinterPropertiesDialog.ui:2107
+#: ui/PrinterPropertiesDialog.ui:2125 ui/PrinterPropertiesDialog.ui:2218
+#: ui/PrinterPropertiesDialog.ui:2236 ui/PrinterPropertiesDialog.ui:2254
+#: ui/PrinterPropertiesDialog.ui:2272 ui/PrinterPropertiesDialog.ui:2549
+#: ui/PrinterPropertiesDialog.ui:2567 ui/PrinterPropertiesDialog.ui:2585
+#: ui/PrinterPropertiesDialog.ui:2671 ui/PrinterPropertiesDialog.ui:2689
+#: ui/PrinterPropertiesDialog.ui:2940 ui/PrinterPropertiesDialog.ui:2958
+#: ui/PrinterPropertiesDialog.ui:2976 ui/PrinterPropertiesDialog.ui:3312
+#: ui/PrinterPropertiesDialog.ui:3330 ui/PrinterPropertiesDialog.ui:3348
+#: ui/PrinterPropertiesDialog.ui:3366 ui/PrinterPropertiesDialog.ui:3384
+#: ui/PrinterPropertiesDialog.ui:3402
 msgid "Reset"
 msgstr "Ristabilìs"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:68
+#: ui/PrinterPropertiesDialog.ui:2147 ui/PrinterPropertiesDialog.ui:2607
+#: ui/PrinterPropertiesDialog.ui:2998
 msgid "More"
 msgstr "Altris opzions"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:69
+#: ui/PrinterPropertiesDialog.ui:2165 ui/PrinterPropertiesDialog.ui:2923
 msgid "1"
 msgstr "1"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:70
+#: ui/PrinterPropertiesDialog.ui:2294
 msgid "<b>Common Options</b>"
 msgstr "<b>Opzions comuns</b>"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:71
+#: ui/PrinterPropertiesDialog.ui:2317
 msgid "Mirror"
 msgstr "Speculâr"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:72
+#: ui/PrinterPropertiesDialog.ui:2345
 msgid "Scaling:"
 msgstr "Scjaladure:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:73
+#: ui/PrinterPropertiesDialog.ui:2374
 msgid "Saturation:"
 msgstr "Saturazion:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:74
+#: ui/PrinterPropertiesDialog.ui:2393
 msgid "Hue adjustment:"
 msgstr "Justament tonalitât:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:75
+#: ui/PrinterPropertiesDialog.ui:2412
 msgid "Gamma:"
 msgstr "Gamma:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:76
+#: ui/PrinterPropertiesDialog.ui:2487 ui/PrinterPropertiesDialog.ui:3116
+#: ui/PrinterPropertiesDialog.ui:3168 ui/PrinterPropertiesDialog.ui:3220
+#: ui/PrinterPropertiesDialog.ui:3272
 msgid "0"
 msgstr "0"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:77
+#: ui/PrinterPropertiesDialog.ui:2496
+msgid "°"
+msgstr ""
+
+#: ui/PrinterPropertiesDialog.ui:2533
 msgid "1000"
 msgstr "1000"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:78
+#: ui/PrinterPropertiesDialog.ui:2711
 msgid "<b>Image Options</b>"
 msgstr "<b>Opzions imagjin</b>"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:79
+#: ui/PrinterPropertiesDialog.ui:2741
 msgid "Characters per inch:"
 msgstr "Caratars par once:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:80
+#: ui/PrinterPropertiesDialog.ui:2760
 msgid "Lines per inch:"
 msgstr "Liniis par once:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:81
+#: ui/PrinterPropertiesDialog.ui:2779
 msgid "Left margin:"
 msgstr "Margjin di çampe:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:82
+#: ui/PrinterPropertiesDialog.ui:2798
 msgid "Right margin:"
 msgstr "Margjin di diestre:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:83
+#: ui/PrinterPropertiesDialog.ui:2817
 msgid "Top margin:"
 msgstr "Margjin superiôr:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:84
+#: ui/PrinterPropertiesDialog.ui:2836
 msgid "Bottom margin:"
 msgstr "Margjin inferiôr:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:85
+#: ui/PrinterPropertiesDialog.ui:2858
 msgid "Pretty print"
 msgstr "Formatazion bilisiade"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:86
+#: ui/PrinterPropertiesDialog.ui:2878
 msgid "Word wrap"
 msgstr "Gnove rie automatiche"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:87
+#: ui/PrinterPropertiesDialog.ui:2905
 msgid "Columns:"
 msgstr "Colonis:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:88
+#: ui/PrinterPropertiesDialog.ui:3022
 msgid "10.00"
 msgstr "10.00"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:89
+#: ui/PrinterPropertiesDialog.ui:3069
 msgid "6.40"
 msgstr "6.40"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:90
+#: ui/PrinterPropertiesDialog.ui:3125 ui/PrinterPropertiesDialog.ui:3140
+#: ui/PrinterPropertiesDialog.ui:3177 ui/PrinterPropertiesDialog.ui:3192
+#: ui/PrinterPropertiesDialog.ui:3229 ui/PrinterPropertiesDialog.ui:3244
+#: ui/PrinterPropertiesDialog.ui:3281 ui/PrinterPropertiesDialog.ui:3296
 msgid "points"
 msgstr "ponts"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:91
+#: ui/PrinterPropertiesDialog.ui:3424
 msgid "<b>Text Options</b>"
 msgstr "<b>Opzions di test</b>"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:92
+#: ui/PrinterPropertiesDialog.ui:3501
 msgid "To add a new option, enter its name in the box below and click to add."
 msgstr ""
 "Par zontâ une gnove opzion, inserìs il so non tal ricuadri chi sot e fâs "
 "clic par zontâle."
 
-#: ../ui/PrinterPropertiesDialog.ui.h:94
+#: ui/PrinterPropertiesDialog.ui:3563
 msgid "<b>Other Options (Advanced)</b>"
 msgstr "<b>Altris opzions (avanzadis)</b>"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:95
+#: ui/PrinterPropertiesDialog.ui:3587
 msgid "Job Options"
 msgstr "Opzions dal lavôr"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:97
+#: ui/PrinterPropertiesDialog.ui:3678
 msgid "<b>Ink/Toner Levels</b>"
 msgstr "<b>Nivei di ingjustri/toner</b>"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:98
+#: ui/PrinterPropertiesDialog.ui:3708
 msgid "There are no status messages for this printer."
 msgstr "No si àn messaçs di stât par cheste stampadore."
 
-#: ../ui/PrinterPropertiesDialog.ui.h:99
+#: ui/PrinterPropertiesDialog.ui:3715
+msgid "label229"
+msgstr ""
+
+#: ui/PrinterPropertiesDialog.ui:3745
+msgid "label230"
+msgstr ""
+
+#: ui/PrinterPropertiesDialog.ui:3758
 msgid "<b>Status Messages</b>"
 msgstr "<b>Messaçs di stât</b>"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:100
+#: ui/PrinterPropertiesDialog.ui:3778
 msgid "Ink/Toner Levels"
 msgstr "Nivei di ingjustri/toner"
 
-#: ../ui/PrintersWindow.ui.h:1
+#: ui/PrintersWindow.ui:32
 msgid "_Server"
 msgstr "_Servidôr"
 
-#: ../ui/PrintersWindow.ui.h:3
+#: ui/PrintersWindow.ui:50
 msgid "_View"
 msgstr "_Mostre"
 
-#: ../ui/PrintersWindow.ui.h:4
+#: ui/PrintersWindow.ui:60
 msgid "_Discovered Printers"
 msgstr "_Stampadoris scuviertis"
 
-#: ../ui/PrintersWindow.ui.h:5
+#: ui/PrintersWindow.ui:75
 msgid "_Help"
 msgstr "_Jutori"
 
-#: ../ui/PrintersWindow.ui.h:6
+#: ui/PrintersWindow.ui:82
 msgid "_Troubleshoot"
 msgstr "_Risoluzion dai problemis"
 
-#: ../ui/PrintersWindow.ui.h:7
+#: ui/PrintersWindow.ui:94
 msgid "About"
 msgstr "Informazions"
 
-#: ../ui/PrintersWindow.ui.h:8
+#: ui/PrintersWindow.ui:188
 msgid "There are no printers configured yet."
 msgstr "No si àn ancjemò stampadoris configuradis."
 
-#: ../ui/PrintersWindow.ui.h:10
+#: ui/PrintersWindow.ui:253
 msgid ""
 "Printing service not available.  Start the service on this computer or "
 "connect to another server."
@@ -3398,55 +4054,55 @@ msgstr ""
 "Servizi di stampe no disponibil.  Inviâ il servizi su chest computer o "
 "conetisi a un altri servidôr."
 
-#: ../ui/PrintersWindow.ui.h:11
+#: ui/PrintersWindow.ui:271
 msgid "Start Service"
 msgstr "Invie il servizi"
 
-#: ../ui/ServerSettingsDialog.ui.h:1
+#: ui/ServerSettingsDialog.ui:8
 msgid "Server Settings"
 msgstr "Impostazions dal servidôr"
 
-#: ../ui/ServerSettingsDialog.ui.h:4
+#: ui/ServerSettingsDialog.ui:83
 msgid "_Show printers shared by other systems"
 msgstr "_Mostre lis stampadoris condividudis dai altris sistemis"
 
-#: ../ui/ServerSettingsDialog.ui.h:5
+#: ui/ServerSettingsDialog.ui:110
 msgid "_Publish shared printers connected to this system"
 msgstr "_Publiche lis stampadoris condividudis colegadis a chest sisteme"
 
-#: ../ui/ServerSettingsDialog.ui.h:6
+#: ui/ServerSettingsDialog.ui:126
 msgid "Allow printing from the _Internet"
 msgstr "Permet la stampe che e rive di _internet"
 
-#: ../ui/ServerSettingsDialog.ui.h:7
+#: ui/ServerSettingsDialog.ui:143
 msgid "Allow _remote administration"
 msgstr "Permet la aministrazion di _lontan"
 
-#: ../ui/ServerSettingsDialog.ui.h:8
+#: ui/ServerSettingsDialog.ui:159
 msgid "Allow _users to cancel any job (not just their own)"
 msgstr "Permet ai _utents di anulâ cualsisei lavôr (no dome i lôr)"
 
-#: ../ui/ServerSettingsDialog.ui.h:9
+#: ui/ServerSettingsDialog.ui:175
 msgid "Save _debugging information for troubleshooting"
 msgstr "Salve lis informazions di _debug pe risoluzion dai erôrs"
 
-#: ../ui/ServerSettingsDialog.ui.h:10
+#: ui/ServerSettingsDialog.ui:213
 msgid "Do not preserve job history"
 msgstr "No sta conservâ la cronologjie dai lavôrs"
 
-#: ../ui/ServerSettingsDialog.ui.h:11
+#: ui/ServerSettingsDialog.ui:228
 msgid "Preserve job history but not files"
 msgstr "Conserve la cronologjie dai lavôrs ma no i files"
 
-#: ../ui/ServerSettingsDialog.ui.h:12
+#: ui/ServerSettingsDialog.ui:244
 msgid "Preserve job files (allow reprinting)"
 msgstr "Conserve i files dai lavôrs (permet di tornâ a stampâ)"
 
-#: ../ui/ServerSettingsDialog.ui.h:13
+#: ui/ServerSettingsDialog.ui:264
 msgid "<b>Job history</b>"
 msgstr "<b>Storic dai lavôrs</b>"
 
-#: ../ui/ServerSettingsDialog.ui.h:14
+#: ui/ServerSettingsDialog.ui:292
 msgid ""
 "Usually print servers broadcast their queues. Specify print servers below to "
 "periodically ask for queues instead."
@@ -3454,637 +4110,47 @@ msgstr ""
 "Di solit i servidôrs di stampe a difondin lis lôr codis. Specificâ chi sot i "
 "servidôrs di stampe che invezit a domandin lis codis in maniere periodiche."
 
-#: ../ui/ServerSettingsDialog.ui.h:16
+#: ui/ServerSettingsDialog.ui:351
 msgid "Remove"
 msgstr "Gjave"
 
-#: ../ui/ServerSettingsDialog.ui.h:17
+#: ui/ServerSettingsDialog.ui:385
 msgid "<b>Browse servers</b>"
 msgstr "<b>Esplore i servidôrs</b>"
 
-#: ../ui/ServerSettingsDialog.ui.h:18
+#: ui/ServerSettingsDialog.ui:402
 msgid "Advanced Server Settings"
 msgstr "Impostazions avanzadis dal servidôr"
 
-#: ../ui/ServerSettingsDialog.ui.h:19
+#: ui/ServerSettingsDialog.ui:421
 msgid "<b>Basic Server Settings</b>"
 msgstr "<b>Impostazions di base dal servidôr</b>"
 
-#: ../ui/SMBBrowseDialog.ui.h:1
+#: ui/SMBBrowseDialog.ui:7
 msgid "SMB Browser"
 msgstr "Navigadôr SMB"
 
-#: ../ui/statusicon_popupmenu.ui.h:1
+#: ui/statusicon_popupmenu.ui:11
 msgid "_Hide"
 msgstr "_Plate"
 
-#: ../ui/statusicon_popupmenu.ui.h:2
+#: ui/statusicon_popupmenu.ui:18
 msgid "_Configure Printers"
 msgstr "_Configure stampadoris"
 
-#: ../ui/statusicon_popupmenu.ui.h:3
+#: ui/statusicon_popupmenu.ui:33
 msgid "_Quit"
 msgstr "_Jes"
 
-#: ../ui/WaitWindow.ui.h:1
+#: ui/WaitWindow.ui:7
 msgid "Please Wait"
 msgstr "Spiete un moment par plasê"
 
-#: ../system-config-printer.desktop.in.h:2
-msgid "Configure printers"
-msgstr "Configure lis stampadoris"
-
-#: ../statereason.py:109
-msgid "Toner low"
-msgstr "Toner in esauriment"
-
-#: ../statereason.py:110
-#, python-format
-msgid "Printer '%s' is low on toner."
-msgstr "Il toner de stampadore '%s' al è cuasi finît."
-
-#: ../statereason.py:111
-msgid "Toner empty"
-msgstr "Toner finît"
-
-#: ../statereason.py:112
-#, python-format
-msgid "Printer '%s' has no toner left."
-msgstr "Il toner de stampadore '%s' al è finît."
-
-#: ../statereason.py:113
-msgid "Cover open"
-msgstr "Tapon viert"
-
-#: ../statereason.py:114
-#, python-format
-msgid "The cover is open on printer '%s'."
-msgstr "Il tapon de stampadore '%s' al è viert."
-
-#: ../statereason.py:115
-msgid "Door open"
-msgstr "Portel viert"
-
-#: ../statereason.py:116
-#, python-format
-msgid "The door is open on printer '%s'."
-msgstr "Il portel de stampadore '%s' al è viert."
-
-#: ../statereason.py:117
-msgid "Paper low"
-msgstr "Cjarte in esauriment"
-
-#: ../statereason.py:118
-#, python-format
-msgid "Printer '%s' is low on paper."
-msgstr "La cjarte te stampadore '%s' e je cuasi finide."
-
-#: ../statereason.py:119
-msgid "Out of paper"
-msgstr "Cjarte finide"
-
-#: ../statereason.py:120
-#, python-format
-msgid "Printer '%s' is out of paper."
-msgstr "La stampadore '%s' e à finît la cjarte."
-
-#: ../statereason.py:121
-msgid "Ink low"
-msgstr "Ingjustri in esauriment"
-
-#: ../statereason.py:122
-#, python-format
-msgid "Printer '%s' is low on ink."
-msgstr "L'ingjustri de stampadore '%s' al sta par finî."
-
-#: ../statereason.py:123
-msgid "Ink empty"
-msgstr "Ingjustri finît"
-
-#: ../statereason.py:124
-#, python-format
-msgid "Printer '%s' has no ink left."
-msgstr "L'ingjustri de stampadore '%s' al è finît."
-
-#: ../statereason.py:125
-msgid "Printer off-line"
-msgstr "Stampadore fûr colegament"
-
-#: ../statereason.py:126
-#, python-format
-msgid "Printer '%s' is currently off-line."
-msgstr "In chest moment la stampadore '%s' e je fûr colegament."
-
-#: ../statereason.py:127
-msgid "Not connected?"
-msgstr "No conetût?"
-
-#: ../statereason.py:128
-#, python-format
-msgid "Printer '%s' may not be connected."
-msgstr "Al podarès jessi che la stampadore '%s' no sedi conetude."
-
-#: ../statereason.py:129 ../statereason.py:149
-msgid "Printer error"
-msgstr "Erôr de stampadore"
-
-#: ../statereason.py:130
-#, python-format
-msgid "There is a problem on printer '%s'."
-msgstr "Al è vignût fûr un erôr su la stampadore '%s'."
-
-#: ../statereason.py:132
-msgid "Printer configuration error"
-msgstr "Erôr di configurazion de stampadore"
-
-#: ../statereason.py:133
-#, python-format
-msgid "There is a missing print filter for printer '%s'."
-msgstr "Al mancje un filtri di stampe pe stampadore '%s'."
-
-#: ../statereason.py:145
-msgid "Printer report"
-msgstr "Rapuart de stampadore"
-
-#: ../statereason.py:147
-msgid "Printer warning"
-msgstr "Avîs de stampadore"
-
-#: ../statereason.py:166
-#, python-format
-msgid "Printer '%s': '%s'."
-msgstr "Stampadore '%s': '%s'."
-
-#: ../timedops.py:116 ../timedops.py:195
-msgid "Please wait"
-msgstr "Spiete un moment par plasê"
-
-#: ../timedops.py:122 ../timedops.py:202
-msgid "Gathering information"
-msgstr "Recupar des informazions"
-
-#: ../ToolbarSearchEntry.py:74
-msgid "_Filter:"
-msgstr "_Filtri:"
-
-#: ../troubleshoot/__init__.py:57
-msgid "Printing troubleshooter"
-msgstr "Risoluzion problemis di stampe"
-
-#: ../troubleshoot/base.py:36
-msgid ""
-"To start this tool, select System->Administration->Print Settings from the "
-"main menu."
-msgstr ""
-"Par eseguî chest program selezionâ dal menù principâl Sisteme->Aministrazion-"
-">Impostazions di stampe."
-
-#: ../troubleshoot/CheckLocalServerPublishing.py:28
-msgid "Server Not Exporting Printers"
-msgstr "Il servidôr nol espuarte stampadoris"
-
-#: ../troubleshoot/CheckLocalServerPublishing.py:29
-msgid ""
-"Although one or more printers are marked as being shared, this print server "
-"is not exporting shared printers to the network."
-msgstr ""
-"Ancje se cualchi stampadore e je segnade tant che condividude, chest "
-"servidôr di stampe nol espuarte chestis stampadoris su la rêt."
-
-#: ../troubleshoot/CheckLocalServerPublishing.py:33
-msgid ""
-"Enable the 'Publish shared printers connected to this system' option in the "
-"server settings using the printing administration tool."
-msgstr ""
-"Abilitâ la opzion 'Publicâ lis stampadoris condividudis colegadis a chest "
-"sisteme' tes impostazions dal servidôr, doprant il strument di aministrazion "
-"de stampe."
-
-#: ../troubleshoot/CheckPPDSanity.py:48 ../applet.py:186
-msgid "Install"
-msgstr "Instalazion"
-
-#: ../troubleshoot/CheckPPDSanity.py:100
-msgid "Invalid PPD File"
-msgstr "File PPD no valit"
-
-#: ../troubleshoot/CheckPPDSanity.py:111
-#, python-format
-msgid ""
-"The PPD file for printer '%s' does not conform to the specification.  "
-"Possible reason follows:"
-msgstr ""
-"Il file PPD pe stampadore '%s' nol è conformi aes specifichis.  Chi indenant "
-"lis pussibilis resons:"
-
-#. Perhaps cupstestppd is not in the path.
-#: ../troubleshoot/CheckPPDSanity.py:117
-#, python-format
-msgid "There is a problem with the PPD file for printer '%s'."
-msgstr "Al è vignût fûr un erôr cul file PPD pe stampadore '%s'."
-
-#: ../troubleshoot/CheckPPDSanity.py:127
-msgid "Missing Printer Driver"
-msgstr "Al mancje il driver de stampadore"
-
-#: ../troubleshoot/CheckPPDSanity.py:141
-#, python-format
-msgid ""
-"Printer '%s' requires the '%s' program but it is not currently installed."
-msgstr ""
-"La stampadore '%s' e à bisogne dal program '%s' che in chest moment nol "
-"risulte instalât."
-
-#: ../troubleshoot/ChooseNetworkPrinter.py:31
-msgid "Choose Network Printer"
-msgstr "Selezionâ la stampadore di rêt"
-
-#: ../troubleshoot/ChooseNetworkPrinter.py:32
-msgid ""
-"Please select the network printer you are trying to use from the list below. "
-"If it does not appear in the list, select 'Not listed'."
-msgstr ""
-"Selezionâ de liste chi sot la stampadore di rêt che si vûl doprâ. Se no je "
-"te liste, selezionâ 'No in liste'."
-
-#: ../troubleshoot/ChooseNetworkPrinter.py:41
-#: ../troubleshoot/ChoosePrinter.py:47 ../troubleshoot/DeviceListed.py:45
-msgid "Information"
-msgstr "Informazions"
-
-#: ../troubleshoot/ChooseNetworkPrinter.py:75
-#: ../troubleshoot/ChoosePrinter.py:71 ../troubleshoot/DeviceListed.py:77
-msgid "Not listed"
-msgstr "No in liste"
-
-#: ../troubleshoot/ChoosePrinter.py:37
-msgid "Choose Printer"
-msgstr "Selezionâ la stampadore"
-
-#: ../troubleshoot/ChoosePrinter.py:38
-msgid ""
-"Please select the printer you are trying to use from the list below. If it "
-"does not appear in the list, select 'Not listed'."
-msgstr ""
-"Selezionâ de liste chi sot la stampadore che si vûl doprâ. Se no je te "
-"liste, selezionâ 'No in liste'."
-
-#: ../troubleshoot/DeviceListed.py:37
-msgid "Choose Device"
-msgstr "Selezionâ il dispositîf"
-
-#: ../troubleshoot/DeviceListed.py:38
-msgid ""
-"Please select the device you want to use from the list below. If it does not "
-"appear in the list, select 'Not listed'."
-msgstr ""
-"Selezionâ de liste chi sot il dispositîf che si vûl doprâ. Se nol è te "
-"liste, selezionâ 'No in liste'."
-
-#: ../troubleshoot/ErrorLogCheckpoint.py:40
-msgid "Debugging"
-msgstr "Debug"
-
-#: ../troubleshoot/ErrorLogCheckpoint.py:41
-msgid ""
-"This step will enable debugging output from the CUPS scheduler.  This may "
-"cause the scheduler to restart.  Click the button below to enable debugging."
-msgstr ""
-"Chest passaç al abilitarà lis operazions di debug de jessude dal "
-"planificadôr CUPS.  Chest al podarès fâ tornâ a inviâ il planificadôr.  Fâs "
-"clic sul boton chi sot par abilitâ il debug."
-
-#: ../troubleshoot/ErrorLogCheckpoint.py:45
-msgid "Enable Debugging"
-msgstr "Ativâ il debug"
-
-#: ../troubleshoot/ErrorLogCheckpoint.py:236
-msgid "Debug logging enabled."
-msgstr "Debug abilitât."
-
-#: ../troubleshoot/ErrorLogCheckpoint.py:238
-msgid "Debug logging was already enabled."
-msgstr "Il debug al è za abilitât."
-
-#: ../troubleshoot/ErrorLogFetch.py:41
-msgid "Retrieve Journal Entries"
-msgstr "Recupere lis vôs dal gjornâl"
-
-#: ../troubleshoot/ErrorLogFetch.py:42
-msgid ""
-"No system journal entries were found. This may be because you are not an "
-"administrator. To fetch journal entries please run this command:"
-msgstr ""
-"No son stadis cjatadis vôs tal gjornâl di sisteme. Chest al podarès jessi "
-"parcè che no tu sês un aministradôr. Par otignî lis vôs dal gjornâl eseguìs "
-"chest comant:"
-
-#: ../troubleshoot/ErrorLogParse.py:32
-msgid "Error log messages"
-msgstr "Messaçs di erôr dal regjistri"
-
-#: ../troubleshoot/ErrorLogParse.py:33
-msgid "There are messages in the error log."
-msgstr "Tal regjistri a son presints messaçs di erôr."
-
-#: ../troubleshoot/Locale.py:31
-msgid "Incorrect Page Size"
-msgstr "Dimension pagjine sbaliade"
-
-#: ../troubleshoot/Locale.py:32
-msgid ""
-"The page size for the print job was not the printer's default page size.  If "
-"this is not intentional it may cause alignment problems."
-msgstr ""
-"La dimension de pagjine pal lavôr in stampe nol corispuint ae dimension "
-"predefinide pe stampadore.  Se chest nol è intenzionâl al podarès causâ "
-"problemis di inlineament."
-
-#: ../troubleshoot/Locale.py:44
-msgid "Print job page size:"
-msgstr "Dimension de pagjine dal lavôr di stampe:"
-
-#: ../troubleshoot/Locale.py:48
-msgid "Printer page size:"
-msgstr "Dimension de pagjine de stampadore:"
-
-#: ../troubleshoot/LocalOrRemote.py:26
-msgid "Printer Location"
-msgstr "Ubicazion de stampadore"
-
-#: ../troubleshoot/LocalOrRemote.py:27
-msgid "Is the printer connected to this computer or available on the network?"
-msgstr "Ise conetude la stampadore a chest computer o disponibile in rêt?"
-
-#: ../troubleshoot/LocalOrRemote.py:29
-msgid "Locally connected printer"
-msgstr "Stampadore colegade in locâl"
-
-#: ../troubleshoot/NetworkCUPSPrinterShared.py:28
-msgid "Queue Not Shared"
-msgstr "Code di stampe no condividude"
-
-#: ../troubleshoot/NetworkCUPSPrinterShared.py:29
-msgid "The CUPS printer on the server is not shared."
-msgstr "La stampadore CUPS sul servidôr no je condividude."
-
-#: ../troubleshoot/PrinterStateReasons.py:34
-msgid "Status Messages"
-msgstr "Messaçs di stât"
-
-#: ../troubleshoot/PrinterStateReasons.py:35
-msgid "There are status messages associated with this queue."
-msgstr "A son presints messaçs di stât associâts a cheste code di stampe."
-
-#: ../troubleshoot/PrinterStateReasons.py:65
-#, python-format
-msgid "The printer's state message is: '%s'."
-msgstr "Il messaçs di stât de stampadore al è: '%s'."
-
-#: ../troubleshoot/PrinterStateReasons.py:90
-msgid "Errors are listed below:"
-msgstr "I erôrs a son listâts chi sot:"
-
-#: ../troubleshoot/PrinterStateReasons.py:95
-msgid "Warnings are listed below:"
-msgstr "I avîs a son listâts chi sot:"
-
-#: ../troubleshoot/PrintTestPage.py:64
-msgid "Test Page"
-msgstr "Pagjine di prove"
-
-#: ../troubleshoot/PrintTestPage.py:65
-msgid ""
-"Now print a test page.  If you are having problems printing a specific "
-"document, print that document now and mark the print job below."
-msgstr ""
-"Cumò stampe une pagjine di prove.  Se tu âs fastidis a stampâ un specific "
-"document, stampe chel document cumò e segne il lavôr di stampe chi sot."
-
-#: ../troubleshoot/PrintTestPage.py:77
-msgid "Cancel All Jobs"
-msgstr "Cancele ducj i lavôrs"
-
-#: ../troubleshoot/PrintTestPage.py:83
-msgid "Test"
-msgstr "Prove"
-
-#: ../troubleshoot/PrintTestPage.py:113
-msgid "Did the marked print jobs print correctly?"
-msgstr "I lavôrs segnâts sono stâts stampâts ben?"
-
-#: ../troubleshoot/PrintTestPage.py:144
-#, python-format
-msgid "Remember to load paper of type '%s' into the printer first."
-msgstr "Visiti prime di cjariâ la cjarte di gjenar '%s' te stampadore."
-
-#: ../troubleshoot/PrintTestPage.py:430
-msgid "Error submitting test page"
-msgstr "Erôr tal inviâ la pagjine di prove"
-
-#: ../troubleshoot/QueueNotEnabled.py:58
-#: ../troubleshoot/QueueRejectingJobs.py:68
-#, python-format
-msgid "The reason given is: '%s'."
-msgstr "La reson dade e je: '%s'."
-
-#: ../troubleshoot/QueueNotEnabled.py:60
-msgid "This may be due to the printer being disconnected or switched off."
-msgstr "Al podarès jessi che la stampadore e sedi scolegade o distudade."
-
-#: ../troubleshoot/QueueNotEnabled.py:64
-msgid "Queue Not Enabled"
-msgstr "Code di stampe no abilitade"
-
-#: ../troubleshoot/QueueNotEnabled.py:65
-#, python-format
-msgid "The queue '%s' is not enabled."
-msgstr "La code di stampe '%s' no je abilitade."
-
-#: ../troubleshoot/QueueNotEnabled.py:73
-msgid ""
-"To enable it, select the 'Enabled' checkbox in the 'Policies' tab for the "
-"printer in the printer administration tool."
-msgstr ""
-"Par abilitâ la code di stampe, selezionâ 'Abilitade' te schede 'Politichis' "
-"pe stampadore dal strument di aministrazion de stampadore."
-
-#: ../troubleshoot/QueueRejectingJobs.py:33
-msgid "Queue Rejecting Jobs"
-msgstr "La code e refude i lavôrs di stampe"
-
-#: ../troubleshoot/QueueRejectingJobs.py:65
-#, python-format
-msgid "The queue '%s' is rejecting jobs."
-msgstr "La code di stampe '%s' e refude i lavôrs."
-
-#: ../troubleshoot/QueueRejectingJobs.py:72
-msgid ""
-"To make the queue accept jobs, select the 'Accepting Jobs' checkbox in the "
-"'Policies' tab for the printer in the printer administration tool."
-msgstr ""
-"Par abilitâ la acetazion dai lavôrs di stampe, selezionâ 'Acetazion lavôrs' "
-"te schede 'Politichis' pe stampadore tal strument di aministrazion de "
-"stampadore."
-
-#: ../troubleshoot/RemoteAddress.py:28
-msgid "Remote Address"
-msgstr "Direzion esterne"
-
-#: ../troubleshoot/RemoteAddress.py:29
-msgid ""
-"Please enter as many details as you can about the network address of this "
-"printer."
-msgstr ""
-"Inserî dutis lis informazions che si cognossin su la direzion di rêt di "
-"cheste stampadore."
-
-#: ../troubleshoot/RemoteAddress.py:37
-msgid "Server name:"
-msgstr "Non dal servidôr:"
-
-#: ../troubleshoot/RemoteAddress.py:44
-msgid "Server IP address:"
-msgstr "Direzion IP dal servidôr:"
-
-#: ../troubleshoot/SchedulerNotRunning.py:28
-msgid "CUPS Service Stopped"
-msgstr "Servizi CUPS fermât"
-
-#: ../troubleshoot/SchedulerNotRunning.py:29
-msgid ""
-"The CUPS print spooler does not appear to be running.  To correct this, "
-"choose System->Administration->Services from the main menu and look for the "
-"'cups' service."
-msgstr ""
-"Al somee che il servizi di stampe CUPS nol sedi in esecuzion.  Par comedâ "
-"cheste situazion, selezione dal menù principâl Sisteme->Aministrazion-"
-">Servizis e cîr il servizi 'cups'."
-
-#: ../troubleshoot/ServerFirewalled.py:28
-msgid "Check Server Firewall"
-msgstr "Controlâ il firewall dal servidôr"
-
-#: ../troubleshoot/ServerFirewalled.py:29
-msgid "It is not possible to connect to the server."
-msgstr "Nol è pussibil conetisi al servidôr."
-
-#: ../troubleshoot/ServerFirewalled.py:44
-#, python-format
-msgid ""
-"Please check to see if a firewall or router configuration is blocking TCP "
-"port %d on server '%s'."
-msgstr ""
-"Controlâ che la configurazion di un firewall o di un router no stedi blocant "
-"la puarte TCP %d sul servidôr '%s'."
-
-#: ../troubleshoot/Shrug.py:28
-msgid "Sorry!"
-msgstr "Nus displâs!"
-
-#: ../troubleshoot/Shrug.py:29
-msgid ""
-"There is no obvious solution to this problem.  Your answers have been "
-"collected together with other useful information.  If you would like to "
-"report a bug, please include this information."
-msgstr ""
-"No esist une soluzion naturâl a chest probleme.  Lis rispuestis a son stadis "
-"metudis dongje cun altris informazions utilis.  Se tu desideris segnalâ un "
-"erôr, par plasê inclût cheste informazion."
-
-#: ../troubleshoot/Shrug.py:36
-msgid "Diagnostic Output (Advanced)"
-msgstr "Jessude diagnostiche (avanzade)"
-
-#: ../troubleshoot/Shrug.py:93
-msgid "Error saving file"
-msgstr "Erôr tal salvâ il file"
-
-#: ../troubleshoot/Shrug.py:94
-msgid "There was an error saving the file:"
-msgstr "Al è vignût fûr un erôr tal salvâ il file:"
-
-#: ../troubleshoot/Welcome.py:45
-msgid "Trouble-shooting Printing"
-msgstr "Risoluzion dai problemis di stampe"
-
-#: ../troubleshoot/Welcome.py:47
-msgid ""
-"The next few screens will contain some questions about your problem with "
-"printing. Based on your answers a solution may be suggested."
-msgstr ""
-"Lis prossimis videadis a contignaran cualchi domande sul probleme cjatât cul "
-"procès di stampe. In base aes rispuestis al è pussibil otignî une soluzion."
-
-#: ../troubleshoot/Welcome.py:51
-msgid "Click 'Forward' to begin."
-msgstr "Fâs clic su 'Indenant' par scomençâ."
-
-#: ../applet.py:90
-msgid "Configuring new printer"
-msgstr "Daûr a configurâ une gnove stampadore"
-
-#: ../applet.py:91
-msgid "Please wait..."
-msgstr "Spiete un moment par plasê..."
-
-#. name is a URI, no queue was generated, because no suitable
-#. driver was found
-#: ../applet.py:120 ../applet.py:173
-msgid "Missing printer driver"
-msgstr "Al mancje il driver de stampadore"
-
-#: ../applet.py:127
-#, python-format
-msgid "No printer driver for %s."
-msgstr "Nissun driver di stampadore par %s."
-
-#: ../applet.py:129
-msgid "No driver for this printer."
-msgstr "Nissun driver par cheste stampadore."
-
-#: ../applet.py:171
-msgid "Printer added"
-msgstr "Stampadore zontade"
-
-#: ../applet.py:177
-msgid "Install printer driver"
-msgstr "Instalazion driver di stampadore"
-
-#: ../applet.py:178
-#, python-format
-msgid "`%s' requires driver installation: %s."
-msgstr "`%s' e à bisugne de instalazion dal driver: %s."
-
-#: ../applet.py:202
-#, python-format
-msgid "`%s' is ready for printing."
-msgstr "`%s' e je pronte par stampâ."
-
-#: ../applet.py:206 ../applet.py:218
-msgid "Print test page"
-msgstr "Stampe pagjine di prove"
-
-#: ../applet.py:209
-msgid "Configure"
-msgstr "Configure"
-
-#: ../applet.py:213
-#, python-format
-msgid "`%s' has been added, using the `%s' driver."
-msgstr "`%s' e je stade zontade, doprant il driver `%s'."
-
-#: ../applet.py:221
-msgid "Find driver"
-msgstr "Cjate il driver"
-
-#: ../print-applet.desktop.in.h:1
-msgid "Print Queue Applet"
-msgstr "Applet pe code di stampe"
-
-#: ../print-applet.desktop.in.h:2
-msgid "System tray icon for managing print jobs"
-msgstr "Icone de guantiere di sisteme par gjestî i lavôrs di stampe"
+#~ msgid "make and model"
+#~ msgstr "produtôr e model"
+
+#~ msgid "printer state"
+#~ msgstr "stât de stampadore"
 
 #~ msgid "Internal Tray"
 #~ msgstr "Scansel interni"

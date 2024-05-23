@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2020-05-05 14:10+0200\n"
+"POT-Creation-Date: 2024-05-22 16:51+0200\n"
 "PO-Revision-Date: 2014-12-16 06:10-0500\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Telugu (http://www.transifex.com/projects/p/system-config-"
@@ -21,562 +21,628 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Zanata 3.9.6\n"
 
-#: ../asyncipp.py:473 ../authconn.py:458 ../authconn.py:460
-#: ../errordialogs.py:63 ../pysmb.py:90 ../pysmb.py:92
+#: applet.py:92
+msgid "Configuring new printer"
+msgstr "కొత్త ముద్రణాయంత్రమును ఆకృతీకరించుచున్నది"
+
+#: applet.py:93
+msgid "Please wait..."
+msgstr "దయచేసి వేచివుండండి..."
+
+#. name is a URI, no queue was generated, because no suitable
+#. driver was found
+#: applet.py:122 applet.py:175
+msgid "Missing printer driver"
+msgstr "తప్పిపోయిన ముద్రకం డ్రైవర్"
+
+#: applet.py:129
+#, python-format
+msgid "No printer driver for %s."
+msgstr "%s కొరకు యే ముద్రకం డ్రైవరులేదు."
+
+#: applet.py:131
+msgid "No driver for this printer."
+msgstr "ఈ ముద్రకం కొరకు యే డ్రైవర్ లేదు."
+
+#: applet.py:136 newprinter.py:646 newprinter.py:1716 newprinter.py:3604
+#: newprinter.py:3664 newprinter.py:3716
+msgid "Search"
+msgstr "శోధించుము"
+
+#: applet.py:173
+msgid "Printer added"
+msgstr "ముద్రకం జతచేయబడింది"
+
+#: applet.py:179
+msgid "Install printer driver"
+msgstr "ముద్రకం డ్రైవరును సంస్థాపించుము"
+
+#: applet.py:180
+#, python-format
+msgid "`%s' requires driver installation: %s."
+msgstr "`%s' కు డ్రైవర్ సంస్థాపన అవసరము: %s."
+
+#: applet.py:188 troubleshoot/CheckPPDSanity.py:48
+msgid "Install"
+msgstr "సంస్థాపించుము"
+
+#: applet.py:204
+#, python-format
+msgid "`%s' is ready for printing."
+msgstr "`%s' ముద్రణకు సిద్దముగా వుంది."
+
+#: applet.py:208 applet.py:220
+msgid "Print test page"
+msgstr "పరిశీలనా పుటను ముద్రించుము."
+
+#: applet.py:211
+msgid "Configure"
+msgstr "ఆకృతీకరించు"
+
+#: applet.py:215
+#, python-format
+msgid "`%s' has been added, using the `%s' driver."
+msgstr "`%s' జతచేయబడింది, `%s' డ్రైవరును వుపయోగిస్తోంది."
+
+#: applet.py:223
+msgid "Find driver"
+msgstr "డ్రైవరును కనుగొనుము"
+
+#: asyncipp.py:473 authconn.py:458 authconn.py:460 errordialogs.py:63
+#: pysmb.py:90 pysmb.py:92
 msgid "Not authorized"
 msgstr "అధికారం లేదు"
 
-#: ../asyncipp.py:474 ../authconn.py:461 ../pysmb.py:93
+#: asyncipp.py:474 authconn.py:461 pysmb.py:93
 msgid "The password may be incorrect."
 msgstr "అనుమతి పదం తప్పుకావచ్చు"
 
-#: ../asyncipp.py:485 ../authconn.py:482
+#: asyncipp.py:485 authconn.py:482
 #, python-format
 msgid "Authentication (%s)"
 msgstr "దృవీకరణ (%s)"
 
-#: ../asyncipp.py:560 ../authconn.py:311 ../errordialogs.py:54
-#: ../errordialogs.py:68
+#: asyncipp.py:560 authconn.py:311 errordialogs.py:54 errordialogs.py:68
 msgid "CUPS server error"
 msgstr "CUPS సర్వరుదోషం"
 
-#: ../asyncipp.py:562 ../authconn.py:309
+#: asyncipp.py:562 authconn.py:309
 #, python-format
 msgid "CUPS server error (%s)"
 msgstr "CUPS సేవిక దోషం (%s)"
 
-#: ../asyncipp.py:578 ../authconn.py:319 ../errordialogs.py:55
-#: ../troubleshoot/PrintTestPage.py:431
+#: asyncipp.py:578 authconn.py:319 errordialogs.py:55
+#: troubleshoot/PrintTestPage.py:431
 #, python-format
 msgid "There was an error during the CUPS operation: '%s'."
 msgstr "CUPS అమలులో ఒక దోషం: '%s'."
 
-#: ../asyncipp.py:581 ../authconn.py:322
+#: asyncipp.py:581 authconn.py:322
 msgid "Retry"
 msgstr "తిరిగిప్రయత్నించు"
 
-#: ../asyncipp.py:598 ../authconn.py:265 ../authconn.py:291
+#: asyncipp.py:598 authconn.py:265 authconn.py:291
 msgid "Operation canceled"
 msgstr "పని రద్దుచేయబడింది"
 
-#: ../authconn.py:39 ../pysmb.py:125 ../ui/NewPrinterWindow.ui.h:40
+#: authconn.py:39 pysmb.py:125 ui/NewPrinterWindow.ui:1120
 msgid "Username:"
 msgstr "వినియోగదారునిపేరు:"
 
-#: ../authconn.py:40 ../pysmb.py:131 ../ui/NewPrinterWindow.ui.h:39
+#: authconn.py:40 pysmb.py:131 ui/NewPrinterWindow.ui:1101
 msgid "Password:"
 msgstr "అనుమతిపదం:"
 
-#: ../authconn.py:41 ../pysmb.py:128
+#: authconn.py:41 pysmb.py:128
 msgid "Domain:"
 msgstr "డొమైన్:"
 
 #. After that, prompt
-#: ../authconn.py:50 ../authconn.py:484 ../pysmb.py:98
+#: authconn.py:50 authconn.py:484 pysmb.py:98
 msgid "Authentication"
 msgstr "దృవీకరణ"
 
-#: ../authconn.py:93
+#: authconn.py:93
 msgid "Remember password"
 msgstr "పాస్‌వర్డ్‌ను గుర్తుంచుకో"
 
-#: ../errordialogs.py:64
+#: errordialogs.py:64
 msgid ""
 "The password may be incorrect, or the server may be configured to deny "
 "remote administration."
 msgstr "అనుమతిపదం సరికాకపోవచ్చు, లేదా సర్వరు deny remote నిర్వహణకి ఆకృతీకరించబడి ఉండవచ్చు."
 
-#: ../errordialogs.py:70
+#: errordialogs.py:70
 msgid "Bad request"
 msgstr "చెడ్డ అభ్యర్ధన"
 
-#: ../errordialogs.py:72
+#: errordialogs.py:72
 msgid "Not found"
 msgstr "కనుగొనబడలేదు"
 
-#: ../errordialogs.py:74
+#: errordialogs.py:74
 msgid "Request timeout"
 msgstr "అడిగిన సమయం అయ్యిపోయింది"
 
-#: ../errordialogs.py:76
+#: errordialogs.py:76
 msgid "Upgrade required"
 msgstr "నవీకరణ అవసరం"
 
-#: ../errordialogs.py:78
+#: errordialogs.py:78
 msgid "Server error"
 msgstr "సర్వరు దోషం"
 
-#: ../errordialogs.py:80 ../system-config-printer.py:761
+#: errordialogs.py:80 system-config-printer.py:777
 msgid "Not connected"
 msgstr "అనుసంధించబడలేదు"
 
-#: ../errordialogs.py:82
+#: errordialogs.py:82
 #, python-format
 msgid "status %s"
 msgstr "స్థితి %s"
 
-#: ../errordialogs.py:84
+#: errordialogs.py:84
 #, python-format
 msgid "There was an HTTP error: %s."
 msgstr "HTTP దోషం అక్కడ ఉండేది: %s."
 
-#: ../jobviewer.py:246
+#: jobviewer.py:246
 msgid "Delete Jobs"
 msgstr "పనులను తొలగించు"
 
-#: ../jobviewer.py:247
+#: jobviewer.py:247
 msgid "Do you really want to delete these jobs?"
 msgstr "మీరు నిజంగా ఈ పనులను తొలగించుదామని అనుకొనుచున్నారా?"
 
-#: ../jobviewer.py:249
+#: jobviewer.py:249
 msgid "Delete Job"
 msgstr "పనిని తొలగించండి"
 
-#: ../jobviewer.py:250
+#: jobviewer.py:250
 msgid "Do you really want to delete this job?"
 msgstr "మీరు నిజంగా ఈ పనిని తొలగించుదామని అనుకొనుచున్నారా?"
 
-#: ../jobviewer.py:253
+#: jobviewer.py:253
 msgid "Cancel Jobs"
 msgstr "పనులను రద్దుచేయండి"
 
-#: ../jobviewer.py:254
+#: jobviewer.py:254
 msgid "Do you really want to cancel these jobs?"
 msgstr "మీరు నిజంగా ఈ పనులను రద్దుచేద్దామని అనుకొనుచున్నారా?"
 
-#: ../jobviewer.py:256
+#: jobviewer.py:256
 msgid "Cancel Job"
 msgstr "పనిని రద్దుచేయండి"
 
-#: ../jobviewer.py:257
+#: jobviewer.py:257
 msgid "Do you really want to cancel this job?"
 msgstr "మీరు నిజంగా ఈ పనిని రద్దుచేద్దామని అనుకొనుచున్నారా?"
 
-#: ../jobviewer.py:261
+#: jobviewer.py:261
 msgid "Keep Printing"
 msgstr "ముద్రిస్తూ వుండు"
 
-#: ../jobviewer.py:328
+#: jobviewer.py:328
 msgid "deleting job"
 msgstr "పనిని తొలగించుతోంది"
 
-#: ../jobviewer.py:330
+#: jobviewer.py:330
 msgid "canceling job"
 msgstr "పనిని రద్దుచేయుచున్నది"
 
-#: ../jobviewer.py:428 ../system-config-printer.py:1710
-#: ../ui/ConnectDialog.ui.h:2 ../ui/ConnectingDialog.ui.h:2
-#: ../ui/NewPrinterName.ui.h:2 ../ui/NewPrinterWindow.ui.h:104
-#: ../ui/PrinterPropertiesDialog.ui.h:4 ../ui/ServerSettingsDialog.ui.h:2
-#: ../ui/SMBBrowseDialog.ui.h:3
+#: jobviewer.py:428 system-config-printer.py:1727 ui/ConnectDialog.ui:27
+#: ui/ConnectingDialog.ui:26 ui/NewPrinterName.ui:24
+#: ui/NewPrinterWindow.ui:3313 ui/PrinterPropertiesDialog.ui:167
+#: ui/ServerSettingsDialog.ui:25 ui/SMBBrowseDialog.ui:77
 msgid "_Cancel"
 msgstr "రద్దుచేయి (_C)"
 
-#: ../jobviewer.py:429
+#: jobviewer.py:429
 msgid "Cancel selected jobs"
 msgstr "ఎంపికచేసిన పనులను రద్దుచేయి"
 
-#: ../jobviewer.py:430 ../system-config-printer.py:1711
-#: ../ui/PrinterPropertiesDialog.ui.h:40
+#: jobviewer.py:430 system-config-printer.py:1728
+#: ui/PrinterPropertiesDialog.ui:1059
 msgid "_Delete"
 msgstr "తొలగించు (_D)"
 
-#: ../jobviewer.py:431
+#: jobviewer.py:431
 msgid "Delete selected jobs"
 msgstr "ఎంపికచేసిన పనులను తొలగించు"
 
-#: ../jobviewer.py:432
+#: jobviewer.py:432
 msgid "_Hold"
 msgstr "పట్టివుంచు (_H)"
 
-#: ../jobviewer.py:433
+#: jobviewer.py:433
 msgid "Hold selected jobs"
 msgstr "ఎంపికచేసిన పనులను కలిగివుండు"
 
-#: ../jobviewer.py:434
+#: jobviewer.py:434
 msgid "_Release"
 msgstr "విడుదలచేయి (_R)"
 
-#: ../jobviewer.py:435
+#: jobviewer.py:435
 msgid "Release selected jobs"
 msgstr "ఎంపికచేసిన పనులను విడుదలచేయి"
 
-#: ../jobviewer.py:436
+#: jobviewer.py:436
 msgid "Re_print"
 msgstr "తిరిగిముద్రించు (_p)"
 
-#: ../jobviewer.py:437
+#: jobviewer.py:437
 msgid "Reprint selected jobs"
 msgstr "ఎంపికచేసిన పనులను తిరిగిముద్రించు"
 
-#: ../jobviewer.py:438
+#: jobviewer.py:438
 msgid "Re_trieve"
 msgstr "తిరిగిపొందు (_t)"
 
-#: ../jobviewer.py:439
+#: jobviewer.py:439
 msgid "Retrieve selected jobs"
 msgstr "ఎంపికచేసిన పనులను తిరిగిపొందు"
 
-#: ../jobviewer.py:440
+#: jobviewer.py:440
 msgid "_Move To"
 msgstr "దీనికి కదుల్చు (_M)"
 
-#: ../jobviewer.py:441
+#: jobviewer.py:441
 msgid "_Authenticate"
 msgstr "దృవీకరించుము (_A)"
 
-#: ../jobviewer.py:443
+#: jobviewer.py:443
 msgid "_View Attributes"
 msgstr "ఏట్రిబ్యూట్లను దర్శించు (_V)"
 
-#: ../jobviewer.py:446 ../jobviewer.py:656
+#: jobviewer.py:446 jobviewer.py:656
 msgid "Close this window"
 msgstr "ఈ విండోను మూయి"
 
-#: ../jobviewer.py:509 ../troubleshoot/PrintTestPage.py:84
+#: jobviewer.py:509 troubleshoot/PrintTestPage.py:84
 msgid "Job"
 msgstr "పని"
 
-#: ../jobviewer.py:510
+#: jobviewer.py:510
 msgid "User"
 msgstr "వినియోగదారి"
 
-#: ../jobviewer.py:511 ../troubleshoot/PrintTestPage.py:88
+#: jobviewer.py:511 troubleshoot/PrintTestPage.py:88
 msgid "Document"
 msgstr "పత్రము"
 
-#: ../jobviewer.py:512 ../system-config-printer.py:941
-#: ../troubleshoot/PrintTestPage.py:86
+#: jobviewer.py:512 system-config-printer.py:957
+#: troubleshoot/PrintTestPage.py:86
 msgid "Printer"
 msgstr "ముద్రకం"
 
-#: ../jobviewer.py:513
+#: jobviewer.py:513
 msgid "Size"
 msgstr "పరిమాణం"
 
-#: ../jobviewer.py:529
+#: jobviewer.py:529
 msgid "Time submitted"
 msgstr "అప్పగించబడిన సమయం"
 
-#: ../jobviewer.py:533 ../troubleshoot/PrintTestPage.py:89
+#: jobviewer.py:533 troubleshoot/PrintTestPage.py:89
 msgid "Status"
 msgstr "స్థితి"
 
-#: ../jobviewer.py:563
+#: jobviewer.py:563
 #, python-format
 msgid "my jobs on %s"
 msgstr "%s పైన నా పనులు"
 
-#: ../jobviewer.py:565
+#: jobviewer.py:565
 msgid "my jobs"
 msgstr "నా పనులు"
 
-#: ../jobviewer.py:570
+#: jobviewer.py:570
 msgid "all jobs"
 msgstr "అన్ని పనులు"
 
-#: ../jobviewer.py:571
+#: jobviewer.py:571
 #, python-format
 msgid "Document Print Status (%s)"
 msgstr "పత్రము ముద్రణ స్థితి (%s)"
 
-#: ../jobviewer.py:646
+#: jobviewer.py:646
 msgid "Job attributes"
 msgstr "పని యాట్రిబ్యూట్లు"
 
-#: ../jobviewer.py:781 ../jobviewer.py:1128 ../jobviewer.py:1907
-#: ../jobviewer.py:1937 ../jobviewer.py:2330 ../jobviewer.py:2339
-#: ../jobviewer.py:2361 ../jobviewer.py:2445 ../printerproperties.py:1638
-#: ../ui/NewPrinterWindow.ui.h:94 ../troubleshoot/ChooseNetworkPrinter.py:102
-#: ../troubleshoot/ChooseNetworkPrinter.py:103
-#: ../troubleshoot/ChooseNetworkPrinter.py:106
-#: ../troubleshoot/ChooseNetworkPrinter.py:107
-#: ../troubleshoot/ChoosePrinter.py:94 ../troubleshoot/ChoosePrinter.py:95
-#: ../troubleshoot/ChoosePrinter.py:98 ../troubleshoot/ChoosePrinter.py:99
-#: ../troubleshoot/DeviceListed.py:100 ../troubleshoot/DeviceListed.py:101
+#: jobviewer.py:781 jobviewer.py:1128 jobviewer.py:1907 jobviewer.py:1937
+#: jobviewer.py:2330 jobviewer.py:2339 jobviewer.py:2361 jobviewer.py:2445
+#: printerproperties.py:1638 troubleshoot/ChooseNetworkPrinter.py:102
+#: troubleshoot/ChooseNetworkPrinter.py:103
+#: troubleshoot/ChooseNetworkPrinter.py:106
+#: troubleshoot/ChooseNetworkPrinter.py:107 troubleshoot/ChoosePrinter.py:94
+#: troubleshoot/ChoosePrinter.py:95 troubleshoot/ChoosePrinter.py:98
+#: troubleshoot/ChoosePrinter.py:99 troubleshoot/DeviceListed.py:100
+#: troubleshoot/DeviceListed.py:101 ui/NewPrinterWindow.ui:2901
+#: ui/NewPrinterWindow.ui:2945 ui/NewPrinterWindow.ui:3000
+#: ui/NewPrinterWindow.ui:3063
 msgid "Unknown"
 msgstr "తెలియనిది"
 
-#: ../jobviewer.py:787
+#: jobviewer.py:787
 msgid "a minute ago"
 msgstr "ఒక నిముషము క్రితము"
 
-#: ../jobviewer.py:790
+#: jobviewer.py:790
 #, python-format
 msgid "%d minutes ago"
 msgstr "%d నిమిషాల క్రితం"
 
-#: ../jobviewer.py:794
+#: jobviewer.py:794
 msgid "an hour ago"
 msgstr "ఒక గంట క్రితము"
 
-#: ../jobviewer.py:796
+#: jobviewer.py:796
 #, python-format
 msgid "%d hours ago"
 msgstr "%d గంటల క్రితము"
 
-#: ../jobviewer.py:800
+#: jobviewer.py:800
 msgid "yesterday"
 msgstr "నిన్న"
 
-#: ../jobviewer.py:802
+#: jobviewer.py:802
 #, python-format
 msgid "%d days ago"
 msgstr "%d రోజుల క్రితము"
 
-#: ../jobviewer.py:806
+#: jobviewer.py:806
 msgid "last week"
 msgstr "చివరి వారము"
 
-#: ../jobviewer.py:808
+#: jobviewer.py:808
 #, python-format
 msgid "%d weeks ago"
 msgstr "%d వాముల క్రితము"
 
-#: ../jobviewer.py:1071 ../jobviewer.py:1160
+#: jobviewer.py:1071 jobviewer.py:1160
 msgid "authenticating job"
 msgstr "పనిని దృవీకరించుచున్నది"
 
-#: ../jobviewer.py:1126
+#: jobviewer.py:1126
 #, python-format
 msgid "Authentication required for printing document `%s' (job %d)"
 msgstr "పత్రము `%s' ముద్రించుటకు దృవీకరణ అవసరమైంది (పని %d)"
 
-#: ../jobviewer.py:1420
+#: jobviewer.py:1420
 msgid "holding job"
 msgstr "పనిని పట్టివుంచినది"
 
-#: ../jobviewer.py:1446
+#: jobviewer.py:1446
 msgid "releasing job"
 msgstr "పనిని విడుదలచేసింది"
 
 #. give the default filename some meaningful name
-#: ../jobviewer.py:1508
+#: jobviewer.py:1508
 msgid "retrieved"
 msgstr "తిరిగిపొందెను"
 
-#: ../jobviewer.py:1518
+#: jobviewer.py:1518
 msgid "Save File"
 msgstr "ఫైలును ఎన్నుకో"
 
-#: ../jobviewer.py:1633 ../system-config-printer.py:310
-#: ../ui/NewPrinterWindow.ui.h:9 ../troubleshoot/ChooseNetworkPrinter.py:37
-#: ../troubleshoot/ChoosePrinter.py:43 ../troubleshoot/DeviceListed.py:43
+#: jobviewer.py:1633 system-config-printer.py:320
+#: troubleshoot/ChooseNetworkPrinter.py:37 troubleshoot/ChoosePrinter.py:43
+#: troubleshoot/DeviceListed.py:43 ui/NewPrinterWindow.ui:235
 msgid "Name"
 msgstr "పేరు"
 
-#: ../jobviewer.py:1636
+#: jobviewer.py:1636
 msgid "Value"
 msgstr "విలువ"
 
-#: ../jobviewer.py:1760
+#: jobviewer.py:1760
 msgid "No documents queued"
 msgstr "ఏ పత్రములు వరుసలోలేవు"
 
-#: ../jobviewer.py:1762
+#: jobviewer.py:1762
 msgid "1 document queued"
 msgstr "1 పత్రము వరుసలోవుంది"
 
-#: ../jobviewer.py:1764
+#: jobviewer.py:1764
 #, python-format
 msgid "%d documents queued"
 msgstr "%d పత్రములు వరుసలో వున్నాయి"
 
-#: ../jobviewer.py:1820
+#: jobviewer.py:1820
 #, python-format
 msgid "processing / pending:   %d / %d"
 msgstr "ప్రోసెస్‌చేస్తోంది / వాయిదావేసింది: %d / %d"
 
-#: ../jobviewer.py:1938
+#: jobviewer.py:1938
 msgid "Document printed"
 msgstr "పత్రము ముద్రితమైంది"
 
-#: ../jobviewer.py:1939
+#: jobviewer.py:1939
 #, python-format
 msgid "Document `%s' has been sent to `%s' for printing."
 msgstr "పత్రము `%s' అనునది `%s' కు ముద్రణ కొరకు పంపెను."
 
-#: ../jobviewer.py:2101
+#: jobviewer.py:2101
 #, python-format
 msgid "There was a problem sending document `%s' (job %d) to the printer."
 msgstr "పత్రము `%s' (పని %d)ను ముద్రకముకు పంపుటలో దోషము వుంది."
 
-#: ../jobviewer.py:2105
+#: jobviewer.py:2105
 #, python-format
 msgid "There was a problem processing document `%s' (job %d)."
 msgstr "పత్రము `%s'ను నిర్వహించడములో దోషము వుంది (పని %d)"
 
 #. Give up and use the provided message untranslated.
-#: ../jobviewer.py:2112
+#: jobviewer.py:2112
 #, python-format
 msgid "There was a problem printing document `%s' (job %d): `%s'."
 msgstr "పత్రము `%s' ముద్రించుటలో దోషము వుంది (పని %d): `%s'"
 
-#: ../jobviewer.py:2119 ../jobviewer.py:2136
+#: jobviewer.py:2119 jobviewer.py:2136
 msgid "Print Error"
 msgstr "ముద్రణ దోషము"
 
-#: ../jobviewer.py:2121
+#: jobviewer.py:2121
 msgid "_Diagnose"
 msgstr "విశ్లేషించుము (_D)"
 
-#: ../jobviewer.py:2142
+#: jobviewer.py:2142
 #, python-format
 msgid "The printer called `%s' has been disabled."
 msgstr "`%s' అనబడు ముద్రకము అచేతనము చేయబడింది."
 
-#: ../jobviewer.py:2349
+#: jobviewer.py:2349
 msgid "disabled"
 msgstr "అచేతనం"
 
-#: ../jobviewer.py:2379
+#: jobviewer.py:2379
 msgid "Held for authentication"
 msgstr "దృవీకరణ కొరకు వుంచబడింది"
 
-#: ../jobviewer.py:2381 ../troubleshoot/PrintTestPage.py:44
+#: jobviewer.py:2381 troubleshoot/PrintTestPage.py:44
 msgid "Held"
 msgstr "పట్టివుంచిన"
 
-#: ../jobviewer.py:2417
+#: jobviewer.py:2417
 #, python-format
 msgid "Held until %s"
 msgstr "%s వరకు పట్టివుంచుము"
 
-#: ../jobviewer.py:2422
+#: jobviewer.py:2422
 msgid "Held until day-time"
 msgstr "పగలు-సమయం వరకు పట్టివుంచుము"
 
-#: ../jobviewer.py:2424
+#: jobviewer.py:2424
 msgid "Held until evening"
 msgstr "సాయంత్రము వరకు పట్టివుంచుము"
 
-#: ../jobviewer.py:2426
+#: jobviewer.py:2426
 msgid "Held until night-time"
 msgstr "రాత్రి-సమయం వరకు పట్టివుంచుము"
 
-#: ../jobviewer.py:2428
+#: jobviewer.py:2428
 msgid "Held until second shift"
 msgstr "రెండవ జాము వరకు పట్టివుంచుము"
 
-#: ../jobviewer.py:2430
+#: jobviewer.py:2430
 msgid "Held until third shift"
 msgstr "మూడవ జాము వరకు పట్టివుంచుము"
 
-#: ../jobviewer.py:2432
+#: jobviewer.py:2432
 msgid "Held until weekend"
 msgstr "వారాంతము వరకు పట్టివుంచుము"
 
-#: ../jobviewer.py:2435 ../troubleshoot/PrintTestPage.py:43
+#: jobviewer.py:2435 troubleshoot/PrintTestPage.py:43
 msgid "Pending"
 msgstr "వాయిదావేయుము"
 
-#: ../jobviewer.py:2436 ../printerproperties.py:73
-#: ../system-config-printer.py:163 ../troubleshoot/PrintTestPage.py:45
+#: jobviewer.py:2436 printerproperties.py:73 system-config-printer.py:173
+#: troubleshoot/PrintTestPage.py:45
 msgid "Processing"
 msgstr "విధానం"
 
-#: ../jobviewer.py:2437 ../printerproperties.py:77
-#: ../system-config-printer.py:165 ../troubleshoot/PrintTestPage.py:46
+#: jobviewer.py:2437 printerproperties.py:77 system-config-printer.py:175
+#: troubleshoot/PrintTestPage.py:46
 msgid "Stopped"
 msgstr "ఆగింది"
 
-#: ../jobviewer.py:2438 ../troubleshoot/PrintTestPage.py:47
+#: jobviewer.py:2438 troubleshoot/PrintTestPage.py:47
 msgid "Canceled"
 msgstr "రద్దుచేయి"
 
-#: ../jobviewer.py:2439 ../troubleshoot/PrintTestPage.py:48
+#: jobviewer.py:2439 troubleshoot/PrintTestPage.py:48
 msgid "Aborted"
 msgstr "నిరర్ధకంగా ముగించు"
 
-#: ../jobviewer.py:2440 ../troubleshoot/PrintTestPage.py:49
+#: jobviewer.py:2440 troubleshoot/PrintTestPage.py:49
 msgid "Completed"
 msgstr "పూర్తైంది"
 
-#: ../newprinter.py:72
+#: newprinter.py:72
 msgid ""
 "The firewall may need adjusting in order to detect network printers.  Adjust "
 "the firewall now?"
 msgstr ""
 "నెట్వర్కు ముద్రకములను గుర్తించుటకు ఫైర్‌వాల్ సర్దుబాటు చేయవలసి వుండవచ్చు. ఫైర్‌వాల్ సర్దుబాటు చేయాలా?"
 
-#: ../newprinter.py:358 ../newprinter.py:369 ../newprinter.py:375
-#: ../newprinter.py:380 ../ppdippstr.py:163
+#: newprinter.py:334 newprinter.py:345 newprinter.py:351 newprinter.py:356
+#: ppdippstr.py:163
 msgid "Default"
 msgstr "అప్రమేయ"
 
 #. See section 4.2.6 of this document for explanation of finishing types:
 #. ftp://ftp.pwg.org/pub/pwg/candidates/cs-ippfinishings10-20010205-5100.1.pdf
-#: ../newprinter.py:370 ../newprinter.py:381 ../newprinter.py:4099
-#: ../ppdippstr.py:65 ../ppdippstr.py:252 ../printerproperties.py:281
+#: newprinter.py:346 newprinter.py:357 newprinter.py:4075 ppdippstr.py:65
+#: ppdippstr.py:252 printerproperties.py:281
 msgid "None"
 msgstr "ఏదీకాదు"
 
-#: ../newprinter.py:371
+#: newprinter.py:347
 msgid "Odd"
 msgstr "బేసి"
 
-#: ../newprinter.py:372
+#: newprinter.py:348
 msgid "Even"
 msgstr "సరి"
 
-#: ../newprinter.py:382
+#: newprinter.py:358
 msgid "XON/XOFF (Software)"
 msgstr "XON/XOFF (సాఫ్టువేర్)"
 
-#: ../newprinter.py:383
+#: newprinter.py:359
 msgid "RTS/CTS (Hardware)"
 msgstr "RTS/CTS (హార్డువేర్)"
 
-#: ../newprinter.py:384
+#: newprinter.py:360
 msgid "DTR/DSR (Hardware)"
 msgstr "DTR/DSR (హార్డువేర్)"
 
-#: ../newprinter.py:402 ../printerproperties.py:235
+#: newprinter.py:378 printerproperties.py:235
 msgid "Members of this class"
 msgstr "ఈ తరగతి సభ్యులు"
 
-#: ../newprinter.py:404 ../printerproperties.py:236
+#: newprinter.py:380 printerproperties.py:236
 msgid "Others"
 msgstr "ఇతరులు"
 
-#: ../newprinter.py:405
+#: newprinter.py:381
 msgid "Devices"
 msgstr "సాధనాలు"
 
-#: ../newprinter.py:406
+#: newprinter.py:382
 msgid "Connections"
 msgstr "అనుసంధానములు"
 
-#: ../newprinter.py:407
+#: newprinter.py:383
 msgid "Makes"
 msgstr "తయారీలు"
 
-#: ../newprinter.py:408
+#: newprinter.py:384
 msgid "Models"
 msgstr "మాదిరులు"
 
-#: ../newprinter.py:409
+#: newprinter.py:385
 msgid "Drivers"
 msgstr "డ్రైవర్లు"
 
-#: ../newprinter.py:410 ../ui/NewPrinterWindow.ui.h:102
+#: newprinter.py:386 ui/NewPrinterWindow.ui:3260
 msgid "Downloadable Drivers"
 msgstr "డౌనులోడు చేయదగిన డ్రైవర్లు"
 
-#: ../newprinter.py:489
+#: newprinter.py:465
 msgid "Browsing requires pysmbc module"
 msgstr ""
 
 #. SMB list columns
-#: ../newprinter.py:494
+#: newprinter.py:470
 msgid "Share"
 msgstr "భాగం"
 
-#: ../newprinter.py:500
+#: newprinter.py:476
 msgid "Comment"
 msgstr "వ్యాఖ్య"
 
-#: ../newprinter.py:515
+#: newprinter.py:491
 msgid ""
 "PostScript Printer Description files (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *."
 "PPD.GZ)"
@@ -584,106 +650,100 @@ msgstr ""
 "పోస్టుస్క్రిప్టు ముద్రణాయంత్రం వివరణ దస్త్రములు *.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *.PPD."
 "GZ)"
 
-#: ../newprinter.py:524
+#: newprinter.py:500
 msgid "All files (*)"
 msgstr "అన్ని దస్త్రములు (*)"
 
-#: ../newprinter.py:670 ../newprinter.py:1740 ../newprinter.py:3628
-#: ../newprinter.py:3688 ../newprinter.py:3740 ../applet.py:134
-msgid "Search"
-msgstr "శోధించుము"
-
-#: ../newprinter.py:709
+#: newprinter.py:685
 msgid "New Class"
 msgstr "కొత్త తరాగతొ"
 
-#: ../newprinter.py:718 ../newprinter.py:735 ../ui/NewPrinterWindow.ui.h:1
+#: newprinter.py:694 newprinter.py:711 ui/NewPrinterWindow.ui:7
 msgid "New Printer"
 msgstr "కొత్త ముద్రకం"
 
-#: ../newprinter.py:727
+#: newprinter.py:703
 msgid "Change Device URI"
 msgstr "URIసాధనాని మార్చు"
 
-#: ../newprinter.py:746
+#: newprinter.py:722
 msgid "Download Printer Driver"
 msgstr "ముద్రకం డ్రైవర్ దింపు"
 
-#: ../newprinter.py:755
+#: newprinter.py:731
 msgid "Change Driver"
 msgstr "డ్రైవును మార్చు"
 
-#: ../newprinter.py:764 ../newprinter.py:2331 ../newprinter.py:2336
+#: newprinter.py:740 newprinter.py:2307 newprinter.py:2312
 msgid "fetching device list"
 msgstr "పరికరము జాబితాను పొందుచున్నది"
 
-#: ../newprinter.py:959
+#: newprinter.py:935
 #, python-format
 msgid "Installing driver %s"
 msgstr "డ్రైవర్ %s సంస్థాపిస్తోంది"
 
-#: ../newprinter.py:966
+#: newprinter.py:942
 msgid "Installing ..."
 msgstr "సంస్థాపించుతోంది ..."
 
-#: ../newprinter.py:1693 ../newprinter.py:3430 ../newprinter.py:3658
-#: ../ppdsloader.py:86
+#: newprinter.py:1669 newprinter.py:3406 newprinter.py:3634 ppdsloader.py:86
 msgid "Searching"
 msgstr "వెతుకుతున్నది"
 
-#: ../newprinter.py:1703 ../ppdsloader.py:93
+#: newprinter.py:1679 ppdsloader.py:93
 msgid "Searching for drivers"
 msgstr "డ్రైవర్ల కొరకు శోధించుచున్నది"
 
 #. device-info
 #. PhysicalDevice obj
 #. Separator?
-#: ../newprinter.py:2246
+#: newprinter.py:2222
 msgid "Enter URI"
 msgstr "URI ప్రవేశపెట్టు"
 
-#: ../newprinter.py:2251
+#: newprinter.py:2227
 msgid "Network Printer"
 msgstr "నెట్వర్కు ముద్రకము"
 
-#: ../newprinter.py:2255
+#: newprinter.py:2231
 msgid "Find Network Printer"
 msgstr "నెట్వర్కు ముద్రకమును కనుగొనుము"
 
-#: ../newprinter.py:2262 ../newprinter.py:3102 ../ppdippstr.py:371
+#: newprinter.py:2238 newprinter.py:3078 ppdippstr.py:371
 msgid "Windows Printer via SAMBA"
 msgstr "SAMBA గుండా Windows ముద్రకము"
 
-#: ../newprinter.py:2294
+#: newprinter.py:2270
 msgid "Allow all incoming IPP Browse packets"
 msgstr "లోనికివచ్చు అన్ని IPP బ్రౌజ్ పాకెట్లను అనుమతించు"
 
-#: ../newprinter.py:2299
+#: newprinter.py:2275
 msgid "Allow all incoming mDNS traffic"
 msgstr "లోనికి వచ్చు mDNS ట్రాఫిక్ అంతా అనుమతించు"
 
-#: ../newprinter.py:2309 ../newprinter.py:2312 ../newprinter.py:2797
-#: ../newprinter.py:2803 ../serversettings.py:566 ../serversettings.py:571
+#: newprinter.py:2285 newprinter.py:2288 newprinter.py:2773 newprinter.py:2779
+#: serversettings.py:566 serversettings.py:571
 msgid "Adjust Firewall"
 msgstr "ఫైర్‌వార్ సర్దుబాటు"
 
-#: ../newprinter.py:2311 ../newprinter.py:2802
+#: newprinter.py:2287 newprinter.py:2778
 msgid "Do It Later"
 msgstr "తరువాత చేయి"
 
-#: ../newprinter.py:2442 ../newprinter.py:3992
+#: newprinter.py:2418 newprinter.py:3968
 msgid " (Current)"
 msgstr " (ప్రస్తుతం)"
 
-#: ../newprinter.py:2542
+#: newprinter.py:2518
 msgid "Scanning..."
 msgstr "సంశోధించుచున్నది..."
 
-#: ../newprinter.py:2598
+#: newprinter.py:2574
 msgid "No Print Shares"
 msgstr "ఏ ముద్రణ భాగస్వామ్యం కాలేదు"
 
-#: ../newprinter.py:2599
+#: newprinter.py:2575
 msgid ""
 "There were no print shares found.  Please check that the Samba service is "
 "marked as trusted in your firewall configuration."
@@ -691,119 +751,119 @@ msgstr ""
 "అక్కడ యెటువంటి ముద్రణ భాగస్వామ్యములు కనబడలేదు.  దయచేసి మీ ఫైర్‌వాల్ ఆకృతీకరణనందు సాంబా సేవ "
 "నమ్మదగినదిగా గుర్తుపెట్టి వుందోలేదో పరిశీలించండి."
 
-#: ../newprinter.py:2740
+#: newprinter.py:2716
 #, python-format
 msgid "Verification requires the %s module"
 msgstr ""
 
-#: ../newprinter.py:2799
+#: newprinter.py:2775
 msgid "Allow all incoming SMB/CIFS browse packets"
 msgstr "లోనికివచ్చు అన్ని SMB/CIFS బ్రౌజ్ పాకెట్లను అనుమతించు"
 
-#: ../newprinter.py:2920
+#: newprinter.py:2896
 msgid "Print Share Verified"
 msgstr "ముద్రణ భాగస్వామ్యం నిర్ధారించబడింది"
 
-#: ../newprinter.py:2921
+#: newprinter.py:2897
 msgid "This print share is accessible."
 msgstr "ఈ ముద్రక భాగస్వామ్యం అందుబాటులో ఉంది."
 
-#: ../newprinter.py:2926
+#: newprinter.py:2902
 msgid "This print share is not accessible."
 msgstr "ఈ ముద్రక భాగస్వామ్యం అందుబాటులోలేదు."
 
-#: ../newprinter.py:2929
+#: newprinter.py:2905
 msgid "Print Share Inaccessible"
 msgstr "ముద్రణ భాగస్వామ్యం యాక్సిస్‌బుల్ కానిది"
 
-#: ../newprinter.py:3068
+#: newprinter.py:3044
 msgid "Parallel Port"
 msgstr "సమాంతర పోర్టు"
 
-#: ../newprinter.py:3070
+#: newprinter.py:3046
 msgid "Serial Port"
 msgstr "వరుస పోర్టు"
 
-#: ../newprinter.py:3074 ../newprinter.py:3082 ../newprinter.py:3227
-#: ../newprinter.py:3229 ../newprinter.py:3276 ../system-config-printer.py:944
+#: newprinter.py:3050 newprinter.py:3058 newprinter.py:3203 newprinter.py:3205
+#: newprinter.py:3252 system-config-printer.py:960
 msgid "Fax"
 msgstr "ఫ్యాక్స్"
 
-#: ../newprinter.py:3074 ../newprinter.py:3076 ../newprinter.py:3276
+#: newprinter.py:3050 newprinter.py:3052 newprinter.py:3252
 msgid "USB"
 msgstr "USB"
 
-#: ../newprinter.py:3078
+#: newprinter.py:3054
 msgid "Bluetooth"
 msgstr "బ్లూటూత్"
 
-#: ../newprinter.py:3080 ../newprinter.py:3083
+#: newprinter.py:3056 newprinter.py:3059
 msgid "HP Linux Imaging and Printing (HPLIP)"
 msgstr "HP లైనక్సు యిమేజింగ్ మరియు ప్రింటింగ్ (HPLIP)"
 
-#: ../newprinter.py:3085
+#: newprinter.py:3061
 msgid "Hardware Abstraction Layer (HAL)"
 msgstr "హార్డువేర్ ఏబ్‌స్ట్రాక్షన్ లేయర్ (HAL)"
 
-#: ../newprinter.py:3087 ../ppdippstr.py:368
+#: newprinter.py:3063 ppdippstr.py:368
 msgid "AppSocket/HP JetDirect"
 msgstr "AppSocket/HP JetDirect"
 
-#: ../newprinter.py:3096
+#: newprinter.py:3072
 #, python-format
 msgid "LPD/LPR queue '%s'"
 msgstr "LPD/LPR క్యూ '%s'"
 
-#: ../newprinter.py:3099
+#: newprinter.py:3075
 msgid "LPD/LPR queue"
 msgstr "LPD/LPR క్యూ"
 
-#: ../newprinter.py:3118 ../newprinter.py:3121
+#: newprinter.py:3094 newprinter.py:3097
 msgid "IPP"
 msgstr "IPP"
 
-#: ../newprinter.py:3123
+#: newprinter.py:3099
 msgid "HTTP"
 msgstr "HTTP"
 
-#: ../newprinter.py:3131 ../newprinter.py:3300
+#: newprinter.py:3107 newprinter.py:3276
 msgid "Remote CUPS printer via DNS-SD"
 msgstr "DNS-SD ద్వారా దూరస్థ CUPS ముద్రకము"
 
-#: ../newprinter.py:3143 ../newprinter.py:3310
+#: newprinter.py:3119 newprinter.py:3286
 #, python-format
 msgid "%s network printer via DNS-SD"
 msgstr "DNS-SD ద్వారా %s నెట్వర్కు ముద్రకము"
 
-#: ../newprinter.py:3147 ../newprinter.py:3312
+#: newprinter.py:3123 newprinter.py:3288
 msgid "Network printer via DNS-SD"
 msgstr "DNS-SD ద్వారా నెట్వర్కు ముద్రకము"
 
-#: ../newprinter.py:3272
+#: newprinter.py:3248
 msgid "A printer connected to the parallel port."
 msgstr "దానితోఉన్న పోర్టుకి అనుసంధించబడిన ముద్రకం."
 
-#: ../newprinter.py:3277
+#: newprinter.py:3253
 msgid ""
 "A fax machine or the fax function of a multi-function device connected to a "
 "USB port."
 msgstr ""
 
-#: ../newprinter.py:3281
+#: newprinter.py:3257
 msgid "A printer connected to a USB port."
 msgstr "USB పోర్టుకి అనుసంధించబడిన ముద్రకం."
 
-#: ../newprinter.py:3283
+#: newprinter.py:3259
 msgid "A printer connected via Bluetooth."
 msgstr "బ్లూటూత్ ద్వారా వొక ముద్రకము అనుసంధానమైంది."
 
-#: ../newprinter.py:3285
+#: newprinter.py:3261
 msgid ""
 "HPLIP software driving a printer, or the printer function of a multi-"
 "function device."
 msgstr "HPLIP సాఫ్టువేరు ముద్రకాన్ని నడుపుతుంది, లేదా ఆ ముద్రకం బహుళ-క్రియాశీల సాధనాలతో పనిచేస్తుం."
 
-#: ../newprinter.py:3288
+#: newprinter.py:3264
 msgid ""
 "HPLIP software driving a fax machine, or the fax function of a multi-"
 "function device."
@@ -811,51 +871,51 @@ msgstr ""
 "HPLIP సాఫ్టువేరు సాధనం ఫ్యాక్సు సాధనాన్ని నడుపగలుగుతుంది, లేదా బహుళ-క్రియాశీల సాధనాలను "
 "ఉపయోగించగలుగుతుం."
 
-#: ../newprinter.py:3291
+#: newprinter.py:3267
 msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
 msgstr "స్థానిక ముద్రకం Hardware Abstraction Layer (HAL).తో నియంత్రించ బడుతుంది."
 
-#: ../newprinter.py:3431
+#: newprinter.py:3407
 msgid "Searching for printers"
 msgstr "ముద్రకముల కొరకు శోధించుచున్నది"
 
-#: ../newprinter.py:3537 ../ui/NewPrinterWindow.ui.h:46
+#: newprinter.py:3513 ui/NewPrinterWindow.ui:1359
 msgid "No printer was found at that address."
 msgstr "ఆ చిరునామా వద్ద ఏ ముద్రకము కనబడలేదు."
 
-#: ../newprinter.py:3693
+#: newprinter.py:3669
 msgid "-- Select from search results --"
 msgstr "-- శోధన ఫలితాలనుండి యెంపికచేయుము --"
 
-#: ../newprinter.py:3695
+#: newprinter.py:3671
 msgid "-- No matches found --"
 msgstr "-- ఏ సరిజోడీలు కనబడలేదు --"
 
-#: ../newprinter.py:3807 ../ui/NewPrinterWindow.ui.h:80
+#: newprinter.py:3783 ui/NewPrinterWindow.ui:2577
 msgid "Local Driver"
 msgstr "స్థానిక డ్రైవర్"
 
-#: ../newprinter.py:3840 ../newprinter.py:3903 ../newprinter.py:4001
+#: newprinter.py:3816 newprinter.py:3879 newprinter.py:3977
 msgid " (recommended)"
 msgstr " (మద్దతివ్వబడింది)"
 
-#: ../newprinter.py:4033
+#: newprinter.py:4009
 msgid "This PPD is generated by foomatic."
 msgstr "ఈ PPD foomatic.చేత నిష్పాదించబడింది."
 
-#: ../newprinter.py:4081
+#: newprinter.py:4057
 msgid "OpenPrinting"
 msgstr "ముద్రణనుతెరువుము"
 
-#: ../newprinter.py:4092
+#: newprinter.py:4068
 msgid "Distributable"
 msgstr "పంపిణీచేయదగిన"
 
-#: ../newprinter.py:4136
+#: newprinter.py:4112
 msgid ", "
 msgstr ", "
 
-#: ../newprinter.py:4141
+#: newprinter.py:4117
 #, python-format
 msgid ""
 "\n"
@@ -864,20 +924,20 @@ msgstr ""
 "\n"
 "(%s)"
 
-#: ../newprinter.py:4146
+#: newprinter.py:4122
 msgid "No support contacts known"
 msgstr "ఏ మద్దతు సంప్రదింపులు తెలియవు"
 
-#: ../newprinter.py:4150 ../newprinter.py:4163
+#: newprinter.py:4126 newprinter.py:4139
 msgid "Not specified."
 msgstr "తెలుపలేదు."
 
 #. Foomatic database problem of some sort.
-#: ../newprinter.py:4208
+#: newprinter.py:4184
 msgid "Database error"
 msgstr "సమాచారనిధి దోషం"
 
-#: ../newprinter.py:4209
+#: newprinter.py:4185
 #, python-format
 msgid "The '%s' driver cannot be used with printer '%s %s'."
 msgstr "ఈ '%s' డ్రైవరు '%s %s' ముద్రంతో ఉపయోగించ లేము."
@@ -885,1254 +945,1263 @@ msgstr "ఈ '%s' డ్రైవరు '%s %s' ముద్రంతో ఉప�
 #. This printer references some XML that is not
 #. installed by default.  Point the user at the
 #. package they need to install.
-#: ../newprinter.py:4219
+#: newprinter.py:4195
 #, python-format
 msgid "You will need to install the '%s' package in order to use this driver."
 msgstr "ఈ డ్రైవును ఉపయోగించటానికి మీరు ఈ '%s' ప్యాకేజిని సంస్థాపించవలసి ఉంటుంది."
 
 #. This error came from trying to open the PPD file.
-#: ../newprinter.py:4226
+#: newprinter.py:4202
 msgid "PPD error"
 msgstr "PPD దోషం"
 
-#: ../newprinter.py:4228
+#: newprinter.py:4204
 msgid "Failed to read PPD file.  Possible reason follows:"
 msgstr "PPD ఫైలుని చదవటంలో విఫలమైంది.  దానికి కారణాలు ఇవి:"
 
 #. Failed to get PPD downloaded from OpenPrinting XXX
-#: ../newprinter.py:4246
+#: newprinter.py:4222
 msgid "Downloadable drivers"
 msgstr "డౌనులోడు చేయదగిన డ్రైవులు"
 
-#: ../newprinter.py:4247
+#: newprinter.py:4223
 msgid "Failed to download PPD."
 msgstr "PPDను డౌనులోడు చేయుటలో విఫలమైంది."
 
-#: ../newprinter.py:4255
+#: newprinter.py:4231
 msgid "fetching PPD"
 msgstr "PPDను పొందుచున్నది"
 
-#: ../newprinter.py:4284 ../newprinter.py:4320
+#: newprinter.py:4260 newprinter.py:4296
 msgid "No Installable Options"
 msgstr "ఎటువంటి సంస్థాపనా ఐచ్చికాలు లేవు"
 
-#: ../newprinter.py:4384
+#: newprinter.py:4360
 #, python-format
 msgid "adding printer %s"
 msgstr "ముద్రకము %s జతచేయుచున్నది"
 
-#: ../newprinter.py:4413 ../newprinter.py:4425 ../newprinter.py:4443
-#: ../printerproperties.py:996 ../system-config-printer.py:1746
-#: ../system-config-printer.py:1776
+#: newprinter.py:4389 newprinter.py:4401 newprinter.py:4419
+#: printerproperties.py:996 system-config-printer.py:1763
+#: system-config-printer.py:1793
 #, python-format
 msgid "modifying printer %s"
 msgstr "ముద్రణాయంత్రం %sను సవరించుచున్నది"
 
-#: ../optionwidgets.py:131
+#: optionwidgets.py:131
 msgid "Conflicts with:"
 msgstr "తో భేదాలు:"
 
-#: ../ppdippstr.py:49
+#: ppdippstr.py:49
 msgid "Abort job"
 msgstr "పనిని నిరర్ధకంగా ముగించు"
 
-#: ../ppdippstr.py:50
+#: ppdippstr.py:50
 msgid "Retry current job"
 msgstr "ప్రస్తుత పనిని తిరిగి ప్రయత్నించుము"
 
-#: ../ppdippstr.py:51
+#: ppdippstr.py:51
 msgid "Retry job"
 msgstr "పనిని తిరిగిప్రయత్నించు"
 
-#: ../ppdippstr.py:52
+#: ppdippstr.py:52
 msgid "Stop printer"
 msgstr "ముద్రణాయంత్రాన్ని ఆపివేయుము"
 
-#: ../ppdippstr.py:58
+#: ppdippstr.py:58
 msgid "Default behavior"
 msgstr "అప్రమేయ ప్రవర్తన"
 
-#: ../ppdippstr.py:59
+#: ppdippstr.py:59
 msgid "Authenticated"
 msgstr "దృవీకరించిన"
 
-#: ../ppdippstr.py:66
+#: ppdippstr.py:66
 msgid "Classified"
 msgstr "వర్గీకరించిన"
 
-#: ../ppdippstr.py:67
+#: ppdippstr.py:67
 msgid "Confidential"
 msgstr "గోప్యమైన"
 
-#: ../ppdippstr.py:68
+#: ppdippstr.py:68
 msgid "Secret"
 msgstr "రహస్యము"
 
-#: ../ppdippstr.py:69
+#: ppdippstr.py:69
 msgid "Standard"
 msgstr "ప్రమాణికం"
 
-#: ../ppdippstr.py:70
+#: ppdippstr.py:70
 msgid "Top secret"
 msgstr "అత్యంతరహస్యం"
 
-#: ../ppdippstr.py:71
+#: ppdippstr.py:71
 msgid "Unclassified"
 msgstr "వర్గీకరించని"
 
-#: ../ppdippstr.py:77
+#: ppdippstr.py:77
 msgid "No hold"
 msgstr "కలిగివుండలేదు"
 
-#: ../ppdippstr.py:78
+#: ppdippstr.py:78
 msgid "Indefinite"
 msgstr "అనిర్వచనీయ"
 
-#: ../ppdippstr.py:79
+#: ppdippstr.py:79
 msgid "Daytime"
 msgstr "పగటిసమయం"
 
-#: ../ppdippstr.py:80
+#: ppdippstr.py:80
 msgid "Evening"
 msgstr "సాయింత్రం"
 
-#: ../ppdippstr.py:81
+#: ppdippstr.py:81
 msgid "Night"
 msgstr "రాత్రి"
 
-#: ../ppdippstr.py:82
+#: ppdippstr.py:82
 msgid "Second shift"
 msgstr "రెండవ జాము"
 
-#: ../ppdippstr.py:83
+#: ppdippstr.py:83
 msgid "Third shift"
 msgstr "మూడవ జాము"
 
-#: ../ppdippstr.py:84
+#: ppdippstr.py:84
 msgid "Weekend"
 msgstr "వారాంతము"
 
-#: ../ppdippstr.py:94
+#: ppdippstr.py:94
 msgid "General"
 msgstr "సాదారణ"
 
 #. HP and foo2zjs
-#: ../ppdippstr.py:97
+#: ppdippstr.py:97
 msgid "Print Quality"
 msgstr ""
 
-#: ../ppdippstr.py:98
+#: ppdippstr.py:98
 msgid "Automatic"
 msgstr ""
 
-#: ../ppdippstr.py:100
+#: ppdippstr.py:100
 msgid "Printing Quality"
 msgstr ""
 
-#: ../ppdippstr.py:101 ../printerproperties.py:324
+#: ppdippstr.py:101 printerproperties.py:324
 msgid "Draft"
 msgstr "చిత్తు(డ్రాఫ్ట్)"
 
-#: ../ppdippstr.py:102 ../printerproperties.py:320 ../printerproperties.py:325
+#: ppdippstr.py:102 printerproperties.py:320 printerproperties.py:325
 msgid "Normal"
 msgstr "సాధారణ"
 
-#: ../ppdippstr.py:103
+#: ppdippstr.py:103
 msgid "Normal Color"
 msgstr ""
 
-#: ../ppdippstr.py:104
+#: ppdippstr.py:104
 msgid "Normal Grayscale"
 msgstr ""
 
-#: ../ppdippstr.py:105
+#: ppdippstr.py:105
 msgid "Draft Color"
 msgstr ""
 
-#: ../ppdippstr.py:106
+#: ppdippstr.py:106
 msgid "Draft Grayscale"
 msgstr ""
 
-#: ../ppdippstr.py:107
+#: ppdippstr.py:107
 msgid "Best"
 msgstr ""
 
-#: ../ppdippstr.py:108
+#: ppdippstr.py:108
 msgid "High-Resolution Photo"
 msgstr ""
 
-#: ../ppdippstr.py:109
+#: ppdippstr.py:109
 msgid "Fast Draft"
 msgstr ""
 
-#: ../ppdippstr.py:111
+#: ppdippstr.py:111
 msgid "Installed Cartridges"
 msgstr ""
 
-#: ../ppdippstr.py:112 ../ppdippstr.py:113
+#: ppdippstr.py:112 ppdippstr.py:113
 msgid "Fast Only"
 msgstr ""
 
-#: ../ppdippstr.py:114
+#: ppdippstr.py:114
 msgid "Photo Only"
 msgstr ""
 
-#: ../ppdippstr.py:115
+#: ppdippstr.py:115
 msgid "Black and TriColor"
 msgstr ""
 
-#: ../ppdippstr.py:116
+#: ppdippstr.py:116
 msgid "Photo and TriColor"
 msgstr ""
 
-#: ../ppdippstr.py:118
+#: ppdippstr.py:118
 msgid "Resolution"
 msgstr ""
 
-#: ../ppdippstr.py:120
+#: ppdippstr.py:120
 msgid "Color Mode"
 msgstr ""
 
-#: ../ppdippstr.py:121 ../ppdippstr.py:239
+#: ppdippstr.py:121 ppdippstr.py:239
 msgid "High Quality Grayscale"
 msgstr ""
 
-#: ../ppdippstr.py:122
+#: ppdippstr.py:122
 msgid "Black Only Grayscale"
 msgstr ""
 
-#: ../ppdippstr.py:124
+#: ppdippstr.py:124
 msgid "Quality"
 msgstr ""
 
-#: ../ppdippstr.py:125
+#: ppdippstr.py:125
 #, fuzzy
 msgid "High Resolution "
 msgstr "ముద్రకము రిజొల్యూషన్:"
 
-#: ../ppdippstr.py:126
+#: ppdippstr.py:126
 msgid "Paper source"
 msgstr ""
 
-#: ../ppdippstr.py:127
+#: ppdippstr.py:127
 msgid "Auto Source"
 msgstr ""
 
-#: ../ppdippstr.py:128
+#: ppdippstr.py:128
 msgid "Manual Feed"
 msgstr ""
 
-#: ../ppdippstr.py:129
+#: ppdippstr.py:129
 msgid "Middle Tray"
 msgstr ""
 
-#: ../ppdippstr.py:130
+#: ppdippstr.py:130
 msgid "Upper or Only One InputSlot"
 msgstr ""
 
-#: ../ppdippstr.py:131
+#: ppdippstr.py:131
 msgid "Multi-purpose Tray"
 msgstr ""
 
-#: ../ppdippstr.py:132
+#: ppdippstr.py:132
 msgid "Drawer 1 "
 msgstr ""
 
-#: ../ppdippstr.py:133
+#: ppdippstr.py:133
 msgid "Drawer 2 "
 msgstr ""
 
-#: ../ppdippstr.py:134
+#: ppdippstr.py:134
 msgid "Tray 1"
 msgstr ""
 
-#: ../ppdippstr.py:135
+#: ppdippstr.py:135
 msgid "Auto Select"
 msgstr ""
 
-#: ../ppdippstr.py:137
+#: ppdippstr.py:137
 msgid "Media Type"
 msgstr ""
 
-#: ../ppdippstr.py:138
+#: ppdippstr.py:138
 msgid "Bond"
 msgstr ""
 
-#: ../ppdippstr.py:139
+#: ppdippstr.py:139
 msgid "Color"
 msgstr ""
 
-#: ../ppdippstr.py:140
+#: ppdippstr.py:140
 msgid "Envelope"
 msgstr ""
 
-#: ../ppdippstr.py:141
+#: ppdippstr.py:141
 msgid "Labels"
 msgstr ""
 
-#: ../ppdippstr.py:142
+#: ppdippstr.py:142
 msgid "Standard Paper"
 msgstr ""
 
-#: ../ppdippstr.py:143
+#: ppdippstr.py:143
 msgid "Heavy"
 msgstr ""
 
-#: ../ppdippstr.py:144
+#: ppdippstr.py:144
 msgid "Light"
 msgstr ""
 
-#: ../ppdippstr.py:145
+#: ppdippstr.py:145
 msgid "Recycled"
 msgstr ""
 
-#: ../ppdippstr.py:146
+#: ppdippstr.py:146
 msgid "Transparency"
 msgstr ""
 
-#: ../ppdippstr.py:147
+#: ppdippstr.py:147
 msgid "Plain Paper"
 msgstr ""
 
-#: ../ppdippstr.py:148
+#: ppdippstr.py:148
 msgid "Plain"
 msgstr ""
 
-#: ../ppdippstr.py:149
+#: ppdippstr.py:149
 #, fuzzy
 #| msgid "Photo tray"
 msgid "Photo Paper"
 msgstr "ఛాయాచిత్ర ట్రే"
 
-#: ../ppdippstr.py:150
+#: ppdippstr.py:150
 msgid "Transparency Film"
 msgstr ""
 
-#: ../ppdippstr.py:151
+#: ppdippstr.py:151
 msgid "CD or DVD Media"
 msgstr ""
 
-#: ../ppdippstr.py:152
+#: ppdippstr.py:152
 msgid "Print Density"
 msgstr ""
 
-#: ../ppdippstr.py:153
+#: ppdippstr.py:153
 msgid "Extra Light (1)"
 msgstr ""
 
-#: ../ppdippstr.py:154
+#: ppdippstr.py:154
 msgid "Light (2)"
 msgstr ""
 
-#: ../ppdippstr.py:155
+#: ppdippstr.py:155
 msgid "Medium (3)"
 msgstr ""
 
-#: ../ppdippstr.py:156
+#: ppdippstr.py:156
 msgid "Dark (4)"
 msgstr ""
 
-#: ../ppdippstr.py:157
+#: ppdippstr.py:157
 msgid "Extra Dark (5)"
 msgstr ""
 
-#: ../ppdippstr.py:158
+#: ppdippstr.py:158
 #, fuzzy
 #| msgid "OpenPrinting"
 msgid "Duplex Printing"
 msgstr "ముద్రణనుతెరువుము"
 
-#: ../ppdippstr.py:159
+#: ppdippstr.py:159
 msgid "Copies"
 msgstr ""
 
-#: ../ppdippstr.py:161
+#: ppdippstr.py:161
 msgid "Adjustment"
 msgstr ""
 
-#: ../ppdippstr.py:162
+#: ppdippstr.py:162
 msgid "Halftone Algorithm"
 msgstr ""
 
-#: ../ppdippstr.py:165
+#: ppdippstr.py:165
 msgid "Miscellaneous"
 msgstr ""
 
-#: ../ppdippstr.py:166
+#: ppdippstr.py:166
 msgid "N-up Orientation"
 msgstr ""
 
-#: ../ppdippstr.py:167
+#: ppdippstr.py:167
 msgid "N-up Printing"
 msgstr ""
 
-#: ../ppdippstr.py:168
+#: ppdippstr.py:168
 msgid "Landscape"
 msgstr ""
 
-#: ../ppdippstr.py:169
+#: ppdippstr.py:169
 msgid "Seascape"
 msgstr ""
 
-#: ../ppdippstr.py:170
+#: ppdippstr.py:170
 msgid "Media Size"
 msgstr ""
 
-#: ../ppdippstr.py:171
+#: ppdippstr.py:171
 msgid "Output Mode"
 msgstr ""
 
-#: ../ppdippstr.py:172
+#: ppdippstr.py:172
 msgid "Grayscale"
 msgstr ""
 
 #. Brother
-#: ../ppdippstr.py:175
+#: ppdippstr.py:175
 #, fuzzy
 #| msgid "Toner empty"
 msgid "Toner save mode"
 msgstr "టోనర్ ఖాళీగావుంది"
 
-#: ../ppdippstr.py:176
+#: ppdippstr.py:176
 msgid "Tray1"
 msgstr ""
 
-#: ../ppdippstr.py:177
+#: ppdippstr.py:177
 msgid "Tray2"
 msgstr ""
 
-#: ../ppdippstr.py:178
+#: ppdippstr.py:178
 msgid "Tray3"
 msgstr ""
 
-#: ../ppdippstr.py:179
+#: ppdippstr.py:179
 msgid "Two-Sided"
 msgstr ""
 
-#: ../ppdippstr.py:180 ../system-config-printer.desktop.in.h:1
+#: ppdippstr.py:180 system-config-printer.appdata.xml.in:6
+#: system-config-printer.desktop.in:3 system-config-printer.desktop.in:4
 msgid "Print Settings"
 msgstr "ముద్రణ అమరికలు"
 
-#: ../ppdippstr.py:181
+#: ppdippstr.py:181
 #, fuzzy
 #| msgid "Print Settings"
 msgid "Print Settings (Advanced)"
 msgstr "ముద్రణ అమరికలు"
 
-#: ../ppdippstr.py:182
+#: ppdippstr.py:182
 msgid "Color Settings"
 msgstr ""
 
-#: ../ppdippstr.py:183
+#: ppdippstr.py:183
 msgid "Color Settings (Advanced)"
 msgstr ""
 
-#: ../ppdippstr.py:184
+#: ppdippstr.py:184
 msgid "Brightness"
 msgstr ""
 
-#: ../ppdippstr.py:185
+#: ppdippstr.py:185
 msgid "Contrast"
 msgstr ""
 
-#: ../ppdippstr.py:186
+#: ppdippstr.py:186
 msgid "Red"
 msgstr ""
 
-#: ../ppdippstr.py:187
+#: ppdippstr.py:187
 msgid "Green"
 msgstr ""
 
-#: ../ppdippstr.py:188
+#: ppdippstr.py:188
 msgid "Blue"
 msgstr ""
 
 #. Epson xp serie
-#: ../ppdippstr.py:191
+#: ppdippstr.py:191
 msgid "_Media Size"
 msgstr ""
 
-#: ../ppdippstr.py:192
+#: ppdippstr.py:192
 msgid "_Grayscale"
 msgstr ""
 
-#: ../ppdippstr.py:193
+#: ppdippstr.py:193
 msgid "_Brightness"
 msgstr ""
 
-#: ../ppdippstr.py:194
+#: ppdippstr.py:194
 msgid "_Contrast"
 msgstr ""
 
-#: ../ppdippstr.py:195
+#: ppdippstr.py:195
 msgid "_Saturation"
 msgstr ""
 
-#: ../ppdippstr.py:196
+#: ppdippstr.py:196
 msgid "On"
 msgstr ""
 
 #. Gutenprint
-#: ../ppdippstr.py:199
+#: ppdippstr.py:199
 #, fuzzy
 #| msgid "Double-sided printing"
 msgid "2-Sided Printing"
 msgstr "రెండు-వైపుల ముద్రణ"
 
-#: ../ppdippstr.py:200
+#: ppdippstr.py:200
 msgid "Shrink Page If Necessary to Fit Borders"
 msgstr ""
 
-#: ../ppdippstr.py:201
+#: ppdippstr.py:201
 msgid "Shrink (print the whole page)"
 msgstr ""
 
-#: ../ppdippstr.py:202
+#: ppdippstr.py:202
 msgid "Crop (preserve dimensions)"
 msgstr ""
 
-#: ../ppdippstr.py:203
+#: ppdippstr.py:203
 msgid "Expand (use maximum page area)"
 msgstr ""
 
-#: ../ppdippstr.py:204
+#: ppdippstr.py:204
 msgid "Borderless"
 msgstr ""
 
-#: ../ppdippstr.py:205 ../troubleshoot/PrintTestPage.py:121
+#: ppdippstr.py:205 troubleshoot/PrintTestPage.py:121
 msgid "No"
 msgstr "కాదు"
 
-#: ../ppdippstr.py:206 ../troubleshoot/PrintTestPage.py:120
+#: ppdippstr.py:206 troubleshoot/PrintTestPage.py:120
 msgid "Yes"
 msgstr "అవును"
 
-#: ../ppdippstr.py:207
+#: ppdippstr.py:207
 msgid "Output Control Common"
 msgstr ""
 
-#: ../ppdippstr.py:208
+#: ppdippstr.py:208
 #, fuzzy
 #| msgid "Connection"
 msgid "Color Correction"
 msgstr "అనుసంధానము"
 
-#: ../ppdippstr.py:209
+#: ppdippstr.py:209
 msgid "Brightness Fine Adjustment"
 msgstr ""
 
-#: ../ppdippstr.py:210
+#: ppdippstr.py:210
 msgid "Contrast Fine Adjustment"
 msgstr ""
 
-#: ../ppdippstr.py:211
+#: ppdippstr.py:211
 msgid "Saturation Fine Adjustment"
 msgstr ""
 
-#: ../ppdippstr.py:212
+#: ppdippstr.py:212
 msgid "Image Type"
 msgstr ""
 
 #. Foomatic
-#: ../ppdippstr.py:214
+#: ppdippstr.py:214
 msgid "Bidirectional printing"
 msgstr ""
 
 #. Options
-#: ../ppdippstr.py:216 ../printerproperties.py:957
+#: ppdippstr.py:216 printerproperties.py:957
 msgid "Installable Options"
 msgstr "సంస్థాపించగల ఐచ్ఛికాలు"
 
-#: ../ppdippstr.py:217
+#: ppdippstr.py:217
 msgid "Duplexer Installed"
 msgstr ""
 
 #. Canon
-#: ../ppdippstr.py:220
+#: ppdippstr.py:220
 msgid "Color Model"
 msgstr ""
 
-#: ../ppdippstr.py:221
+#: ppdippstr.py:221
 msgid "Color Precision"
 msgstr ""
 
-#: ../ppdippstr.py:222
+#: ppdippstr.py:222
 msgid "Resolution "
 msgstr ""
 
-#: ../ppdippstr.py:223
+#: ppdippstr.py:223
 msgid "Printer Features Common"
 msgstr ""
 
-#: ../ppdippstr.py:224
+#: ppdippstr.py:224
 msgid "CD Hub Size"
 msgstr ""
 
-#: ../ppdippstr.py:225
+#: ppdippstr.py:225
 msgid "Ink Type"
 msgstr ""
 
-#: ../ppdippstr.py:226
+#: ppdippstr.py:226
 msgid "Toner Save "
 msgstr ""
 
-#: ../ppdippstr.py:227
+#: ppdippstr.py:227
 msgid "ON"
 msgstr ""
 
-#: ../ppdippstr.py:228
+#: ppdippstr.py:228
 #, fuzzy
 #| msgid "Toner empty"
 msgid "Toner Density "
 msgstr "టోనర్ ఖాళీగావుంది"
 
-#: ../ppdippstr.py:229
+#: ppdippstr.py:229
 msgid "Media Type "
 msgstr ""
 
-#: ../ppdippstr.py:230
+#: ppdippstr.py:230
 msgid "Collate "
 msgstr ""
 
-#: ../ppdippstr.py:231
+#: ppdippstr.py:231
 msgid "Image Refinement "
 msgstr ""
 
-#: ../ppdippstr.py:232
+#: ppdippstr.py:232
 msgid "Image Refinement"
 msgstr ""
 
-#: ../ppdippstr.py:233
+#: ppdippstr.py:233
 msgid "Halftones "
 msgstr ""
 
-#: ../ppdippstr.py:234
+#: ppdippstr.py:234
 msgid "Duplex"
 msgstr ""
 
-#: ../ppdippstr.py:235
+#: ppdippstr.py:235
 msgid "OFF"
 msgstr ""
 
-#: ../ppdippstr.py:236
+#: ppdippstr.py:236
 msgid "ON (Long-edged Binding)"
 msgstr ""
 
-#: ../ppdippstr.py:237
+#: ppdippstr.py:237
 msgid "ON (Short-edged Binding)"
 msgstr ""
 
-#: ../ppdippstr.py:238
+#: ppdippstr.py:238
 #, fuzzy
 #| msgid "Print quality:"
 msgid "High Quality"
 msgstr "ముద్రకము నాణ్యత:"
 
-#: ../ppdippstr.py:240
+#: ppdippstr.py:240
 #, fuzzy
 #| msgid "Controlled by 'Printout mode'"
 msgid "Controlled by 'Print Quality'"
 msgstr "'ముద్రించు రీతి' ద్వారా నియంత్రించబడుతుంది"
 
-#: ../ppdippstr.py:241
+#: ppdippstr.py:241
 msgid "Paper Destination"
 msgstr ""
 
 #. Samsung
-#: ../ppdippstr.py:244
+#: ppdippstr.py:244
 msgid "Paper Size"
 msgstr ""
 
-#: ../ppdippstr.py:245
+#: ppdippstr.py:245
 msgid "Paper Type"
 msgstr ""
 
-#: ../ppdippstr.py:246
+#: ppdippstr.py:246
 msgid "Thin"
 msgstr ""
 
-#: ../ppdippstr.py:247
+#: ppdippstr.py:247
 msgid "Thick"
 msgstr ""
 
-#: ../ppdippstr.py:248
+#: ppdippstr.py:248
 msgid "Thicker"
 msgstr ""
 
-#: ../ppdippstr.py:249
+#: ppdippstr.py:249
 msgid "Edge Enhance"
 msgstr ""
 
-#: ../ppdippstr.py:250
+#: ppdippstr.py:250
 msgid "Skip Blank Pages"
 msgstr ""
 
-#: ../ppdippstr.py:251 ../ppdippstr.py:339
+#: ppdippstr.py:251 ppdippstr.py:339
 msgid "Double-sided Printing"
 msgstr ""
 
-#: ../ppdippstr.py:253
+#: ppdippstr.py:253
 msgid "Reverse Duplex Printing"
 msgstr ""
 
-#: ../ppdippstr.py:254 ../ppdippstr.py:257
+#: ppdippstr.py:254 ppdippstr.py:257
 msgid "Long Edge"
 msgstr ""
 
-#: ../ppdippstr.py:255 ../ppdippstr.py:258
+#: ppdippstr.py:255 ppdippstr.py:258
 msgid "Short Edge"
 msgstr ""
 
-#: ../ppdippstr.py:256
+#: ppdippstr.py:256
 msgid "Two-sided"
 msgstr ""
 
-#: ../ppdippstr.py:259
+#: ppdippstr.py:259
 #, fuzzy
 #| msgid "Toner empty"
 msgid "Toner Save"
 msgstr "టోనర్ ఖాళీగావుంది"
 
 #. Ricoh
-#: ../ppdippstr.py:262
+#: ppdippstr.py:262
 msgid "Finisher"
 msgstr ""
 
-#: ../ppdippstr.py:263
+#: ppdippstr.py:263
 msgid "Option Tray"
 msgstr ""
 
-#: ../ppdippstr.py:264
+#: ppdippstr.py:264
 msgid "External Tray"
 msgstr ""
 
-#: ../ppdippstr.py:265
+#: ppdippstr.py:265
 msgid "Internal Tray 1"
 msgstr ""
 
-#: ../ppdippstr.py:266
+#: ppdippstr.py:266
 msgid "Internal Tray 2"
 msgstr ""
 
-#: ../ppdippstr.py:267
+#: ppdippstr.py:267
 msgid "Internal Shift Tray"
 msgstr ""
 
-#: ../ppdippstr.py:268
+#: ppdippstr.py:268
 msgid "Not Installed"
 msgstr ""
 
-#: ../ppdippstr.py:269
+#: ppdippstr.py:269
 msgid "Installed"
 msgstr ""
 
-#: ../ppdippstr.py:270
+#: ppdippstr.py:270
 msgid "PageSize"
 msgstr ""
 
-#: ../ppdippstr.py:271
+#: ppdippstr.py:271
 msgid "InputSlot"
 msgstr ""
 
-#: ../ppdippstr.py:272
+#: ppdippstr.py:272
 msgid "Tray 2"
 msgstr ""
 
-#: ../ppdippstr.py:273
+#: ppdippstr.py:273
 msgid "Tray 3"
 msgstr ""
 
-#: ../ppdippstr.py:274
+#: ppdippstr.py:274
 msgid "Tray 4"
 msgstr ""
 
-#: ../ppdippstr.py:275
+#: ppdippstr.py:275
 msgid "Bypass Tray"
 msgstr ""
 
-#: ../ppdippstr.py:276
+#: ppdippstr.py:276
 msgid "Collate"
 msgstr ""
 
-#: ../ppdippstr.py:277
+#: ppdippstr.py:277
 msgid "Destination"
 msgstr ""
 
-#: ../ppdippstr.py:278 ../printerproperties.py:282
+#: ppdippstr.py:278 printerproperties.py:282
 msgid "Staple"
 msgstr "స్టేపుల్"
 
-#: ../ppdippstr.py:279 ../printerproperties.py:283
+#: ppdippstr.py:279 printerproperties.py:283
 msgid "Punch"
 msgstr "పంచ్"
 
-#: ../ppdippstr.py:280
+#: ppdippstr.py:280
 msgid "Toner Saving"
 msgstr ""
 
-#: ../ppdippstr.py:281
+#: ppdippstr.py:281
 msgid "Gradation"
 msgstr ""
 
-#: ../ppdippstr.py:282
+#: ppdippstr.py:282
 msgid "Fast"
 msgstr ""
 
 #. HPIJS options
-#: ../ppdippstr.py:285
+#: ppdippstr.py:285
 msgid "Printout mode"
 msgstr "ముద్రించు రీతి"
 
-#: ../ppdippstr.py:287
+#: ppdippstr.py:287
 msgid "Draft (auto-detect-paper type)"
 msgstr "ముసాయిదా (కాగితం-రకము-స్వయంచాలకంగా గుర్తించు)"
 
-#: ../ppdippstr.py:289
+#: ppdippstr.py:289
 msgid "Draft (Color cartridge)"
 msgstr ""
 
-#: ../ppdippstr.py:291
+#: ppdippstr.py:291
 msgid "Draft grayscale (Black cartridge)"
 msgstr ""
 
-#: ../ppdippstr.py:293
+#: ppdippstr.py:293
 msgid "Draft grayscale (auto-detect-paper type)"
 msgstr "ముసాయిదా గ్రేస్కేలు (కాగితం-రకము-స్వయంచాలకంగా గుర్తించు)"
 
-#: ../ppdippstr.py:295
+#: ppdippstr.py:295
 msgid "Normal (Color cartridge)"
 msgstr ""
 
-#: ../ppdippstr.py:297
+#: ppdippstr.py:297
 msgid "Normal grayscale (Black cartridge)"
 msgstr ""
 
-#: ../ppdippstr.py:299
+#: ppdippstr.py:299
 msgid "Normal (auto-detect-paper type)"
 msgstr "సాదారణ (కాగితం-రకము-స్వయంచాలకంగా గుర్తించు)"
 
-#: ../ppdippstr.py:301
+#: ppdippstr.py:301
 msgid "Normal grayscale (auto-detect-paper type)"
 msgstr "సాదారణ గ్రేస్కేలు (కాగితం-రకము-స్వయంచాలకంగా గుర్తించు)"
 
-#: ../ppdippstr.py:303
+#: ppdippstr.py:303
 msgid "High quality (auto-detect-paper type)"
 msgstr "అధిక నాణ్యత (కాగితం-రకము-స్వయంచాలకంగా గుర్తించు)"
 
-#: ../ppdippstr.py:305
+#: ppdippstr.py:305
 msgid "High quality grayscale (auto-detect-paper type)"
 msgstr "అధిక నాణ్యత గ్రేస్కేలు (కాగితం-రకము-స్వయంచాలకంగా గుర్తించు)"
 
-#: ../ppdippstr.py:307
+#: ppdippstr.py:307
 msgid "High quality (Color cartridge)"
 msgstr ""
 
-#: ../ppdippstr.py:309
+#: ppdippstr.py:309
 msgid "High quality grayscale (Black cartridge)"
 msgstr ""
 
-#: ../ppdippstr.py:310
+#: ppdippstr.py:310
 msgid "Photo (on photo paper)"
 msgstr "ఛాయాచిత్రము (ఛాయచిత్ర కాగితంపై)"
 
-#: ../ppdippstr.py:311
+#: ppdippstr.py:311
 msgid "Photo (Color cartridge, on photo paper)"
 msgstr ""
 
-#: ../ppdippstr.py:312
+#: ppdippstr.py:312
 msgid "Best quality (color on photo paper)"
 msgstr "అత్యుత్తమ నాణ్యత (ఛాయాచిత్ర కాగితంపై వర్ణము)"
 
-#: ../ppdippstr.py:313
+#: ppdippstr.py:313
 msgid "Normal quality (color on photo paper)"
 msgstr "సాదారణ నాణ్యత (ఛాయాచిత్ర కాగితముపై వర్ణము)"
 
-#: ../ppdippstr.py:315
+#: ppdippstr.py:315
 msgid "Media source"
 msgstr "మాద్యమం మూలము"
 
-#: ../ppdippstr.py:316
+#: ppdippstr.py:316
 #, fuzzy
 #| msgid "Printer default"
 msgid "Printer Default"
 msgstr "ముద్రకం అప్రమేయం"
 
-#: ../ppdippstr.py:317
+#: ppdippstr.py:317
 msgid "Photo tray"
 msgstr "ఛాయాచిత్ర ట్రే"
 
-#: ../ppdippstr.py:318
+#: ppdippstr.py:318
 msgid "Upper tray"
 msgstr "పై ట్రే"
 
-#: ../ppdippstr.py:319
+#: ppdippstr.py:319
 msgid "Lower tray"
 msgstr "క్రింది ట్రే"
 
-#: ../ppdippstr.py:320
+#: ppdippstr.py:320
 msgid "CD or DVD tray"
 msgstr "CD లేదా DVD ట్రే"
 
-#: ../ppdippstr.py:321
+#: ppdippstr.py:321
 msgid "Envelope feeder"
 msgstr "ఎన్వలప్ ఫీడర్"
 
-#: ../ppdippstr.py:322
+#: ppdippstr.py:322
 msgid "Large capacity tray"
 msgstr "ఎక్కువ సామర్థ్యపు ట్రే"
 
-#: ../ppdippstr.py:323
+#: ppdippstr.py:323
 msgid "Manual feeder"
 msgstr "మానవీయ ఫీడర్"
 
-#: ../ppdippstr.py:324
+#: ppdippstr.py:324
 #, fuzzy
 msgid "Multi-purpose tray "
 msgstr "బహుళ-ప్రయోజనకర ట్రే"
 
-#: ../ppdippstr.py:325
+#: ppdippstr.py:325
 #, fuzzy
 msgid "Multipurpose tray"
 msgstr "బహుళ-ప్రయోజనకర ట్రే"
 
-#: ../ppdippstr.py:327
+#: ppdippstr.py:327
 msgid "Page size"
 msgstr "కాగితం పరిమాణము"
 
-#: ../ppdippstr.py:328
+#: ppdippstr.py:328
 msgid "Custom"
 msgstr "మలచిన"
 
-#: ../ppdippstr.py:329
+#: ppdippstr.py:329
 msgid "Letter"
 msgstr ""
 
-#: ../ppdippstr.py:330
+#: ppdippstr.py:330
 msgid "Photo or 4x6 inch index card"
 msgstr "ఛాయాచిత్రము లేదా 4x6 అంగుళం సూచి కార్డు"
 
-#: ../ppdippstr.py:331
+#: ppdippstr.py:331
 msgid "Photo or 5x7 inch index card"
 msgstr "ఛాయాచిత్రము లేదా 5x7 అంగుళం సూచి కార్డు"
 
-#: ../ppdippstr.py:332
+#: ppdippstr.py:332
 msgid "Photo with tear-off tab"
 msgstr "కత్తరింపు టాబ్‌తో ఛాయాచిత్రము"
 
-#: ../ppdippstr.py:333
+#: ppdippstr.py:333
 msgid "3x5 inch index card"
 msgstr "3x5 అంగుళం సూచి కార్డు"
 
-#: ../ppdippstr.py:334
+#: ppdippstr.py:334
 msgid "5x8 inch index card"
 msgstr "5x8 అంగుళం సూచి కార్డు"
 
-#: ../ppdippstr.py:335
+#: ppdippstr.py:335
 msgid "A6 with tear-off tab"
 msgstr "A6 కత్తిరింపు టాబ్‌తో"
 
-#: ../ppdippstr.py:336
+#: ppdippstr.py:336
 msgid "CD or DVD 80mm"
 msgstr "CD లేదా DVD 80mm"
 
-#: ../ppdippstr.py:337
+#: ppdippstr.py:337
 msgid "CD or DVD 120mm"
 msgstr "CD లేదా DVD 120mm"
 
-#: ../ppdippstr.py:340
+#: ppdippstr.py:340
 msgid "Long edge (standard)"
 msgstr "పొడవు అంచు (ప్రామాణికం)"
 
-#: ../ppdippstr.py:341
+#: ppdippstr.py:341
 msgid "Short edge (flip)"
 msgstr "పొట్టి అంచు (మడత)"
 
-#: ../ppdippstr.py:342
+#: ppdippstr.py:342
 msgid "Off"
 msgstr "ఆఫ్"
 
-#: ../ppdippstr.py:344
+#: ppdippstr.py:344
 msgid "Resolution, quality, ink type, media type"
 msgstr "తీవ్రత, నాణ్యత, లింకు రకము, మాద్యమం రకము"
 
-#: ../ppdippstr.py:345
+#: ppdippstr.py:345
 msgid "Controlled by 'Printout mode'"
 msgstr "'ముద్రించు రీతి' ద్వారా నియంత్రించబడుతుంది"
 
-#: ../ppdippstr.py:346
+#: ppdippstr.py:346
 msgid "300 dpi, Color, Color Cartr."
 msgstr ""
 
-#: ../ppdippstr.py:347
+#: ppdippstr.py:347
 msgid "300 dpi, color, black + color cartridge"
 msgstr "300 dpi, వర్ణము, నలుపు + వర్ణ కాట్రిడ్జు"
 
-#: ../ppdippstr.py:348
+#: ppdippstr.py:348
 msgid "300 dpi, Draft, Color, Color Cartr."
 msgstr ""
 
-#: ../ppdippstr.py:349
+#: ppdippstr.py:349
 msgid "300 dpi, draft, color, black + color cartridge"
 msgstr "300 dpi, ముసాయిదా, వర్ణము, నలుపు + వర్ణకాట్రిడ్జు"
 
-#: ../ppdippstr.py:350
+#: ppdippstr.py:350
 msgid "300 dpi, Draft, Grayscale, Black Cartr."
 msgstr ""
 
-#: ../ppdippstr.py:351
+#: ppdippstr.py:351
 msgid "300 dpi, Grayscale, Black Cartr."
 msgstr ""
 
-#: ../ppdippstr.py:352
+#: ppdippstr.py:352
 msgid "300 dpi, draft, grayscale, black + color cartridge"
 msgstr "300 dpi, ముసాయిదా, గ్రేస్కేలు, బ్లాక్ + వర్ణ కాట్రిడ్జు"
 
-#: ../ppdippstr.py:353
+#: ppdippstr.py:353
 msgid "300 dpi, grayscale, black + color cartridge"
 msgstr "300 dpi, గ్రేస్కేలు, బ్లాక్ + వర్ణ కాట్రిడ్జు"
 
-#: ../ppdippstr.py:354
+#: ppdippstr.py:354
 msgid "600 dpi, color, black + color cartridge"
 msgstr "600 dpi, వర్ణము, బ్లాక్ + వర్ణ కాట్రిడ్జు"
 
-#: ../ppdippstr.py:355
+#: ppdippstr.py:355
 msgid "600 dpi, grayscale, black + color cartridge"
 msgstr "600 dpi, గ్రేస్కేలు, బ్లాక్ + వర్ణ కాట్రిడ్జు"
 
-#: ../ppdippstr.py:356
+#: ppdippstr.py:356
 msgid "600 dpi, photo, black + color cartridge, photo paper"
 msgstr "600 dpi, ఛాయాచిత్రము, బ్లాక్ + వర్ణ కాట్రిడ్జు, ఛాయాచిత్రపు కాగితం"
 
-#: ../ppdippstr.py:357
+#: ppdippstr.py:357
 msgid "600 dpi, color, black + color cartridge, photo paper, normal"
 msgstr "600 dpi, వర్ణము, బ్లాక్ + వర్ణ కాట్రిడ్జు, ఛాయాచిత్ర కాగితం, సాదారణ"
 
-#: ../ppdippstr.py:358
+#: ppdippstr.py:358
 msgid "1200 dpi, photo, black + color cartridge, photo paper"
 msgstr "1200 dpi, ఛాయాచిత్రము, బ్లాక్ + వర్ణ కాట్రిడ్జు, ఛాయాచిత్ర కాగితం"
 
-#: ../ppdippstr.py:364
+#: ppdippstr.py:364
 msgid "Internet Printing Protocol (ipp)"
 msgstr "ఇంటర్నెట్ ప్రింటింగ్ ప్రొటోకాల్ (ipp)"
 
-#: ../ppdippstr.py:365
+#: ppdippstr.py:365
 msgid "Internet Printing Protocol (http)"
 msgstr "ఇంటర్నెట్ ప్రింటింగ్ ప్రొటోకాల్ (http)"
 
-#: ../ppdippstr.py:366
+#: ppdippstr.py:366
 msgid "Internet Printing Protocol (https)"
 msgstr "ఇంటర్నెట్ ప్రింటింగ్ ప్రొటోకాల్ (https)"
 
-#: ../ppdippstr.py:367
+#: ppdippstr.py:367
 msgid "LPD/LPR Host or Printer"
 msgstr "LPD/LPR హోస్టు లేదా ముద్రణాయంత్రం"
 
-#: ../ppdippstr.py:369
+#: ppdippstr.py:369
 msgid "Serial Port #1"
 msgstr "వరుస పోర్టు #1"
 
-#: ../ppdippstr.py:370
+#: ppdippstr.py:370
 msgid "LPT #1"
 msgstr "LPT #1"
 
-#: ../ppdsloader.py:159
+#: ppdsloader.py:159
 msgid "fetching PPDs"
 msgstr "PPDను పొందుచున్నది"
 
-#: ../printerproperties.py:71 ../system-config-printer.py:162
+#: print-applet.desktop.in:3
+msgid "Print Queue Applet"
+msgstr "క్యూ ఆప్లెట్‌ను ముద్రించుము"
+
+#: print-applet.desktop.in:4
+msgid "System tray icon for managing print jobs"
+msgstr "ముద్రణ పనులను నిర్వహించుటకు సిస్టమ్ ట్రే ప్రతిమ"
+
+#: printerproperties.py:71 system-config-printer.py:172
 msgid "Idle"
 msgstr "Idle"
 
-#: ../printerproperties.py:75 ../system-config-printer.py:164
+#: printerproperties.py:75 system-config-printer.py:174
 msgid "Busy"
 msgstr "వత్తిడి"
 
 #. Printer state reasons list
-#: ../printerproperties.py:215
+#: printerproperties.py:215
 msgid "Message"
 msgstr "సందేశం"
 
-#: ../printerproperties.py:237
+#: printerproperties.py:237
 msgid "Users"
 msgstr "వినియోగదారులు"
 
-#: ../printerproperties.py:260
+#: printerproperties.py:260
 msgid "Portrait (no rotation)"
 msgstr "పోర్ట్రైట్ (భ్రమణం లేదు)"
 
-#: ../printerproperties.py:261
+#: printerproperties.py:261
 msgid "Landscape (90 degrees)"
 msgstr "లాండ్‌స్కేప్ (90 డిగ్రీలు)"
 
-#: ../printerproperties.py:262
+#: printerproperties.py:262
 msgid "Reverse landscape (270 degrees)"
 msgstr "అపసవ్య లాండ్‌స్కేప్  (270 డిగ్రీలు)"
 
-#: ../printerproperties.py:263
+#: printerproperties.py:263
 msgid "Reverse portrait (180 degrees)"
 msgstr "అపసవ్య పొర్ట్రైట్ (180 డిగ్రీలు)"
 
-#: ../printerproperties.py:269
+#: printerproperties.py:269
 msgid "Left to right, top to bottom"
 msgstr "ఎడమ నుండి కుడి, పై నుండి కిందకు"
 
-#: ../printerproperties.py:270
+#: printerproperties.py:270
 msgid "Left to right, bottom to top"
 msgstr "ఎడమ నుండి కుడి, కింది నుండి పైనకు"
 
-#: ../printerproperties.py:271
+#: printerproperties.py:271
 msgid "Right to left, top to bottom"
 msgstr "కుడి నుండి ఎడమకు, పై నుండి కిందకు"
 
-#: ../printerproperties.py:272
+#: printerproperties.py:272
 msgid "Right to left, bottom to top"
 msgstr "కుడి నుండి యెడమకు, కింది నుండి పైనకు"
 
-#: ../printerproperties.py:273
+#: printerproperties.py:273
 msgid "Top to bottom, left to right"
 msgstr "పై నుండి కిందకు, ఎడమ నుండి కుడికి"
 
-#: ../printerproperties.py:274
+#: printerproperties.py:274
 msgid "Top to bottom, right to left"
 msgstr "పై నుండి కిందకు, కుడి నుండి ఎడమకు"
 
-#: ../printerproperties.py:275
+#: printerproperties.py:275
 msgid "Bottom to top, left to right"
 msgstr "కింది నుండి పైనకు, ఎడమ నుండి కుడికు"
 
-#: ../printerproperties.py:276
+#: printerproperties.py:276
 msgid "Bottom to top, right to left"
 msgstr "కింది నుండి పైనకు, కుడి నుండి ఎడమకు"
 
-#: ../printerproperties.py:284
+#: printerproperties.py:284
 msgid "Cover"
 msgstr "కవర్"
 
-#: ../printerproperties.py:285
+#: printerproperties.py:285
 msgid "Bind"
 msgstr "బైండ్"
 
-#: ../printerproperties.py:286
+#: printerproperties.py:286
 msgid "Saddle stitch"
 msgstr "సాడిల్ స్టిచ్"
 
-#: ../printerproperties.py:287
+#: printerproperties.py:287
 msgid "Edge stitch"
 msgstr "ఎడ్జ్ స్టిచ్"
 
-#: ../printerproperties.py:288
+#: printerproperties.py:288
 msgid "Fold"
 msgstr "ఫోల్డ్"
 
-#: ../printerproperties.py:289
+#: printerproperties.py:289
 msgid "Trim"
 msgstr "ట్రిమ్"
 
-#: ../printerproperties.py:290
+#: printerproperties.py:290
 msgid "Bale"
 msgstr "బేల్"
 
-#: ../printerproperties.py:291
+#: printerproperties.py:291
 msgid "Booklet maker"
 msgstr "బుక్‌లెట్ మార్కర్"
 
-#: ../printerproperties.py:292
+#: printerproperties.py:292
 msgid "Job offset"
 msgstr "జాబ్ ఆఫ్‌సెట్"
 
-#: ../printerproperties.py:293
+#: printerproperties.py:293
 msgid "Staple (top left)"
 msgstr "స్టేపుల్ (పై యెడమ)"
 
-#: ../printerproperties.py:294
+#: printerproperties.py:294
 msgid "Staple (bottom left)"
 msgstr "స్టేపుల్ (కింది యెడమ)"
 
-#: ../printerproperties.py:295
+#: printerproperties.py:295
 msgid "Staple (top right)"
 msgstr "స్టేపుల్ (పై కుడి)"
 
-#: ../printerproperties.py:296
+#: printerproperties.py:296
 msgid "Staple (bottom right)"
 msgstr "స్టేపుల్ (కింది కుడి)"
 
-#: ../printerproperties.py:297
+#: printerproperties.py:297
 msgid "Edge stitch (left)"
 msgstr "ఎడ్జ్ స్టిచ్ (ఎడమ)"
 
-#: ../printerproperties.py:298
+#: printerproperties.py:298
 msgid "Edge stitch (top)"
 msgstr "ఎడ్జ్ స్టిచ్ (పైన)"
 
-#: ../printerproperties.py:299
+#: printerproperties.py:299
 msgid "Edge stitch (right)"
 msgstr "ఎడ్జ్ స్టిచ్ (కుడి)"
 
-#: ../printerproperties.py:300
+#: printerproperties.py:300
 msgid "Edge stitch (bottom)"
 msgstr "ఎడ్జ్ స్టిచ్ (కింద)"
 
-#: ../printerproperties.py:301
+#: printerproperties.py:301
 msgid "Staple dual (left)"
 msgstr "స్టోపుల్ డ్యూయల్ (ఎడమ)"
 
-#: ../printerproperties.py:302
+#: printerproperties.py:302
 msgid "Staple dual (top)"
 msgstr "స్టేపుల్ డ్యూయల్ (పైన)"
 
-#: ../printerproperties.py:303
+#: printerproperties.py:303
 msgid "Staple dual (right)"
 msgstr "స్టేపుల్ డ్యూయల్ (కుడి)"
 
-#: ../printerproperties.py:304
+#: printerproperties.py:304
 msgid "Staple dual (bottom)"
 msgstr "స్టేపుల్ డ్యూల్ (కింద)"
 
-#: ../printerproperties.py:305
+#: printerproperties.py:305
 msgid "Bind (left)"
 msgstr "బైండ్ (ఎడమ)"
 
-#: ../printerproperties.py:306
+#: printerproperties.py:306
 msgid "Bind (top)"
 msgstr "బైండ్ (పైన)"
 
-#: ../printerproperties.py:307
+#: printerproperties.py:307
 msgid "Bind (right)"
 msgstr "బైండ్ (కుడి)"
 
-#: ../printerproperties.py:308
+#: printerproperties.py:308
 msgid "Bind (bottom)"
 msgstr "బైండ్ (కింద)"
 
-#: ../printerproperties.py:313
+#: printerproperties.py:313
 msgid "One-sided"
 msgstr "ఒక-వైపున"
 
-#: ../printerproperties.py:314
+#: printerproperties.py:314
 msgid "Two-sided (long edge)"
 msgstr "రెండు-వైపుల(పొడవు అంచు)"
 
-#: ../printerproperties.py:315
+#: printerproperties.py:315
 msgid "Two-sided (short edge)"
 msgstr "రెండు-వైపుల (పొట్టి అంచు)"
 
-#: ../printerproperties.py:321
+#: printerproperties.py:321
 msgid "Reverse"
 msgstr "అపసవ్య"
 
-#: ../printerproperties.py:326
+#: printerproperties.py:326
 msgid "High"
 msgstr "అదిక"
 
-#: ../printerproperties.py:348
+#: printerproperties.py:348
 msgid "Automatic rotation"
 msgstr "స్వయంచాలక భ్రమణము"
 
-#: ../printerproperties.py:595
+#: printerproperties.py:595
 msgid "CUPS test page"
 msgstr "CUPS పరిశీలనా పేజీ"
 
-#: ../printerproperties.py:596
+#: printerproperties.py:596
 msgid ""
 "Typically shows whether all jets on a print head are functioning and that "
 "the print feed mechanisms are working properly."
@@ -2140,13 +2209,13 @@ msgstr ""
 "ప్రింట్ హెడ్ నందలి అన్ని జెట్‌లు పనిచేస్తున్నాయా మరియు ప్రింట్ ఫీడ్ యాంత్రికతలు సరిగా పనిచేస్తున్నాయా అనేది  "
 "చూపుతుంది."
 
-#: ../printerproperties.py:603
+#: printerproperties.py:603
 #, python-format
 msgid "Printer Properties - '%s' on %s"
 msgstr "ముద్రణాయంత్రం లక్షణాలు - '%s'   %s పైన"
 
 #. The Conflict button was pressed.
-#: ../printerproperties.py:613
+#: printerproperties.py:613
 msgid ""
 "There are conflicting options.\n"
 "Changes can only be applied after\n"
@@ -2156,20 +2225,20 @@ msgstr ""
 "ఈ విభేదకాలు తొలగించిన తరువాత మాత్రమే\n"
 "మార్పులు మాత్రమే అనువర్తించ బడతాయి."
 
-#: ../printerproperties.py:958 ../ui/PrinterPropertiesDialog.ui.h:48
+#: printerproperties.py:958 ui/PrinterPropertiesDialog.ui:1365
 msgid "Printer Options"
 msgstr "ముద్రణా ఐచ్ఛికాలు"
 
-#: ../printerproperties.py:994
+#: printerproperties.py:994
 #, python-format
 msgid "modifying class %s"
 msgstr "క్లాస్ %sను సవరించుచున్నది"
 
-#: ../printerproperties.py:1012
+#: printerproperties.py:1012
 msgid "This will delete this class!"
 msgstr "ఇది ఈ తరగతిని తొలగిస్తుంది!"
 
-#: ../printerproperties.py:1013
+#: printerproperties.py:1013
 msgid "Proceed anyway?"
 msgstr "ఏమైనప్పటికీ కొనసాగించు?"
 
@@ -2177,283 +2246,436 @@ msgstr "ఏమైనప్పటికీ కొనసాగించు?"
 #. but we have never fetched the server settings to see whether
 #. the server is publishing shared printers.  Fetch the settings
 #. now so that we can update the "not published" label if necessary.
-#: ../printerproperties.py:1106 ../serversettings.py:200
+#: printerproperties.py:1106 serversettings.py:200
 msgid "fetching server settings"
 msgstr "సేవిక అమరికలను పొందుచున్నది"
 
-#: ../printerproperties.py:1189
+#: printerproperties.py:1189
 msgid "printing test page"
 msgstr "పరిశీలనా పేజీను ముద్రించుచున్నది"
 
-#: ../printerproperties.py:1203 ../printerproperties.py:1244
+#: printerproperties.py:1203 printerproperties.py:1244
 msgid "Not possible"
 msgstr "సాధ్యంకాదు"
 
-#: ../printerproperties.py:1204 ../printerproperties.py:1245
+#: printerproperties.py:1204 printerproperties.py:1245
 msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
 msgstr "ఈ రిమోట్ సర్వరు ముద్రక పనిని మద్దతివ్వటంలేదు, సాధారణంగా ముద్రకం పంచుకోబడకపోవటంవల్ల కావచ్చు"
 
-#: ../printerproperties.py:1216 ../printerproperties.py:1236
+#: printerproperties.py:1216 printerproperties.py:1236
 msgid "Submitted"
 msgstr "సమర్పించబడింది"
 
-#: ../printerproperties.py:1217
+#: printerproperties.py:1217
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr "ఉద్యోగంగా పరిశీలనా పుట సమర్పించబదింది %d"
 
-#: ../printerproperties.py:1229
+#: printerproperties.py:1229
 msgid "sending maintenance command"
 msgstr "నిర్వహణా ఆదేశమును పంపుచున్నది"
 
-#: ../printerproperties.py:1237
+#: printerproperties.py:1237
 #, python-format
 msgid "Maintenance command submitted as job %d"
 msgstr "నిర్వహణా ఆదేశము పని %d వలె అప్పగించబడింది"
 
-#: ../printerproperties.py:1318
+#: printerproperties.py:1318
 msgid "Raw Queue"
 msgstr ""
 
-#: ../printerproperties.py:1319
+#: printerproperties.py:1319
 msgid "Unable to get queue details. Treating queue as raw."
 msgstr ""
 
-#: ../printerproperties.py:1331 ../printerproperties.py:1336
+#: printerproperties.py:1331 printerproperties.py:1336
 msgid "Error"
 msgstr "దోషం"
 
-#: ../printerproperties.py:1332
+#: printerproperties.py:1332
 msgid "The PPD file for this queue is damaged."
 msgstr "ఈ క్యూ కొరకు PPD ఫైలు పాడైనది."
 
-#: ../printerproperties.py:1337
+#: printerproperties.py:1337
 msgid "There was a problem connecting to the CUPS server."
 msgstr "CUPS సేవికకు అనుసంధానమగుటలో దోషము వుంది."
 
-#: ../printerproperties.py:1547
+#: printerproperties.py:1547
 msgid "Marker levels are not reported for this printer."
 msgstr "ఈ ముద్రకమునకు గుర్తింపు స్థాయిలు నివేదించిలేవు."
 
-#: ../pysmb.py:114
+#: pysmb.py:114
 #, python-format
 msgid "You must log in to access %s."
 msgstr "మీరు %sను యాక్సెస్ చేయుటకు తప్పక లాగిన్ కావాలి."
 
-#: ../serversettings.py:93
+#: serversettings.py:93
 msgid "Problems?"
 msgstr "సమస్యలా?"
 
-#: ../serversettings.py:273
+#: serversettings.py:273
 msgid "Enter hostname"
 msgstr "అతిధేయిపేరు ప్రవేశపెట్టు"
 
-#: ../serversettings.py:527
+#: serversettings.py:527
 msgid "modifying server settings"
 msgstr "సేవిక అమరికలను సవరించుము"
 
-#: ../serversettings.py:567
+#: serversettings.py:567
 msgid "Adjust the firewall now to allow all incoming IPP connections?"
 msgstr "లోనికి వచ్చు అన్ని IPP అనుసంధానాలను అనుమతించుటకు ఫైర్‌వాల్ సర్దుబాటుచేయాలా?"
 
-#: ../system-config-printer.py:275
+#: statereason.py:109
+msgid "Toner low"
+msgstr "టోనర్ తక్కువగావుంది"
+
+#: statereason.py:110
+#, python-format
+msgid "Printer '%s' is low on toner."
+msgstr "టోనర్‌నందు ముద్రణాయంత్రం '%s' తక్కువగావుంది."
+
+#: statereason.py:111
+msgid "Toner empty"
+msgstr "టోనర్ ఖాళీగావుంది"
+
+#: statereason.py:112
+#, python-format
+msgid "Printer '%s' has no toner left."
+msgstr "ముద్రణాయంత్రం '%s' ఏ టోనర్ ఎడమను కలిగిలేదు."
+
+#: statereason.py:113
+msgid "Cover open"
+msgstr "పైకప్పు తెరిచివుంది"
+
+#: statereason.py:114
+#, python-format
+msgid "The cover is open on printer '%s'."
+msgstr "ముద్రణాయంత్రం '%s' పైతొడుగు తెరిచివుంది."
+
+#: statereason.py:115
+msgid "Door open"
+msgstr "తలుపు తెరిచివుంది"
+
+#: statereason.py:116
+#, python-format
+msgid "The door is open on printer '%s'."
+msgstr "ముద్రణాయంత్రం '%s' పైని తలుపు తెరిచివుంది."
+
+#: statereason.py:117
+msgid "Paper low"
+msgstr "కాగితం తక్కువగావుంది"
+
+#: statereason.py:118
+#, python-format
+msgid "Printer '%s' is low on paper."
+msgstr "ముద్రణాయంత్రం '%s' తక్కువ కాగితాలతోవుంది."
+
+#: statereason.py:119
+msgid "Out of paper"
+msgstr "పుటలు అయిపోయాయి"
+
+#: statereason.py:120
+#, python-format
+msgid "Printer '%s' is out of paper."
+msgstr "ముద్రణాయంత్రం '%s'నందు కాగితాలులేవు."
+
+#: statereason.py:121
+msgid "Ink low"
+msgstr "సిరా తక్కువగావుంది"
+
+#: statereason.py:122
+#, python-format
+msgid "Printer '%s' is low on ink."
+msgstr "ముద్రకము '%s' సిరానందు తక్కువగావుంది."
+
+#: statereason.py:123
+msgid "Ink empty"
+msgstr "సిరా ఖాళీగావుంది"
+
+#: statereason.py:124
+#, python-format
+msgid "Printer '%s' has no ink left."
+msgstr "ముద్రకము '%s'నందు సిరా మిగిలిలేదు."
+
+#: statereason.py:125
+msgid "Printer off-line"
+msgstr "ముద్రణాయంత్రం ఆఫ్-లైనులో వుంది"
+
+#: statereason.py:126
+#, python-format
+msgid "Printer '%s' is currently off-line."
+msgstr "ముద్రణాయంత్రం '%s' ప్రస్తుతం ఆప్‌-లైన్‌లోవుంది"
+
+#: statereason.py:127
+msgid "Not connected?"
+msgstr "అనుసంధించబడలేదా?"
+
+#: statereason.py:128
+#, python-format
+msgid "Printer '%s' may not be connected."
+msgstr "ముద్రణాయంత్రం '%s' అనుసంధానించబడి వుండకపోవచ్చు."
+
+#: statereason.py:129 statereason.py:149
+msgid "Printer error"
+msgstr "ముద్రకము దోషము"
+
+#: statereason.py:130
+#, python-format
+msgid "There is a problem on printer '%s'."
+msgstr "ముద్రకము '%s' పైన అక్కడ వొక సమస్యవుంది."
+
+#: statereason.py:132
+msgid "Printer configuration error"
+msgstr "ముద్రకము ఆకృతీకరణ దోషం"
+
+#: statereason.py:133
+#, python-format
+msgid "There is a missing print filter for printer '%s'."
+msgstr "ముద్రకము '%s' కొరకు తప్పిపోయిన ముద్రక ఫిల్టర్ వుంది."
+
+#: statereason.py:145
+msgid "Printer report"
+msgstr "ముద్రకము నివేదిక"
+
+#: statereason.py:147
+msgid "Printer warning"
+msgstr "ముద్రకము హెచ్చరిక"
+
+#: statereason.py:166
+#, python-format
+msgid "Printer '%s': '%s'."
+msgstr "ముద్రకము '%s': '%s'."
+
+#: system-config-printer.appdata.xml.in:7
+#, fuzzy
+#| msgid "Configure printers"
+msgid "Configure printer queues"
+msgstr "ముద్రకాలను ఆకృతీకరించు"
+
+#: system-config-printer.appdata.xml.in:10
+msgid ""
+"With system-config-printer you can add, edit and delete printer queues. It "
+"allows you to choose the connection method and the printer driver."
+msgstr ""
+
+#: system-config-printer.appdata.xml.in:14
+msgid ""
+"For each queue, you can adjust the default page size and other driver "
+"options, as well as seeing ink/toner levels and status messages."
+msgstr ""
+
+#: system-config-printer.appdata.xml.in:21
+msgid "Main window"
+msgstr ""
+
+#: system-config-printer.appdata.xml.in:25
+#, fuzzy
+#| msgid "Printer Properties"
+msgid "Printer properties"
+msgstr "ముద్రణాయంత్రపు లక్షణములు"
+
+#: system-config-printer.desktop.in:6
+msgid "Configure printers"
+msgstr "ముద్రకాలను ఆకృతీకరించు"
+
+#: system-config-printer.py:285
 msgid "_Connect..."
 msgstr "అనుసంధానించు... (_C)"
 
-#: ../system-config-printer.py:276
+#: system-config-printer.py:286
 msgid "Choose a different CUPS server"
 msgstr "విభిన్న CUPS సేవికను యెంచుకొనుము"
 
-#: ../system-config-printer.py:278
+#: system-config-printer.py:288
 msgid "_Settings..."
 msgstr "అమర్పులు... (_S)"
 
-#: ../system-config-printer.py:279
+#: system-config-printer.py:289
 msgid "Adjust server settings"
 msgstr "సేవిక అమర్పులను సర్దుబాటుచేయుము"
 
-#: ../system-config-printer.py:281 ../ui/PrintersWindow.ui.h:2
+#: system-config-printer.py:291 ui/PrintersWindow.ui:41
 msgid "_Printer"
 msgstr "ముద్రకం (_P)"
 
-#: ../system-config-printer.py:283
+#: system-config-printer.py:293
 msgid "_Class"
 msgstr "క్లాస్ (_C)"
 
-#: ../system-config-printer.py:288
+#: system-config-printer.py:298
 msgid "_Rename"
 msgstr "పునఃనామకరణ (_R)"
 
-#: ../system-config-printer.py:290
+#: system-config-printer.py:300
 msgid "_Duplicate"
 msgstr "నకిలీ (_D)"
 
-#: ../system-config-printer.py:294
+#: system-config-printer.py:304
 msgid "Set As De_fault"
 msgstr "అప్రమేయంగా అమర్చుము (_f)"
 
-#: ../system-config-printer.py:298
+#: system-config-printer.py:308
 msgid "_Create class"
 msgstr "క్లాస్ సృష్టించుము (_C)"
 
-#: ../system-config-printer.py:300
+#: system-config-printer.py:310
 msgid "View Print _Queue"
 msgstr "ముద్రణ వరుసను చూడుము (_Q)"
 
-#: ../system-config-printer.py:304
+#: system-config-printer.py:314
 msgid "E_nabled"
 msgstr "చేతనపరచిన (_n)"
 
-#: ../system-config-printer.py:306
+#: system-config-printer.py:316
 msgid "_Shared"
 msgstr "భాగస్వామ్యపరచిన (_S)"
 
-#: ../system-config-printer.py:311
+#: system-config-printer.py:321
 msgid "Description"
 msgstr "వివరణ"
 
-#: ../system-config-printer.py:312 ../troubleshoot/ChooseNetworkPrinter.py:39
-#: ../troubleshoot/ChoosePrinter.py:45
+#: system-config-printer.py:322 troubleshoot/ChooseNetworkPrinter.py:39
+#: troubleshoot/ChoosePrinter.py:45
 msgid "Location"
 msgstr "స్థానము"
 
-#: ../system-config-printer.py:313
+#: system-config-printer.py:323
 msgid "Manufacturer / Model"
 msgstr "తయారీదారి / రీతి"
 
-#: ../system-config-printer.py:360 ../ui/PrinterPropertiesDialog.ui.h:93
-#: ../ui/PrintersWindow.ui.h:9 ../ui/ServerSettingsDialog.ui.h:15
+#: system-config-printer.py:370 ui/PrinterPropertiesDialog.ui:3530
+#: ui/PrintersWindow.ui:203 ui/ServerSettingsDialog.ui:336
 #, fuzzy
 msgid "Add"
 msgstr "బేసి"
 
-#: ../system-config-printer.py:377 ../ui/PrinterPropertiesDialog.ui.h:96
+#: system-config-printer.py:387 ui/PrinterPropertiesDialog.ui:3652
 #, fuzzy
 msgid "Refresh"
 msgstr "రీఫ్రెష్ (_R)"
 
-#: ../system-config-printer.py:391
+#: system-config-printer.py:401
 msgid "_New"
 msgstr "కొత్త (_N)"
 
-#: ../system-config-printer.py:756
+#: system-config-printer.py:772
 #, python-format
 msgid "Print Settings - %s"
 msgstr "అమరికలను ముద్రించు - %s"
 
-#: ../system-config-printer.py:759
+#: system-config-printer.py:775
 #, python-format
 msgid "Connected to %s"
 msgstr "%sకి అనుసంధించబడింది"
 
-#: ../system-config-printer.py:846
+#: system-config-printer.py:862
 msgid "obtaining queue details"
 msgstr "క్యూ వివరములను పొందుచున్నది"
 
-#: ../system-config-printer.py:935
+#: system-config-printer.py:951
 msgid "Network printer (discovered)"
 msgstr "నెట్వర్కు ముద్రకము (కనుగొనబడింది)"
 
-#: ../system-config-printer.py:938
+#: system-config-printer.py:954
 msgid "Network class (discovered)"
 msgstr "నెట్వర్కు క్లాస్ (కనుగొనబడింది)"
 
-#: ../system-config-printer.py:947
+#: system-config-printer.py:963
 msgid "Class"
 msgstr "క్లాస్"
 
-#: ../system-config-printer.py:950 ../system-config-printer.py:956
-#: ../troubleshoot/LocalOrRemote.py:30
+#: system-config-printer.py:966 system-config-printer.py:972
+#: troubleshoot/LocalOrRemote.py:30
 msgid "Network printer"
 msgstr "నెట్వర్కు ముద్రకము"
 
-#: ../system-config-printer.py:953
+#: system-config-printer.py:969
 msgid "Network print share"
 msgstr "నెట్వర్కు ముద్రణ భాగస్వామ్యం"
 
-#: ../system-config-printer.py:1120
+#: system-config-printer.py:1136
 msgid "Service framework not available"
 msgstr "సేవా ఫ్రేమ్‌వర్క్ అందుబాటులోలేదు"
 
-#: ../system-config-printer.py:1122
+#: system-config-printer.py:1138
 msgid "Cannot start service on remote server"
 msgstr "దూరస్థ సేవికపై సేవను ప్రారంభించలేదు"
 
-#: ../system-config-printer.py:1170 ../ui/ConnectingDialog.ui.h:5
-#, no-c-format, python-format
+#: system-config-printer.py:1187 ui/ConnectingDialog.ui:84
+#, python-format
 msgid "<i>Opening connection to %s</i>"
 msgstr "<i>అనుసంధానమును %s కు తెరుచుచున్నది</i>"
 
-#: ../system-config-printer.py:1333
+#: system-config-printer.py:1350
 msgid "Set Default Printer"
 msgstr "అప్రమేయ ముద్రణాయంత్రాన్ని అమర్చుము"
 
-#: ../system-config-printer.py:1335
+#: system-config-printer.py:1352
 msgid "Do you want to set this as the system-wide default printer?"
 msgstr "మీరు దీనిని సిస్టమ్-వ్యాప్త అప్రమేయ ముద్రకముగా అమర్చాలని అనుకొనుచున్నారా?"
 
-#: ../system-config-printer.py:1337
+#: system-config-printer.py:1354
 msgid "Set as the _system-wide default printer"
 msgstr "సిస్టమ్-వ్యాప్త అప్రమేయ ముద్రకము వలె అమర్చుము (_s)"
 
-#: ../system-config-printer.py:1339
+#: system-config-printer.py:1356
 msgid "_Clear my personal default setting"
 msgstr "నా యొక్క వ్యక్తిగత అప్రమేయ అమరికను శుభ్రంచేయుము (_C)"
 
-#: ../system-config-printer.py:1340
+#: system-config-printer.py:1357
 msgid "Set as my _personal default printer"
 msgstr "నా వ్యక్తిగత అప్రమేయ ముద్రకములా అమర్చుము (_p)"
 
-#: ../system-config-printer.py:1345
+#: system-config-printer.py:1362
 msgid "setting default printer"
 msgstr "అప్రమేయ ముద్రణాయంత్రాన్ని అమర్చుచున్నది"
 
-#: ../system-config-printer.py:1398
+#: system-config-printer.py:1415
 msgid "Cannot Rename"
 msgstr "పునఃనామకరణ చేయలేము"
 
-#: ../system-config-printer.py:1399
+#: system-config-printer.py:1416
 msgid "There are queued jobs."
 msgstr "అక్కడ వరుసచేసిన పనులు వున్నాయి."
 
-#: ../system-config-printer.py:1416
+#: system-config-printer.py:1433
 msgid "Renaming will lose history"
 msgstr "పునఃనామకరణ వలన చరిత్ర పోతుంది"
 
-#: ../system-config-printer.py:1418
+#: system-config-printer.py:1435
 msgid "Completed jobs will no longer be available for re-printing."
 msgstr "పూర్తైన పనులు"
 
-#: ../system-config-printer.py:1531
+#: system-config-printer.py:1548
 msgid "renaming printer"
 msgstr "ముద్రకమును పునఃనామకరణ చేయుచున్నది"
 
-#: ../system-config-printer.py:1694
+#: system-config-printer.py:1711
 #, python-format
 msgid "Really delete class '%s'?"
 msgstr "క్లాస్ '%s'ను నిజంగా తొలగించాలా?"
 
-#: ../system-config-printer.py:1696
+#: system-config-printer.py:1713
 #, python-format
 msgid "Really delete printer '%s'?"
 msgstr "నిజంగా %s ముద్రణాయంత్రాన్ని తొలగించాలా?"
 
-#: ../system-config-printer.py:1700
+#: system-config-printer.py:1717
 msgid "Really delete selected destinations?"
 msgstr "ఎంపికచేసిన గమ్యాలను నిజంగా తొలగించాలా?"
 
-#: ../system-config-printer.py:1721
+#: system-config-printer.py:1738
 #, python-format
 msgid "deleting printer %s"
 msgstr "ముద్రకము %sను తొలగించుచున్నది"
 
-#: ../system-config-printer.py:1812
+#: system-config-printer.py:1829
 msgid "Publish Shared Printers"
 msgstr "భాగస్వామ్య ముద్రకములను ప్రచురించుము"
 
-#: ../system-config-printer.py:1813
+#: system-config-printer.py:1830
 msgid ""
 "Shared printers are not available to other people unless the 'Publish shared "
 "printers' option is enabled in the server settings."
@@ -2461,30 +2683,30 @@ msgstr ""
 "సేవిక అమరికలనందు 'భాగస్వామ్య ముద్రకములను ప్రచురించు' ఐచ్చికం చేతనపరచు నంతవరకు భాగస్వామ్య "
 "ముద్రకములు యితరులకు అందుబాటులో వుండవు."
 
-#: ../system-config-printer.py:2031
+#: system-config-printer.py:2048
 msgid "Would you like to print a test page?"
 msgstr "మీరు పరిశీలనా పేజీను ముద్రించుటకు యిష్టపడతారా?"
 
 #. Not more than 25 characters
-#: ../system-config-printer.py:2033 ../ui/PrinterPropertiesDialog.ui.h:17
-#: ../troubleshoot/PrintTestPage.py:74
+#: system-config-printer.py:2050 troubleshoot/PrintTestPage.py:74
+#: ui/PrinterPropertiesDialog.ui:547
 msgid "Print Test Page"
 msgstr "పాఠ పుటను ముద్రించు"
 
-#: ../system-config-printer.py:2125
+#: system-config-printer.py:2142
 msgid "Install driver"
 msgstr "సంస్థాపనా డ్రైవర్"
 
-#: ../system-config-printer.py:2126 ../troubleshoot/CheckPPDSanity.py:136
+#: system-config-printer.py:2143 troubleshoot/CheckPPDSanity.py:136
 #, python-format
 msgid "Printer '%s' requires the %s package but it is not currently installed."
 msgstr "ముద్రకము '%s'కు %s సంకలనము కావాలి అది ప్రస్తుతం అందుబాటలో లేదు."
 
-#: ../system-config-printer.py:2141
+#: system-config-printer.py:2158
 msgid "Missing driver"
 msgstr "తప్పిపోయిన డ్రైవరు"
 
-#: ../system-config-printer.py:2142
+#: system-config-printer.py:2159
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "
@@ -2493,15 +2715,405 @@ msgstr ""
 "'%s' ముద్రకంకు %s పరిక్రమం కావలసి ఉంది కానీ ఇది ప్రస్తుతం సంస్థాపించబడలేదు.  ఈ ముద్రకాన్ని "
 "ఉపయోగించటానికి ముందే దీన్ని సంస్థాపించండి."
 
-#: ../ui/AboutDialog.ui.h:1
+#: timedops.py:116 timedops.py:195
+msgid "Please wait"
+msgstr "దయచేసి వేచిఉండండి"
+
+#: timedops.py:122 timedops.py:202
+msgid "Gathering information"
+msgstr "సమాచారమును ప్రోగుచేయుచున్నది"
+
+#: ToolbarSearchEntry.py:74
+msgid "_Filter:"
+msgstr "వడపోత (_F):"
+
+#: troubleshoot/base.py:36
+msgid ""
+"To start this tool, select System->Administration->Print Settings from the "
+"main menu."
+msgstr ""
+"ఈ సాధనమును ప్రారంభించుటకు, వ్యవస్థ->నిర్వహణ->ముద్రణ అమరికలను ముఖ్యమెనూ నుండి యెంపికచేయండి."
+
+#: troubleshoot/CheckLocalServerPublishing.py:28
+msgid "Server Not Exporting Printers"
+msgstr "సేవిక ముద్రకములను యెగుమతి చేయుటలేదు"
+
+#: troubleshoot/CheckLocalServerPublishing.py:29
+msgid ""
+"Although one or more printers are marked as being shared, this print server "
+"is not exporting shared printers to the network."
+msgstr ""
+"ఒకటి లేదా ఎక్కువ ముద్రకములు భాగస్వామ్యమైనవిగా గుర్తుంచబడినప్పుటికి, ఈ ముద్రణా సేవిక భాగస్వామ్య "
+"మద్రకాలను నెట్వర్కునకు యెగుమతి చేయుటలేదు."
+
+#: troubleshoot/CheckLocalServerPublishing.py:33
+msgid ""
+"Enable the 'Publish shared printers connected to this system' option in the "
+"server settings using the printing administration tool."
+msgstr ""
+"ముద్రణా నిర్వహణ సాధనమును వుపయోగించి సేవిక అమర్పులనందు 'ఈ సిస్టముకు అనుసంధానించబడి వున్న "
+"భాగస్వామ్య ముద్రకాలను ప్రచురించుము' అను ఐచ్చికాన్ని చేతనము చేయుము."
+
+#: troubleshoot/CheckPPDSanity.py:100
+msgid "Invalid PPD File"
+msgstr "చెల్లని PPD దస్త్రము"
+
+#: troubleshoot/CheckPPDSanity.py:111
+#, python-format
+msgid ""
+"The PPD file for printer '%s' does not conform to the specification.  "
+"Possible reason follows:"
+msgstr ""
+"ముద్రకం '%s'కు PPD దస్త్రము విశదీకరణకు తగినట్లు నిర్ధారించబడలేదు.  క్రిందవి కారణములు కాగలవు:"
+
+#. Perhaps cupstestppd is not in the path.
+#: troubleshoot/CheckPPDSanity.py:117
+#, python-format
+msgid "There is a problem with the PPD file for printer '%s'."
+msgstr "ముద్రకం '%s' కొరకు PPD దస్త్రముతో సమస్యవుంది."
+
+#: troubleshoot/CheckPPDSanity.py:127
+msgid "Missing Printer Driver"
+msgstr "ముద్రకం డ్రైవర్‌ను కలిగిలేదు"
+
+#: troubleshoot/CheckPPDSanity.py:141
+#, python-format
+msgid ""
+"Printer '%s' requires the '%s' program but it is not currently installed."
+msgstr "ముద్రకం '%s'కు '%s' ప్రోగ్రామ్ అవసరము కాని అది ప్రస్తుతం సంస్థాపించిలేదు."
+
+#: troubleshoot/ChooseNetworkPrinter.py:31
+msgid "Choose Network Printer"
+msgstr "నెట్వర్కు ముద్రకాన్ని యెంచుకొనుము"
+
+#: troubleshoot/ChooseNetworkPrinter.py:32
+msgid ""
+"Please select the network printer you are trying to use from the list below. "
+"If it does not appear in the list, select 'Not listed'."
+msgstr ""
+"మీరు వుపయోగించడానికి ప్రయత్నిస్తున్న నెట్వర్కు ముద్రకాన్ని ఈ క్రింది జాబితానుండి యెంపికచేయుము. అది క్రింది "
+"జాబితానందు కనిపించకపోతే, 'జాబితా చేసిలేదు' యెంపికచేయుము."
+
+#: troubleshoot/ChooseNetworkPrinter.py:41 troubleshoot/ChoosePrinter.py:47
+#: troubleshoot/DeviceListed.py:45
+msgid "Information"
+msgstr "సమాచారము"
+
+#: troubleshoot/ChooseNetworkPrinter.py:75 troubleshoot/ChoosePrinter.py:71
+#: troubleshoot/DeviceListed.py:77
+msgid "Not listed"
+msgstr "జాబితా చేసిలేదు"
+
+#: troubleshoot/ChoosePrinter.py:37
+msgid "Choose Printer"
+msgstr "ముద్రకాన్ని యెంచుకొనుము"
+
+#: troubleshoot/ChoosePrinter.py:38
+msgid ""
+"Please select the printer you are trying to use from the list below. If it "
+"does not appear in the list, select 'Not listed'."
+msgstr ""
+"మీరు వుపయోగించడానికి ప్రయత్నిస్తున్న ముద్రకాన్ని క్రింది జాబితానుండి యెంపికచేయుము. అది జాబితానందు "
+"కనిపించకపోతే, 'జాబితా చేసిలేదు' యెంచుకోనుము."
+
+#: troubleshoot/DeviceListed.py:37
+msgid "Choose Device"
+msgstr "పరికరాన్ని యెంపికచేయుము"
+
+#: troubleshoot/DeviceListed.py:38
+msgid ""
+"Please select the device you want to use from the list below. If it does not "
+"appear in the list, select 'Not listed'."
+msgstr ""
+"మీరు వుపయోగించడానికి ప్రయత్నిస్తున్న పరికరాన్ని క్రింది జాబితానుండి యెంపికచేయుము. అది జాబితానందు "
+"కనిపించకపోతే, 'జాబితా చేసిలేదు' యెంచుకోనుము."
+
+#: troubleshoot/DeviceListed.py:47 ui/NewPrinterWindow.ui:411
+msgid "Device URI"
+msgstr "సాధనం URI"
+
+#: troubleshoot/ErrorLogCheckpoint.py:40
+msgid "Debugging"
+msgstr "డీబగ్గింగ్"
+
+#: troubleshoot/ErrorLogCheckpoint.py:41
+msgid ""
+"This step will enable debugging output from the CUPS scheduler.  This may "
+"cause the scheduler to restart.  Click the button below to enable debugging."
+msgstr ""
+"CUPS షెడ్యూలర్‌నుండి డీబగ్గింగ్ అవుట్పుట్‌ను యీ స్టెప్పు చేతనంచేయును.  ఇది షెడ్యూలర్ "
+"పునఃప్రారంభమునకు కారణం కావచ్చును.  డీబగ్గింగ్‌ను చేతనపరచుటకు క్రింది బటన్ నొక్కుము."
+
+#: troubleshoot/ErrorLogCheckpoint.py:45
+msgid "Enable Debugging"
+msgstr "డీబగ్గింగ్‌ను చేతనముచేయుము"
+
+#: troubleshoot/ErrorLogCheckpoint.py:236
+msgid "Debug logging enabled."
+msgstr "డీబగ్ లాగింగ్ చేతనముచేయబడింది."
+
+#: troubleshoot/ErrorLogCheckpoint.py:238
+msgid "Debug logging was already enabled."
+msgstr "డీబగ్ లాగింగ్ యిప్పటికే చేతనముచేయబడింది."
+
+#: troubleshoot/ErrorLogFetch.py:41
+msgid "Retrieve Journal Entries"
+msgstr ""
+
+#: troubleshoot/ErrorLogFetch.py:42
+msgid ""
+"No system journal entries were found. This may be because you are not an "
+"administrator. To fetch journal entries please run this command:"
+msgstr ""
+
+#: troubleshoot/ErrorLogParse.py:32
+msgid "Error log messages"
+msgstr "దోషపు లాగ్ సందేశములు"
+
+#: troubleshoot/ErrorLogParse.py:33
+msgid "There are messages in the error log."
+msgstr "దోషపు లాగ్‌నందు అక్కడ సందేశములు వున్నాయి."
+
+#: troubleshoot/__init__.py:57
+msgid "Printing troubleshooter"
+msgstr "ముద్రణ సమస్యాపరిష్కారిణి"
+
+#: troubleshoot/Locale.py:31
+msgid "Incorrect Page Size"
+msgstr "సరికాని పుట పరిమాణము"
+
+#: troubleshoot/Locale.py:32
+msgid ""
+"The page size for the print job was not the printer's default page size.  If "
+"this is not intentional it may cause alignment problems."
+msgstr ""
+"ముద్రణ పనికొరకు వున్న పుట పరిమాణము ముద్రకంయొక్క అప్రమేయ పుట పరిమాణము కాదు.  ఒకవేళ అది "
+"అంతర్గతము కాకపోతే అది సర్దుబాటు సమస్యలకు కారణమౌతుంది."
+
+#: troubleshoot/Locale.py:44
+msgid "Print job page size:"
+msgstr "ముద్రణ పని పుట పరిమాణము:"
+
+#: troubleshoot/Locale.py:48
+msgid "Printer page size:"
+msgstr "ముద్రకం పుట పరిమాణము:"
+
+#: troubleshoot/LocalOrRemote.py:26
+msgid "Printer Location"
+msgstr "ముద్రకము స్థానము"
+
+#: troubleshoot/LocalOrRemote.py:27
+msgid "Is the printer connected to this computer or available on the network?"
+msgstr "ముద్రకం కంప్యూటరుకు అనుసంధానించబడి వుందా లేక నెట్వర్కునందు అందుబాటులోవుందా?"
+
+#: troubleshoot/LocalOrRemote.py:29
+msgid "Locally connected printer"
+msgstr "స్థానికంగా అనుసంధానించబడివున్న ముద్రకము"
+
+#: troubleshoot/NetworkCUPSPrinterShared.py:28
+msgid "Queue Not Shared"
+msgstr "క్యూ భాగస్వామ్యం కాలేదు"
+
+#: troubleshoot/NetworkCUPSPrinterShared.py:29
+msgid "The CUPS printer on the server is not shared."
+msgstr "సేవికపైన CUPS ముద్రకం భాగస్వామ్యం కాదు."
+
+#: troubleshoot/PrinterStateReasons.py:34
+msgid "Status Messages"
+msgstr "స్థితి సందేశములు"
+
+#: troubleshoot/PrinterStateReasons.py:35
+msgid "There are status messages associated with this queue."
+msgstr "ఈ క్యూతో సంభందమైన స్థితి సందేశములు అక్కడ వున్నాయి."
+
+#: troubleshoot/PrinterStateReasons.py:65
+#, python-format
+msgid "The printer's state message is: '%s'."
+msgstr "ముద్రక స్థితి సందేశము: '%s'."
+
+#: troubleshoot/PrinterStateReasons.py:90
+msgid "Errors are listed below:"
+msgstr "దోషములు క్రింది జాబితాచేసి వున్నాయి:"
+
+#: troubleshoot/PrinterStateReasons.py:95
+msgid "Warnings are listed below:"
+msgstr "హెచ్చరికలు క్రింద జాబితాచేసి వున్నాయి:"
+
+#: troubleshoot/PrintTestPage.py:64
+msgid "Test Page"
+msgstr "పరిశీలనా పుట"
+
+#: troubleshoot/PrintTestPage.py:65
+msgid ""
+"Now print a test page.  If you are having problems printing a specific "
+"document, print that document now and mark the print job below."
+msgstr ""
+"ఇప్పుడు పరిశీలనా పుటను ముద్రించుము. మీకు ఫలానా పత్రమును ముద్రించుటకు సమస్యలు వుంటే, "
+"పత్రమును యిప్పుడు ముద్రించుము మరియు ముద్రణ పనిని క్రిందన గుర్తుంచుము."
+
+#: troubleshoot/PrintTestPage.py:77
+msgid "Cancel All Jobs"
+msgstr "అన్ని పనులను రద్దుచేయుము"
+
+#: troubleshoot/PrintTestPage.py:83
+msgid "Test"
+msgstr "పరిశీలన"
+
+#: troubleshoot/PrintTestPage.py:113
+msgid "Did the marked print jobs print correctly?"
+msgstr "గుర్తుంచిన ముద్రణ పనులు సరిగా ముద్రించినవా?"
+
+#: troubleshoot/PrintTestPage.py:144
+#, python-format
+msgid "Remember to load paper of type '%s' into the printer first."
+msgstr "ముద్రకములోనికి మొదటగా '%s' రకము కాగితమును లోడుచేయుట గుర్తుంచుకొనుము."
+
+#: troubleshoot/PrintTestPage.py:430
+msgid "Error submitting test page"
+msgstr "పరిశీలనా పుటను అప్పగించుటలో దోషము"
+
+#: troubleshoot/QueueNotEnabled.py:58 troubleshoot/QueueRejectingJobs.py:68
+#, python-format
+msgid "The reason given is: '%s'."
+msgstr "ఇవ్వబడిన కారణము: '%s'."
+
+#: troubleshoot/QueueNotEnabled.py:60
+msgid "This may be due to the printer being disconnected or switched off."
+msgstr "ఇది ముద్రకము అననుసంధానించబడుట వలనకాని లేదా స్విచ్ఆఫ్ అగుట వలనకాని కావచ్చును."
+
+#: troubleshoot/QueueNotEnabled.py:64
+msgid "Queue Not Enabled"
+msgstr "క్యూ చేతనము చేయబడిలేదు"
+
+#: troubleshoot/QueueNotEnabled.py:65
+#, python-format
+msgid "The queue '%s' is not enabled."
+msgstr "క్యూ '%s' చేతనము చేయబడిలేదు."
+
+#: troubleshoot/QueueNotEnabled.py:73
+msgid ""
+"To enable it, select the 'Enabled' checkbox in the 'Policies' tab for the "
+"printer in the printer administration tool."
+msgstr ""
+"దీనిని చేతనము చేయుటకు, ముద్రకం నిర్వహణా సాధనమునందు ముద్రకం కొరకు 'విధానాలు' టాబ్‌నందు "
+"'చేతనపరిచిన' చెక్‌బాక్సును యెంపికచేయుము."
+
+#: troubleshoot/QueueRejectingJobs.py:33
+msgid "Queue Rejecting Jobs"
+msgstr "క్యూ పనులను తిరస్కరించుచున్నది"
+
+#: troubleshoot/QueueRejectingJobs.py:65
+#, python-format
+msgid "The queue '%s' is rejecting jobs."
+msgstr "క్యూ '%s' పనులను తిరస్కరించుచున్నది."
+
+#: troubleshoot/QueueRejectingJobs.py:72
+msgid ""
+"To make the queue accept jobs, select the 'Accepting Jobs' checkbox in the "
+"'Policies' tab for the printer in the printer administration tool."
+msgstr ""
+"క్యూ పనులను ఆమోదించునట్లు చేయుటకు, ముద్రకం నిర్వహణ సాధనమునందు ముద్రకం కొరకు 'విధానములు' "
+"టాబ్‌నందలి 'పనులను ఆమోదించు' చెక్‌బాక్సును యెంపికచేయుము."
+
+#: troubleshoot/RemoteAddress.py:28
+msgid "Remote Address"
+msgstr "సుదూర చిరునామా"
+
+#: troubleshoot/RemoteAddress.py:29
+msgid ""
+"Please enter as many details as you can about the network address of this "
+"printer."
+msgstr ""
+"ఈ ముద్రకం యొక్క నెట్వర్కు చిరునామా గురించి దయచేసి మీరు ఎన్ని వివరములు యివ్వగలిగితే అన్ని ప్రవేశపెట్టండి."
+
+#: troubleshoot/RemoteAddress.py:37
+msgid "Server name:"
+msgstr "సేవిక నామము:"
+
+#: troubleshoot/RemoteAddress.py:44
+msgid "Server IP address:"
+msgstr "సేవిక IP చిరునామా:"
+
+#: troubleshoot/SchedulerNotRunning.py:28
+msgid "CUPS Service Stopped"
+msgstr "CUPS సేవ ఆపివేయబడింది"
+
+#: troubleshoot/SchedulerNotRunning.py:29
+msgid ""
+"The CUPS print spooler does not appear to be running.  To correct this, "
+"choose System->Administration->Services from the main menu and look for the "
+"'cups' service."
+msgstr ""
+"CUPS ముద్రణ స్పూలర్ నడుచుచున్నట్లు అనిపించుటలేదు.  దీనిని సవరించుటకు, ముఖ్య మెనూనుండి సిస్టమ్-"
+">నిర్వహణ->సేవలు యెంచుకొని మరియు 'cups' సేవికకొరకు చూడుము."
+
+#: troubleshoot/ServerFirewalled.py:28
+msgid "Check Server Firewall"
+msgstr "సేవిక ఫైర్‌వాలును పరిశీలించుము"
+
+#: troubleshoot/ServerFirewalled.py:29
+msgid "It is not possible to connect to the server."
+msgstr "సేవికకు అనుసంధానమగుటకు యిది సాధ్యపడదు."
+
+#: troubleshoot/ServerFirewalled.py:44
+#, python-format
+msgid ""
+"Please check to see if a firewall or router configuration is blocking TCP "
+"port %d on server '%s'."
+msgstr ""
+"TCP పోర్టు %dను సేవిక '%s'నందు ఫైరువాలు లేదా రూటర్ ఆకృతీకరణ బ్లాకు చేయుచున్నదేమో చూడుటకు "
+"దయచేసి పరిశీలించుము."
+
+#: troubleshoot/Shrug.py:28
+msgid "Sorry!"
+msgstr "మన్నించండి!"
+
+#: troubleshoot/Shrug.py:29
+msgid ""
+"There is no obvious solution to this problem.  Your answers have been "
+"collected together with other useful information.  If you would like to "
+"report a bug, please include this information."
+msgstr ""
+"ఈ సమస్యకు ఖచ్చితమైన పరిష్కారం లేదు. ఇతర వుపయోగకర సమాచారంతో పాటు మీ సమాధానాలు కూడా సేకరించడమైంది. "
+"మీరు బగ్ ఫిర్యాదు చేయవలెనంటే, దయచేసి యీ సమాచారం చేర్చండి."
+
+#: troubleshoot/Shrug.py:36
+msgid "Diagnostic Output (Advanced)"
+msgstr "విశ్లేషిత అవుట్పుట్ (ఆధునిక)"
+
+#: troubleshoot/Shrug.py:93
+msgid "Error saving file"
+msgstr "ఫైలు దాచుటలో దోషం"
+
+#: troubleshoot/Shrug.py:94
+msgid "There was an error saving the file:"
+msgstr "ఫైలును దాచుటలో వొక దోషం వుంది:"
+
+#: troubleshoot/Welcome.py:45
+msgid "Trouble-shooting Printing"
+msgstr "సమస్యా-పరిష్కార ముద్రణ"
+
+#: troubleshoot/Welcome.py:47
+msgid ""
+"The next few screens will contain some questions about your problem with "
+"printing. Based on your answers a solution may be suggested."
+msgstr ""
+"తరువాత రాబోవు కొన్ని తెరలనందు మీకు ముద్రణతోగల సమస్య గురించి కొన్ని ప్రశ్నలు వుంటాయి. మీ సమాధానములపై "
+"ఆధారపడి వొక పరిష్కారమును సూచించవచ్చు."
+
+#: troubleshoot/Welcome.py:51
+msgid "Click 'Forward' to begin."
+msgstr "ప్రరంభించుటకు 'ముందుకు' నొక్కుము."
+
+#: ui/AboutDialog.ui:9
 msgid "Copyright © 2006-2012 Red Hat, Inc."
 msgstr "కాపీరైట్ © 2006-2012 Red Hat, Inc."
 
-#: ../ui/AboutDialog.ui.h:2
+#: ui/AboutDialog.ui:10
 msgid "A CUPS configuration tool."
 msgstr "CUPS ఆకృతీకరణ సాధనము."
 
-#: ../ui/AboutDialog.ui.h:3
+#: ui/AboutDialog.ui:12
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -2530,124 +3142,124 @@ msgstr ""
 "02110-1301, USAకు వ్రాయండి."
 
 #. TRANSLATORS: Replace this string with your names, one name per line.  Thank you very much for your effort on translating system-config-printer and all our other tools!
-#: ../ui/AboutDialog.ui.h:9
+#: ui/AboutDialog.ui:21
 msgid "translator-credits"
 msgstr ""
 "Prajasakti Localisation Team <localisation@prajasakti.com>\n"
 "Kiran Chandra <kiran@swecha.net>\n"
 "Krishna Babu <kkrothap@redhat.com>"
 
-#: ../ui/ConnectDialog.ui.h:1
+#: ui/ConnectDialog.ui:8
 msgid "Connect to CUPS server"
 msgstr "CUPS సర్వరుకి అనుసంధించు"
 
-#: ../ui/ConnectDialog.ui.h:3 ../ui/PrintersWindow.ui.h:12
+#: ui/ConnectDialog.ui:42 ui/PrintersWindow.ui:285
 #, fuzzy
 msgid "Connect"
 msgstr "అనుసంధానము"
 
-#: ../ui/ConnectDialog.ui.h:4
+#: ui/ConnectDialog.ui:78
 msgid "CUPS _server:"
 msgstr "CUPS సేవిక (_s):"
 
-#: ../ui/ConnectDialog.ui.h:5
+#: ui/ConnectDialog.ui:116
 msgid "Require _encryption"
 msgstr "ఎన్క్రిప్షన్ అవసరము (_e)"
 
-#: ../ui/ConnectingDialog.ui.h:1
+#: ui/ConnectingDialog.ui:8
 msgid "Connecting to CUPS server"
 msgstr "CUPS సేవికకు అనుసంధానమౌతోంది"
 
-#: ../ui/ConnectingDialog.ui.h:3
+#: ui/ConnectingDialog.ui:59
 msgid "<span weight=\"bold\" size=\"larger\">Connecting to CUPS server</span>"
 msgstr "<span weight=\"bold\" size=\"larger\">CUPS సేవికకు అనుసంధానమౌతోంది</span>"
 
-#: ../ui/InstallDialog.ui.h:1
+#: ui/InstallDialog.ui:24
 msgid "Close"
 msgstr ""
 
-#: ../ui/InstallDialog.ui.h:2
+#: ui/InstallDialog.ui:64
 msgid "_Install"
 msgstr "సంస్థాపించు(_I)"
 
-#: ../ui/JobsWindow.ui.h:1
+#: ui/JobsWindow.ui:24
 msgid "Refresh job list"
 msgstr "పని జాబితాను తాజాపరచు"
 
-#: ../ui/JobsWindow.ui.h:2 ../ui/SMBBrowseDialog.ui.h:2
+#: ui/JobsWindow.ui:25 ui/SMBBrowseDialog.ui:61
 msgid "_Refresh"
 msgstr "రీఫ్రెష్ (_R)"
 
-#: ../ui/JobsWindow.ui.h:3
+#: ui/JobsWindow.ui:41
 msgid "Show completed jobs"
 msgstr "పూర్తైన పనులను చూపుము"
 
-#: ../ui/JobsWindow.ui.h:4
+#: ui/JobsWindow.ui:42
 msgid "Show _completed jobs"
 msgstr "పూర్తైన పనులను చూపుము (_c)"
 
-#: ../ui/NewPrinterName.ui.h:1
+#: ui/NewPrinterName.ui:7
 msgid "Duplicate Printer"
 msgstr "నకిలీ ముద్రకము"
 
-#: ../ui/NewPrinterName.ui.h:3 ../ui/PrinterPropertiesDialog.ui.h:5
-#: ../ui/ServerSettingsDialog.ui.h:3 ../ui/SMBBrowseDialog.ui.h:4
+#: ui/NewPrinterName.ui:38 ui/PrinterPropertiesDialog.ui:182
+#: ui/ServerSettingsDialog.ui:40 ui/SMBBrowseDialog.ui:93
 msgid "_OK"
 msgstr ""
 
-#: ../ui/NewPrinterName.ui.h:4
+#: ui/NewPrinterName.ui:64
 msgid "New name for the printer"
 msgstr "ముద్రకం కోసం కొత్త పేరు"
 
-#: ../ui/NewPrinterWindow.ui.h:2
+#: ui/NewPrinterWindow.ui:34
 msgid "<span weight=\"bold\" size=\"larger\">Describe Printer</span>"
 msgstr "<span weight=\"bold\" size=\"larger\">ముద్రకమును వర్ణించుము</span>"
 
-#: ../ui/NewPrinterWindow.ui.h:3
+#: ui/NewPrinterWindow.ui:69
 msgid "Short name for this printer such as \"laserjet\""
 msgstr "ఈ ముద్రకమునకు \"laserjet\" వలె పొట్టిన నామము"
 
-#: ../ui/NewPrinterWindow.ui.h:4
+#: ui/NewPrinterWindow.ui:97
 msgid "<b>Printer Name</b>"
 msgstr "<b>ముద్రకం పేరు</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:5
+#: ui/NewPrinterWindow.ui:127
 msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
 msgstr "మనిషి చదవగల వర్ణన \"Duplexer తో HP LaserJet\" వంటివి"
 
-#: ../ui/NewPrinterWindow.ui.h:6
+#: ui/NewPrinterWindow.ui:154
 msgid "<b>Description</b> (optional)"
 msgstr "<b>వర్ణన</b> (ఐచ్ఛిక)"
 
-#: ../ui/NewPrinterWindow.ui.h:7
+#: ui/NewPrinterWindow.ui:184
 msgid "Human-readable location such as \"Lab 1\""
 msgstr "మనిషి చదవగల స్థానం \"Lab 1\" వంటివి"
 
-#: ../ui/NewPrinterWindow.ui.h:8
+#: ui/NewPrinterWindow.ui:211
 msgid "<b>Location</b> (optional)"
 msgstr "<b>స్థానం</b> (ఐచ్ఛికం)"
 
-#: ../ui/NewPrinterWindow.ui.h:10
+#: ui/NewPrinterWindow.ui:253
 msgid "<span weight=\"bold\" size=\"larger\">Select Device</span>"
 msgstr "<span weight=\"bold\" size=\"larger\">పరికరాన్ని యెంపికచేయుము</span>"
 
-#: ../ui/NewPrinterWindow.ui.h:11
+#: ui/NewPrinterWindow.ui:320
 msgid "Device description."
 msgstr "సాధనం వర్ణన."
 
-#: ../ui/NewPrinterWindow.ui.h:12
+#: ui/NewPrinterWindow.ui:328
 msgid "<b>Description</b>"
 msgstr "<b>వర్ణన</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:13
+#: ui/NewPrinterWindow.ui:345
 msgid "Empty"
 msgstr "ఖాళీ"
 
-#: ../ui/NewPrinterWindow.ui.h:14
+#: ui/NewPrinterWindow.ui:377
 msgid "<b>Enter device URI</b>"
 msgstr "<b>పరికరము URIను ప్రవేశపెట్టండి</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:15
+#: ui/NewPrinterWindow.ui:392
 msgid ""
 "For example:\n"
 "ipp://cups-server/printers/printer-queue\n"
@@ -2657,143 +3269,141 @@ msgstr ""
 "ipp://cups-server/printers/printer-queue\n"
 "ipp://printer.mydomain/ipp"
 
-#: ../ui/NewPrinterWindow.ui.h:18 ../troubleshoot/DeviceListed.py:47
-msgid "Device URI"
-msgstr "సాధనం URI"
-
-#: ../ui/NewPrinterWindow.ui.h:19
+#: ui/NewPrinterWindow.ui:437 ui/NewPrinterWindow.ui:549
+#: ui/NewPrinterWindow.ui:1279
 msgid "Host:"
 msgstr "హోస్టు:"
 
-#: ../ui/NewPrinterWindow.ui.h:20
+#: ui/NewPrinterWindow.ui:453
 msgid "Port number:"
 msgstr "పోర్టు సంఖ్య:"
 
-#: ../ui/NewPrinterWindow.ui.h:21
+#: ui/NewPrinterWindow.ui:509
 msgid "<b>Location of the network printer</b>"
 msgstr "<b>నెట్వర్కు ముద్రకం స్థానం</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:22
+#: ui/NewPrinterWindow.ui:522
 msgid "JetDirect"
 msgstr "JetDirect"
 
-#: ../ui/NewPrinterWindow.ui.h:23
+#: ui/NewPrinterWindow.ui:569
 msgid "Queue:"
 msgstr "క్యూ:"
 
-#: ../ui/NewPrinterWindow.ui.h:24
+#: ui/NewPrinterWindow.ui:612
 msgid "Probe"
 msgstr "ప్రోబే"
 
-#: ../ui/NewPrinterWindow.ui.h:25
+#: ui/NewPrinterWindow.ui:686
 msgid "<b>Location of the LPD network printer</b>"
 msgstr "<b>LPD నెట్వర్కు ముద్రకం స్థానం</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:26
+#: ui/NewPrinterWindow.ui:699
 msgid "LPD"
 msgstr "LPD"
 
-#: ../ui/NewPrinterWindow.ui.h:27
+#: ui/NewPrinterWindow.ui:731
 msgid "SCSI"
 msgstr "SCSI"
 
-#: ../ui/NewPrinterWindow.ui.h:28
+#: ui/NewPrinterWindow.ui:758
 msgid "Baud Rate"
 msgstr "బౌడ్ స్థాయి"
 
-#: ../ui/NewPrinterWindow.ui.h:29
+#: ui/NewPrinterWindow.ui:777
 msgid "Parity"
 msgstr "సాదృశ్యం"
 
-#: ../ui/NewPrinterWindow.ui.h:30
+#: ui/NewPrinterWindow.ui:796
 msgid "Data Bits"
 msgstr "సమాచార బిట్లు"
 
-#: ../ui/NewPrinterWindow.ui.h:31
+#: ui/NewPrinterWindow.ui:815
 msgid "Flow Control"
 msgstr "ప్రవాహ నియంత్రణ"
 
-#: ../ui/NewPrinterWindow.ui.h:32
+#: ui/NewPrinterWindow.ui:899
 msgid "<b>Settings of the serial port</b>"
 msgstr "<b>వరుస క్రమ పోర్టు అమర్పులు</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:33
+#: ui/NewPrinterWindow.ui:912
 msgid "Serial"
 msgstr "క్రమం"
 
-#: ../ui/NewPrinterWindow.ui.h:34
+#: ui/NewPrinterWindow.ui:980
 msgid "Browse..."
 msgstr "బ్రౌజ్..."
 
-#: ../ui/NewPrinterWindow.ui.h:35
+#: ui/NewPrinterWindow.ui:1005
 msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
 msgstr "<i>smb://[workgroup/]server[:port]/printer</i>"
 
-#: ../ui/NewPrinterWindow.ui.h:36
+#: ui/NewPrinterWindow.ui:1020
 msgid "<b>SMB Printer</b>"
 msgstr "<b>SMB ముద్రకము</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:37
+#: ui/NewPrinterWindow.ui:1049
 msgid "Prompt user if authentication is required"
 msgstr "దృవీకరణ అవసరమైతే వినియోగదారిని అడుగు"
 
-#: ../ui/NewPrinterWindow.ui.h:38
+#: ui/NewPrinterWindow.ui:1071
 msgid "Set authentication details now"
 msgstr "దృవీకరణ వివరములను యిప్పుడు అమర్చుము"
 
-#: ../ui/NewPrinterWindow.ui.h:41
+#: ui/NewPrinterWindow.ui:1189
 msgid "<b>Authentication</b>"
 msgstr "<b>ధృవీకరణ</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:42
+#: ui/NewPrinterWindow.ui:1215
 msgid "_Verify..."
 msgstr "సరిచూడు... (_V)"
 
-#: ../ui/NewPrinterWindow.ui.h:43
+#: ui/NewPrinterWindow.ui:1242
 msgid "SMB"
 msgstr "SMB"
 
-#: ../ui/NewPrinterWindow.ui.h:44
+#: ui/NewPrinterWindow.ui:1312
 msgid "Find"
 msgstr ""
 
-#: ../ui/NewPrinterWindow.ui.h:45
+#: ui/NewPrinterWindow.ui:1347
 msgid "Searching..."
 msgstr "శోధించుచున్నది..."
 
-#: ../ui/NewPrinterWindow.ui.h:47
+#: ui/NewPrinterWindow.ui:1381
 msgid "<b>Network Printer</b>"
 msgstr "<b>నెట్వర్కు ముద్రకము</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:48
+#: ui/NewPrinterWindow.ui:1395
 msgid "Network"
 msgstr "నెట్వర్కు"
 
-#: ../ui/NewPrinterWindow.ui.h:49
+#: ui/NewPrinterWindow.ui:1437
 msgid "Connection"
 msgstr "అనుసంధానము"
 
-#: ../ui/NewPrinterWindow.ui.h:50
+#: ui/NewPrinterWindow.ui:1471
 msgid "Device"
 msgstr "సాధనం"
 
-#: ../ui/NewPrinterWindow.ui.h:51
+#: ui/NewPrinterWindow.ui:1491 ui/NewPrinterWindow.ui:1885
+#: ui/NewPrinterWindow.ui:2431
 msgid "<span weight=\"bold\" size=\"larger\">Choose Driver</span>"
 msgstr "<span weight=\"bold\" size=\"larger\">డ్రైవరును యెంపికచేయుము</span>"
 
-#: ../ui/NewPrinterWindow.ui.h:52
+#: ui/NewPrinterWindow.ui:1509
 msgid "Select printer from database"
 msgstr "ముద్రకమును డాటాబేసునుండి యెంపికచేయుము"
 
-#: ../ui/NewPrinterWindow.ui.h:53
+#: ui/NewPrinterWindow.ui:1527
 msgid "Provide PPD file"
 msgstr "PPD దస్త్రమును అందివ్వుము"
 
-#: ../ui/NewPrinterWindow.ui.h:54
+#: ui/NewPrinterWindow.ui:1544
 msgid "Search for a printer driver to download"
 msgstr "ముద్రణాయంత్రపు డ్రైవర్ డౌనులోడు చేయుటకు శోధించుము"
 
-#: ../ui/NewPrinterWindow.ui.h:55
+#: ui/NewPrinterWindow.ui:1576
 msgid ""
 "The foomatic printer database contains various manufacturer provided "
 "PostScript Printer Description (PPD) files and also can generate PPD files "
@@ -2806,7 +3416,7 @@ msgstr ""
 "నిష్పాదిస్తుంది. కానీ సాధారణ ఉత్పత్తులలో PPD ఫైళ్లు ముద్రకం యొక్క ప్రత్యేక లక్షణాలను "
 "సమకూర్చగలుగుతుంది."
 
-#: ../ui/NewPrinterWindow.ui.h:56
+#: ui/NewPrinterWindow.ui:1631
 msgid ""
 "PostScript Printer Description (PPD) files can often be found on the driver "
 "disk that comes with the printer. For PostScript printers they are often "
@@ -2815,61 +3425,61 @@ msgstr ""
 "ముద్రకంతో వచ్చే పోస్టు స్క్రిప్టు ముద్రకం వర్ణన (PPD) ఫైళ్లు ఎక్కువగా డ్రైవు డిస్కులో కనబడుతునాయి. "
 "పోస్టు స్క్రిప్టు ముద్రకాలు ఎక్కువగా విండోస్ డ్రైవర్ <sup>®</sup>లలో భాగంగా ఉంటాయి."
 
-#: ../ui/NewPrinterWindow.ui.h:57
+#: ui/NewPrinterWindow.ui:1694
 msgid "Make and model:"
 msgstr "తయారుచేయి మరియూ రీతి:"
 
-#: ../ui/NewPrinterWindow.ui.h:58
+#: ui/NewPrinterWindow.ui:1765
 msgid "_Search"
 msgstr "వెతుకు(_S)"
 
-#: ../ui/NewPrinterWindow.ui.h:59
+#: ui/NewPrinterWindow.ui:1798
 msgid "Printer model:"
 msgstr "ముద్రణాయంత్రం రీతి:"
 
-#: ../ui/NewPrinterWindow.ui.h:60
+#: ui/NewPrinterWindow.ui:1957
 msgid "Comments..."
 msgstr "వ్యాఖ్యానములు..."
 
-#: ../ui/NewPrinterWindow.ui.h:61
+#: ui/NewPrinterWindow.ui:2018
 msgid "<span weight=\"bold\" size=\"larger\">Choose Class Members</span>"
 msgstr "<span weight=\"bold\" size=\"larger\">తరగతి సభ్యులను యెంపికచేయుము</span>"
 
-#: ../ui/NewPrinterWindow.ui.h:62 ../ui/PrinterPropertiesDialog.ui.h:44
+#: ui/NewPrinterWindow.ui:2079 ui/PrinterPropertiesDialog.ui:1193
 msgid "move left"
 msgstr "ఎడమవైపునకు కదుపుము"
 
-#: ../ui/NewPrinterWindow.ui.h:63 ../ui/PrinterPropertiesDialog.ui.h:45
+#: ui/NewPrinterWindow.ui:2106 ui/PrinterPropertiesDialog.ui:1219
 msgid "move right"
 msgstr "కుడివైపునకు కదుపుము"
 
-#: ../ui/NewPrinterWindow.ui.h:64
+#: ui/NewPrinterWindow.ui:2161
 msgid "Class Members"
 msgstr "తరగతి సభ్యులు"
 
-#: ../ui/NewPrinterWindow.ui.h:65
+#: ui/NewPrinterWindow.ui:2180
 msgid "<span weight=\"bold\" size=\"larger\">Existing Settings</span>"
 msgstr "<span weight=\"bold\" size=\"larger\">వున్న అమరికలు</span>"
 
-#: ../ui/NewPrinterWindow.ui.h:66
+#: ui/NewPrinterWindow.ui:2201
 msgid "Try to transfer the current settings"
 msgstr "ప్రస్తుత అమరికలను బదిలీచేయుటకు ప్రయత్నించు"
 
-#: ../ui/NewPrinterWindow.ui.h:67
+#: ui/NewPrinterWindow.ui:2211
 msgid "Use the new PPD (Postscript Printer Description) as is."
 msgstr "కొత్త PPDని (Postscript Printer Description) ఉన్నట్లుగానే ఉపయోగించు."
 
-#: ../ui/NewPrinterWindow.ui.h:68
+#: ui/NewPrinterWindow.ui:2231
 msgid ""
 "This way all current option settings will be lost. The default settings of "
 "the new PPD will be used. "
 msgstr "ఈ విధంగా ప్రస్తుత అన్ని ఐచ్ఛికాల అమర్పులూ పోతాయి. కొత్త PPD యొక్క సిద్ధ అమర్పు వాడాలి. "
 
-#: ../ui/NewPrinterWindow.ui.h:69
+#: ui/NewPrinterWindow.ui:2242
 msgid "Try to copy the option settings over from the old PPD. "
 msgstr "పాత PPDనుండీ ఐచ్ఛిక అమర్పులను కాపీచేయటానికి ప్రయత్నించు. "
 
-#: ../ui/NewPrinterWindow.ui.h:70
+#: ui/NewPrinterWindow.ui:2262
 msgid ""
 "This is done by assuming that options with the same name do have the same "
 "meaning. Settings of options that are not present in the new PPD will be "
@@ -2878,30 +3488,30 @@ msgstr ""
 "ఐచ్ఛికాలను అదేపేరుతో ఊహించటంవల్ల అదే అర్ధాన్ని ఇవ్వటం వల్ల జరిగింది. ఐచ్ఛికం యొక్క అమర్పులు కొత్త "
 "PPDలో లేవు ప్రస్తుత PPDలో సిద్ధంగా అమర్చబడటం లేదా వా.టిని పోగొట్టుకోవటం జరుగుతుంది."
 
-#: ../ui/NewPrinterWindow.ui.h:71
+#: ui/NewPrinterWindow.ui:2287
 msgid "Change PPD"
 msgstr "PPD మార్చు"
 
-#: ../ui/NewPrinterWindow.ui.h:72
+#: ui/NewPrinterWindow.ui:2314
 msgid "<span weight=\"bold\" size=\"larger\">Installable Options</span>"
 msgstr "<span weight=\"bold\" size=\"larger\">సంస్థాపించదగిన ఐచ్చికములు</span>"
 
-#: ../ui/NewPrinterWindow.ui.h:73
+#: ui/NewPrinterWindow.ui:2334
 msgid ""
 "This driver supports additional hardware that may be installed in the "
 "printer."
 msgstr "ఈ ముద్రకమునందు సంస్థాపించదగు అదనపు హార్డువేరును ఈ డ్రైవర్ మద్దతిస్తుంది."
 
-#: ../ui/NewPrinterWindow.ui.h:74 ../ui/PrinterPropertiesDialog.ui.h:47
+#: ui/NewPrinterWindow.ui:2412 ui/PrinterPropertiesDialog.ui:1319
 msgid "Installed Options"
 msgstr "సంస్థాపించిన ఐచ్చికములు"
 
-#: ../ui/NewPrinterWindow.ui.h:75
+#: ui/NewPrinterWindow.ui:2458
 msgid ""
 "For the printer you have selected there are drivers available for download."
 msgstr "మీరు యెంపికచేసుకొనిన ముద్రకమునకు డ్రైవర్ల డౌనులోడు అక్కడ అందుబాటులో వున్నాయి."
 
-#: ../ui/NewPrinterWindow.ui.h:76
+#: ui/NewPrinterWindow.ui:2478
 msgid ""
 "These drivers do not come from your operating system supplier and will not "
 "be covered by their commercial support.  See the support and license terms "
@@ -2910,15 +3520,15 @@ msgstr ""
 "ఈ డ్రైవర్లు మీ అపరేటింగ్ సిస్టమ్ పంపిణీదారినుండి రావు మరియు వారి వ్యాపార మద్దతు వీటికి వర్తించదు.  ఈ "
 "డ్రైవర్ల పంపిణీదారి మద్దతు మరియు లైసెన్సు నియమాలను చూడండి."
 
-#: ../ui/NewPrinterWindow.ui.h:77
+#: ui/NewPrinterWindow.ui:2486
 msgid "<b>Note</b>"
 msgstr "<b>గమనిక</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:78
+#: ui/NewPrinterWindow.ui:2519
 msgid "<b>Select Driver</b>"
 msgstr "<b>డ్రైవర్‌ను యెంపికచేయుము</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:79
+#: ui/NewPrinterWindow.ui:2566
 msgid ""
 "With this choice no driver download will be performed. In the next steps a "
 "locally installed driver will be selected."
@@ -2926,173 +3536,165 @@ msgstr ""
 "ఈ యెంపికతో యే డ్రైవర్ డౌనులోడు జరుపబడదు. తరువాతి అంచెలనందు స్థానికంగా సంస్థాపించిన డ్రైవర్ "
 "యెంపికకాబడుతుంది."
 
-#: ../ui/NewPrinterWindow.ui.h:81 ../ui/PrinterPropertiesDialog.ui.h:7
+#: ui/NewPrinterWindow.ui:2603 ui/PrinterPropertiesDialog.ui:278
 msgid "Description:"
 msgstr "వర్ణన:"
 
-#: ../ui/NewPrinterWindow.ui.h:82
+#: ui/NewPrinterWindow.ui:2622
 msgid "License:"
 msgstr "లైసెన్సు:"
 
-#: ../ui/NewPrinterWindow.ui.h:83
+#: ui/NewPrinterWindow.ui:2641
 msgid "Supplier:"
 msgstr "పంపిణీదారు:"
 
-#: ../ui/NewPrinterWindow.ui.h:84
+#: ui/NewPrinterWindow.ui:2659
 msgid "license"
 msgstr "లైసెన్సు"
 
-#: ../ui/NewPrinterWindow.ui.h:85
+#: ui/NewPrinterWindow.ui:2679
 msgid "short description"
 msgstr "క్లుప్త వివరణ"
 
-#: ../ui/NewPrinterWindow.ui.h:86
+#: ui/NewPrinterWindow.ui:2695
 msgid "Manufacturer"
 msgstr "తయారీదారు"
 
-#: ../ui/NewPrinterWindow.ui.h:87
+#: ui/NewPrinterWindow.ui:2720
 msgid "supplier"
 msgstr "పంపిణీదారు"
 
-#: ../ui/NewPrinterWindow.ui.h:88
+#: ui/NewPrinterWindow.ui:2736
 msgid "Free software"
 msgstr "ఉచిత సాఫ్టువేరు"
 
-#: ../ui/NewPrinterWindow.ui.h:89
+#: ui/NewPrinterWindow.ui:2755
 msgid "Patented algorithms"
 msgstr "పేటెంటుపొందిన అల్గార్దెమ్లు"
 
-#: ../ui/NewPrinterWindow.ui.h:90
+#: ui/NewPrinterWindow.ui:2781
 msgid "Support:"
 msgstr "మద్దతు:"
 
-#: ../ui/NewPrinterWindow.ui.h:91
+#: ui/NewPrinterWindow.ui:2798
 msgid "support contacts"
 msgstr "తోడ్పాటు సంప్రదింపులు"
 
-#: ../ui/NewPrinterWindow.ui.h:92
+#: ui/NewPrinterWindow.ui:2842
 msgid "Text:"
 msgstr "పాఠము:"
 
-#: ../ui/NewPrinterWindow.ui.h:93
+#: ui/NewPrinterWindow.ui:2861
 msgid "Line art:"
 msgstr "లైన్ ఆర్ట్:"
 
-#: ../ui/NewPrinterWindow.ui.h:95
+#: ui/NewPrinterWindow.ui:3023
 msgid "Graphics:"
 msgstr "చిత్రాలు:"
 
-#: ../ui/NewPrinterWindow.ui.h:96
+#: ui/NewPrinterWindow.ui:3086
 msgid "Photo:"
 msgstr "ఛాయాచిత్రము:"
 
-#: ../ui/NewPrinterWindow.ui.h:97
+#: ui/NewPrinterWindow.ui:3109
 msgid "<b>Output Quality</b>"
 msgstr "<b>అవుట్పుట్ నాణ్యత</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:98
+#: ui/NewPrinterWindow.ui:3160
 msgid "Yes, I accept this license"
 msgstr "అవును, నేను ఈ లైసెన్సును ఆమోదిస్తున్నాను"
 
-#: ../ui/NewPrinterWindow.ui.h:99
+#: ui/NewPrinterWindow.ui:3176
 msgid "No, I do not accept this license"
 msgstr "లేదు, నేను ఈ లైసెన్సును ఆమోదించను"
 
-#: ../ui/NewPrinterWindow.ui.h:100
+#: ui/NewPrinterWindow.ui:3203
 msgid "<b>License Terms</b>"
 msgstr "<b>లైసన్సు నియమాలు</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:101
+#: ui/NewPrinterWindow.ui:3223
 msgid "Driver details"
 msgstr "డ్రైవర్ వివరములు"
 
-#: ../ui/NewPrinterWindow.ui.h:103
+#: ui/NewPrinterWindow.ui:3297
 msgid "_Back"
 msgstr ""
 
-#: ../ui/NewPrinterWindow.ui.h:105 ../ui/PrinterPropertiesDialog.ui.h:3
+#: ui/NewPrinterWindow.ui:3329 ui/PrinterPropertiesDialog.ui:152
 msgid "_Apply"
 msgstr ""
 
-#: ../ui/NewPrinterWindow.ui.h:106
+#: ui/NewPrinterWindow.ui:3345
 msgid "_Forward"
 msgstr ""
 
-#: ../ui/PrinterPropertiesDialog.ui.h:1
+#: ui/PrinterPropertiesDialog.ui:92
 msgid "Printer Properties"
 msgstr "ముద్రణాయంత్రపు లక్షణములు"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:2
+#: ui/PrinterPropertiesDialog.ui:132
 msgid "Co_nflicts"
 msgstr "భేదాలు (_n)"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:6
+#: ui/PrinterPropertiesDialog.ui:197
 msgid "_Close"
 msgstr ""
 
-#: ../ui/PrinterPropertiesDialog.ui.h:8
+#: ui/PrinterPropertiesDialog.ui:298
 msgid "Location:"
 msgstr "స్థానం:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:9
+#: ui/PrinterPropertiesDialog.ui:354
 msgid "Device URI:"
 msgstr "సాధనం URI:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:10
+#: ui/PrinterPropertiesDialog.ui:374
 msgid "Printer State:"
 msgstr "ముద్రక స్థితి:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:11
+#: ui/PrinterPropertiesDialog.ui:394
 msgid "Make and Model:"
 msgstr "తయారుచెయి మరియూ మాదిరి:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:12
+#: ui/PrinterPropertiesDialog.ui:431 ui/PrinterPropertiesDialog.ui:476
 msgid "Change..."
 msgstr "మార్చు..."
 
-#: ../ui/PrinterPropertiesDialog.ui.h:13
-msgid "make and model"
-msgstr "తయారి మరియు రకం"
-
-#: ../ui/PrinterPropertiesDialog.ui.h:14
-msgid "printer state"
-msgstr "ముద్రిక స్థితి"
-
-#: ../ui/PrinterPropertiesDialog.ui.h:15
+#: ui/PrinterPropertiesDialog.ui:520
 msgid "<b>Settings</b>"
 msgstr "<b>అమర్పులు</b>"
 
 #. Not more than 25 characters
-#: ../ui/PrinterPropertiesDialog.ui.h:19
+#: ui/PrinterPropertiesDialog.ui:562
 msgid "Print Self-Test Page"
 msgstr "స్వంతగా-పరిశీలనా పేజీను ముద్రించుము"
 
 #. Not more than 25 characters
-#: ../ui/PrinterPropertiesDialog.ui.h:21
+#: ui/PrinterPropertiesDialog.ui:577
 msgid "Clean Print Heads"
 msgstr "ముద్రణ హెడ్లను శుభ్రపరచుము"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:22
+#: ui/PrinterPropertiesDialog.ui:596
 msgid "<b>Tests and Maintenance</b>"
 msgstr "<b>పరిశీలనలు మరియు నిర్వహణ</b>"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:23
+#: ui/PrinterPropertiesDialog.ui:613
 msgid "Settings"
 msgstr "అమర్పులు"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:24
+#: ui/PrinterPropertiesDialog.ui:646
 msgid "Enabled"
 msgstr "సాధ్యం"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:25
+#: ui/PrinterPropertiesDialog.ui:663
 msgid "Accepting jobs"
 msgstr "అనుమతించే పనులు"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:26
+#: ui/PrinterPropertiesDialog.ui:679
 msgid "Shared"
 msgstr "భాగస్వామ్యం"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:27
+#: ui/PrinterPropertiesDialog.ui:705
 msgid ""
 "<i>Not published\n"
 "See server settings</i>"
@@ -3100,68 +3702,68 @@ msgstr ""
 "<i>ప్రచురించలేదు\n"
 "సేవిక అమరికలను చూడుము</i>"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:29
+#: ui/PrinterPropertiesDialog.ui:722
 msgid "<b>State</b>"
 msgstr "<b>స్థితి</b>"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:30
+#: ui/PrinterPropertiesDialog.ui:752
 #, fuzzy
 msgid "Error Policy:"
 msgstr "దోష విధానం: \t"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:31
+#: ui/PrinterPropertiesDialog.ui:771
 msgid "Operation Policy:"
 msgstr "కార్య విధానం:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:32
+#: ui/PrinterPropertiesDialog.ui:825
 msgid "<b>Policies</b>"
 msgstr "<b>విధానాలు</b>"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:33
+#: ui/PrinterPropertiesDialog.ui:855
 msgid "Starting Banner:"
 msgstr "స్ట్రింగ్ బేనరు:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:34
+#: ui/PrinterPropertiesDialog.ui:874
 msgid "Ending Banner:"
 msgstr "బానర్ చివర:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:35
+#: ui/PrinterPropertiesDialog.ui:928
 msgid "<b>Banner</b>"
 msgstr "<b>బేనరు</b>"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:36
+#: ui/PrinterPropertiesDialog.ui:948
 msgid "Policies"
 msgstr "విధానాలు"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:37
+#: ui/PrinterPropertiesDialog.ui:964
 msgid "Allow printing for everyone except these users:"
 msgstr "ఈ వినియోగదారులను మినహాయించి ప్రతిఒక్కరికీ ముద్రణకి అనుమతించు:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:38
+#: ui/PrinterPropertiesDialog.ui:980
 msgid "Deny printing for everyone except these users:"
 msgstr "ఈ వినియోగదారులకుకాక ప్రతి ఒక్కరికొరకూ Deny ముద్రణ:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:39
+#: ui/PrinterPropertiesDialog.ui:1012
 msgid "user"
 msgstr "వినియోగదారి"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:41
+#: ui/PrinterPropertiesDialog.ui:1080
 msgid "_Add"
 msgstr ""
 
-#: ../ui/PrinterPropertiesDialog.ui.h:42
+#: ui/PrinterPropertiesDialog.ui:1118
 msgid "Access Control"
 msgstr "యాక్సిస్ నియంత్రణ"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:43
+#: ui/PrinterPropertiesDialog.ui:1137
 msgid "Add or Remove Members"
 msgstr "సభ్యూలను కలుపు లేదా తొలగించు"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:46
+#: ui/PrinterPropertiesDialog.ui:1273
 msgid "Members"
 msgstr "సభ్యులు"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:49
+#: ui/PrinterPropertiesDialog.ui:1393
 msgid ""
 "Specify the default job options for this printer.  Jobs arriving at this "
 "print server will have these options added if they are not already set by "
@@ -3170,287 +3772,325 @@ msgstr ""
 "ఈ ముద్రకమునకు అప్రమేయ పని ఐచ్చికములను తెలుపండి.  ముద్రణసేవిక వద్దకు వచ్చు పనులు యిప్పటికే "
 "అనువర్తనము ద్వారా అమర్చబడి వుండకపోతే అవి ఈ ఐచ్చికములను జతచేసుకుంటాయి."
 
-#: ../ui/PrinterPropertiesDialog.ui.h:50
+#: ui/PrinterPropertiesDialog.ui:1421
 msgid "Copies:"
 msgstr "నకళ్ళు:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:51
+#: ui/PrinterPropertiesDialog.ui:1440
 msgid "Orientation:"
 msgstr "సర్దుబాటు:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:52
+#: ui/PrinterPropertiesDialog.ui:1452
 msgid "Scale to fit"
 msgstr "సరిగ్గా అమరునట్లు చేయుము"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:53
+#: ui/PrinterPropertiesDialog.ui:1479
 msgid "Pages per side:"
 msgstr "ఒక్కో ప్రక్కకు పేజీలు:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:54
+#: ui/PrinterPropertiesDialog.ui:1508
 msgid "Pages per side layout:"
 msgstr "ప్రక్క నమూనాకు పేజీలు:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:55
+#: ui/PrinterPropertiesDialog.ui:1527
 msgid "Brightness:"
 msgstr "కాంతిప్రకాశం:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:56
+#: ui/PrinterPropertiesDialog.ui:1546
 msgid "Finishings:"
 msgstr "ముగింపులు:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:57
+#: ui/PrinterPropertiesDialog.ui:1565
 msgid "Job priority:"
 msgstr "పని ప్రాముఖ్యత:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:58
+#: ui/PrinterPropertiesDialog.ui:1584
 msgid "Media:"
 msgstr "మాధ్యమం:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:59
+#: ui/PrinterPropertiesDialog.ui:1603
 msgid "Sides:"
 msgstr "ప్రక్కలు:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:60
+#: ui/PrinterPropertiesDialog.ui:1622
 msgid "Hold until:"
 msgstr "అప్పటివరకు పట్టివుంచుము:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:61
+#: ui/PrinterPropertiesDialog.ui:1641
 msgid "Output order:"
 msgstr "అవుట్పుట్ క్రమం:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:62
+#: ui/PrinterPropertiesDialog.ui:1660
 msgid "Print quality:"
 msgstr "ముద్రకము నాణ్యత:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:63
+#: ui/PrinterPropertiesDialog.ui:1679
 msgid "Printer resolution:"
 msgstr "ముద్రకము రిజొల్యూషన్:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:64
+#: ui/PrinterPropertiesDialog.ui:1698
 msgid "Output bin:"
 msgstr "అవుట్పుట్ బిన్:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:65
+#: ui/PrinterPropertiesDialog.ui:1739 ui/PrinterPropertiesDialog.ui:2435
+#: ui/PrinterPropertiesDialog.ui:2630
 msgid "100"
 msgstr ""
 
-#: ../ui/PrinterPropertiesDialog.ui.h:66
+#: ui/PrinterPropertiesDialog.ui:1749 ui/PrinterPropertiesDialog.ui:2445
+#: ui/PrinterPropertiesDialog.ui:2640
+msgid "%"
+msgstr ""
+
+#: ui/PrinterPropertiesDialog.ui:1803
 msgid "50"
 msgstr ""
 
-#: ../ui/PrinterPropertiesDialog.ui.h:67
+#: ui/PrinterPropertiesDialog.ui:1945 ui/PrinterPropertiesDialog.ui:1963
+#: ui/PrinterPropertiesDialog.ui:1981 ui/PrinterPropertiesDialog.ui:1999
+#: ui/PrinterPropertiesDialog.ui:2017 ui/PrinterPropertiesDialog.ui:2035
+#: ui/PrinterPropertiesDialog.ui:2053 ui/PrinterPropertiesDialog.ui:2071
+#: ui/PrinterPropertiesDialog.ui:2089 ui/PrinterPropertiesDialog.ui:2107
+#: ui/PrinterPropertiesDialog.ui:2125 ui/PrinterPropertiesDialog.ui:2218
+#: ui/PrinterPropertiesDialog.ui:2236 ui/PrinterPropertiesDialog.ui:2254
+#: ui/PrinterPropertiesDialog.ui:2272 ui/PrinterPropertiesDialog.ui:2549
+#: ui/PrinterPropertiesDialog.ui:2567 ui/PrinterPropertiesDialog.ui:2585
+#: ui/PrinterPropertiesDialog.ui:2671 ui/PrinterPropertiesDialog.ui:2689
+#: ui/PrinterPropertiesDialog.ui:2940 ui/PrinterPropertiesDialog.ui:2958
+#: ui/PrinterPropertiesDialog.ui:2976 ui/PrinterPropertiesDialog.ui:3312
+#: ui/PrinterPropertiesDialog.ui:3330 ui/PrinterPropertiesDialog.ui:3348
+#: ui/PrinterPropertiesDialog.ui:3366 ui/PrinterPropertiesDialog.ui:3384
+#: ui/PrinterPropertiesDialog.ui:3402
 msgid "Reset"
 msgstr "పునః ప్రారంభం"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:68
+#: ui/PrinterPropertiesDialog.ui:2147 ui/PrinterPropertiesDialog.ui:2607
+#: ui/PrinterPropertiesDialog.ui:2998
 msgid "More"
 msgstr "ఎక్కువ"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:69
+#: ui/PrinterPropertiesDialog.ui:2165 ui/PrinterPropertiesDialog.ui:2923
 msgid "1"
 msgstr ""
 
-#: ../ui/PrinterPropertiesDialog.ui.h:70
+#: ui/PrinterPropertiesDialog.ui:2294
 msgid "<b>Common Options</b>"
 msgstr "<b>ఉమ్మడి ఐచ్చికములు</b>"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:71
+#: ui/PrinterPropertiesDialog.ui:2317
 msgid "Mirror"
 msgstr "అద్దము"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:72
+#: ui/PrinterPropertiesDialog.ui:2345
 msgid "Scaling:"
 msgstr "స్కేలింగ్:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:73
+#: ui/PrinterPropertiesDialog.ui:2374
 msgid "Saturation:"
 msgstr "సాట్యురేషన్:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:74
+#: ui/PrinterPropertiesDialog.ui:2393
 msgid "Hue adjustment:"
 msgstr "హ్యూ సర్దుబాటు:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:75
+#: ui/PrinterPropertiesDialog.ui:2412
 msgid "Gamma:"
 msgstr "గామా:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:76
+#: ui/PrinterPropertiesDialog.ui:2487 ui/PrinterPropertiesDialog.ui:3116
+#: ui/PrinterPropertiesDialog.ui:3168 ui/PrinterPropertiesDialog.ui:3220
+#: ui/PrinterPropertiesDialog.ui:3272
 msgid "0"
 msgstr ""
 
-#: ../ui/PrinterPropertiesDialog.ui.h:77
+#: ui/PrinterPropertiesDialog.ui:2496
+msgid "°"
+msgstr ""
+
+#: ui/PrinterPropertiesDialog.ui:2533
 msgid "1000"
 msgstr ""
 
-#: ../ui/PrinterPropertiesDialog.ui.h:78
+#: ui/PrinterPropertiesDialog.ui:2711
 msgid "<b>Image Options</b>"
 msgstr "<b>ప్రతిబింబము ఐచ్చికములు</b>"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:79
+#: ui/PrinterPropertiesDialog.ui:2741
 msgid "Characters per inch:"
 msgstr "అంగుళమునకు అక్షరములు:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:80
+#: ui/PrinterPropertiesDialog.ui:2760
 msgid "Lines per inch:"
 msgstr "అంగుళమునకు వరుసలు:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:81
+#: ui/PrinterPropertiesDialog.ui:2779
 msgid "Left margin:"
 msgstr "ఎడమ మార్జిన్:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:82
+#: ui/PrinterPropertiesDialog.ui:2798
 msgid "Right margin:"
 msgstr "కుడి మార్జిన్:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:83
+#: ui/PrinterPropertiesDialog.ui:2817
 msgid "Top margin:"
 msgstr "పై మార్జిన్:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:84
+#: ui/PrinterPropertiesDialog.ui:2836
 msgid "Bottom margin:"
 msgstr "క్రింది మార్జిన్:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:85
+#: ui/PrinterPropertiesDialog.ui:2858
 msgid "Pretty print"
 msgstr "మంచి ముద్రణ"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:86
+#: ui/PrinterPropertiesDialog.ui:2878
 msgid "Word wrap"
 msgstr "పద విభజన"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:87
+#: ui/PrinterPropertiesDialog.ui:2905
 msgid "Columns:"
 msgstr "నిలువువరుసలు:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:88
+#: ui/PrinterPropertiesDialog.ui:3022
 msgid "10.00"
 msgstr ""
 
-#: ../ui/PrinterPropertiesDialog.ui.h:89
+#: ui/PrinterPropertiesDialog.ui:3069
 msgid "6.40"
 msgstr ""
 
-#: ../ui/PrinterPropertiesDialog.ui.h:90
+#: ui/PrinterPropertiesDialog.ui:3125 ui/PrinterPropertiesDialog.ui:3140
+#: ui/PrinterPropertiesDialog.ui:3177 ui/PrinterPropertiesDialog.ui:3192
+#: ui/PrinterPropertiesDialog.ui:3229 ui/PrinterPropertiesDialog.ui:3244
+#: ui/PrinterPropertiesDialog.ui:3281 ui/PrinterPropertiesDialog.ui:3296
 msgid "points"
 msgstr "బిందువులు"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:91
+#: ui/PrinterPropertiesDialog.ui:3424
 msgid "<b>Text Options</b>"
 msgstr "<b>పాఠము ఐచ్చికములు</b>"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:92
+#: ui/PrinterPropertiesDialog.ui:3501
 msgid "To add a new option, enter its name in the box below and click to add."
 msgstr ""
 "కొత్త ఐచ్చికమును జతచేయుటకు, క్రింద పెట్టెనందు దాని నామమును ప్రవేశపెట్టి మరియు జతచేయి నొక్కుము."
 
-#: ../ui/PrinterPropertiesDialog.ui.h:94
+#: ui/PrinterPropertiesDialog.ui:3563
 msgid "<b>Other Options (Advanced)</b>"
 msgstr "<b>ఇతర ఐచ్చికములు (ఆధునిక)</b>"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:95
+#: ui/PrinterPropertiesDialog.ui:3587
 msgid "Job Options"
 msgstr "పని ఐచ్ఛికాలు"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:97
+#: ui/PrinterPropertiesDialog.ui:3678
 msgid "<b>Ink/Toner Levels</b>"
 msgstr "<b>ఇంక్/టోనర్ స్థాయిలు</b>"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:98
+#: ui/PrinterPropertiesDialog.ui:3708
 msgid "There are no status messages for this printer."
 msgstr "ఈ ముద్రకమునకు అక్కడ యెటువంటి స్థితి సందేశములు లేవు."
 
-#: ../ui/PrinterPropertiesDialog.ui.h:99
+#: ui/PrinterPropertiesDialog.ui:3715
+msgid "label229"
+msgstr ""
+
+#: ui/PrinterPropertiesDialog.ui:3745
+msgid "label230"
+msgstr ""
+
+#: ui/PrinterPropertiesDialog.ui:3758
 msgid "<b>Status Messages</b>"
 msgstr "<b>స్థితి సందేశములు</b>"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:100
+#: ui/PrinterPropertiesDialog.ui:3778
 msgid "Ink/Toner Levels"
 msgstr "ఇంక్/టోనర్ స్థాయిలు"
 
-#: ../ui/PrintersWindow.ui.h:1
+#: ui/PrintersWindow.ui:32
 msgid "_Server"
 msgstr "సేవిక (_S)"
 
-#: ../ui/PrintersWindow.ui.h:3
+#: ui/PrintersWindow.ui:50
 msgid "_View"
 msgstr "దర్శించు(_V)"
 
-#: ../ui/PrintersWindow.ui.h:4
+#: ui/PrintersWindow.ui:60
 msgid "_Discovered Printers"
 msgstr "కనుగొనిన ముద్రకములు (_D)"
 
-#: ../ui/PrintersWindow.ui.h:5
+#: ui/PrintersWindow.ui:75
 msgid "_Help"
 msgstr "సహాయం (_H)"
 
-#: ../ui/PrintersWindow.ui.h:6
+#: ui/PrintersWindow.ui:82
 msgid "_Troubleshoot"
 msgstr "సమస్యాపరిష్కారము (_T)"
 
-#: ../ui/PrintersWindow.ui.h:7
+#: ui/PrintersWindow.ui:94
 msgid "About"
 msgstr ""
 
-#: ../ui/PrintersWindow.ui.h:8
+#: ui/PrintersWindow.ui:188
 msgid "There are no printers configured yet."
 msgstr "ఏ ముద్రికలు యింకా ఆకృతీకరించలేదు."
 
-#: ../ui/PrintersWindow.ui.h:10
+#: ui/PrintersWindow.ui:253
 msgid ""
 "Printing service not available.  Start the service on this computer or "
 "connect to another server."
 msgstr ""
 "ముద్రణ సేవ యింకా అందుబాటులోలేదు. సేవను యీ కంప్యూటర్‌పై ప్రారంభించండి లేదా వేరొక సేవికకు అనుసంధానించండి."
 
-#: ../ui/PrintersWindow.ui.h:11
+#: ui/PrintersWindow.ui:271
 msgid "Start Service"
 msgstr "సేవను ప్రారంభించు"
 
-#: ../ui/ServerSettingsDialog.ui.h:1
+#: ui/ServerSettingsDialog.ui:8
 msgid "Server Settings"
 msgstr "సేవిక అమర్పులు"
 
-#: ../ui/ServerSettingsDialog.ui.h:4
+#: ui/ServerSettingsDialog.ui:83
 msgid "_Show printers shared by other systems"
 msgstr "ఇతర సిస్టమ్సు ద్వారా భాగస్వామ్యపరచిన ముద్రకాలను చూపుము (_S)"
 
-#: ../ui/ServerSettingsDialog.ui.h:5
+#: ui/ServerSettingsDialog.ui:110
 msgid "_Publish shared printers connected to this system"
 msgstr "ఈ కంప్యూటర్‌కు అనుసంధానించబడిన భాగస్వామ్య ముద్రకాలను ప్రచురించుము (_P)"
 
-#: ../ui/ServerSettingsDialog.ui.h:6
+#: ui/ServerSettingsDialog.ui:126
 msgid "Allow printing from the _Internet"
 msgstr "ఇంటర్నెట్ నుండి ముద్రణను అనుమతించుము (_I)"
 
-#: ../ui/ServerSettingsDialog.ui.h:7
+#: ui/ServerSettingsDialog.ui:143
 msgid "Allow _remote administration"
 msgstr "సుదూర నిర్వహణ అనుమతించు (_r)"
 
-#: ../ui/ServerSettingsDialog.ui.h:8
+#: ui/ServerSettingsDialog.ui:159
 msgid "Allow _users to cancel any job (not just their own)"
 msgstr "వినియోగదారుని ఏ పనైనా రద్దుచేయటానికి అనుమతించు (కేవలం వారి సొంతం కానిది) (_u)"
 
-#: ../ui/ServerSettingsDialog.ui.h:9
+#: ui/ServerSettingsDialog.ui:175
 msgid "Save _debugging information for troubleshooting"
 msgstr "సమస్యాపరిష్కారమునకు డీబగ్గింగ్ సమాచారమును దాయుము (_d)"
 
-#: ../ui/ServerSettingsDialog.ui.h:10
+#: ui/ServerSettingsDialog.ui:213
 msgid "Do not preserve job history"
 msgstr "పని చరిత్రను కలిగివుండవద్దు"
 
-#: ../ui/ServerSettingsDialog.ui.h:11
+#: ui/ServerSettingsDialog.ui:228
 msgid "Preserve job history but not files"
 msgstr "పని చరిత్రను కలిగివుండు కాని దస్త్రములను కలిగివుండ వద్దు"
 
-#: ../ui/ServerSettingsDialog.ui.h:12
+#: ui/ServerSettingsDialog.ui:244
 msgid "Preserve job files (allow reprinting)"
 msgstr "పని దస్త్రములను కలిగివుండుము (పునఃముద్రణను అనుమతించుము)"
 
-#: ../ui/ServerSettingsDialog.ui.h:13
+#: ui/ServerSettingsDialog.ui:264
 msgid "<b>Job history</b>"
 msgstr "<b>పని చరిత్ర</b>"
 
-#: ../ui/ServerSettingsDialog.ui.h:14
+#: ui/ServerSettingsDialog.ui:292
 msgid ""
 "Usually print servers broadcast their queues. Specify print servers below to "
 "periodically ask for queues instead."
@@ -3458,623 +4098,47 @@ msgstr ""
 "సాదరణముగా ముద్రణ సేవికలు వాటి క్యూలను ప్రసారంచేస్తాయి.  సమయానుసారంగా క్యూల గురించి అడుగటకు "
 "బదులుగా ముద్రణ సేవికలను క్రిందన తెలుపండి."
 
-#: ../ui/ServerSettingsDialog.ui.h:16
+#: ui/ServerSettingsDialog.ui:351
 msgid "Remove"
 msgstr ""
 
-#: ../ui/ServerSettingsDialog.ui.h:17
+#: ui/ServerSettingsDialog.ui:385
 msgid "<b>Browse servers</b>"
 msgstr "<b>సేవికలను బ్రౌజ్‌చేయి</b>"
 
-#: ../ui/ServerSettingsDialog.ui.h:18
+#: ui/ServerSettingsDialog.ui:402
 msgid "Advanced Server Settings"
 msgstr "ఆధునిక సేవిక అమర్పులు"
 
-#: ../ui/ServerSettingsDialog.ui.h:19
+#: ui/ServerSettingsDialog.ui:421
 msgid "<b>Basic Server Settings</b>"
 msgstr "<b>ప్రాధమిక సర్వరు అమర్పులు</b>"
 
-#: ../ui/SMBBrowseDialog.ui.h:1
+#: ui/SMBBrowseDialog.ui:7
 msgid "SMB Browser"
 msgstr "SMB అన్వేషణి"
 
-#: ../ui/statusicon_popupmenu.ui.h:1
+#: ui/statusicon_popupmenu.ui:11
 msgid "_Hide"
 msgstr "మరుగుపరుచు(_H)"
 
-#: ../ui/statusicon_popupmenu.ui.h:2
+#: ui/statusicon_popupmenu.ui:18
 msgid "_Configure Printers"
 msgstr "ముద్రకాలను ఆకృతీకరించుము (_C)"
 
-#: ../ui/statusicon_popupmenu.ui.h:3
+#: ui/statusicon_popupmenu.ui:33
 msgid "_Quit"
 msgstr ""
 
-#: ../ui/WaitWindow.ui.h:1
+#: ui/WaitWindow.ui:7
 msgid "Please Wait"
 msgstr "దయచేసి వేచివుండండి"
 
-#: ../system-config-printer.desktop.in.h:2
-msgid "Configure printers"
-msgstr "ముద్రకాలను ఆకృతీకరించు"
-
-#: ../statereason.py:109
-msgid "Toner low"
-msgstr "టోనర్ తక్కువగావుంది"
-
-#: ../statereason.py:110
-#, python-format
-msgid "Printer '%s' is low on toner."
-msgstr "టోనర్‌నందు ముద్రణాయంత్రం '%s' తక్కువగావుంది."
-
-#: ../statereason.py:111
-msgid "Toner empty"
-msgstr "టోనర్ ఖాళీగావుంది"
-
-#: ../statereason.py:112
-#, python-format
-msgid "Printer '%s' has no toner left."
-msgstr "ముద్రణాయంత్రం '%s' ఏ టోనర్ ఎడమను కలిగిలేదు."
-
-#: ../statereason.py:113
-msgid "Cover open"
-msgstr "పైకప్పు తెరిచివుంది"
-
-#: ../statereason.py:114
-#, python-format
-msgid "The cover is open on printer '%s'."
-msgstr "ముద్రణాయంత్రం '%s' పైతొడుగు తెరిచివుంది."
-
-#: ../statereason.py:115
-msgid "Door open"
-msgstr "తలుపు తెరిచివుంది"
-
-#: ../statereason.py:116
-#, python-format
-msgid "The door is open on printer '%s'."
-msgstr "ముద్రణాయంత్రం '%s' పైని తలుపు తెరిచివుంది."
-
-#: ../statereason.py:117
-msgid "Paper low"
-msgstr "కాగితం తక్కువగావుంది"
-
-#: ../statereason.py:118
-#, python-format
-msgid "Printer '%s' is low on paper."
-msgstr "ముద్రణాయంత్రం '%s' తక్కువ కాగితాలతోవుంది."
-
-#: ../statereason.py:119
-msgid "Out of paper"
-msgstr "పుటలు అయిపోయాయి"
-
-#: ../statereason.py:120
-#, python-format
-msgid "Printer '%s' is out of paper."
-msgstr "ముద్రణాయంత్రం '%s'నందు కాగితాలులేవు."
-
-#: ../statereason.py:121
-msgid "Ink low"
-msgstr "సిరా తక్కువగావుంది"
-
-#: ../statereason.py:122
-#, python-format
-msgid "Printer '%s' is low on ink."
-msgstr "ముద్రకము '%s' సిరానందు తక్కువగావుంది."
-
-#: ../statereason.py:123
-msgid "Ink empty"
-msgstr "సిరా ఖాళీగావుంది"
-
-#: ../statereason.py:124
-#, python-format
-msgid "Printer '%s' has no ink left."
-msgstr "ముద్రకము '%s'నందు సిరా మిగిలిలేదు."
-
-#: ../statereason.py:125
-msgid "Printer off-line"
-msgstr "ముద్రణాయంత్రం ఆఫ్-లైనులో వుంది"
-
-#: ../statereason.py:126
-#, python-format
-msgid "Printer '%s' is currently off-line."
-msgstr "ముద్రణాయంత్రం '%s' ప్రస్తుతం ఆప్‌-లైన్‌లోవుంది"
-
-#: ../statereason.py:127
-msgid "Not connected?"
-msgstr "అనుసంధించబడలేదా?"
-
-#: ../statereason.py:128
-#, python-format
-msgid "Printer '%s' may not be connected."
-msgstr "ముద్రణాయంత్రం '%s' అనుసంధానించబడి వుండకపోవచ్చు."
-
-#: ../statereason.py:129 ../statereason.py:149
-msgid "Printer error"
-msgstr "ముద్రకము దోషము"
-
-#: ../statereason.py:130
-#, python-format
-msgid "There is a problem on printer '%s'."
-msgstr "ముద్రకము '%s' పైన అక్కడ వొక సమస్యవుంది."
-
-#: ../statereason.py:132
-msgid "Printer configuration error"
-msgstr "ముద్రకము ఆకృతీకరణ దోషం"
-
-#: ../statereason.py:133
-#, python-format
-msgid "There is a missing print filter for printer '%s'."
-msgstr "ముద్రకము '%s' కొరకు తప్పిపోయిన ముద్రక ఫిల్టర్ వుంది."
-
-#: ../statereason.py:145
-msgid "Printer report"
-msgstr "ముద్రకము నివేదిక"
-
-#: ../statereason.py:147
-msgid "Printer warning"
-msgstr "ముద్రకము హెచ్చరిక"
-
-#: ../statereason.py:166
-#, python-format
-msgid "Printer '%s': '%s'."
-msgstr "ముద్రకము '%s': '%s'."
-
-#: ../timedops.py:116 ../timedops.py:195
-msgid "Please wait"
-msgstr "దయచేసి వేచిఉండండి"
-
-#: ../timedops.py:122 ../timedops.py:202
-msgid "Gathering information"
-msgstr "సమాచారమును ప్రోగుచేయుచున్నది"
-
-#: ../ToolbarSearchEntry.py:74
-msgid "_Filter:"
-msgstr "వడపోత (_F):"
-
-#: ../troubleshoot/__init__.py:57
-msgid "Printing troubleshooter"
-msgstr "ముద్రణ సమస్యాపరిష్కారిణి"
-
-#: ../troubleshoot/base.py:36
-msgid ""
-"To start this tool, select System->Administration->Print Settings from the "
-"main menu."
-msgstr ""
-"ఈ సాధనమును ప్రారంభించుటకు, వ్యవస్థ->నిర్వహణ->ముద్రణ అమరికలను ముఖ్యమెనూ నుండి యెంపికచేయండి."
-
-#: ../troubleshoot/CheckLocalServerPublishing.py:28
-msgid "Server Not Exporting Printers"
-msgstr "సేవిక ముద్రకములను యెగుమతి చేయుటలేదు"
-
-#: ../troubleshoot/CheckLocalServerPublishing.py:29
-msgid ""
-"Although one or more printers are marked as being shared, this print server "
-"is not exporting shared printers to the network."
-msgstr ""
-"ఒకటి లేదా ఎక్కువ ముద్రకములు భాగస్వామ్యమైనవిగా గుర్తుంచబడినప్పుటికి, ఈ ముద్రణా సేవిక భాగస్వామ్య "
-"మద్రకాలను నెట్వర్కునకు యెగుమతి చేయుటలేదు."
-
-#: ../troubleshoot/CheckLocalServerPublishing.py:33
-msgid ""
-"Enable the 'Publish shared printers connected to this system' option in the "
-"server settings using the printing administration tool."
-msgstr ""
-"ముద్రణా నిర్వహణ సాధనమును వుపయోగించి సేవిక అమర్పులనందు 'ఈ సిస్టముకు అనుసంధానించబడి వున్న "
-"భాగస్వామ్య ముద్రకాలను ప్రచురించుము' అను ఐచ్చికాన్ని చేతనము చేయుము."
-
-#: ../troubleshoot/CheckPPDSanity.py:48 ../applet.py:186
-msgid "Install"
-msgstr "సంస్థాపించుము"
-
-#: ../troubleshoot/CheckPPDSanity.py:100
-msgid "Invalid PPD File"
-msgstr "చెల్లని PPD దస్త్రము"
-
-#: ../troubleshoot/CheckPPDSanity.py:111
-#, python-format
-msgid ""
-"The PPD file for printer '%s' does not conform to the specification.  "
-"Possible reason follows:"
-msgstr ""
-"ముద్రకం '%s'కు PPD దస్త్రము విశదీకరణకు తగినట్లు నిర్ధారించబడలేదు.  క్రిందవి కారణములు కాగలవు:"
-
-#. Perhaps cupstestppd is not in the path.
-#: ../troubleshoot/CheckPPDSanity.py:117
-#, python-format
-msgid "There is a problem with the PPD file for printer '%s'."
-msgstr "ముద్రకం '%s' కొరకు PPD దస్త్రముతో సమస్యవుంది."
-
-#: ../troubleshoot/CheckPPDSanity.py:127
-msgid "Missing Printer Driver"
-msgstr "ముద్రకం డ్రైవర్‌ను కలిగిలేదు"
-
-#: ../troubleshoot/CheckPPDSanity.py:141
-#, python-format
-msgid ""
-"Printer '%s' requires the '%s' program but it is not currently installed."
-msgstr "ముద్రకం '%s'కు '%s' ప్రోగ్రామ్ అవసరము కాని అది ప్రస్తుతం సంస్థాపించిలేదు."
-
-#: ../troubleshoot/ChooseNetworkPrinter.py:31
-msgid "Choose Network Printer"
-msgstr "నెట్వర్కు ముద్రకాన్ని యెంచుకొనుము"
-
-#: ../troubleshoot/ChooseNetworkPrinter.py:32
-msgid ""
-"Please select the network printer you are trying to use from the list below. "
-"If it does not appear in the list, select 'Not listed'."
-msgstr ""
-"మీరు వుపయోగించడానికి ప్రయత్నిస్తున్న నెట్వర్కు ముద్రకాన్ని ఈ క్రింది జాబితానుండి యెంపికచేయుము. అది క్రింది "
-"జాబితానందు కనిపించకపోతే, 'జాబితా చేసిలేదు' యెంపికచేయుము."
-
-#: ../troubleshoot/ChooseNetworkPrinter.py:41
-#: ../troubleshoot/ChoosePrinter.py:47 ../troubleshoot/DeviceListed.py:45
-msgid "Information"
-msgstr "సమాచారము"
-
-#: ../troubleshoot/ChooseNetworkPrinter.py:75
-#: ../troubleshoot/ChoosePrinter.py:71 ../troubleshoot/DeviceListed.py:77
-msgid "Not listed"
-msgstr "జాబితా చేసిలేదు"
-
-#: ../troubleshoot/ChoosePrinter.py:37
-msgid "Choose Printer"
-msgstr "ముద్రకాన్ని యెంచుకొనుము"
-
-#: ../troubleshoot/ChoosePrinter.py:38
-msgid ""
-"Please select the printer you are trying to use from the list below. If it "
-"does not appear in the list, select 'Not listed'."
-msgstr ""
-"మీరు వుపయోగించడానికి ప్రయత్నిస్తున్న ముద్రకాన్ని క్రింది జాబితానుండి యెంపికచేయుము. అది జాబితానందు "
-"కనిపించకపోతే, 'జాబితా చేసిలేదు' యెంచుకోనుము."
-
-#: ../troubleshoot/DeviceListed.py:37
-msgid "Choose Device"
-msgstr "పరికరాన్ని యెంపికచేయుము"
-
-#: ../troubleshoot/DeviceListed.py:38
-msgid ""
-"Please select the device you want to use from the list below. If it does not "
-"appear in the list, select 'Not listed'."
-msgstr ""
-"మీరు వుపయోగించడానికి ప్రయత్నిస్తున్న పరికరాన్ని క్రింది జాబితానుండి యెంపికచేయుము. అది జాబితానందు "
-"కనిపించకపోతే, 'జాబితా చేసిలేదు' యెంచుకోనుము."
-
-#: ../troubleshoot/ErrorLogCheckpoint.py:40
-msgid "Debugging"
-msgstr "డీబగ్గింగ్"
-
-#: ../troubleshoot/ErrorLogCheckpoint.py:41
-msgid ""
-"This step will enable debugging output from the CUPS scheduler.  This may "
-"cause the scheduler to restart.  Click the button below to enable debugging."
-msgstr ""
-"CUPS షెడ్యూలర్‌నుండి డీబగ్గింగ్ అవుట్పుట్‌ను యీ స్టెప్పు చేతనంచేయును.  ఇది షెడ్యూలర్ "
-"పునఃప్రారంభమునకు కారణం కావచ్చును.  డీబగ్గింగ్‌ను చేతనపరచుటకు క్రింది బటన్ నొక్కుము."
-
-#: ../troubleshoot/ErrorLogCheckpoint.py:45
-msgid "Enable Debugging"
-msgstr "డీబగ్గింగ్‌ను చేతనముచేయుము"
-
-#: ../troubleshoot/ErrorLogCheckpoint.py:236
-msgid "Debug logging enabled."
-msgstr "డీబగ్ లాగింగ్ చేతనముచేయబడింది."
-
-#: ../troubleshoot/ErrorLogCheckpoint.py:238
-msgid "Debug logging was already enabled."
-msgstr "డీబగ్ లాగింగ్ యిప్పటికే చేతనముచేయబడింది."
-
-#: ../troubleshoot/ErrorLogFetch.py:41
-msgid "Retrieve Journal Entries"
-msgstr ""
-
-#: ../troubleshoot/ErrorLogFetch.py:42
-msgid ""
-"No system journal entries were found. This may be because you are not an "
-"administrator. To fetch journal entries please run this command:"
-msgstr ""
-
-#: ../troubleshoot/ErrorLogParse.py:32
-msgid "Error log messages"
-msgstr "దోషపు లాగ్ సందేశములు"
-
-#: ../troubleshoot/ErrorLogParse.py:33
-msgid "There are messages in the error log."
-msgstr "దోషపు లాగ్‌నందు అక్కడ సందేశములు వున్నాయి."
-
-#: ../troubleshoot/Locale.py:31
-msgid "Incorrect Page Size"
-msgstr "సరికాని పుట పరిమాణము"
-
-#: ../troubleshoot/Locale.py:32
-msgid ""
-"The page size for the print job was not the printer's default page size.  If "
-"this is not intentional it may cause alignment problems."
-msgstr ""
-"ముద్రణ పనికొరకు వున్న పుట పరిమాణము ముద్రకంయొక్క అప్రమేయ పుట పరిమాణము కాదు.  ఒకవేళ అది "
-"అంతర్గతము కాకపోతే అది సర్దుబాటు సమస్యలకు కారణమౌతుంది."
-
-#: ../troubleshoot/Locale.py:44
-msgid "Print job page size:"
-msgstr "ముద్రణ పని పుట పరిమాణము:"
-
-#: ../troubleshoot/Locale.py:48
-msgid "Printer page size:"
-msgstr "ముద్రకం పుట పరిమాణము:"
-
-#: ../troubleshoot/LocalOrRemote.py:26
-msgid "Printer Location"
-msgstr "ముద్రకము స్థానము"
-
-#: ../troubleshoot/LocalOrRemote.py:27
-msgid "Is the printer connected to this computer or available on the network?"
-msgstr "ముద్రకం కంప్యూటరుకు అనుసంధానించబడి వుందా లేక నెట్వర్కునందు అందుబాటులోవుందా?"
-
-#: ../troubleshoot/LocalOrRemote.py:29
-msgid "Locally connected printer"
-msgstr "స్థానికంగా అనుసంధానించబడివున్న ముద్రకము"
-
-#: ../troubleshoot/NetworkCUPSPrinterShared.py:28
-msgid "Queue Not Shared"
-msgstr "క్యూ భాగస్వామ్యం కాలేదు"
-
-#: ../troubleshoot/NetworkCUPSPrinterShared.py:29
-msgid "The CUPS printer on the server is not shared."
-msgstr "సేవికపైన CUPS ముద్రకం భాగస్వామ్యం కాదు."
-
-#: ../troubleshoot/PrinterStateReasons.py:34
-msgid "Status Messages"
-msgstr "స్థితి సందేశములు"
-
-#: ../troubleshoot/PrinterStateReasons.py:35
-msgid "There are status messages associated with this queue."
-msgstr "ఈ క్యూతో సంభందమైన స్థితి సందేశములు అక్కడ వున్నాయి."
-
-#: ../troubleshoot/PrinterStateReasons.py:65
-#, python-format
-msgid "The printer's state message is: '%s'."
-msgstr "ముద్రక స్థితి సందేశము: '%s'."
-
-#: ../troubleshoot/PrinterStateReasons.py:90
-msgid "Errors are listed below:"
-msgstr "దోషములు క్రింది జాబితాచేసి వున్నాయి:"
-
-#: ../troubleshoot/PrinterStateReasons.py:95
-msgid "Warnings are listed below:"
-msgstr "హెచ్చరికలు క్రింద జాబితాచేసి వున్నాయి:"
-
-#: ../troubleshoot/PrintTestPage.py:64
-msgid "Test Page"
-msgstr "పరిశీలనా పుట"
-
-#: ../troubleshoot/PrintTestPage.py:65
-msgid ""
-"Now print a test page.  If you are having problems printing a specific "
-"document, print that document now and mark the print job below."
-msgstr ""
-"ఇప్పుడు పరిశీలనా పుటను ముద్రించుము. మీకు ఫలానా పత్రమును ముద్రించుటకు సమస్యలు వుంటే, "
-"పత్రమును యిప్పుడు ముద్రించుము మరియు ముద్రణ పనిని క్రిందన గుర్తుంచుము."
-
-#: ../troubleshoot/PrintTestPage.py:77
-msgid "Cancel All Jobs"
-msgstr "అన్ని పనులను రద్దుచేయుము"
-
-#: ../troubleshoot/PrintTestPage.py:83
-msgid "Test"
-msgstr "పరిశీలన"
-
-#: ../troubleshoot/PrintTestPage.py:113
-msgid "Did the marked print jobs print correctly?"
-msgstr "గుర్తుంచిన ముద్రణ పనులు సరిగా ముద్రించినవా?"
-
-#: ../troubleshoot/PrintTestPage.py:144
-#, python-format
-msgid "Remember to load paper of type '%s' into the printer first."
-msgstr "ముద్రకములోనికి మొదటగా '%s' రకము కాగితమును లోడుచేయుట గుర్తుంచుకొనుము."
-
-#: ../troubleshoot/PrintTestPage.py:430
-msgid "Error submitting test page"
-msgstr "పరిశీలనా పుటను అప్పగించుటలో దోషము"
-
-#: ../troubleshoot/QueueNotEnabled.py:58
-#: ../troubleshoot/QueueRejectingJobs.py:68
-#, python-format
-msgid "The reason given is: '%s'."
-msgstr "ఇవ్వబడిన కారణము: '%s'."
-
-#: ../troubleshoot/QueueNotEnabled.py:60
-msgid "This may be due to the printer being disconnected or switched off."
-msgstr "ఇది ముద్రకము అననుసంధానించబడుట వలనకాని లేదా స్విచ్ఆఫ్ అగుట వలనకాని కావచ్చును."
-
-#: ../troubleshoot/QueueNotEnabled.py:64
-msgid "Queue Not Enabled"
-msgstr "క్యూ చేతనము చేయబడిలేదు"
-
-#: ../troubleshoot/QueueNotEnabled.py:65
-#, python-format
-msgid "The queue '%s' is not enabled."
-msgstr "క్యూ '%s' చేతనము చేయబడిలేదు."
-
-#: ../troubleshoot/QueueNotEnabled.py:73
-msgid ""
-"To enable it, select the 'Enabled' checkbox in the 'Policies' tab for the "
-"printer in the printer administration tool."
-msgstr ""
-"దీనిని చేతనము చేయుటకు, ముద్రకం నిర్వహణా సాధనమునందు ముద్రకం కొరకు 'విధానాలు' టాబ్‌నందు "
-"'చేతనపరిచిన' చెక్‌బాక్సును యెంపికచేయుము."
-
-#: ../troubleshoot/QueueRejectingJobs.py:33
-msgid "Queue Rejecting Jobs"
-msgstr "క్యూ పనులను తిరస్కరించుచున్నది"
-
-#: ../troubleshoot/QueueRejectingJobs.py:65
-#, python-format
-msgid "The queue '%s' is rejecting jobs."
-msgstr "క్యూ '%s' పనులను తిరస్కరించుచున్నది."
-
-#: ../troubleshoot/QueueRejectingJobs.py:72
-msgid ""
-"To make the queue accept jobs, select the 'Accepting Jobs' checkbox in the "
-"'Policies' tab for the printer in the printer administration tool."
-msgstr ""
-"క్యూ పనులను ఆమోదించునట్లు చేయుటకు, ముద్రకం నిర్వహణ సాధనమునందు ముద్రకం కొరకు 'విధానములు' "
-"టాబ్‌నందలి 'పనులను ఆమోదించు' చెక్‌బాక్సును యెంపికచేయుము."
-
-#: ../troubleshoot/RemoteAddress.py:28
-msgid "Remote Address"
-msgstr "సుదూర చిరునామా"
-
-#: ../troubleshoot/RemoteAddress.py:29
-msgid ""
-"Please enter as many details as you can about the network address of this "
-"printer."
-msgstr ""
-"ఈ ముద్రకం యొక్క నెట్వర్కు చిరునామా గురించి దయచేసి మీరు ఎన్ని వివరములు యివ్వగలిగితే అన్ని ప్రవేశపెట్టండి."
-
-#: ../troubleshoot/RemoteAddress.py:37
-msgid "Server name:"
-msgstr "సేవిక నామము:"
-
-#: ../troubleshoot/RemoteAddress.py:44
-msgid "Server IP address:"
-msgstr "సేవిక IP చిరునామా:"
-
-#: ../troubleshoot/SchedulerNotRunning.py:28
-msgid "CUPS Service Stopped"
-msgstr "CUPS సేవ ఆపివేయబడింది"
-
-#: ../troubleshoot/SchedulerNotRunning.py:29
-msgid ""
-"The CUPS print spooler does not appear to be running.  To correct this, "
-"choose System->Administration->Services from the main menu and look for the "
-"'cups' service."
-msgstr ""
-"CUPS ముద్రణ స్పూలర్ నడుచుచున్నట్లు అనిపించుటలేదు.  దీనిని సవరించుటకు, ముఖ్య మెనూనుండి సిస్టమ్-"
-">నిర్వహణ->సేవలు యెంచుకొని మరియు 'cups' సేవికకొరకు చూడుము."
-
-#: ../troubleshoot/ServerFirewalled.py:28
-msgid "Check Server Firewall"
-msgstr "సేవిక ఫైర్‌వాలును పరిశీలించుము"
-
-#: ../troubleshoot/ServerFirewalled.py:29
-msgid "It is not possible to connect to the server."
-msgstr "సేవికకు అనుసంధానమగుటకు యిది సాధ్యపడదు."
-
-#: ../troubleshoot/ServerFirewalled.py:44
-#, python-format
-msgid ""
-"Please check to see if a firewall or router configuration is blocking TCP "
-"port %d on server '%s'."
-msgstr ""
-"TCP పోర్టు %dను సేవిక '%s'నందు ఫైరువాలు లేదా రూటర్ ఆకృతీకరణ బ్లాకు చేయుచున్నదేమో చూడుటకు "
-"దయచేసి పరిశీలించుము."
-
-#: ../troubleshoot/Shrug.py:28
-msgid "Sorry!"
-msgstr "మన్నించండి!"
-
-#: ../troubleshoot/Shrug.py:29
-msgid ""
-"There is no obvious solution to this problem.  Your answers have been "
-"collected together with other useful information.  If you would like to "
-"report a bug, please include this information."
-msgstr ""
-"ఈ సమస్యకు ఖచ్చితమైన పరిష్కారం లేదు. ఇతర వుపయోగకర సమాచారంతో పాటు మీ సమాధానాలు కూడా సేకరించడమైంది. "
-"మీరు బగ్ ఫిర్యాదు చేయవలెనంటే, దయచేసి యీ సమాచారం చేర్చండి."
-
-#: ../troubleshoot/Shrug.py:36
-msgid "Diagnostic Output (Advanced)"
-msgstr "విశ్లేషిత అవుట్పుట్ (ఆధునిక)"
-
-#: ../troubleshoot/Shrug.py:93
-msgid "Error saving file"
-msgstr "ఫైలు దాచుటలో దోషం"
-
-#: ../troubleshoot/Shrug.py:94
-msgid "There was an error saving the file:"
-msgstr "ఫైలును దాచుటలో వొక దోషం వుంది:"
-
-#: ../troubleshoot/Welcome.py:45
-msgid "Trouble-shooting Printing"
-msgstr "సమస్యా-పరిష్కార ముద్రణ"
-
-#: ../troubleshoot/Welcome.py:47
-msgid ""
-"The next few screens will contain some questions about your problem with "
-"printing. Based on your answers a solution may be suggested."
-msgstr ""
-"తరువాత రాబోవు కొన్ని తెరలనందు మీకు ముద్రణతోగల సమస్య గురించి కొన్ని ప్రశ్నలు వుంటాయి. మీ సమాధానములపై "
-"ఆధారపడి వొక పరిష్కారమును సూచించవచ్చు."
-
-#: ../troubleshoot/Welcome.py:51
-msgid "Click 'Forward' to begin."
-msgstr "ప్రరంభించుటకు 'ముందుకు' నొక్కుము."
-
-#: ../applet.py:90
-msgid "Configuring new printer"
-msgstr "కొత్త ముద్రణాయంత్రమును ఆకృతీకరించుచున్నది"
-
-#: ../applet.py:91
-msgid "Please wait..."
-msgstr "దయచేసి వేచివుండండి..."
-
-#. name is a URI, no queue was generated, because no suitable
-#. driver was found
-#: ../applet.py:120 ../applet.py:173
-msgid "Missing printer driver"
-msgstr "తప్పిపోయిన ముద్రకం డ్రైవర్"
-
-#: ../applet.py:127
-#, python-format
-msgid "No printer driver for %s."
-msgstr "%s కొరకు యే ముద్రకం డ్రైవరులేదు."
-
-#: ../applet.py:129
-msgid "No driver for this printer."
-msgstr "ఈ ముద్రకం కొరకు యే డ్రైవర్ లేదు."
-
-#: ../applet.py:171
-msgid "Printer added"
-msgstr "ముద్రకం జతచేయబడింది"
-
-#: ../applet.py:177
-msgid "Install printer driver"
-msgstr "ముద్రకం డ్రైవరును సంస్థాపించుము"
-
-#: ../applet.py:178
-#, python-format
-msgid "`%s' requires driver installation: %s."
-msgstr "`%s' కు డ్రైవర్ సంస్థాపన అవసరము: %s."
-
-#: ../applet.py:202
-#, python-format
-msgid "`%s' is ready for printing."
-msgstr "`%s' ముద్రణకు సిద్దముగా వుంది."
-
-#: ../applet.py:206 ../applet.py:218
-msgid "Print test page"
-msgstr "పరిశీలనా పుటను ముద్రించుము."
-
-#: ../applet.py:209
-msgid "Configure"
-msgstr "ఆకృతీకరించు"
-
-#: ../applet.py:213
-#, python-format
-msgid "`%s' has been added, using the `%s' driver."
-msgstr "`%s' జతచేయబడింది, `%s' డ్రైవరును వుపయోగిస్తోంది."
-
-#: ../applet.py:221
-msgid "Find driver"
-msgstr "డ్రైవరును కనుగొనుము"
-
-#: ../print-applet.desktop.in.h:1
-msgid "Print Queue Applet"
-msgstr "క్యూ ఆప్లెట్‌ను ముద్రించుము"
-
-#: ../print-applet.desktop.in.h:2
-msgid "System tray icon for managing print jobs"
-msgstr "ముద్రణ పనులను నిర్వహించుటకు సిస్టమ్ ట్రే ప్రతిమ"
+#~ msgid "make and model"
+#~ msgstr "తయారి మరియు రకం"
+
+#~ msgid "printer state"
+#~ msgstr "ముద్రిక స్థితి"
 
 #~ msgid "Option '%s' has value '%s' and cannot be edited."
 #~ msgstr "ఐచ్చికము '%s' అనునది విలువ '%s' కలిగివుంది సరికూర్చుట వీలుకాదు."

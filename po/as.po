@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2020-05-05 14:10+0200\n"
+"POT-Creation-Date: 2024-05-22 16:51+0200\n"
 "PO-Revision-Date: 2014-12-16 02:32-0500\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Assamese (http://www.transifex.com/projects/p/system-config-"
@@ -21,479 +21,545 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Zanata 3.9.6\n"
 
-#: ../asyncipp.py:473 ../authconn.py:458 ../authconn.py:460
-#: ../errordialogs.py:63 ../pysmb.py:90 ../pysmb.py:92
+#: applet.py:92
+msgid "Configuring new printer"
+msgstr "নতুন মূদ্ৰক বিন্যাস কৰক"
+
+#: applet.py:93
+msgid "Please wait..."
+msgstr "অনুগ্ৰহ কৰি অপেক্ষা কৰক..."
+
+#. name is a URI, no queue was generated, because no suitable
+#. driver was found
+#: applet.py:122 applet.py:175
+msgid "Missing printer driver"
+msgstr "সন্ধানহীন চালক"
+
+#: applet.py:129
+#, python-format
+msgid "No printer driver for %s."
+msgstr "%s ৰ কাৰণে মূদ্ৰকৰ চালক নাই ।"
+
+#: applet.py:131
+msgid "No driver for this printer."
+msgstr "মুদ্ৰকৰ বাবে চালক নাই ।"
+
+#: applet.py:136 newprinter.py:646 newprinter.py:1716 newprinter.py:3604
+#: newprinter.py:3664 newprinter.py:3716
+msgid "Search"
+msgstr "বিচাৰক"
+
+#: applet.py:173
+msgid "Printer added"
+msgstr "মূদ্ৰক"
+
+#: applet.py:179
+msgid "Install printer driver"
+msgstr "সন্ধানহীন চালক"
+
+#: applet.py:180
+#, python-format
+msgid "`%s' requires driver installation: %s."
+msgstr "`%s' ৰ বাবে চালকৰ সংস্থাপন প্ৰয়োজনীয়: %s."
+
+#: applet.py:188 troubleshoot/CheckPPDSanity.py:48
+msgid "Install"
+msgstr "সন্ধানহীন চালক"
+
+#: applet.py:204
+#, python-format
+msgid "`%s' is ready for printing."
+msgstr "`%s' মূদ্ৰণৰ বাবে সাজু  ।"
+
+#: applet.py:208 applet.py:220
+msgid "Print test page"
+msgstr "পৰীক্ষাৰ পৃষ্ঠা মুদ্ৰণ কৰক"
+
+#: applet.py:211
+msgid "Configure"
+msgstr "বিন্যাস কৰক"
+
+#: applet.py:215
+#, python-format
+msgid "`%s' has been added, using the `%s' driver."
+msgstr "`%s' যোগ কৰা হ'ল, `%s' চালক ব্যৱহাৰ কৰা হৈছে  ।"
+
+#: applet.py:223
+msgid "Find driver"
+msgstr "অনুসন্ধান"
+
+#: asyncipp.py:473 authconn.py:458 authconn.py:460 errordialogs.py:63
+#: pysmb.py:90 pysmb.py:92
 msgid "Not authorized"
 msgstr "স্বীকৃতি নাই"
 
-#: ../asyncipp.py:474 ../authconn.py:461 ../pysmb.py:93
+#: asyncipp.py:474 authconn.py:461 pysmb.py:93
 msgid "The password may be incorrect."
 msgstr "গুপ্তশব্দ অশুদ্ধ হ'ব পাৰে  ।"
 
-#: ../asyncipp.py:485 ../authconn.py:482
+#: asyncipp.py:485 authconn.py:482
 #, python-format
 msgid "Authentication (%s)"
 msgstr "অনুমোদন ব্যৱস্থা (%s)"
 
-#: ../asyncipp.py:560 ../authconn.py:311 ../errordialogs.py:54
-#: ../errordialogs.py:68
+#: asyncipp.py:560 authconn.py:311 errordialogs.py:54 errordialogs.py:68
 msgid "CUPS server error"
 msgstr "CUPS সেৱকৰ ভুল"
 
-#: ../asyncipp.py:562 ../authconn.py:309
+#: asyncipp.py:562 authconn.py:309
 #, python-format
 msgid "CUPS server error (%s)"
 msgstr "CUPS সেৱকৰ ভুল (%s)"
 
-#: ../asyncipp.py:578 ../authconn.py:319 ../errordialogs.py:55
-#: ../troubleshoot/PrintTestPage.py:431
+#: asyncipp.py:578 authconn.py:319 errordialogs.py:55
+#: troubleshoot/PrintTestPage.py:431
 #, python-format
 msgid "There was an error during the CUPS operation: '%s'."
 msgstr "CUPS ক্ৰিয়াকৰণৰ সময়ত এটা ভুল হ'ল: '%s'."
 
-#: ../asyncipp.py:581 ../authconn.py:322
+#: asyncipp.py:581 authconn.py:322
 msgid "Retry"
 msgstr "পুনঃ চেষ্টা কৰক"
 
-#: ../asyncipp.py:598 ../authconn.py:265 ../authconn.py:291
+#: asyncipp.py:598 authconn.py:265 authconn.py:291
 msgid "Operation canceled"
 msgstr "কাৰ্য্য বাতিল কৰা হ'ল"
 
-#: ../authconn.py:39 ../pysmb.py:125 ../ui/NewPrinterWindow.ui.h:40
+#: authconn.py:39 pysmb.py:125 ui/NewPrinterWindow.ui:1120
 msgid "Username:"
 msgstr "ব্যৱহাৰকৰোঁতাৰ নাম:"
 
-#: ../authconn.py:40 ../pysmb.py:131 ../ui/NewPrinterWindow.ui.h:39
+#: authconn.py:40 pysmb.py:131 ui/NewPrinterWindow.ui:1101
 msgid "Password:"
 msgstr "গুপ্তশব্দ:"
 
-#: ../authconn.py:41 ../pysmb.py:128
+#: authconn.py:41 pysmb.py:128
 msgid "Domain:"
 msgstr "ডোমেইন:"
 
 #. After that, prompt
-#: ../authconn.py:50 ../authconn.py:484 ../pysmb.py:98
+#: authconn.py:50 authconn.py:484 pysmb.py:98
 msgid "Authentication"
 msgstr "অনুমোদন"
 
-#: ../authconn.py:93
+#: authconn.py:93
 msgid "Remember password"
 msgstr "পাছৱৰ্ড মনত পেলাওক "
 
-#: ../errordialogs.py:64
+#: errordialogs.py:64
 msgid ""
 "The password may be incorrect, or the server may be configured to deny "
 "remote administration."
 msgstr ""
 "গুপ্তশব্দ অশুদ্ধ হ'ব পাৰে, বা সেৱকক বিন্যাস কৰা হৈছে দূৰৰ প্ৰশাসন অশ্বীকাৰ কৰিব'লৈ  ।"
 
-#: ../errordialogs.py:70
+#: errordialogs.py:70
 msgid "Bad request"
 msgstr "বেয়া অনুৰোধ"
 
-#: ../errordialogs.py:72
+#: errordialogs.py:72
 msgid "Not found"
 msgstr "বিচাৰি পোৱা নাই"
 
-#: ../errordialogs.py:74
+#: errordialogs.py:74
 msgid "Request timeout"
 msgstr "অনুৰোধৰ বিৰতি"
 
-#: ../errordialogs.py:76
+#: errordialogs.py:76
 msgid "Upgrade required"
 msgstr "উন্নহয়নৰ প্ৰয়োজন"
 
-#: ../errordialogs.py:78
+#: errordialogs.py:78
 msgid "Server error"
 msgstr "সেৱকৰ ভুল"
 
-#: ../errordialogs.py:80 ../system-config-printer.py:761
+#: errordialogs.py:80 system-config-printer.py:777
 msgid "Not connected"
 msgstr "সংযোগ থকা নহয়"
 
-#: ../errordialogs.py:82
+#: errordialogs.py:82
 #, python-format
 msgid "status %s"
 msgstr "অৱস্থা %s"
 
-#: ../errordialogs.py:84
+#: errordialogs.py:84
 #, python-format
 msgid "There was an HTTP error: %s."
 msgstr "এটা HTTP ভুল হৈছিল: %s."
 
-#: ../jobviewer.py:246
+#: jobviewer.py:246
 msgid "Delete Jobs"
 msgstr "কাৰ্য্যবোৰ মচি দিয়ক"
 
-#: ../jobviewer.py:247
+#: jobviewer.py:247
 msgid "Do you really want to delete these jobs?"
 msgstr "আপুনি সচাকে এই কাৰ্য্যবোৰ মচি দিব বিচাৰে নে?"
 
-#: ../jobviewer.py:249
+#: jobviewer.py:249
 msgid "Delete Job"
 msgstr "কাৰ্য্য মচি দিয়ক"
 
-#: ../jobviewer.py:250
+#: jobviewer.py:250
 msgid "Do you really want to delete this job?"
 msgstr "আপুনি সচাকে এই কাৰ্য্য মচি দিব বিচাৰে নে?"
 
-#: ../jobviewer.py:253
+#: jobviewer.py:253
 msgid "Cancel Jobs"
 msgstr "কাৰ্য্যসমুহ বাতিল কৰক"
 
-#: ../jobviewer.py:254
+#: jobviewer.py:254
 msgid "Do you really want to cancel these jobs?"
 msgstr "আপুনি সঁচাকে এই কাৰ্য্যবোৰ মচি দিব বিচাৰে নে?"
 
-#: ../jobviewer.py:256
+#: jobviewer.py:256
 msgid "Cancel Job"
 msgstr "কাৰ্য্য বাতিল কৰক"
 
-#: ../jobviewer.py:257
+#: jobviewer.py:257
 msgid "Do you really want to cancel this job?"
 msgstr "আপুনি সঁচাকৈয়ে কাৰ্য্য বাতিল কৰিবলৈ বিচাৰেনেকি?"
 
-#: ../jobviewer.py:261
+#: jobviewer.py:261
 msgid "Keep Printing"
 msgstr "প্ৰিন্ট কৰি থাকক"
 
-#: ../jobviewer.py:328
+#: jobviewer.py:328
 msgid "deleting job"
 msgstr "কাৰ্য্য মচা হৈ আছে"
 
-#: ../jobviewer.py:330
+#: jobviewer.py:330
 msgid "canceling job"
 msgstr "কাৰ্য্য বাতিল কৰা হৈছে"
 
-#: ../jobviewer.py:428 ../system-config-printer.py:1710
-#: ../ui/ConnectDialog.ui.h:2 ../ui/ConnectingDialog.ui.h:2
-#: ../ui/NewPrinterName.ui.h:2 ../ui/NewPrinterWindow.ui.h:104
-#: ../ui/PrinterPropertiesDialog.ui.h:4 ../ui/ServerSettingsDialog.ui.h:2
-#: ../ui/SMBBrowseDialog.ui.h:3
+#: jobviewer.py:428 system-config-printer.py:1727 ui/ConnectDialog.ui:27
+#: ui/ConnectingDialog.ui:26 ui/NewPrinterName.ui:24
+#: ui/NewPrinterWindow.ui:3313 ui/PrinterPropertiesDialog.ui:167
+#: ui/ServerSettingsDialog.ui:25 ui/SMBBrowseDialog.ui:77
 msgid "_Cancel"
 msgstr "বাতিল কৰক (_C)"
 
-#: ../jobviewer.py:429
+#: jobviewer.py:429
 msgid "Cancel selected jobs"
 msgstr "নিৰ্বাচিত কাৰ্য্যবোৰ বাতিল কৰকস"
 
-#: ../jobviewer.py:430 ../system-config-printer.py:1711
-#: ../ui/PrinterPropertiesDialog.ui.h:40
+#: jobviewer.py:430 system-config-printer.py:1728
+#: ui/PrinterPropertiesDialog.ui:1059
 msgid "_Delete"
 msgstr "মচি দিয়ক (_D)"
 
-#: ../jobviewer.py:431
+#: jobviewer.py:431
 msgid "Delete selected jobs"
 msgstr "নিৰ্বাচিত কাৰ্য্যবোৰ মচি দিয়ক"
 
-#: ../jobviewer.py:432
+#: jobviewer.py:432
 msgid "_Hold"
 msgstr "স্থগিত কৰা হ'ব (_H)"
 
-#: ../jobviewer.py:433
+#: jobviewer.py:433
 msgid "Hold selected jobs"
 msgstr "নিৰ্বাচিত কাৰ্য্যবেৰ ধৰি ৰাখক"
 
-#: ../jobviewer.py:434
+#: jobviewer.py:434
 msgid "_Release"
 msgstr "মুক্ত কৰা হ'ব (_R)"
 
-#: ../jobviewer.py:435
+#: jobviewer.py:435
 msgid "Release selected jobs"
 msgstr "নিৰ্বাচিত কাৰ্য্যবোৰ এৰি দিয়ক"
 
-#: ../jobviewer.py:436
+#: jobviewer.py:436
 msgid "Re_print"
 msgstr "পুনঃ মূদ্ৰণ (_p)"
 
-#: ../jobviewer.py:437
+#: jobviewer.py:437
 msgid "Reprint selected jobs"
 msgstr "নিৰ্বাচিত কাৰ্য্যবোৰ পুনৰ প্ৰিন্ট কৰক"
 
-#: ../jobviewer.py:438
+#: jobviewer.py:438
 msgid "Re_trieve"
 msgstr "উদ্ধাৰ কৰক (_t)"
 
-#: ../jobviewer.py:439
+#: jobviewer.py:439
 msgid "Retrieve selected jobs"
 msgstr "নিৰ্বাচিত কাৰ্য্যবোৰ উদ্ধাৰ কৰক"
 
-#: ../jobviewer.py:440
+#: jobviewer.py:440
 msgid "_Move To"
 msgstr "লৈকে যাওক (_M)"
 
-#: ../jobviewer.py:441
+#: jobviewer.py:441
 msgid "_Authenticate"
 msgstr "অনুমোদন (_A)"
 
-#: ../jobviewer.py:443
+#: jobviewer.py:443
 msgid "_View Attributes"
 msgstr "বৈশিষ্টসমূহ চাওক (_V)"
 
-#: ../jobviewer.py:446 ../jobviewer.py:656
+#: jobviewer.py:446 jobviewer.py:656
 msgid "Close this window"
 msgstr "এই উইন্ডো বন্ধ কৰক"
 
-#: ../jobviewer.py:509 ../troubleshoot/PrintTestPage.py:84
+#: jobviewer.py:509 troubleshoot/PrintTestPage.py:84
 msgid "Job"
 msgstr "কাৰ্য্য"
 
-#: ../jobviewer.py:510
+#: jobviewer.py:510
 msgid "User"
 msgstr "ব্যৱহাৰকৰোঁতা"
 
-#: ../jobviewer.py:511 ../troubleshoot/PrintTestPage.py:88
+#: jobviewer.py:511 troubleshoot/PrintTestPage.py:88
 msgid "Document"
 msgstr "ডকুমেন্ট"
 
-#: ../jobviewer.py:512 ../system-config-printer.py:941
-#: ../troubleshoot/PrintTestPage.py:86
+#: jobviewer.py:512 system-config-printer.py:957
+#: troubleshoot/PrintTestPage.py:86
 msgid "Printer"
 msgstr "মুদ্ৰক"
 
-#: ../jobviewer.py:513
+#: jobviewer.py:513
 msgid "Size"
 msgstr "মাপ"
 
-#: ../jobviewer.py:529
+#: jobviewer.py:529
 msgid "Time submitted"
 msgstr "কাৰ্য্য নিৰ্ধাৰণেৰ সময়"
 
-#: ../jobviewer.py:533 ../troubleshoot/PrintTestPage.py:89
+#: jobviewer.py:533 troubleshoot/PrintTestPage.py:89
 msgid "Status"
 msgstr "অৱস্থা"
 
-#: ../jobviewer.py:563
+#: jobviewer.py:563
 #, python-format
 msgid "my jobs on %s"
 msgstr "%s ত উপস্থিত মোৰ কাৰ্য্য"
 
-#: ../jobviewer.py:565
+#: jobviewer.py:565
 msgid "my jobs"
 msgstr "মোৰ কাৰ্য্যসমূহ"
 
-#: ../jobviewer.py:570
+#: jobviewer.py:570
 msgid "all jobs"
 msgstr "সকলো কাৰ্য্য"
 
-#: ../jobviewer.py:571
+#: jobviewer.py:571
 #, python-format
 msgid "Document Print Status (%s)"
 msgstr "আলেখ্যন মূদ্ৰণ কাৰ্য্যৰ অৱস্থা (%s)"
 
-#: ../jobviewer.py:646
+#: jobviewer.py:646
 msgid "Job attributes"
 msgstr "কাৰ্য্য বৈশিষ্টসমূহ"
 
-#: ../jobviewer.py:781 ../jobviewer.py:1128 ../jobviewer.py:1907
-#: ../jobviewer.py:1937 ../jobviewer.py:2330 ../jobviewer.py:2339
-#: ../jobviewer.py:2361 ../jobviewer.py:2445 ../printerproperties.py:1638
-#: ../ui/NewPrinterWindow.ui.h:94 ../troubleshoot/ChooseNetworkPrinter.py:102
-#: ../troubleshoot/ChooseNetworkPrinter.py:103
-#: ../troubleshoot/ChooseNetworkPrinter.py:106
-#: ../troubleshoot/ChooseNetworkPrinter.py:107
-#: ../troubleshoot/ChoosePrinter.py:94 ../troubleshoot/ChoosePrinter.py:95
-#: ../troubleshoot/ChoosePrinter.py:98 ../troubleshoot/ChoosePrinter.py:99
-#: ../troubleshoot/DeviceListed.py:100 ../troubleshoot/DeviceListed.py:101
+#: jobviewer.py:781 jobviewer.py:1128 jobviewer.py:1907 jobviewer.py:1937
+#: jobviewer.py:2330 jobviewer.py:2339 jobviewer.py:2361 jobviewer.py:2445
+#: printerproperties.py:1638 troubleshoot/ChooseNetworkPrinter.py:102
+#: troubleshoot/ChooseNetworkPrinter.py:103
+#: troubleshoot/ChooseNetworkPrinter.py:106
+#: troubleshoot/ChooseNetworkPrinter.py:107 troubleshoot/ChoosePrinter.py:94
+#: troubleshoot/ChoosePrinter.py:95 troubleshoot/ChoosePrinter.py:98
+#: troubleshoot/ChoosePrinter.py:99 troubleshoot/DeviceListed.py:100
+#: troubleshoot/DeviceListed.py:101 ui/NewPrinterWindow.ui:2901
+#: ui/NewPrinterWindow.ui:2945 ui/NewPrinterWindow.ui:3000
+#: ui/NewPrinterWindow.ui:3063
 msgid "Unknown"
 msgstr "অজ্ঞাত"
 
-#: ../jobviewer.py:787
+#: jobviewer.py:787
 msgid "a minute ago"
 msgstr "এক মিনিট পূৰ্বে"
 
-#: ../jobviewer.py:790
+#: jobviewer.py:790
 #, python-format
 msgid "%d minutes ago"
 msgstr "%d মিনিট পূৰ্বে"
 
-#: ../jobviewer.py:794
+#: jobviewer.py:794
 msgid "an hour ago"
 msgstr "১ ঘন্টা পূৰ্বে"
 
-#: ../jobviewer.py:796
+#: jobviewer.py:796
 #, python-format
 msgid "%d hours ago"
 msgstr "%d ঘন্টা পূৰ্বে"
 
-#: ../jobviewer.py:800
+#: jobviewer.py:800
 msgid "yesterday"
 msgstr "গতকাল"
 
-#: ../jobviewer.py:802
+#: jobviewer.py:802
 #, python-format
 msgid "%d days ago"
 msgstr "%d দিন পূৰ্বে"
 
-#: ../jobviewer.py:806
+#: jobviewer.py:806
 msgid "last week"
 msgstr "যোৱা সপ্তাহ"
 
-#: ../jobviewer.py:808
+#: jobviewer.py:808
 #, python-format
 msgid "%d weeks ago"
 msgstr "%d সপ্তাহ পূৰ্বে"
 
-#: ../jobviewer.py:1071 ../jobviewer.py:1160
+#: jobviewer.py:1071 jobviewer.py:1160
 msgid "authenticating job"
 msgstr "কাৰ্য্য অনুমোদন কৰা"
 
-#: ../jobviewer.py:1126
+#: jobviewer.py:1126
 #, python-format
 msgid "Authentication required for printing document `%s' (job %d)"
 msgstr "`%s' আলেখ্যন মূদ্ৰণ কৰাৰ বাবে অনুমোদন প্ৰয়োজন (কাৰ্য্য সংখ্যা %d)"
 
-#: ../jobviewer.py:1420
+#: jobviewer.py:1420
 msgid "holding job"
 msgstr "কাৰ্য্য ৰখা হৈছে"
 
-#: ../jobviewer.py:1446
+#: jobviewer.py:1446
 msgid "releasing job"
 msgstr "কাৰ্য্য মুক্ত কৰা হৈছে"
 
 #. give the default filename some meaningful name
-#: ../jobviewer.py:1508
+#: jobviewer.py:1508
 msgid "retrieved"
 msgstr "উদ্ধাৰ কৰা হল"
 
-#: ../jobviewer.py:1518
+#: jobviewer.py:1518
 msgid "Save File"
 msgstr "নথিপত্ৰ সঞ্চয় কৰক"
 
-#: ../jobviewer.py:1633 ../system-config-printer.py:310
-#: ../ui/NewPrinterWindow.ui.h:9 ../troubleshoot/ChooseNetworkPrinter.py:37
-#: ../troubleshoot/ChoosePrinter.py:43 ../troubleshoot/DeviceListed.py:43
+#: jobviewer.py:1633 system-config-printer.py:320
+#: troubleshoot/ChooseNetworkPrinter.py:37 troubleshoot/ChoosePrinter.py:43
+#: troubleshoot/DeviceListed.py:43 ui/NewPrinterWindow.ui:235
 msgid "Name"
 msgstr "নাম"
 
-#: ../jobviewer.py:1636
+#: jobviewer.py:1636
 msgid "Value"
 msgstr "মান"
 
-#: ../jobviewer.py:1760
+#: jobviewer.py:1760
 msgid "No documents queued"
 msgstr "কোনো আলেখ্যন অপেক্ষাত নাই"
 
-#: ../jobviewer.py:1762
+#: jobviewer.py:1762
 msgid "1 document queued"
 msgstr "১ আলেখ্যন অপেক্ষাত"
 
-#: ../jobviewer.py:1764
+#: jobviewer.py:1764
 #, python-format
 msgid "%d documents queued"
 msgstr "%d আলেখ্যন অপেক্ষাত"
 
-#: ../jobviewer.py:1820
+#: jobviewer.py:1820
 #, python-format
 msgid "processing / pending:   %d / %d"
 msgstr "প্ৰক্ৰিয়কৰণ হৈ আছে/স্থগিত ৰখা হৈছে:    %d / %d"
 
-#: ../jobviewer.py:1938
+#: jobviewer.py:1938
 msgid "Document printed"
 msgstr "দস্তাবেজ প্ৰিন্ট কৰা হল"
 
-#: ../jobviewer.py:1939
+#: jobviewer.py:1939
 #, python-format
 msgid "Document `%s' has been sent to `%s' for printing."
 msgstr "দস্তাবেজ `%s' -ক প্ৰিন্ট কৰিবলে `%s' -ত পঠোৱা হৈছে।"
 
-#: ../jobviewer.py:2101
+#: jobviewer.py:2101
 #, python-format
 msgid "There was a problem sending document `%s' (job %d) to the printer."
 msgstr "`%s' নথিপত্ৰ (কাৰ্য্য সংখ্যা %d) মূদ্ৰণৰ বাবে পঠিয়াওঁতে সমস্যা ।"
 
-#: ../jobviewer.py:2105
+#: jobviewer.py:2105
 #, python-format
 msgid "There was a problem processing document `%s' (job %d)."
 msgstr "`%s' নথিপত্ৰ (কাৰ্য্যসংখ্যা %d) সংসাধন কৰোঁতে সমস্যা হৈছে ।"
 
 #. Give up and use the provided message untranslated.
-#: ../jobviewer.py:2112
+#: jobviewer.py:2112
 #, python-format
 msgid "There was a problem printing document `%s' (job %d): `%s'."
 msgstr "`%s' আলেখ্যন মূদ্ৰণ কৰোঁতে সমস্যা (কাৰ্য্য সংখ্যা %d): `%s' ।"
 
-#: ../jobviewer.py:2119 ../jobviewer.py:2136
+#: jobviewer.py:2119 jobviewer.py:2136
 msgid "Print Error"
 msgstr "মূদ্ৰণ সংক্ৰান্ত সমস্যা"
 
-#: ../jobviewer.py:2121
+#: jobviewer.py:2121
 msgid "_Diagnose"
 msgstr "বৈশিষ্ট্য সূচনা কৰা (_D)"
 
-#: ../jobviewer.py:2142
+#: jobviewer.py:2142
 #, python-format
 msgid "The printer called `%s' has been disabled."
 msgstr "`%s' নামক মূদ্ৰক নিষ্ক্ৰিয় কৰা হৈছে ।"
 
-#: ../jobviewer.py:2349
+#: jobviewer.py:2349
 msgid "disabled"
 msgstr "অসামৰ্থবান "
 
-#: ../jobviewer.py:2379
+#: jobviewer.py:2379
 msgid "Held for authentication"
 msgstr "অনুমোদনৰ অপেক্ষাত"
 
-#: ../jobviewer.py:2381 ../troubleshoot/PrintTestPage.py:44
+#: jobviewer.py:2381 troubleshoot/PrintTestPage.py:44
 msgid "Held"
 msgstr "আটক কৰা"
 
-#: ../jobviewer.py:2417
+#: jobviewer.py:2417
 #, python-format
 msgid "Held until %s"
 msgstr "%s লৈকে ধৰি ৰাখক"
 
-#: ../jobviewer.py:2422
+#: jobviewer.py:2422
 msgid "Held until day-time"
 msgstr "দিনটোলৈ ধৰি ৰাখক"
 
-#: ../jobviewer.py:2424
+#: jobviewer.py:2424
 msgid "Held until evening"
 msgstr "গধূলিলৈ ধৰি ৰাখক"
 
-#: ../jobviewer.py:2426
+#: jobviewer.py:2426
 msgid "Held until night-time"
 msgstr "ৰাতিলৈ ধৰি ৰাখক:"
 
-#: ../jobviewer.py:2428
+#: jobviewer.py:2428
 msgid "Held until second shift"
 msgstr "দ্বিতীয় shift লৈ ধৰি ৰাখক"
 
-#: ../jobviewer.py:2430
+#: jobviewer.py:2430
 msgid "Held until third shift"
 msgstr "তৃতীয় shift লৈ ধৰি ৰাখক"
 
-#: ../jobviewer.py:2432
+#: jobviewer.py:2432
 msgid "Held until weekend"
 msgstr "সপ্তাহটোলৈ ধৰি ৰাখক:"
 
-#: ../jobviewer.py:2435 ../troubleshoot/PrintTestPage.py:43
+#: jobviewer.py:2435 troubleshoot/PrintTestPage.py:43
 msgid "Pending"
 msgstr "অসমাপ্ত কাৰ্য্য"
 
-#: ../jobviewer.py:2436 ../printerproperties.py:73
-#: ../system-config-printer.py:163 ../troubleshoot/PrintTestPage.py:45
+#: jobviewer.py:2436 printerproperties.py:73 system-config-printer.py:173
+#: troubleshoot/PrintTestPage.py:45
 msgid "Processing"
 msgstr "সংসাধন কৰা হৈছে"
 
-#: ../jobviewer.py:2437 ../printerproperties.py:77
-#: ../system-config-printer.py:165 ../troubleshoot/PrintTestPage.py:46
+#: jobviewer.py:2437 printerproperties.py:77 system-config-printer.py:175
+#: troubleshoot/PrintTestPage.py:46
 msgid "Stopped"
 msgstr "বন্ধ"
 
-#: ../jobviewer.py:2438 ../troubleshoot/PrintTestPage.py:47
+#: jobviewer.py:2438 troubleshoot/PrintTestPage.py:47
 msgid "Canceled"
 msgstr "বাতিল কৰা হৈছে"
 
-#: ../jobviewer.py:2439 ../troubleshoot/PrintTestPage.py:48
+#: jobviewer.py:2439 troubleshoot/PrintTestPage.py:48
 msgid "Aborted"
 msgstr "পৰিত্যক্ত"
 
-#: ../jobviewer.py:2440 ../troubleshoot/PrintTestPage.py:49
+#: jobviewer.py:2440 troubleshoot/PrintTestPage.py:49
 msgid "Completed"
 msgstr "সমাপ্ত"
 
-#: ../newprinter.py:72
+#: newprinter.py:72
 msgid ""
 "The firewall may need adjusting in order to detect network printers.  Adjust "
 "the firewall now?"
@@ -501,84 +567,84 @@ msgstr ""
 "ফায়াৰৱালটোৱে নেটৱাৰ্ক প্ৰিন্টাৰসমূহ ধৰা পেলাবলে আয়োজনৰ প্ৰয়োজন হব পাৰে। "
 "ফায়াৰৱালএতিয়া আয়োজিত কৰিব?"
 
-#: ../newprinter.py:358 ../newprinter.py:369 ../newprinter.py:375
-#: ../newprinter.py:380 ../ppdippstr.py:163
+#: newprinter.py:334 newprinter.py:345 newprinter.py:351 newprinter.py:356
+#: ppdippstr.py:163
 msgid "Default"
 msgstr "অবিকল্পিত"
 
 #. See section 4.2.6 of this document for explanation of finishing types:
 #. ftp://ftp.pwg.org/pub/pwg/candidates/cs-ippfinishings10-20010205-5100.1.pdf
-#: ../newprinter.py:370 ../newprinter.py:381 ../newprinter.py:4099
-#: ../ppdippstr.py:65 ../ppdippstr.py:252 ../printerproperties.py:281
+#: newprinter.py:346 newprinter.py:357 newprinter.py:4075 ppdippstr.py:65
+#: ppdippstr.py:252 printerproperties.py:281
 msgid "None"
 msgstr "শূণ্য"
 
-#: ../newprinter.py:371
+#: newprinter.py:347
 msgid "Odd"
 msgstr "অযুগ্ম"
 
-#: ../newprinter.py:372
+#: newprinter.py:348
 msgid "Even"
 msgstr "যুগ্ম"
 
-#: ../newprinter.py:382
+#: newprinter.py:358
 msgid "XON/XOFF (Software)"
 msgstr "XON/XOFF (চফ্টওৱেৰ)"
 
-#: ../newprinter.py:383
+#: newprinter.py:359
 msgid "RTS/CTS (Hardware)"
 msgstr "RTS/CTS (হাৰ্ডওৱেৰ)"
 
-#: ../newprinter.py:384
+#: newprinter.py:360
 msgid "DTR/DSR (Hardware)"
 msgstr "DTR/DSR (হাৰ্ডওৱেৰ)"
 
-#: ../newprinter.py:402 ../printerproperties.py:235
+#: newprinter.py:378 printerproperties.py:235
 msgid "Members of this class"
 msgstr "এই শ্ৰেণীৰ সদস্যসমূহ"
 
-#: ../newprinter.py:404 ../printerproperties.py:236
+#: newprinter.py:380 printerproperties.py:236
 msgid "Others"
 msgstr "অন্য"
 
-#: ../newprinter.py:405
+#: newprinter.py:381
 msgid "Devices"
 msgstr "যন্ত্ৰ"
 
-#: ../newprinter.py:406
+#: newprinter.py:382
 msgid "Connections"
 msgstr "সংযোগ"
 
-#: ../newprinter.py:407
+#: newprinter.py:383
 msgid "Makes"
 msgstr "নিৰ্মাণ"
 
-#: ../newprinter.py:408
+#: newprinter.py:384
 msgid "Models"
 msgstr "প্ৰতিমান"
 
-#: ../newprinter.py:409
+#: newprinter.py:385
 msgid "Drivers"
 msgstr "চালক"
 
-#: ../newprinter.py:410 ../ui/NewPrinterWindow.ui.h:102
+#: newprinter.py:386 ui/NewPrinterWindow.ui:3260
 msgid "Downloadable Drivers"
 msgstr "ডাউন্‌লোড কৰিব পৰা চালক"
 
-#: ../newprinter.py:489
+#: newprinter.py:465
 msgid "Browsing requires pysmbc module"
 msgstr ""
 
 #. SMB list columns
-#: ../newprinter.py:494
+#: newprinter.py:470
 msgid "Share"
 msgstr "অংশ"
 
-#: ../newprinter.py:500
+#: newprinter.py:476
 msgid "Comment"
 msgstr "মন্তব্য"
 
-#: ../newprinter.py:515
+#: newprinter.py:491
 msgid ""
 "PostScript Printer Description files (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *."
 "PPD.GZ)"
@@ -586,106 +652,100 @@ msgstr ""
 "PostScript Printer Description files (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *."
 "PPD.GZ)"
 
-#: ../newprinter.py:524
+#: newprinter.py:500
 msgid "All files (*)"
 msgstr "সৰ্বধৰনৰ নথিপত্ৰ (*)"
 
-#: ../newprinter.py:670 ../newprinter.py:1740 ../newprinter.py:3628
-#: ../newprinter.py:3688 ../newprinter.py:3740 ../applet.py:134
-msgid "Search"
-msgstr "বিচাৰক"
-
-#: ../newprinter.py:709
+#: newprinter.py:685
 msgid "New Class"
 msgstr "নতুন শ্ৰেণী"
 
-#: ../newprinter.py:718 ../newprinter.py:735 ../ui/NewPrinterWindow.ui.h:1
+#: newprinter.py:694 newprinter.py:711 ui/NewPrinterWindow.ui:7
 msgid "New Printer"
 msgstr "নতুন মুদ্ৰক"
 
-#: ../newprinter.py:727
+#: newprinter.py:703
 msgid "Change Device URI"
 msgstr "যন্ত্ৰৰ URI সলনি কৰক"
 
-#: ../newprinter.py:746
+#: newprinter.py:722
 msgid "Download Printer Driver"
 msgstr "প্ৰিন্টাৰ ড্ৰাইভাৰ ডাউনল'ড কৰক"
 
-#: ../newprinter.py:755
+#: newprinter.py:731
 msgid "Change Driver"
 msgstr "চালক সলনি কৰক"
 
-#: ../newprinter.py:764 ../newprinter.py:2331 ../newprinter.py:2336
+#: newprinter.py:740 newprinter.py:2307 newprinter.py:2312
 msgid "fetching device list"
 msgstr "যন্ত্ৰৰ তালিকা পোৱা হৈছে"
 
-#: ../newprinter.py:959
+#: newprinter.py:935
 #, python-format
 msgid "Installing driver %s"
 msgstr "ড্ৰাইভাৰ %s ইনস্টল কৰা হৈছে"
 
-#: ../newprinter.py:966
+#: newprinter.py:942
 msgid "Installing ..."
 msgstr "ইনস্টল কৰা হৈছে ..."
 
-#: ../newprinter.py:1693 ../newprinter.py:3430 ../newprinter.py:3658
-#: ../ppdsloader.py:86
+#: newprinter.py:1669 newprinter.py:3406 newprinter.py:3634 ppdsloader.py:86
 msgid "Searching"
 msgstr "অনুসন্ধান"
 
-#: ../newprinter.py:1703 ../ppdsloader.py:93
+#: newprinter.py:1679 ppdsloader.py:93
 msgid "Searching for drivers"
 msgstr "ড্ৰাইভাবোৰৰ কাৰণে সন্ধান কৰি আছে"
 
 #. device-info
 #. PhysicalDevice obj
 #. Separator?
-#: ../newprinter.py:2246
+#: newprinter.py:2222
 msgid "Enter URI"
 msgstr "URI সোমাওক"
 
-#: ../newprinter.py:2251
+#: newprinter.py:2227
 msgid "Network Printer"
 msgstr "নে'টৱৰ্ক মূদ্ৰক"
 
-#: ../newprinter.py:2255
+#: newprinter.py:2231
 msgid "Find Network Printer"
 msgstr "নে'টৱৰ্ক মূদ্ৰক বিচাৰক"
 
-#: ../newprinter.py:2262 ../newprinter.py:3102 ../ppdippstr.py:371
+#: newprinter.py:2238 newprinter.py:3078 ppdippstr.py:371
 msgid "Windows Printer via SAMBA"
 msgstr "Windows Printer via SAMBA"
 
-#: ../newprinter.py:2294
+#: newprinter.py:2270
 msgid "Allow all incoming IPP Browse packets"
 msgstr "সকলো আহি থকা IPP ব্ৰাউছ পেকেটসমূহ অনুমতি দিয়ক"
 
-#: ../newprinter.py:2299
+#: newprinter.py:2275
 msgid "Allow all incoming mDNS traffic"
 msgstr "সকলো আহি থকা mDNS ট্ৰাফিক অনুমতি দিয়ক"
 
-#: ../newprinter.py:2309 ../newprinter.py:2312 ../newprinter.py:2797
-#: ../newprinter.py:2803 ../serversettings.py:566 ../serversettings.py:571
+#: newprinter.py:2285 newprinter.py:2288 newprinter.py:2773 newprinter.py:2779
+#: serversettings.py:566 serversettings.py:571
 msgid "Adjust Firewall"
 msgstr "ফায়াৰৱাল আয়োজিত কৰক"
 
-#: ../newprinter.py:2311 ../newprinter.py:2802
+#: newprinter.py:2287 newprinter.py:2778
 msgid "Do It Later"
 msgstr "পিছত কৰিব"
 
-#: ../newprinter.py:2442 ../newprinter.py:3992
+#: newprinter.py:2418 newprinter.py:3968
 msgid " (Current)"
 msgstr " (বৰ্ত্তমানৰ)"
 
-#: ../newprinter.py:2542
+#: newprinter.py:2518
 msgid "Scanning..."
 msgstr "চোৱা হৈছে..."
 
-#: ../newprinter.py:2598
+#: newprinter.py:2574
 msgid "No Print Shares"
 msgstr "কোনো মূদ্ৰণ শ্বেয়াৰ উপলব্ধ নাই"
 
-#: ../newprinter.py:2599
+#: newprinter.py:2575
 msgid ""
 "There were no print shares found.  Please check that the Samba service is "
 "marked as trusted in your firewall configuration."
@@ -693,173 +753,173 @@ msgstr ""
 "কোনো মূদ্ৰণ শ্বেয়াৰ পোৱা নাযায় । অনুগ্ৰহ কৰি ফায়াৰ্ৱাল বিন্যাসত Samba সেৱাক বিশ্বস্ত "
 "সেৱাৰ অন্তৰ্গত চিহ্নিত কৰা হৈছে নে নাই পৰীক্ষা কৰক ।"
 
-#: ../newprinter.py:2740
+#: newprinter.py:2716
 #, python-format
 msgid "Verification requires the %s module"
 msgstr ""
 
-#: ../newprinter.py:2799
+#: newprinter.py:2775
 msgid "Allow all incoming SMB/CIFS browse packets"
 msgstr "সকলো আহি থকা SMB/CIFS ব্ৰাউছ পেকেটসমূহ অনুমতি দিয়ক"
 
-#: ../newprinter.py:2920
+#: newprinter.py:2896
 msgid "Print Share Verified"
 msgstr "মূদ্ৰণৰ শ্বেয়াৰ পৰীক্ষিত হৈছে"
 
-#: ../newprinter.py:2921
+#: newprinter.py:2897
 msgid "This print share is accessible."
 msgstr "এই মুদ্ৰণ অংশ অভিগম কৰিব পাৰি  ।"
 
-#: ../newprinter.py:2926
+#: newprinter.py:2902
 msgid "This print share is not accessible."
 msgstr "এই মুদ্ৰণ অংশ অভিগম কৰিব নোৱাৰি  ।"
 
-#: ../newprinter.py:2929
+#: newprinter.py:2905
 msgid "Print Share Inaccessible"
 msgstr "মূদ্ৰণৰ শ্বেয়াৰ ব্যৱহাৰযোগ্য নহয়"
 
-#: ../newprinter.py:3068
+#: newprinter.py:3044
 msgid "Parallel Port"
 msgstr "Parallel Port"
 
-#: ../newprinter.py:3070
+#: newprinter.py:3046
 msgid "Serial Port"
 msgstr "Serial Port"
 
-#: ../newprinter.py:3074 ../newprinter.py:3082 ../newprinter.py:3227
-#: ../newprinter.py:3229 ../newprinter.py:3276 ../system-config-printer.py:944
+#: newprinter.py:3050 newprinter.py:3058 newprinter.py:3203 newprinter.py:3205
+#: newprinter.py:3252 system-config-printer.py:960
 msgid "Fax"
 msgstr "ফেক্স"
 
-#: ../newprinter.py:3074 ../newprinter.py:3076 ../newprinter.py:3276
+#: newprinter.py:3050 newprinter.py:3052 newprinter.py:3252
 msgid "USB"
 msgstr "USB"
 
-#: ../newprinter.py:3078
+#: newprinter.py:3054
 msgid "Bluetooth"
 msgstr "ব্লুটুথ"
 
-#: ../newprinter.py:3080 ../newprinter.py:3083
+#: newprinter.py:3056 newprinter.py:3059
 msgid "HP Linux Imaging and Printing (HPLIP)"
 msgstr "HP Linux Imaging and Printing (HPLIP)"
 
-#: ../newprinter.py:3085
+#: newprinter.py:3061
 msgid "Hardware Abstraction Layer (HAL)"
 msgstr "Hardware Abstraction Layer (HAL)"
 
-#: ../newprinter.py:3087 ../ppdippstr.py:368
+#: newprinter.py:3063 ppdippstr.py:368
 msgid "AppSocket/HP JetDirect"
 msgstr "AppSocket/HP JetDirect"
 
-#: ../newprinter.py:3096
+#: newprinter.py:3072
 #, python-format
 msgid "LPD/LPR queue '%s'"
 msgstr "LPD/LPR queue '%s'"
 
-#: ../newprinter.py:3099
+#: newprinter.py:3075
 msgid "LPD/LPR queue"
 msgstr "LPD/LPR queue"
 
-#: ../newprinter.py:3118 ../newprinter.py:3121
+#: newprinter.py:3094 newprinter.py:3097
 msgid "IPP"
 msgstr "IPP"
 
-#: ../newprinter.py:3123
+#: newprinter.py:3099
 msgid "HTTP"
 msgstr "HTTP"
 
-#: ../newprinter.py:3131 ../newprinter.py:3300
+#: newprinter.py:3107 newprinter.py:3276
 msgid "Remote CUPS printer via DNS-SD"
 msgstr "DNS-SD হৈ দুৰৱৰ্তী CUPS প্ৰিন্টাৰ"
 
-#: ../newprinter.py:3143 ../newprinter.py:3310
+#: newprinter.py:3119 newprinter.py:3286
 #, python-format
 msgid "%s network printer via DNS-SD"
 msgstr "DNS-SD হৈ %s নেটৱাৰ্ক প্ৰিন্টাৰ"
 
-#: ../newprinter.py:3147 ../newprinter.py:3312
+#: newprinter.py:3123 newprinter.py:3288
 msgid "Network printer via DNS-SD"
 msgstr "DNS-SD হৈ নেটৱাৰ্ক প্ৰিন্টাৰ"
 
-#: ../newprinter.py:3272
+#: newprinter.py:3248
 msgid "A printer connected to the parallel port."
 msgstr "পেৰেলেল প'ৰ্টত সংযোগ থকা মুদ্ৰক  ।"
 
-#: ../newprinter.py:3277
+#: newprinter.py:3253
 msgid ""
 "A fax machine or the fax function of a multi-function device connected to a "
 "USB port."
 msgstr ""
 
-#: ../newprinter.py:3281
+#: newprinter.py:3257
 msgid "A printer connected to a USB port."
 msgstr "USB প'ৰ্টত সংযোগ থকা মুদ্ৰক  ।"
 
-#: ../newprinter.py:3283
+#: newprinter.py:3259
 msgid "A printer connected via Bluetooth."
 msgstr "এটা ব্লুটুথৰে সংযোগিত প্ৰিন্টাৰ"
 
-#: ../newprinter.py:3285
+#: newprinter.py:3261
 msgid ""
 "HPLIP software driving a printer, or the printer function of a multi-"
 "function device."
 msgstr ""
 "HPLIP চালনাজ্ঞানে চলোৱা মুদ্ৰক, বা বিভিন্ন কাৰ্য্যকৰণ থকা যন্ত্ৰৰ মুদ্ৰণ কাৰ্য্য  ।"
 
-#: ../newprinter.py:3288
+#: newprinter.py:3264
 msgid ""
 "HPLIP software driving a fax machine, or the fax function of a multi-"
 "function device."
 msgstr ""
 "HPLIP চালনাজ্ঞানে চলোৱা ফেক্স যন্ত্ৰ, বা বিভিন্ন কাৰ্য্যকৰণ থকা যন্ত্ৰৰ ফেক্স কাৰ্য্য  ।"
 
-#: ../newprinter.py:3291
+#: newprinter.py:3267
 msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
 msgstr ""
 "হাৰ্ডৱেৰ এব্সট্ৰেক্সন লেয়াৰ (যান্ত্ৰিক সামগ্ৰীৰ নিৰ্য্যাস বাহিৰ কৰা স্তৰ)(HAL)-এ "
 "উদ্ঘাটন কৰা স্থানীয় মুদ্ৰক  ।"
 
-#: ../newprinter.py:3431
+#: newprinter.py:3407
 msgid "Searching for printers"
 msgstr "মূদ্ৰকৰ কাৰণে সন্ধান কৰি আছে"
 
-#: ../newprinter.py:3537 ../ui/NewPrinterWindow.ui.h:46
+#: newprinter.py:3513 ui/NewPrinterWindow.ui:1359
 msgid "No printer was found at that address."
 msgstr "সেই ঠিকনাত কোনো মূদ্ৰক পোৱা ন'গ'ল ।"
 
-#: ../newprinter.py:3693
+#: newprinter.py:3669
 msgid "-- Select from search results --"
 msgstr "-- অনুসন্ধানৰ পৰা নিৰ্ব্বাচন কৰা হ'ব --"
 
-#: ../newprinter.py:3695
+#: newprinter.py:3671
 msgid "-- No matches found --"
 msgstr "না"
 
-#: ../newprinter.py:3807 ../ui/NewPrinterWindow.ui.h:80
+#: newprinter.py:3783 ui/NewPrinterWindow.ui:2577
 msgid "Local Driver"
 msgstr "স্থানীয় চালক"
 
-#: ../newprinter.py:3840 ../newprinter.py:3903 ../newprinter.py:4001
+#: newprinter.py:3816 newprinter.py:3879 newprinter.py:3977
 msgid " (recommended)"
 msgstr " (উপদেশ দিয়া হয়)"
 
-#: ../newprinter.py:4033
+#: newprinter.py:4009
 msgid "This PPD is generated by foomatic."
 msgstr "এই PPD foomatic ৰ দ্বাৰা উৎপন্ন কৰা হৈছে  ।"
 
-#: ../newprinter.py:4081
+#: newprinter.py:4057
 msgid "OpenPrinting"
 msgstr "মুদ্ৰণ কৰা কাৰ্য্য"
 
-#: ../newprinter.py:4092
+#: newprinter.py:4068
 msgid "Distributable"
 msgstr "বিতৰণ কৰিব পৰা"
 
-#: ../newprinter.py:4136
+#: newprinter.py:4112
 msgid ", "
 msgstr ", "
 
-#: ../newprinter.py:4141
+#: newprinter.py:4117
 #, python-format
 msgid ""
 "\n"
@@ -868,20 +928,20 @@ msgstr ""
 "\n"
 "(%s)"
 
-#: ../newprinter.py:4146
+#: newprinter.py:4122
 msgid "No support contacts known"
 msgstr "কোনো সমৰ্থিত পৰিচয় পোৱা নাযায়"
 
-#: ../newprinter.py:4150 ../newprinter.py:4163
+#: newprinter.py:4126 newprinter.py:4139
 msgid "Not specified."
 msgstr "নিৰ্ধাৰিত নহয় ।"
 
 #. Foomatic database problem of some sort.
-#: ../newprinter.py:4208
+#: newprinter.py:4184
 msgid "Database error"
 msgstr "তথ্য ভঁৰালত ভুল"
 
-#: ../newprinter.py:4209
+#: newprinter.py:4185
 #, python-format
 msgid "The '%s' driver cannot be used with printer '%s %s'."
 msgstr "'%s' চালক '%s %s' মুদ্ৰকৰ সৈতে ব্যৱহাৰ কৰিব পৰা নাযাব  ।"
@@ -889,1254 +949,1263 @@ msgstr "'%s' চালক '%s %s' মুদ্ৰকৰ সৈতে ব্য�
 #. This printer references some XML that is not
 #. installed by default.  Point the user at the
 #. package they need to install.
-#: ../newprinter.py:4219
+#: newprinter.py:4195
 #, python-format
 msgid "You will need to install the '%s' package in order to use this driver."
 msgstr "এই চালক ব্যৱহাৰ কৰিব'লৈ আপুনি '%s' সৰঞ্জাম সংস্থাপন কৰিব লাগিব  ।"
 
 #. This error came from trying to open the PPD file.
-#: ../newprinter.py:4226
+#: newprinter.py:4202
 msgid "PPD error"
 msgstr "PPD ভুল"
 
-#: ../newprinter.py:4228
+#: newprinter.py:4204
 msgid "Failed to read PPD file.  Possible reason follows:"
 msgstr "PPD নথিপত্ৰ পঢ়াত অক্ষম  । সম্ভৱপৰ কাৰণ এনে ধৰণৰ:"
 
 #. Failed to get PPD downloaded from OpenPrinting XXX
-#: ../newprinter.py:4246
+#: newprinter.py:4222
 msgid "Downloadable drivers"
 msgstr "ডাউন্‌লোড কৰিব পৰা চালক"
 
-#: ../newprinter.py:4247
+#: newprinter.py:4223
 msgid "Failed to download PPD."
 msgstr "PPD ডাউনলোড কৰোঁতে ব্যৰ্থ ।"
 
-#: ../newprinter.py:4255
+#: newprinter.py:4231
 msgid "fetching PPD"
 msgstr "PPD পোৱা হৈছ"
 
-#: ../newprinter.py:4284 ../newprinter.py:4320
+#: newprinter.py:4260 newprinter.py:4296
 msgid "No Installable Options"
 msgstr "সংস্থাপন কৰিব পৰা বিকল্প নাই"
 
-#: ../newprinter.py:4384
+#: newprinter.py:4360
 #, python-format
 msgid "adding printer %s"
 msgstr "%s মূদ্ৰক যোগ কৰা হৈছে"
 
-#: ../newprinter.py:4413 ../newprinter.py:4425 ../newprinter.py:4443
-#: ../printerproperties.py:996 ../system-config-printer.py:1746
-#: ../system-config-printer.py:1776
+#: newprinter.py:4389 newprinter.py:4401 newprinter.py:4419
+#: printerproperties.py:996 system-config-printer.py:1763
+#: system-config-printer.py:1793
 #, python-format
 msgid "modifying printer %s"
 msgstr "মূদ্ৰক %s সলনি কৰা হৈছে"
 
-#: ../optionwidgets.py:131
+#: optionwidgets.py:131
 msgid "Conflicts with:"
 msgstr "সংঘাত হৈছে:"
 
-#: ../ppdippstr.py:49
+#: ppdippstr.py:49
 msgid "Abort job"
 msgstr "কাৰ্য্য এৰি যাওক"
 
-#: ../ppdippstr.py:50
+#: ppdippstr.py:50
 msgid "Retry current job"
 msgstr "বৰ্ত্তমানৰ কাৰ্য্য পুনঃ চেষ্টা কৰক"
 
-#: ../ppdippstr.py:51
+#: ppdippstr.py:51
 msgid "Retry job"
 msgstr "কাৰ্য্য পুনঃ চেষ্টা কৰক"
 
-#: ../ppdippstr.py:52
+#: ppdippstr.py:52
 msgid "Stop printer"
 msgstr "মুদ্ৰক বন্ধ কৰক"
 
-#: ../ppdippstr.py:58
+#: ppdippstr.py:58
 msgid "Default behavior"
 msgstr "অৱিকল্পিত আচৰণ"
 
-#: ../ppdippstr.py:59
+#: ppdippstr.py:59
 msgid "Authenticated"
 msgstr "অনুমোদিত"
 
-#: ../ppdippstr.py:66
+#: ppdippstr.py:66
 msgid "Classified"
 msgstr "শ্ৰেণীভুক্ত"
 
-#: ../ppdippstr.py:67
+#: ppdippstr.py:67
 msgid "Confidential"
 msgstr "গোপনীয়"
 
-#: ../ppdippstr.py:68
+#: ppdippstr.py:68
 msgid "Secret"
 msgstr "গোপনীয়"
 
-#: ../ppdippstr.py:69
+#: ppdippstr.py:69
 msgid "Standard"
 msgstr "মানবিশিষ্ট"
 
-#: ../ppdippstr.py:70
+#: ppdippstr.py:70
 msgid "Top secret"
 msgstr "অতিমাত্ৰায় গোপনীয়"
 
-#: ../ppdippstr.py:71
+#: ppdippstr.py:71
 msgid "Unclassified"
 msgstr "শ্ৰেণীবিহীন"
 
-#: ../ppdippstr.py:77
+#: ppdippstr.py:77
 msgid "No hold"
 msgstr "হ'ল্ড কৰা নাই"
 
-#: ../ppdippstr.py:78
+#: ppdippstr.py:78
 msgid "Indefinite"
 msgstr "অসীমিত"
 
-#: ../ppdippstr.py:79
+#: ppdippstr.py:79
 msgid "Daytime"
 msgstr "দিনত"
 
-#: ../ppdippstr.py:80
+#: ppdippstr.py:80
 msgid "Evening"
 msgstr "গধূলি"
 
-#: ../ppdippstr.py:81
+#: ppdippstr.py:81
 msgid "Night"
 msgstr "ৰাতি"
 
-#: ../ppdippstr.py:82
+#: ppdippstr.py:82
 msgid "Second shift"
 msgstr "দ্বিতীয় shift"
 
-#: ../ppdippstr.py:83
+#: ppdippstr.py:83
 msgid "Third shift"
 msgstr "তৃতীয় shift"
 
-#: ../ppdippstr.py:84
+#: ppdippstr.py:84
 msgid "Weekend"
 msgstr "সপ্তাহন্তত"
 
-#: ../ppdippstr.py:94
+#: ppdippstr.py:94
 msgid "General"
 msgstr "সাধাৰণ"
 
 #. HP and foo2zjs
-#: ../ppdippstr.py:97
+#: ppdippstr.py:97
 msgid "Print Quality"
 msgstr ""
 
-#: ../ppdippstr.py:98
+#: ppdippstr.py:98
 msgid "Automatic"
 msgstr ""
 
-#: ../ppdippstr.py:100
+#: ppdippstr.py:100
 msgid "Printing Quality"
 msgstr ""
 
-#: ../ppdippstr.py:101 ../printerproperties.py:324
+#: ppdippstr.py:101 printerproperties.py:324
 msgid "Draft"
 msgstr "খচৰা"
 
-#: ../ppdippstr.py:102 ../printerproperties.py:320 ../printerproperties.py:325
+#: ppdippstr.py:102 printerproperties.py:320 printerproperties.py:325
 msgid "Normal"
 msgstr "স্বাভাৱিক"
 
-#: ../ppdippstr.py:103
+#: ppdippstr.py:103
 msgid "Normal Color"
 msgstr ""
 
-#: ../ppdippstr.py:104
+#: ppdippstr.py:104
 msgid "Normal Grayscale"
 msgstr ""
 
-#: ../ppdippstr.py:105
+#: ppdippstr.py:105
 msgid "Draft Color"
 msgstr ""
 
-#: ../ppdippstr.py:106
+#: ppdippstr.py:106
 msgid "Draft Grayscale"
 msgstr ""
 
-#: ../ppdippstr.py:107
+#: ppdippstr.py:107
 msgid "Best"
 msgstr ""
 
-#: ../ppdippstr.py:108
+#: ppdippstr.py:108
 msgid "High-Resolution Photo"
 msgstr ""
 
-#: ../ppdippstr.py:109
+#: ppdippstr.py:109
 msgid "Fast Draft"
 msgstr ""
 
-#: ../ppdippstr.py:111
+#: ppdippstr.py:111
 msgid "Installed Cartridges"
 msgstr ""
 
-#: ../ppdippstr.py:112 ../ppdippstr.py:113
+#: ppdippstr.py:112 ppdippstr.py:113
 msgid "Fast Only"
 msgstr ""
 
-#: ../ppdippstr.py:114
+#: ppdippstr.py:114
 msgid "Photo Only"
 msgstr ""
 
-#: ../ppdippstr.py:115
+#: ppdippstr.py:115
 msgid "Black and TriColor"
 msgstr ""
 
-#: ../ppdippstr.py:116
+#: ppdippstr.py:116
 msgid "Photo and TriColor"
 msgstr ""
 
-#: ../ppdippstr.py:118
+#: ppdippstr.py:118
 msgid "Resolution"
 msgstr ""
 
-#: ../ppdippstr.py:120
+#: ppdippstr.py:120
 msgid "Color Mode"
 msgstr ""
 
-#: ../ppdippstr.py:121 ../ppdippstr.py:239
+#: ppdippstr.py:121 ppdippstr.py:239
 msgid "High Quality Grayscale"
 msgstr ""
 
-#: ../ppdippstr.py:122
+#: ppdippstr.py:122
 msgid "Black Only Grayscale"
 msgstr ""
 
-#: ../ppdippstr.py:124
+#: ppdippstr.py:124
 msgid "Quality"
 msgstr ""
 
-#: ../ppdippstr.py:125
+#: ppdippstr.py:125
 #, fuzzy
 msgid "High Resolution "
 msgstr "প্ৰিন্টাৰ সংকল্প:"
 
-#: ../ppdippstr.py:126
+#: ppdippstr.py:126
 msgid "Paper source"
 msgstr ""
 
-#: ../ppdippstr.py:127
+#: ppdippstr.py:127
 msgid "Auto Source"
 msgstr ""
 
-#: ../ppdippstr.py:128
+#: ppdippstr.py:128
 msgid "Manual Feed"
 msgstr ""
 
-#: ../ppdippstr.py:129
+#: ppdippstr.py:129
 msgid "Middle Tray"
 msgstr ""
 
-#: ../ppdippstr.py:130
+#: ppdippstr.py:130
 msgid "Upper or Only One InputSlot"
 msgstr ""
 
-#: ../ppdippstr.py:131
+#: ppdippstr.py:131
 msgid "Multi-purpose Tray"
 msgstr ""
 
-#: ../ppdippstr.py:132
+#: ppdippstr.py:132
 msgid "Drawer 1 "
 msgstr ""
 
-#: ../ppdippstr.py:133
+#: ppdippstr.py:133
 msgid "Drawer 2 "
 msgstr ""
 
-#: ../ppdippstr.py:134
+#: ppdippstr.py:134
 msgid "Tray 1"
 msgstr ""
 
-#: ../ppdippstr.py:135
+#: ppdippstr.py:135
 msgid "Auto Select"
 msgstr ""
 
-#: ../ppdippstr.py:137
+#: ppdippstr.py:137
 msgid "Media Type"
 msgstr ""
 
-#: ../ppdippstr.py:138
+#: ppdippstr.py:138
 msgid "Bond"
 msgstr ""
 
-#: ../ppdippstr.py:139
+#: ppdippstr.py:139
 msgid "Color"
 msgstr ""
 
-#: ../ppdippstr.py:140
+#: ppdippstr.py:140
 msgid "Envelope"
 msgstr ""
 
-#: ../ppdippstr.py:141
+#: ppdippstr.py:141
 msgid "Labels"
 msgstr ""
 
-#: ../ppdippstr.py:142
+#: ppdippstr.py:142
 msgid "Standard Paper"
 msgstr ""
 
-#: ../ppdippstr.py:143
+#: ppdippstr.py:143
 msgid "Heavy"
 msgstr ""
 
-#: ../ppdippstr.py:144
+#: ppdippstr.py:144
 msgid "Light"
 msgstr ""
 
-#: ../ppdippstr.py:145
+#: ppdippstr.py:145
 msgid "Recycled"
 msgstr ""
 
-#: ../ppdippstr.py:146
+#: ppdippstr.py:146
 msgid "Transparency"
 msgstr ""
 
-#: ../ppdippstr.py:147
+#: ppdippstr.py:147
 msgid "Plain Paper"
 msgstr ""
 
-#: ../ppdippstr.py:148
+#: ppdippstr.py:148
 msgid "Plain"
 msgstr ""
 
-#: ../ppdippstr.py:149
+#: ppdippstr.py:149
 #, fuzzy
 #| msgid "Photo tray"
 msgid "Photo Paper"
 msgstr "Photo tray"
 
-#: ../ppdippstr.py:150
+#: ppdippstr.py:150
 msgid "Transparency Film"
 msgstr ""
 
-#: ../ppdippstr.py:151
+#: ppdippstr.py:151
 msgid "CD or DVD Media"
 msgstr ""
 
-#: ../ppdippstr.py:152
+#: ppdippstr.py:152
 msgid "Print Density"
 msgstr ""
 
-#: ../ppdippstr.py:153
+#: ppdippstr.py:153
 msgid "Extra Light (1)"
 msgstr ""
 
-#: ../ppdippstr.py:154
+#: ppdippstr.py:154
 msgid "Light (2)"
 msgstr ""
 
-#: ../ppdippstr.py:155
+#: ppdippstr.py:155
 msgid "Medium (3)"
 msgstr ""
 
-#: ../ppdippstr.py:156
+#: ppdippstr.py:156
 msgid "Dark (4)"
 msgstr ""
 
-#: ../ppdippstr.py:157
+#: ppdippstr.py:157
 msgid "Extra Dark (5)"
 msgstr ""
 
-#: ../ppdippstr.py:158
+#: ppdippstr.py:158
 #, fuzzy
 #| msgid "OpenPrinting"
 msgid "Duplex Printing"
 msgstr "মুদ্ৰণ কৰা কাৰ্য্য"
 
-#: ../ppdippstr.py:159
+#: ppdippstr.py:159
 msgid "Copies"
 msgstr ""
 
-#: ../ppdippstr.py:161
+#: ppdippstr.py:161
 msgid "Adjustment"
 msgstr ""
 
-#: ../ppdippstr.py:162
+#: ppdippstr.py:162
 msgid "Halftone Algorithm"
 msgstr ""
 
-#: ../ppdippstr.py:165
+#: ppdippstr.py:165
 msgid "Miscellaneous"
 msgstr ""
 
-#: ../ppdippstr.py:166
+#: ppdippstr.py:166
 msgid "N-up Orientation"
 msgstr ""
 
-#: ../ppdippstr.py:167
+#: ppdippstr.py:167
 msgid "N-up Printing"
 msgstr ""
 
-#: ../ppdippstr.py:168
+#: ppdippstr.py:168
 msgid "Landscape"
 msgstr ""
 
-#: ../ppdippstr.py:169
+#: ppdippstr.py:169
 msgid "Seascape"
 msgstr ""
 
-#: ../ppdippstr.py:170
+#: ppdippstr.py:170
 msgid "Media Size"
 msgstr ""
 
-#: ../ppdippstr.py:171
+#: ppdippstr.py:171
 msgid "Output Mode"
 msgstr ""
 
-#: ../ppdippstr.py:172
+#: ppdippstr.py:172
 msgid "Grayscale"
 msgstr ""
 
 #. Brother
-#: ../ppdippstr.py:175
+#: ppdippstr.py:175
 #, fuzzy
 #| msgid "Toner empty"
 msgid "Toner save mode"
 msgstr "টোনাৰ ফাঁকা"
 
-#: ../ppdippstr.py:176
+#: ppdippstr.py:176
 msgid "Tray1"
 msgstr ""
 
-#: ../ppdippstr.py:177
+#: ppdippstr.py:177
 msgid "Tray2"
 msgstr ""
 
-#: ../ppdippstr.py:178
+#: ppdippstr.py:178
 msgid "Tray3"
 msgstr ""
 
-#: ../ppdippstr.py:179
+#: ppdippstr.py:179
 msgid "Two-Sided"
 msgstr ""
 
-#: ../ppdippstr.py:180 ../system-config-printer.desktop.in.h:1
+#: ppdippstr.py:180 system-config-printer.appdata.xml.in:6
+#: system-config-printer.desktop.in:3 system-config-printer.desktop.in:4
 msgid "Print Settings"
 msgstr "প্ৰিন্ট সংহতিসমূহ"
 
-#: ../ppdippstr.py:181
+#: ppdippstr.py:181
 #, fuzzy
 #| msgid "Print Settings"
 msgid "Print Settings (Advanced)"
 msgstr "প্ৰিন্ট সংহতিসমূহ"
 
-#: ../ppdippstr.py:182
+#: ppdippstr.py:182
 msgid "Color Settings"
 msgstr ""
 
-#: ../ppdippstr.py:183
+#: ppdippstr.py:183
 msgid "Color Settings (Advanced)"
 msgstr ""
 
-#: ../ppdippstr.py:184
+#: ppdippstr.py:184
 msgid "Brightness"
 msgstr ""
 
-#: ../ppdippstr.py:185
+#: ppdippstr.py:185
 msgid "Contrast"
 msgstr ""
 
-#: ../ppdippstr.py:186
+#: ppdippstr.py:186
 msgid "Red"
 msgstr ""
 
-#: ../ppdippstr.py:187
+#: ppdippstr.py:187
 msgid "Green"
 msgstr ""
 
-#: ../ppdippstr.py:188
+#: ppdippstr.py:188
 msgid "Blue"
 msgstr ""
 
 #. Epson xp serie
-#: ../ppdippstr.py:191
+#: ppdippstr.py:191
 msgid "_Media Size"
 msgstr ""
 
-#: ../ppdippstr.py:192
+#: ppdippstr.py:192
 msgid "_Grayscale"
 msgstr ""
 
-#: ../ppdippstr.py:193
+#: ppdippstr.py:193
 msgid "_Brightness"
 msgstr ""
 
-#: ../ppdippstr.py:194
+#: ppdippstr.py:194
 msgid "_Contrast"
 msgstr ""
 
-#: ../ppdippstr.py:195
+#: ppdippstr.py:195
 msgid "_Saturation"
 msgstr ""
 
-#: ../ppdippstr.py:196
+#: ppdippstr.py:196
 msgid "On"
 msgstr ""
 
 #. Gutenprint
-#: ../ppdippstr.py:199
+#: ppdippstr.py:199
 #, fuzzy
 #| msgid "Double-sided printing"
 msgid "2-Sided Printing"
 msgstr "Double-sided printing"
 
-#: ../ppdippstr.py:200
+#: ppdippstr.py:200
 msgid "Shrink Page If Necessary to Fit Borders"
 msgstr ""
 
-#: ../ppdippstr.py:201
+#: ppdippstr.py:201
 msgid "Shrink (print the whole page)"
 msgstr ""
 
-#: ../ppdippstr.py:202
+#: ppdippstr.py:202
 msgid "Crop (preserve dimensions)"
 msgstr ""
 
-#: ../ppdippstr.py:203
+#: ppdippstr.py:203
 msgid "Expand (use maximum page area)"
 msgstr ""
 
-#: ../ppdippstr.py:204
+#: ppdippstr.py:204
 msgid "Borderless"
 msgstr ""
 
-#: ../ppdippstr.py:205 ../troubleshoot/PrintTestPage.py:121
+#: ppdippstr.py:205 troubleshoot/PrintTestPage.py:121
 msgid "No"
 msgstr "নহয়"
 
-#: ../ppdippstr.py:206 ../troubleshoot/PrintTestPage.py:120
+#: ppdippstr.py:206 troubleshoot/PrintTestPage.py:120
 msgid "Yes"
 msgstr "হয়"
 
-#: ../ppdippstr.py:207
+#: ppdippstr.py:207
 msgid "Output Control Common"
 msgstr ""
 
-#: ../ppdippstr.py:208
+#: ppdippstr.py:208
 #, fuzzy
 #| msgid "Connection"
 msgid "Color Correction"
 msgstr "সংযোগ"
 
-#: ../ppdippstr.py:209
+#: ppdippstr.py:209
 msgid "Brightness Fine Adjustment"
 msgstr ""
 
-#: ../ppdippstr.py:210
+#: ppdippstr.py:210
 msgid "Contrast Fine Adjustment"
 msgstr ""
 
-#: ../ppdippstr.py:211
+#: ppdippstr.py:211
 msgid "Saturation Fine Adjustment"
 msgstr ""
 
-#: ../ppdippstr.py:212
+#: ppdippstr.py:212
 msgid "Image Type"
 msgstr ""
 
 #. Foomatic
-#: ../ppdippstr.py:214
+#: ppdippstr.py:214
 msgid "Bidirectional printing"
 msgstr ""
 
 #. Options
-#: ../ppdippstr.py:216 ../printerproperties.py:957
+#: ppdippstr.py:216 printerproperties.py:957
 msgid "Installable Options"
 msgstr "সংস্থাপন কৰিব পৰা বিকল্প"
 
-#: ../ppdippstr.py:217
+#: ppdippstr.py:217
 msgid "Duplexer Installed"
 msgstr ""
 
 #. Canon
-#: ../ppdippstr.py:220
+#: ppdippstr.py:220
 msgid "Color Model"
 msgstr ""
 
-#: ../ppdippstr.py:221
+#: ppdippstr.py:221
 msgid "Color Precision"
 msgstr ""
 
-#: ../ppdippstr.py:222
+#: ppdippstr.py:222
 msgid "Resolution "
 msgstr ""
 
-#: ../ppdippstr.py:223
+#: ppdippstr.py:223
 msgid "Printer Features Common"
 msgstr ""
 
-#: ../ppdippstr.py:224
+#: ppdippstr.py:224
 msgid "CD Hub Size"
 msgstr ""
 
-#: ../ppdippstr.py:225
+#: ppdippstr.py:225
 msgid "Ink Type"
 msgstr ""
 
-#: ../ppdippstr.py:226
+#: ppdippstr.py:226
 msgid "Toner Save "
 msgstr ""
 
-#: ../ppdippstr.py:227
+#: ppdippstr.py:227
 msgid "ON"
 msgstr ""
 
-#: ../ppdippstr.py:228
+#: ppdippstr.py:228
 #, fuzzy
 #| msgid "Toner empty"
 msgid "Toner Density "
 msgstr "টোনাৰ ফাঁকা"
 
-#: ../ppdippstr.py:229
+#: ppdippstr.py:229
 msgid "Media Type "
 msgstr ""
 
-#: ../ppdippstr.py:230
+#: ppdippstr.py:230
 msgid "Collate "
 msgstr ""
 
-#: ../ppdippstr.py:231
+#: ppdippstr.py:231
 msgid "Image Refinement "
 msgstr ""
 
-#: ../ppdippstr.py:232
+#: ppdippstr.py:232
 msgid "Image Refinement"
 msgstr ""
 
-#: ../ppdippstr.py:233
+#: ppdippstr.py:233
 msgid "Halftones "
 msgstr ""
 
-#: ../ppdippstr.py:234
+#: ppdippstr.py:234
 msgid "Duplex"
 msgstr ""
 
-#: ../ppdippstr.py:235
+#: ppdippstr.py:235
 msgid "OFF"
 msgstr ""
 
-#: ../ppdippstr.py:236
+#: ppdippstr.py:236
 msgid "ON (Long-edged Binding)"
 msgstr ""
 
-#: ../ppdippstr.py:237
+#: ppdippstr.py:237
 msgid "ON (Short-edged Binding)"
 msgstr ""
 
-#: ../ppdippstr.py:238
+#: ppdippstr.py:238
 #, fuzzy
 #| msgid "Print quality:"
 msgid "High Quality"
 msgstr "প্ৰিন্ট বৈশিষ্ট:"
 
-#: ../ppdippstr.py:240
+#: ppdippstr.py:240
 #, fuzzy
 #| msgid "Controlled by 'Printout mode'"
 msgid "Controlled by 'Print Quality'"
 msgstr "'Printout mode' এৰে নিয়ন্ত্ৰিত"
 
-#: ../ppdippstr.py:241
+#: ppdippstr.py:241
 msgid "Paper Destination"
 msgstr ""
 
 #. Samsung
-#: ../ppdippstr.py:244
+#: ppdippstr.py:244
 msgid "Paper Size"
 msgstr ""
 
-#: ../ppdippstr.py:245
+#: ppdippstr.py:245
 msgid "Paper Type"
 msgstr ""
 
-#: ../ppdippstr.py:246
+#: ppdippstr.py:246
 msgid "Thin"
 msgstr ""
 
-#: ../ppdippstr.py:247
+#: ppdippstr.py:247
 msgid "Thick"
 msgstr ""
 
-#: ../ppdippstr.py:248
+#: ppdippstr.py:248
 msgid "Thicker"
 msgstr ""
 
-#: ../ppdippstr.py:249
+#: ppdippstr.py:249
 msgid "Edge Enhance"
 msgstr ""
 
-#: ../ppdippstr.py:250
+#: ppdippstr.py:250
 msgid "Skip Blank Pages"
 msgstr ""
 
-#: ../ppdippstr.py:251 ../ppdippstr.py:339
+#: ppdippstr.py:251 ppdippstr.py:339
 msgid "Double-sided Printing"
 msgstr ""
 
-#: ../ppdippstr.py:253
+#: ppdippstr.py:253
 msgid "Reverse Duplex Printing"
 msgstr ""
 
-#: ../ppdippstr.py:254 ../ppdippstr.py:257
+#: ppdippstr.py:254 ppdippstr.py:257
 msgid "Long Edge"
 msgstr ""
 
-#: ../ppdippstr.py:255 ../ppdippstr.py:258
+#: ppdippstr.py:255 ppdippstr.py:258
 msgid "Short Edge"
 msgstr ""
 
-#: ../ppdippstr.py:256
+#: ppdippstr.py:256
 msgid "Two-sided"
 msgstr ""
 
-#: ../ppdippstr.py:259
+#: ppdippstr.py:259
 #, fuzzy
 #| msgid "Toner empty"
 msgid "Toner Save"
 msgstr "টোনাৰ ফাঁকা"
 
 #. Ricoh
-#: ../ppdippstr.py:262
+#: ppdippstr.py:262
 msgid "Finisher"
 msgstr ""
 
-#: ../ppdippstr.py:263
+#: ppdippstr.py:263
 msgid "Option Tray"
 msgstr ""
 
-#: ../ppdippstr.py:264
+#: ppdippstr.py:264
 msgid "External Tray"
 msgstr ""
 
-#: ../ppdippstr.py:265
+#: ppdippstr.py:265
 msgid "Internal Tray 1"
 msgstr ""
 
-#: ../ppdippstr.py:266
+#: ppdippstr.py:266
 msgid "Internal Tray 2"
 msgstr ""
 
-#: ../ppdippstr.py:267
+#: ppdippstr.py:267
 msgid "Internal Shift Tray"
 msgstr ""
 
-#: ../ppdippstr.py:268
+#: ppdippstr.py:268
 msgid "Not Installed"
 msgstr ""
 
-#: ../ppdippstr.py:269
+#: ppdippstr.py:269
 msgid "Installed"
 msgstr ""
 
-#: ../ppdippstr.py:270
+#: ppdippstr.py:270
 msgid "PageSize"
 msgstr ""
 
-#: ../ppdippstr.py:271
+#: ppdippstr.py:271
 msgid "InputSlot"
 msgstr ""
 
-#: ../ppdippstr.py:272
+#: ppdippstr.py:272
 msgid "Tray 2"
 msgstr ""
 
-#: ../ppdippstr.py:273
+#: ppdippstr.py:273
 msgid "Tray 3"
 msgstr ""
 
-#: ../ppdippstr.py:274
+#: ppdippstr.py:274
 msgid "Tray 4"
 msgstr ""
 
-#: ../ppdippstr.py:275
+#: ppdippstr.py:275
 msgid "Bypass Tray"
 msgstr ""
 
-#: ../ppdippstr.py:276
+#: ppdippstr.py:276
 msgid "Collate"
 msgstr ""
 
-#: ../ppdippstr.py:277
+#: ppdippstr.py:277
 msgid "Destination"
 msgstr ""
 
-#: ../ppdippstr.py:278 ../printerproperties.py:282
+#: ppdippstr.py:278 printerproperties.py:282
 msgid "Staple"
 msgstr "স্টেপল্"
 
-#: ../ppdippstr.py:279 ../printerproperties.py:283
+#: ppdippstr.py:279 printerproperties.py:283
 msgid "Punch"
 msgstr "পাঞ্চ"
 
-#: ../ppdippstr.py:280
+#: ppdippstr.py:280
 msgid "Toner Saving"
 msgstr ""
 
-#: ../ppdippstr.py:281
+#: ppdippstr.py:281
 msgid "Gradation"
 msgstr ""
 
-#: ../ppdippstr.py:282
+#: ppdippstr.py:282
 msgid "Fast"
 msgstr ""
 
 #. HPIJS options
-#: ../ppdippstr.py:285
+#: ppdippstr.py:285
 msgid "Printout mode"
 msgstr "মূদ্ৰক নিৰ্গমৰ ধৰণ:"
 
-#: ../ppdippstr.py:287
+#: ppdippstr.py:287
 msgid "Draft (auto-detect-paper type)"
 msgstr "Draft (auto-detect-paper type)"
 
-#: ../ppdippstr.py:289
+#: ppdippstr.py:289
 msgid "Draft (Color cartridge)"
 msgstr ""
 
-#: ../ppdippstr.py:291
+#: ppdippstr.py:291
 msgid "Draft grayscale (Black cartridge)"
 msgstr ""
 
-#: ../ppdippstr.py:293
+#: ppdippstr.py:293
 msgid "Draft grayscale (auto-detect-paper type)"
 msgstr "Draft grayscale (auto-detect-paper type)"
 
-#: ../ppdippstr.py:295
+#: ppdippstr.py:295
 msgid "Normal (Color cartridge)"
 msgstr ""
 
-#: ../ppdippstr.py:297
+#: ppdippstr.py:297
 msgid "Normal grayscale (Black cartridge)"
 msgstr ""
 
-#: ../ppdippstr.py:299
+#: ppdippstr.py:299
 msgid "Normal (auto-detect-paper type)"
 msgstr "Normal (auto-detect-paper type)"
 
-#: ../ppdippstr.py:301
+#: ppdippstr.py:301
 msgid "Normal grayscale (auto-detect-paper type)"
 msgstr "Normal grayscale (auto-detect-paper type)"
 
-#: ../ppdippstr.py:303
+#: ppdippstr.py:303
 msgid "High quality (auto-detect-paper type)"
 msgstr "High quality (auto-detect-paper type)"
 
-#: ../ppdippstr.py:305
+#: ppdippstr.py:305
 msgid "High quality grayscale (auto-detect-paper type)"
 msgstr "High quality grayscale (auto-detect-paper type)"
 
-#: ../ppdippstr.py:307
+#: ppdippstr.py:307
 msgid "High quality (Color cartridge)"
 msgstr ""
 
-#: ../ppdippstr.py:309
+#: ppdippstr.py:309
 msgid "High quality grayscale (Black cartridge)"
 msgstr ""
 
-#: ../ppdippstr.py:310
+#: ppdippstr.py:310
 msgid "Photo (on photo paper)"
 msgstr "Photo (on photo paper)"
 
-#: ../ppdippstr.py:311
+#: ppdippstr.py:311
 msgid "Photo (Color cartridge, on photo paper)"
 msgstr ""
 
-#: ../ppdippstr.py:312
+#: ppdippstr.py:312
 msgid "Best quality (color on photo paper)"
 msgstr "Best quality (color on photo paper)"
 
-#: ../ppdippstr.py:313
+#: ppdippstr.py:313
 msgid "Normal quality (color on photo paper)"
 msgstr "Normal quality (color on photo paper)"
 
-#: ../ppdippstr.py:315
+#: ppdippstr.py:315
 msgid "Media source"
 msgstr "মিডিয়াৰ উত্স:"
 
-#: ../ppdippstr.py:316
+#: ppdippstr.py:316
 #, fuzzy
 #| msgid "Printer default"
 msgid "Printer Default"
 msgstr "প্ৰিন্টাৰৰ অবিকল্পিত মান"
 
-#: ../ppdippstr.py:317
+#: ppdippstr.py:317
 msgid "Photo tray"
 msgstr "Photo tray"
 
-#: ../ppdippstr.py:318
+#: ppdippstr.py:318
 msgid "Upper tray"
 msgstr "Upper tray"
 
-#: ../ppdippstr.py:319
+#: ppdippstr.py:319
 msgid "Lower tray"
 msgstr "Lower tray"
 
-#: ../ppdippstr.py:320
+#: ppdippstr.py:320
 msgid "CD or DVD tray"
 msgstr "CD or DVD tray"
 
-#: ../ppdippstr.py:321
+#: ppdippstr.py:321
 msgid "Envelope feeder"
 msgstr "Envelope feeder"
 
-#: ../ppdippstr.py:322
+#: ppdippstr.py:322
 msgid "Large capacity tray"
 msgstr "Large capacity tray"
 
-#: ../ppdippstr.py:323
+#: ppdippstr.py:323
 msgid "Manual feeder"
 msgstr "Manual feeder"
 
-#: ../ppdippstr.py:324
+#: ppdippstr.py:324
 #, fuzzy
 msgid "Multi-purpose tray "
 msgstr "Multi-purpose tray"
 
-#: ../ppdippstr.py:325
+#: ppdippstr.py:325
 #, fuzzy
 msgid "Multipurpose tray"
 msgstr "Multi-purpose tray"
 
-#: ../ppdippstr.py:327
+#: ppdippstr.py:327
 msgid "Page size"
 msgstr "পৃষ্ঠাৰ আকাৰ"
 
-#: ../ppdippstr.py:328
+#: ppdippstr.py:328
 msgid "Custom"
 msgstr "Custom"
 
-#: ../ppdippstr.py:329
+#: ppdippstr.py:329
 msgid "Letter"
 msgstr ""
 
-#: ../ppdippstr.py:330
+#: ppdippstr.py:330
 msgid "Photo or 4x6 inch index card"
 msgstr "Photo or 4x6 inch index card"
 
-#: ../ppdippstr.py:331
+#: ppdippstr.py:331
 msgid "Photo or 5x7 inch index card"
 msgstr "Photo or 5x7 inch index card"
 
-#: ../ppdippstr.py:332
+#: ppdippstr.py:332
 msgid "Photo with tear-off tab"
 msgstr "Photo with tear-off tab"
 
-#: ../ppdippstr.py:333
+#: ppdippstr.py:333
 msgid "3x5 inch index card"
 msgstr "3x5 inch index card"
 
-#: ../ppdippstr.py:334
+#: ppdippstr.py:334
 msgid "5x8 inch index card"
 msgstr "5x8 inch index card"
 
-#: ../ppdippstr.py:335
+#: ppdippstr.py:335
 msgid "A6 with tear-off tab"
 msgstr "A6 with tear-off tab"
 
-#: ../ppdippstr.py:336
+#: ppdippstr.py:336
 msgid "CD or DVD 80mm"
 msgstr "CD or DVD 80mm"
 
-#: ../ppdippstr.py:337
+#: ppdippstr.py:337
 msgid "CD or DVD 120mm"
 msgstr "CD or DVD 120mm"
 
-#: ../ppdippstr.py:340
+#: ppdippstr.py:340
 msgid "Long edge (standard)"
 msgstr "দীৰ্ঘ প্ৰান্ত (প্ৰমিত মান)"
 
-#: ../ppdippstr.py:341
+#: ppdippstr.py:341
 msgid "Short edge (flip)"
 msgstr "ক্ষুদ্ৰ প্ৰান্ত (উলট)"
 
-#: ../ppdippstr.py:342
+#: ppdippstr.py:342
 msgid "Off"
 msgstr "বন্ধ"
 
-#: ../ppdippstr.py:344
+#: ppdippstr.py:344
 msgid "Resolution, quality, ink type, media type"
 msgstr "ৰিজোলিউছন,গুণ, চিয়াঁহিৰ ধৰণ,মিডিয়াৰ ধৰণ"
 
-#: ../ppdippstr.py:345
+#: ppdippstr.py:345
 msgid "Controlled by 'Printout mode'"
 msgstr "'Printout mode' এৰে নিয়ন্ত্ৰিত"
 
-#: ../ppdippstr.py:346
+#: ppdippstr.py:346
 msgid "300 dpi, Color, Color Cartr."
 msgstr ""
 
-#: ../ppdippstr.py:347
+#: ppdippstr.py:347
 msgid "300 dpi, color, black + color cartridge"
 msgstr "300 dpi, color, black + color cartridge"
 
-#: ../ppdippstr.py:348
+#: ppdippstr.py:348
 msgid "300 dpi, Draft, Color, Color Cartr."
 msgstr ""
 
-#: ../ppdippstr.py:349
+#: ppdippstr.py:349
 msgid "300 dpi, draft, color, black + color cartridge"
 msgstr "300 dpi, draft, color, black + color cartridge"
 
-#: ../ppdippstr.py:350
+#: ppdippstr.py:350
 msgid "300 dpi, Draft, Grayscale, Black Cartr."
 msgstr ""
 
-#: ../ppdippstr.py:351
+#: ppdippstr.py:351
 msgid "300 dpi, Grayscale, Black Cartr."
 msgstr ""
 
-#: ../ppdippstr.py:352
+#: ppdippstr.py:352
 msgid "300 dpi, draft, grayscale, black + color cartridge"
 msgstr "300 dpi, draft, grayscale, black + color cartridge"
 
-#: ../ppdippstr.py:353
+#: ppdippstr.py:353
 msgid "300 dpi, grayscale, black + color cartridge"
 msgstr "300 dpi, grayscale, black + color cartridge"
 
-#: ../ppdippstr.py:354
+#: ppdippstr.py:354
 msgid "600 dpi, color, black + color cartridge"
 msgstr "600 dpi, color, black + color cartridge"
 
-#: ../ppdippstr.py:355
+#: ppdippstr.py:355
 msgid "600 dpi, grayscale, black + color cartridge"
 msgstr "600 dpi, grayscale, black + color cartridge"
 
-#: ../ppdippstr.py:356
+#: ppdippstr.py:356
 msgid "600 dpi, photo, black + color cartridge, photo paper"
 msgstr "600 dpi, photo, black + color cartridge, photo paper"
 
-#: ../ppdippstr.py:357
+#: ppdippstr.py:357
 msgid "600 dpi, color, black + color cartridge, photo paper, normal"
 msgstr "600 dpi, color, black + color cartridge, photo paper, normal"
 
-#: ../ppdippstr.py:358
+#: ppdippstr.py:358
 msgid "1200 dpi, photo, black + color cartridge, photo paper"
 msgstr "1200 dpi, photo, black + color cartridge, photo paper"
 
-#: ../ppdippstr.py:364
+#: ppdippstr.py:364
 msgid "Internet Printing Protocol (ipp)"
 msgstr "ইন্টাৰনেট প্ৰিন্টিং প্ৰটকল (ipp)"
 
-#: ../ppdippstr.py:365
+#: ppdippstr.py:365
 msgid "Internet Printing Protocol (http)"
 msgstr "ইন্টাৰনেট প্ৰিন্টিং প্ৰটকল (http)"
 
-#: ../ppdippstr.py:366
+#: ppdippstr.py:366
 msgid "Internet Printing Protocol (https)"
 msgstr "ইন্টাৰনেট প্ৰিন্টিং প্ৰটকল (https)"
 
-#: ../ppdippstr.py:367
+#: ppdippstr.py:367
 msgid "LPD/LPR Host or Printer"
 msgstr "LPD/LPR হস্ট অথবা প্ৰিন্টাৰ"
 
-#: ../ppdippstr.py:369
+#: ppdippstr.py:369
 msgid "Serial Port #1"
 msgstr "ক্ৰমিক পোৰ্ট #১"
 
-#: ../ppdippstr.py:370
+#: ppdippstr.py:370
 msgid "LPT #1"
 msgstr "LPT #১"
 
-#: ../ppdsloader.py:159
+#: ppdsloader.py:159
 msgid "fetching PPDs"
 msgstr "PPDs সংগ্ৰহ কৰা হৈ আছে"
 
-#: ../printerproperties.py:71 ../system-config-printer.py:162
+#: print-applet.desktop.in:3
+msgid "Print Queue Applet"
+msgstr "মূদ্ৰণ কৰক"
+
+#: print-applet.desktop.in:4
+msgid "System tray icon for managing print jobs"
+msgstr "মূদ্ৰণ কাৰ্য্য পৰিচালনাৰ বাবে ব্যৱস্থাপ্ৰণালী-ট্ৰে তে প্ৰদৰ্শনযোগ্য আইকন"
+
+#: printerproperties.py:71 system-config-printer.py:172
 msgid "Idle"
 msgstr "অসাৰ"
 
-#: ../printerproperties.py:75 ../system-config-printer.py:164
+#: printerproperties.py:75 system-config-printer.py:174
 msgid "Busy"
 msgstr "ব্যস্ত"
 
 #. Printer state reasons list
-#: ../printerproperties.py:215
+#: printerproperties.py:215
 msgid "Message"
 msgstr "বাৰ্তা"
 
-#: ../printerproperties.py:237
+#: printerproperties.py:237
 msgid "Users"
 msgstr "ব্যৱহাৰকৰ্তা"
 
-#: ../printerproperties.py:260
+#: printerproperties.py:260
 msgid "Portrait (no rotation)"
 msgstr "পট্ৰেইট (ঘূৰণ নাই)"
 
-#: ../printerproperties.py:261
+#: printerproperties.py:261
 msgid "Landscape (90 degrees)"
 msgstr "লেন্ডস্কেইপ (৯০ ডিগ্ৰি)"
 
-#: ../printerproperties.py:262
+#: printerproperties.py:262
 msgid "Reverse landscape (270 degrees)"
 msgstr "উলোটা লেন্ডস্কেইপ (২৭০ ডিগ্ৰি)"
 
-#: ../printerproperties.py:263
+#: printerproperties.py:263
 msgid "Reverse portrait (180 degrees)"
 msgstr "উলোটা পট্ৰেইট (১৮০ ডিগ্ৰি)"
 
-#: ../printerproperties.py:269
+#: printerproperties.py:269
 msgid "Left to right, top to bottom"
 msgstr "বাওফালৰ পৰা সোফাল, উপৰ পৰা তলতস"
 
-#: ../printerproperties.py:270
+#: printerproperties.py:270
 msgid "Left to right, bottom to top"
 msgstr "বাওফালৰ পৰা সোফাল, তলৰ পৰা উপৰ"
 
-#: ../printerproperties.py:271
+#: printerproperties.py:271
 msgid "Right to left, top to bottom"
 msgstr "সোফালৰ পৰা বাওফাল, উপৰ পৰা তল"
 
-#: ../printerproperties.py:272
+#: printerproperties.py:272
 msgid "Right to left, bottom to top"
 msgstr "সোফালৰ পৰা বাওফাল, তলৰ পৰা উপৰ"
 
-#: ../printerproperties.py:273
+#: printerproperties.py:273
 msgid "Top to bottom, left to right"
 msgstr "উপৰ পৰা তল, বাওফালৰ পৰা সোফা;ল"
 
-#: ../printerproperties.py:274
+#: printerproperties.py:274
 msgid "Top to bottom, right to left"
 msgstr "উপৰৰ পৰা তল, সোফালৰ পৰা বাওফাল"
 
-#: ../printerproperties.py:275
+#: printerproperties.py:275
 msgid "Bottom to top, left to right"
 msgstr "তলৰ পৰা উপৰ, বাওফালৰ পৰা সোফাল"
 
-#: ../printerproperties.py:276
+#: printerproperties.py:276
 msgid "Bottom to top, right to left"
 msgstr "তলৰ পৰা উপৰ, সোফালৰ পৰা বাওফাল"
 
-#: ../printerproperties.py:284
+#: printerproperties.py:284
 msgid "Cover"
 msgstr "ঢাকনি"
 
-#: ../printerproperties.py:285
+#: printerproperties.py:285
 msgid "Bind"
 msgstr "বন্ধা"
 
-#: ../printerproperties.py:286
+#: printerproperties.py:286
 msgid "Saddle stitch"
 msgstr "জিন চিলাই"
 
-#: ../printerproperties.py:287
+#: printerproperties.py:287
 msgid "Edge stitch"
 msgstr "প্ৰান্ত চিলাই"
 
-#: ../printerproperties.py:288
+#: printerproperties.py:288
 msgid "Fold"
 msgstr "জঁপা"
 
-#: ../printerproperties.py:289
+#: printerproperties.py:289
 msgid "Trim"
 msgstr "ক্ষীণ"
 
-#: ../printerproperties.py:290
+#: printerproperties.py:290
 msgid "Bale"
 msgstr "মোটৰী"
 
-#: ../printerproperties.py:291
+#: printerproperties.py:291
 msgid "Booklet maker"
 msgstr "পুস্তিকা নিৰ্মাতা"
 
-#: ../printerproperties.py:292
+#: printerproperties.py:292
 msgid "Job offset"
 msgstr "কাৰ্য্য অফচেট"
 
-#: ../printerproperties.py:293
+#: printerproperties.py:293
 msgid "Staple (top left)"
 msgstr "স্টেপল্ (উপৰ বাওফাল)"
 
-#: ../printerproperties.py:294
+#: printerproperties.py:294
 msgid "Staple (bottom left)"
 msgstr "স্টেপল্ (তল বাওফাল)"
 
-#: ../printerproperties.py:295
+#: printerproperties.py:295
 msgid "Staple (top right)"
 msgstr "স্টেপল্ (উপৰ সোফাল)"
 
-#: ../printerproperties.py:296
+#: printerproperties.py:296
 msgid "Staple (bottom right)"
 msgstr "স্টেপল্ (তল সোফাল)"
 
-#: ../printerproperties.py:297
+#: printerproperties.py:297
 msgid "Edge stitch (left)"
 msgstr "প্ৰান্ত চিলাই (বাওফাল)"
 
-#: ../printerproperties.py:298
+#: printerproperties.py:298
 msgid "Edge stitch (top)"
 msgstr "প্ৰান্ত চিলাই (উপৰ)"
 
-#: ../printerproperties.py:299
+#: printerproperties.py:299
 msgid "Edge stitch (right)"
 msgstr "প্ৰান্ত চিলাই (সোফাল)"
 
-#: ../printerproperties.py:300
+#: printerproperties.py:300
 msgid "Edge stitch (bottom)"
 msgstr "প্ৰান্ত চিলাই (তল)"
 
-#: ../printerproperties.py:301
+#: printerproperties.py:301
 msgid "Staple dual (left)"
 msgstr "স্টেপল্ দৈত (বাওফাল)"
 
-#: ../printerproperties.py:302
+#: printerproperties.py:302
 msgid "Staple dual (top)"
 msgstr "স্টেপল্ দৈত (উপৰ)"
 
-#: ../printerproperties.py:303
+#: printerproperties.py:303
 msgid "Staple dual (right)"
 msgstr "স্টেপল্ দৈত (সোফাল)"
 
-#: ../printerproperties.py:304
+#: printerproperties.py:304
 msgid "Staple dual (bottom)"
 msgstr "স্টেপল্ দৈত (তল)"
 
-#: ../printerproperties.py:305
+#: printerproperties.py:305
 msgid "Bind (left)"
 msgstr "বন্ধা (বাওফাল)"
 
-#: ../printerproperties.py:306
+#: printerproperties.py:306
 msgid "Bind (top)"
 msgstr "বন্ধা (উপৰ)"
 
-#: ../printerproperties.py:307
+#: printerproperties.py:307
 msgid "Bind (right)"
 msgstr "বন্ধা (সোফাল)"
 
-#: ../printerproperties.py:308
+#: printerproperties.py:308
 msgid "Bind (bottom)"
 msgstr "বন্ধা (তল)"
 
-#: ../printerproperties.py:313
+#: printerproperties.py:313
 msgid "One-sided"
 msgstr "এক-ফলিয়া"
 
-#: ../printerproperties.py:314
+#: printerproperties.py:314
 msgid "Two-sided (long edge)"
 msgstr "দুই-ফলিয়া (দীঘল প্ৰান্ত)"
 
-#: ../printerproperties.py:315
+#: printerproperties.py:315
 msgid "Two-sided (short edge)"
 msgstr "এক-ফলিয়া (সৰু প্ৰান্ত)"
 
-#: ../printerproperties.py:321
+#: printerproperties.py:321
 msgid "Reverse"
 msgstr "উলোটা"
 
-#: ../printerproperties.py:326
+#: printerproperties.py:326
 msgid "High"
 msgstr "উখ"
 
-#: ../printerproperties.py:348
+#: printerproperties.py:348
 msgid "Automatic rotation"
 msgstr "Automatic rotation"
 
-#: ../printerproperties.py:595
+#: printerproperties.py:595
 msgid "CUPS test page"
 msgstr "CUPS পৰিক্ষা পত্ৰ"
 
-#: ../printerproperties.py:596
+#: printerproperties.py:596
 msgid ""
 "Typically shows whether all jets on a print head are functioning and that "
 "the print feed mechanisms are working properly."
@@ -2144,13 +2213,13 @@ msgstr ""
 "সাধাৰনত দেখায় এটা প্ৰিন্ট হেডত সকলো জেট কাৰ্যকৰী হই আৰু প্ৰিন্ট ফিড মেকানিজম "
 "সঠিকভাৱে কাম কৰি আছে নে"
 
-#: ../printerproperties.py:603
+#: printerproperties.py:603
 #, python-format
 msgid "Printer Properties - '%s' on %s"
 msgstr "মূদ্ৰকৰ বৈশিষ্ট্য - `%s' %s ৰ ওপৰত"
 
 #. The Conflict button was pressed.
-#: ../printerproperties.py:613
+#: printerproperties.py:613
 msgid ""
 "There are conflicting options.\n"
 "Changes can only be applied after\n"
@@ -2160,20 +2229,20 @@ msgstr ""
 "এই সংঘাতসমূহ খণ্ডন কৰাৰ পিছতহে\n"
 "সাল সলনি সমূহ প্ৰয়োগ কৰিব পাৰি  ।"
 
-#: ../printerproperties.py:958 ../ui/PrinterPropertiesDialog.ui.h:48
+#: printerproperties.py:958 ui/PrinterPropertiesDialog.ui:1365
 msgid "Printer Options"
 msgstr "মুদ্ৰকৰ বিকল্প"
 
-#: ../printerproperties.py:994
+#: printerproperties.py:994
 #, python-format
 msgid "modifying class %s"
 msgstr "%s শ্ৰেণী সলনি কৰা হৈছে"
 
-#: ../printerproperties.py:1012
+#: printerproperties.py:1012
 msgid "This will delete this class!"
 msgstr "এই কাৰ্য্যই এই শ্ৰেণীটো আঁতৰাব !"
 
-#: ../printerproperties.py:1013
+#: printerproperties.py:1013
 msgid "Proceed anyway?"
 msgstr "যিকোনো উপায়ে আগবাঢ়োঁ ?"
 
@@ -2181,284 +2250,437 @@ msgstr "যিকোনো উপায়ে আগবাঢ়োঁ ?"
 #. but we have never fetched the server settings to see whether
 #. the server is publishing shared printers.  Fetch the settings
 #. now so that we can update the "not published" label if necessary.
-#: ../printerproperties.py:1106 ../serversettings.py:200
+#: printerproperties.py:1106 serversettings.py:200
 msgid "fetching server settings"
 msgstr "সেৱক সংক্ৰান্ত বৈশিষ্ট্য পোৱা হৈছে"
 
-#: ../printerproperties.py:1189
+#: printerproperties.py:1189
 msgid "printing test page"
 msgstr "পৰীক্ষাৰ পৃষ্ঠা মুদ্ৰণ কৰা হৈছে"
 
-#: ../printerproperties.py:1203 ../printerproperties.py:1244
+#: printerproperties.py:1203 printerproperties.py:1244
 msgid "Not possible"
 msgstr "অসাধ্য"
 
-#: ../printerproperties.py:1204 ../printerproperties.py:1245
+#: printerproperties.py:1204 printerproperties.py:1245
 msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
 msgstr "দূৰৰ সেৱকে মুদ্ৰণৰ কাৰ্য্য গ্ৰহণ নকৰিলে,সম্ভৱতঃ মুদ্ৰকক অংশীদাৰ কৰা হোৱা নাই  ।"
 
-#: ../printerproperties.py:1216 ../printerproperties.py:1236
+#: printerproperties.py:1216 printerproperties.py:1236
 msgid "Submitted"
 msgstr "আগবঢ়োৱা হ'ল"
 
-#: ../printerproperties.py:1217
+#: printerproperties.py:1217
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr "%d কাৰ্য্য হিচাপে পৰীক্ষাৰ পৃষ্ঠা আগবঢ়োৱা হৈছে"
 
-#: ../printerproperties.py:1229
+#: printerproperties.py:1229
 msgid "sending maintenance command"
 msgstr "পৰিচালনাৰ আদেশ পঠিওৱা হৈছে"
 
-#: ../printerproperties.py:1237
+#: printerproperties.py:1237
 #, python-format
 msgid "Maintenance command submitted as job %d"
 msgstr "%d কাৰ্য্য হিচাপে পৰীক্ষাৰ পৃষ্ঠা আগবঢ়োৱা হৈছে"
 
-#: ../printerproperties.py:1318
+#: printerproperties.py:1318
 msgid "Raw Queue"
 msgstr ""
 
-#: ../printerproperties.py:1319
+#: printerproperties.py:1319
 msgid "Unable to get queue details. Treating queue as raw."
 msgstr ""
 
-#: ../printerproperties.py:1331 ../printerproperties.py:1336
+#: printerproperties.py:1331 printerproperties.py:1336
 msgid "Error"
 msgstr "ভুল"
 
-#: ../printerproperties.py:1332
+#: printerproperties.py:1332
 msgid "The PPD file for this queue is damaged."
 msgstr "এই শাৰীৰ বাবে PPD নথিপত্ৰ ক্ষতিগ্ৰস্থ।"
 
-#: ../printerproperties.py:1337
+#: printerproperties.py:1337
 msgid "There was a problem connecting to the CUPS server."
 msgstr "CUPS সেৱকলৈ সংযোগ কৰোঁতে এটা ভুল হ'ল  ।"
 
-#: ../printerproperties.py:1547
+#: printerproperties.py:1547
 msgid "Marker levels are not reported for this printer."
 msgstr "এই মূদ্ৰকত মাৰ্কাৰৰ স্তৰৰ প্ৰতিবেদন কৰা নহয় ।"
 
-#: ../pysmb.py:114
+#: pysmb.py:114
 #, python-format
 msgid "You must log in to access %s."
 msgstr "%s -ত প্ৰবেশাধিকাৰ লবলে আপুনি লগিন কৰিব লাগিব।"
 
-#: ../serversettings.py:93
+#: serversettings.py:93
 msgid "Problems?"
 msgstr "সমস্যা?"
 
-#: ../serversettings.py:273
+#: serversettings.py:273
 msgid "Enter hostname"
 msgstr "হস্টনাম সুমুৱাওক"
 
-#: ../serversettings.py:527
+#: serversettings.py:527
 msgid "modifying server settings"
 msgstr "সেৱক সংক্ৰান্ত বৈশিষ্ট্য পৰিবৰ্ত্তন কৰা হৈছে"
 
-#: ../serversettings.py:567
+#: serversettings.py:567
 msgid "Adjust the firewall now to allow all incoming IPP connections?"
 msgstr "সকলো আহি থকা IPP সংযোগসমূহ অনুমতি দিবলে ফায়াৰৱালক এতিয়া আয়োজিত কৰিব নে?"
 
-#: ../system-config-printer.py:275
+#: statereason.py:109
+msgid "Toner low"
+msgstr "টোনাৰ স্বল্প পৰিমানে উপলব্ধ"
+
+#: statereason.py:110
+#, python-format
+msgid "Printer '%s' is low on toner."
+msgstr "'%s' মূদ্ৰকে টোনাৰেৰ পৰিমান হ্ৰাস হৈছে ।"
+
+#: statereason.py:111
+msgid "Toner empty"
+msgstr "টোনাৰ ফাঁকা"
+
+#: statereason.py:112
+#, python-format
+msgid "Printer '%s' has no toner left."
+msgstr "'%s' মূদ্ৰকে টোনাৰ অৱশিষ্ট নাই ।"
+
+#: statereason.py:113
+msgid "Cover open"
+msgstr "ঢাকনা খোলা"
+
+#: statereason.py:114
+#, python-format
+msgid "The cover is open on printer '%s'."
+msgstr "'%s' মূদ্ৰকৰ ঢাকনা খোলা অৱস্থায় আছে ।"
+
+#: statereason.py:115
+msgid "Door open"
+msgstr "দৰজা খোলা"
+
+#: statereason.py:116
+#, python-format
+msgid "The door is open on printer '%s'."
+msgstr "'%s' মূদ্ৰকৰ দৰজা খোলা অৱস্থায় আছে ।"
+
+#: statereason.py:117
+msgid "Paper low"
+msgstr "স্বল্প পৰিমান কাগজ"
+
+#: statereason.py:118
+#, python-format
+msgid "Printer '%s' is low on paper."
+msgstr "'%s' মূদ্ৰকে কাগজেৰ পৰিমান হ্ৰাস হৈছে ।"
+
+#: statereason.py:119
+msgid "Out of paper"
+msgstr "কাগজ নাই"
+
+#: statereason.py:120
+#, python-format
+msgid "Printer '%s' is out of paper."
+msgstr "'%s' মূদ্ৰকে কাগজ ফুৰিয়ে গিয়েছে ।"
+
+#: statereason.py:121
+msgid "Ink low"
+msgstr "কালি স্বল্প"
+
+#: statereason.py:122
+#, python-format
+msgid "Printer '%s' is low on ink."
+msgstr "'%s' মূদ্ৰকে কালিৰ মাত্ৰা হ্ৰাস পেয়েছে ।"
+
+#: statereason.py:123
+msgid "Ink empty"
+msgstr "কালি নাই"
+
+#: statereason.py:124
+#, python-format
+msgid "Printer '%s' has no ink left."
+msgstr "'%s' মূদ্ৰকে কালি ফুৰিয়ে গিয়েছে ।"
+
+#: statereason.py:125
+msgid "Printer off-line"
+msgstr "মূদ্ৰক অফ-লাইন"
+
+#: statereason.py:126
+#, python-format
+msgid "Printer '%s' is currently off-line."
+msgstr "`%s' মূদ্ৰক বৰ্তমানে অফ-লাইন অৱস্থাত আছে ।"
+
+#: statereason.py:127
+msgid "Not connected?"
+msgstr "সংযোগ অনুপস্থিত?"
+
+#: statereason.py:128
+#, python-format
+msgid "Printer '%s' may not be connected."
+msgstr "'%s' মূদ্ৰক সংযোগ কৰা সম্ভৱ নহয় ।"
+
+#: statereason.py:129 statereason.py:149
+msgid "Printer error"
+msgstr "মূদ্ৰক সংক্ৰান্ত সমস্যা"
+
+#: statereason.py:130
+#, python-format
+msgid "There is a problem on printer '%s'."
+msgstr "`%s' মূদ্ৰকত কিছু সমস্যা দেখা দিছে ।"
+
+#: statereason.py:132
+msgid "Printer configuration error"
+msgstr "প্ৰিন্টাৰ সংৰূপ ত্ৰুটি"
+
+#: statereason.py:133
+#, python-format
+msgid "There is a missing print filter for printer '%s'."
+msgstr "প্ৰিন্টাৰ '%s' -ৰ বাবে এটা সন্ধানহীন প্ৰিন্ট ফিল্টাৰ আছে।"
+
+#: statereason.py:145
+msgid "Printer report"
+msgstr "মূদ্ৰক সংক্ৰান্ত বিৱৰণ"
+
+#: statereason.py:147
+msgid "Printer warning"
+msgstr "মূদ্ৰক সংক্ৰান্ত সতৰ্কবাৰ্তা"
+
+#: statereason.py:166
+#, python-format
+msgid "Printer '%s': '%s'."
+msgstr "মূদ্ৰক '%s': '%s' ।"
+
+#: system-config-printer.appdata.xml.in:7
+#, fuzzy
+#| msgid "Configure printers"
+msgid "Configure printer queues"
+msgstr "মুদ্ৰকৰ বিন্যাস কৰক"
+
+#: system-config-printer.appdata.xml.in:10
+msgid ""
+"With system-config-printer you can add, edit and delete printer queues. It "
+"allows you to choose the connection method and the printer driver."
+msgstr ""
+
+#: system-config-printer.appdata.xml.in:14
+msgid ""
+"For each queue, you can adjust the default page size and other driver "
+"options, as well as seeing ink/toner levels and status messages."
+msgstr ""
+
+#: system-config-printer.appdata.xml.in:21
+msgid "Main window"
+msgstr ""
+
+#: system-config-printer.appdata.xml.in:25
+#, fuzzy
+#| msgid "Printer Properties"
+msgid "Printer properties"
+msgstr "মূদ্ৰকৰ বৈশিষ্ট্য"
+
+#: system-config-printer.desktop.in:6
+msgid "Configure printers"
+msgstr "মুদ্ৰকৰ বিন্যাস কৰক"
+
+#: system-config-printer.py:285
 msgid "_Connect..."
 msgstr "সংযোগ স্থাপন কৰক... (_C_"
 
-#: ../system-config-printer.py:276
+#: system-config-printer.py:286
 msgid "Choose a different CUPS server"
 msgstr "ভিন্ন CUPS সেৱক নিৰ্ব্বাচন কৰক"
 
-#: ../system-config-printer.py:278
+#: system-config-printer.py:288
 msgid "_Settings..."
 msgstr "বৈশিষ্ট্যাৱলী...(_S)"
 
-#: ../system-config-printer.py:279
+#: system-config-printer.py:289
 msgid "Adjust server settings"
 msgstr "সেৱক সংক্ৰান্ত বৈশিষ্ট্য পৰিবৰ্ত্তন কৰক"
 
-#: ../system-config-printer.py:281 ../ui/PrintersWindow.ui.h:2
+#: system-config-printer.py:291 ui/PrintersWindow.ui:41
 msgid "_Printer"
 msgstr "মূদ্ৰক (_P)"
 
-#: ../system-config-printer.py:283
+#: system-config-printer.py:293
 msgid "_Class"
 msgstr "শ্ৰেণী (_C)"
 
-#: ../system-config-printer.py:288
+#: system-config-printer.py:298
 msgid "_Rename"
 msgstr "নাম পৰিবৰ্ত্তন (_R)"
 
-#: ../system-config-printer.py:290
+#: system-config-printer.py:300
 msgid "_Duplicate"
 msgstr "প্ৰতিলিপি (_D)"
 
-#: ../system-config-printer.py:294
+#: system-config-printer.py:304
 msgid "Set As De_fault"
 msgstr "অবিকল্পিত ৰূপে নিৰ্ধাৰণ কৰক (_f)"
 
-#: ../system-config-printer.py:298
+#: system-config-printer.py:308
 msgid "_Create class"
 msgstr "শ্ৰেণী নিৰ্মাণ কৰক (_C)"
 
-#: ../system-config-printer.py:300
+#: system-config-printer.py:310
 msgid "View Print _Queue"
 msgstr "মূদ্ৰণৰ queue প্ৰদৰ্শন কৰা হ'ব (_Q)"
 
-#: ../system-config-printer.py:304
+#: system-config-printer.py:314
 msgid "E_nabled"
 msgstr "সক্ৰিয় (_n)"
 
-#: ../system-config-printer.py:306
+#: system-config-printer.py:316
 msgid "_Shared"
 msgstr "যৌথৰূপে ব্যৱহৃত (_S)"
 
-#: ../system-config-printer.py:311
+#: system-config-printer.py:321
 msgid "Description"
 msgstr "বিৱৰণ"
 
-#: ../system-config-printer.py:312 ../troubleshoot/ChooseNetworkPrinter.py:39
-#: ../troubleshoot/ChoosePrinter.py:45
+#: system-config-printer.py:322 troubleshoot/ChooseNetworkPrinter.py:39
+#: troubleshoot/ChoosePrinter.py:45
 msgid "Location"
 msgstr "অৱস্থান"
 
-#: ../system-config-printer.py:313
+#: system-config-printer.py:323
 msgid "Manufacturer / Model"
 msgstr "প্ৰস্তুতকাৰী / মডেল"
 
-#: ../system-config-printer.py:360 ../ui/PrinterPropertiesDialog.ui.h:93
-#: ../ui/PrintersWindow.ui.h:9 ../ui/ServerSettingsDialog.ui.h:15
+#: system-config-printer.py:370 ui/PrinterPropertiesDialog.ui:3530
+#: ui/PrintersWindow.ui:203 ui/ServerSettingsDialog.ui:336
 #, fuzzy
 msgid "Add"
 msgstr "অযুগ্ম"
 
-#: ../system-config-printer.py:377 ../ui/PrinterPropertiesDialog.ui.h:96
+#: system-config-printer.py:387 ui/PrinterPropertiesDialog.ui:3652
 #, fuzzy
 msgid "Refresh"
 msgstr "সতেজ কৰক (_R)"
 
-#: ../system-config-printer.py:391
+#: system-config-printer.py:401
 msgid "_New"
 msgstr "নতুন (_N)"
 
-#: ../system-config-printer.py:756
+#: system-config-printer.py:772
 #, python-format
 msgid "Print Settings - %s"
 msgstr "প্ৰিন্ট সংহতিসমূহ - %s"
 
-#: ../system-config-printer.py:759
+#: system-config-printer.py:775
 #, python-format
 msgid "Connected to %s"
 msgstr "%s লৈ সংযোজিত"
 
-#: ../system-config-printer.py:846
+#: system-config-printer.py:862
 msgid "obtaining queue details"
 msgstr "কিউ বিৱৰণ পোৱা হৈছে"
 
-#: ../system-config-printer.py:935
+#: system-config-printer.py:951
 msgid "Network printer (discovered)"
 msgstr "নে'টৱৰ্ক মূদ্ৰক (উদ্ভাৱন কৰা)"
 
-#: ../system-config-printer.py:938
+#: system-config-printer.py:954
 msgid "Network class (discovered)"
 msgstr "নে'টৱৰ্কৰ শ্ৰেণী (উদ্ভাৱন কৰা)"
 
-#: ../system-config-printer.py:947
+#: system-config-printer.py:963
 msgid "Class"
 msgstr "শ্ৰেণী"
 
-#: ../system-config-printer.py:950 ../system-config-printer.py:956
-#: ../troubleshoot/LocalOrRemote.py:30
+#: system-config-printer.py:966 system-config-printer.py:972
+#: troubleshoot/LocalOrRemote.py:30
 msgid "Network printer"
 msgstr "নে'টৱৰ্ক মূদ্ৰক"
 
-#: ../system-config-printer.py:953
+#: system-config-printer.py:969
 msgid "Network print share"
 msgstr "নে'টৱৰ্ক মূদ্ৰণৰ যৌথ ব্যৱহাৰ"
 
-#: ../system-config-printer.py:1120
+#: system-config-printer.py:1136
 msgid "Service framework not available"
 msgstr "সেৱা গাথনি উপলব্ধ নহয়"
 
-#: ../system-config-printer.py:1122
+#: system-config-printer.py:1138
 msgid "Cannot start service on remote server"
 msgstr "দুৰৱৰ্তী চাৰ্ভাৰত সেৱা আৰম্ভ কৰিব নোৱাৰি"
 
-#: ../system-config-printer.py:1170 ../ui/ConnectingDialog.ui.h:5
-#, no-c-format, python-format
+#: system-config-printer.py:1187 ui/ConnectingDialog.ui:84
+#, python-format
 msgid "<i>Opening connection to %s</i>"
 msgstr "<i>%s লৈ সংযোগ খোলা হৈছে</i>"
 
-#: ../system-config-printer.py:1333
+#: system-config-printer.py:1350
 msgid "Set Default Printer"
 msgstr "অবিকল্পিত মূদ্ৰক ৰূপে চিহ্নিত কৰা হ'ব"
 
-#: ../system-config-printer.py:1335
+#: system-config-printer.py:1352
 msgid "Do you want to set this as the system-wide default printer?"
 msgstr ""
 "সম্পূৰ্ণ ব্যৱস্থাপ্ৰণালীৰ বাবে আপুনি এই মূদ্ৰকক অবিকল্পিত মূদ্ৰক ৰূপে নিৰ্ধাৰণ কৰিব নেকি ?"
 
-#: ../system-config-printer.py:1337
+#: system-config-printer.py:1354
 msgid "Set as the _system-wide default printer"
 msgstr "সম্পূৰ্ণ ব্যৱস্থাপ্ৰণালীৰ বাবে অবিকল্পিত মূদ্ৰক ৰূপে নিৰ্ধাৰণ কৰা হ'ব (_s)"
 
-#: ../system-config-printer.py:1339
+#: system-config-printer.py:1356
 msgid "_Clear my personal default setting"
 msgstr "ব্যক্তিগত ব্যৱহাৰৰ অবিকল্পিত মান আঁতৰুৱা হ'ব (_C)"
 
-#: ../system-config-printer.py:1340
+#: system-config-printer.py:1357
 msgid "Set as my _personal default printer"
 msgstr "ব্যক্তিগত অবিকল্পিত মূদ্ৰক ৰূপে চিহ্নিত কৰক (_p)"
 
-#: ../system-config-printer.py:1345
+#: system-config-printer.py:1362
 msgid "setting default printer"
 msgstr "অবিকল্পিত মূদ্ৰক প্ৰতিষ্ঠা কৰা হৈছে"
 
-#: ../system-config-printer.py:1398
+#: system-config-printer.py:1415
 msgid "Cannot Rename"
 msgstr "নাম পৰিবৰ্ত্তন কৰা সম্ভৱ নহয়"
 
-#: ../system-config-printer.py:1399
+#: system-config-printer.py:1416
 msgid "There are queued jobs."
 msgstr "অপেক্ষাত কাৰ্য্য উপস্থিত ।"
 
-#: ../system-config-printer.py:1416
+#: system-config-printer.py:1433
 msgid "Renaming will lose history"
 msgstr "নাম পৰিবৰ্তন কৰিলে পূৰ্ববৰ্তী তথ্য আঁতৰুৱা যাব"
 
-#: ../system-config-printer.py:1418
+#: system-config-printer.py:1435
 msgid "Completed jobs will no longer be available for re-printing."
 msgstr "সমাপ্ত কাৰ্য্যবোৰ পুনঃ সঞ্চালনৰ বাবে উপলব্ধ কৰা ন'হ'ব ।"
 
-#: ../system-config-printer.py:1531
+#: system-config-printer.py:1548
 msgid "renaming printer"
 msgstr "মুদ্ৰকৰ পুনঃ নামকৰণ"
 
-#: ../system-config-printer.py:1694
+#: system-config-printer.py:1711
 #, python-format
 msgid "Really delete class '%s'?"
 msgstr "`%s' বিভাগ নিশ্চিতৰূপে আঁতৰুৱা হ'ব ?"
 
-#: ../system-config-printer.py:1696
+#: system-config-printer.py:1713
 #, python-format
 msgid "Really delete printer '%s'?"
 msgstr "`%s' মূদ্ৰক নিশ্চিতৰূপে আঁতৰুৱা হ'ব ?"
 
-#: ../system-config-printer.py:1700
+#: system-config-printer.py:1717
 msgid "Really delete selected destinations?"
 msgstr "নিৰ্ব্বচিত গন্তব্যস্থল নিশ্চিতৰূপে আঁতৰুৱা হ'ব ?"
 
-#: ../system-config-printer.py:1721
+#: system-config-printer.py:1738
 #, python-format
 msgid "deleting printer %s"
 msgstr "%s মূদ্ৰক আঁতৰুৱা হৈছে"
 
-#: ../system-config-printer.py:1812
+#: system-config-printer.py:1829
 msgid "Publish Shared Printers"
 msgstr "যৌথৰূপে ব্যৱহৃত মূদ্ৰক প্ৰদৰ্শন কৰা হ'ব"
 
-#: ../system-config-printer.py:1813
+#: system-config-printer.py:1830
 msgid ""
 "Shared printers are not available to other people unless the 'Publish shared "
 "printers' option is enabled in the server settings."
@@ -2466,31 +2688,31 @@ msgstr ""
 "সেৱকৰ বৈশিষ্ট্যত 'যৌথৰূপে ব্যৱহৃত মূদ্ৰক প্ৰদৰ্শন কৰা হ'ব' বিকল্প সক্ৰিয় নাথাকিলে "
 "যৌথৰূপে ব্যৱহৃত মূদ্ৰকসমূহ অন্যান্য ব্যৱহাৰকৰোঁতাৰ বাবে উপলব্ধ কৰা ন'হ'ব ।"
 
-#: ../system-config-printer.py:2031
+#: system-config-printer.py:2048
 msgid "Would you like to print a test page?"
 msgstr "আপুনি পৰীক্ষাৰ পৃষ্ঠা মূদ্ৰণ কৰিব বিচাৰে নে ?"
 
 #. Not more than 25 characters
-#: ../system-config-printer.py:2033 ../ui/PrinterPropertiesDialog.ui.h:17
-#: ../troubleshoot/PrintTestPage.py:74
+#: system-config-printer.py:2050 troubleshoot/PrintTestPage.py:74
+#: ui/PrinterPropertiesDialog.ui:547
 msgid "Print Test Page"
 msgstr "পৰীক্ষাৰ পৃষ্ঠা মুদ্ৰণ কৰক"
 
-#: ../system-config-printer.py:2125
+#: system-config-printer.py:2142
 msgid "Install driver"
 msgstr "সন্ধানহীন চালক"
 
-#: ../system-config-printer.py:2126 ../troubleshoot/CheckPPDSanity.py:136
+#: system-config-printer.py:2143 troubleshoot/CheckPPDSanity.py:136
 #, python-format
 msgid "Printer '%s' requires the %s package but it is not currently installed."
 msgstr ""
 "Printer '%s' requires the %s package but it is not currently installed."
 
-#: ../system-config-printer.py:2141
+#: system-config-printer.py:2158
 msgid "Missing driver"
 msgstr "সন্ধানহীন চালক"
 
-#: ../system-config-printer.py:2142
+#: system-config-printer.py:2159
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "
@@ -2499,15 +2721,404 @@ msgstr ""
 "'%s' মুদ্ৰকক %s কাৰ্য্যক্ৰমৰ প্ৰয়োজন কিন্তু বৰ্ত্তমানে সংস্থাপিত নহয়  ।এই মুদ্ৰক ব্যৱহাৰ "
 "কৰাৰ পূৰ্বে অনুগ্ৰহ কৰি সংস্থাপন কৰিব  ।"
 
-#: ../ui/AboutDialog.ui.h:1
+#: timedops.py:116 timedops.py:195
+msgid "Please wait"
+msgstr "অনুগ্ৰহ কৰি প্ৰতীক্ষা কৰক"
+
+#: timedops.py:122 timedops.py:202
+msgid "Gathering information"
+msgstr "তথ্য গোটোৱা হৈছে"
+
+#: ToolbarSearchEntry.py:74
+msgid "_Filter:"
+msgstr "ফিল্টাৰ (_F):"
+
+#: troubleshoot/base.py:36
+msgid ""
+"To start this tool, select System->Administration->Print Settings from the "
+"main menu."
+msgstr "এই সঁজুলি আৰম্ভ কৰিবলে, মূখ্য মেনুৰ পৰা চিস্টেম->প্ৰশাসন->প্ৰিন্ট সংহতিসমূহ বাছক।"
+
+#: troubleshoot/CheckLocalServerPublishing.py:28
+msgid "Server Not Exporting Printers"
+msgstr "সেৱক দ্বাৰা মূদ্ৰক ৰপ্তানি কৰা হোৱা নাই"
+
+#: troubleshoot/CheckLocalServerPublishing.py:29
+msgid ""
+"Although one or more printers are marked as being shared, this print server "
+"is not exporting shared printers to the network."
+msgstr ""
+"একাধিক সংখ্যক মূদ্ৰক, যৌথৰূপে ব্যৱহাৰৰ বাবে চিহ্নিত হ'লেও, চিহ্নিত মূদ্ৰণ সেৱক দ্বাৰা "
+"যৌথৰূপে ব্যৱহাৰৰ বাবে নিৰ্ধাৰিত মূদ্ৰক(সমূহ) নে'টৱৰ্কত ৰপ্তানি কৰা হোৱা নাই ।"
+
+#: troubleshoot/CheckLocalServerPublishing.py:33
+msgid ""
+"Enable the 'Publish shared printers connected to this system' option in the "
+"server settings using the printing administration tool."
+msgstr ""
+"মূদ্ৰণ ব্যৱস্থা পৰিচালনাৰ প্ৰশাসনিক সৰঞ্জামৰ সহায়ত সেৱকৰ বৈশিষ্ট্যৰ ক্ষেত্ৰত 'বৰ্তমান "
+"ব্যৱস্থাপ্ৰণালীৰ সৈতে সংযুক্ত প্ৰকাশিত মূদ্ৰক শ্বেয়াৰ কৰা হ'ব' বিকল্প সক্ৰিয় কৰক ।"
+
+#: troubleshoot/CheckPPDSanity.py:100
+msgid "Invalid PPD File"
+msgstr "PPD নথিপত্ৰ বৈধ নহয়"
+
+#: troubleshoot/CheckPPDSanity.py:111
+#, python-format
+msgid ""
+"The PPD file for printer '%s' does not conform to the specification.  "
+"Possible reason follows:"
+msgstr "'%s' মূদ্ৰকৰ PPD নথিপত্ৰ সুনিৰ্দিষ্ট মানৰ সৈতে সুসংগত নহয় । সাম্ভাব্য কাৰণ:"
+
+#. Perhaps cupstestppd is not in the path.
+#: troubleshoot/CheckPPDSanity.py:117
+#, python-format
+msgid "There is a problem with the PPD file for printer '%s'."
+msgstr "'%s' মূদ্ৰকৰ PPD নথিপত্ৰ সংক্ৰান্ত সমস্যা দেখা দিছে ।"
+
+#: troubleshoot/CheckPPDSanity.py:127
+msgid "Missing Printer Driver"
+msgstr "অনুপস্থিত মূদ্ৰক চালক"
+
+#: troubleshoot/CheckPPDSanity.py:141
+#, python-format
+msgid ""
+"Printer '%s' requires the '%s' program but it is not currently installed."
+msgstr ""
+"'%s' মূদ্ৰকৰ বাবে '%s' প্ৰোগ্ৰাম আৱশ্যক হ'লেও এইটো বৰ্তমানে সংস্থাপন কৰা নাই ।"
+
+#: troubleshoot/ChooseNetworkPrinter.py:31
+msgid "Choose Network Printer"
+msgstr "নে'টৱৰ্ক মূদ্ৰক নিৰ্ব্বাচন কৰক"
+
+#: troubleshoot/ChooseNetworkPrinter.py:32
+msgid ""
+"Please select the network printer you are trying to use from the list below. "
+"If it does not appear in the list, select 'Not listed'."
+msgstr ""
+"নিম্নলিখিত তালিকাৰ পৰা অনুগ্ৰহ কৰে ব্যৱহাৰৰ উদ্দেশ্যে নে'টৱৰ্ক মূদ্ৰক নিৰ্ব্বাচন কৰক । "
+"তালিকাত এইটো উপস্থিত নাথাকিলে 'তালিকাত অনুপস্থিত' নিৰ্ব্বাচন কৰক ।"
+
+#: troubleshoot/ChooseNetworkPrinter.py:41 troubleshoot/ChoosePrinter.py:47
+#: troubleshoot/DeviceListed.py:45
+msgid "Information"
+msgstr "তথ্য"
+
+#: troubleshoot/ChooseNetworkPrinter.py:75 troubleshoot/ChoosePrinter.py:71
+#: troubleshoot/DeviceListed.py:77
+msgid "Not listed"
+msgstr "তালিকাত অনুপস্থিত"
+
+#: troubleshoot/ChoosePrinter.py:37
+msgid "Choose Printer"
+msgstr "মূদ্ৰক নিৰ্ব্বাচন কৰক"
+
+#: troubleshoot/ChoosePrinter.py:38
+msgid ""
+"Please select the printer you are trying to use from the list below. If it "
+"does not appear in the list, select 'Not listed'."
+msgstr ""
+"নিম্নলিখিত তালিকাৰ পৰা অনুগ্ৰহ কৰি ব্যৱহাৰৰ উদ্দেশ্যে মূদ্ৰক নিৰ্ব্বাচন কৰক । তালিকাত "
+"এইটো উপস্থিত নাথাকিলে 'তালিকাত অনুপস্থিত' নিৰ্ব্বাচন কৰক ।"
+
+#: troubleshoot/DeviceListed.py:37
+msgid "Choose Device"
+msgstr "যন্ত্ৰ নিৰ্ব্বাচন কৰক"
+
+#: troubleshoot/DeviceListed.py:38
+msgid ""
+"Please select the device you want to use from the list below. If it does not "
+"appear in the list, select 'Not listed'."
+msgstr ""
+"নিম্নলিখিত তালিকাৰ পৰা অনুগ্ৰহ কৰি ব্যৱহাৰেৰ উদ্দেশ্যে প্ৰযোজ্য যন্ত্ৰ নিৰ্ব্বাচন কৰক । "
+"তালিকাত এইটো উপস্থিত নাথাকিলে 'তালিকাত অনুপস্থিত' নিৰ্ব্বাচন কৰক ।"
+
+#: troubleshoot/DeviceListed.py:47 ui/NewPrinterWindow.ui:411
+msgid "Device URI"
+msgstr "যন্ত্ৰ URI"
+
+#: troubleshoot/ErrorLogCheckpoint.py:40
+msgid "Debugging"
+msgstr "ডিবাগ ব্যৱস্থা"
+
+#: troubleshoot/ErrorLogCheckpoint.py:41
+msgid ""
+"This step will enable debugging output from the CUPS scheduler.  This may "
+"cause the scheduler to restart.  Click the button below to enable debugging."
+msgstr ""
+"এই স্তৰে CUPS অনুসূচকৰ পৰা ডিবাগ আউটপুট সামৰ্থবান কৰিব। ইয়াৰ বাবে অনুসূচক পুনৰাম্ভ হব "
+"পাৰে। ডিবাগ সামৰ্থবান কৰিবলে তলত দিয়া বুটাম সামৰ্থবান কৰক।"
+
+#: troubleshoot/ErrorLogCheckpoint.py:45
+msgid "Enable Debugging"
+msgstr "ডিবাগ ব্যৱস্থা সক্ৰিয় কৰক"
+
+#: troubleshoot/ErrorLogCheckpoint.py:236
+msgid "Debug logging enabled."
+msgstr "ডিবাগ লগ ব্যৱস্থা সক্ৰিয় কৰা হৈছে ।"
+
+#: troubleshoot/ErrorLogCheckpoint.py:238
+msgid "Debug logging was already enabled."
+msgstr "ডিবাগ লগ ব্যৱস্থা ইতিমধ্যে সক্ৰিয় কৰা হৈছে ।"
+
+#: troubleshoot/ErrorLogFetch.py:41
+msgid "Retrieve Journal Entries"
+msgstr ""
+
+#: troubleshoot/ErrorLogFetch.py:42
+msgid ""
+"No system journal entries were found. This may be because you are not an "
+"administrator. To fetch journal entries please run this command:"
+msgstr ""
+
+#: troubleshoot/ErrorLogParse.py:32
+msgid "Error log messages"
+msgstr "ত্ৰুটি সংক্ৰান্ত লগ বাৰ্তা"
+
+#: troubleshoot/ErrorLogParse.py:33
+msgid "There are messages in the error log."
+msgstr "ত্ৰুটি সংক্ৰান্ত লগত বাৰ্তা উপস্থিত আছে ।"
+
+#: troubleshoot/__init__.py:57
+msgid "Printing troubleshooter"
+msgstr "মূদ্ৰণ সংক্ৰান্ত সমস্যাৰ সমাধান ব্যৱস্থা"
+
+#: troubleshoot/Locale.py:31
+msgid "Incorrect Page Size"
+msgstr "অশুদ্ধ পৃষ্ঠাৰ আকাৰ"
+
+#: troubleshoot/Locale.py:32
+msgid ""
+"The page size for the print job was not the printer's default page size.  If "
+"this is not intentional it may cause alignment problems."
+msgstr ""
+"মূদ্ৰণ কাৰ্য্যৰ পৃষ্ঠাৰ আকাৰ মূদ্ৰকৰ অবিকল্পিত পৃষ্ঠাৰ আকাৰ নহয় । এইটো ইচ্ছাকৃত ন'হ'লে "
+"ইয়াৰ কাৰণে সংৰেখনৰ সমস্যা হ'ব পাৰে ।"
+
+#: troubleshoot/Locale.py:44
+msgid "Print job page size:"
+msgstr "মুদ্ৰণ কাৰ্য্যৰ পৃষ্ঠাৰ আকাৰ:"
+
+#: troubleshoot/Locale.py:48
+msgid "Printer page size:"
+msgstr "মুদ্ৰকৰ পৃষ্ঠাৰ অৱস্থা:"
+
+#: troubleshoot/LocalOrRemote.py:26
+msgid "Printer Location"
+msgstr "মূদ্ৰকৰ অৱস্থান"
+
+#: troubleshoot/LocalOrRemote.py:27
+msgid "Is the printer connected to this computer or available on the network?"
+msgstr "মূদ্ৰক এই কম্পিউৰটাৰৰ সৈতে সংযুক্ত নে নে'টৱৰ্কত উপস্থিত?"
+
+#: troubleshoot/LocalOrRemote.py:29
+msgid "Locally connected printer"
+msgstr "স্থানীয়ৰূপে সংযুক্ত মূদ্ৰক"
+
+#: troubleshoot/NetworkCUPSPrinterShared.py:28
+msgid "Queue Not Shared"
+msgstr "queue যৌথৰূপে ব্যৱহৃত নহয়"
+
+#: troubleshoot/NetworkCUPSPrinterShared.py:29
+msgid "The CUPS printer on the server is not shared."
+msgstr "সেৱকতে উপস্থিত CUPS মূদ্ৰক যৌথৰূপে ব্যৱহৃত নহয় ।"
+
+#: troubleshoot/PrinterStateReasons.py:34
+msgid "Status Messages"
+msgstr "অৱস্থাসূচক বাৰ্তা"
+
+#: troubleshoot/PrinterStateReasons.py:35
+msgid "There are status messages associated with this queue."
+msgstr "চিহ্নিত queue বাবে কিছু অৱস্থাসূচক বাৰ্তা উপস্থিত আছে ।"
+
+#: troubleshoot/PrinterStateReasons.py:65
+#, python-format
+msgid "The printer's state message is: '%s'."
+msgstr "মূদ্ৰকৰ অৱস্থা সংক্ৰান্ত বাৰ্তা: '%s' ।"
+
+#: troubleshoot/PrinterStateReasons.py:90
+msgid "Errors are listed below:"
+msgstr "ত্ৰুটিসমূহ তলত তালিকাভুক্ত কৰা হৈছে:"
+
+#: troubleshoot/PrinterStateReasons.py:95
+msgid "Warnings are listed below:"
+msgstr "সতৰ্কবাৰ্তা তলত তালিকাভুক্ত কৰা হৈছে:"
+
+#: troubleshoot/PrintTestPage.py:64
+msgid "Test Page"
+msgstr "পৰীক্ষামূলক পৃষ্ঠা"
+
+#: troubleshoot/PrintTestPage.py:65
+msgid ""
+"Now print a test page.  If you are having problems printing a specific "
+"document, print that document now and mark the print job below."
+msgstr ""
+"এখন পৰীক্ষামূলক পৃষ্ঠা মূদ্ৰণ কৰক । কোনো নিৰ্দিষ্ট আলেখ্যন মূদ্ৰণ কৰোঁতে সমস্যা হ'লে, "
+"সংশ্লিষ্ট নথিপত্ৰ পুনঃ মূদ্ৰণ কৰক আৰু মূদ্ৰণ কাৰ্য্য তলত চিহ্নিত কৰক ।"
+
+#: troubleshoot/PrintTestPage.py:77
+msgid "Cancel All Jobs"
+msgstr "সকলো কাৰ্য্য বাতিল কৰক"
+
+#: troubleshoot/PrintTestPage.py:83
+msgid "Test"
+msgstr "পৰীক্ষা"
+
+#: troubleshoot/PrintTestPage.py:113
+msgid "Did the marked print jobs print correctly?"
+msgstr "চিহ্নিত মূদ্ৰণ কাৰ্য্যসমূহ সঠিকৰূপে সঞ্চালিত হৈছেনে ?"
+
+#: troubleshoot/PrintTestPage.py:144
+#, python-format
+msgid "Remember to load paper of type '%s' into the printer first."
+msgstr "মূদ্ৰকত প্ৰথমে '%s' ধৰনৰ কাগজ লগাব নাপাহৰিব ।"
+
+#: troubleshoot/PrintTestPage.py:430
+msgid "Error submitting test page"
+msgstr "পৰীক্ষামূলক পৃষ্ঠা প্ৰেৰণ কৰোঁতে সমস্যা"
+
+#: troubleshoot/QueueNotEnabled.py:58 troubleshoot/QueueRejectingJobs.py:68
+#, python-format
+msgid "The reason given is: '%s'."
+msgstr "উল্লেখিত কাৰণ: '%s' ।"
+
+#: troubleshoot/QueueNotEnabled.py:60
+msgid "This may be due to the printer being disconnected or switched off."
+msgstr "মূদ্ৰক বিচ্ছিন্ন হ'লে বা বন্ধ হ'লে এই সমস্যাই দেখা দিব পাৰে ।"
+
+#: troubleshoot/QueueNotEnabled.py:64
+msgid "Queue Not Enabled"
+msgstr "queue সক্ৰিয় কৰা নহয়"
+
+#: troubleshoot/QueueNotEnabled.py:65
+#, python-format
+msgid "The queue '%s' is not enabled."
+msgstr "'%s' queue সক্ৰিয় কৰা নহয় ।"
+
+#: troubleshoot/QueueNotEnabled.py:73
+msgid ""
+"To enable it, select the 'Enabled' checkbox in the 'Policies' tab for the "
+"printer in the printer administration tool."
+msgstr ""
+"সক্ৰিয় কৰাৰ বাবে মূদ্ৰক সংক্ৰান্ত প্ৰশাসনিক সৰঞ্জামত মূদ্ৰকৰ বাবে নিৰ্ধাৰিত 'নিয়ম "
+"নীতি' শীৰ্ষক টেবত 'সক্ৰিয়' নামক ছেক বাকচ নিৰ্ব্বাচন কৰক ।"
+
+#: troubleshoot/QueueRejectingJobs.py:33
+msgid "Queue Rejecting Jobs"
+msgstr "queueৰ পৰা কাৰ্য্য প্ৰত্যাখ্যান কৰা হৈছে"
+
+#: troubleshoot/QueueRejectingJobs.py:65
+#, python-format
+msgid "The queue '%s' is rejecting jobs."
+msgstr "'%s' queueৰ পৰা কাৰ্য্য প্ৰত্যাখ্যান কৰা হৈছে ।"
+
+#: troubleshoot/QueueRejectingJobs.py:72
+msgid ""
+"To make the queue accept jobs, select the 'Accepting Jobs' checkbox in the "
+"'Policies' tab for the printer in the printer administration tool."
+msgstr ""
+"queue দ্বাৰা কাৰ্য্য গ্ৰহণ কৰাৰ বাবে মূদ্ৰক সংক্ৰান্ত প্ৰশাসনিক সৰঞ্জামত মূদ্ৰকৰ বাবে "
+"নিৰ্ধাৰিত 'নিয়ম নীতি' শীৰ্ষক টেবত 'কাৰ্য্য গ্ৰহণ কৰা হ'ব' নামক ছেক বাকচ নিৰ্ব্বাচন "
+"কৰক ।"
+
+#: troubleshoot/RemoteAddress.py:28
+msgid "Remote Address"
+msgstr "দূৰবৰ্তী ঠিকনা"
+
+#: troubleshoot/RemoteAddress.py:29
+msgid ""
+"Please enter as many details as you can about the network address of this "
+"printer."
+msgstr "অনুগ্ৰহ কৰি মূদ্ৰকৰ নে'টৱৰ্ক ঠিকনা সম্বন্ধে যথাসম্ভৱ বিৱৰণ উল্লেখ কৰক ।"
+
+#: troubleshoot/RemoteAddress.py:37
+msgid "Server name:"
+msgstr "সেৱকৰ নাম:"
+
+#: troubleshoot/RemoteAddress.py:44
+msgid "Server IP address:"
+msgstr "সেৱকৰ IP ঠিকনা:"
+
+#: troubleshoot/SchedulerNotRunning.py:28
+msgid "CUPS Service Stopped"
+msgstr "CUPS সেৱা বন্ধ কৰা আছে"
+
+#: troubleshoot/SchedulerNotRunning.py:29
+msgid ""
+"The CUPS print spooler does not appear to be running.  To correct this, "
+"choose System->Administration->Services from the main menu and look for the "
+"'cups' service."
+msgstr ""
+"CUPS মূদ্ৰণ স্পুলাৰ সম্ভৱতঃ নাই চলা ।  এই সমস্যা সমাধানৰ বাবে প্ৰধান তালিকাৰ পৰা "
+"ব্যৱস্থাপ্ৰণালী->প্ৰশাসনিক কাৰ্য্য->সেৱা নিৰ্ব্বাচন কৰি 'cups' সেৱা অনুসন্ধান কৰক ।"
+
+#: troubleshoot/ServerFirewalled.py:28
+msgid "Check Server Firewall"
+msgstr "সেৱকৰ ফায়াৰ্ৱাল পৰীক্ষা কৰক"
+
+#: troubleshoot/ServerFirewalled.py:29
+msgid "It is not possible to connect to the server."
+msgstr "সেৱকৰ সৈতে সংযোগ স্থাপন কৰা সম্ভৱ নহয় ।"
+
+#: troubleshoot/ServerFirewalled.py:44
+#, python-format
+msgid ""
+"Please check to see if a firewall or router configuration is blocking TCP "
+"port %d on server '%s'."
+msgstr ""
+"ফায়াৰ্ৱাল বা ৰাউটাৰ বিন্যাসৰ ফলত TCP পোৰ্ট %d ক সেৱক '%s' ত অৱৰুদ্ধ কৰা হৈছে নে "
+"নাই অনুগ্ৰহ কৰি পৰীক্ষা কৰক ।"
+
+#: troubleshoot/Shrug.py:28
+msgid "Sorry!"
+msgstr "দুঃখিত!"
+
+#: troubleshoot/Shrug.py:29
+msgid ""
+"There is no obvious solution to this problem.  Your answers have been "
+"collected together with other useful information.  If you would like to "
+"report a bug, please include this information."
+msgstr ""
+"এই সমস্যাৰ কোনো সঠিক সমাধান নাই। আপোনাৰ উত্তৰসমূহ অন্য কামত অহা তথ্যৰ লগত সংগ্ৰহ "
+"কৰা হৈছে। যদি আপুনি এটা বাগৰ সংবাদ দিব বিচাৰিছে, অনুগ্ৰহ কৰি এই তথ্য যোগ কৰিব।"
+
+#: troubleshoot/Shrug.py:36
+msgid "Diagnostic Output (Advanced)"
+msgstr "বৈশিষ্ট্য সূচনা কৰাৰ ফলাফল (উন্নত)"
+
+#: troubleshoot/Shrug.py:93
+msgid "Error saving file"
+msgstr "ত্ৰুটি সঞ্চয়ী নথিপত্ৰ"
+
+#: troubleshoot/Shrug.py:94
+msgid "There was an error saving the file:"
+msgstr "নথিপত্ৰ সঞ্চয় কৰোতে এটা ত্ৰুটি হৈছিল:"
+
+#: troubleshoot/Welcome.py:45
+msgid "Trouble-shooting Printing"
+msgstr "মূদ্ৰকৰ সমস্যা সমাধান"
+
+#: troubleshoot/Welcome.py:47
+msgid ""
+"The next few screens will contain some questions about your problem with "
+"printing. Based on your answers a solution may be suggested."
+msgstr ""
+"পৰৱৰ্তী কিছুমান পৰ্দাত আপোনাৰ প্ৰিন্ট জৰিত সমস্যৰ বিষয়ে কিছুমান প্ৰশ্ন থাকিব। আপোনাৰ "
+"উত্তৰসমুহৰ উপৰত ভিত্তি কৰি এটা সমাধান দিয়া হব।"
+
+#: troubleshoot/Welcome.py:51
+msgid "Click 'Forward' to begin."
+msgstr "আৰম্ভ কৰাৰ বাবে 'আগবাঢ়ক' টিপক ।"
+
+#: ui/AboutDialog.ui:9
 msgid "Copyright © 2006-2012 Red Hat, Inc."
 msgstr "স্বত্বাধিকাৰ © ২০০৬-২০১২ Red Hat, Inc."
 
-#: ../ui/AboutDialog.ui.h:2
+#: ui/AboutDialog.ui:10
 msgid "A CUPS configuration tool."
 msgstr "মুদ্ৰকৰ বিন্যাস - %s"
 
-#: ../ui/AboutDialog.ui.h:3
+#: ui/AboutDialog.ui:12
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -2537,124 +3148,124 @@ msgstr ""
 "Fifth Floor, Boston, MA  02110-1301, USA।লে লিখক"
 
 #. TRANSLATORS: Replace this string with your names, one name per line.  Thank you very much for your effort on translating system-config-printer and all our other tools!
-#: ../ui/AboutDialog.ui.h:9
+#: ui/AboutDialog.ui:21
 msgid "translator-credits"
 msgstr ""
 "অমিতাক্ষ ফুকন (aphukan@fedoraproject.org), নীলমদ্যুতি গোস্বামী, (ngoswami@redhat."
 "com)"
 
-#: ../ui/ConnectDialog.ui.h:1
+#: ui/ConnectDialog.ui:8
 msgid "Connect to CUPS server"
 msgstr "CUPS সেৱকলৈ সংযোগ কৰক"
 
-#: ../ui/ConnectDialog.ui.h:3 ../ui/PrintersWindow.ui.h:12
+#: ui/ConnectDialog.ui:42 ui/PrintersWindow.ui:285
 #, fuzzy
 msgid "Connect"
 msgstr "সংযোগ"
 
-#: ../ui/ConnectDialog.ui.h:4
+#: ui/ConnectDialog.ui:78
 msgid "CUPS _server:"
 msgstr "CUPS সেৱক (_s):"
 
-#: ../ui/ConnectDialog.ui.h:5
+#: ui/ConnectDialog.ui:116
 msgid "Require _encryption"
 msgstr "সাঙ্কেতিক কৰাৰ প্ৰয়োজন (_e)"
 
-#: ../ui/ConnectingDialog.ui.h:1
+#: ui/ConnectingDialog.ui:8
 msgid "Connecting to CUPS server"
 msgstr "CUPS সেৱকলৈ সংযোগ কৰা হৈছে"
 
-#: ../ui/ConnectingDialog.ui.h:3
+#: ui/ConnectingDialog.ui:59
 msgid "<span weight=\"bold\" size=\"larger\">Connecting to CUPS server</span>"
 msgstr ""
 "<span weight=\"bold\" size=\"larger\">CUPS সেৱকলৈ সংযোগ কৰা হৈছে</span>"
 
-#: ../ui/InstallDialog.ui.h:1
+#: ui/InstallDialog.ui:24
 msgid "Close"
 msgstr ""
 
-#: ../ui/InstallDialog.ui.h:2
+#: ui/InstallDialog.ui:64
 msgid "_Install"
 msgstr "সংস্থাপন কৰক (_I)"
 
-#: ../ui/JobsWindow.ui.h:1
+#: ui/JobsWindow.ui:24
 msgid "Refresh job list"
 msgstr "কাৰ্য্য তালিকা পুনৰ উন্মোচন কৰক"
 
-#: ../ui/JobsWindow.ui.h:2 ../ui/SMBBrowseDialog.ui.h:2
+#: ui/JobsWindow.ui:25 ui/SMBBrowseDialog.ui:61
 msgid "_Refresh"
 msgstr "সতেজ কৰক (_R)"
 
-#: ../ui/JobsWindow.ui.h:3
+#: ui/JobsWindow.ui:41
 msgid "Show completed jobs"
 msgstr "সমপূৰ্ণ কাৰ্য্যবোৰ দেখুৱাওক"
 
-#: ../ui/JobsWindow.ui.h:4
+#: ui/JobsWindow.ui:42
 msgid "Show _completed jobs"
 msgstr "সমাপ্ত কাৰ্য্য প্ৰদৰ্শন কৰা হ'ব (_c)"
 
-#: ../ui/NewPrinterName.ui.h:1
+#: ui/NewPrinterName.ui:7
 msgid "Duplicate Printer"
 msgstr "প্ৰিন্টাৰ প্ৰতিলিপি কৰক"
 
-#: ../ui/NewPrinterName.ui.h:3 ../ui/PrinterPropertiesDialog.ui.h:5
-#: ../ui/ServerSettingsDialog.ui.h:3 ../ui/SMBBrowseDialog.ui.h:4
+#: ui/NewPrinterName.ui:38 ui/PrinterPropertiesDialog.ui:182
+#: ui/ServerSettingsDialog.ui:40 ui/SMBBrowseDialog.ui:93
 msgid "_OK"
 msgstr ""
 
-#: ../ui/NewPrinterName.ui.h:4
+#: ui/NewPrinterName.ui:64
 msgid "New name for the printer"
 msgstr "মুদ্ৰকৰ বাবে নতুন নাম"
 
-#: ../ui/NewPrinterWindow.ui.h:2
+#: ui/NewPrinterWindow.ui:34
 msgid "<span weight=\"bold\" size=\"larger\">Describe Printer</span>"
 msgstr "<span weight=\"bold\" size=\"larger\">মূদ্ৰকৰ বিৱৰণ</span>"
 
-#: ../ui/NewPrinterWindow.ui.h:3
+#: ui/NewPrinterWindow.ui:69
 msgid "Short name for this printer such as \"laserjet\""
 msgstr "এই মূদ্ৰকৰ সংক্ষিপ্ত নাম, যেনে \"laserjet\""
 
-#: ../ui/NewPrinterWindow.ui.h:4
+#: ui/NewPrinterWindow.ui:97
 msgid "<b>Printer Name</b>"
 msgstr "<b>মুদ্ৰকৰ নাম</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:5
+#: ui/NewPrinterWindow.ui:127
 msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
 msgstr "মানুহে পঢ়িব পৰা বিৱৰণ যেনে \"HP LaserJet Duplexer ৰ সৈতে\""
 
-#: ../ui/NewPrinterWindow.ui.h:6
+#: ui/NewPrinterWindow.ui:154
 msgid "<b>Description</b> (optional)"
 msgstr "<b>বিৱৰণ</b> (বৈকল্পিক)"
 
-#: ../ui/NewPrinterWindow.ui.h:7
+#: ui/NewPrinterWindow.ui:184
 msgid "Human-readable location such as \"Lab 1\""
 msgstr "মানুহে পঢ়িব পৰা স্থান যেনে  \"লেব ১\""
 
-#: ../ui/NewPrinterWindow.ui.h:8
+#: ui/NewPrinterWindow.ui:211
 msgid "<b>Location</b> (optional)"
 msgstr "<b>স্থান</b> (বৈকল্পিক)"
 
-#: ../ui/NewPrinterWindow.ui.h:10
+#: ui/NewPrinterWindow.ui:253
 msgid "<span weight=\"bold\" size=\"larger\">Select Device</span>"
 msgstr "<span weight=\"bold\" size=\"larger\">যন্ত্ৰ নিৰ্ব্বাচন কৰক</span>"
 
-#: ../ui/NewPrinterWindow.ui.h:11
+#: ui/NewPrinterWindow.ui:320
 msgid "Device description."
 msgstr "যন্ত্ৰৰ বিৱৰণ:"
 
-#: ../ui/NewPrinterWindow.ui.h:12
+#: ui/NewPrinterWindow.ui:328
 msgid "<b>Description</b>"
 msgstr "<b>বিৱৰণ</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:13
+#: ui/NewPrinterWindow.ui:345
 msgid "Empty"
 msgstr "ৰিক্ত"
 
-#: ../ui/NewPrinterWindow.ui.h:14
+#: ui/NewPrinterWindow.ui:377
 msgid "<b>Enter device URI</b>"
 msgstr "যন্ত্ৰৰ URI দিয়ক"
 
-#: ../ui/NewPrinterWindow.ui.h:15
+#: ui/NewPrinterWindow.ui:392
 msgid ""
 "For example:\n"
 "ipp://cups-server/printers/printer-queue\n"
@@ -2664,143 +3275,141 @@ msgstr ""
 "ipp://cups-server/printers/printer-queue\n"
 "ipp://printer.mydomain/ipp"
 
-#: ../ui/NewPrinterWindow.ui.h:18 ../troubleshoot/DeviceListed.py:47
-msgid "Device URI"
-msgstr "যন্ত্ৰ URI"
-
-#: ../ui/NewPrinterWindow.ui.h:19
+#: ui/NewPrinterWindow.ui:437 ui/NewPrinterWindow.ui:549
+#: ui/NewPrinterWindow.ui:1279
 msgid "Host:"
 msgstr "গৃহস্থ:"
 
-#: ../ui/NewPrinterWindow.ui.h:20
+#: ui/NewPrinterWindow.ui:453
 msgid "Port number:"
 msgstr "পোৰ্ট সংখ্যা:"
 
-#: ../ui/NewPrinterWindow.ui.h:21
+#: ui/NewPrinterWindow.ui:509
 msgid "<b>Location of the network printer</b>"
 msgstr "<b>নে'টৱৰ্ক মুদ্ৰকৰ স্থান</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:22
+#: ui/NewPrinterWindow.ui:522
 msgid "JetDirect"
 msgstr "JetDirect"
 
-#: ../ui/NewPrinterWindow.ui.h:23
+#: ui/NewPrinterWindow.ui:569
 msgid "Queue:"
 msgstr "Queue:"
 
-#: ../ui/NewPrinterWindow.ui.h:24
+#: ui/NewPrinterWindow.ui:612
 msgid "Probe"
 msgstr "অনুসন্ধান"
 
-#: ../ui/NewPrinterWindow.ui.h:25
+#: ui/NewPrinterWindow.ui:686
 msgid "<b>Location of the LPD network printer</b>"
 msgstr "<b>LPD নে'টৱৰ্ক মুদ্ৰকৰ স্থান</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:26
+#: ui/NewPrinterWindow.ui:699
 msgid "LPD"
 msgstr "LPD"
 
-#: ../ui/NewPrinterWindow.ui.h:27
+#: ui/NewPrinterWindow.ui:731
 msgid "SCSI"
 msgstr "SCSI"
 
-#: ../ui/NewPrinterWindow.ui.h:28
+#: ui/NewPrinterWindow.ui:758
 msgid "Baud Rate"
 msgstr "ব'ওড হাৰ"
 
-#: ../ui/NewPrinterWindow.ui.h:29
+#: ui/NewPrinterWindow.ui:777
 msgid "Parity"
 msgstr "সমমানতা"
 
-#: ../ui/NewPrinterWindow.ui.h:30
+#: ui/NewPrinterWindow.ui:796
 msgid "Data Bits"
 msgstr "তথ্যৰ বিট"
 
-#: ../ui/NewPrinterWindow.ui.h:31
+#: ui/NewPrinterWindow.ui:815
 msgid "Flow Control"
 msgstr "ধাৰা নিয়ন্ত্ৰণ"
 
-#: ../ui/NewPrinterWindow.ui.h:32
+#: ui/NewPrinterWindow.ui:899
 msgid "<b>Settings of the serial port</b>"
 msgstr "<b>চিৰিয়েল প'ৰ্টৰ পটভুমি</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:33
+#: ui/NewPrinterWindow.ui:912
 msgid "Serial"
 msgstr "ক্ৰমিক"
 
-#: ../ui/NewPrinterWindow.ui.h:34
+#: ui/NewPrinterWindow.ui:980
 msgid "Browse..."
 msgstr "চৰণ কৰক..."
 
-#: ../ui/NewPrinterWindow.ui.h:35
+#: ui/NewPrinterWindow.ui:1005
 msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
 msgstr "<i>smb://[workgroup/]server[:port]/printer</i>"
 
-#: ../ui/NewPrinterWindow.ui.h:36
+#: ui/NewPrinterWindow.ui:1020
 msgid "<b>SMB Printer</b>"
 msgstr "<b> SMB মূদ্ৰক</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:37
+#: ui/NewPrinterWindow.ui:1049
 msgid "Prompt user if authentication is required"
 msgstr "অনুমোদন প্ৰয়োজন হ'লে ব্যৱহাৰকৰোঁতাক সূচিত কৰা হ'ব"
 
-#: ../ui/NewPrinterWindow.ui.h:38
+#: ui/NewPrinterWindow.ui:1071
 msgid "Set authentication details now"
 msgstr "অনুমোদন সংক্ৰান্ত বিৱৰণ এতিয়া নিৰ্ধাৰণ কৰক"
 
-#: ../ui/NewPrinterWindow.ui.h:41
+#: ui/NewPrinterWindow.ui:1189
 msgid "<b>Authentication</b>"
 msgstr "<b>অনুমোদন</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:42
+#: ui/NewPrinterWindow.ui:1215
 msgid "_Verify..."
 msgstr "সত্যাখ্যান কৰক(_V)..."
 
-#: ../ui/NewPrinterWindow.ui.h:43
+#: ui/NewPrinterWindow.ui:1242
 msgid "SMB"
 msgstr "SMB"
 
-#: ../ui/NewPrinterWindow.ui.h:44
+#: ui/NewPrinterWindow.ui:1312
 msgid "Find"
 msgstr ""
 
-#: ../ui/NewPrinterWindow.ui.h:45
+#: ui/NewPrinterWindow.ui:1347
 msgid "Searching..."
 msgstr "অনুসন্ধান কৰা হৈছে..."
 
-#: ../ui/NewPrinterWindow.ui.h:47
+#: ui/NewPrinterWindow.ui:1381
 msgid "<b>Network Printer</b>"
 msgstr "<b>নে'টৱৰ্ক মূদ্ৰক</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:48
+#: ui/NewPrinterWindow.ui:1395
 msgid "Network"
 msgstr "নেটৱৰ্ক"
 
-#: ../ui/NewPrinterWindow.ui.h:49
+#: ui/NewPrinterWindow.ui:1437
 msgid "Connection"
 msgstr "সংযোগ"
 
-#: ../ui/NewPrinterWindow.ui.h:50
+#: ui/NewPrinterWindow.ui:1471
 msgid "Device"
 msgstr "ডিভাইচ"
 
-#: ../ui/NewPrinterWindow.ui.h:51
+#: ui/NewPrinterWindow.ui:1491 ui/NewPrinterWindow.ui:1885
+#: ui/NewPrinterWindow.ui:2431
 msgid "<span weight=\"bold\" size=\"larger\">Choose Driver</span>"
 msgstr "<span weight=\"bold\" size=\"larger\">চালক নিৰ্ব্বাচন কৰক</span>"
 
-#: ../ui/NewPrinterWindow.ui.h:52
+#: ui/NewPrinterWindow.ui:1509
 msgid "Select printer from database"
 msgstr "তথ্যসংগ্ৰহৰ পৰা মুদ্ৰক নিৰ্ব্বাচন কৰক"
 
-#: ../ui/NewPrinterWindow.ui.h:53
+#: ui/NewPrinterWindow.ui:1527
 msgid "Provide PPD file"
 msgstr "নথিপত্ৰ"
 
-#: ../ui/NewPrinterWindow.ui.h:54
+#: ui/NewPrinterWindow.ui:1544
 msgid "Search for a printer driver to download"
 msgstr "উল্লেখিত সময় অৱধি"
 
-#: ../ui/NewPrinterWindow.ui.h:55
+#: ui/NewPrinterWindow.ui:1576
 msgid ""
 "The foomatic printer database contains various manufacturer provided "
 "PostScript Printer Description (PPD) files and also can generate PPD files "
@@ -2813,7 +3422,7 @@ msgstr ""
 "কৰিব পাৰে  । কিন্তু সাদাৰণতে উদ্যোগপতিয়ে যোগান ধৰা PPD নথিপত্ৰৰ দ্বাৰা মুদ্ৰকৰ "
 "নিৰ্দ্দিষ্ট বৈশিষ্টৰ উন্নত অভিগমন কৰিব পাৰি  ।"
 
-#: ../ui/NewPrinterWindow.ui.h:56
+#: ui/NewPrinterWindow.ui:1631
 msgid ""
 "PostScript Printer Description (PPD) files can often be found on the driver "
 "disk that comes with the printer. For PostScript printers they are often "
@@ -2823,52 +3432,52 @@ msgstr ""
 "ডিস্কত পোৱা যায়। PostScript প্ৰিন্টসমূহৰ বাবে সচৰাচৰ তেওলোক Windows<sup>®</sup> "
 "ড্ৰাইভাৰৰ অংশ। "
 
-#: ../ui/NewPrinterWindow.ui.h:57
+#: ui/NewPrinterWindow.ui:1694
 msgid "Make and model:"
 msgstr "ধৰন আৰু মডেল:"
 
-#: ../ui/NewPrinterWindow.ui.h:58
+#: ui/NewPrinterWindow.ui:1765
 msgid "_Search"
 msgstr "অনুসন্ধান কৰক (_S)"
 
-#: ../ui/NewPrinterWindow.ui.h:59
+#: ui/NewPrinterWindow.ui:1798
 msgid "Printer model:"
 msgstr "মূদ্ৰক:"
 
-#: ../ui/NewPrinterWindow.ui.h:60
+#: ui/NewPrinterWindow.ui:1957
 msgid "Comments..."
 msgstr "মন্তব্য"
 
-#: ../ui/NewPrinterWindow.ui.h:61
+#: ui/NewPrinterWindow.ui:2018
 msgid "<span weight=\"bold\" size=\"larger\">Choose Class Members</span>"
 msgstr ""
 "<span weight=\"bold\" size=\"larger\">শ্ৰেণীৰ সদস্যবৃন্দ নিৰ্ব্বাচন কৰক</span>"
 
-#: ../ui/NewPrinterWindow.ui.h:62 ../ui/PrinterPropertiesDialog.ui.h:44
+#: ui/NewPrinterWindow.ui:2079 ui/PrinterPropertiesDialog.ui:1193
 msgid "move left"
 msgstr "বাওঁফালে যাওক"
 
-#: ../ui/NewPrinterWindow.ui.h:63 ../ui/PrinterPropertiesDialog.ui.h:45
+#: ui/NewPrinterWindow.ui:2106 ui/PrinterPropertiesDialog.ui:1219
 msgid "move right"
 msgstr "সোঁফালে যাওক"
 
-#: ../ui/NewPrinterWindow.ui.h:64
+#: ui/NewPrinterWindow.ui:2161
 msgid "Class Members"
 msgstr "ক্লাচ সদস্যসমূহ"
 
-#: ../ui/NewPrinterWindow.ui.h:65
+#: ui/NewPrinterWindow.ui:2180
 msgid "<span weight=\"bold\" size=\"larger\">Existing Settings</span>"
 msgstr "<span weight=\"bold\" size=\"larger\">উপস্থিত বৈশিষ্ট্য</span>"
 
-#: ../ui/NewPrinterWindow.ui.h:66
+#: ui/NewPrinterWindow.ui:2201
 msgid "Try to transfer the current settings"
 msgstr "বৰ্তমান সংহতিসমূহ বদলি কৰিবলে চেষ্টা কৰক"
 
-#: ../ui/NewPrinterWindow.ui.h:67
+#: ui/NewPrinterWindow.ui:2211
 msgid "Use the new PPD (Postscript Printer Description) as is."
 msgstr "যিদৰে আছে, তেনেকেই নতুন PPD (পোচ্-চ্‌ক্ৰিপ্‌ট মুদ্ৰক বিৱৰণ)ব্যৱহাৰ কৰক  ।"
 
-#: ../ui/NewPrinterWindow.ui.h:68
+#: ui/NewPrinterWindow.ui:2231
 msgid ""
 "This way all current option settings will be lost. The default settings of "
 "the new PPD will be used. "
@@ -2876,11 +3485,11 @@ msgstr ""
 "এই ধৰণে সকলো বৰ্ত্তমানৰ বিকল্পৰ পটভুমি হেৰুৱা যাব  । নতুন PPDৰ অৱিকল্পত পটভুমি "
 "ব্যৱহাৰ কৰা যাব  ।"
 
-#: ../ui/NewPrinterWindow.ui.h:69
+#: ui/NewPrinterWindow.ui:2242
 msgid "Try to copy the option settings over from the old PPD. "
 msgstr "পূৰণি PPD ৰ পৰা বিকল্পৰ বিন্যাস নকল কৰিব'লৈ চেষ্টা কৰক  ।"
 
-#: ../ui/NewPrinterWindow.ui.h:70
+#: ui/NewPrinterWindow.ui:2262
 msgid ""
 "This is done by assuming that options with the same name do have the same "
 "meaning. Settings of options that are not present in the new PPD will be "
@@ -2890,15 +3499,15 @@ msgstr ""
 "নোহোৱা বিকল্পৰ পটভুমি হেৰুৱা যাব আৰু অকল নতুন PPD ত থকা বিকল্পসমূহহে অৱিকল্পিত ভাবে "
 "নিৰ্দ্দিষ্ট কৰা যাব  ।"
 
-#: ../ui/NewPrinterWindow.ui.h:71
+#: ui/NewPrinterWindow.ui:2287
 msgid "Change PPD"
 msgstr "PPD সলনি কৰক"
 
-#: ../ui/NewPrinterWindow.ui.h:72
+#: ui/NewPrinterWindow.ui:2314
 msgid "<span weight=\"bold\" size=\"larger\">Installable Options</span>"
 msgstr "<span weight=\"bold\" size=\"larger\">সংস্থাপন কৰাৰ যোগ্য বিকল্প</span>"
 
-#: ../ui/NewPrinterWindow.ui.h:73
+#: ui/NewPrinterWindow.ui:2334
 msgid ""
 "This driver supports additional hardware that may be installed in the "
 "printer."
@@ -2906,31 +3515,31 @@ msgstr ""
 "This driver supports additional hardware that may be installed in the "
 "printer."
 
-#: ../ui/NewPrinterWindow.ui.h:74 ../ui/PrinterPropertiesDialog.ui.h:47
+#: ui/NewPrinterWindow.ui:2412 ui/PrinterPropertiesDialog.ui:1319
 msgid "Installed Options"
 msgstr "সংস্থাপিত বিকল্প"
 
-#: ../ui/NewPrinterWindow.ui.h:75
+#: ui/NewPrinterWindow.ui:2458
 msgid ""
 "For the printer you have selected there are drivers available for download."
 msgstr "উল্লেখিত সময় অৱধি."
 
-#: ../ui/NewPrinterWindow.ui.h:76
+#: ui/NewPrinterWindow.ui:2478
 msgid ""
 "These drivers do not come from your operating system supplier and will not "
 "be covered by their commercial support.  See the support and license terms "
 "of the driver's supplier."
 msgstr "সৰ্বমোট."
 
-#: ../ui/NewPrinterWindow.ui.h:77
+#: ui/NewPrinterWindow.ui:2486
 msgid "<b>Note</b>"
 msgstr "<b> নোট</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:78
+#: ui/NewPrinterWindow.ui:2519
 msgid "<b>Select Driver</b>"
 msgstr "<b> চালক</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:79
+#: ui/NewPrinterWindow.ui:2566
 msgid ""
 "With this choice no driver download will be performed. In the next steps a "
 "locally installed driver will be selected."
@@ -2938,173 +3547,165 @@ msgstr ""
 "এই নিৰ্ব্বাচনত কোনো চালক ডাউন্‌লোড কৰা ন'হ'ব । পিছৰ পদক্ষেপত এটা স্থানীয় সংস্থাপিত "
 "চালক নিৰ্বাচিত কৰা হ'ব ।"
 
-#: ../ui/NewPrinterWindow.ui.h:81 ../ui/PrinterPropertiesDialog.ui.h:7
+#: ui/NewPrinterWindow.ui:2603 ui/PrinterPropertiesDialog.ui:278
 msgid "Description:"
 msgstr "বিৱৰণ:"
 
-#: ../ui/NewPrinterWindow.ui.h:82
+#: ui/NewPrinterWindow.ui:2622
 msgid "License:"
 msgstr "প্ৰমাণপত্ৰ:"
 
-#: ../ui/NewPrinterWindow.ui.h:83
+#: ui/NewPrinterWindow.ui:2641
 msgid "Supplier:"
 msgstr "Supplier:"
 
-#: ../ui/NewPrinterWindow.ui.h:84
+#: ui/NewPrinterWindow.ui:2659
 msgid "license"
 msgstr "লাইচেঞ্চ"
 
-#: ../ui/NewPrinterWindow.ui.h:85
+#: ui/NewPrinterWindow.ui:2679
 msgid "short description"
 msgstr "সমু বিৱৰণ"
 
-#: ../ui/NewPrinterWindow.ui.h:86
+#: ui/NewPrinterWindow.ui:2695
 msgid "Manufacturer"
 msgstr "প্ৰস্তুতকাৰী"
 
-#: ../ui/NewPrinterWindow.ui.h:87
+#: ui/NewPrinterWindow.ui:2720
 msgid "supplier"
 msgstr "যোগনিয়াৰ"
 
-#: ../ui/NewPrinterWindow.ui.h:88
+#: ui/NewPrinterWindow.ui:2736
 msgid "Free software"
 msgstr "মুক্ত চালনাজ্ঞান"
 
-#: ../ui/NewPrinterWindow.ui.h:89
+#: ui/NewPrinterWindow.ui:2755
 msgid "Patented algorithms"
 msgstr "Patented algorithms"
 
-#: ../ui/NewPrinterWindow.ui.h:90
+#: ui/NewPrinterWindow.ui:2781
 msgid "Support:"
 msgstr "সমৰ্থন:"
 
-#: ../ui/NewPrinterWindow.ui.h:91
+#: ui/NewPrinterWindow.ui:2798
 msgid "support contacts"
 msgstr "সমৰ্থন পৰিচয়সমূহ"
 
-#: ../ui/NewPrinterWindow.ui.h:92
+#: ui/NewPrinterWindow.ui:2842
 msgid "Text:"
 msgstr "টেক্সট:"
 
-#: ../ui/NewPrinterWindow.ui.h:93
+#: ui/NewPrinterWindow.ui:2861
 msgid "Line art:"
 msgstr "লাইন আৰ্ট:"
 
-#: ../ui/NewPrinterWindow.ui.h:95
+#: ui/NewPrinterWindow.ui:3023
 msgid "Graphics:"
 msgstr "গ্ৰাফিক্স:"
 
-#: ../ui/NewPrinterWindow.ui.h:96
+#: ui/NewPrinterWindow.ui:3086
 msgid "Photo:"
 msgstr "ফ'টো:"
 
-#: ../ui/NewPrinterWindow.ui.h:97
+#: ui/NewPrinterWindow.ui:3109
 msgid "<b>Output Quality</b>"
 msgstr "<b>নিৰ্গমৰ গুণ</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:98
+#: ui/NewPrinterWindow.ui:3160
 msgid "Yes, I accept this license"
 msgstr "হয়, মই এই অনুজ্ঞাপত্ৰ গ্ৰহণ কৰিছোঁ"
 
-#: ../ui/NewPrinterWindow.ui.h:99
+#: ui/NewPrinterWindow.ui:3176
 msgid "No, I do not accept this license"
 msgstr "নহয়, মই এই অনুজ্ঞাপত্ৰ গ্ৰহণ নকৰোঁ"
 
-#: ../ui/NewPrinterWindow.ui.h:100
+#: ui/NewPrinterWindow.ui:3203
 msgid "<b>License Terms</b>"
 msgstr "<b>মুদ্ৰকৰ নাম</b>"
 
-#: ../ui/NewPrinterWindow.ui.h:101
+#: ui/NewPrinterWindow.ui:3223
 msgid "Driver details"
 msgstr "চালক"
 
-#: ../ui/NewPrinterWindow.ui.h:103
+#: ui/NewPrinterWindow.ui:3297
 msgid "_Back"
 msgstr ""
 
-#: ../ui/NewPrinterWindow.ui.h:105 ../ui/PrinterPropertiesDialog.ui.h:3
+#: ui/NewPrinterWindow.ui:3329 ui/PrinterPropertiesDialog.ui:152
 msgid "_Apply"
 msgstr ""
 
-#: ../ui/NewPrinterWindow.ui.h:106
+#: ui/NewPrinterWindow.ui:3345
 msgid "_Forward"
 msgstr ""
 
-#: ../ui/PrinterPropertiesDialog.ui.h:1
+#: ui/PrinterPropertiesDialog.ui:92
 msgid "Printer Properties"
 msgstr "মূদ্ৰকৰ বৈশিষ্ট্য"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:2
+#: ui/PrinterPropertiesDialog.ui:132
 msgid "Co_nflicts"
 msgstr "যুঁজসমূহ (_n)"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:6
+#: ui/PrinterPropertiesDialog.ui:197
 msgid "_Close"
 msgstr ""
 
-#: ../ui/PrinterPropertiesDialog.ui.h:8
+#: ui/PrinterPropertiesDialog.ui:298
 msgid "Location:"
 msgstr "স্থান:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:9
+#: ui/PrinterPropertiesDialog.ui:354
 msgid "Device URI:"
 msgstr "যন্ত্ৰ URI:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:10
+#: ui/PrinterPropertiesDialog.ui:374
 msgid "Printer State:"
 msgstr "মুদ্ৰকৰ অৱস্থা:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:11
+#: ui/PrinterPropertiesDialog.ui:394
 msgid "Make and Model:"
 msgstr "নিৰ্মাণ আৰু প্ৰতিমান:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:12
+#: ui/PrinterPropertiesDialog.ui:431 ui/PrinterPropertiesDialog.ui:476
 msgid "Change..."
 msgstr "সলনি..."
 
-#: ../ui/PrinterPropertiesDialog.ui.h:13
-msgid "make and model"
-msgstr "নিৰ্মাণ আৰু আৰ্হি"
-
-#: ../ui/PrinterPropertiesDialog.ui.h:14
-msgid "printer state"
-msgstr "প্ৰিন্টাৰ অৱস্থা"
-
-#: ../ui/PrinterPropertiesDialog.ui.h:15
+#: ui/PrinterPropertiesDialog.ui:520
 msgid "<b>Settings</b>"
 msgstr "<b>পটভুমি</b>"
 
 #. Not more than 25 characters
-#: ../ui/PrinterPropertiesDialog.ui.h:19
+#: ui/PrinterPropertiesDialog.ui:562
 msgid "Print Self-Test Page"
 msgstr "মূদ্ৰণ কৰক পৰীক্ষা পৃষ্ঠা"
 
 #. Not more than 25 characters
-#: ../ui/PrinterPropertiesDialog.ui.h:21
+#: ui/PrinterPropertiesDialog.ui:577
 msgid "Clean Print Heads"
 msgstr "মূদ্ৰণ কৰক"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:22
+#: ui/PrinterPropertiesDialog.ui:596
 msgid "<b>Tests and Maintenance</b>"
 msgstr "<b>Tests and Maintenance</b>"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:23
+#: ui/PrinterPropertiesDialog.ui:613
 msgid "Settings"
 msgstr "পটভুমি"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:24
+#: ui/PrinterPropertiesDialog.ui:646
 msgid "Enabled"
 msgstr "সক্ৰীয়"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:25
+#: ui/PrinterPropertiesDialog.ui:663
 msgid "Accepting jobs"
 msgstr "কাৰ্য্য গ্ৰহণ কৰা হৈছে"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:26
+#: ui/PrinterPropertiesDialog.ui:679
 msgid "Shared"
 msgstr "অংশীদাৰ কৰা"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:27
+#: ui/PrinterPropertiesDialog.ui:705
 msgid ""
 "<i>Not published\n"
 "See server settings</i>"
@@ -3112,68 +3713,68 @@ msgstr ""
 "<i>প্ৰকাশিত কৰা হোৱা নাই\n"
 "সেৱকৰ পটভুমি চাওক</i>"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:29
+#: ui/PrinterPropertiesDialog.ui:722
 msgid "<b>State</b>"
 msgstr "<b>অৱস্থা</b>"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:30
+#: ui/PrinterPropertiesDialog.ui:752
 #, fuzzy
 msgid "Error Policy:"
 msgstr "ভুল নীতি: \t"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:31
+#: ui/PrinterPropertiesDialog.ui:771
 msgid "Operation Policy:"
 msgstr "কাৰ্য্য কৰা নীতি:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:32
+#: ui/PrinterPropertiesDialog.ui:825
 msgid "<b>Policies</b>"
 msgstr "<b>নীতিসমূহ</b>"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:33
+#: ui/PrinterPropertiesDialog.ui:855
 msgid "Starting Banner:"
 msgstr "আৰম্ভণিৰ পতাকা:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:34
+#: ui/PrinterPropertiesDialog.ui:874
 msgid "Ending Banner:"
 msgstr "অন্তৰ পতাকা:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:35
+#: ui/PrinterPropertiesDialog.ui:928
 msgid "<b>Banner</b>"
 msgstr "<b>পতাকা</b>"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:36
+#: ui/PrinterPropertiesDialog.ui:948
 msgid "Policies"
 msgstr "নীতি"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:37
+#: ui/PrinterPropertiesDialog.ui:964
 msgid "Allow printing for everyone except these users:"
 msgstr "এই ব্যৱহাৰকৰ্তাকৈইজনৰ বাদে সকলোৰে কাৰণে মুদ্ৰণৰ আজ্ঞা দিয়ক:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:38
+#: ui/PrinterPropertiesDialog.ui:980
 msgid "Deny printing for everyone except these users:"
 msgstr "এই ব্যৱহাৰকৰ্তাকৈইজনৰ বাদে সকলোৰে কাৰণে মুদ্ৰণৰ আজ্ঞা নিদিব:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:39
+#: ui/PrinterPropertiesDialog.ui:1012
 msgid "user"
 msgstr "ব্যৱহাৰকৰোঁতা"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:41
+#: ui/PrinterPropertiesDialog.ui:1080
 msgid "_Add"
 msgstr ""
 
-#: ../ui/PrinterPropertiesDialog.ui.h:42
+#: ui/PrinterPropertiesDialog.ui:1118
 msgid "Access Control"
 msgstr "অভিগমৰ নিয়ন্ত্ৰণ"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:43
+#: ui/PrinterPropertiesDialog.ui:1137
 msgid "Add or Remove Members"
 msgstr "সদস্য যোগ কৰক বা আঁতৰাওক"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:46
+#: ui/PrinterPropertiesDialog.ui:1273
 msgid "Members"
 msgstr "সদস্য"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:49
+#: ui/PrinterPropertiesDialog.ui:1393
 msgid ""
 "Specify the default job options for this printer.  Jobs arriving at this "
 "print server will have these options added if they are not already set by "
@@ -3183,232 +3784,270 @@ msgstr ""
 "অ্যাপ্লিকেশন দ্বাৰা এই সমস্ত বিকল্পেৰ মান নিৰ্ধাৰিত না হলে চিহ্নিত মূদ্ৰকে আগত সমস্ত "
 "কাৰ্য্যৰ বাবে উল্লেখিত বিকল্পসমূহ প্ৰয়োগ কৰা হ'ব ।"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:50
+#: ui/PrinterPropertiesDialog.ui:1421
 msgid "Copies:"
 msgstr "প্ৰতিলিপি:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:51
+#: ui/PrinterPropertiesDialog.ui:1440
 msgid "Orientation:"
 msgstr "দিশা:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:52
+#: ui/PrinterPropertiesDialog.ui:1452
 msgid "Scale to fit"
 msgstr "মাপ অনুযায়ী"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:53
+#: ui/PrinterPropertiesDialog.ui:1479
 msgid "Pages per side:"
 msgstr "প্ৰতি পাৰ্শ্বে পৃষ্ঠা সংখ্যা:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:54
+#: ui/PrinterPropertiesDialog.ui:1508
 msgid "Pages per side layout:"
 msgstr "প্ৰতি বিন্যাসে পৃষ্ঠা সংখ্যা:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:55
+#: ui/PrinterPropertiesDialog.ui:1527
 msgid "Brightness:"
 msgstr "উজ্জ্বলতা:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:56
+#: ui/PrinterPropertiesDialog.ui:1546
 msgid "Finishings:"
 msgstr "কাৰ্য্য সমাপ্তি:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:57
+#: ui/PrinterPropertiesDialog.ui:1565
 msgid "Job priority:"
 msgstr "কাৰ্য্যত অগ্ৰাধিকাৰৰ মাত্ৰা:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:58
+#: ui/PrinterPropertiesDialog.ui:1584
 msgid "Media:"
 msgstr "মিডিয়া:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:59
+#: ui/PrinterPropertiesDialog.ui:1603
 msgid "Sides:"
 msgstr "পাৰ্শ্ব:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:60
+#: ui/PrinterPropertiesDialog.ui:1622
 msgid "Hold until:"
 msgstr "-লৈকে ধৰি ৰাখক:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:61
+#: ui/PrinterPropertiesDialog.ui:1641
 msgid "Output order:"
 msgstr "আউটপুট অনুক্ৰম:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:62
+#: ui/PrinterPropertiesDialog.ui:1660
 msgid "Print quality:"
 msgstr "প্ৰিন্ট বৈশিষ্ট:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:63
+#: ui/PrinterPropertiesDialog.ui:1679
 msgid "Printer resolution:"
 msgstr "প্ৰিন্টাৰ সংকল্প:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:64
+#: ui/PrinterPropertiesDialog.ui:1698
 msgid "Output bin:"
 msgstr "আউটপুট bin:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:65
+#: ui/PrinterPropertiesDialog.ui:1739 ui/PrinterPropertiesDialog.ui:2435
+#: ui/PrinterPropertiesDialog.ui:2630
 msgid "100"
 msgstr ""
 
-#: ../ui/PrinterPropertiesDialog.ui.h:66
+#: ui/PrinterPropertiesDialog.ui:1749 ui/PrinterPropertiesDialog.ui:2445
+#: ui/PrinterPropertiesDialog.ui:2640
+msgid "%"
+msgstr ""
+
+#: ui/PrinterPropertiesDialog.ui:1803
 msgid "50"
 msgstr ""
 
-#: ../ui/PrinterPropertiesDialog.ui.h:67
+#: ui/PrinterPropertiesDialog.ui:1945 ui/PrinterPropertiesDialog.ui:1963
+#: ui/PrinterPropertiesDialog.ui:1981 ui/PrinterPropertiesDialog.ui:1999
+#: ui/PrinterPropertiesDialog.ui:2017 ui/PrinterPropertiesDialog.ui:2035
+#: ui/PrinterPropertiesDialog.ui:2053 ui/PrinterPropertiesDialog.ui:2071
+#: ui/PrinterPropertiesDialog.ui:2089 ui/PrinterPropertiesDialog.ui:2107
+#: ui/PrinterPropertiesDialog.ui:2125 ui/PrinterPropertiesDialog.ui:2218
+#: ui/PrinterPropertiesDialog.ui:2236 ui/PrinterPropertiesDialog.ui:2254
+#: ui/PrinterPropertiesDialog.ui:2272 ui/PrinterPropertiesDialog.ui:2549
+#: ui/PrinterPropertiesDialog.ui:2567 ui/PrinterPropertiesDialog.ui:2585
+#: ui/PrinterPropertiesDialog.ui:2671 ui/PrinterPropertiesDialog.ui:2689
+#: ui/PrinterPropertiesDialog.ui:2940 ui/PrinterPropertiesDialog.ui:2958
+#: ui/PrinterPropertiesDialog.ui:2976 ui/PrinterPropertiesDialog.ui:3312
+#: ui/PrinterPropertiesDialog.ui:3330 ui/PrinterPropertiesDialog.ui:3348
+#: ui/PrinterPropertiesDialog.ui:3366 ui/PrinterPropertiesDialog.ui:3384
+#: ui/PrinterPropertiesDialog.ui:3402
 msgid "Reset"
 msgstr "পুনঃ নিৰ্ধাৰণ"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:68
+#: ui/PrinterPropertiesDialog.ui:2147 ui/PrinterPropertiesDialog.ui:2607
+#: ui/PrinterPropertiesDialog.ui:2998
 msgid "More"
 msgstr "অতিৰিক্ত"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:69
+#: ui/PrinterPropertiesDialog.ui:2165 ui/PrinterPropertiesDialog.ui:2923
 msgid "1"
 msgstr ""
 
-#: ../ui/PrinterPropertiesDialog.ui.h:70
+#: ui/PrinterPropertiesDialog.ui:2294
 msgid "<b>Common Options</b>"
 msgstr "<b>সাধাৰণ বিকল্প</b>"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:71
+#: ui/PrinterPropertiesDialog.ui:2317
 msgid "Mirror"
 msgstr "মিৰৰ"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:72
+#: ui/PrinterPropertiesDialog.ui:2345
 msgid "Scaling:"
 msgstr "মাপ পৰিবৰ্ত্তন:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:73
+#: ui/PrinterPropertiesDialog.ui:2374
 msgid "Saturation:"
 msgstr "স্যাচুৰেশন:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:74
+#: ui/PrinterPropertiesDialog.ui:2393
 msgid "Hue adjustment:"
 msgstr "হিউ পৰিবৰ্ত্তন:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:75
+#: ui/PrinterPropertiesDialog.ui:2412
 msgid "Gamma:"
 msgstr "গামা:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:76
+#: ui/PrinterPropertiesDialog.ui:2487 ui/PrinterPropertiesDialog.ui:3116
+#: ui/PrinterPropertiesDialog.ui:3168 ui/PrinterPropertiesDialog.ui:3220
+#: ui/PrinterPropertiesDialog.ui:3272
 msgid "0"
 msgstr ""
 
-#: ../ui/PrinterPropertiesDialog.ui.h:77
+#: ui/PrinterPropertiesDialog.ui:2496
+msgid "°"
+msgstr ""
+
+#: ui/PrinterPropertiesDialog.ui:2533
 msgid "1000"
 msgstr ""
 
-#: ../ui/PrinterPropertiesDialog.ui.h:78
+#: ui/PrinterPropertiesDialog.ui:2711
 msgid "<b>Image Options</b>"
 msgstr "<b>প্ৰতিমুৰ্তিৰ বিকল্প</b>"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:79
+#: ui/PrinterPropertiesDialog.ui:2741
 msgid "Characters per inch:"
 msgstr "প্ৰতি ইঞ্চিত অক্ষৰ সংখ্যা:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:80
+#: ui/PrinterPropertiesDialog.ui:2760
 msgid "Lines per inch:"
 msgstr "প্ৰতি ইঞ্চিত পংক্তি সংখ্যা:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:81
+#: ui/PrinterPropertiesDialog.ui:2779
 msgid "Left margin:"
 msgstr "বাওঁফালৰ প্ৰান্তৰেখা"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:82
+#: ui/PrinterPropertiesDialog.ui:2798
 msgid "Right margin:"
 msgstr "সোঁফালেেৰ প্ৰান্তৰেখা:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:83
+#: ui/PrinterPropertiesDialog.ui:2817
 msgid "Top margin:"
 msgstr "উপৰেৰ প্ৰান্তৰেখা"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:84
+#: ui/PrinterPropertiesDialog.ui:2836
 msgid "Bottom margin:"
 msgstr "তলতৰ প্ৰান্তৰেখা:"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:85
+#: ui/PrinterPropertiesDialog.ui:2858
 msgid "Pretty print"
 msgstr "Pretty print"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:86
+#: ui/PrinterPropertiesDialog.ui:2878
 msgid "Word wrap"
 msgstr "পংক্তি বিভাজন"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:87
+#: ui/PrinterPropertiesDialog.ui:2905
 msgid "Columns:"
 msgstr "কলাম: "
 
-#: ../ui/PrinterPropertiesDialog.ui.h:88
+#: ui/PrinterPropertiesDialog.ui:3022
 msgid "10.00"
 msgstr ""
 
-#: ../ui/PrinterPropertiesDialog.ui.h:89
+#: ui/PrinterPropertiesDialog.ui:3069
 msgid "6.40"
 msgstr ""
 
-#: ../ui/PrinterPropertiesDialog.ui.h:90
+#: ui/PrinterPropertiesDialog.ui:3125 ui/PrinterPropertiesDialog.ui:3140
+#: ui/PrinterPropertiesDialog.ui:3177 ui/PrinterPropertiesDialog.ui:3192
+#: ui/PrinterPropertiesDialog.ui:3229 ui/PrinterPropertiesDialog.ui:3244
+#: ui/PrinterPropertiesDialog.ui:3281 ui/PrinterPropertiesDialog.ui:3296
 msgid "points"
 msgstr "পইন্ট"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:91
+#: ui/PrinterPropertiesDialog.ui:3424
 msgid "<b>Text Options</b>"
 msgstr "<b>লিপিৰ বিকল্প</b>"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:92
+#: ui/PrinterPropertiesDialog.ui:3501
 msgid "To add a new option, enter its name in the box below and click to add."
 msgstr ""
 "নতুন বিকল্প যোগ কৰাৰ বাবে নিম্নলিখিত বাক্সে সেটিৰ নাম লিখে যোগ কৰক ক্লিক কৰক ।"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:94
+#: ui/PrinterPropertiesDialog.ui:3563
 msgid "<b>Other Options (Advanced)</b>"
 msgstr "<b>অন্য বিকল্প (উন্নত)</b>"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:95
+#: ui/PrinterPropertiesDialog.ui:3587
 msgid "Job Options"
 msgstr "কাৰ্য্যৰ বিকল্প"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:97
+#: ui/PrinterPropertiesDialog.ui:3678
 msgid "<b>Ink/Toner Levels</b>"
 msgstr "<b>চিয়াঁহি/ট'নাৰৰ স্তৰ</b>"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:98
+#: ui/PrinterPropertiesDialog.ui:3708
 msgid "There are no status messages for this printer."
 msgstr "চিহ্নিত মূদ্ৰকৰ বাবে কিছু অৱস্থাসূচক বাৰ্তা উপস্থিত আছে ।"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:99
+#: ui/PrinterPropertiesDialog.ui:3715
+msgid "label229"
+msgstr ""
+
+#: ui/PrinterPropertiesDialog.ui:3745
+msgid "label230"
+msgstr ""
+
+#: ui/PrinterPropertiesDialog.ui:3758
 msgid "<b>Status Messages</b>"
 msgstr "<b>অৱস্থাসূচক বাৰ্তা</b>"
 
-#: ../ui/PrinterPropertiesDialog.ui.h:100
+#: ui/PrinterPropertiesDialog.ui:3778
 msgid "Ink/Toner Levels"
 msgstr "চিয়াঁহি/ট'নাৰৰ স্তৰ"
 
-#: ../ui/PrintersWindow.ui.h:1
+#: ui/PrintersWindow.ui:32
 msgid "_Server"
 msgstr "সেৱক (_S)"
 
-#: ../ui/PrintersWindow.ui.h:3
+#: ui/PrintersWindow.ui:50
 msgid "_View"
 msgstr "প্ৰদৰ্শন (_V)"
 
-#: ../ui/PrintersWindow.ui.h:4
+#: ui/PrintersWindow.ui:60
 msgid "_Discovered Printers"
 msgstr "উদ্ভাৱন কৰা হোৱা মূদ্ৰক (_D)"
 
-#: ../ui/PrintersWindow.ui.h:5
+#: ui/PrintersWindow.ui:75
 msgid "_Help"
 msgstr "সহায়(_H)"
 
-#: ../ui/PrintersWindow.ui.h:6
+#: ui/PrintersWindow.ui:82
 msgid "_Troubleshoot"
 msgstr "সমস্যামুক্তি (_T)"
 
-#: ../ui/PrintersWindow.ui.h:7
+#: ui/PrintersWindow.ui:94
 msgid "About"
 msgstr ""
 
-#: ../ui/PrintersWindow.ui.h:8
+#: ui/PrintersWindow.ui:188
 msgid "There are no printers configured yet."
 msgstr "এতিয়ালৈকে কোনো প্ৰিন্টাৰ সংৰূপীত কৰা হোৱা নাই।"
 
-#: ../ui/PrintersWindow.ui.h:10
+#: ui/PrintersWindow.ui:253
 msgid ""
 "Printing service not available.  Start the service on this computer or "
 "connect to another server."
@@ -3416,56 +4055,56 @@ msgstr ""
 "প্ৰিন্ট সেৱা উপলব্ধ নহয়। সেৱাটো এই কমপিউটাৰত আৰম্ভ কৰক অথবা অন্য চাৰ্ভাৰৰ লগত "
 "সংযোগ কৰক।"
 
-#: ../ui/PrintersWindow.ui.h:11
+#: ui/PrintersWindow.ui:271
 msgid "Start Service"
 msgstr "সেৱা আৰম্ভ কৰক"
 
-#: ../ui/ServerSettingsDialog.ui.h:1
+#: ui/ServerSettingsDialog.ui:8
 msgid "Server Settings"
 msgstr "চাৰ্ভাৰ সংহতিসমূহ"
 
-#: ../ui/ServerSettingsDialog.ui.h:4
+#: ui/ServerSettingsDialog.ui:83
 msgid "_Show printers shared by other systems"
 msgstr "অন্য ব্যৱস্থাপ্ৰণালীৰ লগত অংশীদাৰ কৰা মুদ্ৰক দেখুৱাওক (_S)"
 
-#: ../ui/ServerSettingsDialog.ui.h:5
+#: ui/ServerSettingsDialog.ui:110
 msgid "_Publish shared printers connected to this system"
 msgstr "বৰ্তমান ব্যৱস্থাপ্ৰণালীৰ সৈতে সংযুক্ত শ্বেয়াৰ কৰা মূদ্ৰক প্ৰকাশিত হ'ব (_P)"
 
-#: ../ui/ServerSettingsDialog.ui.h:6
+#: ui/ServerSettingsDialog.ui:126
 msgid "Allow printing from the _Internet"
 msgstr "ইন্টাৰনে'টৰ পৰা মূদ্ৰণ কৰাৰ অনুমতি দিয়ক (_I)"
 
-#: ../ui/ServerSettingsDialog.ui.h:7
+#: ui/ServerSettingsDialog.ui:143
 msgid "Allow _remote administration"
 msgstr "দূৰৰ প্ৰশাসনৰ অনুমতি দিয়ক (_r)"
 
-#: ../ui/ServerSettingsDialog.ui.h:8
+#: ui/ServerSettingsDialog.ui:159
 msgid "Allow _users to cancel any job (not just their own)"
 msgstr ""
 "যিকোনো কাৰ্য্য বাতিল কৰিব'লৈ ব্যৱহাৰকৰ্তাক অনুমতি দিয়ক (নিজৰ কাৰ্য্যৰো বাহিৰে) (_u)"
 
-#: ../ui/ServerSettingsDialog.ui.h:9
+#: ui/ServerSettingsDialog.ui:175
 msgid "Save _debugging information for troubleshooting"
 msgstr "বিজুতিৰ সমাধানৰ বাবে ডিবাগৰ তথ্য সংৰক্ষিত কৰক (_d)"
 
-#: ../ui/ServerSettingsDialog.ui.h:10
+#: ui/ServerSettingsDialog.ui:213
 msgid "Do not preserve job history"
 msgstr "কাৰ্য্যৰ ইতিহাস ৰক্ষা নকৰিব"
 
-#: ../ui/ServerSettingsDialog.ui.h:11
+#: ui/ServerSettingsDialog.ui:228
 msgid "Preserve job history but not files"
 msgstr "কাৰ্য্যৰ ইতিহাস ৰক্ষা কৰিব কিন্তু নথিপত্ৰ নহয়"
 
-#: ../ui/ServerSettingsDialog.ui.h:12
+#: ui/ServerSettingsDialog.ui:244
 msgid "Preserve job files (allow reprinting)"
 msgstr "কাৰ্য্যৰ নথিপত্ৰ সংৰক্ষণ কৰক (পুনঃ মূদ্ৰণৰ বাবে)"
 
-#: ../ui/ServerSettingsDialog.ui.h:13
+#: ui/ServerSettingsDialog.ui:264
 msgid "<b>Job history</b>"
 msgstr "<b>কাৰ্য্য ইতিহাস</b>"
 
-#: ../ui/ServerSettingsDialog.ui.h:14
+#: ui/ServerSettingsDialog.ui:292
 msgid ""
 "Usually print servers broadcast their queues. Specify print servers below to "
 "periodically ask for queues instead."
@@ -3473,622 +4112,47 @@ msgstr ""
 "সাধাৰনত প্ৰিন্ট চাৰ্ভাৰসমূহয়ে তেওলোকৰ শাৰীসমূহ সম্প্ৰচাৰ কৰে। ম্যাদীভাৱে শাৰীসমূহ "
 "বিচাৰিবলে তলত প্ৰিন্ট চাৰ্ভাৰসমূহ ধাৰ্য্য কৰক।"
 
-#: ../ui/ServerSettingsDialog.ui.h:16
+#: ui/ServerSettingsDialog.ui:351
 msgid "Remove"
 msgstr ""
 
-#: ../ui/ServerSettingsDialog.ui.h:17
+#: ui/ServerSettingsDialog.ui:385
 msgid "<b>Browse servers</b>"
 msgstr "<b>চাৰ্ভাৰসমূহ ব্ৰাউছ কৰক</b>"
 
-#: ../ui/ServerSettingsDialog.ui.h:18
+#: ui/ServerSettingsDialog.ui:402
 msgid "Advanced Server Settings"
 msgstr "সেৱকৰ উন্নত বিন্যাস"
 
-#: ../ui/ServerSettingsDialog.ui.h:19
+#: ui/ServerSettingsDialog.ui:421
 msgid "<b>Basic Server Settings</b>"
 msgstr "<b>সেৱকৰ মৌলিক বিন্যাস</b>"
 
-#: ../ui/SMBBrowseDialog.ui.h:1
+#: ui/SMBBrowseDialog.ui:7
 msgid "SMB Browser"
 msgstr "SMB চৰক"
 
-#: ../ui/statusicon_popupmenu.ui.h:1
+#: ui/statusicon_popupmenu.ui:11
 msgid "_Hide"
 msgstr "লুকিয়ে ফেলুন (_H)"
 
-#: ../ui/statusicon_popupmenu.ui.h:2
+#: ui/statusicon_popupmenu.ui:18
 msgid "_Configure Printers"
 msgstr "প্ৰিন্টাৰসমূহ সংৰূপণ কৰক (_C)"
 
-#: ../ui/statusicon_popupmenu.ui.h:3
+#: ui/statusicon_popupmenu.ui:33
 msgid "_Quit"
 msgstr ""
 
-#: ../ui/WaitWindow.ui.h:1
+#: ui/WaitWindow.ui:7
 msgid "Please Wait"
 msgstr "অনুগ্ৰহ কৰি প্ৰতীক্ষা কৰক"
 
-#: ../system-config-printer.desktop.in.h:2
-msgid "Configure printers"
-msgstr "মুদ্ৰকৰ বিন্যাস কৰক"
-
-#: ../statereason.py:109
-msgid "Toner low"
-msgstr "টোনাৰ স্বল্প পৰিমানে উপলব্ধ"
-
-#: ../statereason.py:110
-#, python-format
-msgid "Printer '%s' is low on toner."
-msgstr "'%s' মূদ্ৰকে টোনাৰেৰ পৰিমান হ্ৰাস হৈছে ।"
-
-#: ../statereason.py:111
-msgid "Toner empty"
-msgstr "টোনাৰ ফাঁকা"
-
-#: ../statereason.py:112
-#, python-format
-msgid "Printer '%s' has no toner left."
-msgstr "'%s' মূদ্ৰকে টোনাৰ অৱশিষ্ট নাই ।"
-
-#: ../statereason.py:113
-msgid "Cover open"
-msgstr "ঢাকনা খোলা"
-
-#: ../statereason.py:114
-#, python-format
-msgid "The cover is open on printer '%s'."
-msgstr "'%s' মূদ্ৰকৰ ঢাকনা খোলা অৱস্থায় আছে ।"
-
-#: ../statereason.py:115
-msgid "Door open"
-msgstr "দৰজা খোলা"
-
-#: ../statereason.py:116
-#, python-format
-msgid "The door is open on printer '%s'."
-msgstr "'%s' মূদ্ৰকৰ দৰজা খোলা অৱস্থায় আছে ।"
-
-#: ../statereason.py:117
-msgid "Paper low"
-msgstr "স্বল্প পৰিমান কাগজ"
-
-#: ../statereason.py:118
-#, python-format
-msgid "Printer '%s' is low on paper."
-msgstr "'%s' মূদ্ৰকে কাগজেৰ পৰিমান হ্ৰাস হৈছে ।"
-
-#: ../statereason.py:119
-msgid "Out of paper"
-msgstr "কাগজ নাই"
-
-#: ../statereason.py:120
-#, python-format
-msgid "Printer '%s' is out of paper."
-msgstr "'%s' মূদ্ৰকে কাগজ ফুৰিয়ে গিয়েছে ।"
-
-#: ../statereason.py:121
-msgid "Ink low"
-msgstr "কালি স্বল্প"
-
-#: ../statereason.py:122
-#, python-format
-msgid "Printer '%s' is low on ink."
-msgstr "'%s' মূদ্ৰকে কালিৰ মাত্ৰা হ্ৰাস পেয়েছে ।"
-
-#: ../statereason.py:123
-msgid "Ink empty"
-msgstr "কালি নাই"
-
-#: ../statereason.py:124
-#, python-format
-msgid "Printer '%s' has no ink left."
-msgstr "'%s' মূদ্ৰকে কালি ফুৰিয়ে গিয়েছে ।"
-
-#: ../statereason.py:125
-msgid "Printer off-line"
-msgstr "মূদ্ৰক অফ-লাইন"
-
-#: ../statereason.py:126
-#, python-format
-msgid "Printer '%s' is currently off-line."
-msgstr "`%s' মূদ্ৰক বৰ্তমানে অফ-লাইন অৱস্থাত আছে ।"
-
-#: ../statereason.py:127
-msgid "Not connected?"
-msgstr "সংযোগ অনুপস্থিত?"
-
-#: ../statereason.py:128
-#, python-format
-msgid "Printer '%s' may not be connected."
-msgstr "'%s' মূদ্ৰক সংযোগ কৰা সম্ভৱ নহয় ।"
-
-#: ../statereason.py:129 ../statereason.py:149
-msgid "Printer error"
-msgstr "মূদ্ৰক সংক্ৰান্ত সমস্যা"
-
-#: ../statereason.py:130
-#, python-format
-msgid "There is a problem on printer '%s'."
-msgstr "`%s' মূদ্ৰকত কিছু সমস্যা দেখা দিছে ।"
-
-#: ../statereason.py:132
-msgid "Printer configuration error"
-msgstr "প্ৰিন্টাৰ সংৰূপ ত্ৰুটি"
-
-#: ../statereason.py:133
-#, python-format
-msgid "There is a missing print filter for printer '%s'."
-msgstr "প্ৰিন্টাৰ '%s' -ৰ বাবে এটা সন্ধানহীন প্ৰিন্ট ফিল্টাৰ আছে।"
-
-#: ../statereason.py:145
-msgid "Printer report"
-msgstr "মূদ্ৰক সংক্ৰান্ত বিৱৰণ"
-
-#: ../statereason.py:147
-msgid "Printer warning"
-msgstr "মূদ্ৰক সংক্ৰান্ত সতৰ্কবাৰ্তা"
-
-#: ../statereason.py:166
-#, python-format
-msgid "Printer '%s': '%s'."
-msgstr "মূদ্ৰক '%s': '%s' ।"
-
-#: ../timedops.py:116 ../timedops.py:195
-msgid "Please wait"
-msgstr "অনুগ্ৰহ কৰি প্ৰতীক্ষা কৰক"
-
-#: ../timedops.py:122 ../timedops.py:202
-msgid "Gathering information"
-msgstr "তথ্য গোটোৱা হৈছে"
-
-#: ../ToolbarSearchEntry.py:74
-msgid "_Filter:"
-msgstr "ফিল্টাৰ (_F):"
-
-#: ../troubleshoot/__init__.py:57
-msgid "Printing troubleshooter"
-msgstr "মূদ্ৰণ সংক্ৰান্ত সমস্যাৰ সমাধান ব্যৱস্থা"
-
-#: ../troubleshoot/base.py:36
-msgid ""
-"To start this tool, select System->Administration->Print Settings from the "
-"main menu."
-msgstr "এই সঁজুলি আৰম্ভ কৰিবলে, মূখ্য মেনুৰ পৰা চিস্টেম->প্ৰশাসন->প্ৰিন্ট সংহতিসমূহ বাছক।"
-
-#: ../troubleshoot/CheckLocalServerPublishing.py:28
-msgid "Server Not Exporting Printers"
-msgstr "সেৱক দ্বাৰা মূদ্ৰক ৰপ্তানি কৰা হোৱা নাই"
-
-#: ../troubleshoot/CheckLocalServerPublishing.py:29
-msgid ""
-"Although one or more printers are marked as being shared, this print server "
-"is not exporting shared printers to the network."
-msgstr ""
-"একাধিক সংখ্যক মূদ্ৰক, যৌথৰূপে ব্যৱহাৰৰ বাবে চিহ্নিত হ'লেও, চিহ্নিত মূদ্ৰণ সেৱক দ্বাৰা "
-"যৌথৰূপে ব্যৱহাৰৰ বাবে নিৰ্ধাৰিত মূদ্ৰক(সমূহ) নে'টৱৰ্কত ৰপ্তানি কৰা হোৱা নাই ।"
-
-#: ../troubleshoot/CheckLocalServerPublishing.py:33
-msgid ""
-"Enable the 'Publish shared printers connected to this system' option in the "
-"server settings using the printing administration tool."
-msgstr ""
-"মূদ্ৰণ ব্যৱস্থা পৰিচালনাৰ প্ৰশাসনিক সৰঞ্জামৰ সহায়ত সেৱকৰ বৈশিষ্ট্যৰ ক্ষেত্ৰত 'বৰ্তমান "
-"ব্যৱস্থাপ্ৰণালীৰ সৈতে সংযুক্ত প্ৰকাশিত মূদ্ৰক শ্বেয়াৰ কৰা হ'ব' বিকল্প সক্ৰিয় কৰক ।"
-
-#: ../troubleshoot/CheckPPDSanity.py:48 ../applet.py:186
-msgid "Install"
-msgstr "সন্ধানহীন চালক"
-
-#: ../troubleshoot/CheckPPDSanity.py:100
-msgid "Invalid PPD File"
-msgstr "PPD নথিপত্ৰ বৈধ নহয়"
-
-#: ../troubleshoot/CheckPPDSanity.py:111
-#, python-format
-msgid ""
-"The PPD file for printer '%s' does not conform to the specification.  "
-"Possible reason follows:"
-msgstr "'%s' মূদ্ৰকৰ PPD নথিপত্ৰ সুনিৰ্দিষ্ট মানৰ সৈতে সুসংগত নহয় । সাম্ভাব্য কাৰণ:"
-
-#. Perhaps cupstestppd is not in the path.
-#: ../troubleshoot/CheckPPDSanity.py:117
-#, python-format
-msgid "There is a problem with the PPD file for printer '%s'."
-msgstr "'%s' মূদ্ৰকৰ PPD নথিপত্ৰ সংক্ৰান্ত সমস্যা দেখা দিছে ।"
-
-#: ../troubleshoot/CheckPPDSanity.py:127
-msgid "Missing Printer Driver"
-msgstr "অনুপস্থিত মূদ্ৰক চালক"
-
-#: ../troubleshoot/CheckPPDSanity.py:141
-#, python-format
-msgid ""
-"Printer '%s' requires the '%s' program but it is not currently installed."
-msgstr ""
-"'%s' মূদ্ৰকৰ বাবে '%s' প্ৰোগ্ৰাম আৱশ্যক হ'লেও এইটো বৰ্তমানে সংস্থাপন কৰা নাই ।"
-
-#: ../troubleshoot/ChooseNetworkPrinter.py:31
-msgid "Choose Network Printer"
-msgstr "নে'টৱৰ্ক মূদ্ৰক নিৰ্ব্বাচন কৰক"
-
-#: ../troubleshoot/ChooseNetworkPrinter.py:32
-msgid ""
-"Please select the network printer you are trying to use from the list below. "
-"If it does not appear in the list, select 'Not listed'."
-msgstr ""
-"নিম্নলিখিত তালিকাৰ পৰা অনুগ্ৰহ কৰে ব্যৱহাৰৰ উদ্দেশ্যে নে'টৱৰ্ক মূদ্ৰক নিৰ্ব্বাচন কৰক । "
-"তালিকাত এইটো উপস্থিত নাথাকিলে 'তালিকাত অনুপস্থিত' নিৰ্ব্বাচন কৰক ।"
-
-#: ../troubleshoot/ChooseNetworkPrinter.py:41
-#: ../troubleshoot/ChoosePrinter.py:47 ../troubleshoot/DeviceListed.py:45
-msgid "Information"
-msgstr "তথ্য"
-
-#: ../troubleshoot/ChooseNetworkPrinter.py:75
-#: ../troubleshoot/ChoosePrinter.py:71 ../troubleshoot/DeviceListed.py:77
-msgid "Not listed"
-msgstr "তালিকাত অনুপস্থিত"
-
-#: ../troubleshoot/ChoosePrinter.py:37
-msgid "Choose Printer"
-msgstr "মূদ্ৰক নিৰ্ব্বাচন কৰক"
-
-#: ../troubleshoot/ChoosePrinter.py:38
-msgid ""
-"Please select the printer you are trying to use from the list below. If it "
-"does not appear in the list, select 'Not listed'."
-msgstr ""
-"নিম্নলিখিত তালিকাৰ পৰা অনুগ্ৰহ কৰি ব্যৱহাৰৰ উদ্দেশ্যে মূদ্ৰক নিৰ্ব্বাচন কৰক । তালিকাত "
-"এইটো উপস্থিত নাথাকিলে 'তালিকাত অনুপস্থিত' নিৰ্ব্বাচন কৰক ।"
-
-#: ../troubleshoot/DeviceListed.py:37
-msgid "Choose Device"
-msgstr "যন্ত্ৰ নিৰ্ব্বাচন কৰক"
-
-#: ../troubleshoot/DeviceListed.py:38
-msgid ""
-"Please select the device you want to use from the list below. If it does not "
-"appear in the list, select 'Not listed'."
-msgstr ""
-"নিম্নলিখিত তালিকাৰ পৰা অনুগ্ৰহ কৰি ব্যৱহাৰেৰ উদ্দেশ্যে প্ৰযোজ্য যন্ত্ৰ নিৰ্ব্বাচন কৰক । "
-"তালিকাত এইটো উপস্থিত নাথাকিলে 'তালিকাত অনুপস্থিত' নিৰ্ব্বাচন কৰক ।"
-
-#: ../troubleshoot/ErrorLogCheckpoint.py:40
-msgid "Debugging"
-msgstr "ডিবাগ ব্যৱস্থা"
-
-#: ../troubleshoot/ErrorLogCheckpoint.py:41
-msgid ""
-"This step will enable debugging output from the CUPS scheduler.  This may "
-"cause the scheduler to restart.  Click the button below to enable debugging."
-msgstr ""
-"এই স্তৰে CUPS অনুসূচকৰ পৰা ডিবাগ আউটপুট সামৰ্থবান কৰিব। ইয়াৰ বাবে অনুসূচক পুনৰাম্ভ হব "
-"পাৰে। ডিবাগ সামৰ্থবান কৰিবলে তলত দিয়া বুটাম সামৰ্থবান কৰক।"
-
-#: ../troubleshoot/ErrorLogCheckpoint.py:45
-msgid "Enable Debugging"
-msgstr "ডিবাগ ব্যৱস্থা সক্ৰিয় কৰক"
-
-#: ../troubleshoot/ErrorLogCheckpoint.py:236
-msgid "Debug logging enabled."
-msgstr "ডিবাগ লগ ব্যৱস্থা সক্ৰিয় কৰা হৈছে ।"
-
-#: ../troubleshoot/ErrorLogCheckpoint.py:238
-msgid "Debug logging was already enabled."
-msgstr "ডিবাগ লগ ব্যৱস্থা ইতিমধ্যে সক্ৰিয় কৰা হৈছে ।"
-
-#: ../troubleshoot/ErrorLogFetch.py:41
-msgid "Retrieve Journal Entries"
-msgstr ""
-
-#: ../troubleshoot/ErrorLogFetch.py:42
-msgid ""
-"No system journal entries were found. This may be because you are not an "
-"administrator. To fetch journal entries please run this command:"
-msgstr ""
-
-#: ../troubleshoot/ErrorLogParse.py:32
-msgid "Error log messages"
-msgstr "ত্ৰুটি সংক্ৰান্ত লগ বাৰ্তা"
-
-#: ../troubleshoot/ErrorLogParse.py:33
-msgid "There are messages in the error log."
-msgstr "ত্ৰুটি সংক্ৰান্ত লগত বাৰ্তা উপস্থিত আছে ।"
-
-#: ../troubleshoot/Locale.py:31
-msgid "Incorrect Page Size"
-msgstr "অশুদ্ধ পৃষ্ঠাৰ আকাৰ"
-
-#: ../troubleshoot/Locale.py:32
-msgid ""
-"The page size for the print job was not the printer's default page size.  If "
-"this is not intentional it may cause alignment problems."
-msgstr ""
-"মূদ্ৰণ কাৰ্য্যৰ পৃষ্ঠাৰ আকাৰ মূদ্ৰকৰ অবিকল্পিত পৃষ্ঠাৰ আকাৰ নহয় । এইটো ইচ্ছাকৃত ন'হ'লে "
-"ইয়াৰ কাৰণে সংৰেখনৰ সমস্যা হ'ব পাৰে ।"
-
-#: ../troubleshoot/Locale.py:44
-msgid "Print job page size:"
-msgstr "মুদ্ৰণ কাৰ্য্যৰ পৃষ্ঠাৰ আকাৰ:"
-
-#: ../troubleshoot/Locale.py:48
-msgid "Printer page size:"
-msgstr "মুদ্ৰকৰ পৃষ্ঠাৰ অৱস্থা:"
-
-#: ../troubleshoot/LocalOrRemote.py:26
-msgid "Printer Location"
-msgstr "মূদ্ৰকৰ অৱস্থান"
-
-#: ../troubleshoot/LocalOrRemote.py:27
-msgid "Is the printer connected to this computer or available on the network?"
-msgstr "মূদ্ৰক এই কম্পিউৰটাৰৰ সৈতে সংযুক্ত নে নে'টৱৰ্কত উপস্থিত?"
-
-#: ../troubleshoot/LocalOrRemote.py:29
-msgid "Locally connected printer"
-msgstr "স্থানীয়ৰূপে সংযুক্ত মূদ্ৰক"
-
-#: ../troubleshoot/NetworkCUPSPrinterShared.py:28
-msgid "Queue Not Shared"
-msgstr "queue যৌথৰূপে ব্যৱহৃত নহয়"
-
-#: ../troubleshoot/NetworkCUPSPrinterShared.py:29
-msgid "The CUPS printer on the server is not shared."
-msgstr "সেৱকতে উপস্থিত CUPS মূদ্ৰক যৌথৰূপে ব্যৱহৃত নহয় ।"
-
-#: ../troubleshoot/PrinterStateReasons.py:34
-msgid "Status Messages"
-msgstr "অৱস্থাসূচক বাৰ্তা"
-
-#: ../troubleshoot/PrinterStateReasons.py:35
-msgid "There are status messages associated with this queue."
-msgstr "চিহ্নিত queue বাবে কিছু অৱস্থাসূচক বাৰ্তা উপস্থিত আছে ।"
-
-#: ../troubleshoot/PrinterStateReasons.py:65
-#, python-format
-msgid "The printer's state message is: '%s'."
-msgstr "মূদ্ৰকৰ অৱস্থা সংক্ৰান্ত বাৰ্তা: '%s' ।"
-
-#: ../troubleshoot/PrinterStateReasons.py:90
-msgid "Errors are listed below:"
-msgstr "ত্ৰুটিসমূহ তলত তালিকাভুক্ত কৰা হৈছে:"
-
-#: ../troubleshoot/PrinterStateReasons.py:95
-msgid "Warnings are listed below:"
-msgstr "সতৰ্কবাৰ্তা তলত তালিকাভুক্ত কৰা হৈছে:"
-
-#: ../troubleshoot/PrintTestPage.py:64
-msgid "Test Page"
-msgstr "পৰীক্ষামূলক পৃষ্ঠা"
-
-#: ../troubleshoot/PrintTestPage.py:65
-msgid ""
-"Now print a test page.  If you are having problems printing a specific "
-"document, print that document now and mark the print job below."
-msgstr ""
-"এখন পৰীক্ষামূলক পৃষ্ঠা মূদ্ৰণ কৰক । কোনো নিৰ্দিষ্ট আলেখ্যন মূদ্ৰণ কৰোঁতে সমস্যা হ'লে, "
-"সংশ্লিষ্ট নথিপত্ৰ পুনঃ মূদ্ৰণ কৰক আৰু মূদ্ৰণ কাৰ্য্য তলত চিহ্নিত কৰক ।"
-
-#: ../troubleshoot/PrintTestPage.py:77
-msgid "Cancel All Jobs"
-msgstr "সকলো কাৰ্য্য বাতিল কৰক"
-
-#: ../troubleshoot/PrintTestPage.py:83
-msgid "Test"
-msgstr "পৰীক্ষা"
-
-#: ../troubleshoot/PrintTestPage.py:113
-msgid "Did the marked print jobs print correctly?"
-msgstr "চিহ্নিত মূদ্ৰণ কাৰ্য্যসমূহ সঠিকৰূপে সঞ্চালিত হৈছেনে ?"
-
-#: ../troubleshoot/PrintTestPage.py:144
-#, python-format
-msgid "Remember to load paper of type '%s' into the printer first."
-msgstr "মূদ্ৰকত প্ৰথমে '%s' ধৰনৰ কাগজ লগাব নাপাহৰিব ।"
-
-#: ../troubleshoot/PrintTestPage.py:430
-msgid "Error submitting test page"
-msgstr "পৰীক্ষামূলক পৃষ্ঠা প্ৰেৰণ কৰোঁতে সমস্যা"
-
-#: ../troubleshoot/QueueNotEnabled.py:58
-#: ../troubleshoot/QueueRejectingJobs.py:68
-#, python-format
-msgid "The reason given is: '%s'."
-msgstr "উল্লেখিত কাৰণ: '%s' ।"
-
-#: ../troubleshoot/QueueNotEnabled.py:60
-msgid "This may be due to the printer being disconnected or switched off."
-msgstr "মূদ্ৰক বিচ্ছিন্ন হ'লে বা বন্ধ হ'লে এই সমস্যাই দেখা দিব পাৰে ।"
-
-#: ../troubleshoot/QueueNotEnabled.py:64
-msgid "Queue Not Enabled"
-msgstr "queue সক্ৰিয় কৰা নহয়"
-
-#: ../troubleshoot/QueueNotEnabled.py:65
-#, python-format
-msgid "The queue '%s' is not enabled."
-msgstr "'%s' queue সক্ৰিয় কৰা নহয় ।"
-
-#: ../troubleshoot/QueueNotEnabled.py:73
-msgid ""
-"To enable it, select the 'Enabled' checkbox in the 'Policies' tab for the "
-"printer in the printer administration tool."
-msgstr ""
-"সক্ৰিয় কৰাৰ বাবে মূদ্ৰক সংক্ৰান্ত প্ৰশাসনিক সৰঞ্জামত মূদ্ৰকৰ বাবে নিৰ্ধাৰিত 'নিয়ম "
-"নীতি' শীৰ্ষক টেবত 'সক্ৰিয়' নামক ছেক বাকচ নিৰ্ব্বাচন কৰক ।"
-
-#: ../troubleshoot/QueueRejectingJobs.py:33
-msgid "Queue Rejecting Jobs"
-msgstr "queueৰ পৰা কাৰ্য্য প্ৰত্যাখ্যান কৰা হৈছে"
-
-#: ../troubleshoot/QueueRejectingJobs.py:65
-#, python-format
-msgid "The queue '%s' is rejecting jobs."
-msgstr "'%s' queueৰ পৰা কাৰ্য্য প্ৰত্যাখ্যান কৰা হৈছে ।"
-
-#: ../troubleshoot/QueueRejectingJobs.py:72
-msgid ""
-"To make the queue accept jobs, select the 'Accepting Jobs' checkbox in the "
-"'Policies' tab for the printer in the printer administration tool."
-msgstr ""
-"queue দ্বাৰা কাৰ্য্য গ্ৰহণ কৰাৰ বাবে মূদ্ৰক সংক্ৰান্ত প্ৰশাসনিক সৰঞ্জামত মূদ্ৰকৰ বাবে "
-"নিৰ্ধাৰিত 'নিয়ম নীতি' শীৰ্ষক টেবত 'কাৰ্য্য গ্ৰহণ কৰা হ'ব' নামক ছেক বাকচ নিৰ্ব্বাচন "
-"কৰক ।"
-
-#: ../troubleshoot/RemoteAddress.py:28
-msgid "Remote Address"
-msgstr "দূৰবৰ্তী ঠিকনা"
-
-#: ../troubleshoot/RemoteAddress.py:29
-msgid ""
-"Please enter as many details as you can about the network address of this "
-"printer."
-msgstr "অনুগ্ৰহ কৰি মূদ্ৰকৰ নে'টৱৰ্ক ঠিকনা সম্বন্ধে যথাসম্ভৱ বিৱৰণ উল্লেখ কৰক ।"
-
-#: ../troubleshoot/RemoteAddress.py:37
-msgid "Server name:"
-msgstr "সেৱকৰ নাম:"
-
-#: ../troubleshoot/RemoteAddress.py:44
-msgid "Server IP address:"
-msgstr "সেৱকৰ IP ঠিকনা:"
-
-#: ../troubleshoot/SchedulerNotRunning.py:28
-msgid "CUPS Service Stopped"
-msgstr "CUPS সেৱা বন্ধ কৰা আছে"
-
-#: ../troubleshoot/SchedulerNotRunning.py:29
-msgid ""
-"The CUPS print spooler does not appear to be running.  To correct this, "
-"choose System->Administration->Services from the main menu and look for the "
-"'cups' service."
-msgstr ""
-"CUPS মূদ্ৰণ স্পুলাৰ সম্ভৱতঃ নাই চলা ।  এই সমস্যা সমাধানৰ বাবে প্ৰধান তালিকাৰ পৰা "
-"ব্যৱস্থাপ্ৰণালী->প্ৰশাসনিক কাৰ্য্য->সেৱা নিৰ্ব্বাচন কৰি 'cups' সেৱা অনুসন্ধান কৰক ।"
-
-#: ../troubleshoot/ServerFirewalled.py:28
-msgid "Check Server Firewall"
-msgstr "সেৱকৰ ফায়াৰ্ৱাল পৰীক্ষা কৰক"
-
-#: ../troubleshoot/ServerFirewalled.py:29
-msgid "It is not possible to connect to the server."
-msgstr "সেৱকৰ সৈতে সংযোগ স্থাপন কৰা সম্ভৱ নহয় ।"
-
-#: ../troubleshoot/ServerFirewalled.py:44
-#, python-format
-msgid ""
-"Please check to see if a firewall or router configuration is blocking TCP "
-"port %d on server '%s'."
-msgstr ""
-"ফায়াৰ্ৱাল বা ৰাউটাৰ বিন্যাসৰ ফলত TCP পোৰ্ট %d ক সেৱক '%s' ত অৱৰুদ্ধ কৰা হৈছে নে "
-"নাই অনুগ্ৰহ কৰি পৰীক্ষা কৰক ।"
-
-#: ../troubleshoot/Shrug.py:28
-msgid "Sorry!"
-msgstr "দুঃখিত!"
-
-#: ../troubleshoot/Shrug.py:29
-msgid ""
-"There is no obvious solution to this problem.  Your answers have been "
-"collected together with other useful information.  If you would like to "
-"report a bug, please include this information."
-msgstr ""
-"এই সমস্যাৰ কোনো সঠিক সমাধান নাই। আপোনাৰ উত্তৰসমূহ অন্য কামত অহা তথ্যৰ লগত সংগ্ৰহ "
-"কৰা হৈছে। যদি আপুনি এটা বাগৰ সংবাদ দিব বিচাৰিছে, অনুগ্ৰহ কৰি এই তথ্য যোগ কৰিব।"
-
-#: ../troubleshoot/Shrug.py:36
-msgid "Diagnostic Output (Advanced)"
-msgstr "বৈশিষ্ট্য সূচনা কৰাৰ ফলাফল (উন্নত)"
-
-#: ../troubleshoot/Shrug.py:93
-msgid "Error saving file"
-msgstr "ত্ৰুটি সঞ্চয়ী নথিপত্ৰ"
-
-#: ../troubleshoot/Shrug.py:94
-msgid "There was an error saving the file:"
-msgstr "নথিপত্ৰ সঞ্চয় কৰোতে এটা ত্ৰুটি হৈছিল:"
-
-#: ../troubleshoot/Welcome.py:45
-msgid "Trouble-shooting Printing"
-msgstr "মূদ্ৰকৰ সমস্যা সমাধান"
-
-#: ../troubleshoot/Welcome.py:47
-msgid ""
-"The next few screens will contain some questions about your problem with "
-"printing. Based on your answers a solution may be suggested."
-msgstr ""
-"পৰৱৰ্তী কিছুমান পৰ্দাত আপোনাৰ প্ৰিন্ট জৰিত সমস্যৰ বিষয়ে কিছুমান প্ৰশ্ন থাকিব। আপোনাৰ "
-"উত্তৰসমুহৰ উপৰত ভিত্তি কৰি এটা সমাধান দিয়া হব।"
-
-#: ../troubleshoot/Welcome.py:51
-msgid "Click 'Forward' to begin."
-msgstr "আৰম্ভ কৰাৰ বাবে 'আগবাঢ়ক' টিপক ।"
-
-#: ../applet.py:90
-msgid "Configuring new printer"
-msgstr "নতুন মূদ্ৰক বিন্যাস কৰক"
-
-#: ../applet.py:91
-msgid "Please wait..."
-msgstr "অনুগ্ৰহ কৰি অপেক্ষা কৰক..."
-
-#. name is a URI, no queue was generated, because no suitable
-#. driver was found
-#: ../applet.py:120 ../applet.py:173
-msgid "Missing printer driver"
-msgstr "সন্ধানহীন চালক"
-
-#: ../applet.py:127
-#, python-format
-msgid "No printer driver for %s."
-msgstr "%s ৰ কাৰণে মূদ্ৰকৰ চালক নাই ।"
-
-#: ../applet.py:129
-msgid "No driver for this printer."
-msgstr "মুদ্ৰকৰ বাবে চালক নাই ।"
-
-#: ../applet.py:171
-msgid "Printer added"
-msgstr "মূদ্ৰক"
-
-#: ../applet.py:177
-msgid "Install printer driver"
-msgstr "সন্ধানহীন চালক"
-
-#: ../applet.py:178
-#, python-format
-msgid "`%s' requires driver installation: %s."
-msgstr "`%s' ৰ বাবে চালকৰ সংস্থাপন প্ৰয়োজনীয়: %s."
-
-#: ../applet.py:202
-#, python-format
-msgid "`%s' is ready for printing."
-msgstr "`%s' মূদ্ৰণৰ বাবে সাজু  ।"
-
-#: ../applet.py:206 ../applet.py:218
-msgid "Print test page"
-msgstr "পৰীক্ষাৰ পৃষ্ঠা মুদ্ৰণ কৰক"
-
-#: ../applet.py:209
-msgid "Configure"
-msgstr "বিন্যাস কৰক"
-
-#: ../applet.py:213
-#, python-format
-msgid "`%s' has been added, using the `%s' driver."
-msgstr "`%s' যোগ কৰা হ'ল, `%s' চালক ব্যৱহাৰ কৰা হৈছে  ।"
-
-#: ../applet.py:221
-msgid "Find driver"
-msgstr "অনুসন্ধান"
-
-#: ../print-applet.desktop.in.h:1
-msgid "Print Queue Applet"
-msgstr "মূদ্ৰণ কৰক"
-
-#: ../print-applet.desktop.in.h:2
-msgid "System tray icon for managing print jobs"
-msgstr "মূদ্ৰণ কাৰ্য্য পৰিচালনাৰ বাবে ব্যৱস্থাপ্ৰণালী-ট্ৰে তে প্ৰদৰ্শনযোগ্য আইকন"
+#~ msgid "make and model"
+#~ msgstr "নিৰ্মাণ আৰু আৰ্হি"
+
+#~ msgid "printer state"
+#~ msgstr "প্ৰিন্টাৰ অৱস্থা"
 
 #~ msgid "Option '%s' has value '%s' and cannot be edited."
 #~ msgstr "Option '%s' has value '%s' and cannot be edited."

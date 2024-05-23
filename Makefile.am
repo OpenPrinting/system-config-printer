@@ -59,11 +59,11 @@ dbus/org.fedoraproject.Config.Printing.service: dbus/org.fedoraproject.Config.Pr
 
 # Use distutils to build the module.
 all-local: .stamp-distutils-in-builddir config.py cupshelpers/config.py
-	$(PYTHON) -m build
+	$(PYTHON) -m build --no-isolation
 
 # Use distutils to install the module.
 install-exec-local: .stamp-distutils-in-builddir
-	$(PYTHON) -m pip install --root $(DESTDIR) --prefix=$(prefix) .
+	$(PYTHON) -m pip install --root "$(DESTDIR)" --prefix=$(prefix) --no-build-isolation .
 
 # Uninstall the module, crossing our fingers that we know enough
 # about how distutils works to do this.  Unfortunately, distutils
@@ -72,6 +72,7 @@ uninstall-local:
 	rm -f $(DESTDIR)/$(pythondir)/cupshelpers*.egg-info
 	rm -rf $(DESTDIR)/$(pythondir)/cupshelpers/__pycache__
 	rm -rf $(DESTDIR)/$(pythondir)/cupshelpers*.egg
+	rm -rf $(DESTDIR)/$(pythondir)/cupshelpers*.dist-info
 	for file in $(EXPORT_MODULES) $(EXPORT_MODULES_GEN); do	\
 		rm -f $(DESTDIR)/$(pythondir)/$$file*;		\
 	done
@@ -83,7 +84,7 @@ clean-local:
 		rm -f setup.py;					\
 		for file in $(EXPORT_MODULES)			\
 			$(EXPORT_MODULES_GEN); do		\
-			rm -f $$file*;				\
+			rm -f $$file*;	\
 		done;						\
 	fi
 	rm -f .stamp-distutils-in-builddir
@@ -288,7 +289,7 @@ EXTRA_DIST=\
 	bootstrap \
 	mkinstalldirs \
 	ChangeLog-OLD \
-	README \
+	README.md \
 	$(desktop_in_files) \
 	config.py.in \
 	cupshelpers/config.py.in \
@@ -401,6 +402,7 @@ distclean-local:
 	rm -rf html
 	rm -rf cupshelpers/__pycache__
 	rm -rf cupshelpers.egg-info/
-	rm -rf dist/cupshelpers*.egg
+	rm -rf dist
+	rm -rf ./$(prefix)
 
 .PHONY: update-po missing-languages run help FORCE

@@ -21,6 +21,4 @@ from distutils.core import setup
 setup(name='cupshelpers',
       version='1.0',
       description='Helper functions and classes for using CUPS',
-      maintainer='Tim Waugh',
-      maintainer_email='twaugh@redhat.com',
       packages=['cupshelpers'])
