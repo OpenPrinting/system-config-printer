@@ -250,6 +250,7 @@ class NewPrinterGUI(GtkGUI):
                               "entNPName",
                               "entNPDescription",
                               "entNPLocation",
+                              "isSharedCbx",
                               "tvNPDevices",
                               "ntbkNPType",
                               "lblNPDeviceDescription",
@@ -754,6 +755,7 @@ class NewPrinterGUI(GtkGUI):
     def _initialiseWidgetsForMode (self, mode_name):
         self.entNPName.set_text (self.makeNameUnique (mode_name))
         self.entNPName.grab_focus ()
+        self.isSharedCbx.set_active(False)
         for widget in [self.entNPLocation,
                        self.entNPDescription,
                        self.entSMBURI, self.entSMBUsername,
@@ -4320,6 +4322,7 @@ class NewPrinterGUI(GtkGUI):
             name = self.entNPName.get_text()
             location = self.entNPLocation.get_text()
             info = self.entNPDescription.get_text()
+            isShared = self.isSharedCbx.get_active()
         else:
             name = self._name
 
@@ -4391,6 +4394,7 @@ class NewPrinterGUI(GtkGUI):
                 cupshelpers.activateNewPrinter (self.cups, name)
                 self.cups.setPrinterLocation(name, location)
                 self.cups.setPrinterInfo(name, info)
+                self.cups.setPrinterShared(name, isShared)
             except cups.IPPError as e:
                 (e, msg) = e.args
                 self.show_IPP_Error(e, msg)
