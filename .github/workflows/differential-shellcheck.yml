@@ -16,11 +16,11 @@ jobs:
 
     steps: 
       - name: Repository checkout
-        uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b
+        uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938
         with:
           fetch-depth: 0
 
       - name: Differential ShellCheck
-        uses: redhat-plumbers-in-action/differential-shellcheck@52bab0caa5249d6acd8bcd5bc7a68e69ac9319f9
+        uses: redhat-plumbers-in-action/differential-shellcheck@cc6721c45a8800cc666de45493545a07a638d121
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
