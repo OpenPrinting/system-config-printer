@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk+" version="3.0"/>
+  
+  <object class="GtkBox" id="printer-item">
+    <property name="orientation">vertical</property>
+    <property name="spacing">6</property>
+    <property name="hexpand">True</property>
+    <property name="visible">True</property>
+
+    <!-- Horizontal box containing printer icon and details -->
+    <child>
+      <object class="GtkBox">
+        <property name="orientation">horizontal</property>
+        <property name="spacing">10</property>
+        <property name="hexpand">True</property>
+
+        <!-- Printer icon -->
+        <child>
+          <object class="GtkImage" id="printer-icon">
+            <property name="icon_name">printer-symbolic</property>
+            <property name="visible">True</property>
+            <property name="pixel_size">48</property>
+          </object>
+        </child>
+
+        <!-- Printer name label -->
+        <child>
+          <object class="GtkLabel" id="printer-name">
+            <property name="label">Printer Name</property>
+            <property name="visible">True</property>
+            <property name="hexpand">True</property>
+          </object>
+        </child>
+
+        <!-- Open link button -->
+        <child>
+          <object class="GtkButton" id="open-link-button">
+            <property name="label" translatable="yes">Website</property>
+            <property name="visible">True</property>
+            <signal name="clicked" handler="on_open_link_clicked"/>
+          </object>
+        </child>
+      </object>
+    </child>
+
+    <!-- Separator line -->
+    <child>
+      <object class="GtkSeparator" id="printer-item-separator">
+        <property name="orientation">horizontal</property>
+        <property name="visible">True</property>
+        <property name="margin_top">5</property>
+        <property name="margin_bottom">5</property>
+      </object>
+    </child>
+  </object>
+</interface>
