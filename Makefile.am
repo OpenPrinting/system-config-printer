@@ -113,6 +113,7 @@ nobase_pkgdata_DATA=					\
 	gui.py						\
 	gtkinklevel.py					\
 	installpackage.py				\
+	ipp_pd_async.py					\
 	jobviewer.py					\
 	killtimer.py					\
 	monitor.py					\
@@ -135,6 +136,8 @@ nobase_pkgdata_DATA=					\
 	userdefault.py					\
 	ui/AboutDialog.ui				\
 	ui/ConnectDialog.ui				\
+	ui/DiscoveredPrintersDialog.ui				\
+	ui/PrinterItem.ui				\
 	ui/ConnectingDialog.ui				\
 	ui/InstallDialog.ui				\
 	ui/JobsWindow.ui				\
