@@ -250,6 +250,7 @@ class NewPrinterGUI(GtkGUI):
                               "entNPName",
                               "entNPDescription",
                               "entNPLocation",
+                              "isSharedCbx",
                               "tvNPDevices",
                               "ntbkNPType",
                               "lblNPDeviceDescription",
@@ -621,6 +622,19 @@ class NewPrinterGUI(GtkGUI):
             nonfatalException (e)
             return False
 
+        self.cups._begin_operation (_("fetching server settings"))
+        try:
+            server_settings = self.cups.adminGetServerSettings()
+        except cups.IPPError as e:
+            (e, m) = e.args
+            show_IPP_Error(e, m, self._parent)
+            self.cups._end_operation ()
+            raise
+
+        self.cups._end_operation ()
+        self.isShared = server_settings.get (cups.CUPS_SERVER_SHARE_PRINTERS,
+                                                '0') == '1'
+
         try:
             self.printers = cupshelpers.getPrinters (self.cups)
         except cups.IPPError as e:
@@ -754,6 +768,7 @@ class NewPrinterGUI(GtkGUI):
     def _initialiseWidgetsForMode (self, mode_name):
         self.entNPName.set_text (self.makeNameUnique (mode_name))
         self.entNPName.grab_focus ()
+        self.isSharedCbx.set_active(self.isShared)
         for widget in [self.entNPLocation,
                        self.entNPDescription,
                        self.entSMBURI, self.entSMBUsername,
@@ -4320,8 +4335,10 @@ class NewPrinterGUI(GtkGUI):
             name = self.entNPName.get_text()
             location = self.entNPLocation.get_text()
             info = self.entNPDescription.get_text()
+            isShared = self.isSharedCbx.get_active()
         else:
             name = self._name
+            isShared = self.isShared
 
         ppd = self.ppd
 
@@ -4391,6 +4408,7 @@ class NewPrinterGUI(GtkGUI):
                 cupshelpers.activateNewPrinter (self.cups, name)
                 self.cups.setPrinterLocation(name, location)
                 self.cups.setPrinterInfo(name, info)
+                self.cups.setPrinterShared(name, isShared)
             except cups.IPPError as e:
                 (e, msg) = e.args
                 self.show_IPP_Error(e, msg)
