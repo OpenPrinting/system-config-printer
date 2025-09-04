@@ -3053,7 +3053,6 @@ class NewPrinterGUI(GtkGUI):
         physicaldevice = model.get_value (iter, 1)
         if physicaldevice is None:
             return
-        show_uris = True
         for device in physicaldevice.get_devices ():
             if device.type == "parallel":
                 device.menuentry = _("Parallel Port")
@@ -3137,7 +3136,6 @@ class NewPrinterGUI(GtkGUI):
                         device.menuentry = \
                             _("Network printer via DNS-SD")
             else:
-                show_uris = False
                 device.menuentry = device.uri
 
         model = Gtk.ListStore (str,                    # URI description
@@ -3234,7 +3232,7 @@ class NewPrinterGUI(GtkGUI):
             n += 1
         column = self.tvNPDeviceURIs.get_column (0)
         self.tvNPDeviceURIs.set_cursor (Gtk.TreePath(), column, False)
-        if show_uris:
+        if n > 1:
             self.expNPDeviceURIs.show_all ()
         else:
             self.expNPDeviceURIs.hide ()
