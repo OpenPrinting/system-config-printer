@@ -601,6 +601,9 @@ get_ieee1284_id_using_libusb (struct udev_device *dev,
   char libusbserial[1024];
   char ieee1284_id[1024];
   int got = 0;
+  unsigned long idVendorSamsung, idProductSamsung;
+  idVendorSamsung = strtoul("04E8", &end, 16);
+  idProductSamsung = strtoul("3460", &end, 16);
 
   idVendorStr = udev_device_get_sysattr_value (dev, "idVendor");
   idProductStr = udev_device_get_sysattr_value (dev, "idProduct");
@@ -695,6 +698,12 @@ get_ieee1284_id_using_libusb (struct udev_device *dev,
             }
 
             m = altptr->bAlternateSetting;
+            if (idVendor == idVendorSamsung && idProduct == idProductSamsung)
+            {
+              syslog (LOG_DEBUG, "skip 'libusb_set_interface_alt_setting' for Samsung ProXpress M3870FD");
+            }
+            else
+            {
             if (libusb_set_interface_alt_setting(handle, n, m)
                 < 0)
             {
@@ -702,6 +711,7 @@ get_ieee1284_id_using_libusb (struct udev_device *dev,
               handle = NULL;
               syslog (LOG_DEBUG, "failed set altinterface");
               continue;
+            }
             }
 
             memset (ieee1284_id, '\0', sizeof (ieee1284_id));
