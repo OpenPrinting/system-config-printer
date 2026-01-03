@@ -1744,15 +1744,13 @@ class NewPrinterGUI(GtkGUI):
         for handler in self.opreq_handlers:
             opreq.disconnect (handler)
 
-        Gdk.threads_enter ()
-
-        try:
             self.opreq_user_search = False
             self.opreq_handlers = None
             self.opreq = None
             self._searchdialog.hide ()
             self._searchdialog.destroy ()
             self._searchdialog = None
+
 
             # Check whether we have found something
             if len (printers) < 1:
@@ -1769,28 +1767,21 @@ class NewPrinterGUI(GtkGUI):
                 self.downloadable_drivers = drivers
                 self.founddownloadabledrivers = True
 
-                try:
-                    self.NewPrinterWindow.show()
-                    self.setNPButtons()
-                    if not self.fillDownloadableDrivers():
-                        ready (self.NewPrinterWindow)
-
-                        self.founddownloadabledrivers = False
-                        if self.dialog_mode == "download_driver":
-                            self.on_NPCancel(None)
-                        else:
-                            self.nextNPTab ()
+                self.NewPrinterWindow.show()
+                self.setNPButtons()
+                    
+                if not self.fillDownloadableDrivers():
+                    ready(self.NewPrinterWindow)
+                    self.founddownloadabledrivers = False
+                    if self.dialog_mode == "download_driver":
+                        self.on_NPCancel(None)
                     else:
-                        if self.dialog_mode == "download_driver":
-                            self.nextNPTab (step = 0)
-                        else:
-                            self.nextNPTab ()
-                except:
-                    nonfatalException ()
-                    self.nextNPTab ()
-
-        finally:
-            Gdk.threads_leave ()
+                        self.nextNPTab()
+                else:
+                    if self.dialog_mode == "download_driver":
+                        self.nextNPTab(step=0)
+                    else:
+                        self.nextNPTab()
 
     def opreq_id_search_error (self, opreq, status, err):
         debugprint ("OpenPrinting request failed (%d): %s" % (status,
@@ -3488,7 +3479,6 @@ class NewPrinterGUI(GtkGUI):
         self.printer_finder = finder
 
     def found_network_printer_callback (self, new_device):
-        Gdk.threads_enter ()
         if new_device:
             self.network_found += 1
             dev = PhysicalDevice (new_device)
@@ -3530,7 +3520,6 @@ class NewPrinterGUI(GtkGUI):
                                                           "address.") + '</i>')
                 self.lblNetworkFindNotFound.show ()
 
-        Gdk.threads_leave ()
     ###
 
     def getDeviceURI(self):
@@ -3674,7 +3663,6 @@ class NewPrinterGUI(GtkGUI):
 
         button = self.btnNPDownloadableDriverSearch
         label = self.btnNPDownloadableDriverSearch_label
-        Gdk.threads_enter ()
         try:
             label.set_text (_("Search"))
             button.set_sensitive (True)
@@ -3709,8 +3697,6 @@ class NewPrinterGUI(GtkGUI):
             self.setNPButtons ()
         except:
             nonfatalException()
-
-        Gdk.threads_leave ()
 
     def opreq_user_search_error (self, opreq, status, err):
         debugprint ("OpenPrinting request failed (%d): %s" % (status,
