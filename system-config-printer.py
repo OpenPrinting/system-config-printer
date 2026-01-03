@@ -1200,15 +1200,10 @@ class GUI(GtkGUI):
 
     def update_connecting_pbar (self):
         ret = True
-        Gdk.threads_enter ()
-        try:
-            if not self.ConnectingDialog.get_property ("visible"):
-                ret = False # stop animation
-            else:
-                self.pbarConnecting.pulse ()
-        finally:
-            Gdk.threads_leave ()
-
+        if not self.ConnectingDialog.get_property ("visible"):
+            ret = False # stop animation
+        else:
+            self.pbarConnecting.pulse ()
         return ret
 
     def on_connectingdialog_delete (self, widget, event):
@@ -1254,34 +1249,25 @@ class GUI(GtkGUI):
                                              encryption=self.connect_encrypt)
         except RuntimeError as s:
             if self.connect_thread != _thread.get_ident(): return
-            Gdk.threads_enter()
-            try:
-                self.ConnectingDialog.hide()
-                self.cups = None
-                self.setConnected()
-                self.populateList()
-                show_IPP_Error(None, s, parent)
-            finally:
-                Gdk.threads_leave()
+            self.ConnectingDialog.hide()
+            self.cups = None
+            self.setConnected()
+            self.populateList()
+            show_IPP_Error(None, s, parent)
             return
         except cups.IPPError as e:
             (e, s) = e.args
             if self.connect_thread != _thread.get_ident(): return
-            Gdk.threads_enter()
-            try:
-                self.ConnectingDialog.hide()
-                self.cups = None
-                self.setConnected()
-                self.populateList()
-                show_IPP_Error(e, s, parent)
-            finally:
-                Gdk.threads_leave()
+            self.ConnectingDialog.hide()
+            self.cups = None
+            self.setConnected()
+            self.populateList()
+            show_IPP_Error(e, s, parent)
             return
         except:
             nonfatalException ()
 
         if self.connect_thread != _thread.get_ident(): return
-        Gdk.threads_enter()
 
         try:
             self.ConnectingDialog.hide()
@@ -1296,8 +1282,6 @@ class GUI(GtkGUI):
             show_HTTP_Error(s, parent)
         except:
             nonfatalException ()
-
-        Gdk.threads_leave()
 
     def reconnect (self):
         """Reconnect to CUPS after the server has reloaded."""
@@ -2075,24 +2059,15 @@ class GUI(GtkGUI):
         GLib.timeout_add_seconds (1, self.service_started_try)
 
     def service_started_try (self):
-        Gdk.threads_enter ()
-        try:
-            self.on_btnRefresh_clicked (None)
-        finally:
-            Gdk.threads_leave ()
+        self.on_btnRefresh_clicked (None)
 
         GLib.timeout_add_seconds (1, self.service_started_retry)
         return False
 
     def service_started_retry (self):
         if not self.cups:
-            Gdk.threads_enter ()
-            try:
-                self.on_btnRefresh_clicked (None)
-                self.btnStartService.set_sensitive (True)
-            finally:
-                Gdk.threads_leave ()
-
+            self.on_btnRefresh_clicked (None)
+            self.btnStartService.set_sensitive (True)
         return False
 
     def checkDriverExists(self, parent, name, ppd=None):
@@ -2197,11 +2172,7 @@ class GUI(GtkGUI):
     def defer_refresh (self):
         def deferred_refresh ():
             self.populateList_timer = None
-            Gdk.threads_enter ()
-            try:
-                self.populateList (prompt_allowed=False)
-            finally:
-                Gdk.threads_leave ()
+            self.populateList (prompt_allowed=False)
             return False
 
         if self.populateList_timer:
@@ -2250,11 +2221,7 @@ def main(show_jobs):
     else:
         mainwindow = GUI()
 
-    Gdk.threads_enter ()
-    try:
-        Gtk.main()
-    finally:
-        Gdk.threads_leave ()
+    Gtk.main()
 
 if __name__ == "__main__":
     import getopt

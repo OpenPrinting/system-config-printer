@@ -116,13 +116,11 @@ if __name__ == '__main__':
     from gi.repository import GLib
     import time
     def adjust_level (level):
-        Gdk.threads_enter ()
         l = level.get_level ()
         l += 1
         if l > 100:
             l = 0
         level.set_level (l)
-        Gdk.threads_leave ()
         return True
 
     w = Gtk.Window ()

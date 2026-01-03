@@ -175,9 +175,7 @@ class PPDCache:
 
     def _schedule_callback (self, callback, name, result, exc):
         def cb_func (callback, name, result, exc):
-            Gdk.threads_enter ()
             callback (name, result, exc)
-            Gdk.threads_leave ()
             return False
 
         GLib.idle_add (cb_func, callback, name, result, exc)

@@ -302,9 +302,6 @@ class Connection:
         return result
 
     def _ask_retry_server_error (self, message):
-        if self._lock:
-            Gdk.threads_enter ()
-
         try:
             msg = (_("CUPS server error (%s)") % self._operation_stack[0])
         except IndexError:
@@ -323,7 +320,6 @@ class Connection:
         d.set_default_response (Gtk.ResponseType.OK)
         if self._lock:
             d.connect ("response", self._on_retry_server_error_response)
-            Gdk.threads_leave ()
         else:
             self._retry_response = d.run ()
             d.destroy ()
@@ -449,8 +445,6 @@ class Connection:
         return 1
 
     def _show_not_authorized_dialog (self):
-        if self._lock:
-            Gdk.threads_enter ()
         d = Gtk.MessageDialog (transient_for=self._parent,
                                modal=True, destroy_with_parent=True,
                                message_type=Gtk.MessageType.ERROR,
@@ -463,7 +457,6 @@ class Connection:
             d.connect ("response", self._on_not_authorized_dialog_response)
             d.show_all ()
             d.show_now ()
-            Gdk.threads_leave ()
         else:
             d.run ()
             d.destroy ()
@@ -473,9 +466,6 @@ class Connection:
         dialog.destroy ()
 
     def _perform_authentication_with_dialog (self):
-        if self._lock:
-            Gdk.threads_enter ()
-
         # Prompt.
         if len (self._operation_stack) > 0:
             try:
@@ -497,7 +487,6 @@ class Connection:
         self._dialog_shown = True
         if self._lock:
             d.connect ("response", self._on_authentication_response)
-            Gdk.threads_leave ()
         else:
             response = d.run ()
             self._on_authentication_response (d, response)

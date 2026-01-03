@@ -816,9 +816,7 @@ class JobViewer (GtkGUI):
 
         if need_update and not self.job_creation_times_timer:
             def update_times_with_locking ():
-                Gdk.threads_enter ()
                 ret = self.update_job_creation_times ()
-                Gdk.threads_leave ()
                 return ret
 
             t = GLib.timeout_add_seconds (60, update_times_with_locking)
@@ -873,9 +871,7 @@ class JobViewer (GtkGUI):
 
         if not self.job_creation_times_timer:
             def start_updating_job_creation_times():
-                Gdk.threads_enter ()
                 self.update_job_creation_times ()
-                Gdk.threads_leave ()
                 return False
 
             GLib.timeout_add (500, start_updating_job_creation_times)
@@ -1797,7 +1793,6 @@ class JobViewer (GtkGUI):
             self.worst_reason = worst_reason
             debugprint ("Worst reason: %s" % worst_reason)
 
-        Gdk.threads_enter ()
         self.statusbar.pop (0)
         if self.worst_reason is not None:
             (title, tooltip) = self.worst_reason.get_description ()
@@ -1825,8 +1820,6 @@ class JobViewer (GtkGUI):
             self.statusicon.set_from_pixbuf (pixbuf)
             self.set_statusicon_visibility ()
             self.set_statusicon_tooltip (tooltip=tooltip)
-
-        Gdk.threads_leave ()
 
     ## Notifications
     def notify_printer_state_reason_if_important (self, reason):
