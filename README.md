@@ -83,7 +83,7 @@ Build requirements:
   - systemd
 - tools:
   - autoconf
-  - autoconf-archives
+  - autoconf-archive
   - automake
   - desktop-file-install
   - intltool
