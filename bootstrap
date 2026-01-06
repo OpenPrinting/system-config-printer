@@ -1,6 +1,6 @@
 #!/bin/sh
 autopoint --force
-aclocal
+aclocal -I m4
 automake --foreign --copy --add-missing
 autoconf
 
