@@ -1,4 +1,4 @@
-AC_INIT(system-config-printer, 1.5.18)
+AC_INIT([system-config-printer],[1.5.18])
 AC_CONFIG_SRCDIR(system-config-printer.py)
 AM_INIT_AUTOMAKE([dist-xz dist-bzip2 subdir-objects 1.6])
 AC_CONFIG_MACRO_DIR([m4])
@@ -18,8 +18,7 @@ AC_SUBST(DATADIRNAME)
 
 # Let distributor specify if they want to use a vendor with desktop-file-install
 AC_ARG_WITH(desktop-vendor,
-              [AC_HELP_STRING([--with-desktop-vendor],
-                              [Specify the vendor for use in calls to desktop-file-install @<:@default=@:>@])],,
+              [AS_HELP_STRING([--with-desktop-vendor],[Specify the vendor for use in calls to desktop-file-install @<:@default=@:>@])],,
                               [with_desktop_vendor=""])
 
 VENDOR=$with_desktop_vendor
@@ -63,8 +62,7 @@ AC_SUBST(cupsserverbindir)
 PKG_CHECK_MODULES(GLIB, glib-2.0, has_glib=yes, has_glib=no)
 
 AC_ARG_WITH(udev-rules,
-	    [AC_HELP_STRING([--with-udev-rules],
-			    [Enable automatic USB print queue configuration @<:@default=no@:>@])],
+	    [AS_HELP_STRING([--with-udev-rules],[Enable automatic USB print queue configuration @<:@default=no@:>@])],
 	    [],
 	    [with_udev_rules=no])
 AM_CONDITIONAL([UDEV_RULES], [test x$with_udev_rules != xno])
@@ -99,8 +97,7 @@ fi
 AM_CONDITIONAL(HAVE_SYSTEMD, [test -n "$with_systemdsystemunitdir" -a "x$with_systemdsystemunitdir" != xno ])
 
 AC_ARG_WITH(xmlto,
-        [AC_HELP_STRING([--with-xmlto],
-                [Enable xmlto manual generation @<:@default=yes@:>@])])
+        [AS_HELP_STRING([--with-xmlto],[Enable xmlto manual generation @<:@default=yes@:>@])])
 AM_CONDITIONAL([XMLTO], [test x$with_xmlto != xno])
 
 AC_CONFIG_FILES([
