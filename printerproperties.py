@@ -1205,7 +1205,7 @@ class PrinterPropertiesDialog(GtkGUI):
                                      "the print job, most likely "
                                      "because the printer is not "
                                      "shared."),
-                                   self.parent)
+                                   self.dialog)
             else:
                 show_IPP_Error(e, msg, self.parent)
 
@@ -1215,7 +1215,7 @@ class PrinterPropertiesDialog(GtkGUI):
         if job_id is not None:
             show_info_dialog (_("Submitted"),
                               _("Test page submitted as job %d") % job_id,
-                              parent=self.parent)
+                              parent=self.dialog)
 
     def maintenance_command (self, command):
         printer = self.printer
@@ -1236,7 +1236,7 @@ class PrinterPropertiesDialog(GtkGUI):
                 show_info_dialog (_("Submitted"),
                                   _("Maintenance command submitted as "
                                     "job %d") % job_id,
-                                  parent=self.parent)
+                                  parent=self.dialog)
             except cups.IPPError as e:
                 (e, msg) = e.args
                 if (e == cups.IPP_NOT_AUTHORIZED and
@@ -1246,7 +1246,7 @@ class PrinterPropertiesDialog(GtkGUI):
                                          "the print job, most likely "
                                          "because the printer is not "
                                          "shared."),
-                                       self.parent)
+                                       self.show_dialog)
                 else:
                     show_IPP_Error(e, msg, self.parent)
             self.cups._end_operation ()
