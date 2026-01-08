@@ -404,6 +404,5 @@ distclean-local:
 	rm -rf cupshelpers.egg-info/
 	rm -rf dist/cupshelpers*.egg
 	rm -rf dist
-	rm -rf ./$(prefix)
 
 .PHONY: update-po missing-languages run help FORCE
