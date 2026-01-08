@@ -128,13 +128,6 @@ class FirewallD:
             else:
                 raise FirewallError (e.code, e.msg)
 
-    def check_ipp_client_allowed (self):
-        if not self._get_fw_data ():
-            return True
-
-        return (IPP_CLIENT_SERVICE in self._fw_data.getServices () or
-               [IPP_CLIENT_PORT, IPP_CLIENT_PROTOCOL] in self._fw_data.getPorts ())
-
     def check_ipp_server_allowed (self):
         if not self._get_fw_data ():
             return True
@@ -248,11 +241,6 @@ class SystemConfigFirewall:
 
         args.append ("--service=" + service)
         self._fw_data = (args, filename)
-
-    def check_ipp_client_allowed (self):
-        return self._check_any_allowed (set(["--port=%s:%s" %
-                                        (IPP_CLIENT_PORT, IPP_CLIENT_PROTOCOL),
-                                             "--service=" + IPP_CLIENT_SERVICE]))
 
     def check_ipp_server_allowed (self):
         return self._check_any_allowed (set(["--port=%s:%s" %

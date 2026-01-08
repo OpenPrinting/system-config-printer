@@ -2273,41 +2273,35 @@ class NewPrinterGUI(GtkGUI):
 
     def on_firewall_read (self, data):
         f = self.firewall
-        allowed = True
+        mdns_allowed = False
+
         try:
-            ipp_allowed = f.check_ipp_client_allowed ()
             mdns_allowed = f.check_mdns_allowed ()
-            allowed = (ipp_allowed and mdns_allowed)
+
+            if mdns_allowed:
+                debugprint("Firewall all OK, no changes needed")
+                return
 
             secondary_text = TEXT_adjust_firewall + "\n\n"
-            if not ipp_allowed:
-                secondary_text += ("- " +
-                                   _("Allow all incoming IPP Browse packets") +
-                                   "\n")
-                f.add_service (firewallsettings.IPP_CLIENT_SERVICE)
-            if not mdns_allowed:
-                secondary_text += ("- " +
-                                   _("Allow all incoming mDNS traffic") + "\n")
-                f.add_service (firewallsettings.MDNS_SERVICE)
+            secondary_text += ("- " +
+                               _("Allow all incoming mDNS traffic") + "\n")
+            f.add_service (firewallsettings.MDNS_SERVICE)
 
-            if not allowed:
-                debugprint ("Asking for permission to adjust firewall:\n%s" %
-                            secondary_text)
-                dialog = Gtk.MessageDialog (parent=self.NewPrinterWindow,
-                                            modal=True, destroy_with_parent=True,
-                                            message_type=Gtk.MessageType.QUESTION,
-                                            buttons=Gtk.ButtonsType.NONE,
-                                            text= _("Adjust Firewall"))
-                dialog.format_secondary_markup (secondary_text)
-                dialog.add_buttons (_("Do It Later"), Gtk.ResponseType.NO,
-                                    _("Adjust Firewall"), Gtk.ResponseType.YES)
-                dialog.connect ('response', self.adjust_firewall_response)
-                dialog.show ()
+            debugprint ("Asking for permission to adjust firewall:\n%s" %
+                        secondary_text)
+            dialog = Gtk.MessageDialog (parent=self.NewPrinterWindow,
+                                        modal=True, destroy_with_parent=True,
+                                        message_type=Gtk.MessageType.QUESTION,
+                                        buttons=Gtk.ButtonsType.NONE,
+                                        text= _("Adjust Firewall"))
+            dialog.format_secondary_markup (secondary_text)
+            dialog.add_buttons (_("Do It Later"), Gtk.ResponseType.NO,
+                                _("Adjust Firewall"), Gtk.ResponseType.YES)
+            dialog.connect ('response', self.adjust_firewall_response)
+            dialog.show ()
         except (dbus.DBusException, Exception):
             nonfatalException ()
 
-        if allowed:
-            debugprint ("Firewall all OK, no changes needed")
 
     def adjust_firewall_response (self, dialog, response):
         dialog.destroy ()
