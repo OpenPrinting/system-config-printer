@@ -448,24 +448,18 @@ def _simple_gui ():
             text = ""
             for printer in printers.values ():
                 text += printer + "\n"
-            Gdk.threads_enter ()
             self.tv.get_buffer ().set_text (text)
-            Gdk.threads_leave ()
 
         def list_drivers_callback (self, status, user_data, drivers):
             if status != 0:
                 raise drivers[1]
 
             text = pprint.pformat (drivers)
-            Gdk.threads_enter ()
             self.tv.get_buffer ().set_text (text)
-            Gdk.threads_leave ()
 
         def query_callback (self, status, user_data, result):
-            Gdk.threads_enter ()
             self.tv.get_buffer ().set_text (str (result))
             open ("result.xml", "w").write (str (result))
-            Gdk.threads_leave ()
 
     q = QueryApp()
     Gtk.main ()
