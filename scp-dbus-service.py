@@ -429,11 +429,9 @@ class ConfigPrintingJobApplet(dbus.service.Object):
     def __init__ (self, bus, path):
         bus_name = dbus.service.BusName (CONFIG_BUS, bus=bus)
         dbus.service.Object.__init__ (self, bus_name=bus_name, object_path=path)
-        Gdk.threads_enter ()
         self.jobapplet = jobviewer.JobViewer(bus=dbus.SystemBus (),
                                              applet=True, my_jobs=True)
         self.jobapplet.set_process_pending (False)
-        Gdk.threads_leave ()
         handle = self.jobapplet.connect ('finished', self.on_jobapplet_finished)
         self.finished_handle = handle
         self.has_finished = False
@@ -599,7 +597,5 @@ if __name__ == '__main__':
     debugprint ("Service running...")
     g_killtimer = killtimer.KillTimer (killfunc=Gtk.main_quit)
     cp = ConfigPrinting ()
-    Gdk.threads_enter ()
     Gtk.main ()
-    Gdk.threads_leave ()
     cp.destroy ()

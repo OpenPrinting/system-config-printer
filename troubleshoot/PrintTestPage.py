@@ -476,7 +476,6 @@ class PrintTestPage(Question):
 
         # Enter the GDK lock.  We need to do this because we were
         # called from a timeout.
-        Gdk.threads_enter ()
 
         parent = self.troubleshooter.get_window ()
         self.op = TimedOperation (get_notifications,
@@ -485,7 +484,6 @@ class PrintTestPage(Question):
         try:
             notifications = self.op.run ()
         except (OperationCanceled, cups.IPPError):
-            Gdk.threads_leave ()
             return True
 
         answers = self.troubleshooter.answers
@@ -527,5 +525,4 @@ class PrintTestPage(Question):
             self.update_jobs_list)
         debugprint ("Update again in %ds" %
                     notifications['notify-get-interval'])
-        Gdk.threads_leave ()
         return False

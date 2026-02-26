@@ -108,7 +108,6 @@ class TimedSubprocess(Timed):
         return True
 
     def show_wait_window (self):
-        Gdk.threads_enter ()
         wait = Gtk.MessageDialog (parent=self.parent,
                                   modal=True, destroy_with_parent=True,
                                   message_type=Gtk.MessageType.INFO,
@@ -122,7 +121,6 @@ class TimedSubprocess(Timed):
         wait.format_secondary_text (_("Gathering information"))
         wait.show_all ()
         self.wait_window = wait
-        Gdk.threads_leave ()
         return False
 
     def wait_window_response (self, dialog, response):

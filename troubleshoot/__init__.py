@@ -381,6 +381,4 @@ if __name__ == "__main__":
         pass
     Gdk.threads_init()
     run (Gtk.main_quit)
-    Gdk.threads_enter ()
     Gtk.main ()
-    Gdk.threads_leave ()
