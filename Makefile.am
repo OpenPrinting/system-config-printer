@@ -44,12 +44,20 @@ config.py: config.py.in Makefile
 	  -e "s|\@PACKAGE\@|$(PACKAGE)|" \
 	  $< > $@
 
+if HAVE_CUPS_3
+CUPSCONF_SYSCONFDIR =
+CUPSCONF_SERVERBINDIR =
+else
+CUPSCONF_SYSCONFDIR = $(sysconfdir)
+CUPSCONF_SERVERBINDIR = $(cupsserverbindir)
+endif
+
 cupshelpers/config.py: cupshelpers/config.py.in Makefile
 	$(mkdir_p) cupshelpers
 	sed \
 	  -e "s|\@prefix\@|$(prefix)|" \
-	  -e "s|\@sysconfdir\@|$(sysconfdir)|" \
-	  -e "s|\@cupsserverbindir\@|$(cupsserverbindir)|" \
+	  -e "s|\@sysconfdir\@|$(CUPSCONF_SYSCONFDIR)|" \
+	  -e "s|\@cupsserverbindir\@|$(CUPSCONF_SERVERBINDIR)|" \
 	  $< > $@
 
 dbus/org.fedoraproject.Config.Printing.service: dbus/org.fedoraproject.Config.Printing.service.in $(top_builddir)/config.status Makefile
@@ -191,8 +199,8 @@ if UDEV_RULES
 udevrules_DATA=udev/70-printers.rules
 udev_udev_configure_printer_SOURCES=\
 	udev/udev-configure-printer.c
-udev_udev_configure_printer_LDADD= -lcups -ludev $(libusb_LIBS) $(GLIB_LIBS)
-udev_udev_configure_printer_CFLAGS= $(AM_CFLAGS) $(libusb_CFLAGS) $(GLIB_CFLAGS)
+udev_udev_configure_printer_LDADD= $(CUPS_LIBS) -ludev $(libusb_LIBS) $(GLIB_LIBS)
+udev_udev_configure_printer_CFLAGS= $(AM_CFLAGS) $(CUPS_CFLAGS) $(libusb_CFLAGS) $(GLIB_CFLAGS)
 udev_PROGRAMS=\
 	udev/udev-configure-printer
 udev_SCRIPTS=\
