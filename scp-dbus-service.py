@@ -20,6 +20,17 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+import os
+import sys
+
+# Ensure the package data directory is on sys.path so that local modules
+# (debug, asyncconn, config, etc.) can be found when PYTHONSAFEPATH is set.
+# Without this, Python's safe-path mode excludes the script's own directory
+# from sys.path, causing ModuleNotFoundError for every local import.
+_pkgdir = os.path.dirname(os.path.abspath(__file__))
+if _pkgdir not in sys.path:
+    sys.path.insert(0, _pkgdir)
+
 import gi
 import dbus.service
 from gi.repository import GObject
@@ -28,7 +39,6 @@ gi.require_version('Gdk', '3.0')
 from gi.repository import Gdk
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
-import sys
 
 from debug import *
 import asyncconn
