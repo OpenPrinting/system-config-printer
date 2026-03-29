@@ -239,6 +239,7 @@ class NewPrinterGUI(GtkGUI):
         self.recommended_model_selected = False
         self._searchdialog = None
         self._installdialog = None
+        self.web_interface_device = None
 
         self.getWidgets({"NewPrinterWindow":
                              ["NewPrinterWindow",
@@ -464,7 +465,7 @@ class NewPrinterGUI(GtkGUI):
         self.expNPDeviceURIs.connect ("notify::expanded",
                                       self.on_expNPDeviceURIs_expanded)
         self.expNPDeviceURIs.set_expanded(1)
-        self.btnNPOpenWebInterface.set_sensitive (False)
+        # self.btnNPOpenWebInterface.set_sensitive (False)
 
         # SMB browser
         self.smb_store = Gtk.TreeStore (GObject.TYPE_PYOBJECT)
@@ -2249,33 +2250,33 @@ class NewPrinterGUI(GtkGUI):
         network_iter = model.append (None, row=[_("Network Printer"),
                                                 None,
                                                 False])
+        network_dict = { 'device-class': 'network',
+                         'device-info': _("Find Network Printer") }
+        network = cupshelpers.Device ('network', **network_dict)
+        find_nw_iter = model.append (network_iter,
+                                     row=[self._manual_network_device_label (network),
+                                          PhysicalDevice (network), False])
         model.append (network_iter, row=['', None, True])
         ipp_group_iter = model.append (network_iter,
                                        row=[_("IPP Destinations"),
                                             None,
                                             False])
         model.append (network_iter, row=['', None, True])
-        queue_group_iter = model.append (network_iter,
-                                         row=[_("Queues & Others"),
-                                              None,
-                                              False])
-        network_dict = { 'device-class': 'network',
-                         'device-info': _("Find Network Printer") }
-        network = cupshelpers.Device ('network', **network_dict)
-        find_nw_iter = model.append (queue_group_iter,
-                                     row=[self._manual_network_device_label (network),
-                                          PhysicalDevice (network), False])
+        legacy_group_iter = model.append (network_iter,
+                                          row=[_("Legacy Protocols"),
+                                               None,
+                                               False])
         smbdev_dict = { 'device-class': 'network',
                         'device-info': _("Windows Printer via SAMBA") }
         smbdev = cupshelpers.Device ('smb', **smbdev_dict)
-        model.append (queue_group_iter,
+        model.append (legacy_group_iter,
                       row=[self._manual_network_device_label (smbdev),
                            PhysicalDevice (smbdev), False])
         self.devices_uri_iter = uri_iter
         self.devices_find_nw_iter = find_nw_iter
         self.devices_network_iter = network_iter
         self.devices_network_ipp_group_iter = ipp_group_iter
-        self.devices_network_queue_group_iter = queue_group_iter
+        self.devices_network_legacy_group_iter = legacy_group_iter
         self.devices_network_fetched = False
         self.tvNPDevices.set_model (model)
         self.entNPTDevice.set_text ('')
@@ -2978,8 +2979,10 @@ class NewPrinterGUI(GtkGUI):
         return model.get_value (iter, 2) == "device"
 
     def _classify_connection_device (self, device):
-        if device.type == "ipp":
+        
+        if device.type in ["ipp", "ipps", "https"]:
             parsed = urllib.parse.urlparse (device.uri)
+            print(device.type,"dtttt",parsed.path.startswith ("/printers/"))
             if parsed.path.startswith ("/printers/"):
                 return "queue"
             return "ipp"
@@ -3029,7 +3032,7 @@ class NewPrinterGUI(GtkGUI):
 
             iter = model.iter_next (iter)
 
-        self.btnNPOpenWebInterface.set_sensitive (False)
+        # self.btnNPOpenWebInterface.set_sensitive (False)
 
     def _get_connection_path_for_uri (self, uri):
         model = self.tvNPDeviceURIs.get_model ()
@@ -3051,7 +3054,7 @@ class NewPrinterGUI(GtkGUI):
         if device.type in ["ipp", "ipps", "https"]:
             return self.devices_network_ipp_group_iter
 
-        return self.devices_network_queue_group_iter
+        return self.devices_network_legacy_group_iter
 
     def _manual_network_device_label (self, device):
         labels = {
@@ -3066,6 +3069,144 @@ class NewPrinterGUI(GtkGUI):
         }
         return labels.get (device.type,
                            getattr (device, "info", None) or device.uri)
+                           
+    def _get_adminurl_from_avahi(self, device):
+        import subprocess
+        import re
+
+        try:
+            output = subprocess.check_output(
+                ["avahi-browse", "-rt", "_ipps._tcp"],
+                text=True
+            )
+
+            matches = re.findall(r'adminurl=([^\s"]+)', output)
+
+            if matches:
+                return matches[0].replace(".local./", ".local/")
+
+        except Exception as e:
+            print("Avahi error:", e)
+
+        return None
+    def _get_device_web_interface_url(self, device, physicaldevice=None):
+        import urllib.parse
+
+        attrs = getattr(device, "other_attributes", {})
+
+        for key in ["printer-more-info", "device-more-info", "adminurl"]:
+            url = attrs.get(key)
+            if isinstance(url, list):
+                url = url[0] if url else None
+            if url:
+                return url.replace(".local./", ".local/")
+
+        if physicaldevice:
+            txt = getattr(physicaldevice, "txt", None) or \
+                getattr(physicaldevice, "dnssd_txt", None)
+
+            if txt:
+                for entry in txt:
+                    if isinstance(entry, bytes):
+                        entry = entry.decode(errors="ignore")
+
+                    if isinstance(entry, str) and entry.startswith("adminurl="):
+                        url = entry.split("=", 1)[1]
+                        return url.replace(".local./", ".local/")
+
+        parsed = urllib.parse.urlparse(device.uri)
+        raw_host = parsed.hostname or ""
+        
+        if "._tcp" in raw_host:
+            url = self._get_adminurl_from_avahi(device)
+            print("ggg",url)
+            if url:
+                return url
+
+        host = raw_host
+
+        if not host or "._tcp" in host:
+            host = (
+                attrs.get("hostname") or
+                attrs.get("host") or
+                attrs.get("address") or
+                attrs.get("ip-address")
+            )
+
+        if not host and physicaldevice:
+            host = (
+                getattr(physicaldevice, "dnssd_hostname", None) or
+                getattr(physicaldevice, "_network_host", None) or
+                getattr(physicaldevice, "address", None)
+            )
+
+        if not host:
+            return None
+
+        host = urllib.parse.unquote(host).rstrip(".")
+
+        scheme = "https" if parsed.scheme in ["ipps", "https"] else "http"
+
+        port = parsed.port
+        if port and port not in [80, 443]:
+            return f"{scheme}://{host}:{port}/"
+
+        return f"{scheme}://{host}/"
+    
+    def _get_preferred_ipp_device (self, physicaldevice):
+        for device in physicaldevice.get_devices ():
+            if (self._classify_connection_device (device) == "ipp" and
+                self._get_device_web_interface_url (device,
+                                                    physicaldevice=physicaldevice) is not None):
+                return device
+
+        return None
+
+    def _get_selected_physical_device (self):
+        path, column = self.tvNPDevices.get_cursor ()
+        if path is None:
+            return None
+
+        model = self.tvNPDevices.get_model ()
+        if model is None:
+            return None
+
+        iter = model.get_iter (path)
+        if iter is None:
+            return None
+
+        return model.get_value (iter, 1)
+
+    def _get_selected_connection_device (self):
+        path, column = self.tvNPDeviceURIs.get_cursor ()
+        if path is None:
+            return None
+
+        model = self.tvNPDeviceURIs.get_model ()
+        if model is None:
+            return None
+
+        iter = model.get_iter (path)
+        if iter is None:
+            return None
+
+        return model.get_value (iter, 1)
+
+    def _update_web_interface_button (self, device=None, physicaldevice=None):
+        if device is None:
+            device = self._get_selected_connection_device ()
+        if (device is None or
+            self._classify_connection_device (device) != "ipp" or
+            self._get_device_web_interface_url (device,
+                                                physicaldevice=physicaldevice) is None):
+            if physicaldevice is None:
+                physicaldevice = self._get_selected_physical_device ()
+            if physicaldevice is not None:
+                device = self._get_preferred_ipp_device (physicaldevice)
+            else:
+                device = None
+        self.web_interface_device = device
+        self.btnNPOpenWebInterface.set_sensitive (device is not None)
 
     def device_row_separator_fn (self, model, iter, data):
         return model.get_value (iter, 2)
@@ -3152,14 +3293,12 @@ class NewPrinterGUI(GtkGUI):
         self.device_selected += 1
         path, column = widget.get_cursor ()
         if path is None:
-            self.btnNPOpenWebInterface.set_sensitive (False)
             return
 
         model = widget.get_model ()
         iter = model.get_iter (path)
         physicaldevice = model.get_value (iter, 1)
         if physicaldevice is None:
-            self.btnNPOpenWebInterface.set_sensitive (False)
             return
         show_uris = True
         for device in physicaldevice.get_devices ():
@@ -3345,28 +3484,27 @@ class NewPrinterGUI(GtkGUI):
                 model, self._connection_group_title (group),
                 grouped_devices[group])
         self._set_default_connection_selection (model)
+        # Keep main selection in sync with the default connection row.
+        self.device = self._get_selected_connection_device ()
+        self._update_web_interface_button (physicaldevice=physicaldevice)
         if show_uris:
             self.expNPDeviceURIs.show_all ()
         else:
             self.expNPDeviceURIs.hide ()
-            self.btnNPOpenWebInterface.set_sensitive (False)
 
     def on_tvNPDeviceURIs_cursor_changed(self, widget):
         path, column = widget.get_cursor ()
         if path is None:
-            self.btnNPOpenWebInterface.set_sensitive (False)
             return
 
         model = widget.get_model ()
         iter = model.get_iter (path)
         device = model.get_value(iter, 1)
         if device is None:
-            self.btnNPOpenWebInterface.set_sensitive (False)
             return
 
         self.device = device
-        self.btnNPOpenWebInterface.set_sensitive (
-            self._classify_connection_device (device) == "ipp")
+        self._update_web_interface_button (device=device)
         self.lblNPDeviceDescription.set_text ('')
         page = self.new_printer_device_tabs.get (device.type, self.PAGE_SELECT_DEVICE)
         self.ntbkNPType.set_current_page(page)
@@ -3523,16 +3661,32 @@ class NewPrinterGUI(GtkGUI):
 
         self.setNPButtons()
 
-    def on_btnNPOpenWebInterface_clicked (self, button):
-        try:
-            Gtk.show_uri_on_window (self.NewPrinterWindow,
-                                    "http://localhost:8000",
-                                    Gdk.CURRENT_TIME)
-        except GLib.GError as e:
-            show_error_dialog (_("Unable to Open Web Interface"),
-                               str (e),
-                               parent=self.NewPrinterWindow)
+    def on_btnNPOpenWebInterface_clicked(self, button):
+        import subprocess
 
+        url = self._get_device_web_interface_url(
+            self.web_interface_device,
+            physicaldevice=self._get_selected_physical_device()
+        )
+
+        print(url)
+
+        if not url:
+            show_error_dialog(
+                _("Unable to Open Web Interface"),
+                _("No web interface URL was provided by the printer."),
+                parent=self.NewPrinterWindow
+            )
+            return
+
+        try:
+            subprocess.Popen(["xdg-open", url])
+        except Exception as e:
+            show_error_dialog(
+                _("Unable to Open Web Interface"),
+                str(e),
+                parent=self.NewPrinterWindow
+            )
     def on_entNPTLpdHost_changed(self, ent):
         hostname = ent.get_text()
         self.btnNPTLpdProbe.set_sensitive (len (hostname) > 0)
@@ -3664,6 +3818,8 @@ class NewPrinterGUI(GtkGUI):
     ###
 
     def getDeviceURI(self):
+        if self.device is None:
+            raise AttributeError
         if self.dialog_mode in ['printer_with_uri', 'ppd']:
             return self.device.uri
 
