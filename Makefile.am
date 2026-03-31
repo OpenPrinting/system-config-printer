@@ -132,6 +132,7 @@ nobase_pkgdata_DATA=					\
 	smburi.py					\
 	statereason.py					\
 	timedops.py					\
+	thread_operations.py				\
 	ToolbarSearchEntry.py				\
 	userdefault.py					\
 	ui/AboutDialog.ui				\
