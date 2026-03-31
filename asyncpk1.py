@@ -110,17 +110,9 @@ class _PK1AsyncMethodCall:
             return
 
         if str (error) == '':
-            try:
-                Gdk.threads_enter ()
-            except:
-                pass
             debugprint ("%s: no error, calling reply handler %s" %
                         (self, self._client_reply_handler))
             self._client_reply_handler (self._conn, self._unpack_fn (*args))
-            try:
-                Gdk.threads_leave ()
-            except:
-                pass
             self._destroy ()
             return
 
@@ -133,17 +125,9 @@ class _PK1AsyncMethodCall:
 
         if exc.get_dbus_name () == CUPS_PK_NEED_AUTH:
             exc = cups.IPPError (cups.IPP_NOT_AUTHORIZED, 'pkcancel')
-            try:
-                Gdk.threads_enter ()
-            except:
-                pass
             debugprint ("%s: no auth, calling error handler %s" %
                         (self, self._client_error_handler))
             self._client_error_handler (self._conn, exc)
-            try:
-                Gdk.threads_leave ()
-            except:
-                pass
             self._destroy ()
             return
 
