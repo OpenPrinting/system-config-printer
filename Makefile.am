@@ -69,9 +69,7 @@ install-exec-local: .stamp-distutils-in-builddir
 # about how distutils works to do this.  Unfortunately, distutils
 # doesn't provide a way to do this itself.
 uninstall-local:
-	rm -f $(DESTDIR)/$(pythondir)/cupshelpers*.egg-info
 	rm -rf $(DESTDIR)/$(pythondir)/cupshelpers/__pycache__
-	rm -rf $(DESTDIR)/$(pythondir)/cupshelpers*.egg
 	rm -rf $(DESTDIR)/$(pythondir)/cupshelpers*.dist-info
 	for file in $(EXPORT_MODULES) $(EXPORT_MODULES_GEN); do	\
 		rm -f $(DESTDIR)/$(pythondir)/$$file*;		\
@@ -401,8 +399,6 @@ DISTCLEANFILES=*.pyc *.pyo *~ *.bak \
 distclean-local:
 	rm -rf html
 	rm -rf cupshelpers/__pycache__
-	rm -rf cupshelpers.egg-info/
-	rm -rf dist/cupshelpers*.egg
 	rm -rf dist
 
 .PHONY: update-po missing-languages run help FORCE
