@@ -137,6 +137,9 @@ nobase_pkgdata_DATA=					\
 	ui/AboutDialog.ui				\
 	ui/ConnectDialog.ui				\
 	ui/ConnectingDialog.ui				\
+	ui/DiscoveredPrintersDialog.ui				\
+	ui/PrinterItem.ui				\
+	ui/AvahiWarningDialog.ui				\
 	ui/InstallDialog.ui				\
 	ui/JobsWindow.ui				\
 	ui/NewPrinterName.ui				\

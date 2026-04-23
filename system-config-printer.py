@@ -28,11 +28,22 @@ import sys, os, time, re
 import _thread
 import dbus
 import gi
+import webbrowser
+import asyncio
+from ipp_pd_async import AvahiServiceBrowser
+
 try:
     gi.require_version('Polkit', '1.0')
     from gi.repository import Polkit
 except:
     Polkit = False
+
+try:
+    import avahi
+    AVAHI_AVAILABLE = True
+except ImportError:
+    print("Warning: Avahi module not found. Service discovery will be disabled.")
+    AVAHI_AVAILABLE = False
 
 gi.require_version('GdkPixbuf', '2.0')
 from gi.repository import GdkPixbuf
@@ -215,12 +226,25 @@ class GUI(GtkGUI):
                               "dests_iconview",
                               "btnAddFirstPrinter",
                               "btnStartService",
+                              "btnDiscoverPrinters",
+                              "btnConnectNoService",
                               "btnConnectNoService",
                               "statusbarMain",
                               "toolbar",
                               "server_menubar_item",
                               "printer_menubar_item",
                               "view_discovered_printers"],
+                         "DiscoveredPrintersDialog": [
+                              "DiscoveredPrintersDialog",
+                              "printers-flowbox",
+                              "buttonOk"
+                            ],
+                         "PrinterItem": [
+                              "printer-item",
+                              "printer-icon",
+                              "printer-name",
+                              "open-link-button"
+                            ],
                          "AboutDialog":
                              ["AboutDialog"],
                          "ConnectDialog":
@@ -515,6 +539,7 @@ class GUI(GtkGUI):
         self.dests_iconview.connect ("drag-data-get",
                                      self.dests_iconview_drag_data_get)
         self.btnStartService.connect ('clicked', self.on_start_service_clicked)
+        self.btnDiscoverPrinters.connect ('clicked', self.on_discover_printers_button_click)        
         self.btnConnectNoService.connect ('clicked', self.on_connect_activate)
         self.btnAddFirstPrinter.connect ('clicked',
                                          self.on_new_printer_activate)
@@ -545,6 +570,11 @@ class GUI(GtkGUI):
 
 
         self.PrintersWindow.show()
+        self.builder = Gtk.Builder()
+        self.service_browser = AvahiServiceBrowser()
+        self.service_browser.run()
+        self.discovered_services = self.service_browser.get_all_discovered_services()    # To store discovered services
+
 
     def display_properties_dialog_for (self, queue):
         model = self.dests_iconview.get_model ()
@@ -613,6 +643,53 @@ class GUI(GtkGUI):
             # Check that we're still connected.
             self.monitor.update ()
             return
+
+    def on_discover_printers_button_click(self, widget):
+        if not AVAHI_AVAILABLE:
+            self.builder.add_from_file("ui/AvahiWarningDialog.ui")
+            warning_dialog = self.builder.get_object("AvahiWarningDialog")
+            warning_dialog.set_transient_for(self.PrintersWindow)
+            warning_dialog.show_all()
+            return  # Exit function early
+
+        # Clear previous printers in flowbox
+        self.builder.add_from_file("ui/DiscoveredPrintersDialog.ui")
+        self.discovered_printers_dialog = self.builder.get_object("DiscoveredPrintersDialog")
+
+        self.discovered_services = self.service_browser.get_all_discovered_services()
+        printers = [
+            {"name": "Printer 1", "link": "https://example.com/printer1"},
+            {"name": "Printer 2", "link": "https://example.com/printer2"},
+            {"name": "Printer 3", "link": "https://example.com/printer3"},
+        ]
+        printers = self.discovered_services
+        printers_flowbox = self.builder.get_object("printers-flowbox")
+        for printer in printers:
+            item_builder = Gtk.Builder()
+            item_builder.add_from_file("ui/PrinterItem.ui")
+
+            # Configure each printer item
+            printer_item = item_builder.get_object("printer-item")
+            printer_name_label = item_builder.get_object("printer-name")
+            open_link_button = item_builder.get_object("open-link-button")
+
+            printer_name_label.set_text(printer["name"])
+            open_link_button.connect("clicked", self.on_open_link_clicked, printer["link"])
+
+            # Add the item to the flowbox
+            printers_flowbox.add(printer_item)
+            printer_item.show_all()
+
+        # Display the dialog
+        self.discovered_printers_dialog.set_transient_for(self.PrintersWindow)
+        self.discovered_printers_dialog.show_all()
+
+    def on_open_link_clicked(self, widget, link):
+        # Open the provided link in the web browser
+        webbrowser.open(link)
+
+    def on_discovered_printers_dialog_close(self, widget):
+        self.discovered_printers_dialog.hide()
 
     def on_properties_dialog_closed (self, obj):
         self.sensitise_main_window_widgets ()
