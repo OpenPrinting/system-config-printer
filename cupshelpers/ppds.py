@@ -161,6 +161,9 @@ def ppdMakeModelSplit (ppd_make_and_model):
         cleanup_make = True
 
     # Special handling for two-word manufacturers
+    elif l.startswith ("canon inc "):
+        make = "Canon"
+        model = ppd_make_and_model[10:]
     elif l.startswith ("konica minolta "):
         make = "KONICA MINOLTA"
         model = ppd_make_and_model[15:]
