@@ -1927,20 +1927,47 @@ ipp://printer.mydomain/ipp</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <child>
-                      <object class="GtkScrolledWindow" id="scrolledwindow13">
-                        <property name="width_request">250</property>
+                      <object class="GtkBox" id="vboxNPModels">
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="shadow_type">in</property>
+                        <property name="can_focus">False</property>
+                        <property name="orientation">vertical</property>
+                        <property name="spacing">6</property>
                         <child>
-                          <object class="GtkTreeView" id="tvNPModels">
+                          <object class="GtkEntry" id="entryNPModelsSearch">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <signal name="cursor-changed" handler="on_tvNPModels_cursor_changed" swapped="no"/>
-                            <child internal-child="selection">
-                              <object class="GtkTreeSelection" id="treeview-selection4"/>
+                            <property name="placeholder_text" translatable="yes">Filter models...</property>
+                            <property name="tooltip_text" translatable="yes">Type to filter the list of printer models</property>
+                            <signal name="changed" handler="on_entryNPModelsSearch_changed" swapped="no"/>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkScrolledWindow" id="scrolledwindow13">
+                            <property name="width_request">250</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="shadow_type">in</property>
+                            <child>
+                              <object class="GtkTreeView" id="tvNPModels">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <signal name="cursor-changed" handler="on_tvNPModels_cursor_changed" swapped="no"/>
+                                <child internal-child="selection">
+                                  <object class="GtkTreeSelection" id="treeview-selection4"/>
+                                </child>
+                              </object>
                             </child>
                           </object>
+                          <packing>
+                            <property name="expand">True</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
                         </child>
                       </object>
                       <packing>

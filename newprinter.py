@@ -285,6 +285,7 @@ class NewPrinterGUI(GtkGUI):
                               "ntbkPPDSource",
                               "rbtnNPPPD",
                               "tvNPMakes",
+                              "entryNPModelsSearch",
                               "rbtnNPFoomatic",
                               "filechooserPPD",
                               "rbtnNPDownloadableDriverSearch",
@@ -393,6 +394,13 @@ class NewPrinterGUI(GtkGUI):
             treeview.set_model(model)
             treeview.append_column(column)
             treeview.get_selection().set_mode(selection_mode)
+
+        # Set up filter for Models list
+        self.models_liststore = self.tvNPModels.get_model()
+        self.models_filter = self.models_liststore.filter_new()
+        self.models_filter.set_visible_func(self.models_visible_func)
+        self.tvNPModels.set_model(self.models_filter)
+        self.entryNPModelsSearch.connect("changed", self.on_entryNPModelsSearch_changed)
 
         # Since some dialogs are reused we can't let the delete-event's
         # default handler destroy them
@@ -1356,11 +1364,12 @@ class NewPrinterGUI(GtkGUI):
                 # is available, based on the model the user has
                 # selected.
                 try:
-                    model, iter = self.tvNPModels.get_selection ().\
-                                  get_selected ()
-                    name = model.get(iter, 0)[0]
-                    name = self.makeNameUnique (name)
-                    self.entNPName.set_text (name)
+                    selection = self.tvNPModels.get_selection ()
+                    model, iter = selection.get_selected ()
+                    if iter is not None:
+                        name = model.get(iter, 0)[0]
+                        name = self.makeNameUnique (name)
+                        self.entNPName.set_text (name)
                 except:
                     nonfatalException ()
 
@@ -3866,11 +3875,27 @@ class NewPrinterGUI(GtkGUI):
             self.recommended_make_selected = recommended_make
             self.fillModelList()
 
+    def models_visible_func(self, model, iter, data):
+        """Filter function for models list."""
+        search_text = self.entryNPModelsSearch.get_text().lower()
+        if not search_text:
+            return True
+        # Check both the display text (column 0) and the actual model name (column 1)
+        display_text = model.get(iter, 0)[0].lower()
+        model_name = model.get(iter, 1)[0].lower()
+        return search_text in display_text or search_text in model_name
+
+    def on_entryNPModelsSearch_changed(self, entry):
+        """Handle search text changes."""
+        if self.models_filter:
+            self.models_filter.refilter()
+
     def fillModelList(self):
         self.recommended_model_selected = False
+        self.entryNPModelsSearch.set_text("")  # Clear filter when make changes
         models = self.ppds.getModels(self.NPMake)
-        model = self.tvNPModels.get_model()
-        model.clear()
+        # Clear the underlying liststore, not the filter model
+        self.models_liststore.clear()
         selected = False
         is_auto_make = (cupshelpers.ppds.normalize (self.NPMake) ==
                         cupshelpers.ppds.normalize (self.auto_make))
@@ -3886,12 +3911,15 @@ class NewPrinterGUI(GtkGUI):
             else:
                 text = pmodel
 
-            iter = model.append((text, pmodel,))
+            iter = self.models_liststore.append((text, pmodel,))
             if recommended:
-                path = model.get_path(iter)
-                self.tvNPModels.set_cursor (path, None, False)
-                self.tvNPModels.scroll_to_cell(path, None,
-                                               True, 0.5, 0.5)
+                # Get the path in the filter model, not the liststore
+                child_path = self.models_liststore.get_path(iter)
+                filter_path = self.models_filter.convert_child_path_to_path(child_path)
+                if filter_path is not None:
+                    self.tvNPModels.set_cursor (filter_path, None, False)
+                    self.tvNPModels.scroll_to_cell(filter_path, None,
+                                                   True, 0.5, 0.5)
                 selected = True
         if not selected:
             self.tvNPModels.set_cursor (Gtk.TreePath(), None, False)
