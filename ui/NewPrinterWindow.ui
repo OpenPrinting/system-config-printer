@@ -1437,6 +1437,22 @@ ipp://printer.mydomain/ipp</property>
                           </packing>
                         </child>
                         <child>
+                          <object class="GtkButton" id="btnNPOpenWebInterface">
+                            <property name="label" translatable="yes">Open Web Interface</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <property name="halign">start</property>
+                            <property name="sensitive">False</property>
+                            <signal name="clicked" handler="on_btnNPOpenWebInterface_clicked" swapped="no"/>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                        <child>
                           <object class="GtkExpander" id="expNPDeviceURIs">
                             <property name="height_request">120</property>
                             <property name="visible">True</property>
@@ -1472,7 +1488,7 @@ ipp://printer.mydomain/ipp</property>
                             <property name="expand">True</property>
                             <property name="fill">True</property>
                             <property name="pack_type">end</property>
-                            <property name="position">1</property>
+                            <property name="position">2</property>
                           </packing>
                         </child>
                       </object>
