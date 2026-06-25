@@ -1744,29 +1744,30 @@ class NewPrinterGUI(GtkGUI):
         for handler in self.opreq_handlers:
             opreq.disconnect (handler)
 
-            self.opreq_user_search = False
-            self.opreq_handlers = None
-            self.opreq = None
-            self._searchdialog.hide ()
-            self._searchdialog.destroy ()
-            self._searchdialog = None
+        self.opreq_user_search = False
+        self.opreq_handlers = None
+        self.opreq = None
+        self._searchdialog.hide ()
+        self._searchdialog.destroy ()
+        self._searchdialog = None
 
 
-            # Check whether we have found something
-            if len (printers) < 1:
-                # No.
-                ready (self.NewPrinterWindow)
+        # Check whether we have found something
+        if len (printers) < 1:
+            # No.
+            ready (self.NewPrinterWindow)
 
-                self.founddownloadabledrivers = False
-                if self.dialog_mode == "download_driver":
-                    self.on_NPCancel(None)
-                else:
-                    self.nextNPTab ()
+            self.founddownloadabledrivers = False
+            if self.dialog_mode == "download_driver":
+                self.on_NPCancel(None)
             else:
-                self.downloadable_printers = printers
-                self.downloadable_drivers = drivers
-                self.founddownloadabledrivers = True
+                self.nextNPTab ()
+        else:
+            self.downloadable_printers = printers
+            self.downloadable_drivers = drivers
+            self.founddownloadabledrivers = True
 
+            try:
                 self.NewPrinterWindow.show()
                 self.setNPButtons()
                     
@@ -1782,6 +1783,10 @@ class NewPrinterGUI(GtkGUI):
                         self.nextNPTab(step=0)
                     else:
                         self.nextNPTab()
+            except:
+                nonfatalException ()
+                self.nextNPTab ()
+
 
     def opreq_id_search_error (self, opreq, status, err):
         debugprint ("OpenPrinting request failed (%d): %s" % (status,
