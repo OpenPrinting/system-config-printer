@@ -510,7 +510,6 @@ class Connection:
 
 if __name__ == '__main__':
     # Test it out.
-    Gdk.threads_init ()
     from timedops import TimedOperation
     set_debugging (True)
     c = TimedOperation (Connection, args=(None,)).run ()

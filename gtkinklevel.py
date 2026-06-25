@@ -143,5 +143,4 @@ if __name__ == '__main__':
     GLib.timeout_add (10, adjust_level, ylevel)
     w.show_all ()
     w.connect ('delete_event', Gtk.main_quit)
-    Gdk.threads_init ()
     Gtk.main ()

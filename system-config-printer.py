@@ -2210,7 +2210,6 @@ class GUI(GtkGUI):
 
 def main(show_jobs):
     cups.setUser (os.environ.get ("CUPS_USER", cups.getUser()))
-    Gdk.threads_init ()
     from dbus.glib import DBusGMainLoop
     DBusGMainLoop (set_as_default=True)
 

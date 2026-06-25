@@ -404,7 +404,6 @@ def _simple_gui ():
     from gi.repository import Gdk
     from gi.repository import Gtk
     import pprint
-    Gdk.threads_init ()
     class QueryApp:
         def __init__(self):
             self.openprinting = OpenPrinting()

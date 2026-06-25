@@ -185,7 +185,6 @@ if __name__ == "__main__":
     from debug import *
     from gi.repository import GObject
     set_debugging (True)
-    Gdk.threads_init ()
     loop = GObject.MainLoop ()
 
     def signal (name, result, exc):
