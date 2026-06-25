@@ -24,8 +24,6 @@ import gi
 import dbus.service
 from gi.repository import GObject
 from gi.repository import GLib
-gi.require_version('Gdk', '3.0')
-from gi.repository import Gdk
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 import sys
@@ -577,7 +575,6 @@ if __name__ == '__main__':
         pass
 
     ppdippstr.init ()
-    Gdk.threads_init ()
     from dbus.glib import DBusGMainLoop
     DBusGMainLoop (set_as_default=True)
 
