@@ -1249,26 +1249,32 @@ class GUI(GtkGUI):
                                              encryption=self.connect_encrypt)
         except RuntimeError as s:
             if self.connect_thread != _thread.get_ident(): return
-            self.ConnectingDialog.hide()
-            self.cups = None
-            self.setConnected()
-            self.populateList()
-            show_IPP_Error(None, s, parent)
+            GLib.idle_add(self._connect_failed, None, s, parent)
             return
         except cups.IPPError as e:
             (e, s) = e.args
             if self.connect_thread != _thread.get_ident(): return
-            self.ConnectingDialog.hide()
-            self.cups = None
-            self.setConnected()
-            self.populateList()
-            show_IPP_Error(e, s, parent)
+            GLib.idle_add(self._connect_failed, e, s, parent)
             return
         except:
             nonfatalException ()
 
         if self.connect_thread != _thread.get_ident(): return
 
+        GLib.idle_add(self._connect_succeeded, connection, parent)
+
+    def _connect_failed(self, e, s, parent):
+        self.ConnectingDialog.hide()
+        self.cups = None
+        self.setConnected()
+        self.populateList()
+        if e is None:
+            show_IPP_Error(None, s, parent)
+        else:
+            show_IPP_Error(e, s, parent)
+        return False
+
+    def _connect_succeeded(self, connection, parent):
         try:
             self.ConnectingDialog.hide()
             self.cups = connection
@@ -1282,6 +1288,7 @@ class GUI(GtkGUI):
             show_HTTP_Error(s, parent)
         except:
             nonfatalException ()
+        return False
 
     def reconnect (self):
         """Reconnect to CUPS after the server has reloaded."""
