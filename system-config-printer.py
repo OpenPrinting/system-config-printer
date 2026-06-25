@@ -23,9 +23,8 @@
 
 # config is generated from config.py.in by configure
 import config
-
 import sys, os, time, re
-import _thread
+import threading
 import dbus
 import gi
 try:
@@ -104,6 +103,7 @@ import statereason
 import newprinter
 from newprinter import busy, ready
 import printerproperties
+from thread_operations import thread_safe_blocking_call, SCP_MAIN_THREAD_NAME
 
 import ppdippstr
 ppdippstr.init ()
@@ -765,6 +765,7 @@ class GUI(GtkGUI):
         except RuntimeError:
             self.monitor.update ()
 
+    @thread_safe_blocking_call
     def setConnected(self):
         connected = bool(self.cups)
 
@@ -846,6 +847,7 @@ class GUI(GtkGUI):
         known_servers.sort()
         return known_servers
 
+    @thread_safe_blocking_call
     def populateList(self, prompt_allowed=True):
         # Save selection of printers.
         selected_printers = set()
@@ -1195,19 +1197,17 @@ class GUI(GtkGUI):
         cups.setUser('')
         self.connect_user = cups.getUser()
         # Now start a new thread for connection.
-        self.connect_thread = _thread.start_new_thread(self.connect,
-                                                      (self.PrintersWindow,))
+        self.connect_thread = threading.Thread(target=self.connect,
+                                               name="SCP_CONNECTING_THREAD"
+                                               )
+        self.connect_thread.start()
 
     def update_connecting_pbar (self):
         ret = True
-        Gdk.threads_enter ()
-        try:
-            if not self.ConnectingDialog.get_property ("visible"):
-                ret = False # stop animation
-            else:
-                self.pbarConnecting.pulse ()
-        finally:
-            Gdk.threads_leave ()
+        if not self.ConnectingDialog.get_property ("visible"):
+            ret = False # stop animation
+        else:
+            self.pbarConnecting.pulse ()
 
         return ret
 
@@ -1224,7 +1224,7 @@ class GUI(GtkGUI):
         self.connect_thread = None
         self.ConnectingDialog.hide()
 
-    def connect(self, parent=None):
+    def connect(self):
         """
         Open a connection to a new server. Is executed in a separate thread!
         """
@@ -1249,42 +1249,44 @@ class GUI(GtkGUI):
                 nonfatalException ()
 
         try:
-            connection = authconn.Connection(parent,
+            connection = authconn.Connection(self.PrintersWindow,
                                              host=self.connect_server,
                                              encryption=self.connect_encrypt)
         except RuntimeError as s:
-            if self.connect_thread != _thread.get_ident(): return
-            Gdk.threads_enter()
-            try:
-                self.ConnectingDialog.hide()
-                self.cups = None
-                self.setConnected()
-                self.populateList()
-                show_IPP_Error(None, s, parent)
-            finally:
-                Gdk.threads_leave()
+            if self.connect_thread != threading.currentThread(): return
+            Gdk.threads_add_idle(GLib.PRIORITY_DEFAULT_IDLE,
+                                 self.ConnectingDialog.hide,
+                                 )
+            self.cups = None
+            self.setConnected()
+            self.populateList()
+            Gdk.threads_add_idle(GLib.PRIORITY_DEFAULT_IDLE,
+                                 show_IPP_Error,
+                                 None, s, self.PrintersWindow
+                                 )
             return
         except cups.IPPError as e:
             (e, s) = e.args
-            if self.connect_thread != _thread.get_ident(): return
-            Gdk.threads_enter()
-            try:
-                self.ConnectingDialog.hide()
-                self.cups = None
-                self.setConnected()
-                self.populateList()
-                show_IPP_Error(e, s, parent)
-            finally:
-                Gdk.threads_leave()
+            if self.connect_thread != threading.currentThread(): return
+            Gdk.threads_add_idle(GLib.PRIORITY_DEFAULT_IDLE,
+                                 self.ConnectingDialog.hide,
+                                 )
+            self.cups = None
+            self.setConnected()
+            self.populateList()
+            Gdk.threads_add_idle(GLib.PRIORITY_DEFAULT_IDLE,
+                                 show_IPP_Error,
+                                 None, s, self.PrintersWindow
+                                 )
             return
         except:
             nonfatalException ()
 
-        if self.connect_thread != _thread.get_ident(): return
-        Gdk.threads_enter()
-
+        if self.connect_thread != threading.currentThread(): return
         try:
-            self.ConnectingDialog.hide()
+            Gdk.threads_add_idle(GLib.PRIORITY_DEFAULT_IDLE,
+                                 self.ConnectingDialog.hide,
+                                 )
             self.cups = connection
             self.setConnected()
             self.populateList()
@@ -1293,11 +1295,12 @@ class GUI(GtkGUI):
             self.cups = None
             self.setConnected()
             self.populateList()
-            show_HTTP_Error(s, parent)
+            Gdk.threads_add_idle(GLib.PRIORITY_DEFAULT_IDLE,
+                                 show_HTTP_Error,
+                                 s, self.PrintersWindow
+                                 )
         except:
             nonfatalException ()
-
-        Gdk.threads_leave()
 
     def reconnect (self):
         """Reconnect to CUPS after the server has reloaded."""
@@ -2075,23 +2078,19 @@ class GUI(GtkGUI):
         GLib.timeout_add_seconds (1, self.service_started_try)
 
     def service_started_try (self):
-        Gdk.threads_enter ()
-        try:
-            self.on_btnRefresh_clicked (None)
-        finally:
-            Gdk.threads_leave ()
+        Gdk.threads_add_idle(GLib.PRIORITY_DEFAULT_IDLE,
+                             self.on_btnRefresh_clicked,
+                             None
+                             )
+
 
         GLib.timeout_add_seconds (1, self.service_started_retry)
         return False
 
     def service_started_retry (self):
         if not self.cups:
-            Gdk.threads_enter ()
-            try:
                 self.on_btnRefresh_clicked (None)
                 self.btnStartService.set_sensitive (True)
-            finally:
-                Gdk.threads_leave ()
 
         return False
 
@@ -2197,11 +2196,7 @@ class GUI(GtkGUI):
     def defer_refresh (self):
         def deferred_refresh ():
             self.populateList_timer = None
-            Gdk.threads_enter ()
-            try:
-                self.populateList (prompt_allowed=False)
-            finally:
-                Gdk.threads_leave ()
+            self.populateList (prompt_allowed=False)
             return False
 
         if self.populateList_timer:
@@ -2239,6 +2234,8 @@ class GUI(GtkGUI):
 
 def main(show_jobs):
     cups.setUser (os.environ.get ("CUPS_USER", cups.getUser()))
+    # set name for main thread
+    threading.currentThread().setName(SCP_MAIN_THREAD_NAME)
     Gdk.threads_init ()
     from dbus.glib import DBusGMainLoop
     DBusGMainLoop (set_as_default=True)
@@ -2250,11 +2247,7 @@ def main(show_jobs):
     else:
         mainwindow = GUI()
 
-    Gdk.threads_enter ()
-    try:
-        Gtk.main()
-    finally:
-        Gdk.threads_leave ()
+    Gtk.main()
 
 if __name__ == "__main__":
     import getopt
