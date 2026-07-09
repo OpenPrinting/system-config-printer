@@ -1,3 +1,19 @@
 #!/bin/sh
 prefix=@prefix@
-exec @datarootdir@/@PACKAGE@/applet.py "$@"
+
+force=no
+args=""
+for arg in "$@"; do
+    case "$arg" in
+        --force) force=yes ;;
+        *) args="$args $arg" ;;
+    esac
+done
+
+if [ "$force" = "no" ] && command -v kde-print-queue >/dev/null 2>&1; then
+    echo "system-config-printer-applet: kde-print-queue found — plasma-print-manager is likely installed." >&2
+    echo "The tray applet would duplicate its functionality. Use --force to override." >&2
+    exit 0
+fi
+
+exec @datarootdir@/@PACKAGE@/applet.py $args
