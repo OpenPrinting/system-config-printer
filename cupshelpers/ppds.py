@@ -1157,12 +1157,9 @@ class PPDs:
             lmfg = id_dict['MFG'].lower ()
             lmdl = id_dict['MDL'].lower ()
 
-            bad = False
-            if len (lmfg) == 0:
-                bad = True
+            # A blank MFG is legal (some devices report one); index the
+            # PPD under the empty make so blank-MFG device IDs can match.
             if len (lmdl) == 0:
-                bad = True
-            if bad:
                 continue
 
             if lmfg not in ids:
