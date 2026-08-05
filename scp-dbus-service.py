@@ -244,7 +244,7 @@ class GroupPhysicalDevicesRequest:
             for device_uri, device_dict in self.devices.items ():
                 deviceobj = cupshelpers.Device (device_uri, **device_dict)
                 self.deviceobjs[device_uri] = deviceobj
-                if device_uri.startswith ("dnssd://"):
+                if dnssdresolve.needs_service_resolution (device_uri):
                     need_resolving[device_uri] = deviceobj
 
             if len (need_resolving) > 0:
@@ -263,8 +263,11 @@ class GroupPhysicalDevicesRequest:
         # We can ignore resolved_devices because the actual objects
         # (in self.devices) have been modified.
         try:
+            cache = dnssdresolve.LegacyUSBDeviceCache ()
+            devices = dnssdresolve.suppress_legacy_usb_devices (
+                self.deviceobjs.values (), cache)
             self.physdevs = []
-            for device_uri, deviceobj in self.deviceobjs.items ():
+            for deviceobj in devices:
                 newphysicaldevice = PhysicalDevice.PhysicalDevice (deviceobj)
                 matched = False
                 try:
