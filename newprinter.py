@@ -1901,6 +1901,9 @@ class NewPrinterGUI(GtkGUI):
             try:
                 uri = self.getDeviceURI ()
                 valid = validDeviceURI (uri)
+            except AttributeError:
+                # No device selected yet.
+                valid = False
             except:
                 nonfatalException ()
             self.btnNPForward.set_sensitive(valid)
@@ -2023,47 +2026,71 @@ class NewPrinterGUI(GtkGUI):
         self.fetchDevices_conn._end_operation ()
         self.fetchDevices_conn.destroy ()
         self.fetchDevices_conn = None
+        # Display any devices buffered before the error, then clear.
+        if self._pending_devices is not None:
+            pending = self._pending_devices
+            self._pending_devices = None
+            self.add_devices (pending, None, no_more=True)
 
     def local_devices_reply (self, conn, result, current_uri):
         self.dec_spinner_task ()
 
-        # Now we've got the local devices, start a request for the
-        # network devices.
-        self.fetchDevices (network=True, current_uri=current_uri)
+        # Buffer local devices rather than displaying them immediately.
+        # This prevents the UI from flickering when a legacy USB device
+        # is briefly shown and then later suppressed/replaced by its
+        # IPP-over-USB counterpart discovered during the network/DNS-SD phase.
+        self._pending_devices = result.copy()
 
-        # Add the local devices to the list.
-        self.add_devices (result, current_uri)
+        # Now start a request for the network devices.
+        self.fetchDevices (network=True, current_uri=current_uri)
 
     def network_devices_reply (self, conn, result, current_uri):
         self.fetchDevices_conn._end_operation ()
         self.fetchDevices_conn.destroy ()
         self.fetchDevices_conn = None
 
-        # Add the network devices to the list.
-        no_more = True
+        # Separate devices that need DNS-SD resolution.
         need_resolving = {}
         for uri, device in result.items ():
-            if uri.startswith ("dnssd://"):
+            if dnssdresolve.needs_service_resolution (uri):
                 need_resolving[uri] = device
-                no_more = False
 
         for uri in need_resolving.keys ():
             del result[uri]
 
-        self.add_devices (result, current_uri, no_more=no_more)
+        # Merge non-DNS-SD network devices into the pending buffer.
+        if self._pending_devices is None:
+            self._pending_devices = result.copy()
+        else:
+            self._pending_devices.update (result)
 
         if len (need_resolving) > 0:
+            # DNS-SD resolution required — keep buffering.
             resolver = dnssdresolve.DNSSDHostNamesResolver (need_resolving)
             self.inc_spinner_task ()
             resolver.resolve (reply_handler=lambda devices:
                                   self.dnssd_resolve_reply (current_uri,
                                                             devices))
+        else:
+            # No DNS-SD resolution needed — display the final device list.
+            pending = self._pending_devices
+            self._pending_devices = None
+            self.add_devices (pending, current_uri, no_more=True)
 
         self.dec_spinner_task ()
         self.check_firewall ()
 
     def dnssd_resolve_reply (self, current_uri, devices):
-        self.add_devices (devices, current_uri, no_more=True)
+        # Merge resolved DNS-SD devices into the pending buffer and
+        # display the complete device list exactly once.
+        if self._pending_devices is None:
+            self._pending_devices = {}
+        self._pending_devices.update (devices)
+
+        pending = self._pending_devices
+        self._pending_devices = None
+        self.add_devices (pending, current_uri, no_more=True)
+
         self.dec_spinner_task ()
         self.check_firewall ()
 
@@ -2265,6 +2292,8 @@ class NewPrinterGUI(GtkGUI):
         self.devices_find_nw_iter = find_nw_iter
         self.devices_network_iter = network_iter
         self.devices_network_fetched = False
+        self._legacy_usb_cache = dnssdresolve.LegacyUSBDeviceCache ()
+        self._pending_devices = None
         self.tvNPDevices.set_model (model)
         self.entNPTDevice.set_text ('')
         self.expNPDeviceURIs.hide ()
@@ -2323,14 +2352,16 @@ class NewPrinterGUI(GtkGUI):
         self.fetchDevices_conn._begin_operation (_("fetching device list"))
         self.fetchDevices (network=False, current_uri=self.current_uri)
         del self.current_uri
-
     def add_devices (self, devices, current_uri, no_more=False):
+        current_from_batch = False
         if current_uri:
             if current_uri in devices:
                 current = devices.pop(current_uri)
+                current_from_batch = True
             elif current_uri.replace (":9100", "") in devices:
                 current_uri = current_uri.replace (":9100", "")
                 current = devices.pop(current_uri)
+                current_from_batch = True
             elif no_more:
                 current = cupshelpers.Device (current_uri)
                 current.info = "Current device"
@@ -2338,6 +2369,11 @@ class NewPrinterGUI(GtkGUI):
                 current_uri = None
 
         devices = list(devices.values())
+        devices = dnssdresolve.suppress_legacy_usb_devices (devices, self._legacy_usb_cache)
+        if current_from_batch and current_uri and \
+           not any (device.uri == current_uri for device in devices):
+            current_uri = None
+            current = None
 
         for device in devices:
             if device.type == "socket":
@@ -2375,6 +2411,29 @@ class NewPrinterGUI(GtkGUI):
                                                        "hal", "beh", "smb", 
                                                        "scsi", "http", "bjnp",
                                                        "delete")]
+
+        ipp_serials = dnssdresolve.ipp_usb_serials (devices)
+        if ipp_serials:
+            to_remove = []
+            for phys in self.devices:
+                devs = phys.get_devices ()
+                if devs and any (getattr (d, 'type', '') == 'usb' for d in devs):
+                    if phys.sn in ipp_serials:
+                        debugprint ("Removing stale USB PhysicalDevice with SN %s" % phys.sn)
+                        to_remove.append (phys)
+
+            if to_remove:
+                model = self.tvNPDevices.get_model ()
+                for phys in to_remove:
+                    self.devices.remove (phys)
+                    if model:
+                        it = model.get_iter_first ()
+                        while it:
+                            if model.get_value (it, 1) == phys:
+                                model.remove (it)
+                                break
+                            it = model.iter_next (it)
+
         newdevices = []
         for device in devices:
             debugprint("Adding device with URI %s" % device.uri)
@@ -2433,13 +2492,18 @@ class NewPrinterGUI(GtkGUI):
                     # An actual network printer device.  Put this at the top.
                     iter = model.insert_before (network_iter, find_nw_iter,
                                                 row=row)
+                    if device == current_device or dnssdresolve.is_ipp_over_usb_device(devs[0]):
+                        network_path = model.get_path(network_iter)
+                        child_path = model.get_path(iter)
+                        self.tvNPDevices.expand_row(network_path, False)
 
-                    # If this is the currently selected device we need
-                    # to expand the "Network Printer" row so that it
-                    # is visible.
-                    if device == current_device:
-                        network_path = model.get_path (network_iter)
-                        self.tvNPDevices.expand_row (network_path, False)
+                        def _select_ipp_device(tv, path):
+                            tv.scroll_to_cell(path, None, True, 0.5, 0.0)
+                            col = tv.get_column(0)
+                            tv.set_cursor(path, col, False)
+                            return False
+                        GLib.idle_add(_select_ipp_device,
+                                     self.tvNPDevices, child_path)
                 else:
                     # Just a method of finding one.
                     iter = model.append (network_iter, row=row)

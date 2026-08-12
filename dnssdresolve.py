@@ -22,6 +22,128 @@ import dbus, re
 import urllib.parse
 from debug import *
 
+
+def _txt_value (txt, key):
+    prefix = key + "="
+    for value in txt:
+        value = _txt_text (value)
+        if value.startswith (prefix):
+            return value[len (prefix):]
+    return ''
+
+
+def _txt_text (value):
+    if isinstance (value, str):
+        return value
+    if isinstance (value, bytes):
+        return value.decode ("utf-8", "replace")
+    if isinstance (value, dbus.ByteArray):
+        return bytes (value).decode ("utf-8", "replace")
+    if isinstance (value, dbus.Array):
+        try:
+            return bytes (value).decode ("utf-8", "replace")
+        except (TypeError, ValueError):
+            return ''.join (_txt_text (item) for item in value)
+    return str (value)
+
+
+def _service_tuple_from_uri (uri):
+    parsed = urllib.parse.urlparse (uri)
+    if parsed.scheme == 'dnssd':
+        hostname = parsed.netloc
+    elif parsed.scheme in ('ipp', 'ipps') and \
+         parsed.netloc.find ("._ipp._tcp.local") != -1:
+        hostname = parsed.netloc
+    else:
+        return None
+
+    elements = hostname.rsplit (".", 3)
+    if len (elements) != 4:
+        return None
+
+    name, stype, protocol, domain = elements
+    name = urllib.parse.unquote (name)
+    stype += "." + protocol # e.g. _printer._tcp
+    return (name, stype, domain)
+
+
+def needs_service_resolution (uri):
+    return _service_tuple_from_uri (uri) is not None
+
+
+def _device_serial (device):
+    if hasattr (device, 'id_dict'):
+        return device.id_dict.get ('SN', '')
+    if hasattr (device, 'sn'):
+        return device.sn
+    return ''
+
+
+def is_ipp_over_usb_device (device):
+    parsed = urllib.parse.urlparse (device.uri)
+    return (parsed.scheme in ('ipp', 'ipps') and
+            _service_tuple_from_uri (device.uri) is not None)
+
+
+def _is_legacy_usb_device (device):
+    return (getattr (device, 'device_class', '') == 'direct' and
+            getattr (device, 'type', '') == 'usb')
+
+
+def ipp_usb_serials (devices):
+    devices = list (devices)
+    serials = set ()
+    for device in devices:
+        if is_ipp_over_usb_device (device):
+            serial = _device_serial (device)
+            if serial != '':
+                serials.add (serial)
+    return serials
+
+
+class LegacyUSBDeviceCache:
+    """Track legacy USB device serials across sequential discovery batches."""
+
+    def __init__ (self):
+        self._usb_serials = set ()
+
+    def note_devices (self, devices):
+        for device in devices:
+            if _is_legacy_usb_device (device):
+                serial = _device_serial (device)
+                if serial != '':
+                    self._usb_serials.add (serial)
+
+    def suppress(self, devices):
+        devices = list(devices)
+
+        ipp_serials = ipp_usb_serials(devices)
+
+        if not ipp_serials:
+            return devices
+
+        filtered = []
+        for device in devices:
+            if (_is_legacy_usb_device(device) and
+                _device_serial(device) in ipp_serials):
+                continue
+
+            filtered.append(device)
+
+        return filtered
+
+    def superseded_usb_serials (self, devices):
+        """Return cached USB serials superseded by IPP-over-USB in devices."""
+        return self._usb_serials & ipp_usb_serials (devices)
+
+
+def suppress_legacy_usb_devices (devices, cache=None):
+    devices = list (devices)
+    if cache is None:
+        cache = LegacyUSBDeviceCache ()
+    cache.note_devices (devices)
+    return cache.suppress (devices)
+
 class DNSSDHostNamesResolver:
     def __init__ (self, devices):
         self._devices = devices
@@ -44,29 +166,19 @@ class DNSSDHostNamesResolver:
             return
 
         for uri, device in self._devices.items ():
-            if not uri.startswith ("dnssd://"):
+            service = _service_tuple_from_uri (uri)
+            if service is None:
                 self._unresolved -= 1
                 continue
 
-            # We need to resolve the DNS-SD hostname in order to
-            # compare with other network devices.
-            result = urllib.parse.urlparse (uri)
-            hostname = result.netloc
-            elements = hostname.rsplit (".", 3)
-            if len (elements) != 4:
-                self._resolved ()
-                continue
-
-            name, stype, protocol, domain = elements
-            name = urllib.parse.unquote (name)
-            stype += "." + protocol #  e.g. _printer._tcp
+            name, stype, domain = service
 
             try:
                 obj = bus.get_object ("org.freedesktop.Avahi", "/")
                 server = dbus.Interface (obj,
                                          "org.freedesktop.Avahi.Server")
                 self._device_uri_by_name[(name, stype, domain)] = uri
-                debugprint ("Resolving address for %s" % hostname)
+                debugprint ("Resolving address for %s" % uri)
                 server.ResolveService (-1, -1,
                                         name, stype, domain,
                                         -1, 0,
@@ -88,13 +200,18 @@ class DNSSDHostNamesResolver:
     def _reply (self, interface, protocol, name, stype, domain,
                 host, aprotocol, address, port, txt, flags):
         uri = self._device_uri_by_name[(name, stype, domain)]
-        self._devices[uri].address = address
+        device = self._devices[uri]
+        device.address = address
         hostname = host
         p = hostname.find(".")
         if p != -1:
             hostname = hostname[:p]
         debugprint ("%s is at %s (%s)" % (uri, address, hostname))
-        self._devices[uri].hostname = hostname
+        device.hostname = hostname
+        if hasattr (device, 'id_dict') and not device.id_dict.get ('SN', ''):
+            serial = _txt_value (txt, 'usb_SER')
+            if serial != '':
+                device.id_dict['SN'] = serial
         self._resolved ()
 
     def _error (self, uri, error):
