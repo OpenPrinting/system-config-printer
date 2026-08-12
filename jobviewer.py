@@ -394,7 +394,6 @@ class JobViewer (GtkGUI):
         self.specific_dests = specific_dests
         notify_caps = Notify.get_server_caps ()
         self.notify_has_actions = "actions" in notify_caps
-        self.notify_has_persistence = "persistence" in notify_caps
 
         self.jobs = {}
         self.jobiters = {}
@@ -587,22 +586,8 @@ class JobViewer (GtkGUI):
         theme = Gtk.IconTheme.get_default ()
         self.icon_jobs = load_icon (theme, ICON)
         self.icon_jobs_processing = load_icon (theme, "printer-printing")
-        self.icon_no_jobs = self.icon_jobs.copy ()
-        self.icon_no_jobs.fill (0)
-        self.icon_jobs.composite (self.icon_no_jobs,
-                                  0, 0,
-                                  self.icon_no_jobs.get_width(),
-                                  self.icon_no_jobs.get_height(),
-                                  0, 0,
-                                  1.0, 1.0,
-                                  GdkPixbuf.InterpType.BILINEAR,
-                                  127)
-        if self.applet and not self.notify_has_persistence:
-            self.statusicon = Gtk.StatusIcon ()
-            self.statusicon.set_from_pixbuf (self.icon_no_jobs)
-            self.statusicon.connect ('activate', self.toggle_window_display)
-            self.statusicon.connect ('popup-menu', self.on_icon_popupmenu)
-            self.statusicon.set_visible (False)
+        if self.applet:
+            self._setup_tray_icon ()
 
         # D-Bus
         if bus is None:
@@ -704,10 +689,45 @@ class JobViewer (GtkGUI):
         for op in self.ops:
             op.destroy ()
 
-        if self.applet and not self.notify_has_persistence:
-            self.statusicon.set_visible (False)
+        if self.applet:
+            self._set_tray_visible (False)
 
         self.emit ('finished')
+
+    def _setup_tray_icon (self):
+        """Set up the system tray icon using AyatanaAppIndicator3
+        (StatusNotifierItem protocol)."""
+        gi.require_version('AyatanaAppIndicator3', '0.1')
+        from gi.repository import AyatanaAppIndicator3 as AppIndicator
+        self._AppIndicator = AppIndicator
+        self.statusicon_popupmenu.show_all ()
+        self.indicator = AppIndicator.Indicator.new (
+            "system-config-printer-applet",
+            "printer",
+            AppIndicator.IndicatorCategory.APPLICATION_STATUS)
+        self.indicator.set_title (_("Print Queue Applet"))
+        self.indicator.set_icon_full ("printer", _("Print queue"))
+        self.indicator.set_menu (self.statusicon_popupmenu)
+        # Middle-click activates the first menu item ("Hide").
+        items = self.statusicon_popupmenu.get_children ()
+        if items:
+            self.indicator.set_secondary_activate_target (items[0])
+        # Left-click toggles the jobs window. Requires libayatana-appindicator
+        # >= 0.6.0 (Activate D-Bus method support); on older versions the
+        # signal is silently ignored and the panel falls back to showing
+        # the context menu.
+        self.indicator.connect ("activate", self._on_indicator_activate)
+        self.indicator.set_status (AppIndicator.IndicatorStatus.PASSIVE)
+
+    def _on_indicator_activate (self, indicator, x, y):
+        self.toggle_window_display ()
+
+    def _set_tray_visible (self, visible):
+        AppIndicator = self._AppIndicator
+        if visible:
+            self.indicator.set_status (AppIndicator.IndicatorStatus.ACTIVE)
+        else:
+            self.indicator.set_status (AppIndicator.IndicatorStatus.PASSIVE)
 
     def set_process_pending (self, whether):
         self.process_pending_events = whether
@@ -733,35 +753,19 @@ class JobViewer (GtkGUI):
     def show_IPP_Error(self, exception, message):
         return errordialogs.show_IPP_Error (exception, message, self.JobsWindow)
 
-    def toggle_window_display(self, icon, force_show=False):
+    def toggle_window_display(self, icon=None, force_show=False):
         visible = getattr (self.JobsWindow, 'visible', None)
         if force_show:
             visible = False
 
-        if self.notify_has_persistence:
-            if visible:
-                self.JobsWindow.hide ()
-            else:
-                self.JobsWindow.show ()
+        if visible:
+            self.JobsWindow.set_visible (False)
         else:
-            if visible:
-                w = self.JobsWindow.get_window()
-                aw = self.JobsAttributesWindow.get_window()
-                (loc, s, area, o) = self.statusicon.get_geometry ()
-
-                if loc:
-                    w.set_skip_taskbar_hint (True)
-                    if aw is not None:
-                        aw.set_skip_taskbar_hint (True)
-                    self.JobsWindow.iconify ()
-                else:
-                    self.JobsWindow.set_visible (False)
-            else:
-                self.JobsWindow.present ()
-                self.JobsWindow.set_skip_taskbar_hint (False)
-                aw = self.JobsAttributesWindow.get_window()
-                if aw is not None:
-                    aw.set_skip_taskbar_hint (False)
+            self.JobsWindow.present ()
+            self.JobsWindow.set_skip_taskbar_hint (False)
+            aw = self.JobsAttributesWindow.get_window()
+            if aw is not None:
+                aw.set_skip_taskbar_hint (False)
 
         self.JobsWindow.visible = not visible
 
@@ -1219,16 +1223,9 @@ class JobViewer (GtkGUI):
         debugprint ("num_jobs: %d" % num_jobs)
         debugprint ("num_jobs_when_hidden: %d" % self.num_jobs_when_hidden)
 
-        if self.notify_has_persistence:
-            return
+        show = open_notifications > 0 or num_jobs > self.num_jobs_when_hidden
 
-        # Don't handle tooltips during the mainloop recursion at the
-        # end of this function as it seems to cause havoc (bug #664044,
-        # bug #739745).
-        self.statusicon.set_has_tooltip (False)
-
-        self.statusicon.set_visible (open_notifications > 0 or
-                                     num_jobs > self.num_jobs_when_hidden)
+        self._set_tray_visible (show)
 
         # Let the icon show/hide itself before continuing.
         while self.process_pending_events and Gtk.events_pending ():
@@ -1344,9 +1341,6 @@ class JobViewer (GtkGUI):
         # Right-clicked.
         self.job_context_menu.popup (None, None, None, None, event_button,
                                      event.get_time ())
-
-    def on_icon_popupmenu(self, icon, button, time):
-        self.statusicon_popupmenu.popup (None, None, None, None, button, time)
 
     def on_icon_hide_activate(self, menuitem):
         self.num_jobs_when_hidden = len (self.jobs.keys ())
@@ -1722,30 +1716,6 @@ class JobViewer (GtkGUI):
 
         return pixbuf
 
-    def get_icon_pixbuf (self, have_jobs=None):
-        if not self.applet:
-            return
-
-        if have_jobs is None:
-            have_jobs = len (self.jobs.keys ()) > 0
-
-        if have_jobs:
-            pixbuf = self.icon_jobs
-            for jobid, jobdata in self.jobs.items ():
-                jstate = jobdata.get ('job-state', cups.IPP_JOB_PENDING)
-                if jstate == cups.IPP_JOB_PROCESSING:
-                    pixbuf = self.icon_jobs_processing
-                    break
-        else:
-            pixbuf = self.icon_no_jobs
-
-        try:
-            pixbuf = self.add_state_reason_emblem (pixbuf)
-        except:
-            nonfatalException ()
-
-        return pixbuf
-
     def set_statusicon_tooltip (self, tooltip=None):
         if not self.applet:
             return
@@ -1759,9 +1729,11 @@ class JobViewer (GtkGUI):
             else:
                 tooltip = _("%d documents queued") % num_jobs
 
-        self.statusicon.set_tooltip_markup (tooltip)
+        # set_tooltip_title requires libayatana-appindicator >= 0.6.0
+        if hasattr(self.indicator, 'set_tooltip_title'):
+            self.indicator.set_tooltip_title (tooltip)
 
-    def update_status (self, have_jobs=None):
+    def update_status (self):
         # Found out which printer state reasons apply to our active jobs.
         upset_printers = set()
         for printer, reasons in self.printer_state_reasons.items ():
@@ -1794,13 +1766,13 @@ class JobViewer (GtkGUI):
             debugprint ("Worst reason: %s" % worst_reason)
 
         self.statusbar.pop (0)
+        processing = 0
         if self.worst_reason is not None:
             (title, tooltip) = self.worst_reason.get_description ()
             self.statusbar.push (0, tooltip)
         else:
             tooltip = None
             status_message = ""
-            processing = 0
             pending = 0
             for jobid in self.active_jobs:
                 try:
@@ -1815,9 +1787,22 @@ class JobViewer (GtkGUI):
                 status_message = _("processing / pending:   %d / %d") % (processing, pending)
                 self.statusbar.push(0, status_message)
 
-        if self.applet and not self.notify_has_persistence:
-            pixbuf = self.get_icon_pixbuf (have_jobs=have_jobs)
-            self.statusicon.set_from_pixbuf (pixbuf)
+        if self.applet:
+            # Tray icon reflects the most severe current condition:
+            # error > warning > processing > idle.
+            if self.worst_reason is not None:
+                level = self.worst_reason.get_level ()
+                if level >= StateReason.ERROR:
+                    icon_name = "printer-error"
+                elif level >= StateReason.WARNING:
+                    icon_name = "printer-warning"
+                else:
+                    icon_name = "printer"
+            elif processing > 0:
+                icon_name = "printer-printing"
+            else:
+                icon_name = "printer"
+            self.indicator.set_icon_full (icon_name, _("Print queue"))
             self.set_statusicon_visibility ()
             self.set_statusicon_tooltip (tooltip=tooltip)
 
@@ -1990,7 +1975,7 @@ class JobViewer (GtkGUI):
         elif jobid in self.active_jobs:
             self.active_jobs.remove (jobid)
 
-        self.update_status (have_jobs=True)
+        self.update_status ()
         if self.applet:
             if not self.job_is_active (jobdata):
                 return
