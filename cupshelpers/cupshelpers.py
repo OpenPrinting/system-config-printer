@@ -21,6 +21,7 @@
 
 import cups, pprint, os, tempfile, re, string
 import locale
+import urllib.parse
 from . import _debugprint
 from . import config
 from functools import reduce
@@ -535,9 +536,12 @@ class Device:
 
         self.id_dict = parseDeviceID (self.id)
 
-        s = uri.find("serial=")
-        if s != -1 and not self.id_dict.get ('SN',''):
-            self.id_dict['SN'] = uri[s + 7:]
+        if not self.id_dict.get ('SN', ''):
+            serial = urllib.parse.parse_qs (
+                urllib.parse.urlsplit (uri).query,
+                keep_blank_values=True).get ('serial', [])
+            if len (serial) > 0:
+                self.id_dict['SN'] = serial[0]
 
     def __repr__ (self):
         return "<cupshelpers.Device \"%s\">" % self.uri

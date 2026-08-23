@@ -26,6 +26,14 @@ try:
 except ImportError:
     cups = None
 
+
+def _make_device(uri, device_class, serial, make_and_model='Xerox B235 MFP'):
+   return cupshelpers.Device(
+      uri,
+      **{'device-class': device_class,
+         'device-make-and-model': make_and_model,
+         'device-id': 'MFG:Xerox;MDL:B235 MFP;SN:%s;' % serial})
+
 @pytest.mark.skipif(cups is None, reason="cups module not available")
 def test_ordering():
     # See https://bugzilla.redhat.com/show_bug.cgi?id=1154686
@@ -73,3 +81,13 @@ def test_ordering():
     devices = phys.get_devices ()
     assert devices[0] < devices[1]
     assert devices[0].uri.startswith ("hp")
+
+
+@pytest.mark.skipif(cups is None, reason="cups module not available")
+def test_usb_serial_drops_interface_suffix():
+   device = cupshelpers.Device(
+      "usb://HP/Color%20LaserJet%20CP3525?serial=34004H030206H&interface=1",
+      **{'device-id':'MFG:Hewlett-Packard;CMD:PJL,MLC,BIDI-ECP,PJL,PCLXL,PCL,POSTSCRIPT,PDF;MDL:HP Color LaserJet CP3525;CLS:PRINTER;DES:Hewlett-Packard Color LaserJet CP3525;',
+         'device-make-and-model':'HP Color LaserJet CP3525',
+         'device-class':'direct'})
+   assert device.id_dict['SN'] == '34004H030206H'
