@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk+" version="3.0"/>
+  <object class="GtkDialog" id="AvahiWarningDialog">
+    <property name="title" translatable="yes">Warning</property>
+    <property name="modal">True</property>
+    <property name="window_position">center-on-parent</property>
+    <property name="default_width">350</property>
+    <property name="default_height">150</property>
+
+    <child internal-child="vbox">
+      <object class="GtkBox" id="dialog-vbox">
+        <property name="visible">True</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">6</property>
+
+        <child>
+          <object class="GtkImage" id="warning-icon">
+            <property name="icon_name">dialog-warning</property>
+            <property name="visible">True</property>
+            <property name="pixel_size">48</property>
+          </object>
+        </child>
+
+        <child>
+          <object class="GtkLabel" id="warning-message">
+            <property name="label" translatable="yes">
+              Avahi module is not installed. 
+              Service discovery will not work.
+            </property>
+            <property name="visible">True</property>
+            <property name="wrap">True</property>
+          </object>
+        </child>
+      </object>
+    </child>
+
+    <child internal-child="action_area">
+      <object class="GtkButtonBox" id="dialog-action_area">
+        <property name="visible">True</property>
+        <property name="layout_style">end</property>
+        <child>
+          <object class="GtkButton" id="ok-button">
+            <property name="label" translatable="yes">OK</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <signal name="clicked" handler="on_avahi_warning_close" swapped="no"/>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>
