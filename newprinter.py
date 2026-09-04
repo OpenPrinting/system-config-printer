@@ -2483,6 +2483,8 @@ class NewPrinterGUI(GtkGUI):
                 continue
             devs = device.get_devices ()
             network = devs[0].device_class == 'network'
+            if network and dnssdresolve.is_ipp_over_usb_device(devs[0]):
+                network = False
             info = device.get_info ()
             if device == current_device:
                 info += _(" (Current)")
@@ -2492,7 +2494,7 @@ class NewPrinterGUI(GtkGUI):
                     # An actual network printer device.  Put this at the top.
                     iter = model.insert_before (network_iter, find_nw_iter,
                                                 row=row)
-                    if device == current_device or dnssdresolve.is_ipp_over_usb_device(devs[0]):
+                    if device == current_device:
                         network_path = model.get_path(network_iter)
                         child_path = model.get_path(iter)
                         self.tvNPDevices.expand_row(network_path, False)
@@ -2520,7 +2522,7 @@ class NewPrinterGUI(GtkGUI):
 
                 iter = model.insert_before (None, iter, row=row)
 
-            if device == current_device:
+            if device == current_device or dnssdresolve.is_ipp_over_usb_device(devs[0]):
                 device_select_path = model.get_path (iter)
                 self.tvNPDevices.scroll_to_cell (device_select_path,
                                                  row_align=0.5)

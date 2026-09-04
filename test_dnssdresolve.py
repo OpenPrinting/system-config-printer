@@ -27,11 +27,12 @@ def test_dns_sd_usb_ser_populates_sn():
 
 
 class DummyIPPUSBDevice:
-    def __init__(self, uri, device_class, serial):
+    def __init__(self, uri, device_class, serial, address='127.0.0.1'):
         self.uri = uri
         self.device_class = device_class
         self.type = uri.split(':', 1)[0]
         self.id_dict = {'SN': serial}
+        self.address = address
 
 
 def test_ipp_usb_helper_suppresses_legacy_usb_when_serial_matches():
@@ -67,7 +68,7 @@ def test_ipp_usb_helper_leaves_lan_ipp_unchanged():
         DummyIPPUSBDevice('usb://Xerox/B235%20MFP?serial=34004H030206H&interface=1',
                           'direct', '34004H030206H'),
         DummyIPPUSBDevice('ipp://printer.example.com/ipp/print',
-                          'network', '34004H030206H'),
+                          'network', '34004H030206H', address='192.168.1.10'),
     ]
 
     filtered = dnssdresolve.suppress_legacy_usb_devices(devices)
@@ -143,7 +144,7 @@ def test_ipp_usb_cache_does_not_affect_lan_ipp():
     usb = DummyIPPUSBDevice('usb://Xerox/B235%20MFP?serial=34004H030206H&interface=1',
                             'direct', '34004H030206H')
     ipp_lan = DummyIPPUSBDevice('ipp://printer.example.com/ipp/print',
-                                'network', '34004H030206H')
+                                'network', '34004H030206H', address='192.168.1.10')
 
     visible = dnssdresolve.suppress_legacy_usb_devices([usb], cache)
     superseded = cache.superseded_usb_serials([ipp_lan])
@@ -172,3 +173,23 @@ def test_ipp_usb_cache_does_not_suppress_usb_without_serial():
         'usb://Xerox/B235%20MFP?serial=&interface=1',
         'ipp://Xerox(R)%20B235%20MFP%20(USB)._ipp._tcp.local/',
     ]
+
+
+def test_is_ipp_over_usb_device_127_0_0_1():
+    dev = DummyIPPUSBDevice('ipp://printer._ipp._tcp.local/', 'network', '', address='127.0.0.1')
+    assert dnssdresolve.is_ipp_over_usb_device(dev) is True
+
+
+def test_is_ipp_over_usb_device_ipv6_loopback():
+    dev = DummyIPPUSBDevice('ipp://printer._ipp._tcp.local/', 'network', '', address='::1')
+    assert dnssdresolve.is_ipp_over_usb_device(dev) is True
+
+
+def test_is_ipp_over_usb_device_lan_ip():
+    dev = DummyIPPUSBDevice('ipp://printer._ipp._tcp.local/', 'network', '', address='192.168.1.10')
+    assert dnssdresolve.is_ipp_over_usb_device(dev) is False
+
+
+def test_is_ipp_over_usb_device_non_ipp_uri():
+    dev = DummyIPPUSBDevice('socket://printer._printer._tcp.local/', 'network', '', address='127.0.0.1')
+    assert dnssdresolve.is_ipp_over_usb_device(dev) is False
