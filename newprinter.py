@@ -198,6 +198,8 @@ class NewPrinterGUI(GtkGUI):
     INSTALL_RESULT_DONE = True
     INSTALL_RESULT_OPS_PENDING = False
 
+    SEARCHING_ROW_MINIMUM_TIME = 0.5
+
     new_printer_device_tabs = {
         "parallel" : 0, # empty tab
         "usb" : 0,
@@ -2032,18 +2034,7 @@ class NewPrinterGUI(GtkGUI):
             self._pending_devices = None
             self.add_devices (pending, None, no_more=True)
         else:
-            if hasattr(self, '_searching_row_ref') and self._searching_row_ref is not None:
-                if self._searching_row_ref.valid():
-                    model = self.tvNPDevices.get_model()
-                    if model is not None:
-                        path = self._searching_row_ref.get_path()
-                        if path is not None:
-                            try:
-                                iter = model.get_iter(path)
-                                model.remove(iter)
-                            except ValueError:
-                                pass
-                self._searching_row_ref = None
+            self._finish_searching_row ()
 
     def local_devices_reply (self, conn, result, current_uri):
         self.dec_spinner_task ()
@@ -2361,30 +2352,68 @@ class NewPrinterGUI(GtkGUI):
         self.fetchDevices (network=True)
 
     def start_fetching_devices (self):
+        timeout_id = getattr (self, '_searching_row_timeout_id', None)
+        if timeout_id is not None:
+            GLib.source_remove (timeout_id)
+            self._searching_row_timeout_id = None
+
+        if getattr (self, '_searching_row_ref', None) is not None:
+            self._remove_searching_row ()
+
         # Insert a transient status row
         model = self.tvNPDevices.get_model()
         if model is not None:
             iter = model.append(None, row=[_("Searching for printers..."), None, False])
             path = model.get_path(iter)
             self._searching_row_ref = Gtk.TreeRowReference.new(model, path)
+            self._searching_row_displayed_at = time.monotonic ()
 
         self.fetchDevices_conn = asyncconn.Connection ()
         self.fetchDevices_conn._begin_operation (_("fetching device list"))
         self.fetchDevices (network=False, current_uri=self.current_uri)
         del self.current_uri
+
+    def _remove_searching_row (self):
+        self._searching_row_timeout_id = None
+        row_ref = getattr (self, '_searching_row_ref', None)
+        self._searching_row_ref = None
+        self._searching_row_displayed_at = None
+
+        if row_ref is None or not row_ref.valid ():
+            return False
+
+        model = row_ref.get_model ()
+        path = row_ref.get_path ()
+        if model is not None and path is not None:
+            try:
+                iter = model.get_iter (path)
+                model.remove (iter)
+            except ValueError:
+                pass
+
+        return False
+
+    def _finish_searching_row (self):
+        if getattr (self, '_searching_row_ref', None) is None:
+            return
+
+        displayed_at = getattr (self, '_searching_row_displayed_at', None)
+        if displayed_at is None:
+            self._remove_searching_row ()
+            return
+
+        remaining = (self.SEARCHING_ROW_MINIMUM_TIME -
+                     (time.monotonic () - displayed_at))
+        if remaining <= 0:
+            self._remove_searching_row ()
+        elif getattr (self, '_searching_row_timeout_id', None) is None:
+            timeout = max (1, int (remaining * 1000) + 1)
+            self._searching_row_timeout_id = GLib.timeout_add (
+                timeout, self._remove_searching_row)
+
     def add_devices (self, devices, current_uri, no_more=False):
-        if no_more and hasattr(self, '_searching_row_ref') and self._searching_row_ref is not None:
-            if self._searching_row_ref.valid():
-                model = self.tvNPDevices.get_model()
-                if model is not None:
-                    path = self._searching_row_ref.get_path()
-                    if path is not None:
-                        try:
-                            iter = model.get_iter(path)
-                            model.remove(iter)
-                        except ValueError:
-                            pass
-            self._searching_row_ref = None
+        if no_more:
+            self._finish_searching_row ()
 
         current_from_batch = False
         if current_uri:
