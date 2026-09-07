@@ -198,8 +198,6 @@ class NewPrinterGUI(GtkGUI):
     INSTALL_RESULT_DONE = True
     INSTALL_RESULT_OPS_PENDING = False
 
-    SEARCHING_ROW_MINIMUM_TIME = 0.5
-
     new_printer_device_tabs = {
         "parallel" : 0, # empty tab
         "usb" : 0,
@@ -463,6 +461,26 @@ class NewPrinterGUI(GtkGUI):
         self.tvNPDevices.set_row_separator_func (self.device_row_separator_fn, None)
         self.tvNPDevices.connect ("row-activated", self.device_row_activated)
         self.tvNPDevices.connect ("row-expanded", self.device_row_expanded)
+
+        # inline searching spinner
+        scrolled = self.tvNPDevices.get_parent ()
+        parent_box = scrolled.get_parent ()
+        if parent_box is not None:
+            self._searching_overlay = Gtk.Overlay ()
+            parent_box.remove (scrolled)
+            self._searching_overlay.add (scrolled)
+            parent_box.pack_start (self._searching_overlay, True, True, 0)
+            parent_box.reorder_child (self._searching_overlay, 0)
+
+            self._searching_spinner = Gtk.Spinner ()
+            self._searching_spinner.set_halign (Gtk.Align.CENTER)
+            self._searching_spinner.set_valign (Gtk.Align.CENTER)
+            self._searching_spinner.set_size_request (32, 32)
+            self._searching_overlay.add_overlay (self._searching_spinner)
+            self._searching_overlay.show_all ()
+            self._searching_spinner.hide ()
+        else:
+            self._searching_spinner = None
 
         # Devices expander
         self.expNPDeviceURIs.connect ("notify::expanded",
@@ -1998,7 +2016,6 @@ class NewPrinterGUI(GtkGUI):
 
     def fetchDevices(self, network=False, current_uri=None):
         debugprint ("fetchDevices")
-        self.inc_spinner_task ()
 
         # Search for Bluetooth printers together with the network printers
         # as the Bluetooth search takes rather long time
@@ -2024,7 +2041,6 @@ class NewPrinterGUI(GtkGUI):
     def error_getting_devices (self, conn, exc):
         # Just ignore the error.
         debugprint ("Error fetching devices: %s" % repr (exc))
-        self.dec_spinner_task ()
         self.fetchDevices_conn._end_operation ()
         self.fetchDevices_conn.destroy ()
         self.fetchDevices_conn = None
@@ -2034,11 +2050,9 @@ class NewPrinterGUI(GtkGUI):
             self._pending_devices = None
             self.add_devices (pending, None, no_more=True)
         else:
-            self._finish_searching_row ()
+            self._hide_searching_spinner ()
 
     def local_devices_reply (self, conn, result, current_uri):
-        self.dec_spinner_task ()
-
         # Buffer local devices rather than displaying them immediately.
         # This prevents the UI from flickering when a legacy USB device
         # is briefly shown and then later suppressed/replaced by its
@@ -2071,7 +2085,6 @@ class NewPrinterGUI(GtkGUI):
         if len (need_resolving) > 0:
             # DNS-SD resolution required — keep buffering.
             resolver = dnssdresolve.DNSSDHostNamesResolver (need_resolving)
-            self.inc_spinner_task ()
             resolver.resolve (reply_handler=lambda devices:
                                   self.dnssd_resolve_reply (current_uri,
                                                             devices))
@@ -2081,7 +2094,6 @@ class NewPrinterGUI(GtkGUI):
             self._pending_devices = None
             self.add_devices (pending, current_uri, no_more=True)
 
-        self.dec_spinner_task ()
         self.check_firewall ()
 
     def dnssd_resolve_reply (self, current_uri, devices):
@@ -2095,7 +2107,6 @@ class NewPrinterGUI(GtkGUI):
         self._pending_devices = None
         self.add_devices (pending, current_uri, no_more=True)
 
-        self.dec_spinner_task ()
         self.check_firewall ()
 
     def get_hpfax_device_id(self, faxuri):
@@ -2347,73 +2358,32 @@ class NewPrinterGUI(GtkGUI):
             self.firewall.write ()
 
         debugprint ("Fetching network devices after firewall dialog response")
+        self._show_searching_spinner ()
         self.fetchDevices_conn = asyncconn.Connection ()
         self.fetchDevices_conn._begin_operation (_("fetching device list"))
         self.fetchDevices (network=True)
 
     def start_fetching_devices (self):
-        timeout_id = getattr (self, '_searching_row_timeout_id', None)
-        if timeout_id is not None:
-            GLib.source_remove (timeout_id)
-            self._searching_row_timeout_id = None
-
-        if getattr (self, '_searching_row_ref', None) is not None:
-            self._remove_searching_row ()
-
-        # Insert a transient status row
-        model = self.tvNPDevices.get_model()
-        if model is not None:
-            iter = model.append(None, row=[_("Searching for printers..."), None, False])
-            path = model.get_path(iter)
-            self._searching_row_ref = Gtk.TreeRowReference.new(model, path)
-            self._searching_row_displayed_at = time.monotonic ()
+        self._show_searching_spinner ()
 
         self.fetchDevices_conn = asyncconn.Connection ()
         self.fetchDevices_conn._begin_operation (_("fetching device list"))
         self.fetchDevices (network=False, current_uri=self.current_uri)
         del self.current_uri
 
-    def _remove_searching_row (self):
-        self._searching_row_timeout_id = None
-        row_ref = getattr (self, '_searching_row_ref', None)
-        self._searching_row_ref = None
-        self._searching_row_displayed_at = None
+    def _show_searching_spinner (self):
+        if self._searching_spinner is not None:
+            self._searching_spinner.start ()
+            self._searching_spinner.show ()
 
-        if row_ref is None or not row_ref.valid ():
-            return False
-
-        model = row_ref.get_model ()
-        path = row_ref.get_path ()
-        if model is not None and path is not None:
-            try:
-                iter = model.get_iter (path)
-                model.remove (iter)
-            except ValueError:
-                pass
-
-        return False
-
-    def _finish_searching_row (self):
-        if getattr (self, '_searching_row_ref', None) is None:
-            return
-
-        displayed_at = getattr (self, '_searching_row_displayed_at', None)
-        if displayed_at is None:
-            self._remove_searching_row ()
-            return
-
-        remaining = (self.SEARCHING_ROW_MINIMUM_TIME -
-                     (time.monotonic () - displayed_at))
-        if remaining <= 0:
-            self._remove_searching_row ()
-        elif getattr (self, '_searching_row_timeout_id', None) is None:
-            timeout = max (1, int (remaining * 1000) + 1)
-            self._searching_row_timeout_id = GLib.timeout_add (
-                timeout, self._remove_searching_row)
+    def _hide_searching_spinner (self):
+        if self._searching_spinner is not None:
+            self._searching_spinner.hide ()
+            self._searching_spinner.stop ()
 
     def add_devices (self, devices, current_uri, no_more=False):
         if no_more:
-            self._finish_searching_row ()
+            self._hide_searching_spinner ()
 
         current_from_batch = False
         if current_uri:
