@@ -475,7 +475,7 @@ class NewPrinterGUI(GtkGUI):
             self._searching_spinner = Gtk.Spinner ()
             self._searching_spinner.set_halign (Gtk.Align.CENTER)
             self._searching_spinner.set_valign (Gtk.Align.CENTER)
-            self._searching_spinner.set_size_request (48, 48)
+            self._searching_spinner.set_size_request (32, 32)
             self._searching_overlay.add_overlay (self._searching_spinner)
             self._searching_overlay.show_all ()
             self._searching_spinner.hide ()
