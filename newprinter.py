@@ -414,7 +414,8 @@ class NewPrinterGUI(GtkGUI):
         self.ntbkNPDownloadableDriverProperties.set_show_tabs(False)
 
         self.spinner_count = 0
-
+        self.spinner.set_size_request(58, 58)
+        self.spinner.get_style_context().add_class("large-spinner")
         # Set up OpenPrinting widgets.
         self.opreq = None
         self.opreq_handlers = None
@@ -475,7 +476,7 @@ class NewPrinterGUI(GtkGUI):
             self._searching_spinner = Gtk.Spinner ()
             self._searching_spinner.set_halign (Gtk.Align.CENTER)
             self._searching_spinner.set_valign (Gtk.Align.CENTER)
-            self._searching_spinner.set_size_request (32, 32)
+            self._searching_spinner.set_size_request (58, 58)
             self._searching_overlay.add_overlay (self._searching_spinner)
             self._searching_overlay.show_all ()
             self._searching_spinner.hide ()
