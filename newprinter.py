@@ -462,6 +462,26 @@ class NewPrinterGUI(GtkGUI):
         self.tvNPDevices.connect ("row-activated", self.device_row_activated)
         self.tvNPDevices.connect ("row-expanded", self.device_row_expanded)
 
+        # inline searching spinner
+        scrolled = self.tvNPDevices.get_parent ()
+        parent_box = scrolled.get_parent ()
+        if parent_box is not None:
+            self._searching_overlay = Gtk.Overlay ()
+            parent_box.remove (scrolled)
+            self._searching_overlay.add (scrolled)
+            parent_box.pack_start (self._searching_overlay, True, True, 0)
+            parent_box.reorder_child (self._searching_overlay, 0)
+
+            self._searching_spinner = Gtk.Spinner ()
+            self._searching_spinner.set_halign (Gtk.Align.CENTER)
+            self._searching_spinner.set_valign (Gtk.Align.CENTER)
+            self._searching_spinner.set_size_request (32, 32)
+            self._searching_overlay.add_overlay (self._searching_spinner)
+            self._searching_overlay.show_all ()
+            self._searching_spinner.hide ()
+        else:
+            self._searching_spinner = None
+
         # Devices expander
         self.expNPDeviceURIs.connect ("notify::expanded",
                                       self.on_expNPDeviceURIs_expanded)
@@ -1996,7 +2016,6 @@ class NewPrinterGUI(GtkGUI):
 
     def fetchDevices(self, network=False, current_uri=None):
         debugprint ("fetchDevices")
-        self.inc_spinner_task ()
 
         # Search for Bluetooth printers together with the network printers
         # as the Bluetooth search takes rather long time
@@ -2022,7 +2041,6 @@ class NewPrinterGUI(GtkGUI):
     def error_getting_devices (self, conn, exc):
         # Just ignore the error.
         debugprint ("Error fetching devices: %s" % repr (exc))
-        self.dec_spinner_task ()
         self.fetchDevices_conn._end_operation ()
         self.fetchDevices_conn.destroy ()
         self.fetchDevices_conn = None
@@ -2031,10 +2049,10 @@ class NewPrinterGUI(GtkGUI):
             pending = self._pending_devices
             self._pending_devices = None
             self.add_devices (pending, None, no_more=True)
+        else:
+            self._hide_searching_spinner ()
 
     def local_devices_reply (self, conn, result, current_uri):
-        self.dec_spinner_task ()
-
         # Buffer local devices rather than displaying them immediately.
         # This prevents the UI from flickering when a legacy USB device
         # is briefly shown and then later suppressed/replaced by its
@@ -2067,7 +2085,6 @@ class NewPrinterGUI(GtkGUI):
         if len (need_resolving) > 0:
             # DNS-SD resolution required — keep buffering.
             resolver = dnssdresolve.DNSSDHostNamesResolver (need_resolving)
-            self.inc_spinner_task ()
             resolver.resolve (reply_handler=lambda devices:
                                   self.dnssd_resolve_reply (current_uri,
                                                             devices))
@@ -2077,7 +2094,6 @@ class NewPrinterGUI(GtkGUI):
             self._pending_devices = None
             self.add_devices (pending, current_uri, no_more=True)
 
-        self.dec_spinner_task ()
         self.check_firewall ()
 
     def dnssd_resolve_reply (self, current_uri, devices):
@@ -2091,7 +2107,6 @@ class NewPrinterGUI(GtkGUI):
         self._pending_devices = None
         self.add_devices (pending, current_uri, no_more=True)
 
-        self.dec_spinner_task ()
         self.check_firewall ()
 
     def get_hpfax_device_id(self, faxuri):
@@ -2343,16 +2358,33 @@ class NewPrinterGUI(GtkGUI):
             self.firewall.write ()
 
         debugprint ("Fetching network devices after firewall dialog response")
+        self._show_searching_spinner ()
         self.fetchDevices_conn = asyncconn.Connection ()
         self.fetchDevices_conn._begin_operation (_("fetching device list"))
         self.fetchDevices (network=True)
 
     def start_fetching_devices (self):
+        self._show_searching_spinner ()
+
         self.fetchDevices_conn = asyncconn.Connection ()
         self.fetchDevices_conn._begin_operation (_("fetching device list"))
         self.fetchDevices (network=False, current_uri=self.current_uri)
         del self.current_uri
+
+    def _show_searching_spinner (self):
+        if self._searching_spinner is not None:
+            self._searching_spinner.start ()
+            self._searching_spinner.show ()
+
+    def _hide_searching_spinner (self):
+        if self._searching_spinner is not None:
+            self._searching_spinner.hide ()
+            self._searching_spinner.stop ()
+
     def add_devices (self, devices, current_uri, no_more=False):
+        if no_more:
+            self._hide_searching_spinner ()
+
         current_from_batch = False
         if current_uri:
             if current_uri in devices:
@@ -2483,6 +2515,8 @@ class NewPrinterGUI(GtkGUI):
                 continue
             devs = device.get_devices ()
             network = devs[0].device_class == 'network'
+            if network and dnssdresolve.is_ipp_over_usb_device(devs[0]):
+                network = False
             info = device.get_info ()
             if device == current_device:
                 info += _(" (Current)")
@@ -2492,7 +2526,7 @@ class NewPrinterGUI(GtkGUI):
                     # An actual network printer device.  Put this at the top.
                     iter = model.insert_before (network_iter, find_nw_iter,
                                                 row=row)
-                    if device == current_device or dnssdresolve.is_ipp_over_usb_device(devs[0]):
+                    if device == current_device:
                         network_path = model.get_path(network_iter)
                         child_path = model.get_path(iter)
                         self.tvNPDevices.expand_row(network_path, False)
@@ -2520,7 +2554,7 @@ class NewPrinterGUI(GtkGUI):
 
                 iter = model.insert_before (None, iter, row=row)
 
-            if device == current_device:
+            if device == current_device or dnssdresolve.is_ipp_over_usb_device(devs[0]):
                 device_select_path = model.get_path (iter)
                 self.tvNPDevices.scroll_to_cell (device_select_path,
                                                  row_align=0.5)

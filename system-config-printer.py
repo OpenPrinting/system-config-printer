@@ -536,12 +536,31 @@ class GUI(GtkGUI):
 
         self.setConnected()
 
-        if len (self.printers) > 4:
-            self.PrintersWindow.set_default_size (720, 345)
-        elif len (self.printers) > 2:
-            self.PrintersWindow.set_default_size (500, 345)
-        elif len (self.printers) > 1:
-            self.PrintersWindow.set_default_size (500, 180)
+
+        MIN_W, MIN_H = 720, 480
+        MAX_W, MAX_H = 1280, 900
+        FRACTION = 0.6
+
+        work_w = work_h = 0
+        screen = Gdk.Screen.get_default ()
+        if screen is not None:
+            if hasattr (screen, 'get_monitor_workarea'):
+
+                n = screen.get_primary_monitor ()
+                workarea = screen.get_monitor_workarea (n)
+                work_w = workarea.width
+                work_h = workarea.height
+            else:
+                work_w = screen.get_width ()
+                work_h = screen.get_height ()
+
+        if work_w > 0 and work_h > 0:
+            target_w = max (MIN_W, min (int (work_w * FRACTION), MAX_W))
+            target_h = max (MIN_H, min (int (work_h * FRACTION), MAX_H))
+        else:
+            target_w, target_h = MIN_W, MIN_H
+
+        self.PrintersWindow.set_default_size (target_w, target_h)
 
 
         self.PrintersWindow.show()
