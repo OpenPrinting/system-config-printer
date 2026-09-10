@@ -577,6 +577,10 @@ class PPDs:
         mfgl = mfg.lower ()
         mdll = mdl.lower ()
 
+        if mfgl == "":
+            _debugprint ("**** Device ID has an empty MFG field; "
+                         "matching on MDL alone")
+
         id_matched = False
         try:
             for each in self.ids[mfgl][mdll]:
@@ -1148,6 +1152,7 @@ class PPDs:
             return
 
         ids = {}
+        blank_mfg = 0
         for ppdname, ppddict in self.ppds.items ():
             id = _singleton (ppddict.get ('ppd-device-id'))
             if not id:
@@ -1157,13 +1162,13 @@ class PPDs:
             lmfg = id_dict['MFG'].lower ()
             lmdl = id_dict['MDL'].lower ()
 
-            bad = False
-            if len (lmfg) == 0:
-                bad = True
+            # A blank MFG is legal (some devices report one); index the
+            # PPD under the empty make so blank-MFG device IDs can match.
             if len (lmdl) == 0:
-                bad = True
-            if bad:
                 continue
+
+            if len (lmfg) == 0:
+                blank_mfg += 1
 
             if lmfg not in ids:
                 ids[lmfg] = {}
@@ -1173,6 +1178,9 @@ class PPDs:
 
             ids[lmfg][lmdl].append (ppdname)
 
+        if blank_mfg:
+            _debugprint ("%d PPDs with empty MFG in their device ID, "
+                         "indexed under the empty make" % blank_mfg)
         self.ids = ids
 
 def _show_help():
