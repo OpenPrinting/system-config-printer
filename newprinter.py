@@ -863,6 +863,7 @@ class NewPrinterGUI(GtkGUI):
     # get PPDs
 
     def _getPPDs_reply (self, ppdsloader):
+        self._hide_searching_spinner()
         exc = ppdsloader.get_error ()
         if exc:
             ppdsloader.destroy ()
@@ -948,7 +949,8 @@ class NewPrinterGUI(GtkGUI):
             self.dec_spinner_task ()
 
         self.NewPrinterWindow.hide()
-        if self.opreq is not None:
+        self._hide_searching_spinner()
+        if getattr(self, 'opreq', None) is not None:
             for handler in self.opreq_handlers:
                 self.opreq.disconnect (handler)
 
@@ -1032,28 +1034,29 @@ class NewPrinterGUI(GtkGUI):
 
             done = False
             pbar = self._installdialog._progress_bar
+            import select
             while self.p.poll() is None:
-                line = stdout.readline ().strip()
-                if (len(line) > 0):
-                    if line == "done":
-                        done = True
-                        break
-                    elif line.startswith(b"P"):
-                        try:
-                            percentage = float(line[1:])
-                            if percentage >= 0:
-                                pbar.set_fraction(percentage/100)
-                            else:
-                                pbar.set_pulse_step(-percentage/100)
-                                pbar.pulse()
-                        except:
-                            pass
-                    else:
-                        self.installed_driver_files.append(line.decode("utf-8"));
+                rlist, _, _ = select.select([stdout], [], [], 0.1)
+                if rlist:
+                    line = stdout.readline ().strip()
+                    if (len(line) > 0):
+                        if line == b"done":
+                            done = True
+                            break
+                        elif line.startswith(b"P"):
+                            try:
+                                percentage = float(line[1:])
+                                if percentage >= 0:
+                                    pbar.set_fraction(percentage/100)
+                                else:
+                                    pbar.set_pulse_step(-percentage/100)
+                                    pbar.pulse()
+                            except:
+                                pass
+                        else:
+                            self.installed_driver_files.append(line.decode("utf-8"))
                 while Gtk.events_pending ():
                     Gtk.main_iteration ()
-                if not line:
-                    time.sleep (0.1)
             if self.p.returncode != 0 and not done:
                 ret = False
         except:
@@ -1565,6 +1568,7 @@ class NewPrinterGUI(GtkGUI):
 
     def _loadPPDsForDevice (self, devid, uri):
         debugprint ("nextNPTab: need PPDs loaded")
+        self._show_searching_spinner()
         p = ppdsloader.PPDsLoader (device_id=devid,
                                    device_uri=uri,
                                    parent=self.NewPrinterWindow,
@@ -1711,22 +1715,9 @@ class NewPrinterGUI(GtkGUI):
                     self.searchedfordriverpackages = True
 
                     self._searchdialog_canceled = False
-                    fmt = _("Searching")
-                    self._searchdialog = Gtk.MessageDialog (
-                        parent=self.NewPrinterWindow,
-                        modal=True,
-                        destroy_with_parent=True,
-                        message_type=Gtk.MessageType.INFO,
-                        buttons=Gtk.ButtonsType.CANCEL,
-                        text=fmt)
-
-                    self._searchdialog.format_secondary_text (
-                        _("Searching for drivers"))
+                    self._show_searching_spinner()
 
                     self.opreq = OpenPrintingRequest ()
-                    self._searchdialog.connect (
-                        "response", self._searchdialog_response)
-                    self._searchdialog.show_all ()
 
                     self.opreq_handlers = []
                     self.opreq_handlers.append (
@@ -1777,9 +1768,7 @@ class NewPrinterGUI(GtkGUI):
         self.opreq_user_search = False
         self.opreq_handlers = None
         self.opreq = None
-        self._searchdialog.hide ()
-        self._searchdialog.destroy ()
-        self._searchdialog = None
+        self._hide_searching_spinner()
 
 
         # Check whether we have found something
@@ -4434,6 +4423,7 @@ class NewPrinterGUI(GtkGUI):
         if self.ppdsloader:
             self.ppdsloader.destroy ()
             self.ppdsloader = None
+            self._hide_searching_spinner()
 
         if self.printer_finder:
             self.printer_finder.cancel ()
