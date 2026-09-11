@@ -20,7 +20,7 @@
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 import dbus
-from gi.repository import GObject
+from gi.repository import GObject, GLib
 from gi.repository import Gtk
 import cupshelpers
 
@@ -83,19 +83,9 @@ class PPDsLoader(GObject.GObject):
             debugprint ("Failed to get session bus")
             self._bus = None
 
-        fmt = _("Searching")
-        self._dialog = Gtk.MessageDialog (parent=parent,
-                                          modal=True, destroy_with_parent=True,
-                                          message_type=Gtk.MessageType.INFO,
-                                          buttons=Gtk.ButtonsType.CANCEL,
-                                          text=fmt)
-
-        self._dialog.format_secondary_text (_("Searching for drivers"))
-
-        self._dialog.connect ("response", self._dialog_response)
+        self._dialog = None
 
     def run (self):
-        self._dialog.show_all ()
 
         if self._device_id:
             self._devid_dict = cupshelpers.parseDeviceID (self._device_id)
@@ -215,9 +205,22 @@ class PPDsLoader(GObject.GObject):
 
     def _query_packagekit (self):
         debugprint ("Asking PackageKit to install drivers")
+        import threading
+        def worker():
+            try:
+                obj = self._bus.get_object ("org.freedesktop.PackageKit",
+                                            "/org/freedesktop/PackageKit")
+                GLib.idle_add (self._query_packagekit_got_obj, obj, None)
+            except Exception as e:
+                GLib.idle_add (self._query_packagekit_got_obj, None, e)
+        threading.Thread(target=worker, daemon=True).start()
+
+    def _query_packagekit_got_obj(self, obj, exc):
+        if exc is not None:
+            debugprint ("Failed to talk to PackageKit: %s" % repr (exc))
+            self._query_cups ()
+            return
         try:
-            obj = self._bus.get_object ("org.freedesktop.PackageKit",
-                                        "/org/freedesktop/PackageKit")
             proxy = dbus.Interface (obj, "org.freedesktop.PackageKit.Modify")
             resources = [self._gpk_device_id]
             interaction = "hide-finished"
@@ -230,22 +233,18 @@ class PPDsLoader(GObject.GObject):
                                          timeout=3600)
         except Exception as e:
             debugprint ("Failed to talk to PackageKit: %s" % repr (e))
-            if self._dialog:
-                self._dialog.show_all ()
-                self._query_cups ()
+            self._query_cups ()
 
     def _packagekit_reply (self):
         debugprint ("Got PackageKit reply")
         self._need_requery_cups = True
-        if self._dialog:
-            self._dialog.show_all ()
-            self._query_cups ()
+        pass
+        self._query_cups ()
 
     def _packagekit_error (self, exc):
         debugprint ("Got PackageKit error: %s" % repr (exc))
-        if self._dialog:
-            self._dialog.show_all ()
-            self._query_cups ()
+        pass
+        self._query_cups ()
 
     def _query_jockey (self):
         debugprint ("Asking Jockey to install drivers")
