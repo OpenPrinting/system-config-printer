@@ -852,6 +852,7 @@ class NewPrinterGUI(GtkGUI):
 
         self._getPPDs_reply (ppdsloader)
         if not self.ppds:
+            self.setNPButtons()
             return
 
         if ppdsloader._jockey_has_answered:
@@ -1209,6 +1210,7 @@ class NewPrinterGUI(GtkGUI):
 
         if not keep_going:
             debugprint ('Interrupting execution of nextNPTab(): Operations pending')
+            self.btnNPForward.set_sensitive (False)
             return
 
         order = self._getPagesOrderForDialogMode ()
