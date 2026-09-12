@@ -19,12 +19,14 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+import threading
+
 import dbus
 from gi.repository import GObject, GLib
 from gi.repository import Gtk
-import cupshelpers
 
 import cups
+import cupshelpers
 cups.require ("1.9.52")
 
 import asyncconn
@@ -74,6 +76,7 @@ class PPDsLoader(GObject.GObject):
         self._ppdsmatch_result = None
         self._jockey_queried = False
         self._jockey_has_answered = False
+        self._destroyed = False
         self._local_cups = (self._host is None or
                             self._host == "localhost" or
                             self._host[0] == '/')
@@ -83,7 +86,6 @@ class PPDsLoader(GObject.GObject):
             debugprint ("Failed to get session bus")
             self._bus = None
 
-        self._dialog = None
 
     def run (self):
 
@@ -106,9 +108,7 @@ class PPDsLoader(GObject.GObject):
 
     def destroy (self):
         debugprint ("DESTROY: %s" % self)
-        if self._dialog:
-            self._dialog.destroy ()
-            self._dialog = None
+        self._destroyed = True
 
         self._parent = None
 
@@ -129,11 +129,6 @@ class PPDsLoader(GObject.GObject):
         debugprint ("%s: stored error is %s" % (self, repr (self._exc)))
         return self._exc
 
-    def _dialog_response (self, dialog, response):
-        dialog.destroy ()
-        self._dialog = None
-        self.emit ('finished')
-
     def _query_cups (self):
         debugprint ("Asking CUPS for PPDs")
         if (not self._conn):
@@ -146,11 +141,17 @@ class PPDsLoader(GObject.GObject):
             self._cups_connect_reply(self._conn, None)
 
     def _cups_connect_reply (self, conn, UNUSED):
+        if self._destroyed:
+            return
+
         conn._begin_operation (_("fetching PPDs"))
         conn.getPPDs2 (reply_handler=self._cups_reply,
                        error_handler=self._cups_error)
 
     def _cups_reply (self, conn, result):
+        if self._destroyed:
+            return
+
         ppds = cupshelpers.ppds.PPDs (result, language=self._language)
         self._ppds = ppds
         self._need_requery_cups = False
@@ -186,65 +187,59 @@ class PPDsLoader(GObject.GObject):
 
         conn.destroy ()
         self._conn = None
-        if self._dialog is not None:
-            self._dialog.destroy ()
-            self._dialog = None
 
         self.emit ('finished')
 
     def _cups_error (self, conn, exc):
+        if self._destroyed:
+            return
+
         conn.destroy ()
         self._conn = None
         self._ppds = None
         self._exc = exc
-        if self._dialog is not None:
-            self._dialog.destroy ()
-            self._dialog = None
 
         self.emit ('finished')
 
     def _query_packagekit (self):
         debugprint ("Asking PackageKit to install drivers")
-        import threading
+
+        gpk_device_id = self._gpk_device_id
+
         def worker():
+            bus = None
+            success = False
             try:
-                obj = self._bus.get_object ("org.freedesktop.PackageKit",
-                                            "/org/freedesktop/PackageKit")
-                GLib.idle_add (self._query_packagekit_got_obj, obj, None)
+                bus = dbus.SessionBus(private=True)
+                obj = bus.get_object("org.freedesktop.PackageKit",
+                                     "/org/freedesktop/PackageKit")
+                proxy = dbus.Interface(obj, "org.freedesktop.PackageKit.Modify")
+                resources = [gpk_device_id]
+                interaction = "hide-finished"
+                debugprint("Calling InstallPrinterDrivers in worker")
+                proxy.InstallPrinterDrivers(dbus.UInt32(0), resources, interaction, timeout=3600)
+                success = True
             except Exception as e:
-                GLib.idle_add (self._query_packagekit_got_obj, None, e)
+                debugprint("Got PackageKit error in worker: %s" % repr(e))
+            finally:
+                if bus is not None:
+                    bus.close()
+                GLib.idle_add(self._on_packagekit_done, success)
+
         threading.Thread(target=worker, daemon=True).start()
 
-    def _query_packagekit_got_obj(self, obj, exc):
-        if exc is not None:
-            debugprint ("Failed to talk to PackageKit: %s" % repr (exc))
-            self._query_cups ()
-            return
-        try:
-            proxy = dbus.Interface (obj, "org.freedesktop.PackageKit.Modify")
-            resources = [self._gpk_device_id]
-            interaction = "hide-finished"
-            debugprint ("Calling InstallPrinterDrivers (%s, %s, %s)" %
-                        (repr (0), repr (resources), repr (interaction)))
-            proxy.InstallPrinterDrivers (dbus.UInt32 (0),
-                                         resources, interaction,
-                                         reply_handler=self._packagekit_reply,
-                                         error_handler=self._packagekit_error,
-                                         timeout=3600)
-        except Exception as e:
-            debugprint ("Failed to talk to PackageKit: %s" % repr (e))
-            self._query_cups ()
+    def _on_packagekit_done(self, success):
+        if self._destroyed:
+            return False
 
-    def _packagekit_reply (self):
-        debugprint ("Got PackageKit reply")
-        self._need_requery_cups = True
-        pass
-        self._query_cups ()
+        if not success:
+            debugprint("PackageKit installation failed or returned error")
+        else:
+            debugprint("Got PackageKit reply")
+            self._need_requery_cups = True
 
-    def _packagekit_error (self, exc):
-        debugprint ("Got PackageKit error: %s" % repr (exc))
-        pass
-        self._query_cups ()
+        self._query_cups()
+        return False
 
     def _query_jockey (self):
         debugprint ("Asking Jockey to install drivers")
@@ -259,6 +254,9 @@ class PPDsLoader(GObject.GObject):
             self._jockey_error (e)
 
     def _jockey_reply (self, conn, result):
+        if self._destroyed:
+            return
+
         debugprint ("Got Jockey result: %s" % repr (result))
         self._jockey_has_answered = True
         try:
@@ -268,6 +266,9 @@ class PPDsLoader(GObject.GObject):
         self._query_cups ()
 
     def _jockey_error (self, exc):
+        if self._destroyed:
+            return
+
         debugprint ("Got Jockey error: %s" % repr (exc))
         if self._need_requery_cups:
             self._query_cups ()
@@ -276,9 +277,6 @@ class PPDsLoader(GObject.GObject):
                 self._conn.destroy ()
                 self._conn = None
 
-            if self._dialog is not None:
-                self._dialog.destroy ()
-                self._dialog = None
 
             self.emit ('finished')
 

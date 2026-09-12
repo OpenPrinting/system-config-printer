@@ -27,6 +27,11 @@ import config
 import sys, os, time, re
 import _thread
 import dbus
+import dbus.mainloop.glib
+
+# Must be initialized before any threads use D-Bus.
+dbus.mainloop.glib.threads_init()
+
 import gi
 try:
     gi.require_version('Polkit', '1.0')
