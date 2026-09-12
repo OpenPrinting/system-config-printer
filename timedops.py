@@ -18,7 +18,6 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-import dbus.mainloop.glib
 from gi.repository import GObject
 from gi.repository import GLib
 from gi.repository import Gdk
@@ -30,10 +29,6 @@ import gettext
 gettext.install(domain=config.PACKAGE, localedir=config.localedir)
 from debug import *
 
-# Initialise threading for D-Bus.  This is needed as long as it is
-# used from two separate threads.  We only do this in a few places
-# now, but in particular the troubleshooter does this (bug #662047).
-dbus.mainloop.glib.threads_init ()
 
 class OperationCanceled(RuntimeError):
     pass
