@@ -416,6 +416,19 @@ class NewPrinterGUI(GtkGUI):
         self.spinner_count = 0
         self.spinner.set_size_request(58, 58)
         self.spinner.get_style_context().add_class("large-spinner")
+        self._spinner_css_provider = Gtk.CssProvider ()
+        self._spinner_css_provider.load_from_data (b"""
+            .scp-searching-spinner {
+                min-width: 48px;
+                min-height: 48px;
+            }
+        """)
+        Gtk.StyleContext.add_provider_for_screen (
+            Gdk.Screen.get_default (),
+            self._spinner_css_provider,
+            Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+        # self.spinner.set_size_request(58, 58)
+        self.spinner.get_style_context().add_class("scp-searching-spinner")
         # Set up OpenPrinting widgets.
         self.opreq = None
         self.opreq_handlers = None
@@ -477,6 +490,8 @@ class NewPrinterGUI(GtkGUI):
             self._searching_spinner.set_halign (Gtk.Align.CENTER)
             self._searching_spinner.set_valign (Gtk.Align.CENTER)
             self._searching_spinner.set_size_request (58, 58)
+            # self._searching_spinner.set_size_request (58, 58)
+            self._searching_spinner.get_style_context().add_class("scp-searching-spinner")
             self._searching_overlay.add_overlay (self._searching_spinner)
             self._searching_overlay.show_all ()
             self._searching_spinner.hide ()
