@@ -63,6 +63,7 @@ import asyncconn
 import ppdsloader
 import dnssdresolve
 import installpackage
+from vectorspinner import VectorSpinner
 
 import gettext
 gettext.install(domain=config.PACKAGE, localedir=config.localedir)
@@ -413,21 +414,15 @@ class NewPrinterGUI(GtkGUI):
         self.ntbkNPDownloadableDriverProperties.set_show_tabs(False)
 
         self.spinner_count = 0
-        self.spinner.set_size_request(58, 58)
-        self.spinner.get_style_context().add_class("large-spinner")
-        self._spinner_css_provider = Gtk.CssProvider ()
-        self._spinner_css_provider.load_from_data (b"""
-            .scp-searching-spinner {
-                min-width: 48px;
-                min-height: 48px;
-            }
-        """)
-        Gtk.StyleContext.add_provider_for_screen (
-            Gdk.Screen.get_default (),
-            self._spinner_css_provider,
-            Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
-        # self.spinner.set_size_request(58, 58)
-        self.spinner.get_style_context().add_class("scp-searching-spinner")
+        # Replace the UI-file GtkSpinner with our custom VectorSpinner
+        # so the spinner renders identically across all GTK themes.
+        old_spinner = self.spinner
+        spinner_parent = old_spinner.get_parent ()
+        if spinner_parent is not None:
+            spinner_parent.remove (old_spinner)
+            self.spinner = VectorSpinner (size=32)
+            spinner_parent.pack_start (self.spinner, False, True, 0)
+            spinner_parent.reorder_child (self.spinner, 0)
         # Set up OpenPrinting widgets.
         self.opreq = None
         self.opreq_handlers = None
@@ -483,11 +478,15 @@ class NewPrinterGUI(GtkGUI):
             self._searching_vbox.set_halign(Gtk.Align.CENTER)
             self._searching_vbox.set_valign(Gtk.Align.CENTER)
             self._searching_vbox.set_vexpand(True)
-            self._searching_spinner = Gtk.Spinner ()
-            # self._searching_spinner.set_size_request (58, 58)
-            self._searching_spinner.get_style_context().add_class("scp-searching-spinner")
+            self._searching_vbox.set_hexpand(True)
+            
+            self._searching_spinner = VectorSpinner (size=48)
+            self._searching_spinner.set_halign(Gtk.Align.CENTER)
+            
             self._searching_label = Gtk.Label()
             self._searching_label.set_use_markup(True)
+            self._searching_label.set_halign(Gtk.Align.CENTER)
+            self._searching_label.set_justify(Gtk.Justification.CENTER)
             self._searching_vbox.pack_start(self._searching_spinner, False, False, 0)
             self._searching_vbox.pack_start(self._searching_label, False, False, 0)
             vbNPDevices.pack_start(self._searching_vbox, True, True, 0)
@@ -2436,6 +2435,7 @@ class NewPrinterGUI(GtkGUI):
             else:
                 self._searching_label.hide()
             self.ntbkNPType.hide ()
+            self._searching_spinner.show ()
             self._searching_spinner.start ()
             self._searching_vbox.show ()
 
