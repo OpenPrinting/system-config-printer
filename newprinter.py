@@ -63,6 +63,7 @@ import asyncconn
 import ppdsloader
 import dnssdresolve
 import installpackage
+from vectorspinner import VectorSpinner
 
 import gettext
 gettext.install(domain=config.PACKAGE, localedir=config.localedir)
@@ -237,7 +238,6 @@ class NewPrinterGUI(GtkGUI):
         self.nextnptab_rerun = False
         self.printers = {} # set in init()
         self.recommended_model_selected = False
-        self._searchdialog = None
         self._installdialog = None
 
         self.getWidgets({"NewPrinterWindow":
@@ -414,7 +414,13 @@ class NewPrinterGUI(GtkGUI):
         self.ntbkNPDownloadableDriverProperties.set_show_tabs(False)
 
         self.spinner_count = 0
-
+        old_spinner = self.spinner
+        spinner_parent = old_spinner.get_parent ()
+        if spinner_parent is not None:
+            spinner_parent.remove (old_spinner)
+            self.spinner = VectorSpinner (size=32)
+            spinner_parent.pack_start (self.spinner, False, True, 0)
+            spinner_parent.reorder_child (self.spinner, 0)
         # Set up OpenPrinting widgets.
         self.opreq = None
         self.opreq_handlers = None
@@ -462,23 +468,41 @@ class NewPrinterGUI(GtkGUI):
         self.tvNPDevices.connect ("row-activated", self.device_row_activated)
         self.tvNPDevices.connect ("row-expanded", self.device_row_expanded)
 
-        # inline searching spinner
-        scrolled = self.tvNPDevices.get_parent ()
-        parent_box = scrolled.get_parent ()
-        if parent_box is not None:
-            self._searching_overlay = Gtk.Overlay ()
-            parent_box.remove (scrolled)
-            self._searching_overlay.add (scrolled)
-            parent_box.pack_start (self._searching_overlay, True, True, 0)
-            parent_box.reorder_child (self._searching_overlay, 0)
-
-            self._searching_spinner = Gtk.Spinner ()
-            self._searching_spinner.set_halign (Gtk.Align.CENTER)
-            self._searching_spinner.set_valign (Gtk.Align.CENTER)
-            self._searching_spinner.set_size_request (32, 32)
-            self._searching_overlay.add_overlay (self._searching_spinner)
-            self._searching_overlay.show_all ()
-            self._searching_spinner.hide ()
+        # Searching spinner — placed in a Gtk.Stack alongside the Description
+        # notebook. This prevents the left and right panes from resizing when
+        # switching between them, as the Stack maintains the max size of both.
+        vbNPDevices = self.ntbkNPType.get_parent ()
+        if vbNPDevices is not None:
+            self._searching_stack = Gtk.Stack()
+            self._searching_stack.set_transition_type(Gtk.StackTransitionType.CROSSFADE)
+            self._searching_stack.set_homogeneous(True)
+            
+            vbNPDevices.remove(self.ntbkNPType)
+            self._searching_stack.add_named(self.ntbkNPType, "notebook")
+            
+            self._searching_vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
+            self._searching_vbox.set_halign(Gtk.Align.CENTER)
+            self._searching_vbox.set_valign(Gtk.Align.CENTER)
+            self._searching_vbox.set_vexpand(True)
+            self._searching_vbox.set_hexpand(True)
+            
+            self._searching_spinner = VectorSpinner (size=48)
+            self._searching_spinner.set_halign(Gtk.Align.CENTER)
+            
+            self._searching_label = Gtk.Label()
+            self._searching_label.set_use_markup(True)
+            self._searching_label.set_halign(Gtk.Align.CENTER)
+            self._searching_label.set_justify(Gtk.Justification.CENTER)
+            self._searching_vbox.pack_start(self._searching_spinner, False, False, 0)
+            self._searching_vbox.pack_start(self._searching_label, False, False, 0)
+            
+            self._searching_stack.add_named(self._searching_vbox, "spinner")
+            vbNPDevices.pack_start(self._searching_stack, True, True, 0)
+            vbNPDevices.reorder_child(self._searching_stack, 0)
+            self._searching_stack.show_all ()
+            
+            # Start with the notebook visible
+            self._searching_stack.set_visible_child_name("notebook")
         else:
             self._searching_spinner = None
 
@@ -847,6 +871,7 @@ class NewPrinterGUI(GtkGUI):
 
         self._getPPDs_reply (ppdsloader)
         if not self.ppds:
+            self.setNPButtons()
             return
 
         if ppdsloader._jockey_has_answered:
@@ -862,6 +887,7 @@ class NewPrinterGUI(GtkGUI):
     # get PPDs
 
     def _getPPDs_reply (self, ppdsloader):
+        self._hide_searching_spinner()
         exc = ppdsloader.get_error ()
         if exc:
             ppdsloader.destroy ()
@@ -940,6 +966,7 @@ class NewPrinterGUI(GtkGUI):
         if self.ppdsloader:
             self.ppdsloader.destroy ()
             self.ppdsloader = None
+            self._hide_searching_spinner()
 
         if self.printer_finder:
             self.printer_finder.cancel ()
@@ -947,7 +974,8 @@ class NewPrinterGUI(GtkGUI):
             self.dec_spinner_task ()
 
         self.NewPrinterWindow.hide()
-        if self.opreq is not None:
+        self._hide_searching_spinner()
+        if getattr(self, 'opreq', None) is not None:
             for handler in self.opreq_handlers:
                 self.opreq.disconnect (handler)
 
@@ -1025,42 +1053,112 @@ class NewPrinterGUI(GtkGUI):
             self.p = subprocess.Popen (args, env=new_environ, close_fds=True,
                                        stdin=subprocess.DEVNULL,
                                        stdout=subprocess.PIPE)
-            # Keep the UI refreshed while we wait for
-            # the drivers query to complete.
-            (stdout, stderr) = (self.p.stdout, self.p.stderr)
 
-            done = False
+            # Use a nested main loop and IO watch for event-driven async I/O
+            loop = GLib.MainLoop()
             pbar = self._installdialog._progress_bar
-            while self.p.poll() is None:
-                line = stdout.readline ().strip()
-                if (len(line) > 0):
-                    if line == "done":
-                        done = True
-                        break
-                    elif line.startswith(b"P"):
-                        try:
-                            percentage = float(line[1:])
-                            if percentage >= 0:
-                                pbar.set_fraction(percentage/100)
-                            else:
-                                pbar.set_pulse_step(-percentage/100)
-                                pbar.pulse()
-                        except:
-                            pass
-                    else:
-                        self.installed_driver_files.append(line.decode("utf-8"));
-                while Gtk.events_pending ():
-                    Gtk.main_iteration ()
+
+            # Make stdout non-blocking
+            import fcntl
+            flags = fcntl.fcntl(self.p.stdout.fileno(), fcntl.F_GETFL)
+            fcntl.fcntl(self.p.stdout.fileno(), fcntl.F_SETFL, flags | os.O_NONBLOCK)
+
+            done_received = False
+            child_exited = False
+            eof_reached = False
+            io_error = False
+            exit_status = -1
+
+            def check_done():
+                if child_exited and (eof_reached or io_error):
+                    loop.quit()
+
+            def process_line(line):
+                nonlocal done_received
+                line = line.strip()
                 if not line:
-                    time.sleep (0.1)
-            if self.p.returncode != 0 and not done:
+                    return
+                if line == b"done":
+                    done_received = True
+                elif line.startswith(b"P"):
+                    try:
+                        percentage = float(line[1:])
+                        if percentage >= 0:
+                            pbar.set_fraction(percentage/100)
+                        else:
+                            pbar.set_pulse_step(-percentage/100)
+                            pbar.pulse()
+                    except:
+                        pass
+                else:
+                    self.installed_driver_files.append(line.decode("utf-8", errors="replace"))
+
+            buffer = b""
+            def on_stdout_ready(source, condition):
+                nonlocal buffer, eof_reached, io_error
+                import os as _os
+                fd = source if isinstance(source, int) else source.fileno()
+
+                while True:
+                    try:
+                        data = _os.read(fd, 4096)
+                        if not data:
+                            eof_reached = True
+                            break
+                        buffer += data
+                        while b"\n" in buffer:
+                            line, buffer = buffer.split(b"\n", 1)
+                            process_line(line)
+                    except BlockingIOError:
+                        break
+                    except Exception as e:
+                        debugprint("Unexpected IO error reading from subprocess: %s" % e)
+                        io_error = True
+                        break
+
+                if condition & GLib.IOCondition.ERR:
+                    debugprint("GLib.IOCondition.ERR received on subprocess stdout")
+                    io_error = True
+
+                if eof_reached or io_error or (condition & GLib.IOCondition.HUP):
+                    if buffer:
+                        process_line(buffer)
+                        buffer = b""
+                    if condition & GLib.IOCondition.HUP:
+                        eof_reached = True
+                    check_done()
+                    return False
+                return True
+
+            def on_child_exit(pid, status):
+                nonlocal child_exited, exit_status
+                child_exited = True
+                exit_status = status
+                check_done()
+
+            watch_id = GLib.io_add_watch(self.p.stdout,
+                                         GLib.PRIORITY_DEFAULT,
+                                         GLib.IOCondition.IN | GLib.IOCondition.HUP | GLib.IOCondition.ERR,
+                                         on_stdout_ready)
+            child_watch_id = GLib.child_watch_add(self.p.pid, on_child_exit)
+
+            # Block here, processing UI events and I/O until both EOF and child exit occur
+            loop.run()
+
+            # Convert exit status to return code. waitpid returns a 16-bit status.
+            import os as _os
+            returncode = _os.waitstatus_to_exitcode(exit_status) if hasattr(_os, 'waitstatus_to_exitcode') else (exit_status >> 8)
+            if returncode != 0 and not done_received:
                 ret = False
-        except:
-            # Problem executing command.
+            if io_error:
+                ret = False
+
+        except Exception as e:
+            debugprint("Error in do_installdriverpackage: %s" % e)
             ret = False
 
         if not ret:
-            self.installed_driver_files = [];
+            self.installed_driver_files = []
 
         return ret
 
@@ -1131,6 +1229,7 @@ class NewPrinterGUI(GtkGUI):
 
         if not keep_going:
             debugprint ('Interrupting execution of nextNPTab(): Operations pending')
+            self.btnNPForward.set_sensitive (False)
             return
 
         order = self._getPagesOrderForDialogMode ()
@@ -1185,7 +1284,7 @@ class NewPrinterGUI(GtkGUI):
                 if (self.device.id and
                     not self.device.type in ("socket", "lpd", "ipp",
                                              "http", "https", "bluetooth")):
-                    name = "%s %s" % (self.device.id_dict["MFG"], 
+                    name = "%s %s" % (self.device.id_dict["MFG"],
                                       self.device.id_dict["MDL"])
             except:
                 nonfatalException ()
@@ -1564,6 +1663,7 @@ class NewPrinterGUI(GtkGUI):
 
     def _loadPPDsForDevice (self, devid, uri):
         debugprint ("nextNPTab: need PPDs loaded")
+        self._show_searching_spinner(_("Searching for drivers"))
         p = ppdsloader.PPDsLoader (device_id=devid,
                                    device_uri=uri,
                                    parent=self.NewPrinterWindow,
@@ -1709,23 +1809,8 @@ class NewPrinterGUI(GtkGUI):
                     debugprint ('nextNPTab: Searching for "%s"' % devid)
                     self.searchedfordriverpackages = True
 
-                    self._searchdialog_canceled = False
-                    fmt = _("Searching")
-                    self._searchdialog = Gtk.MessageDialog (
-                        parent=self.NewPrinterWindow,
-                        modal=True,
-                        destroy_with_parent=True,
-                        message_type=Gtk.MessageType.INFO,
-                        buttons=Gtk.ButtonsType.CANCEL,
-                        text=fmt)
-
-                    self._searchdialog.format_secondary_text (
-                        _("Searching for drivers"))
-
                     self.opreq = OpenPrintingRequest ()
-                    self._searchdialog.connect (
-                        "response", self._searchdialog_response)
-                    self._searchdialog.show_all ()
+                    self._show_searching_spinner(_("Searching for drivers"))
 
                     self.opreq_handlers = []
                     self.opreq_handlers.append (
@@ -1753,22 +1838,6 @@ class NewPrinterGUI(GtkGUI):
         # No operations are pending if reached.
         return self.INSTALL_RESULT_DONE
 
-    def _searchdialog_response (self, dialog, response):
-        # Cancel clicked while performing openprinting search
-
-        self.btnNPDownloadableDriverSearch.set_sensitive (True)
-        self.btnNPDownloadableDriverSearch_label.set_text (_("Search"))
-
-        self.installed_driver_files = []
-        self.searchedfordriverpackages = True
-        self.founddownloadabledrivers = False
-        self.founddownloadableppd = False
-
-        ready (self.NewPrinterWindow)
-
-        # Cancel the openprinting request.
-        GLib.idle_add (self.opreq.cancel)
-
     def opreq_id_search_done (self, opreq, printers, drivers):
         for handler in self.opreq_handlers:
             opreq.disconnect (handler)
@@ -1776,9 +1845,7 @@ class NewPrinterGUI(GtkGUI):
         self.opreq_user_search = False
         self.opreq_handlers = None
         self.opreq = None
-        self._searchdialog.hide ()
-        self._searchdialog.destroy ()
-        self._searchdialog = None
+        self._hide_searching_spinner()
 
 
         # Check whether we have found something
@@ -1799,7 +1866,7 @@ class NewPrinterGUI(GtkGUI):
             try:
                 self.NewPrinterWindow.show()
                 self.setNPButtons()
-                    
+
                 if not self.fillDownloadableDrivers():
                     ready(self.NewPrinterWindow)
                     self.founddownloadabledrivers = False
@@ -2358,28 +2425,33 @@ class NewPrinterGUI(GtkGUI):
             self.firewall.write ()
 
         debugprint ("Fetching network devices after firewall dialog response")
-        self._show_searching_spinner ()
+        self._show_searching_spinner (_("Searching for printers"))
         self.fetchDevices_conn = asyncconn.Connection ()
         self.fetchDevices_conn._begin_operation (_("fetching device list"))
         self.fetchDevices (network=True)
 
     def start_fetching_devices (self):
-        self._show_searching_spinner ()
+        self._show_searching_spinner (_("Searching for printers"))
 
         self.fetchDevices_conn = asyncconn.Connection ()
         self.fetchDevices_conn._begin_operation (_("fetching device list"))
         self.fetchDevices (network=False, current_uri=self.current_uri)
         del self.current_uri
 
-    def _show_searching_spinner (self):
-        if self._searching_spinner is not None:
+    def _show_searching_spinner (self, text=""):
+        if getattr(self, '_searching_stack', None) is not None:
+            if text:
+                self._searching_label.set_markup("<b>%s</b>" % text)
+                self._searching_label.show()
+            else:
+                self._searching_label.hide()
             self._searching_spinner.start ()
-            self._searching_spinner.show ()
+            self._searching_stack.set_visible_child_name("spinner")
 
     def _hide_searching_spinner (self):
-        if self._searching_spinner is not None:
-            self._searching_spinner.hide ()
+        if getattr(self, '_searching_stack', None) is not None:
             self._searching_spinner.stop ()
+            self._searching_stack.set_visible_child_name("notebook")
 
     def add_devices (self, devices, current_uri, no_more=False):
         if no_more:
@@ -2440,7 +2512,7 @@ class NewPrinterGUI(GtkGUI):
                     else:
                         device2.uri = "delete"
         devices = [x for x in devices if x.uri not in ("hp", "hpfax",
-                                                       "hal", "beh", "smb", 
+                                                       "hal", "beh", "smb",
                                                        "scsi", "http", "bjnp",
                                                        "delete")]
 
@@ -2523,7 +2595,7 @@ class NewPrinterGUI(GtkGUI):
             row=[info, device, False]
             if network:
                 if devs[0].uri != devs[0].type:
-                    # An actual network printer device.  Put this at the top.
+                    # Show discovered network printers as selectable top-level devices.
                     iter = model.insert_before (network_iter, find_nw_iter,
                                                 row=row)
                     if device == current_device:
@@ -4433,6 +4505,7 @@ class NewPrinterGUI(GtkGUI):
         if self.ppdsloader:
             self.ppdsloader.destroy ()
             self.ppdsloader = None
+            self._hide_searching_spinner()
 
         if self.printer_finder:
             self.printer_finder.cancel ()
