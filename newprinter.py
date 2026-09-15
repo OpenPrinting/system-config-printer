@@ -475,19 +475,14 @@ class NewPrinterGUI(GtkGUI):
         self.tvNPDevices.connect ("row-activated", self.device_row_activated)
         self.tvNPDevices.connect ("row-expanded", self.device_row_expanded)
 
-        # inline searching spinner
-        scrolled = self.tvNPDevices.get_parent ()
-        parent_box = scrolled.get_parent ()
-        if parent_box is not None:
-            self._searching_overlay = Gtk.Overlay ()
-            parent_box.remove (scrolled)
-            self._searching_overlay.add (scrolled)
-            parent_box.pack_start (self._searching_overlay, True, True, 0)
-            parent_box.reorder_child (self._searching_overlay, 0)
-
+        # Searching spinner — placed in the right-side panel (vbNPDevices)
+        # next to the Description/device-type notebook, per reviewer feedback.
+        vbNPDevices = self.ntbkNPType.get_parent ()
+        if vbNPDevices is not None:
             self._searching_vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
             self._searching_vbox.set_halign(Gtk.Align.CENTER)
             self._searching_vbox.set_valign(Gtk.Align.CENTER)
+            self._searching_vbox.set_vexpand(True)
             self._searching_spinner = Gtk.Spinner ()
             # self._searching_spinner.set_size_request (58, 58)
             self._searching_spinner.get_style_context().add_class("scp-searching-spinner")
@@ -495,8 +490,8 @@ class NewPrinterGUI(GtkGUI):
             self._searching_label.set_use_markup(True)
             self._searching_vbox.pack_start(self._searching_spinner, False, False, 0)
             self._searching_vbox.pack_start(self._searching_label, False, False, 0)
-            self._searching_overlay.add_overlay (self._searching_vbox)
-            self._searching_overlay.show_all ()
+            vbNPDevices.pack_start(self._searching_vbox, True, True, 0)
+            self._searching_vbox.show_all ()
             self._searching_vbox.hide ()
         else:
             self._searching_spinner = None
@@ -2440,6 +2435,7 @@ class NewPrinterGUI(GtkGUI):
                 self._searching_label.show()
             else:
                 self._searching_label.hide()
+            self.ntbkNPType.hide ()
             self._searching_spinner.start ()
             self._searching_vbox.show ()
 
@@ -2447,6 +2443,7 @@ class NewPrinterGUI(GtkGUI):
         if getattr(self, '_searching_vbox', None) is not None:
             self._searching_vbox.hide ()
             self._searching_spinner.stop ()
+            self.ntbkNPType.show ()
 
     def add_devices (self, devices, current_uri, no_more=False):
         if no_more:
@@ -2590,7 +2587,7 @@ class NewPrinterGUI(GtkGUI):
             row=[info, device, False]
             if network:
                 if devs[0].uri != devs[0].type:
-                    # An actual network printer device.  Put this at the top.
+                    # Show discovered network printers as selectable top-level devices.
                     iter = model.insert_before (network_iter, find_nw_iter,
                                                 row=row)
                     if device == current_device:
