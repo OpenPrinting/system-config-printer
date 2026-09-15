@@ -414,8 +414,6 @@ class NewPrinterGUI(GtkGUI):
         self.ntbkNPDownloadableDriverProperties.set_show_tabs(False)
 
         self.spinner_count = 0
-        # Replace the UI-file GtkSpinner with our custom VectorSpinner
-        # so the spinner renders identically across all GTK themes.
         old_spinner = self.spinner
         spinner_parent = old_spinner.get_parent ()
         if spinner_parent is not None:
@@ -470,10 +468,18 @@ class NewPrinterGUI(GtkGUI):
         self.tvNPDevices.connect ("row-activated", self.device_row_activated)
         self.tvNPDevices.connect ("row-expanded", self.device_row_expanded)
 
-        # Searching spinner — placed in the right-side panel (vbNPDevices)
-        # next to the Description/device-type notebook, per reviewer feedback.
+        # Searching spinner — placed in a Gtk.Stack alongside the Description
+        # notebook. This prevents the left and right panes from resizing when
+        # switching between them, as the Stack maintains the max size of both.
         vbNPDevices = self.ntbkNPType.get_parent ()
         if vbNPDevices is not None:
+            self._searching_stack = Gtk.Stack()
+            self._searching_stack.set_transition_type(Gtk.StackTransitionType.CROSSFADE)
+            self._searching_stack.set_homogeneous(True)
+            
+            vbNPDevices.remove(self.ntbkNPType)
+            self._searching_stack.add_named(self.ntbkNPType, "notebook")
+            
             self._searching_vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
             self._searching_vbox.set_halign(Gtk.Align.CENTER)
             self._searching_vbox.set_valign(Gtk.Align.CENTER)
@@ -489,9 +495,14 @@ class NewPrinterGUI(GtkGUI):
             self._searching_label.set_justify(Gtk.Justification.CENTER)
             self._searching_vbox.pack_start(self._searching_spinner, False, False, 0)
             self._searching_vbox.pack_start(self._searching_label, False, False, 0)
-            vbNPDevices.pack_start(self._searching_vbox, True, True, 0)
-            self._searching_vbox.show_all ()
-            self._searching_vbox.hide ()
+            
+            self._searching_stack.add_named(self._searching_vbox, "spinner")
+            vbNPDevices.pack_start(self._searching_stack, True, True, 0)
+            vbNPDevices.reorder_child(self._searching_stack, 0)
+            self._searching_stack.show_all ()
+            
+            # Start with the notebook visible
+            self._searching_stack.set_visible_child_name("notebook")
         else:
             self._searching_spinner = None
 
@@ -2428,22 +2439,19 @@ class NewPrinterGUI(GtkGUI):
         del self.current_uri
 
     def _show_searching_spinner (self, text=""):
-        if getattr(self, '_searching_vbox', None) is not None:
+        if getattr(self, '_searching_stack', None) is not None:
             if text:
                 self._searching_label.set_markup("<b>%s</b>" % text)
                 self._searching_label.show()
             else:
                 self._searching_label.hide()
-            self.ntbkNPType.hide ()
-            self._searching_spinner.show ()
             self._searching_spinner.start ()
-            self._searching_vbox.show ()
+            self._searching_stack.set_visible_child_name("spinner")
 
     def _hide_searching_spinner (self):
-        if getattr(self, '_searching_vbox', None) is not None:
-            self._searching_vbox.hide ()
+        if getattr(self, '_searching_stack', None) is not None:
             self._searching_spinner.stop ()
-            self.ntbkNPType.show ()
+            self._searching_stack.set_visible_child_name("notebook")
 
     def add_devices (self, devices, current_uri, no_more=False):
         if no_more:

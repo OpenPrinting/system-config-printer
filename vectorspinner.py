@@ -4,7 +4,7 @@
 ## A theme-independent spinner that renders identically across all
 ## GTK themes and Linux distributions.
 ## Authors:
-##  Alexander Pevzner
+##  Alexander Pevzner <pzz@apevzner.com>
 ##  Ayush Singh <ayushsinghceee@gmail.com>
 
 ## This program is free software; you can redistribute it and/or modify
@@ -12,7 +12,14 @@
 ## the Free Software Foundation; either version 2 of the License, or
 ## (at your option) any later version.
 
-## If any error is found in this code, please report it to the author at ayushsinghceee@gmail.com
+## This program is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+## GNU General Public License for more details.
+
+## You should have received a copy of the GNU General Public License
+## along with this program; if not, write to the Free Software
+## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 import math
 import cairo
@@ -24,13 +31,13 @@ from gi.repository import GLib
 class VectorSpinner(Gtk.DrawingArea):
     """A custom spinner widget drawn with Cairo vectors.
 
+    Note: We must use a custom implementation because the standard Gtk.Spinner
+    is unfortunately not customizable, at least in some Linux distributions 
+    and system themes where CSS overrides for size are ignored.
+
     Unlike Gtk.Spinner, this renders identically across all GTK themes
     and distributions since it draws its own animation frames using
     Cairo vector paths.
-
-    The spinner consists of evenly-spaced radial lines arranged in a
-    circle. Each frame, the "bright" line advances one position,
-    creating the classic rotating spinner effect through opacity fade.
     """
 
     def __init__(self, size=32, interval=20, num_lines=12):
