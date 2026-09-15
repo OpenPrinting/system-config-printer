@@ -27,7 +27,7 @@ import config
 import cupshelpers
 from debug import *
 
-from gi.repository import GObject
+from gi.repository import GObject, GLib
 
 class OpenPrintingRequest(GObject.GObject):
     __gsignals__ = {
@@ -79,7 +79,7 @@ class OpenPrintingRequest(GObject.GObject):
         self._handle = None
         if status != 0:
             debugprint ("%s -> 'error'" % self)
-            self.emit ('error', status, printers)
+            GLib.idle_add (self.emit, 'error', status, printers)
             return
 
         self.downloadable_printers_unchecked = [(x, printers[x])
@@ -130,7 +130,7 @@ class OpenPrintingRequest(GObject.GObject):
         self._handle = None
         if status != 0:
             debugprint ("%s -> 'error'" % self)
-            self.emit ('error', status, drivers)
+            GLib.idle_add (self.emit, 'error', status, drivers)
             return
 
         if drivers:
@@ -163,9 +163,9 @@ class OpenPrintingRequest(GObject.GObject):
     def _drivers_got (self):
         self._handle = None
         debugprint ("%s -> 'finished'" % self)
-        self.emit ('finished',
-                   self.downloadable_printers,
-                   self.downloadable_drivers)
+        GLib.idle_add (self.emit, 'finished',
+                       self.downloadable_printers,
+                       self.downloadable_drivers)
 
 if __name__ == '__main__':
     from pprint import pprint
