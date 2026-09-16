@@ -38,6 +38,7 @@ import dbus
 from gi.repository import Gdk
 from gi.repository import Gtk
 import functools
+import urllib.parse
 
 import cups
 
@@ -170,6 +171,58 @@ def download_gpg_fingerprint(url):
         return m.group(1).strip().replace(' ','')
 
     return None
+
+def _normalize_uri(uri):
+    """
+    Normalize a device URI for comparison by lowercasing the scheme
+    and injecting default network ports if missing (e.g. socket -> 9100).
+    """
+    if not uri:
+        return ""
+
+    try:
+        parsed = urllib.parse.urlsplit(uri)
+        scheme = parsed.scheme.lower()
+        netloc = parsed.netloc
+        port = parsed.port
+    except ValueError:
+        return uri
+
+    if port is None:
+        default_ports = {
+            "http": 80,
+            "https": 443,
+            "ipp": 631,
+            "ipps": 631,
+            "socket": 9100,
+            "lpd": 515
+        }
+        if scheme in default_ports:
+            netloc = f"{netloc}:{default_ports[scheme]}"
+
+    return urllib.parse.urlunsplit((scheme, netloc, parsed.path, parsed.query, parsed.fragment))
+
+def _filter_configured_devices(discovered_devices, configured_printers):
+    """
+    Filter out already configured printers from the discovered devices list.
+    Matching is based on URI comparison using identical normalization rules.
+    """
+    configured_uris = set()
+    if configured_printers:
+        for p in configured_printers.values():
+            uri = getattr(p, 'device_uri', "")
+            if uri:
+                configured_uris.add(_normalize_uri(uri))
+
+    filtered_devices = []
+    for d in discovered_devices:
+        if _normalize_uri(d.uri) not in configured_uris:
+            filtered_devices.append(d)
+        else:
+            debugprint("Suppressing already configured device: %s" % d.uri)
+
+    return filtered_devices
+
 
 class NewPrinterGUI(GtkGUI):
 
@@ -2479,20 +2532,8 @@ class NewPrinterGUI(GtkGUI):
             current_uri = None
             current = None
 
-        for device in devices:
-            if device.type == "socket":
-                # Remove default port to more easily find duplicate URIs
-                device.uri = device.uri.replace (":9100", "")
-
-        # Map generic URIs to something canonical
-        def replace_generic (device):
-            if device.uri == "hp:/no_device_found":
-                device.uri = "hp"
-            elif device.uri == "hpfax:/no_device_found":
-                device.uri = "hpfax"
-            return device
-
-        devices = list(map (replace_generic, devices))
+        # Filter out already configured printers
+        devices = _filter_configured_devices(devices, getattr(self, 'printers', None))
 
         # Mark duplicate URIs for deletion
         for i in range (len (devices) - 1):
@@ -2501,7 +2542,7 @@ class NewPrinterGUI(GtkGUI):
                 device2 = devices[j]
                 if device1.uri == "delete" or device2.uri == "delete":
                     continue
-                if device1.uri == device2.uri:
+                if _normalize_uri(device1.uri) == _normalize_uri(device2.uri):
                     # Keep the one with the longer (better) device ID
                     if (not device1.id):
                         device1.uri = "delete"
