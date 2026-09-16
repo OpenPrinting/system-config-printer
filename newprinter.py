@@ -171,6 +171,34 @@ def download_gpg_fingerprint(url):
 
     return None
 
+def _filter_configured_devices(discovered_devices, configured_printers):
+    """
+    Filter out already configured printers from the discovered devices list.
+    Matching is based on URI comparison using identical normalization rules.
+    """
+    configured_uris = set()
+    if configured_printers:
+        for p in configured_printers.values():
+            uri = getattr(p, 'device_uri', "")
+            if uri:
+                if uri.startswith("socket:"):
+                    uri = uri.replace(":9100", "")
+                elif uri == "hp:/no_device_found":
+                    uri = "hp"
+                elif uri == "hpfax:/no_device_found":
+                    uri = "hpfax"
+                configured_uris.add(uri)
+
+    filtered_devices = []
+    for d in discovered_devices:
+        if d.uri not in configured_uris:
+            filtered_devices.append(d)
+        else:
+            debugprint("Suppressing already configured device: %s" % d.uri)
+
+    return filtered_devices
+
+
 class NewPrinterGUI(GtkGUI):
 
     __gsignals__ = {
@@ -2493,6 +2521,9 @@ class NewPrinterGUI(GtkGUI):
             return device
 
         devices = list(map (replace_generic, devices))
+
+        # Filter out already configured printers
+        devices = _filter_configured_devices(devices, getattr(self, 'printers', None))
 
         # Mark duplicate URIs for deletion
         for i in range (len (devices) - 1):
