@@ -20,7 +20,6 @@
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 import pytest
-
 import newprinter
 
 class MockPrinter:
@@ -65,14 +64,30 @@ def test_multiple_configured_printers():
     assert len(filtered) == 1
     assert filtered[0].uri == "usb://dev3"
 
-def test_socket_port_normalization():
-    dev = MockDevice("socket://192.168.1.5")
+def test_default_ports_normalization():
+    tests = [
+        ("socket://192.168.1.5", "socket://192.168.1.5:9100"),
+        ("http://192.168.1.5", "http://192.168.1.5:80"),
+        ("https://192.168.1.5", "https://192.168.1.5:443"),
+        ("ipp://192.168.1.5", "ipp://192.168.1.5:631"),
+        ("ipps://192.168.1.5", "ipps://192.168.1.5:631"),
+        ("lpd://192.168.1.5", "lpd://192.168.1.5:515"),
+        ("IPP://192.168.1.5:631", "ipp://192.168.1.5"),
+    ]
+    for disc_uri, conf_uri in tests:
+        dev = MockDevice(disc_uri)
+        printers = {"Printer1": MockPrinter(conf_uri)}
+        filtered = newprinter._filter_configured_devices([dev], printers)
+        assert len(filtered) == 0, f"Expected match between {disc_uri} and {conf_uri}"
+
+def test_different_port_no_match():
+    dev = MockDevice("socket://192.168.1.5:1234")
     printers = {"Printer1": MockPrinter("socket://192.168.1.5:9100")}
     filtered = newprinter._filter_configured_devices([dev], printers)
-    assert len(filtered) == 0
+    assert len(filtered) == 1, "Different ports should not match"
 
-def test_generic_hp_normalization():
-    dev = MockDevice("hp")
-    printers = {"Printer1": MockPrinter("hp:/no_device_found")}
+def test_hp_no_device_found_does_not_match_real_printer():
+    dev = MockDevice("hp:/no_device_found")
+    printers = {"Printer1": MockPrinter("hp:/net/printer?ip=1.2.3.4")}
     filtered = newprinter._filter_configured_devices([dev], printers)
-    assert len(filtered) == 0
+    assert len(filtered) == 1, "hp:/no_device_found should not match a real HP printer"
