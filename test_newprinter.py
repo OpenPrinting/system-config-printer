@@ -3,7 +3,7 @@
 ## Copyright (C) 2015 Red Hat, Inc.
 ## Authors:
 ##  Alexander Pevzner <pzz@apevzner.com>
-##  Ayush Singh <ayushsinghcee@gmail.com>
+##  Ayush Singh <ayushsinghceee@gmail.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
