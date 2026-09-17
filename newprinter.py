@@ -224,6 +224,29 @@ def _filter_configured_devices(discovered_devices, configured_printers):
     return filtered_devices
 
 
+def _get_driver_name_from_ppd(ppd, ppds_cache):
+    """Return a human-readable name for the selected driver."""
+    if ppd == 'raw':
+        return _("Raw Queue")
+
+    if isinstance(ppd, cups.PPD):
+        attr = ppd.findAttr("NickName")
+        if not attr:
+            attr = ppd.findAttr("modelName")
+        return attr.value if (attr and attr.value) else ""
+
+    if isinstance(ppd, str) and ppd:
+        try:
+            info = ppds_cache.getInfoFromPPDName(ppd)
+            if "ppd-make-and-model" in info:
+                return _singleton(info["ppd-make-and-model"])
+        except KeyError:
+            pass
+        return ppd
+
+    return ""
+
+
 class NewPrinterGUI(GtkGUI):
 
     __gsignals__ = {
@@ -302,6 +325,7 @@ class NewPrinterGUI(GtkGUI):
                               "spinner",
                               "entNPName",
                               "entNPDescription",
+                              "entNPDriver",
                               "entNPLocation",
                               "isSharedCbx",
                               "tvNPDevices",
@@ -875,7 +899,7 @@ class NewPrinterGUI(GtkGUI):
         self.entNPName.grab_focus ()
         self.isSharedCbx.set_active(self.isShared)
         for widget in [self.entNPLocation,
-                       self.entNPDescription,
+                       self.entNPDescription, self.entNPDriver,
                        self.entSMBURI, self.entSMBUsername,
                        self.entSMBPassword]:
             widget.set_text ('')
@@ -1363,6 +1387,10 @@ class NewPrinterGUI(GtkGUI):
 
             if descr:
                 self.entNPDescription.set_text (descr)
+
+            # Set the read-only driver field.
+            driver_name = _get_driver_name_from_ppd(self.ppd, self.ppds)
+            self.entNPDriver.set_text(driver_name)
 
         self.ntbkNewPrinter.set_current_page(next_page_nr)
 

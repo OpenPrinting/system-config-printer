@@ -91,3 +91,63 @@ def test_hp_no_device_found_does_not_match_real_printer():
     printers = {"Printer1": MockPrinter("hp:/net/printer?ip=1.2.3.4")}
     filtered = newprinter._filter_configured_devices([dev], printers)
     assert len(filtered) == 1, "hp:/no_device_found should not match a real HP printer"
+
+
+class MockPPDAttr:
+    def __init__(self, value):
+        self.value = value
+
+
+class MockCupsPPD:
+    def __init__(self, attrs):
+        self.attrs = attrs
+
+    def findAttr(self, name):
+        if name in self.attrs:
+            return MockPPDAttr(self.attrs[name])
+        return None
+
+
+class MockPPDsCache:
+    def __init__(self, data):
+        self.data = data
+
+    def getInfoFromPPDName(self, name):
+        if name in self.data:
+            return self.data[name]
+        raise KeyError(name)
+
+
+def test_driver_name_from_cups_ppd(monkeypatch):
+    import cups
+    monkeypatch.setattr(cups, "PPD", MockCupsPPD)
+
+    ppd = MockCupsPPD({"NickName": "HP LaserJet 1200", "modelName": "HP LaserJet"})
+
+    assert newprinter._get_driver_name_from_ppd(ppd, None) == "HP LaserJet 1200"
+
+    ppd2 = MockCupsPPD({"modelName": "HP LaserJet"})
+    assert newprinter._get_driver_name_from_ppd(ppd2, None) == "HP LaserJet"
+
+
+def test_driver_name_from_string():
+    cache = MockPPDsCache({
+        "foomatic:HP-LaserJet_1200-pxlmono.ppd": {"ppd-make-and-model": "HP LaserJet 1200 Foomatic/pxlmono"},
+        "some-other-driver.ppd": {"ppd-make-and-model": ["HP LaserJet", "Something else"]}
+    })
+
+    assert newprinter._get_driver_name_from_ppd("raw", cache) == "Raw Queue"
+    assert newprinter._get_driver_name_from_ppd(None, cache) == ""
+    assert newprinter._get_driver_name_from_ppd("", cache) == ""
+    assert newprinter._get_driver_name_from_ppd("foomatic:HP-LaserJet_1200-pxlmono.ppd", cache) == "HP LaserJet 1200 Foomatic/pxlmono"
+    assert newprinter._get_driver_name_from_ppd("some-other-driver.ppd", cache) == "HP LaserJet"
+    assert newprinter._get_driver_name_from_ppd("unknown.ppd", cache) == "unknown.ppd"
+
+
+def test_driver_name_from_cups_ppd_missing_attrs(monkeypatch):
+    import cups
+    monkeypatch.setattr(cups, "PPD", MockCupsPPD)
+
+    ppd = MockCupsPPD({"OtherAttr": "Value"})
+
+    assert newprinter._get_driver_name_from_ppd(ppd, None) == ""
