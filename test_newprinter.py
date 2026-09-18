@@ -274,5 +274,3 @@ def test_driverless_installable_options_reached(monkeypatch):
     np.fillNPInstallableOptions.assert_called_once()
 
     np._loadPPDsForDevice.assert_not_called()
-
-    np._loadPPDsForDevice.assert_not_called()
