@@ -1337,6 +1337,7 @@ class NewPrinterGUI(GtkGUI):
                     self.nextnptab_rerun = False
                     result = self._handlePrinterInstallationMode(step)
                     if result == self.INSTALL_RESULT_OPS_PENDING:
+                        self.btnNPForward.set_sensitive(False)
                         return
                 return
 

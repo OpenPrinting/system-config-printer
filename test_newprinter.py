@@ -350,6 +350,7 @@ def test_broken_driverless_triggers_legacy_fallback():
 
     assert np.device.driverless is False
     assert np._handlePrinterInstallationMode.call_count == 2
+    np.btnNPForward.set_sensitive.assert_called_with(False)
     np.fillNPInstallableOptions.assert_not_called()
 
 def test_non_driverless_ppd_failure_preserves_string(monkeypatch):
