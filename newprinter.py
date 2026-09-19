@@ -1329,6 +1329,15 @@ class NewPrinterGUI(GtkGUI):
             self.ppd = self.getNPPPD()
             self.installable_options = False
             if self.ppd is None:
+                if getattr(self.device, 'driverless', False) and self.ppds is None:
+                    debugprint("Driverless PPD failed; falling back to legacy driver search")
+                    self.device.driverless = False
+                    self.device._driverless_failed = True
+                    self.exactdrivermatch = False
+                    self.nextnptab_rerun = False
+                    result = self._handlePrinterInstallationMode(step)
+                    if result == self.INSTALL_RESULT_OPS_PENDING:
+                        return
                 return
 
             # Prepare Installable Options screen.
@@ -1762,6 +1771,11 @@ class NewPrinterGUI(GtkGUI):
     def _installPrinterFromDeviceID (self, devid, page_nr, step):
         ppdname = None
         self.id_matched_ppdnames = []
+
+        search_uri = self.device.uri
+        if getattr(self.device, '_driverless_failed', False):
+            search_uri = None
+
         try:
             if getattr(self.device, 'driverless', False):
                 ppdname = "driverless:%s" % self.device.uri
@@ -1802,7 +1816,7 @@ class NewPrinterGUI(GtkGUI):
                                              id_dict["MDL"],
                                              id_dict["DES"],
                                              id_dict["CMD"],
-                                             self.device.uri,
+                                             search_uri,
                                              self.device.make_and_model)
                 debugprint ("Suitable PPDs found: %s" % repr(fit))
                 ppdnamelist = self.ppds.\
@@ -1851,7 +1865,7 @@ class NewPrinterGUI(GtkGUI):
                                             "Printer",
                                             "Generic Printer",
                                             [],
-                                            self.device.uri)
+                                            search_uri)
                 status = "generic"
         except:
             nonfatalException ()
@@ -4425,8 +4439,10 @@ class NewPrinterGUI(GtkGUI):
 
     def getNPPPD(self):
         ppd = None
+        _driverless_attempt = False
         if getattr(self.device, 'driverless', False) and self.ppds is None:
             ppd = self.auto_driver
+            _driverless_attempt = True
         else:
             try:
                 if ((self.rbtnNPFoomatic.get_active() or
@@ -4517,9 +4533,13 @@ class NewPrinterGUI(GtkGUI):
             except RuntimeError:
                 nonfatalException()
                 debugprint ("libcups from CUPS 1.3 not available: never mind")
+                if _driverless_attempt:
+                    ppd = None
             except cups.IPPError:
                 nonfatalException()
                 debugprint ("CUPS 1.3 server not available: never mind")
+                if _driverless_attempt:
+                    ppd = None
 
             self.cups._end_operation ()
 
