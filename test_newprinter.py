@@ -19,8 +19,14 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+import gi
+import tempfile
 import pytest
 import newprinter
+gi.require_version('Gtk', '3.0')
+from unittest.mock import MagicMock
+import cupshelpers
+import cups
 
 class MockPrinter:
     def __init__(self, uri):
@@ -151,3 +157,284 @@ def test_driver_name_from_cups_ppd_missing_attrs(monkeypatch):
     ppd = MockCupsPPD({"OtherAttr": "Value"})
 
     assert newprinter._get_driver_name_from_ppd(ppd, None) == ""
+
+class DummyGUI(newprinter.NewPrinterGUI):
+    def __init__(self):
+        self.ppds = None
+        self.dialog_mode = "printer"
+        self.device = cupshelpers.Device("ipp://localhost:60000/ipp/print", **{"device-info": "driverless"})
+        if "driverless" in self.device.info:
+            self.device.driverless = True
+        self.device.type = "ipp"
+        self.remotecupsqueue = False
+        self.id_matched_ppdnames = []
+        self.exactdrivermatch = False
+        self.nextnptab_rerun = False
+        self.devid = None
+        self.searchedfordriverpackages = True
+        self.fetchDevices_conn = None
+        self.printer_finder = None
+
+def get_dummy_gui():
+    np = DummyGUI()
+    np._loadPPDsForDevice = MagicMock()
+    np._installPrinterFromDeviceID = MagicMock(return_value="install_done")
+    np.getNetworkPrinterMakeModel = MagicMock()
+    np.getDeviceURI = MagicMock(return_value="ipp://localhost:60000/ipp/print")
+    np.dec_spinner_task = MagicMock()
+    np.cups = MagicMock()
+    np.cups.getServerPPD = MagicMock(return_value='/tmp/mock.ppd')
+    return np
+
+def test_driverless_skip_snmp():
+    np = get_dummy_gui()
+    np._selectDeviceForInstallation("ipp://localhost:60000/ipp/print")
+    np.getNetworkPrinterMakeModel.assert_not_called()
+
+def test_driverless_skip_ppd_load():
+    np = get_dummy_gui()
+    np._selectDeviceForInstallation = MagicMock()
+    np._installHPScannerFilesIfNeeded = MagicMock()
+    np._handlePrinterInstallationStage(newprinter.NewPrinterGUI.PAGE_SELECT_DEVICE, 1)
+    np._loadPPDsForDevice.assert_not_called()
+
+def test_driverless_install_device_id():
+    np = get_dummy_gui()
+    real_install = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np)
+    np._installPrinterOrSearchForDriver = MagicMock()
+    real_install(None, 1, 1)
+    expected_ppd = "driverless:ipp://localhost:60000/ipp/print"
+    np._installPrinterOrSearchForDriver.assert_called_with(None, expected_ppd, "exact", 1, 1)
+
+def test_driverless_search_driver():
+    np = get_dummy_gui()
+    real_search = newprinter.NewPrinterGUI._installPrinterOrSearchForDriver.__get__(np)
+    np.ppds = None  # Ensure ppds is None as it would be from skipping load
+    np.fillDriverList = MagicMock()
+    np.fillMakeList = MagicMock()
+    ppdname = "driverless:ipp://localhost:60000/ipp/print"
+    real_search(None, ppdname, "exact", 0, 0)
+    assert np.exactdrivermatch
+    assert np.auto_make == "Generic"
+    assert np.auto_model == "Driverless IPP"
+    assert np.auto_driver == ppdname
+    np.fillDriverList.assert_not_called()
+    np.fillMakeList.assert_not_called()
+
+def test_driverless_get_np_ppd(monkeypatch):
+
+    monkeypatch.setattr(cups, "PPD", MockCupsPPD)
+
+    np = get_dummy_gui()
+    np.auto_driver = "driverless:ipp://localhost:60000/ipp/print"
+    np.cups._begin_operation = MagicMock()
+    with tempfile.NamedTemporaryFile(delete=False) as tf:
+        mock_ppd_path = tf.name
+    np.cups.getServerPPD = MagicMock(return_value=mock_ppd_path)
+
+    real_get = newprinter.NewPrinterGUI.getNPPPD.__get__(np)
+    result = real_get()
+    np.cups._begin_operation.assert_called_with("fetching PPD")
+    np.cups.getServerPPD.assert_called_with("driverless:ipp://localhost:60000/ipp/print")
+
+    assert isinstance(result, MockCupsPPD)
+
+def test_driverless_installable_options_reached(monkeypatch):
+    
+    monkeypatch.setattr(cups, "PPD", MockCupsPPD)
+
+    np = get_dummy_gui()
+    np.getNPPPD = MagicMock(return_value=MockCupsPPD({}))
+    np.exactdrivermatch = True
+    np.dialog_mode = 'printer'
+    np.remotecupsqueue = False
+    np.founddownloadabledrivers = False
+    np.rbtnNPDownloadableDriverSearch = MagicMock()
+    np.rbtnNPDownloadableDriverSearch.get_active.return_value = False
+    np.fillNPInstallableOptions = MagicMock()
+    np._selectDeviceForInstallation = MagicMock()
+    np.makeNameUnique = MagicMock(return_value="printer")
+    np.entNPName = MagicMock()
+    np.entNPDescription = MagicMock()
+    np.entNPLocation = MagicMock()
+    np.entNPDriver = MagicMock()
+    np.btnNPApply = MagicMock()
+    np.btnNPForward = MagicMock()
+    np.btnNPBack = MagicMock()
+
+    real_stage = newprinter.NewPrinterGUI.nextNPTab.__get__(np)
+    np.ntbkNewPrinter = MagicMock()
+
+    np.ntbkNewPrinter.get_current_page.return_value = 1
+    np._handlePrinterInstallationMode = MagicMock(return_value=1)
+
+    real_stage(1)
+
+    np.getNPPPD.assert_called_once()
+    np.fillNPInstallableOptions.assert_called_once()
+
+    np._loadPPDsForDevice.assert_not_called()
+
+def test_broken_driverless_getnpppd_returns_none_on_runtime_error(monkeypatch):
+    """When cups.PPD() raises RuntimeError for a driverless PPD,
+    getNPPPD() must return None (not the stale string)."""
+    monkeypatch.setattr(cups, "PPD",
+                        MagicMock(side_effect=RuntimeError("ppdOpenFile failed")))
+
+    np = get_dummy_gui()
+    np.auto_driver = "driverless:ipp://localhost:60000/ipp/print"
+    np.cups._begin_operation = MagicMock()
+    np.cups._end_operation = MagicMock()
+    with tempfile.NamedTemporaryFile(delete=False) as tf:
+        mock_ppd_path = tf.name
+    np.cups.getServerPPD = MagicMock(return_value=mock_ppd_path)
+
+    real_get = newprinter.NewPrinterGUI.getNPPPD.__get__(np)
+    result = real_get()
+
+    assert result is None
+    np.cups.getServerPPD.assert_called_with("driverless:ipp://localhost:60000/ipp/print")
+
+def test_broken_driverless_getnpppd_returns_none_on_ipp_error(monkeypatch):
+    """When getServerPPD raises cups.IPPError for a driverless PPD,
+    getNPPPD() must return None."""
+    monkeypatch.setattr(cups, "PPD", MockCupsPPD)
+
+    np = get_dummy_gui()
+    np.auto_driver = "driverless:ipp://localhost:60000/ipp/print"
+    np.cups._begin_operation = MagicMock()
+    np.cups._end_operation = MagicMock()
+    np.cups.getServerPPD = MagicMock(side_effect=cups.IPPError(0, ""))
+
+    real_get = newprinter.NewPrinterGUI.getNPPPD.__get__(np)
+    result = real_get()
+
+    assert result is None
+
+def test_broken_driverless_triggers_legacy_fallback():
+    """When driverless PPD fetch fails in nextNPTab, device.driverless
+    should be set to False and _handlePrinterInstallationMode should
+    be called to trigger the legacy PPD catalog load."""
+    np = get_dummy_gui()
+    np.getNPPPD = MagicMock(return_value=None)
+    np.exactdrivermatch = True
+    np.dialog_mode = 'printer'
+    np.remotecupsqueue = False
+    np.founddownloadabledrivers = False
+    np.rbtnNPDownloadableDriverSearch = MagicMock()
+    np.rbtnNPDownloadableDriverSearch.get_active.return_value = False
+    np.fillNPInstallableOptions = MagicMock()
+    np._selectDeviceForInstallation = MagicMock()
+    np.makeNameUnique = MagicMock(return_value="printer")
+    np.entNPName = MagicMock()
+    np.entNPDescription = MagicMock()
+    np.entNPLocation = MagicMock()
+    np.entNPDriver = MagicMock()
+    np.btnNPApply = MagicMock()
+    np.btnNPForward = MagicMock()
+    np.btnNPBack = MagicMock()
+
+    real_stage = newprinter.NewPrinterGUI.nextNPTab.__get__(np)
+    np.ntbkNewPrinter = MagicMock()
+    np.ntbkNewPrinter.get_current_page.return_value = 1
+    original_mode = MagicMock(
+        return_value=newprinter.NewPrinterGUI.INSTALL_RESULT_DONE)
+   
+    np._handlePrinterInstallationMode = MagicMock(
+        side_effect=[newprinter.NewPrinterGUI.INSTALL_RESULT_DONE,
+                     newprinter.NewPrinterGUI.INSTALL_RESULT_OPS_PENDING])
+
+    assert np.device.driverless is True
+
+    real_stage(1)
+
+    assert np.device.driverless is False
+    assert np._handlePrinterInstallationMode.call_count == 2
+    np.btnNPForward.set_sensitive.assert_called_with(False)
+    np.fillNPInstallableOptions.assert_not_called()
+
+def test_non_driverless_ppd_failure_preserves_string(monkeypatch):
+    """For non-driverless PPD strings, RuntimeError in cups.PPD()
+    should NOT set ppd to None — the existing server-side fallback
+    must be preserved."""
+    monkeypatch.setattr(cups, "PPD",
+                        MagicMock(side_effect=RuntimeError("ppdOpenFile failed")))
+
+    np = get_dummy_gui()
+    np.device.driverless = False
+    np.ppds = MagicMock()
+    np.rbtnNPFoomatic = MagicMock()
+    np.rbtnNPFoomatic.get_active.return_value = True
+    np.founddownloadableppd = False
+    np.installed_driver_files = []
+    np.tvNPDrivers = MagicMock()
+    selection_mock = MagicMock()
+    iter_mock = MagicMock()
+    model_mock = MagicMock()
+    model_mock.get_path.return_value = [0]
+    selection_mock.get_selected.return_value = (model_mock, iter_mock)
+    np.tvNPDrivers.get_selection.return_value = selection_mock
+    np.NPDrivers = ["foomatic:HP-LaserJet-pxlmono.ppd"]
+    np.cups._begin_operation = MagicMock()
+    np.cups._end_operation = MagicMock()
+    with tempfile.NamedTemporaryFile(delete=False) as tf:
+        mock_ppd_path = tf.name
+    np.cups.getServerPPD = MagicMock(return_value=mock_ppd_path)
+
+    real_get = newprinter.NewPrinterGUI.getNPPPD.__get__(np)
+    result = real_get()
+
+    assert result == "foomatic:HP-LaserJet-pxlmono.ppd"
+
+def test_search_uri_masking_broken_driverless():
+    """Verify that a broken driverless fallback masks its URI as None."""
+    np = get_dummy_gui()
+    np.device.driverless = False
+    np.device._driverless_failed = True
+    np.device.id = "MFG:A;MDL:B;"
+    np.device.id_dict = {"MFG": "A", "MDL": "B", "DES": "", "CMD": []}
+    np.device.uri = "ipp://localhost:60000/ipp/print"
+    np.device.make_and_model = "A B"
+    np.dialog_mode = 'printer'
+    np.remotecupsqueue = False
+    np.ppds = MagicMock()
+    np.ppds.getPPDNamesFromDeviceID.return_value = {"mock_ppd": "exact"}
+    np.ppds.orderPPDNamesByPreference.return_value = ["mock_ppd"]
+
+    real_install = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np)
+    real_install(None, 0, 0)
+
+    np.ppds.getPPDNamesFromDeviceID.assert_called_with("A", "B", "", [], None, "A B")
+
+def test_search_uri_normal_non_driverless():
+    """Verify that a normal non-driverless IPP device passes its true URI."""
+    np = get_dummy_gui()
+    np.device.driverless = False
+    np.device._driverless_failed = False
+    np.device.id = "MFG:A;MDL:B;"
+    np.device.id_dict = {"MFG": "A", "MDL": "B", "DES": "", "CMD": []}
+    np.device.uri = "ipp://localhost:60000/ipp/print"
+    np.device.make_and_model = "A B"
+    np.dialog_mode = 'printer'
+    np.remotecupsqueue = False
+    np.ppds = MagicMock()
+    np.ppds.getPPDNamesFromDeviceID.return_value = {"mock_ppd": "exact"}
+    np.ppds.orderPPDNamesByPreference.return_value = ["mock_ppd"]
+
+    real_install = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np)
+    real_install(None, 0, 0)
+    np.ppds.getPPDNamesFromDeviceID.assert_called_with("A", "B", "", [], "ipp://localhost:60000/ipp/print", "A B")
+
+def test_search_uri_working_driverless():
+    """Verify that a working driverless device bypasses legacy matching entirely."""
+    np = get_dummy_gui()
+    np.device.driverless = True
+    np.device._driverless_failed = False
+    np.device.uri = "ipp://localhost:60000/ipp/print"
+    np.dialog_mode = 'printer'
+    np.ppds = MagicMock()
+    np._installPrinterOrSearchForDriver = MagicMock()
+
+    real_install = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np)
+    real_install(None, 0, 0)
+    np.ppds.getPPDNamesFromDeviceID.assert_not_called()
