@@ -201,11 +201,17 @@ def test_driverless_skip_ppd_load():
 def test_driverless_install_device_id():
     np = get_dummy_gui()
     real_install = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np)
-    np._installPrinterOrSearchForDriver = MagicMock()
+    np._installPrinterOrSearchForDriver = MagicMock(return_value=newprinter.NewPrinterGUI.INSTALL_RESULT_DONE)
     np._validateDriverlessPPD = MagicMock(return_value="mock_ppd_object")
     real_install(None, 1, 1)
     expected_ppd = "driverless:ipp://localhost:60000/ipp/print"
     np._installPrinterOrSearchForDriver.assert_called_with(None, expected_ppd, "exact", 1, 1)
+
+    # E. Working driverless:
+    # - validation succeeds
+    # - no _driverless_failed state
+    # - existing driverless behavior remains unchanged
+    assert not getattr(np.device, '_driverless_failed', False)
 
 def test_driverless_search_driver():
     np = get_dummy_gui()
@@ -401,6 +407,7 @@ def test_search_uri_masking_broken_driverless():
     np.ppds = MagicMock()
     np.ppds.getPPDNamesFromDeviceID.return_value = {"mock_ppd": "exact"}
     np.ppds.orderPPDNamesByPreference.return_value = ["mock_ppd"]
+    np._installPrinterOrSearchForDriver = MagicMock(return_value=newprinter.NewPrinterGUI.INSTALL_RESULT_DONE)
 
     real_install = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np)
     real_install(None, 0, 0)
@@ -421,6 +428,7 @@ def test_search_uri_normal_non_driverless():
     np.ppds = MagicMock()
     np.ppds.getPPDNamesFromDeviceID.return_value = {"mock_ppd": "exact"}
     np.ppds.orderPPDNamesByPreference.return_value = ["mock_ppd"]
+    np._installPrinterOrSearchForDriver = MagicMock(return_value=newprinter.NewPrinterGUI.INSTALL_RESULT_DONE)
 
     real_install = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np)
     real_install(None, 0, 0)
@@ -434,7 +442,7 @@ def test_search_uri_working_driverless():
     np.device.uri = "ipp://localhost:60000/ipp/print"
     np.dialog_mode = 'printer'
     np.ppds = MagicMock()
-    np._installPrinterOrSearchForDriver = MagicMock()
+    np._installPrinterOrSearchForDriver = MagicMock(return_value=newprinter.NewPrinterGUI.INSTALL_RESULT_DONE)
 
     real_install = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np)
     real_install(None, 0, 0)
@@ -456,14 +464,21 @@ def test_network_broken_driverless_rejected():
     np.ppds.orderPPDNamesByPreference.return_value = ["driverless:dnssd://...", "other_ppd"]
 
     np._validateDriverlessPPD = MagicMock(return_value=None)
-    np._installPrinterOrSearchForDriver = MagicMock()
+    np._installPrinterOrSearchForDriver = MagicMock(return_value=newprinter.NewPrinterGUI.INSTALL_RESULT_DONE)
 
+    np.exactdrivermatch = True # Pre-set to verify it gets explicitly forced to False
     real_install = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np)
-    real_install(None, 0, 0)
+    result = real_install(None, 0, 0)
 
-    # It should skip driverless:dnssd://... and use other_ppd
     np._validateDriverlessPPD.assert_called_with("driverless:dnssd://...")
-    np._installPrinterOrSearchForDriver.assert_called_with(None, "other_ppd", "close", 0, 0)
+    np._installPrinterOrSearchForDriver.assert_called_with(None, None, None, 0, 0)
+    assert result == newprinter.NewPrinterGUI.INSTALL_RESULT_DONE
+
+    assert np.device.driverless is False
+    assert np.device._driverless_failed is True
+    assert np.exactdrivermatch is False
+    assert np.id_matched_ppdnames == []
+    assert not hasattr(np, '_broken_driverless_ppds')
 
 def test_network_broken_driverless_no_alternative():
     """Network broken driverless with no alternative behaves as no matching PPD."""
@@ -481,12 +496,19 @@ def test_network_broken_driverless_no_alternative():
     np.ppds.orderPPDNamesByPreference.return_value = ["driverless:dnssd://..."]
 
     np._validateDriverlessPPD = MagicMock(return_value=None)
-    np._installPrinterOrSearchForDriver = MagicMock()
+    np._installPrinterOrSearchForDriver = MagicMock(return_value=newprinter.NewPrinterGUI.INSTALL_RESULT_DONE)
 
     real_install = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np)
     result = real_install(None, 0, 0)
-    np._installPrinterOrSearchForDriver.assert_not_called()
+
+    # B. If all candidates are removed, ppdname=None, status=None
+    # exactdrivermatch remains False, and it continues to manual fallback
+    np._installPrinterOrSearchForDriver.assert_called_with(None, None, None, 0, 0)
     assert result == newprinter.NewPrinterGUI.INSTALL_RESULT_DONE
+
+    assert np.device.driverless is False
+    assert np.device._driverless_failed is True
+    assert not hasattr(np, '_broken_driverless_ppds')
 
 def test_usb_broken_driverless_fallback():
     """USB/ipp-usb broken driverless still enters existing fallback."""
@@ -521,3 +543,40 @@ def test_working_driverless_cached():
     assert result == mock_ppd
     np.cups.getServerPPD.assert_not_called()
     assert getattr(np, '_cached_driverless_ppd', None) is None
+
+def test_fillDriverList_excludes_broken_driverless_ppds(monkeypatch):
+    """Verify fillDriverList excludes driverless PPDs when _driverless_failed is True."""
+    np = get_dummy_gui()
+    np.device.make_and_model = "A B"
+    np.device.id_dict = {"MFG": "A", "MDL": "B"}
+    np.installed_driver_files = []
+    np.auto_driver = None
+    np.recommended_model_selected = False
+
+    np.device._driverless_failed = True
+
+    np.ppds = MagicMock()
+    np.ppds.getInfoFromModel.return_value = {
+        "driverless:dnssd://...": {"ppd-make-and-model": "Broken Xerox, Fax, driverless"},
+        "other_ppd": {"ppd-make-and-model": "Other Driver"}
+    }
+    np.ppds.orderPPDNamesByPreference.return_value = ["driverless:dnssd://...", "other_ppd"]
+
+    def get_info(name):
+        return np.ppds.getInfoFromModel.return_value[name]
+    np.ppds.getInfoFromPPDName.side_effect = get_info
+
+    np.tvNPDrivers = MagicMock()
+    mock_model = MagicMock()
+    np.tvNPDrivers.get_model.return_value = mock_model
+
+    real_fill = newprinter.NewPrinterGUI.fillDriverList.__get__(np)
+    real_fill("A", "B")
+
+    assert "driverless:dnssd://..." not in np.NPDrivers
+
+    assert "other_ppd" in np.NPDrivers
+    assert np.NPDrivers == ["other_ppd"]
+    appended_strings = [args[0][0] for args, kwargs in mock_model.append.call_args_list]
+    assert not any("Broken Xerox" in s for s in appended_strings)
+    assert any("Other Driver" in s for s in appended_strings)

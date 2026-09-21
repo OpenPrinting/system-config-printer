@@ -1789,6 +1789,7 @@ class NewPrinterGUI(GtkGUI):
 
     def _installPrinterFromDeviceID (self, devid, page_nr, step):
         ppdname = None
+        status = None
         self.id_matched_ppdnames = []
 
         search_uri = self.device.uri
@@ -1857,8 +1858,12 @@ class NewPrinterGUI(GtkGUI):
                 while ppdnamelist and isinstance(ppdnamelist[0], str) and ppdnamelist[0].startswith("driverless:"):
                     validated_ppd = self._validateDriverlessPPD(ppdnamelist[0])
                     if validated_ppd is None:
-                        debugprint("Driverless PPD validation failed; excluding from candidates")
-                        ppdnamelist.pop(0)
+                        debugprint("Driverless PPD validation failed; abandoning driverless mode completely")
+                        self.device.driverless = False
+                        self.device._driverless_failed = True
+                        self.exactdrivermatch = False
+                        ppdnamelist = []
+                        break
                     else:
                         self._cached_driverless_ppd = validated_ppd
                         break
@@ -1913,8 +1918,14 @@ class NewPrinterGUI(GtkGUI):
         except:
             nonfatalException ()
 
-        if (ppdname and
-            (not self.remotecupsqueue or self.dialog_mode == "ppd")):
+        if getattr(self.device, '_driverless_failed', False):
+            # Broken driverless PPD: do not automatically select any fallback PPD
+            # that might hijack the driver-selection UI.
+            ppdname = None
+            status = None
+            self.id_matched_ppdnames = []
+
+        if (not self.remotecupsqueue or self.dialog_mode == "ppd"):
             return self._installPrinterOrSearchForDriver (devid, ppdname, status, page_nr, step)
 
         # No operations are pending if reached.
@@ -1926,7 +1937,7 @@ class NewPrinterGUI(GtkGUI):
                 self.auto_make = "Generic"
                 self.auto_model = "Driverless IPP"
                 self.auto_driver = ppdname
-            elif ppdname != "download":
+            elif ppdname is not None and ppdname != "download":
                 ppddict = self.ppds.getInfoFromPPDName (ppdname)
                 make_model = _singleton (ppddict['ppd-make-and-model'])
                 (make, model) = \
@@ -4276,6 +4287,12 @@ class NewPrinterGUI(GtkGUI):
             # No available PPDs for some reason(!)
             debugprint ("No PPDs available?")
             self.NPDrivers = []
+
+        if getattr(self.device, '_driverless_failed', False):
+            self.NPDrivers = [
+                p for p in self.NPDrivers
+                if not p.startswith("driverless:")
+            ]
 
         driverlist = []
         NPDrivers = []
