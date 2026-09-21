@@ -1768,6 +1768,24 @@ class NewPrinterGUI(GtkGUI):
         self.ppdsloader = p
         p.connect ('finished',self.on_ppdsloader_finished_next)
         p.run ()
+    def _validateDriverlessPPD(self, ppdname):
+        self.cups._begin_operation(_("validating driverless PPD"))
+        try:
+            f = self.cups.getServerPPD(ppdname)
+            try:
+                ppd = cups.PPD(f)
+                return ppd
+            finally:
+                try:
+                    os.unlink(f)
+                except OSError:
+                    pass
+        except (RuntimeError, cups.IPPError):
+            nonfatalException()
+            debugprint("Driverless PPD validation failed for %s" % ppdname)
+            return None
+        finally:
+            self.cups._end_operation()
 
     def _installPrinterFromDeviceID (self, devid, page_nr, step):
         ppdname = None
@@ -1780,6 +1798,17 @@ class NewPrinterGUI(GtkGUI):
         try:
             if getattr(self.device, 'driverless', False):
                 ppdname = "driverless:%s" % self.device.uri
+                validated_ppd = self._validateDriverlessPPD(ppdname)
+                if validated_ppd is None:
+                    debugprint("Driverless PPD validation failed; loading PPD catalog")
+                    self.device.driverless = False
+                    self.device._driverless_failed = True
+                    uri = self.device.uri
+                    if not devid:
+                        devid = self.device.id or self.devid
+                    self._loadPPDsForDevice(devid, uri)
+                    return self.INSTALL_RESULT_OPS_PENDING
+                self._cached_driverless_ppd = validated_ppd
                 status = "exact"
             elif self.dialog_mode == "download_driver":
                 ppdname = "download"
@@ -1825,9 +1854,22 @@ class NewPrinterGUI(GtkGUI):
                                                self.installed_driver_files,
                                                devid=id_dict, fit=fit)
                 debugprint ("PPDs in priority order: %s" % repr(ppdnamelist))
+                while ppdnamelist and isinstance(ppdnamelist[0], str) and ppdnamelist[0].startswith("driverless:"):
+                    validated_ppd = self._validateDriverlessPPD(ppdnamelist[0])
+                    if validated_ppd is None:
+                        debugprint("Driverless PPD validation failed; excluding from candidates")
+                        ppdnamelist.pop(0)
+                    else:
+                        self._cached_driverless_ppd = validated_ppd
+                        break
+
                 self.id_matched_ppdnames = ppdnamelist
-                ppdname = ppdnamelist[0]
-                status = fit[ppdname]
+                if ppdnamelist:
+                    ppdname = ppdnamelist[0]
+                    status = fit[ppdname]
+                else:
+                    ppdname = None
+                    status = None
             elif (self.dialog_mode == "ppd" and self.orig_ppd):
                 attr = self.orig_ppd.findAttr("NickName")
                 if not attr:
@@ -4439,6 +4481,11 @@ class NewPrinterGUI(GtkGUI):
         self.setNPButtons()
 
     def getNPPPD(self):
+        cached = getattr(self, '_cached_driverless_ppd', None)
+        if cached is not None:
+            self._cached_driverless_ppd = None
+            return cached
+
         ppd = None
         _driverless_attempt = False
         if getattr(self.device, 'driverless', False) and self.ppds is None:

@@ -202,6 +202,7 @@ def test_driverless_install_device_id():
     np = get_dummy_gui()
     real_install = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np)
     np._installPrinterOrSearchForDriver = MagicMock()
+    np._validateDriverlessPPD = MagicMock(return_value="mock_ppd_object")
     real_install(None, 1, 1)
     expected_ppd = "driverless:ipp://localhost:60000/ipp/print"
     np._installPrinterOrSearchForDriver.assert_called_with(None, expected_ppd, "exact", 1, 1)
@@ -438,3 +439,85 @@ def test_search_uri_working_driverless():
     real_install = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np)
     real_install(None, 0, 0)
     np.ppds.getPPDNamesFromDeviceID.assert_not_called()
+
+def test_network_broken_driverless_rejected():
+    """Network broken driverless candidate is rejected and falls back."""
+    np = get_dummy_gui()
+    np.device.driverless = False
+    np.device.uri = "dnssd://printer._ipp._tcp.local/"
+    np.device.make_and_model = "A B"
+    np.device.id_dict = {"MFG": "A", "MDL": "B", "DES": "", "CMD": []}
+    np.device.id = "MFG:A;MDL:B;"
+    np.installed_driver_files = []
+    np.dialog_mode = 'printer'
+    np.remotecupsqueue = False
+    np.ppds = MagicMock()
+    np.ppds.getPPDNamesFromDeviceID.return_value = {"driverless:dnssd://...": "exact", "other_ppd": "close"}
+    np.ppds.orderPPDNamesByPreference.return_value = ["driverless:dnssd://...", "other_ppd"]
+
+    np._validateDriverlessPPD = MagicMock(return_value=None)
+    np._installPrinterOrSearchForDriver = MagicMock()
+
+    real_install = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np)
+    real_install(None, 0, 0)
+
+    # It should skip driverless:dnssd://... and use other_ppd
+    np._validateDriverlessPPD.assert_called_with("driverless:dnssd://...")
+    np._installPrinterOrSearchForDriver.assert_called_with(None, "other_ppd", "close", 0, 0)
+
+def test_network_broken_driverless_no_alternative():
+    """Network broken driverless with no alternative behaves as no matching PPD."""
+    np = get_dummy_gui()
+    np.device.driverless = False
+    np.device.uri = "dnssd://printer._ipp._tcp.local/"
+    np.device.make_and_model = "A B"
+    np.device.id_dict = {"MFG": "A", "MDL": "B", "DES": "", "CMD": []}
+    np.device.id = "MFG:A;MDL:B;"
+    np.installed_driver_files = []
+    np.dialog_mode = 'printer'
+    np.remotecupsqueue = False
+    np.ppds = MagicMock()
+    np.ppds.getPPDNamesFromDeviceID.return_value = {"driverless:dnssd://...": "exact"}
+    np.ppds.orderPPDNamesByPreference.return_value = ["driverless:dnssd://..."]
+
+    np._validateDriverlessPPD = MagicMock(return_value=None)
+    np._installPrinterOrSearchForDriver = MagicMock()
+
+    real_install = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np)
+    result = real_install(None, 0, 0)
+    np._installPrinterOrSearchForDriver.assert_not_called()
+    assert result == newprinter.NewPrinterGUI.INSTALL_RESULT_DONE
+
+def test_usb_broken_driverless_fallback():
+    """USB/ipp-usb broken driverless still enters existing fallback."""
+    np = get_dummy_gui()
+    np.device.driverless = True
+    np.device.uri = "ipp://localhost:60000/ipp/print"
+    np._validateDriverlessPPD = MagicMock(return_value=None)
+    np._loadPPDsForDevice = MagicMock()
+
+    real_install = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np)
+    result = real_install(None, 0, 0)
+
+    assert result == newprinter.NewPrinterGUI.INSTALL_RESULT_OPS_PENDING
+    assert np.device.driverless is False
+    assert np.device._driverless_failed is True
+    np._loadPPDsForDevice.assert_called_once()
+
+def test_working_driverless_cached():
+    """Working driverless PPD is cached and not fetched twice."""
+    np = get_dummy_gui()
+    np.device.driverless = True
+    np.device.uri = "ipp://localhost:60000/ipp/print"
+    np.ppds = None
+    np.auto_driver = "driverless:ipp://localhost:60000/ipp/print"
+    mock_ppd = MagicMock()
+    np._cached_driverless_ppd = mock_ppd
+
+    np.cups = MagicMock()
+    real_get = newprinter.NewPrinterGUI.getNPPPD.__get__(np)
+    result = real_get()
+
+    assert result == mock_ppd
+    np.cups.getServerPPD.assert_not_called()
+    assert getattr(np, '_cached_driverless_ppd', None) is None
