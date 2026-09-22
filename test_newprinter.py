@@ -174,6 +174,18 @@ class DummyGUI(newprinter.NewPrinterGUI):
         self.searchedfordriverpackages = True
         self.fetchDevices_conn = None
         self.printer_finder = None
+        self.founddownloadabledrivers = False
+        self.rbtnNPDownloadableDriverSearch = MagicMock()
+        self.rbtnNPDownloadableDriverSearch.get_active.return_value = False
+        self.rbtnNPFoomatic = MagicMock()
+        self.rbtnNPFoomatic.get_active.return_value = True
+        self.rbtnNPPPD = MagicMock()
+        self.rbtnNPPPD.get_active.return_value = False
+        self.auto_make = ""
+        self.auto_model = ""
+        self.auto_driver = None
+        self.ppdsloader = None
+        self.installed_driver_files = []
 
 def get_dummy_gui():
     np = DummyGUI()
@@ -191,12 +203,13 @@ def test_driverless_skip_snmp():
     np._selectDeviceForInstallation("ipp://localhost:60000/ipp/print")
     np.getNetworkPrinterMakeModel.assert_not_called()
 
-def test_driverless_skip_ppd_load():
+def test_driverless_loads_ppds_on_forward():
     np = get_dummy_gui()
     np._selectDeviceForInstallation = MagicMock()
     np._installHPScannerFilesIfNeeded = MagicMock()
-    np._handlePrinterInstallationStage(newprinter.NewPrinterGUI.PAGE_SELECT_DEVICE, 1)
-    np._loadPPDsForDevice.assert_not_called()
+    res = np._handlePrinterInstallationStage(newprinter.NewPrinterGUI.PAGE_SELECT_DEVICE, 1)
+    np._loadPPDsForDevice.assert_called_once()
+    assert res == newprinter.NewPrinterGUI.INSTALL_RESULT_OPS_PENDING
 
 def test_driverless_install_device_id():
     np = get_dummy_gui()
@@ -515,21 +528,23 @@ def test_network_broken_driverless_no_alternative():
     assert not hasattr(np, '_broken_driverless_ppds')
 
 def test_usb_broken_driverless_fallback():
-    """USB/ipp-usb broken driverless still enters existing fallback."""
+    """USB/ipp-usb broken driverless enters manual fallback without re-loading PPDs."""
     np = get_dummy_gui()
     np.device.driverless = True
     np.device.uri = "ipp://localhost:60000/ipp/print"
     np._validateDriverlessPPD = MagicMock(return_value=None)
     np._loadPPDsForDevice = MagicMock()
+    np._installPrinterOrSearchForDriver = MagicMock(return_value=newprinter.NewPrinterGUI.INSTALL_RESULT_DONE)
 
     real_install = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np)
     result = real_install(None, 0, 0)
 
-    assert result == newprinter.NewPrinterGUI.INSTALL_RESULT_OPS_PENDING
+    assert result == newprinter.NewPrinterGUI.INSTALL_RESULT_DONE
     assert np.device.driverless is False
     assert np.device._driverless_failed is True
     assert np.searchedfordriverpackages is True
-    np._loadPPDsForDevice.assert_called_once_with(None, "ipp://localhost:60000/ipp/print")
+    assert np.exactdrivermatch is False
+    np._loadPPDsForDevice.assert_not_called()
 
 def test_working_driverless_cached():
     """Working driverless PPD is cached and not fetched twice."""
@@ -764,7 +779,7 @@ def test_normal_printer_searches_openprinting_when_no_match(monkeypatch):
 
 
 def test_network_broken_driverless_probe_failure_sets_flags_and_skips_packagekit():
-    """When driverless PPD validation fails, flags are set immediately and PPDs are loaded with devid=None to skip PackageKit."""
+    """When driverless PPD validation fails, flags are set immediately and driverless mode is abandoned."""
     np = get_dummy_gui()
     np.device.driverless = True
     np.device.uri = "dnssd://Xerox%20B235._ipp._tcp.local/"
@@ -772,15 +787,17 @@ def test_network_broken_driverless_probe_failure_sets_flags_and_skips_packagekit
     np.searchedfordriverpackages = False
     np._validateDriverlessPPD = MagicMock(return_value=None)
     np._loadPPDsForDevice = MagicMock()
+    np._installPrinterOrSearchForDriver = MagicMock(return_value=newprinter.NewPrinterGUI.INSTALL_RESULT_DONE)
 
     real_install = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np)
     result = real_install(np.device.id, 0, 0)
 
-    assert result == newprinter.NewPrinterGUI.INSTALL_RESULT_OPS_PENDING
+    assert result == newprinter.NewPrinterGUI.INSTALL_RESULT_DONE
     assert np.device.driverless is False
     assert np.device._driverless_failed is True
     assert np.searchedfordriverpackages is True
-    np._loadPPDsForDevice.assert_called_once_with(None, "dnssd://Xerox%20B235._ipp._tcp.local/")
+    assert np.exactdrivermatch is False
+    np._loadPPDsForDevice.assert_not_called()
 
 
 def test_broken_driverless_guard_prevents_openprinting_even_if_reset(monkeypatch):
@@ -839,7 +856,7 @@ def test_choose_driver_button_visible_for_driverless():
     np.btnNPChooseDriver.hide.assert_not_called()
 
 
-def test_choose_driver_button_hidden_for_non_driverless():
+def test_choose_driver_button_visible_for_non_driverless():
     np = get_dummy_gui()
     np.ntbkNewPrinter = MagicMock()
     np.ntbkNewPrinter.get_current_page.return_value = newprinter.NewPrinterGUI.PAGE_DESCRIBE_PRINTER
@@ -856,8 +873,8 @@ def test_choose_driver_button_hidden_for_non_driverless():
 
     newprinter.NewPrinterGUI.setNPButtons(np)
 
-    np.btnNPChooseDriver.hide.assert_called_once()
-    np.btnNPChooseDriver.show.assert_not_called()
+    np.btnNPChooseDriver.show.assert_called_once()
+    np.btnNPChooseDriver.hide.assert_not_called()
 
 
 def test_clicking_choose_driver_button_enters_manual_workflow():
@@ -869,43 +886,18 @@ def test_clicking_choose_driver_button_enters_manual_workflow():
     np.rbtnNPFoomatic = MagicMock()
     np.on_rbtnNPFoomatic_toggled = MagicMock()
     np.nextNPTab = MagicMock()
+    np._loadPPDsForDevice = MagicMock()
 
     newprinter.NewPrinterGUI.on_btnNPChooseDriver_clicked(np, None)
 
     assert np.device.driverless is False
     assert np.exactdrivermatch is False
     assert np.searchedfordriverpackages is True
+    np._loadPPDsForDevice.assert_not_called()
     np.ntbkNewPrinter.set_current_page.assert_called_with(newprinter.NewPrinterGUI.PAGE_SELECT_INSTALL_METHOD)
     np.rbtnNPFoomatic.set_active.assert_called_with(True)
     np.on_rbtnNPFoomatic_toggled.assert_called_with(np.rbtnNPFoomatic)
     np.nextNPTab.assert_called_with(step=0)
-
-
-def test_clicking_choose_driver_button_loads_ppds_when_none():
-    np = get_dummy_gui()
-    np.device.driverless = True
-    np.exactdrivermatch = True
-    np.ppds = None
-    np.ntbkNewPrinter = MagicMock()
-    np.rbtnNPFoomatic = MagicMock()
-    np.on_rbtnNPFoomatic_toggled = MagicMock()
-    np.nextNPTab = MagicMock()
-    np._loadPPDsForDevice = MagicMock()
-    np.btnNPChooseDriver = MagicMock()
-    np.spinnerNPChooseDriver = MagicMock()
-    np._show_choose_driver_spinner = newprinter.NewPrinterGUI._show_choose_driver_spinner.__get__(np)
-
-    newprinter.NewPrinterGUI.on_btnNPChooseDriver_clicked(np, None)
-
-    assert np.device.driverless is False
-    assert np.exactdrivermatch is False
-    assert np.searchedfordriverpackages is True
-    np.btnNPChooseDriver.set_sensitive.assert_called_once_with(False)
-    np.spinnerNPChooseDriver.show.assert_called_once()
-    np.spinnerNPChooseDriver.start.assert_called_once()
-    np._loadPPDsForDevice.assert_called_once_with(np.device.id, np.device.uri)
-    np.ntbkNewPrinter.set_current_page.assert_not_called()
-    np.nextNPTab.assert_not_called()
 
 
 def test_choose_driver_triggers_ppd_load_when_ppds_none():
@@ -983,35 +975,11 @@ def test_driverless_printer_subsequently_selects_non_driverless_driver(monkeypat
     np.printers = {}
 
     newprinter.NewPrinterGUI.setNPButtons(np)
-    np.btnNPChooseDriver.hide.assert_called_once()
-    np.btnNPChooseDriver.show.assert_not_called()
+    np.btnNPChooseDriver.show.assert_called_once()
+    np.btnNPChooseDriver.hide.assert_not_called()
 
 
-def test_is_driverless_ppd_helper():
-    """Verify _is_driverless_ppd correctly identifies driverless PPDs in all formats."""
-    # Strings
-    assert newprinter._is_driverless_ppd("driverless:ipp://localhost:60000/ipp/print") is True
-    assert newprinter._is_driverless_ppd("driverless:ipps://broken-xerox._ipps._tcp.local/") is True
-    assert newprinter._is_driverless_ppd("everywhere") is True
-    assert newprinter._is_driverless_ppd("foomatic:HP-LaserJet") is False
-    assert newprinter._is_driverless_ppd("raw") is False
-    assert newprinter._is_driverless_ppd("") is False
-    assert newprinter._is_driverless_ppd(None) is False
 
-    xerox_ppd = MockCupsPPD({"NickName": "Xerox Xerox(R) B235 MFP, Fax, driverless, cups-filters 2.0.0"})
-    assert newprinter._is_driverless_ppd(xerox_ppd) is True
-
-    everywhere_ppd = MockCupsPPD({"NickName": "HP Color LaserJet MFP M477fdw - IPP Everywhere"})
-    assert newprinter._is_driverless_ppd(everywhere_ppd) is True
-
-    ipp_attr_ppd = MockCupsPPD({"cupsIPPContentType": "application/pdf,image/pwg-raster"})
-    assert newprinter._is_driverless_ppd(ipp_attr_ppd) is True
-
-    filter_ppd = MockCupsPPD({"cupsFilter2": "image/pwg-raster 0 rastertopwg driverless"})
-    assert newprinter._is_driverless_ppd(filter_ppd) is True
-
-    legacy_ppd = MockCupsPPD({"NickName": "HP LaserJet 4 Plus, hpcups 3.21.2"})
-    assert newprinter._is_driverless_ppd(legacy_ppd) is False
 
 
 def test_driverless_xerox_b235_button_visible_on_describe_page():
@@ -1036,9 +1004,9 @@ def test_driverless_xerox_b235_button_visible_on_describe_page():
     np.btnNPChooseDriver.hide.assert_not_called()
 
 
-def test_non_driverless_ppd_object_button_hidden_on_describe_page():
+def test_non_driverless_ppd_object_button_visible_on_describe_page():
     """When self.ppd is a cups.PPD object for a normal non-driverless driver,
-    btnNPChooseDriver must be hidden on PAGE_DESCRIBE_PRINTER."""
+    btnNPChooseDriver must remain visible on PAGE_DESCRIBE_PRINTER."""
     np = get_dummy_gui()
     np.ppd = MockCupsPPD({"NickName": "HP LaserJet 4 Plus, hpcups 3.21.2"})
     np.device.driverless = False
@@ -1054,8 +1022,8 @@ def test_non_driverless_ppd_object_button_hidden_on_describe_page():
     np.printers = {}
 
     newprinter.NewPrinterGUI.setNPButtons(np)
-    np.btnNPChooseDriver.hide.assert_called_once()
-    np.btnNPChooseDriver.show.assert_not_called()
+    np.btnNPChooseDriver.show.assert_called_once()
+    np.btnNPChooseDriver.hide.assert_not_called()
 
 
 def test_driverless_validation_success_sets_device_driverless_true():
@@ -1081,9 +1049,9 @@ def test_driverless_validation_success_sets_device_driverless_true():
 
 
 def test_choose_driver_ppdsloader_completion_populates_makes_without_back_forward(monkeypatch):
-    """Regression test: clicking 'Choose a different driver...' when self.ppds is None
-    starts asynchronous PPD loader, and upon loader completion, automatically continues
-    the manual driver-selection workflow and populates the Make list without user Back/Forward."""
+    """When self.ppds is None on Forward from PAGE_SELECT_DEVICE, PPD loader starts.
+    Upon loader completion for a broken driverless printer, it automatically continues
+    and directs to Choose Driver (PAGE_SELECT_INSTALL_METHOD) with Make list populated."""
     import ppdsloader
     np = get_dummy_gui()
     np._loadPPDsForDevice = newprinter.NewPrinterGUI._loadPPDsForDevice.__get__(np)
@@ -1092,6 +1060,7 @@ def test_choose_driver_ppdsloader_completion_populates_makes_without_back_forwar
     np._handlePrinterInstallationStage = newprinter.NewPrinterGUI._handlePrinterInstallationStage.__get__(np)
     np._handlePrinterInstallationMode = newprinter.NewPrinterGUI._handlePrinterInstallationMode.__get__(np)
     np._getPagesOrderForDialogMode = newprinter.NewPrinterGUI._getPagesOrderForDialogMode.__get__(np)
+    np._validateDriverlessPPD = MagicMock(return_value=None)
     np.nextNPTab = newprinter.NewPrinterGUI.nextNPTab.__get__(np)
     np.getDeviceURI = newprinter.NewPrinterGUI.getDeviceURI.__get__(np)
     np.setNPButtons = MagicMock()
@@ -1123,7 +1092,7 @@ def test_choose_driver_ppdsloader_completion_populates_makes_without_back_forwar
     dev.device_class = "network"
     np.device = dev
 
-    current_page = [newprinter.NewPrinterGUI.PAGE_DESCRIBE_PRINTER]
+    current_page = [newprinter.NewPrinterGUI.PAGE_SELECT_DEVICE]
     np.ntbkNewPrinter = MagicMock()
     np.ntbkNewPrinter.get_current_page.side_effect = lambda: current_page[0]
     np.ntbkNewPrinter.set_current_page.side_effect = lambda p: current_page.__setitem__(0, p)
@@ -1181,29 +1150,20 @@ def test_choose_driver_ppdsloader_completion_populates_makes_without_back_forwar
     monkeypatch.setattr(ppdsloader, "PPDsLoader", FakeLoader)
 
     np.btnNPChooseDriver = MagicMock()
-    np.spinnerNPChooseDriver = MagicMock()
-    np._show_choose_driver_spinner = newprinter.NewPrinterGUI._show_choose_driver_spinner.__get__(np)
-    np._hide_choose_driver_spinner = newprinter.NewPrinterGUI._hide_choose_driver_spinner.__get__(np)
 
-    # 1. User clicks "Choose a different driver..."
-    newprinter.NewPrinterGUI.on_btnNPChooseDriver_clicked(np, MagicMock())
+    # 1. Forward clicked on PAGE_SELECT_DEVICE
+    np.nextNPTab(step=1)
 
-    # 2. PPDs were initially None: button disabled, spinner shown, loader runs, page stays on Describe Printer
-    np.btnNPChooseDriver.set_sensitive.assert_called_with(False)
-    np.spinnerNPChooseDriver.show.assert_called_once()
-    np.spinnerNPChooseDriver.start.assert_called_once()
+    # 2. PPDs were initially None: loader runs, page stays on PAGE_SELECT_DEVICE
     assert np.ppdsloader is not None
     assert fill_make_called == []
-    assert current_page[0] == newprinter.NewPrinterGUI.PAGE_DESCRIBE_PRINTER
+    assert current_page[0] == newprinter.NewPrinterGUI.PAGE_SELECT_DEVICE
 
     # 3. Simulate PPD loader completion
     finished_cb = loader_callbacks['finished']
     newprinter.NewPrinterGUI.on_ppdsloader_finished_next(np, np.ppdsloader)
 
-    # 4. Without any user Back/Forward action, spinner hidden, page transitions to Choose Driver and Make list is populated
-    np.spinnerNPChooseDriver.stop.assert_called_once()
-    np.spinnerNPChooseDriver.hide.assert_called_once()
-    np.btnNPChooseDriver.set_sensitive.assert_called_with(True)
+    # 4. Without any user Back/Forward action, page transitions to Choose Driver and Make list is populated
     assert fill_make_called == [True]
     assert np.auto_make == "Xerox"
     assert current_page[0] == newprinter.NewPrinterGUI.PAGE_SELECT_INSTALL_METHOD
@@ -1293,19 +1253,294 @@ def test_choose_driver_with_existing_ppds_populates_makes_immediately(monkeypatc
     monkeypatch.setattr(newprinter, "ready", MagicMock())
 
     np.btnNPChooseDriver = MagicMock()
-    np.spinnerNPChooseDriver = MagicMock()
-    np._show_choose_driver_spinner = newprinter.NewPrinterGUI._show_choose_driver_spinner.__get__(np)
-    np._hide_choose_driver_spinner = newprinter.NewPrinterGUI._hide_choose_driver_spinner.__get__(np)
 
     newprinter.NewPrinterGUI.on_btnNPChooseDriver_clicked(np, MagicMock())
 
-    # PPDs already exist: no loader is started, no spinner shown, button not disabled, directly transitions and populates
+    # PPDs already exist: no loader is started, button not disabled, directly transitions and populates
     assert np.ppdsloader is None
     np.btnNPChooseDriver.set_sensitive.assert_not_called()
-    np.spinnerNPChooseDriver.show.assert_not_called()
-    np.spinnerNPChooseDriver.start.assert_not_called()
     assert fill_make_called == [True]
     assert np.auto_make == "Xerox"
     assert current_page[0] == newprinter.NewPrinterGUI.PAGE_SELECT_INSTALL_METHOD
     assert mock_opreq_cls.called is False
     assert np.device.uri == "ipps://Broken%20Xerox%20B235%20MFP._ipps._tcp.local"
+
+
+def test_state_machine_case1_working_driverless(monkeypatch):
+    """CASE 1: Working driverless printer:
+    Given driverless candidate, driverless PPD validation succeeds, self.ppds is None:
+    - Forward starts PPD catalog loader (INSTALL_RESULT_OPS_PENDING)
+    - After PPD loading completes, driverless PPD validation succeeds
+    - driverless remains enabled
+    - workflow reaches Describe Printer
+    - driverless driver is selected
+    - Choose Driver button is visible on Describe Printer
+    """
+    np = get_dummy_gui()
+    np._installPrinterFromDeviceID = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np)
+    np._installPrinterOrSearchForDriver = newprinter.NewPrinterGUI._installPrinterOrSearchForDriver.__get__(np)
+    np._loadPPDsForDevice = MagicMock()
+    np._installHPScannerFilesIfNeeded = MagicMock()
+    np._selectDeviceForInstallation = MagicMock()
+    np.device.uri = "ipp://printer.local/ipp/print"
+    np.device.driverless = True
+    np.device._driverless_failed = False
+    np.ppds = None
+
+    mock_ppd = MockCupsPPD({"NickName": "Driverless Xerox Printer"})
+    np._validateDriverlessPPD = MagicMock(return_value=mock_ppd)
+
+    # 1. Forward clicked on PAGE_SELECT_DEVICE starts PPD loading
+    res = newprinter.NewPrinterGUI._handlePrinterInstallationStage(
+        np, newprinter.NewPrinterGUI.PAGE_SELECT_DEVICE, 1
+    )
+    np._loadPPDsForDevice.assert_called_once()
+    assert res == newprinter.NewPrinterGUI.INSTALL_RESULT_OPS_PENDING
+
+    # 2. Simulate PPD loading completion
+    mock_ppds = MagicMock()
+    mock_ppds.getMakes.return_value = ["Generic", "HP", "Xerox"]
+    np.ppds = mock_ppds
+    np.fillDriverList = MagicMock()
+    np.fillMakeList = MagicMock()
+
+    # Second run of stage after PPDs loaded
+    res2 = newprinter.NewPrinterGUI._handlePrinterInstallationStage(
+        np, newprinter.NewPrinterGUI.PAGE_SELECT_DEVICE, 1
+    )
+    assert res2 == newprinter.NewPrinterGUI.INSTALL_RESULT_DONE
+
+    # Driverless remains enabled and driverless driver selected
+    assert np.device.driverless is True
+    assert np.exactdrivermatch is True
+    assert np.auto_driver == "driverless:ipp://printer.local/ipp/print"
+
+    # In dialog mode 'printer', with exactdrivermatch=True, order reaches PAGE_DESCRIBE_PRINTER
+    order = newprinter.NewPrinterGUI._getPagesOrderForDialogMode(np)
+    assert order == [
+        newprinter.NewPrinterGUI.PAGE_SELECT_DEVICE,
+        newprinter.NewPrinterGUI.PAGE_INSTALLABLE_OPTIONS,
+        newprinter.NewPrinterGUI.PAGE_DESCRIBE_PRINTER,
+    ]
+
+    # Verify Choose Driver button is visible on Describe Printer
+    np.ntbkNewPrinter = MagicMock()
+    np.ntbkNewPrinter.get_current_page.return_value = newprinter.NewPrinterGUI.PAGE_DESCRIBE_PRINTER
+    np.dialog_mode = "printer"
+    np.btnNPBack = MagicMock()
+    np.btnNPForward = MagicMock()
+    np.btnNPApply = MagicMock()
+    np.btnNPChooseDriver = MagicMock()
+    np.entNPName = MagicMock()
+    np.entNPName.get_text.return_value = "TestPrinter"
+    np.printers = {}
+    np.ppd = "driverless:ipp://printer.local/ipp/print"
+
+    newprinter.NewPrinterGUI.setNPButtons(np)
+    np.btnNPChooseDriver.show.assert_called_once()
+
+
+def test_state_machine_case2_normal_non_driverless():
+    """CASE 2: Normal non-driverless printer:
+    Given normal printer, self.ppds is None:
+    - Forward on PAGE_SELECT_DEVICE starts PPD catalog loader (INSTALL_RESULT_OPS_PENDING)
+    - After PPD loading completes, driverless capability validation is not used
+    - exactdrivermatch is False, so workflow directs to Choose Driver (PAGE_SELECT_INSTALL_METHOD)
+    - Makes list is populated
+    """
+    np = get_dummy_gui()
+    np._installPrinterFromDeviceID = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np)
+    np._installPrinterOrSearchForDriver = newprinter.NewPrinterGUI._installPrinterOrSearchForDriver.__get__(np)
+    np._loadPPDsForDevice = MagicMock()
+    np._installHPScannerFilesIfNeeded = MagicMock()
+    np._selectDeviceForInstallation = MagicMock()
+    np.device.uri = "socket://192.168.1.50"
+    np.device.driverless = False
+    np.device._driverless_failed = False
+    np.ppds = None
+
+    # 1. Forward clicked on PAGE_SELECT_DEVICE
+    res = newprinter.NewPrinterGUI._handlePrinterInstallationStage(
+        np, newprinter.NewPrinterGUI.PAGE_SELECT_DEVICE, 1
+    )
+
+    # Assert PPD loader is started and operations are pending
+    np._loadPPDsForDevice.assert_called_once()
+    assert res == newprinter.NewPrinterGUI.INSTALL_RESULT_OPS_PENDING
+
+    # 2. Simulate PPD loading completion
+    mock_ppds = MagicMock()
+    mock_ppds.getMakes.return_value = ["Generic", "HP"]
+    mock_ppds.getPPDNamesFromDeviceID.return_value = {"foomatic:HP-Generic": "exact"}
+    mock_ppds.orderPPDNamesByPreference.return_value = ["foomatic:HP-Generic"]
+    mock_ppds.getInfoFromPPDName.return_value = {"ppd-make-and-model": "HP Generic"}
+    np.ppds = mock_ppds
+    np.fillDriverList = MagicMock()
+    np.fillMakeList = MagicMock()
+
+    res2 = newprinter.NewPrinterGUI._handlePrinterInstallationStage(
+        np, newprinter.NewPrinterGUI.PAGE_SELECT_DEVICE, 1
+    )
+    assert res2 == newprinter.NewPrinterGUI.INSTALL_RESULT_DONE
+    assert np.exactdrivermatch is False
+    np.fillMakeList.assert_called_once()
+
+    order = newprinter.NewPrinterGUI._getPagesOrderForDialogMode(np)
+    assert order == [
+        newprinter.NewPrinterGUI.PAGE_SELECT_DEVICE,
+        newprinter.NewPrinterGUI.PAGE_SELECT_INSTALL_METHOD,
+        newprinter.NewPrinterGUI.PAGE_CHOOSE_DRIVER_FROM_DB,
+        newprinter.NewPrinterGUI.PAGE_INSTALLABLE_OPTIONS,
+        newprinter.NewPrinterGUI.PAGE_DESCRIBE_PRINTER,
+    ]
+    assert order[order.index(newprinter.NewPrinterGUI.PAGE_SELECT_DEVICE) + 1] == \
+        newprinter.NewPrinterGUI.PAGE_SELECT_INSTALL_METHOD
+
+
+def test_state_machine_case3_broken_driverless():
+    """CASE 3: Broken driverless printer:
+    Given driverless candidate, self.ppds is None:
+    - Forward on PAGE_SELECT_DEVICE starts PPD catalog loader (INSTALL_RESULT_OPS_PENDING)
+    - After PPD loading completes, driverless PPD validation fails:
+      - driverless is disabled (device.driverless = False, device._driverless_failed = True, searchedfordriverpackages = True)
+      - broken driverless URI is NOT selected as driver
+      - OpenPrinting is NOT queried
+      - workflow goes to Choose Driver (PAGE_SELECT_INSTALL_METHOD)
+      - Makes list is populated
+    """
+    np = get_dummy_gui()
+    np._installPrinterFromDeviceID = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np)
+    np._installPrinterOrSearchForDriver = newprinter.NewPrinterGUI._installPrinterOrSearchForDriver.__get__(np)
+    np._loadPPDsForDevice = MagicMock()
+    np._installHPScannerFilesIfNeeded = MagicMock()
+    np._selectDeviceForInstallation = MagicMock()
+    np.device.uri = "ipps://broken-xerox._ipps._tcp.local"
+    np.device.id = "MFG:Xerox;MDL:B235 MFP;"
+    np.device.id_dict = {"MFG": "Xerox", "MDL": "B235 MFP", "DES": "", "CMD": []}
+    np.device.make_and_model = "Xerox B235 MFP"
+    np.device.driverless = True
+    np.ppds = None
+    np._validateDriverlessPPD = MagicMock(return_value=None)
+
+    # 1. Forward clicked on PAGE_SELECT_DEVICE starts PPD loading
+    res = newprinter.NewPrinterGUI._handlePrinterInstallationStage(
+        np, newprinter.NewPrinterGUI.PAGE_SELECT_DEVICE, 1
+    )
+    np._loadPPDsForDevice.assert_called_once()
+    assert res == newprinter.NewPrinterGUI.INSTALL_RESULT_OPS_PENDING
+
+    # 2. Simulate PPD loading completion
+    mock_ppds = MagicMock()
+    mock_ppds.getMakes.return_value = ["Generic", "Xerox"]
+    mock_ppds.getPPDNamesFromDeviceID.return_value = {
+        "driverless:ipps://broken-xerox._ipps._tcp.local": "exact",
+        "foomatic:Xerox-Fallback": "close",
+    }
+    mock_ppds.orderPPDNamesByPreference.return_value = [
+        "driverless:ipps://broken-xerox._ipps._tcp.local",
+        "foomatic:Xerox-Fallback",
+    ]
+    np.ppds = mock_ppds
+    np.fillDriverList = MagicMock()
+    np.fillMakeList = MagicMock()
+
+    # Second run of stage: driverless validation fails
+    res2 = newprinter.NewPrinterGUI._handlePrinterInstallationStage(
+        np, newprinter.NewPrinterGUI.PAGE_SELECT_DEVICE, 1
+    )
+    assert res2 == newprinter.NewPrinterGUI.INSTALL_RESULT_DONE
+    assert np.device.driverless is False
+    assert np.device._driverless_failed is True
+    assert np.searchedfordriverpackages is True
+    assert np.exactdrivermatch is False
+    assert np.auto_driver != "driverless:ipps://broken-xerox._ipps._tcp.local"
+    np.fillMakeList.assert_called_once()
+
+    order = newprinter.NewPrinterGUI._getPagesOrderForDialogMode(np)
+    assert order == [
+        newprinter.NewPrinterGUI.PAGE_SELECT_DEVICE,
+        newprinter.NewPrinterGUI.PAGE_SELECT_INSTALL_METHOD,
+        newprinter.NewPrinterGUI.PAGE_CHOOSE_DRIVER_FROM_DB,
+        newprinter.NewPrinterGUI.PAGE_INSTALLABLE_OPTIONS,
+        newprinter.NewPrinterGUI.PAGE_DESCRIBE_PRINTER,
+    ]
+    assert order[order.index(newprinter.NewPrinterGUI.PAGE_SELECT_DEVICE) + 1] == \
+        newprinter.NewPrinterGUI.PAGE_SELECT_INSTALL_METHOD
+
+
+def test_state_machine_case4_choose_different_driver_with_ppds_available():
+    """CASE 4: Choose different driver with PPDs available:
+    Given Describe Printer, self.ppds is already populated.
+    Click "Choose a different driver...":
+    - driverless is disabled
+    - manual selection mode is entered
+    - PAGE_SELECT_INSTALL_METHOD is reached
+    - Makes are populated
+    - no PPD loader is started
+    """
+    np = get_dummy_gui()
+    np._loadPPDsForDevice = MagicMock()
+    np.device.driverless = True
+    np.exactdrivermatch = True
+    mock_ppds = MagicMock()
+    mock_ppds.getMakes.return_value = ["Generic", "HP", "Xerox"]
+    np.ppds = mock_ppds
+
+    current_page = [newprinter.NewPrinterGUI.PAGE_DESCRIBE_PRINTER]
+    np.ntbkNewPrinter = MagicMock()
+    np.ntbkNewPrinter.get_current_page.side_effect = lambda: current_page[0]
+    np.ntbkNewPrinter.set_current_page.side_effect = lambda p: current_page.__setitem__(0, p)
+    np.rbtnNPFoomatic = MagicMock()
+    np.on_rbtnNPFoomatic_toggled = MagicMock()
+    fill_make_called = []
+    np.fillMakeList = MagicMock(side_effect=lambda: fill_make_called.append(True))
+    np.nextNPTab = MagicMock(side_effect=lambda step=1: fill_make_called.append(True))
+    np.btnNPChooseDriver = MagicMock()
+
+    newprinter.NewPrinterGUI.on_btnNPChooseDriver_clicked(np, MagicMock())
+
+    assert np.device.driverless is False
+    assert np.exactdrivermatch is False
+    assert np.searchedfordriverpackages is True
+    assert current_page[0] == newprinter.NewPrinterGUI.PAGE_SELECT_INSTALL_METHOD
+    np._loadPPDsForDevice.assert_not_called()
+    assert np.btnNPChooseDriver.set_sensitive.called is False
+    assert len(fill_make_called) > 0
+
+
+def test_state_machine_case5_choose_different_driver_after_legacy_fallback():
+    """CASE 5: Choose different driver after legacy fallback:
+    Given Broken driverless printer, PPD catalog already loaded, Describe Printer.
+    Click "Choose a different driver...":
+    - manual driver-selection workflow opens
+    - Makes are populated
+    - no second PPD loader is started
+    """
+    np = get_dummy_gui()
+    np._loadPPDsForDevice = MagicMock()
+    np.device.driverless = False
+    np.device._driverless_failed = True
+    np.exactdrivermatch = False
+    mock_ppds = MagicMock()
+    mock_ppds.getMakes.return_value = ["Generic", "HP", "Xerox"]
+    np.ppds = mock_ppds
+    np.ppdsloader = None
+
+    current_page = [newprinter.NewPrinterGUI.PAGE_DESCRIBE_PRINTER]
+    np.ntbkNewPrinter = MagicMock()
+    np.ntbkNewPrinter.get_current_page.side_effect = lambda: current_page[0]
+    np.ntbkNewPrinter.set_current_page.side_effect = lambda p: current_page.__setitem__(0, p)
+    np.rbtnNPFoomatic = MagicMock()
+    np.on_rbtnNPFoomatic_toggled = MagicMock()
+    fill_make_called = []
+    np.nextNPTab = MagicMock(side_effect=lambda step=1: fill_make_called.append(True))
+    np.btnNPChooseDriver = MagicMock()
+
+    newprinter.NewPrinterGUI.on_btnNPChooseDriver_clicked(np, MagicMock())
+
+    assert np.device.driverless is False
+    assert np.searchedfordriverpackages is True
+    assert current_page[0] == newprinter.NewPrinterGUI.PAGE_SELECT_INSTALL_METHOD
+    np._loadPPDsForDevice.assert_not_called()
+    assert np.ppdsloader is None
+    assert len(fill_make_called) > 0

@@ -249,37 +249,13 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkBox" id="boxNPChooseDriver">
+                              <object class="GtkButton" id="btnNPChooseDriver">
+                                <property name="label" translatable="yes">Choose a different driver...</property>
                                 <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="spacing">6</property>
-                                <child>
-                                  <object class="GtkButton" id="btnNPChooseDriver">
-                                    <property name="label" translatable="yes">Choose a different driver...</property>
-                                    <property name="visible">False</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="receives_default">False</property>
-                                    <property name="halign">start</property>
-                                    <signal name="clicked" handler="on_btnNPChooseDriver_clicked" swapped="no"/>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="fill">False</property>
-                                    <property name="position">0</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkSpinner" id="spinnerNPChooseDriver">
-                                    <property name="visible">False</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="no_show_all">True</property>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="fill">False</property>
-                                    <property name="position">1</property>
-                                  </packing>
-                                </child>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">False</property>
+                                <property name="halign">start</property>
+                                <signal name="clicked" handler="on_btnNPChooseDriver_clicked" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="expand">False</property>

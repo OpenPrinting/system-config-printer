@@ -249,32 +249,6 @@ def _get_driver_name_from_ppd(ppd, ppds_cache):
 
     return ""
 
-
-def _is_driverless_ppd(ppd):
-    """Check whether the given PPD (string name or cups.PPD object) represents
-    a driverless driver."""
-    if not ppd:
-        return False
-    if isinstance(ppd, str):
-        return ppd.startswith("driverless:") or ppd == "everywhere"
-    if isinstance(ppd, cups.PPD) or hasattr(ppd, "findAttr"):
-        attr = ppd.findAttr("NickName")
-        if not attr:
-            attr = ppd.findAttr("modelName") or ppd.findAttr("ModelName")
-        if attr and attr.value:
-            val = attr.value.lower()
-            if "driverless" in val or "ipp everywhere" in val:
-                return True
-        filt = ppd.findAttr("cupsFilter2") or ppd.findAttr("cupsFilter")
-        if filt and filt.value:
-            fval = filt.value.lower()
-            if "driverless" in fval or "ipp-everywhere" in fval:
-                return True
-        if ppd.findAttr("cupsIPPContentType") or ppd.findAttr("cupsIPPOptions"):
-            return True
-    return False
-
-
 class NewPrinterGUI(GtkGUI):
 
     __gsignals__ = {
@@ -357,7 +331,6 @@ class NewPrinterGUI(GtkGUI):
                               "entNPDescription",
                               "entNPDriver",
                               "btnNPChooseDriver",
-                              "spinnerNPChooseDriver",
                               "entNPLocation",
                               "isSharedCbx",
                               "tvNPDevices",
@@ -531,14 +504,6 @@ class NewPrinterGUI(GtkGUI):
             spinner_parent.pack_start (self.spinner, False, True, 0)
             spinner_parent.reorder_child (self.spinner, 0)
 
-        old_choose_spinner = getattr(self, 'spinnerNPChooseDriver', None)
-        if old_choose_spinner is not None:
-            choose_spinner_parent = old_choose_spinner.get_parent ()
-            if choose_spinner_parent is not None:
-                choose_spinner_parent.remove (old_choose_spinner)
-                self.spinnerNPChooseDriver = VectorSpinner (size=20)
-                self.spinnerNPChooseDriver.set_no_show_all (True)
-                choose_spinner_parent.pack_start (self.spinnerNPChooseDriver, False, False, 0)
         # Set up OpenPrinting widgets.
         self.opreq = None
         self.opreq_handlers = None
@@ -1008,7 +973,6 @@ class NewPrinterGUI(GtkGUI):
 
     def _getPPDs_reply (self, ppdsloader):
         self._hide_searching_spinner()
-        self._hide_choose_driver_spinner()
         exc = ppdsloader.get_error ()
         if exc:
             ppdsloader.destroy ()
@@ -1088,7 +1052,6 @@ class NewPrinterGUI(GtkGUI):
             self.ppdsloader.destroy ()
             self.ppdsloader = None
             self._hide_searching_spinner()
-            self._hide_choose_driver_spinner()
 
         if self.printer_finder:
             self.printer_finder.cancel ()
@@ -1122,14 +1085,6 @@ class NewPrinterGUI(GtkGUI):
         self.searchedfordriverpackages = True
         self.rbtnNPFoomatic.set_active(True)
         self.on_rbtnNPFoomatic_toggled(self.rbtnNPFoomatic)
-        if self.ppds is None:
-            if hasattr(self, 'btnNPChooseDriver') and self.btnNPChooseDriver:
-                self.btnNPChooseDriver.set_sensitive(False)
-            self._show_choose_driver_spinner()
-            devid = self.device.id if self.device else self.devid
-            uri = self.device.uri if self.device else None
-            self._loadPPDsForDevice(devid, uri)
-            return
         self.ntbkNewPrinter.set_current_page(self.PAGE_SELECT_INSTALL_METHOD)
         self.nextNPTab(step=0)
 
@@ -1388,7 +1343,7 @@ class NewPrinterGUI(GtkGUI):
             self.ppd = self.getNPPPD()
             self.installable_options = False
             if self.ppd is None:
-                if getattr(self.device, 'driverless', False) and self.ppds is None:
+                if getattr(self.device, 'driverless', False):
                     debugprint("Driverless PPD failed; falling back to legacy driver search")
                     self.device.driverless = False
                     self.device._driverless_failed = True
@@ -1671,8 +1626,7 @@ class NewPrinterGUI(GtkGUI):
             if not devid:
                 devid = None
 
-            if (self.ppds is None and self.dialog_mode != "download_driver" and
-                not getattr(self.device, 'driverless', False)):
+            if self.ppds is None and self.dialog_mode != "download_driver":
                 self._loadPPDsForDevice (devid, uri)
                 # _loadPPDsForDevice () is an asynchronous operation, so
                 # let the caller know that it can't continue for now.
@@ -1861,15 +1815,17 @@ class NewPrinterGUI(GtkGUI):
                 ppdname = "driverless:%s" % self.device.uri
                 validated_ppd = self._validateDriverlessPPD(ppdname)
                 if validated_ppd is None:
-                    debugprint("Driverless PPD validation failed; loading PPD catalog")
+                    debugprint("Driverless PPD validation failed; abandoning driverless mode completely")
                     self.device.driverless = False
                     self.device._driverless_failed = True
                     self.searchedfordriverpackages = True
-                    uri = self.device.uri
-                    self._loadPPDsForDevice(None, uri)
-                    return self.INSTALL_RESULT_OPS_PENDING
-                self._cached_driverless_ppd = validated_ppd
-                status = "exact"
+                    self.exactdrivermatch = False
+                    ppdname = None
+                    status = None
+                    self.id_matched_ppdnames = []
+                else:
+                    self._cached_driverless_ppd = validated_ppd
+                    status = "exact"
             elif self.dialog_mode == "download_driver":
                 ppdname = "download"
                 status = "generic"
@@ -1998,7 +1954,7 @@ class NewPrinterGUI(GtkGUI):
 
     def _installPrinterOrSearchForDriver (self, devid, ppdname, status, page_nr, step):
         try:
-            if getattr(self.device, 'driverless', False) and self.ppds is None:
+            if getattr(self.device, 'driverless', False):
                 self.auto_make = "Generic"
                 self.auto_model = "Driverless IPP"
                 self.auto_driver = ppdname
@@ -2015,6 +1971,7 @@ class NewPrinterGUI(GtkGUI):
                 except:
                     nonfatalException ()
             if ((status == "exact" or status == "exact-cmd") and \
+                getattr(self.device, 'driverless', False) and \
                 self.dialog_mode != "ppd" and \
                 page_nr != self.PAGE_SELECT_INSTALL_METHOD):
                 self.exactdrivermatch = True
@@ -2025,6 +1982,7 @@ class NewPrinterGUI(GtkGUI):
                 if (self.dialog_mode != "ppd" and
                     self.searchedfordriverpackages == False and
                     page_nr != self.PAGE_SELECT_INSTALL_METHOD and
+                    status not in ("exact", "exact-cmd") and
                     not getattr(self.device, '_driverless_failed', False) and
                     devid and len(devid) > 0 and
                     not (devid.find("MFG:generic;") >= 0 or
@@ -2074,7 +2032,7 @@ class NewPrinterGUI(GtkGUI):
                 except:
                     pass
 
-        if not (getattr(self.device, 'driverless', False) and self.ppds is None):
+        if self.ppds is not None:
             if (self.dialog_mode == "ppd" or
                     (self.dialog_mode != "download_driver" and
                      not self.remotecupsqueue and page_nr != self.PAGE_DOWNLOAD_DRIVER)):
@@ -2264,18 +2222,8 @@ class NewPrinterGUI(GtkGUI):
                               not self.installable_options)):
                 self.btnNPBack.hide ()
 
-            is_driverless = (
-                _is_driverless_ppd(self.ppd)
-                or (isinstance(getattr(self, 'auto_driver', None), str) and
-                    (self.auto_driver.startswith('driverless:') or self.auto_driver == 'everywhere'))
-                or (getattr(self.device, 'driverless', False) and
-                    not getattr(self.device, '_driverless_failed', False))
-            )
-            if hasattr(self, 'btnNPChooseDriver'):
-                if is_driverless:
-                    self.btnNPChooseDriver.show()
-                else:
-                    self.btnNPChooseDriver.hide()
+            if hasattr(self, 'btnNPChooseDriver') and self.btnNPChooseDriver:
+                self.btnNPChooseDriver.show()
         if nr == self.PAGE_SELECT_INSTALL_METHOD:
             downloadable_selected = False
             if self.rbtnNPDownloadableDriverSearch.get_active ():
@@ -2710,18 +2658,6 @@ class NewPrinterGUI(GtkGUI):
         if getattr(self, '_searching_stack', None) is not None:
             self._searching_spinner.stop ()
             self._searching_stack.set_visible_child_name("notebook")
-
-    def _show_choose_driver_spinner (self):
-        if getattr(self, 'spinnerNPChooseDriver', None) is not None:
-            self.spinnerNPChooseDriver.show ()
-            self.spinnerNPChooseDriver.start ()
-
-    def _hide_choose_driver_spinner (self):
-        if getattr(self, 'spinnerNPChooseDriver', None) is not None:
-            self.spinnerNPChooseDriver.stop ()
-            self.spinnerNPChooseDriver.hide ()
-        if getattr(self, 'btnNPChooseDriver', None) is not None:
-            self.btnNPChooseDriver.set_sensitive (True)
 
     def add_devices (self, devices, current_uri, no_more=False):
         if no_more:
@@ -4619,7 +4555,7 @@ class NewPrinterGUI(GtkGUI):
 
         ppd = None
         _driverless_attempt = False
-        if getattr(self.device, 'driverless', False) and self.ppds is None:
+        if getattr(self.device, 'driverless', False):
             ppd = self.auto_driver
             _driverless_attempt = True
         else:
