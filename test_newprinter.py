@@ -816,3 +816,496 @@ def test_ppdsloader_with_none_device_id_skips_packagekit_and_queries_cups():
 
     loader._query_packagekit.assert_not_called()
     loader._query_cups.assert_called_once()
+
+
+def test_choose_driver_button_visible_for_driverless():
+    np = get_dummy_gui()
+    np.ntbkNewPrinter = MagicMock()
+    np.ntbkNewPrinter.get_current_page.return_value = newprinter.NewPrinterGUI.PAGE_DESCRIBE_PRINTER
+    np.dialog_mode = "printer"
+    np.btnNPBack = MagicMock()
+    np.btnNPForward = MagicMock()
+    np.btnNPApply = MagicMock()
+    np.btnNPChooseDriver = MagicMock()
+    np.entNPName = MagicMock()
+    np.entNPName.get_text.return_value = "TestPrinter"
+    np.printers = {}
+    np.ppd = "driverless:ipp://localhost:60000/ipp/print"
+    np.device.driverless = True
+
+    newprinter.NewPrinterGUI.setNPButtons(np)
+
+    np.btnNPChooseDriver.show.assert_called_once()
+    np.btnNPChooseDriver.hide.assert_not_called()
+
+
+def test_choose_driver_button_hidden_for_non_driverless():
+    np = get_dummy_gui()
+    np.ntbkNewPrinter = MagicMock()
+    np.ntbkNewPrinter.get_current_page.return_value = newprinter.NewPrinterGUI.PAGE_DESCRIBE_PRINTER
+    np.dialog_mode = "printer"
+    np.btnNPBack = MagicMock()
+    np.btnNPForward = MagicMock()
+    np.btnNPApply = MagicMock()
+    np.btnNPChooseDriver = MagicMock()
+    np.entNPName = MagicMock()
+    np.entNPName.get_text.return_value = "TestPrinter"
+    np.printers = {}
+    np.ppd = "foomatic:HP-LaserJet_4_Plus-hpijs.ppd"
+    np.device.driverless = False
+
+    newprinter.NewPrinterGUI.setNPButtons(np)
+
+    np.btnNPChooseDriver.hide.assert_called_once()
+    np.btnNPChooseDriver.show.assert_not_called()
+
+
+def test_clicking_choose_driver_button_enters_manual_workflow():
+    np = get_dummy_gui()
+    np.device.driverless = True
+    np.exactdrivermatch = True
+    np.ppds = MagicMock()
+    np.ntbkNewPrinter = MagicMock()
+    np.rbtnNPFoomatic = MagicMock()
+    np.on_rbtnNPFoomatic_toggled = MagicMock()
+    np.nextNPTab = MagicMock()
+
+    newprinter.NewPrinterGUI.on_btnNPChooseDriver_clicked(np, None)
+
+    assert np.device.driverless is False
+    assert np.exactdrivermatch is False
+    assert np.searchedfordriverpackages is True
+    np.ntbkNewPrinter.set_current_page.assert_called_with(newprinter.NewPrinterGUI.PAGE_SELECT_INSTALL_METHOD)
+    np.rbtnNPFoomatic.set_active.assert_called_with(True)
+    np.on_rbtnNPFoomatic_toggled.assert_called_with(np.rbtnNPFoomatic)
+    np.nextNPTab.assert_called_with(step=0)
+
+
+def test_clicking_choose_driver_button_loads_ppds_when_none():
+    np = get_dummy_gui()
+    np.device.driverless = True
+    np.exactdrivermatch = True
+    np.ppds = None
+    np.ntbkNewPrinter = MagicMock()
+    np.rbtnNPFoomatic = MagicMock()
+    np.on_rbtnNPFoomatic_toggled = MagicMock()
+    np.nextNPTab = MagicMock()
+    np._loadPPDsForDevice = MagicMock()
+    np.btnNPChooseDriver = MagicMock()
+    np.spinnerNPChooseDriver = MagicMock()
+    np._show_choose_driver_spinner = newprinter.NewPrinterGUI._show_choose_driver_spinner.__get__(np)
+
+    newprinter.NewPrinterGUI.on_btnNPChooseDriver_clicked(np, None)
+
+    assert np.device.driverless is False
+    assert np.exactdrivermatch is False
+    assert np.searchedfordriverpackages is True
+    np.btnNPChooseDriver.set_sensitive.assert_called_once_with(False)
+    np.spinnerNPChooseDriver.show.assert_called_once()
+    np.spinnerNPChooseDriver.start.assert_called_once()
+    np._loadPPDsForDevice.assert_called_once_with(np.device.id, np.device.uri)
+    np.ntbkNewPrinter.set_current_page.assert_not_called()
+    np.nextNPTab.assert_not_called()
+
+
+def test_choose_driver_triggers_ppd_load_when_ppds_none():
+    np = get_dummy_gui()
+    np.ppds = None
+    np.device.driverless = False
+    np.dialog_mode = "printer"
+    np._selectDeviceForInstallation = MagicMock()
+    np._installHPScannerFilesIfNeeded = MagicMock()
+    np._loadPPDsForDevice = MagicMock()
+
+    result = newprinter.NewPrinterGUI._handlePrinterInstallationStage(
+        np, newprinter.NewPrinterGUI.PAGE_SELECT_INSTALL_METHOD, 0
+    )
+
+    np._loadPPDsForDevice.assert_called_once()
+    assert result == newprinter.NewPrinterGUI.INSTALL_RESULT_OPS_PENDING
+
+
+def test_driverless_printer_subsequently_selects_non_driverless_driver(monkeypatch):
+    """When on PAGE_SELECT_INSTALL_METHOD, driverless PPD is excluded from ppdnamelist,
+    exactdrivermatch is False, and selecting a manual driver shows that driver and hides the button."""
+    monkeypatch.setattr(cups, "PPD", MockCupsPPD)
+
+    np = get_dummy_gui()
+    np.ppds = MagicMock()
+    fit = {
+        "driverless:ipp://localhost:60000/ipp/print": "exact",
+        "foomatic:HP-LaserJet": "exact",
+    }
+    np.ppds.getPPDNamesFromDeviceID.return_value = fit
+    np.ppds.orderPPDNamesByPreference.return_value = [
+        "driverless:ipp://localhost:60000/ipp/print",
+        "foomatic:HP-LaserJet",
+    ]
+    np.ppds.getInfoFromPPDName.return_value = {
+        "ppd-make-and-model": "HP LaserJet"
+    }
+    np.installed_driver_files = []
+    np.fillDriverList = MagicMock()
+    np.fillMakeList = MagicMock()
+    np.device.driverless = False
+    np.device.id = "MFG:HP;MDL:LaserJet;"
+    np.device.id_dict = {"MFG": "HP", "MDL": "LaserJet", "DES": "", "CMD": []}
+    np.device.make_and_model = "HP LaserJet"
+
+    real_install = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np)
+    res = real_install(np.device.id, newprinter.NewPrinterGUI.PAGE_SELECT_INSTALL_METHOD, 0)
+
+    assert np.auto_driver == "foomatic:HP-LaserJet"
+    assert np.exactdrivermatch is False
+    np.fillMakeList.assert_called_once()
+    assert res == newprinter.NewPrinterGUI.INSTALL_RESULT_DONE
+
+    np.remotecupsqueue = False
+    np.founddownloadabledrivers = False
+    np.rbtnNPDownloadableDriverSearch = MagicMock()
+    np.rbtnNPDownloadableDriverSearch.get_active.return_value = False
+    np.rbtnNPFoomatic = MagicMock()
+    np.rbtnNPFoomatic.get_active.return_value = True
+
+    order = newprinter.NewPrinterGUI._getPagesOrderForDialogMode(np)
+    assert newprinter.NewPrinterGUI.PAGE_SELECT_INSTALL_METHOD in order
+    assert newprinter.NewPrinterGUI.PAGE_CHOOSE_DRIVER_FROM_DB in order
+
+    np.ppd = "foomatic:HP-LaserJet"
+    np.ntbkNewPrinter = MagicMock()
+    np.ntbkNewPrinter.get_current_page.return_value = newprinter.NewPrinterGUI.PAGE_DESCRIBE_PRINTER
+    np.btnNPBack = MagicMock()
+    np.btnNPForward = MagicMock()
+    np.btnNPApply = MagicMock()
+    np.btnNPChooseDriver = MagicMock()
+    np.entNPName = MagicMock()
+    np.entNPName.get_text.return_value = "HP_LaserJet"
+    np.printers = {}
+
+    newprinter.NewPrinterGUI.setNPButtons(np)
+    np.btnNPChooseDriver.hide.assert_called_once()
+    np.btnNPChooseDriver.show.assert_not_called()
+
+
+def test_is_driverless_ppd_helper():
+    """Verify _is_driverless_ppd correctly identifies driverless PPDs in all formats."""
+    # Strings
+    assert newprinter._is_driverless_ppd("driverless:ipp://localhost:60000/ipp/print") is True
+    assert newprinter._is_driverless_ppd("driverless:ipps://broken-xerox._ipps._tcp.local/") is True
+    assert newprinter._is_driverless_ppd("everywhere") is True
+    assert newprinter._is_driverless_ppd("foomatic:HP-LaserJet") is False
+    assert newprinter._is_driverless_ppd("raw") is False
+    assert newprinter._is_driverless_ppd("") is False
+    assert newprinter._is_driverless_ppd(None) is False
+
+    xerox_ppd = MockCupsPPD({"NickName": "Xerox Xerox(R) B235 MFP, Fax, driverless, cups-filters 2.0.0"})
+    assert newprinter._is_driverless_ppd(xerox_ppd) is True
+
+    everywhere_ppd = MockCupsPPD({"NickName": "HP Color LaserJet MFP M477fdw - IPP Everywhere"})
+    assert newprinter._is_driverless_ppd(everywhere_ppd) is True
+
+    ipp_attr_ppd = MockCupsPPD({"cupsIPPContentType": "application/pdf,image/pwg-raster"})
+    assert newprinter._is_driverless_ppd(ipp_attr_ppd) is True
+
+    filter_ppd = MockCupsPPD({"cupsFilter2": "image/pwg-raster 0 rastertopwg driverless"})
+    assert newprinter._is_driverless_ppd(filter_ppd) is True
+
+    legacy_ppd = MockCupsPPD({"NickName": "HP LaserJet 4 Plus, hpcups 3.21.2"})
+    assert newprinter._is_driverless_ppd(legacy_ppd) is False
+
+
+def test_driverless_xerox_b235_button_visible_on_describe_page():
+    """Real go-mfp Xerox B235 scenario: self.ppd is a cups.PPD object with
+    cups-filters driverless NickName. btnNPChooseDriver must be visible on PAGE_DESCRIBE_PRINTER."""
+    np = get_dummy_gui()
+    np.ppd = MockCupsPPD({"NickName": "Xerox Xerox(R) B235 MFP, Fax, driverless, cups-filters 2.0.0"})
+    np.device.driverless = False
+    np.auto_driver = None
+    np.ntbkNewPrinter = MagicMock()
+    np.ntbkNewPrinter.get_current_page.return_value = newprinter.NewPrinterGUI.PAGE_DESCRIBE_PRINTER
+    np.btnNPBack = MagicMock()
+    np.btnNPForward = MagicMock()
+    np.btnNPApply = MagicMock()
+    np.btnNPChooseDriver = MagicMock()
+    np.entNPName = MagicMock()
+    np.entNPName.get_text.return_value = "Broken_Xerox_B235"
+    np.printers = {}
+
+    newprinter.NewPrinterGUI.setNPButtons(np)
+    np.btnNPChooseDriver.show.assert_called_once()
+    np.btnNPChooseDriver.hide.assert_not_called()
+
+
+def test_non_driverless_ppd_object_button_hidden_on_describe_page():
+    """When self.ppd is a cups.PPD object for a normal non-driverless driver,
+    btnNPChooseDriver must be hidden on PAGE_DESCRIBE_PRINTER."""
+    np = get_dummy_gui()
+    np.ppd = MockCupsPPD({"NickName": "HP LaserJet 4 Plus, hpcups 3.21.2"})
+    np.device.driverless = False
+    np.auto_driver = None
+    np.ntbkNewPrinter = MagicMock()
+    np.ntbkNewPrinter.get_current_page.return_value = newprinter.NewPrinterGUI.PAGE_DESCRIBE_PRINTER
+    np.btnNPBack = MagicMock()
+    np.btnNPForward = MagicMock()
+    np.btnNPApply = MagicMock()
+    np.btnNPChooseDriver = MagicMock()
+    np.entNPName = MagicMock()
+    np.entNPName.get_text.return_value = "HP_LaserJet_4"
+    np.printers = {}
+
+    newprinter.NewPrinterGUI.setNPButtons(np)
+    np.btnNPChooseDriver.hide.assert_called_once()
+    np.btnNPChooseDriver.show.assert_not_called()
+
+
+def test_driverless_validation_success_sets_device_driverless_true():
+    """When _validateDriverlessPPD succeeds, self.device.driverless should be set to True."""
+    np = get_dummy_gui()
+    np.ppds = MagicMock()
+    np.ppds.getPPDNamesFromDeviceID.return_value = {"driverless:dnssd://...": "exact"}
+    np.ppds.orderPPDNamesByPreference.return_value = ["driverless:dnssd://..."]
+    np.installed_driver_files = []
+    np.device.driverless = False
+    np.device.id = "MFG:Xerox;MDL:B235;"
+    np.device.id_dict = {"MFG": "Xerox", "MDL": "B235", "DES": "", "CMD": []}
+    np.device.make_and_model = "Xerox B235"
+    mock_ppd = MockCupsPPD({"NickName": "Xerox Xerox(R) B235 MFP, Fax, driverless, cups-filters 2.0.0"})
+    np._validateDriverlessPPD = MagicMock(return_value=mock_ppd)
+    np._installPrinterOrSearchForDriver = MagicMock(return_value=newprinter.NewPrinterGUI.INSTALL_RESULT_DONE)
+
+    res = newprinter.NewPrinterGUI._installPrinterFromDeviceID(np, np.device.id, newprinter.NewPrinterGUI.PAGE_SELECT_DEVICE, 1)
+
+    assert res == newprinter.NewPrinterGUI.INSTALL_RESULT_DONE
+    assert np.device.driverless is True
+    assert np._cached_driverless_ppd == mock_ppd
+
+
+def test_choose_driver_ppdsloader_completion_populates_makes_without_back_forward(monkeypatch):
+    """Regression test: clicking 'Choose a different driver...' when self.ppds is None
+    starts asynchronous PPD loader, and upon loader completion, automatically continues
+    the manual driver-selection workflow and populates the Make list without user Back/Forward."""
+    import ppdsloader
+    np = get_dummy_gui()
+    np._loadPPDsForDevice = newprinter.NewPrinterGUI._loadPPDsForDevice.__get__(np)
+    np._installPrinterFromDeviceID = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np)
+    np._selectDeviceForInstallation = newprinter.NewPrinterGUI._selectDeviceForInstallation.__get__(np)
+    np._handlePrinterInstallationStage = newprinter.NewPrinterGUI._handlePrinterInstallationStage.__get__(np)
+    np._handlePrinterInstallationMode = newprinter.NewPrinterGUI._handlePrinterInstallationMode.__get__(np)
+    np._getPagesOrderForDialogMode = newprinter.NewPrinterGUI._getPagesOrderForDialogMode.__get__(np)
+    np.nextNPTab = newprinter.NewPrinterGUI.nextNPTab.__get__(np)
+    np.getDeviceURI = newprinter.NewPrinterGUI.getDeviceURI.__get__(np)
+    np.setNPButtons = MagicMock()
+    np.NewPrinterWindow = MagicMock()
+    np.dialog_mode = "printer"
+    np.remotecupsqueue = False
+    np.exactdrivermatch = True
+    np.searchedfordriverpackages = False
+    np.founddownloadabledrivers = False
+    np.installed_driver_files = []
+    np.devid = None
+    np._host = "localhost"
+    np._encryption = 0
+    np.fetchDevices_conn = None
+    np.printer_finder = None
+    np.ppds = None
+    np.ppdsloader = None
+    np.options = {}
+    np.opreq = None
+
+    dev = MagicMock()
+    dev.id = "MFG:Xerox;MDL:B235 MFP;"
+    dev.id_dict = {"MFG": "Xerox", "MDL": "B235 MFP", "DES": "", "CMD": []}
+    dev.make_and_model = "Xerox B235 MFP"
+    dev.uri = "ipps://Broken%20Xerox%20B235%20MFP._ipps._tcp.local"
+    dev.type = "ipps"
+    dev.driverless = True
+    dev._driverless_failed = False
+    dev.device_class = "network"
+    np.device = dev
+
+    current_page = [newprinter.NewPrinterGUI.PAGE_DESCRIBE_PRINTER]
+    np.ntbkNewPrinter = MagicMock()
+    np.ntbkNewPrinter.get_current_page.side_effect = lambda: current_page[0]
+    np.ntbkNewPrinter.set_current_page.side_effect = lambda p: current_page.__setitem__(0, p)
+
+    np.ntbkPPDSource = MagicMock()
+    np.rbtnNPDownloadableDriverSearch = MagicMock()
+    np.rbtnNPDownloadableDriverSearch.get_active.return_value = False
+    np.rbtnNPFoomatic = MagicMock()
+    np.rbtnNPFoomatic.get_active.return_value = True
+    np.rbtnNPPPD = MagicMock()
+    np.rbtnNPPPD.get_active.return_value = False
+    np.filechooserPPD = MagicMock()
+    np.filechooserPPD.get_filename.return_value = ""
+    np.btnNPForward = MagicMock()
+    np.btnNPBack = MagicMock()
+    np.btnNPApply = MagicMock()
+    np.tvNPMakes = MagicMock()
+    np.tvNPDrivers = MagicMock()
+    np.entNPTDevice = MagicMock()
+    np.entNPTDevice.get_text.return_value = ""
+    np.entNPDownloadableDriverSearch = MagicMock()
+    np.cmbNPDownloadableDriverFoundPrinters = MagicMock()
+    np.cbNPDownloadableDriverFoundDrivers = MagicMock()
+    np.btnNPDownloadableDriverSearch = MagicMock()
+
+    fill_make_called = []
+    np.fillMakeList = MagicMock(side_effect=lambda: fill_make_called.append(True))
+
+    mock_opreq_cls = MagicMock()
+    monkeypatch.setattr(newprinter, "OpenPrintingRequest", mock_opreq_cls)
+    monkeypatch.setattr(newprinter, "busy", MagicMock())
+    monkeypatch.setattr(newprinter, "ready", MagicMock())
+
+    loader_callbacks = {}
+    class FakeLoader:
+        def __init__(self, **kwargs):
+            self._jockey_has_answered = False
+            self.device_id = kwargs.get('device_id')
+            self.device_uri = kwargs.get('device_uri')
+        def connect(self, signal, cb):
+            loader_callbacks[signal] = cb
+        def run(self): pass
+        def get_error(self): return None
+        def get_ppds(self):
+            mock_ppds = MagicMock()
+            mock_ppds.findMatches.return_value = []
+            mock_ppds.getPPDNamesFromDeviceID.return_value = {}
+            mock_ppds.orderPPDNamesByPreference.return_value = []
+            mock_ppds.getMakes.return_value = ["Generic", "HP", "Xerox"]
+            return mock_ppds
+        def get_ppdsmatch_result(self): return None
+        def get_installed_files(self): return []
+        def destroy(self): pass
+
+    monkeypatch.setattr(ppdsloader, "PPDsLoader", FakeLoader)
+
+    np.btnNPChooseDriver = MagicMock()
+    np.spinnerNPChooseDriver = MagicMock()
+    np._show_choose_driver_spinner = newprinter.NewPrinterGUI._show_choose_driver_spinner.__get__(np)
+    np._hide_choose_driver_spinner = newprinter.NewPrinterGUI._hide_choose_driver_spinner.__get__(np)
+
+    # 1. User clicks "Choose a different driver..."
+    newprinter.NewPrinterGUI.on_btnNPChooseDriver_clicked(np, MagicMock())
+
+    # 2. PPDs were initially None: button disabled, spinner shown, loader runs, page stays on Describe Printer
+    np.btnNPChooseDriver.set_sensitive.assert_called_with(False)
+    np.spinnerNPChooseDriver.show.assert_called_once()
+    np.spinnerNPChooseDriver.start.assert_called_once()
+    assert np.ppdsloader is not None
+    assert fill_make_called == []
+    assert current_page[0] == newprinter.NewPrinterGUI.PAGE_DESCRIBE_PRINTER
+
+    # 3. Simulate PPD loader completion
+    finished_cb = loader_callbacks['finished']
+    newprinter.NewPrinterGUI.on_ppdsloader_finished_next(np, np.ppdsloader)
+
+    # 4. Without any user Back/Forward action, spinner hidden, page transitions to Choose Driver and Make list is populated
+    np.spinnerNPChooseDriver.stop.assert_called_once()
+    np.spinnerNPChooseDriver.hide.assert_called_once()
+    np.btnNPChooseDriver.set_sensitive.assert_called_with(True)
+    assert fill_make_called == [True]
+    assert np.auto_make == "Xerox"
+    assert current_page[0] == newprinter.NewPrinterGUI.PAGE_SELECT_INSTALL_METHOD
+    assert mock_opreq_cls.called is False
+    assert np.device.uri == "ipps://Broken%20Xerox%20B235%20MFP._ipps._tcp.local"
+
+
+def test_choose_driver_with_existing_ppds_populates_makes_immediately(monkeypatch):
+    """When self.ppds is already loaded, clicking 'Choose a different driver...'
+    immediately opens PAGE_SELECT_INSTALL_METHOD with the Makes list populated."""
+    np = get_dummy_gui()
+    np._loadPPDsForDevice = newprinter.NewPrinterGUI._loadPPDsForDevice.__get__(np)
+    np._installPrinterFromDeviceID = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np)
+    np._selectDeviceForInstallation = newprinter.NewPrinterGUI._selectDeviceForInstallation.__get__(np)
+    np._handlePrinterInstallationStage = newprinter.NewPrinterGUI._handlePrinterInstallationStage.__get__(np)
+    np._handlePrinterInstallationMode = newprinter.NewPrinterGUI._handlePrinterInstallationMode.__get__(np)
+    np._getPagesOrderForDialogMode = newprinter.NewPrinterGUI._getPagesOrderForDialogMode.__get__(np)
+    np.nextNPTab = newprinter.NewPrinterGUI.nextNPTab.__get__(np)
+    np.getDeviceURI = newprinter.NewPrinterGUI.getDeviceURI.__get__(np)
+    np.setNPButtons = MagicMock()
+    np.NewPrinterWindow = MagicMock()
+    np.dialog_mode = "printer"
+    np.remotecupsqueue = False
+    np.exactdrivermatch = True
+    np.searchedfordriverpackages = False
+    np.founddownloadabledrivers = False
+    np.installed_driver_files = []
+    np.devid = None
+    np._host = "localhost"
+    np._encryption = 0
+    np.fetchDevices_conn = None
+    np.printer_finder = None
+    np.ppdsloader = None
+    np.options = {}
+    np.opreq = None
+
+    mock_ppds = MagicMock()
+    mock_ppds.findMatches.return_value = []
+    mock_ppds.getPPDNamesFromDeviceID.return_value = {}
+    mock_ppds.orderPPDNamesByPreference.return_value = []
+    mock_ppds.getMakes.return_value = ["Generic", "HP", "Xerox"]
+    np.ppds = mock_ppds
+
+    dev = MagicMock()
+    dev.id = "MFG:Xerox;MDL:B235 MFP;"
+    dev.id_dict = {"MFG": "Xerox", "MDL": "B235 MFP", "DES": "", "CMD": []}
+    dev.make_and_model = "Xerox B235 MFP"
+    dev.uri = "ipps://Broken%20Xerox%20B235%20MFP._ipps._tcp.local"
+    dev.type = "ipps"
+    dev.driverless = True
+    dev._driverless_failed = False
+    dev.device_class = "network"
+    np.device = dev
+
+    current_page = [newprinter.NewPrinterGUI.PAGE_DESCRIBE_PRINTER]
+    np.ntbkNewPrinter = MagicMock()
+    np.ntbkNewPrinter.get_current_page.side_effect = lambda: current_page[0]
+    np.ntbkNewPrinter.set_current_page.side_effect = lambda p: current_page.__setitem__(0, p)
+
+    np.ntbkPPDSource = MagicMock()
+    np.rbtnNPDownloadableDriverSearch = MagicMock()
+    np.rbtnNPDownloadableDriverSearch.get_active.return_value = False
+    np.rbtnNPFoomatic = MagicMock()
+    np.rbtnNPFoomatic.get_active.return_value = True
+    np.rbtnNPPPD = MagicMock()
+    np.rbtnNPPPD.get_active.return_value = False
+    np.filechooserPPD = MagicMock()
+    np.filechooserPPD.get_filename.return_value = ""
+    np.btnNPForward = MagicMock()
+    np.btnNPBack = MagicMock()
+    np.btnNPApply = MagicMock()
+    np.tvNPMakes = MagicMock()
+    np.tvNPDrivers = MagicMock()
+    np.entNPTDevice = MagicMock()
+    np.entNPTDevice.get_text.return_value = ""
+    np.entNPDownloadableDriverSearch = MagicMock()
+    np.cmbNPDownloadableDriverFoundPrinters = MagicMock()
+    np.cbNPDownloadableDriverFoundDrivers = MagicMock()
+    np.btnNPDownloadableDriverSearch = MagicMock()
+
+    fill_make_called = []
+    np.fillMakeList = MagicMock(side_effect=lambda: fill_make_called.append(True))
+
+    mock_opreq_cls = MagicMock()
+    monkeypatch.setattr(newprinter, "OpenPrintingRequest", mock_opreq_cls)
+    monkeypatch.setattr(newprinter, "busy", MagicMock())
+    monkeypatch.setattr(newprinter, "ready", MagicMock())
+
+    np.btnNPChooseDriver = MagicMock()
+    np.spinnerNPChooseDriver = MagicMock()
+    np._show_choose_driver_spinner = newprinter.NewPrinterGUI._show_choose_driver_spinner.__get__(np)
+    np._hide_choose_driver_spinner = newprinter.NewPrinterGUI._hide_choose_driver_spinner.__get__(np)
+
+    newprinter.NewPrinterGUI.on_btnNPChooseDriver_clicked(np, MagicMock())
+
+    # PPDs already exist: no loader is started, no spinner shown, button not disabled, directly transitions and populates
+    assert np.ppdsloader is None
+    np.btnNPChooseDriver.set_sensitive.assert_not_called()
+    np.spinnerNPChooseDriver.show.assert_not_called()
+    np.spinnerNPChooseDriver.start.assert_not_called()
+    assert fill_make_called == [True]
+    assert np.auto_make == "Xerox"
+    assert current_page[0] == newprinter.NewPrinterGUI.PAGE_SELECT_INSTALL_METHOD
+    assert mock_opreq_cls.called is False
+    assert np.device.uri == "ipps://Broken%20Xerox%20B235%20MFP._ipps._tcp.local"
