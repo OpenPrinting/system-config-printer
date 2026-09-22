@@ -3410,7 +3410,7 @@ class NewPrinterGUI(GtkGUI):
 
             elif device.type == "smb":
                 device.menuentry = _("Windows Printer via SAMBA")
-            elif device.type == "ipp":
+            elif device.type == "ipp" or device.type == "ipps":
                 (scheme, rest) = urllib.parse.splittype (device.uri)
                 (hostport, rest) = urllib.parse.splithost (rest)
                 (queue, rest) = urllib.parse.splitquery (rest)
@@ -3450,7 +3450,12 @@ class NewPrinterGUI(GtkGUI):
                         protocol = "LPD"
                     elif name.find("._pdl-datastream") != -1:
                         protocol = "AppSocket/JetDirect"
-                    if protocol is not None:
+                    if protocol == "IPP":
+                        if dnssdresolve.is_ipp_over_usb_device (device):
+                            device.menuentry = _("IPP over USB")
+                        else:
+                            device.menuentry = _("IPP")
+                    elif protocol is not None:
                         device.menuentry = (_("%s network printer via DNS-SD")
                                             % protocol)
                     else:
