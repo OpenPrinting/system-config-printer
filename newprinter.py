@@ -1768,6 +1768,7 @@ class NewPrinterGUI(GtkGUI):
         self.ppdsloader = p
         p.connect ('finished',self.on_ppdsloader_finished_next)
         p.run ()
+        
     def _validateDriverlessPPD(self, ppdname):
         self.cups._begin_operation(_("validating driverless PPD"))
         try:
