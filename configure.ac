@@ -35,6 +35,7 @@ AC_SUBST(DESKTOPPREFIX)
 PKG_PROG_PKG_CONFIG
 
 dnl Allow manual definition for CUPS SERVERBIN, if not defined, use value from pkg-config...
+dnl For CUPS 3 (cups3.pc / libcups3), this is not required and may be left empty.
 AC_MSG_CHECKING([for CUPS SERVERBIN dir])
 AC_ARG_WITH([cups_serverbin_dir],
   AS_HELP_STRING([--with-cups-serverbin-dir], [set CUPS SERVERBIN dir, default=value from pkg-config]), [
@@ -42,22 +43,47 @@ AC_ARG_WITH([cups_serverbin_dir],
     AC_MSG_RESULT([$withval])
   ], [
     AS_IF([test "x$PKG_CONFIG" != x], [
-      AS_IF([$PKG_CONFIG --exists cups], [
-          cupsserverbindir=$($PKG_CONFIG --variable=cups_serverbin cups)
-          AC_MSG_RESULT([$cupsserverbindir])
+      dnl First try CUPS 3 (cups3.pc). CUPS 3 does not need serverbin, so we
+      dnl simply allow an empty value here.
+      AS_IF([$PKG_CONFIG --exists cups3], [
+          cupsserverbindir=""
+          AC_MSG_RESULT([none (CUPS 3)])
         ], [
-          AC_MSG_ERROR([No CUPS pkgconfig file present and no CUPS SERVERBIN dir defined in configure options.])
+          dnl Fall back to CUPS 2 (cups.pc) which still defines cups_serverbin.
+          AS_IF([$PKG_CONFIG --exists cups], [
+              cupsserverbindir=$($PKG_CONFIG --variable=cups_serverbin cups)
+              AC_MSG_RESULT([$cupsserverbindir])
+            ], [
+              AC_MSG_ERROR([No CUPS pkgconfig file present (cups3.pc or cups.pc) and no CUPS SERVERBIN dir defined in configure options.])
+            ])
         ])
     ], [
       AC_MSG_ERROR([No pkg-config present and no CUPS SERVERBIN dir defined in configure options.])
     ])
 ])
 
-AS_IF([test "x$cupsserverbindir" = x], [
-  AC_MSG_ERROR([No CUPS SERVERBIN dir defined in CUPS pkgconfig file or configure options.])
-])
-
 AC_SUBST(cupsserverbindir)
+
+dnl Check for CUPS library (CUPS 3 via cups3.pc, else CUPS 2 via cups.pc)
+AC_MSG_CHECKING([for CUPS library])
+
+PKG_CHECK_MODULES([CUPS], [cups3], [
+    have_cups3=yes
+    AC_DEFINE([HAVE_CUPS_3], [1], [Define if CUPS 3.x (libcups3) is available])
+    cups_version=`$PKG_CONFIG --modversion cups3`
+  ], [
+    have_cups3=no
+    PKG_CHECK_MODULES([CUPS], [cups >= 1.6], [
+        cups_version=`$PKG_CONFIG --modversion cups`
+      ], [
+        AC_MSG_ERROR([CUPS library not found. Need cups3.pc or cups.pc >= 1.6])
+      ])
+  ])
+
+AC_MSG_RESULT([$cups_version])
+AC_SUBST([CUPS_CFLAGS])
+AC_SUBST([CUPS_LIBS])
+AM_CONDITIONAL([HAVE_CUPS_3], [test "x$have_cups3" = "xyes"])
 
 PKG_CHECK_MODULES(GLIB, glib-2.0, has_glib=yes, has_glib=no)
 
