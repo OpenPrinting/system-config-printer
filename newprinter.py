@@ -1333,6 +1333,7 @@ class NewPrinterGUI(GtkGUI):
                     debugprint("Driverless PPD failed; falling back to legacy driver search")
                     self.device.driverless = False
                     self.device._driverless_failed = True
+                    self.searchedfordriverpackages = True
                     self.exactdrivermatch = False
                     self.nextnptab_rerun = False
                     result = self._handlePrinterInstallationMode(step)
@@ -1768,7 +1769,6 @@ class NewPrinterGUI(GtkGUI):
         self.ppdsloader = p
         p.connect ('finished',self.on_ppdsloader_finished_next)
         p.run ()
-        
     def _validateDriverlessPPD(self, ppdname):
         self.cups._begin_operation(_("validating driverless PPD"))
         try:
@@ -1805,10 +1805,9 @@ class NewPrinterGUI(GtkGUI):
                     debugprint("Driverless PPD validation failed; loading PPD catalog")
                     self.device.driverless = False
                     self.device._driverless_failed = True
+                    self.searchedfordriverpackages = True
                     uri = self.device.uri
-                    if not devid:
-                        devid = self.device.id or self.devid
-                    self._loadPPDsForDevice(devid, uri)
+                    self._loadPPDsForDevice(None, uri)
                     return self.INSTALL_RESULT_OPS_PENDING
                 self._cached_driverless_ppd = validated_ppd
                 status = "exact"
@@ -1862,6 +1861,7 @@ class NewPrinterGUI(GtkGUI):
                         debugprint("Driverless PPD validation failed; abandoning driverless mode completely")
                         self.device.driverless = False
                         self.device._driverless_failed = True
+                        self.searchedfordriverpackages = True
                         self.exactdrivermatch = False
                         ppdnamelist = []
                         break
@@ -1925,6 +1925,7 @@ class NewPrinterGUI(GtkGUI):
             ppdname = None
             status = None
             self.id_matched_ppdnames = []
+            self.searchedfordriverpackages = True
 
         if (not self.remotecupsqueue or self.dialog_mode == "ppd"):
             return self._installPrinterOrSearchForDriver (devid, ppdname, status, page_nr, step)
@@ -1956,6 +1957,7 @@ class NewPrinterGUI(GtkGUI):
                 self.exactdrivermatch = False
                 if (self.dialog_mode != "ppd" and
                     self.searchedfordriverpackages == False and
+                    not getattr(self.device, '_driverless_failed', False) and
                     devid and len(devid) > 0 and
                     not (devid.find("MFG:generic;") >= 0 or
                          devid.find("MFG:Generic;") >= 0 or
@@ -3420,11 +3422,6 @@ class NewPrinterGUI(GtkGUI):
                 if 'driverless' in device.info:
                     device.driverless = True
 
-                is_usb = False
-                if hostport:
-                    h = hostport.lower()
-                    if h.startswith("localhost") or h.startswith("127.0.0.1") or h.startswith("[::1]"):
-                        is_usb = True
                 is_usb = dnssdresolve.is_ipp_over_usb_device (device)
 
                 conn_type = _("IPP over USB") if is_usb else _("IPP")

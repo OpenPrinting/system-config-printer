@@ -466,6 +466,7 @@ def test_network_broken_driverless_rejected():
     np._validateDriverlessPPD = MagicMock(return_value=None)
     np._installPrinterOrSearchForDriver = MagicMock(return_value=newprinter.NewPrinterGUI.INSTALL_RESULT_DONE)
 
+    np.searchedfordriverpackages = False
     np.exactdrivermatch = True # Pre-set to verify it gets explicitly forced to False
     real_install = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np)
     result = real_install(None, 0, 0)
@@ -478,11 +479,13 @@ def test_network_broken_driverless_rejected():
     assert np.device._driverless_failed is True
     assert np.exactdrivermatch is False
     assert np.id_matched_ppdnames == []
+    assert np.searchedfordriverpackages is True
     assert not hasattr(np, '_broken_driverless_ppds')
 
 def test_network_broken_driverless_no_alternative():
     """Network broken driverless with no alternative behaves as no matching PPD."""
     np = get_dummy_gui()
+    np.searchedfordriverpackages = False
     np.device.driverless = False
     np.device.uri = "dnssd://printer._ipp._tcp.local/"
     np.device.make_and_model = "A B"
@@ -508,6 +511,7 @@ def test_network_broken_driverless_no_alternative():
 
     assert np.device.driverless is False
     assert np.device._driverless_failed is True
+    assert np.searchedfordriverpackages is True
     assert not hasattr(np, '_broken_driverless_ppds')
 
 def test_usb_broken_driverless_fallback():
@@ -524,7 +528,8 @@ def test_usb_broken_driverless_fallback():
     assert result == newprinter.NewPrinterGUI.INSTALL_RESULT_OPS_PENDING
     assert np.device.driverless is False
     assert np.device._driverless_failed is True
-    np._loadPPDsForDevice.assert_called_once()
+    assert np.searchedfordriverpackages is True
+    np._loadPPDsForDevice.assert_called_once_with(None, "ipp://localhost:60000/ipp/print")
 
 def test_working_driverless_cached():
     """Working driverless PPD is cached and not fetched twice."""
@@ -639,3 +644,114 @@ def test_ipp_connection_labels():
     # ipp-usb (::1) -> "IPP over USB"
     assert dev_usb_v6.menuentry == "IPP over USB"
     assert getattr(dev_usb_v6, 'driverless', False) is True
+
+
+def test_broken_driverless_skips_openprinting(monkeypatch):
+    """Broken driverless fallback skips remote OpenPrinting query."""
+    np = get_dummy_gui()
+    np.searchedfordriverpackages = False
+    np.installed_driver_files = []
+    np.device.driverless = False
+    np.device._driverless_failed = True
+    np.device.id = "MFG:Xerox;MDL:B235;"
+    np.device.uri = "dnssd://Xerox%20B235._ipp._tcp.local/"
+    np.ppds = MagicMock()
+    np.ppds.getPPDNamesFromDeviceID.return_value = {}
+    np.ppds.orderPPDNamesByPreference.return_value = []
+    np.fillMakeList = MagicMock()
+
+    mock_opreq_cls = MagicMock()
+    monkeypatch.setattr(newprinter, "OpenPrintingRequest", mock_opreq_cls)
+
+    real_install = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np)
+    result = real_install(np.device.id, 0, 0)
+
+    assert np.searchedfordriverpackages is True
+    mock_opreq_cls.assert_not_called()
+    assert getattr(np, 'opreq', None) is None
+    np.fillMakeList.assert_called_once()
+    assert result == newprinter.NewPrinterGUI.INSTALL_RESULT_DONE
+
+
+def test_normal_printer_searches_openprinting_when_no_match(monkeypatch):
+    """Normal printer without driver match still queries OpenPrinting."""
+    np = get_dummy_gui()
+    np.searchedfordriverpackages = False
+    np.installed_driver_files = []
+    np.device.driverless = False
+    np.device._driverless_failed = False
+    np.device.id = "MFG:TestMFG;MDL:TestMDL;"
+    np.device.uri = "usb://TestMFG/TestMDL"
+    np.ppds = MagicMock()
+    np.ppds.getPPDNamesFromDeviceID.return_value = {}
+    np.ppds.orderPPDNamesByPreference.return_value = []
+    np.fillMakeList = MagicMock()
+    np._show_searching_spinner = MagicMock()
+
+    mock_opreq_instance = MagicMock()
+    mock_opreq_cls = MagicMock(return_value=mock_opreq_instance)
+    monkeypatch.setattr(newprinter, "OpenPrintingRequest", mock_opreq_cls)
+
+    real_install = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np)
+    result = real_install(np.device.id, 0, 0)
+
+    assert np.searchedfordriverpackages is True
+    mock_opreq_cls.assert_called_once()
+    mock_opreq_instance.searchPrinters.assert_called_once_with(np.device.id)
+    np.fillMakeList.assert_not_called()
+    assert result == newprinter.NewPrinterGUI.INSTALL_RESULT_OPS_PENDING
+
+
+def test_network_broken_driverless_probe_failure_sets_flags_and_skips_packagekit():
+    """When driverless PPD validation fails, flags are set immediately and PPDs are loaded with devid=None to skip PackageKit."""
+    np = get_dummy_gui()
+    np.device.driverless = True
+    np.device.uri = "dnssd://Xerox%20B235._ipp._tcp.local/"
+    np.device.id = "MFG:Xerox;MDL:B235;"
+    np.searchedfordriverpackages = False
+    np._validateDriverlessPPD = MagicMock(return_value=None)
+    np._loadPPDsForDevice = MagicMock()
+
+    real_install = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np)
+    result = real_install(np.device.id, 0, 0)
+
+    assert result == newprinter.NewPrinterGUI.INSTALL_RESULT_OPS_PENDING
+    assert np.device.driverless is False
+    assert np.device._driverless_failed is True
+    assert np.searchedfordriverpackages is True
+    np._loadPPDsForDevice.assert_called_once_with(None, "dnssd://Xerox%20B235._ipp._tcp.local/")
+
+
+def test_broken_driverless_guard_prevents_openprinting_even_if_reset(monkeypatch):
+    """Even if searchedfordriverpackages is reset to False, _driverless_failed=True prevents OpenPrinting."""
+    np = get_dummy_gui()
+    np.searchedfordriverpackages = False
+    np.device.driverless = False
+    np.device._driverless_failed = True
+    np.dialog_mode = "printer"
+    np.ppds = MagicMock()
+    np.fillMakeList = MagicMock()
+
+    mock_opreq_cls = MagicMock()
+    monkeypatch.setattr(newprinter, "OpenPrintingRequest", mock_opreq_cls)
+
+    real_search = newprinter.NewPrinterGUI._installPrinterOrSearchForDriver.__get__(np)
+    result = real_search("MFG:Xerox;MDL:B235;", None, None, 0, 0)
+
+    mock_opreq_cls.assert_not_called()
+    assert getattr(np, 'opreq', None) is None
+    np.fillMakeList.assert_called_once()
+    assert result == newprinter.NewPrinterGUI.INSTALL_RESULT_DONE
+
+
+def test_ppdsloader_with_none_device_id_skips_packagekit_and_queries_cups():
+    """Passing device_id=None to PPDsLoader skips PackageKit and directly queries CUPS."""
+    import ppdsloader
+    loader = ppdsloader.PPDsLoader(device_id=None, device_uri="dnssd://Xerox%20B235._ipp._tcp.local/")
+    loader._query_packagekit = MagicMock()
+    loader._query_cups = MagicMock()
+
+    loader.run()
+
+    loader._query_packagekit.assert_not_called()
+    loader._query_cups.assert_called_once()
