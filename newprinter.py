@@ -3417,15 +3417,21 @@ class NewPrinterGUI(GtkGUI):
                     if queue.startswith("printers/"):
                         queue = queue[9:]
                 if 'driverless' in device.info:
-                    drvless = "Driverless "
                     device.driverless = True
-                else:
-                    drvless = ""
+
+                is_usb = False
+                if hostport:
+                    h = hostport.lower()
+                    if h.startswith("localhost") or h.startswith("127.0.0.1") or h.startswith("[::1]"):
+                        is_usb = True
+                is_usb = dnssdresolve.is_ipp_over_usb_device (device)
+
+                conn_type = _("IPP over USB") if is_usb else _("IPP")
+
                 if queue != '':
-                    device.menuentry = (("%s" + _("IPP") + " (%s)") %
-                                        (drvless, queue))
+                    device.menuentry = "%s (%s)" % (conn_type, queue)
                 else:
-                    device.menuentry = (("%s" + _("IPP")) % drvless)
+                    device.menuentry = conn_type
             elif device.type == "http" or device.type == "https":
                 device.menuentry = _("HTTP")
             elif device.type == "dnssd" or device.type == "mdns":

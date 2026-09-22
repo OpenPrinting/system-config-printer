@@ -247,7 +247,7 @@ def test_driverless_get_np_ppd(monkeypatch):
     assert isinstance(result, MockCupsPPD)
 
 def test_driverless_installable_options_reached(monkeypatch):
-    
+
     monkeypatch.setattr(cups, "PPD", MockCupsPPD)
 
     np = get_dummy_gui()
@@ -346,7 +346,7 @@ def test_broken_driverless_triggers_legacy_fallback():
     np.ntbkNewPrinter.get_current_page.return_value = 1
     original_mode = MagicMock(
         return_value=newprinter.NewPrinterGUI.INSTALL_RESULT_DONE)
-   
+
     np._handlePrinterInstallationMode = MagicMock(
         side_effect=[newprinter.NewPrinterGUI.INSTALL_RESULT_DONE,
                      newprinter.NewPrinterGUI.INSTALL_RESULT_OPS_PENDING])
@@ -580,3 +580,62 @@ def test_fillDriverList_excludes_broken_driverless_ppds(monkeypatch):
     appended_strings = [args[0][0] for args, kwargs in mock_model.append.call_args_list]
     assert not any("Broken Xerox" in s for s in appended_strings)
     assert any("Other Driver" in s for s in appended_strings)
+
+def test_ipp_connection_labels():
+    """Verify that IPP connection labels distinguish IPP and IPP over USB using dnssdresolve."""
+    np = get_dummy_gui()
+    np.device_selected = 0
+    np.tvNPDeviceURIs = MagicMock()
+    np.expNPDeviceURIs = MagicMock()
+    np.lblNPDeviceDescription = MagicMock()
+    np.ntbkNPType = MagicMock()
+    np.new_printer_device_tabs = {}
+    np.PAGE_SELECT_DEVICE = 1
+    np.PAGE_DESCRIBE_PRINTER = 2
+
+    mock_widget = MagicMock()
+    mock_widget.get_cursor.return_value = ("0", 0)
+    mock_model = MagicMock()
+    mock_widget.get_model.return_value = mock_model
+    mock_model.get_iter.return_value = "iter"
+
+    mock_physicaldevice = MagicMock()
+    mock_model.get_value.return_value = mock_physicaldevice
+
+    # 1. Normal network IPP printer (non-driverless)
+    dev_net = cupshelpers.Device("ipp://printer._ipp._tcp.local/", **{'device-info': 'Network Printer'})
+    dev_net.address = '192.168.1.20'
+
+    # 2. Driverless network IPP printer
+    dev_net_driverless = cupshelpers.Device("ipp://printer._ipp._tcp.local/", **{'device-info': 'Network Printer (driverless)'})
+    dev_net_driverless.address = '192.168.1.10'
+
+    # 3. ipp-usb printer resolved to 127.0.0.1
+    dev_usb_v4 = cupshelpers.Device("ipp://printer%20(USB)._ipp._tcp.local/", **{'device-info': 'ipp-usb (driverless)'})
+    dev_usb_v4.address = '127.0.0.1'
+
+    # 4. ipp-usb printer resolved to ::1
+    dev_usb_v6 = cupshelpers.Device("ipp://printer%20(USB)._ipp._tcp.local/", **{'device-info': 'ipp-usb (driverless)'})
+    dev_usb_v6.address = '::1'
+
+    mock_physicaldevice.get_devices.return_value = [
+        dev_net, dev_net_driverless, dev_usb_v4, dev_usb_v6
+    ]
+
+    np.on_tvNPDevices_cursor_changed(mock_widget)
+
+    # normal network IPP -> "IPP"
+    assert dev_net.menuentry == "IPP"
+    assert not getattr(dev_net, 'driverless', False)
+
+    # driverless network IPP -> "IPP"
+    assert dev_net_driverless.menuentry == "IPP"
+    assert getattr(dev_net_driverless, 'driverless', False) is True
+
+    # ipp-usb (127.0.0.1) -> "IPP over USB"
+    assert dev_usb_v4.menuentry == "IPP over USB"
+    assert getattr(dev_usb_v4, 'driverless', False) is True
+
+    # ipp-usb (::1) -> "IPP over USB"
+    assert dev_usb_v6.menuentry == "IPP over USB"
+    assert getattr(dev_usb_v6, 'driverless', False) is True
