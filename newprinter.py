@@ -229,6 +229,9 @@ def _get_driver_name_from_ppd(ppd, ppds_cache):
     if ppd == 'raw':
         return _("Raw Queue")
 
+    if isinstance(ppd, str) and ppd.startswith('driverless:'):
+        return "Driverless IPP"
+
     if isinstance(ppd, cups.PPD):
         attr = ppd.findAttr("NickName")
         if not attr:
@@ -245,7 +248,6 @@ def _get_driver_name_from_ppd(ppd, ppds_cache):
         return ppd
 
     return ""
-
 
 class NewPrinterGUI(GtkGUI):
 
@@ -284,6 +286,8 @@ class NewPrinterGUI(GtkGUI):
         "hp" : 0,
         "hpfax" : 0,
         "dnssd" : 0,
+        "ipp" : 0,
+        "ipps" : 0,
         "socket": 2,
         "lpd" : 3,
         "scsi" : 4,
@@ -326,6 +330,7 @@ class NewPrinterGUI(GtkGUI):
                               "entNPName",
                               "entNPDescription",
                               "entNPDriver",
+                              "btnNPChooseDriver",
                               "entNPLocation",
                               "isSharedCbx",
                               "tvNPDevices",
@@ -498,6 +503,7 @@ class NewPrinterGUI(GtkGUI):
             self.spinner = VectorSpinner (size=32)
             spinner_parent.pack_start (self.spinner, False, True, 0)
             spinner_parent.reorder_child (self.spinner, 0)
+
         # Set up OpenPrinting widgets.
         self.opreq = None
         self.opreq_handlers = None
@@ -956,7 +962,9 @@ class NewPrinterGUI(GtkGUI):
 
         debugprint ("Loaded PPDs this time; try nextNPTab again...")
         self.nextnptab_rerun = True
-        if self.ntbkNewPrinter.get_current_page () == self.PAGE_SELECT_INSTALL_METHOD:
+        if self.ntbkNewPrinter.get_current_page () in (self.PAGE_DESCRIBE_PRINTER,
+                                                       self.PAGE_SELECT_INSTALL_METHOD):
+            self.ntbkNewPrinter.set_current_page (self.PAGE_SELECT_INSTALL_METHOD)
             self.nextNPTab (step = 0)
         else:
             self.nextNPTab ()
@@ -1070,6 +1078,15 @@ class NewPrinterGUI(GtkGUI):
 
     def on_btnNPForward_clicked(self, widget):
         self.nextNPTab()
+
+    def on_btnNPChooseDriver_clicked(self, widget):
+        self.device.driverless = False
+        self.exactdrivermatch = False
+        self.searchedfordriverpackages = True
+        self.rbtnNPFoomatic.set_active(True)
+        self.on_rbtnNPFoomatic_toggled(self.rbtnNPFoomatic)
+        self.ntbkNewPrinter.set_current_page(self.PAGE_SELECT_INSTALL_METHOD)
+        self.nextNPTab(step=0)
 
     def installdriverpackage (self, driver):
         install_info = self._getDriverInstallationInfo (driver)
@@ -1326,6 +1343,17 @@ class NewPrinterGUI(GtkGUI):
             self.ppd = self.getNPPPD()
             self.installable_options = False
             if self.ppd is None:
+                if getattr(self.device, 'driverless', False):
+                    debugprint("Driverless PPD failed; falling back to legacy driver search")
+                    self.device.driverless = False
+                    self.device._driverless_failed = True
+                    self.searchedfordriverpackages = True
+                    self.exactdrivermatch = False
+                    self.nextnptab_rerun = False
+                    result = self._handlePrinterInstallationMode(step)
+                    if result == self.INSTALL_RESULT_OPS_PENDING:
+                        self.btnNPForward.set_sensitive(False)
+                        return
                 return
 
             # Prepare Installable Options screen.
@@ -1639,7 +1667,8 @@ class NewPrinterGUI(GtkGUI):
             self.dec_spinner_task ()
 
         if (not self.device.id and
-            self.device.type in ["socket", "lpd", "ipp"]):
+            self.device.type in ["socket", "lpd", "ipp"] and
+            not getattr(self.device, 'driverless', False)):
             # This is a network printer whose model we don't yet know.
             # Try to discover it.
             self.getNetworkPrinterMakeModel ()
@@ -1753,12 +1782,51 @@ class NewPrinterGUI(GtkGUI):
         self.ppdsloader = p
         p.connect ('finished',self.on_ppdsloader_finished_next)
         p.run ()
+    def _validateDriverlessPPD(self, ppdname):
+        self.cups._begin_operation(_("validating driverless PPD"))
+        try:
+            f = self.cups.getServerPPD(ppdname)
+            try:
+                ppd = cups.PPD(f)
+                return ppd
+            finally:
+                try:
+                    os.unlink(f)
+                except OSError:
+                    pass
+        except (RuntimeError, cups.IPPError):
+            nonfatalException()
+            debugprint("Driverless PPD validation failed for %s" % ppdname)
+            return None
+        finally:
+            self.cups._end_operation()
 
     def _installPrinterFromDeviceID (self, devid, page_nr, step):
         ppdname = None
+        status = None
         self.id_matched_ppdnames = []
+
+        search_uri = self.device.uri
+        if getattr(self.device, '_driverless_failed', False):
+            search_uri = None
+
         try:
-            if self.dialog_mode == "download_driver":
+            if getattr(self.device, 'driverless', False):
+                ppdname = "driverless:%s" % self.device.uri
+                validated_ppd = self._validateDriverlessPPD(ppdname)
+                if validated_ppd is None:
+                    debugprint("Driverless PPD validation failed; abandoning driverless mode completely")
+                    self.device.driverless = False
+                    self.device._driverless_failed = True
+                    self.searchedfordriverpackages = True
+                    self.exactdrivermatch = False
+                    ppdname = None
+                    status = None
+                    self.id_matched_ppdnames = []
+                else:
+                    self._cached_driverless_ppd = validated_ppd
+                    status = "exact"
+            elif self.dialog_mode == "download_driver":
                 ppdname = "download"
                 status = "generic"
             elif self.remotecupsqueue:
@@ -1794,7 +1862,7 @@ class NewPrinterGUI(GtkGUI):
                                              id_dict["MDL"],
                                              id_dict["DES"],
                                              id_dict["CMD"],
-                                             self.device.uri,
+                                             search_uri,
                                              self.device.make_and_model)
                 debugprint ("Suitable PPDs found: %s" % repr(fit))
                 ppdnamelist = self.ppds.\
@@ -1802,9 +1870,31 @@ class NewPrinterGUI(GtkGUI):
                                                self.installed_driver_files,
                                                devid=id_dict, fit=fit)
                 debugprint ("PPDs in priority order: %s" % repr(ppdnamelist))
+                if page_nr == self.PAGE_SELECT_INSTALL_METHOD:
+                    ppdnamelist = [p for p in ppdnamelist if not (isinstance(p, str) and p.startswith("driverless:"))]
+                else:
+                    while ppdnamelist and isinstance(ppdnamelist[0], str) and ppdnamelist[0].startswith("driverless:"):
+                        validated_ppd = self._validateDriverlessPPD(ppdnamelist[0])
+                        if validated_ppd is None:
+                            debugprint("Driverless PPD validation failed; abandoning driverless mode completely")
+                            self.device.driverless = False
+                            self.device._driverless_failed = True
+                            self.searchedfordriverpackages = True
+                            self.exactdrivermatch = False
+                            ppdnamelist = []
+                            break
+                        else:
+                            self._cached_driverless_ppd = validated_ppd
+                            self.device.driverless = True
+                            break
+
                 self.id_matched_ppdnames = ppdnamelist
-                ppdname = ppdnamelist[0]
-                status = fit[ppdname]
+                if ppdnamelist:
+                    ppdname = ppdnamelist[0]
+                    status = fit[ppdname]
+                else:
+                    ppdname = None
+                    status = None
             elif (self.dialog_mode == "ppd" and self.orig_ppd):
                 attr = self.orig_ppd.findAttr("NickName")
                 if not attr:
@@ -1843,13 +1933,20 @@ class NewPrinterGUI(GtkGUI):
                                             "Printer",
                                             "Generic Printer",
                                             [],
-                                            self.device.uri)
+                                            search_uri)
                 status = "generic"
         except:
             nonfatalException ()
 
-        if (ppdname and
-            (not self.remotecupsqueue or self.dialog_mode == "ppd")):
+        if getattr(self.device, '_driverless_failed', False):
+            # Broken driverless PPD: do not automatically select any fallback PPD
+            # that might hijack the driver-selection UI.
+            ppdname = None
+            status = None
+            self.id_matched_ppdnames = []
+            self.searchedfordriverpackages = True
+
+        if (not self.remotecupsqueue or self.dialog_mode == "ppd"):
             return self._installPrinterOrSearchForDriver (devid, ppdname, status, page_nr, step)
 
         # No operations are pending if reached.
@@ -1857,17 +1954,26 @@ class NewPrinterGUI(GtkGUI):
 
     def _installPrinterOrSearchForDriver (self, devid, ppdname, status, page_nr, step):
         try:
-            if ppdname != "download":
-                ppddict = self.ppds.getInfoFromPPDName (ppdname)
-                make_model = _singleton (ppddict['ppd-make-and-model'])
-                (make, model) = \
-                    cupshelpers.ppds.ppdMakeModelSplit (make_model)
-                self.auto_make = make
-                self.auto_model = model
+            if getattr(self.device, 'driverless', False):
+                self.auto_make = "Generic"
+                self.auto_model = "Driverless IPP"
                 self.auto_driver = ppdname
-                self.fillDriverList(make, model)
+            elif ppdname is not None and ppdname != "download":
+                self.auto_driver = ppdname
+                try:
+                    ppddict = self.ppds.getInfoFromPPDName (ppdname)
+                    make_model = _singleton (ppddict['ppd-make-and-model'])
+                    (make, model) = \
+                        cupshelpers.ppds.ppdMakeModelSplit (make_model)
+                    self.auto_make = make
+                    self.auto_model = model
+                    self.fillDriverList(make, model)
+                except:
+                    nonfatalException ()
             if ((status == "exact" or status == "exact-cmd") and \
-                self.dialog_mode != "ppd"):
+                getattr(self.device, 'driverless', False) and \
+                self.dialog_mode != "ppd" and \
+                page_nr != self.PAGE_SELECT_INSTALL_METHOD):
                 self.exactdrivermatch = True
                 if step == 0:
                     page_nr = self.PAGE_INSTALLABLE_OPTIONS;
@@ -1875,6 +1981,9 @@ class NewPrinterGUI(GtkGUI):
                 self.exactdrivermatch = False
                 if (self.dialog_mode != "ppd" and
                     self.searchedfordriverpackages == False and
+                    page_nr != self.PAGE_SELECT_INSTALL_METHOD and
+                    status not in ("exact", "exact-cmd") and
+                    not getattr(self.device, '_driverless_failed', False) and
                     devid and len(devid) > 0 and
                     not (devid.find("MFG:generic;") >= 0 or
                          devid.find("MFG:Generic;") >= 0 or
@@ -1911,10 +2020,23 @@ class NewPrinterGUI(GtkGUI):
         except:
             nonfatalException ()
 
-        if (self.dialog_mode == "ppd" or
-                (self.dialog_mode != "download_driver" and
-                 not self.remotecupsqueue and page_nr != self.PAGE_DOWNLOAD_DRIVER)):
-            self.fillMakeList()
+        if not getattr(self, 'auto_make', None):
+            if getattr(self.device, 'make_and_model', None):
+                (make, model) = cupshelpers.ppds.ppdMakeModelSplit(self.device.make_and_model)
+                self.auto_make = make
+            elif devid:
+                try:
+                    id_dict = self.device.id_dict if self.device and self.device.id else cupshelpers.parseDeviceID(devid)
+                    if id_dict.get("MFG"):
+                        self.auto_make = id_dict["MFG"]
+                except:
+                    pass
+
+        if self.ppds is not None:
+            if (self.dialog_mode == "ppd" or
+                    (self.dialog_mode != "download_driver" and
+                     not self.remotecupsqueue and page_nr != self.PAGE_DOWNLOAD_DRIVER)):
+                self.fillMakeList()
 
         # No operations are pending if reached.
         return self.INSTALL_RESULT_DONE
@@ -2099,6 +2221,9 @@ class NewPrinterGUI(GtkGUI):
                          (self.exactdrivermatch and \
                               not self.installable_options)):
                 self.btnNPBack.hide ()
+
+            if hasattr(self, 'btnNPChooseDriver') and self.btnNPChooseDriver:
+                self.btnNPChooseDriver.show()
         if nr == self.PAGE_SELECT_INSTALL_METHOD:
             downloadable_selected = False
             if self.rbtnNPDownloadableDriverSearch.get_active ():
@@ -3326,7 +3451,7 @@ class NewPrinterGUI(GtkGUI):
 
             elif device.type == "smb":
                 device.menuentry = _("Windows Printer via SAMBA")
-            elif device.type == "ipp":
+            elif device.type == "ipp" or device.type == "ipps":
                 (scheme, rest) = urllib.parse.splittype (device.uri)
                 (hostport, rest) = urllib.parse.splithost (rest)
                 (queue, rest) = urllib.parse.splitquery (rest)
@@ -3336,15 +3461,16 @@ class NewPrinterGUI(GtkGUI):
                     if queue.startswith("printers/"):
                         queue = queue[9:]
                 if 'driverless' in device.info:
-                    drvless = "Driverless "
                     device.driverless = True
-                else:
-                    drvless = ""
+
+                is_usb = dnssdresolve.is_ipp_over_usb_device (device)
+
+                conn_type = _("IPP over USB") if is_usb else _("IPP")
+
                 if queue != '':
-                    device.menuentry = (("%s" + _("IPP") + " (%s)") %
-                                        (drvless, queue))
+                    device.menuentry = "%s (%s)" % (conn_type, queue)
                 else:
-                    device.menuentry = (("%s" + _("IPP")) % drvless)
+                    device.menuentry = conn_type
             elif device.type == "http" or device.type == "https":
                 device.menuentry = _("HTTP")
             elif device.type == "dnssd" or device.type == "mdns":
@@ -3365,7 +3491,12 @@ class NewPrinterGUI(GtkGUI):
                         protocol = "LPD"
                     elif name.find("._pdl-datastream") != -1:
                         protocol = "AppSocket/JetDirect"
-                    if protocol is not None:
+                    if protocol == "IPP":
+                        if dnssdresolve.is_ipp_over_usb_device (device):
+                            device.menuentry = _("IPP over USB")
+                        else:
+                            device.menuentry = _("IPP")
+                    elif protocol is not None:
                         device.menuentry = (_("%s network printer via DNS-SD")
                                             % protocol)
                     else:
@@ -4207,6 +4338,12 @@ class NewPrinterGUI(GtkGUI):
             debugprint ("No PPDs available?")
             self.NPDrivers = []
 
+        if getattr(self.device, '_driverless_failed', False):
+            self.NPDrivers = [
+                p for p in self.NPDrivers
+                if not p.startswith("driverless:")
+            ]
+
         driverlist = []
         NPDrivers = []
         i = 0
@@ -4411,83 +4548,93 @@ class NewPrinterGUI(GtkGUI):
         self.setNPButtons()
 
     def getNPPPD(self):
+        cached = getattr(self, '_cached_driverless_ppd', None)
+        if cached is not None:
+            self._cached_driverless_ppd = None
+            return cached
+
         ppd = None
-        try:
-            if ((self.rbtnNPFoomatic.get_active() or
-                    len(self.installed_driver_files) > 0) and
-                self.founddownloadableppd == False):
-                model, iter = self.tvNPDrivers.get_selection().get_selected()
-                nr = model.get_path(iter)[0]
-                ppd = self.NPDrivers[nr]
-            elif self.rbtnNPPPD.get_active():
-                ppd = cups.PPD(self.filechooserPPD.get_filename())
-            else:
-                # PPD of the driver downloaded from OpenPrinting XXX
-                treeview = self.tvNPDownloadableDrivers
-                model, iter = treeview.get_selection ().get_selected ()
-                driver = model.get_value (iter, 1)
-                if driver != 0 and 'ppds' in driver:
-                    # Only need to download a PPD.
-                    if (len(driver['ppds']) > 0):
-                        file_to_download = driver['ppds'][0]
-                        debugprint ("ppd file to download [" + file_to_download+ "]")
-                        file_to_download = file_to_download.strip()
-                        if (len(file_to_download) > 0):
-                            ppdurlobj = urllib.request.urlopen(file_to_download)
-                            ppdcontent = ppdurlobj.read()
-                            ppdurlobj.close()
-                            with tempfile.NamedTemporaryFile () as tmpf:
-                                tmpf.write(ppdcontent)
-                                tmpf.flush ()
-                                ppd = cups.PPD(tmpf.name)
-
-        except (RuntimeError, urllib.error.HTTPError) as e:
-            debugprint ("RuntimeError: " + repr (e))
-            if self.rbtnNPFoomatic.get_active():
-                # Foomatic database problem of some sort.
-                err_title = _('Database error')
-                err_text = _("The '%s' driver cannot be "
-                             "used with printer '%s %s'.")
-                model, iter = (self.tvNPDrivers.get_selection().
-                               get_selected())
-                nr = model.get_path(iter)[0]
-                driver = self.NPDrivers[nr]
-                if driver.startswith ("gutenprint"):
-                    # This printer references some XML that is not
-                    # installed by default.  Point the user at the
-                    # package they need to install.
-                    err = _("You will need to install the '%s' package "
-                            "in order to use this driver.") % \
-                            "gutenprint-foomatic"
+        _driverless_attempt = False
+        if getattr(self.device, 'driverless', False):
+            ppd = self.auto_driver
+            _driverless_attempt = True
+        else:
+            try:
+                if ((self.rbtnNPFoomatic.get_active() or
+                        len(self.installed_driver_files) > 0) and
+                    self.founddownloadableppd == False):
+                    model, iter = self.tvNPDrivers.get_selection().get_selected()
+                    nr = model.get_path(iter)[0]
+                    ppd = self.NPDrivers[nr]
+                elif self.rbtnNPPPD.get_active():
+                    ppd = cups.PPD(self.filechooserPPD.get_filename())
                 else:
-                    err = err_text % (driver, self.NPMake, self.NPModel)
-            elif self.rbtnNPPPD.get_active():
-                # This error came from trying to open the PPD file.
-                err_title = _('PPD error')
-                filename = self.filechooserPPD.get_filename()
-                err = _('Failed to read PPD file.  Possible reason '
-                        'follows:') + '\n'
-                try:
-                    # We want this to be in the current natural language,
-                    # so we intentionally don't set LC_ALL=C here.
-                    p = subprocess.Popen (['/usr/bin/cupstestppd',
-                                           '-rvv', filename],
-                                          close_fds=True,
-                                          stdin=subprocess.DEVNULL,
-                                          stdout=subprocess.PIPE,
-                                          stderr=subprocess.PIPE)
-                    (stdout, stderr) = p.communicate ()
-                    err += stdout.decode ()
-                except:
-                    # Problem executing command.
-                    raise
-            else:
-                # Failed to get PPD downloaded from OpenPrinting XXX
-                err_title = _('Downloadable drivers')
-                err = _("Failed to download PPD.")
+                    # PPD of the driver downloaded from OpenPrinting XXX
+                    treeview = self.tvNPDownloadableDrivers
+                    model, iter = treeview.get_selection ().get_selected ()
+                    driver = model.get_value (iter, 1)
+                    if driver != 0 and 'ppds' in driver:
+                        # Only need to download a PPD.
+                        if (len(driver['ppds']) > 0):
+                            file_to_download = driver['ppds'][0]
+                            debugprint ("ppd file to download [" + file_to_download+ "]")
+                            file_to_download = file_to_download.strip()
+                            if (len(file_to_download) > 0):
+                                ppdurlobj = urllib.request.urlopen(file_to_download)
+                                ppdcontent = ppdurlobj.read()
+                                ppdurlobj.close()
+                                with tempfile.NamedTemporaryFile () as tmpf:
+                                    tmpf.write(ppdcontent)
+                                    tmpf.flush ()
+                                    ppd = cups.PPD(tmpf.name)
 
-            show_error_dialog (err_title, err, self.NewPrinterWindow)
-            return None
+            except (RuntimeError, urllib.error.HTTPError) as e:
+                debugprint ("RuntimeError: " + repr (e))
+                if self.rbtnNPFoomatic.get_active():
+                    # Foomatic database problem of some sort.
+                    err_title = _('Database error')
+                    err_text = _("The '%s' driver cannot be "
+                                 "used with printer '%s %s'.")
+                    model, iter = (self.tvNPDrivers.get_selection().
+                                   get_selected())
+                    nr = model.get_path(iter)[0]
+                    driver = self.NPDrivers[nr]
+                    if driver.startswith ("gutenprint"):
+                        # This printer references some XML that is not
+                        # installed by default.  Point the user at the
+                        # package they need to install.
+                        err = _("You will need to install the '%s' package "
+                                "in order to use this driver.") % \
+                                "gutenprint-foomatic"
+                    else:
+                        err = err_text % (driver, self.NPMake, self.NPModel)
+                elif self.rbtnNPPPD.get_active():
+                    # This error came from trying to open the PPD file.
+                    err_title = _('PPD error')
+                    filename = self.filechooserPPD.get_filename()
+                    err = _('Failed to read PPD file.  Possible reason '
+                            'follows:') + '\n'
+                    try:
+                        # We want this to be in the current natural language,
+                        # so we intentionally don't set LC_ALL=C here.
+                        p = subprocess.Popen (['/usr/bin/cupstestppd',
+                                               '-rvv', filename],
+                                              close_fds=True,
+                                              stdin=subprocess.DEVNULL,
+                                              stdout=subprocess.PIPE,
+                                              stderr=subprocess.PIPE)
+                        (stdout, stderr) = p.communicate ()
+                        err += stdout.decode ()
+                    except:
+                        # Problem executing command.
+                        raise
+                else:
+                    # Failed to get PPD downloaded from OpenPrinting XXX
+                    err_title = _('Downloadable drivers')
+                    err = _("Failed to download PPD.")
+
+                show_error_dialog (err_title, err, self.NewPrinterWindow)
+                return None
 
         debugprint("ppd: " + repr(ppd))
 
@@ -4501,9 +4648,13 @@ class NewPrinterGUI(GtkGUI):
             except RuntimeError:
                 nonfatalException()
                 debugprint ("libcups from CUPS 1.3 not available: never mind")
+                if _driverless_attempt:
+                    ppd = None
             except cups.IPPError:
                 nonfatalException()
                 debugprint ("CUPS 1.3 server not available: never mind")
+                if _driverless_attempt:
+                    ppd = None
 
             self.cups._end_operation ()
 
