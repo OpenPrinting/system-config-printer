@@ -412,6 +412,18 @@ class NewPrinterGUI(GtkGUI):
 
                         domain=config.PACKAGE)
 
+        self.readonly_css = Gtk.CssProvider()
+        self.readonly_css.load_from_data(b"""
+        entry.readonly {
+            color: #777;
+            background-color: #eee;
+        }
+        """)
+        Gtk.StyleContext.add_provider_for_screen(
+            Gdk.Screen.get_default(),
+            self.readonly_css,
+            Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+
         # Fill in liststores for combo-box widgets
         for (widget,
              opts) in [(self.cmbNPTSerialBaud,
@@ -1419,6 +1431,7 @@ class NewPrinterGUI(GtkGUI):
             # Set the read-only driver field.
             driver_name = _get_driver_name_from_ppd(self.ppd, self.ppds)
             self.entNPDriver.set_text(driver_name)
+            self.entNPDriver.get_style_context().add_class("readonly")
 
         self.ntbkNewPrinter.set_current_page(next_page_nr)
 
