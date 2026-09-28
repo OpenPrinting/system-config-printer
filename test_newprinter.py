@@ -947,7 +947,7 @@ def test_driverless_printer_subsequently_selects_non_driverless_driver(monkeypat
     real_install = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np)
     res = real_install(np.device.id, newprinter.NewPrinterGUI.PAGE_SELECT_INSTALL_METHOD, 0)
 
-    assert np.auto_driver == "foomatic:HP-LaserJet"
+    assert np.auto_driver == "driverless:ipp://localhost:60000/ipp/print"
     assert np.exactdrivermatch is False
     np.fillMakeList.assert_called_once()
     assert res == newprinter.NewPrinterGUI.INSTALL_RESULT_DONE
@@ -1544,3 +1544,452 @@ def test_state_machine_case5_choose_different_driver_after_legacy_fallback():
     np._loadPPDsForDevice.assert_not_called()
     assert np.ppdsloader is None
     assert len(fill_make_called) > 0
+
+
+def test_ppdsloader_exclude_schemes():
+    """1. Verify ppdsloader.PPDsLoader calls getPPDs2 with exclude_schemes=['driverless', 'driverless-fax']."""
+    import ppdsloader
+    mock_conn = MagicMock()
+    loader = ppdsloader.PPDsLoader()
+    loader._cups_connect_reply(mock_conn, None)
+    mock_conn.getPPDs2.assert_called_once()
+    assert mock_conn.getPPDs2.call_args[1].get("exclude_schemes") == ["driverless", "driverless-fax"]
+
+
+def test_scp_dbus_service_exclude_schemes():
+    """1b. Verify scp-dbus-service FetchedPPDs calls getPPDs2 with exclude_schemes=['driverless', 'driverless-fax']."""
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("scp_dbus_service", "scp-dbus-service.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    mock_conn = MagicMock()
+    f = mod.FetchedPPDs(mock_conn, "en")
+    f.run()
+    mock_conn.getPPDs2.assert_called_once()
+    assert mock_conn.getPPDs2.call_args[1].get("exclude_schemes") == ["driverless", "driverless-fax"]
+
+
+def test_broken_driverless_printer_no_catalog_entry():
+    """2. A broken driverless printer:
+       - driverless validation fails
+       - no driverless:* entry is added to self.ppds
+       - driverless does not appear as a selectable catalog driver
+    """
+    np = get_dummy_gui()
+    np.device = cupshelpers.Device("ipp://broken-printer.local/ipp/print", **{"device-info": "driverless"})
+    np.device.driverless = True
+    np.ppds = cupshelpers.ppds.PPDs({
+        "foomatic:sample.ppd": {
+            "ppd-make-and-model": ["Sample Printer"],
+            "ppd-natural-language": ["en"],
+            "ppd-make": ["Sample"],
+            "ppd-device-id": [""],
+        }
+    })
+    np._validateDriverlessPPD = MagicMock(return_value=None)
+    np._installPrinterOrSearchForDriver = MagicMock(return_value=newprinter.NewPrinterGUI.INSTALL_RESULT_DONE)
+
+    real_install = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np)
+    real_install(None, 0, 1)
+
+    assert np.device.driverless is False
+    assert np.device._driverless_failed is True
+    assert not any(k.startswith("driverless:") for k in np.ppds.ppds.keys())
+    assert "Generic" not in np.ppds.getMakes()
+
+    np.tvNPDrivers = MagicMock()
+    mock_model = MagicMock()
+    np.tvNPDrivers.get_model.return_value = mock_model
+    real_fill = newprinter.NewPrinterGUI.fillDriverList.__get__(np)
+    real_fill("Generic", "Driverless IPP")
+    assert not any(p.startswith("driverless:") for p in np.NPDrivers)
+    assert np.NPDrivers == []
+
+    real_fill("Sample", "Printer")
+    assert np.NPDrivers == ["foomatic:sample.ppd"]
+
+
+def test_working_driverless_printer_catalog_entry_and_indexes():
+    """3. A working driverless printer:
+       - validation succeeds
+       - exactly its current driverless:<URI> entry is added
+       - the entry has the real printer identity metadata
+       - lazy indexes are invalidated/rebuilt correctly
+    """
+    uri = "ipp://working-printer.local/ipp/print"
+    np = get_dummy_gui()
+    np.device = cupshelpers.Device(
+        uri,
+        **{
+            "device-info": "driverless",
+            "device-id": "MFG:Xerox;MDL:B235 MFP;CMD:PCLM,POSTSCRIPT;",
+            "device-make-and-model": "Xerox B235 MFP",
+        }
+    )
+    np.device.driverless = True
+    np.ppds = cupshelpers.ppds.PPDs({})
+    np.ppds.makes = {"StaleMake": {}}
+    np.ppds.ids = {"stale": {}}
+    mock_ppd = MagicMock(spec=cups.PPD)
+    mock_ppd.findAttr.return_value = None
+    np._validateDriverlessPPD = MagicMock(return_value=mock_ppd)
+    np._installPrinterOrSearchForDriver = MagicMock(return_value=newprinter.NewPrinterGUI.INSTALL_RESULT_DONE)
+
+    real_install = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np)
+    real_install(None, 0, 1)
+
+    expected_key = f"driverless:{uri}"
+    assert expected_key in np.ppds.ppds
+    assert len([k for k in np.ppds.ppds if k.startswith("driverless:")]) == 1
+    entry = np.ppds.ppds[expected_key]
+    assert entry == {
+        "ppd-make-and-model": ["Xerox B235 MFP, driverless"],
+        "ppd-natural-language": ["en"],
+        "ppd-make": ["Xerox"],
+        "ppd-device-id": ["MFG:Xerox;MDL:B235 MFP;CMD:PCLM,POSTSCRIPT;"],
+        "ppd-type": ["pdf"],
+    }
+    assert np._cached_driverless_ppd == mock_ppd
+    assert np.ppds.makes is None
+    assert np.ppds.ids is None
+
+    assert "Xerox" in np.ppds.getMakes()
+    assert "B235 MFP" in np.ppds.getModels("Xerox")
+
+
+def test_legacy_printer_flow_unchanged():
+    """4. A normal legacy printer:
+       - no driverless validation is attempted
+       - existing PPD matching remains unchanged
+    """
+    np = get_dummy_gui()
+    np.device = cupshelpers.Device("usb://HP/LaserJet%201200", **{"device-id": "MFG:HP;MDL:LaserJet 1200;"})
+    np.device.driverless = False
+    mock_ppds = MagicMock()
+    mock_ppds.getPPDNamesFromDeviceID.return_value = {"foomatic:HP-LaserJet_1200.ppd": "exact"}
+    mock_ppds.orderPPDNamesByPreference.return_value = ["foomatic:HP-LaserJet_1200.ppd"]
+    np.ppds = mock_ppds
+    np._validateDriverlessPPD = MagicMock()
+    np._installPrinterOrSearchForDriver = MagicMock(return_value=newprinter.NewPrinterGUI.INSTALL_RESULT_DONE)
+
+    real_install = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np)
+    real_install("MFG:HP;MDL:LaserJet 1200;", 0, 1)
+
+    np._validateDriverlessPPD.assert_not_called()
+    assert np.id_matched_ppdnames == ["foomatic:HP-LaserJet_1200.ppd"]
+
+
+def test_driverless_fax_never_added_to_catalog():
+    """5. driverless-fax is never re-added to catalog."""
+    np = get_dummy_gui()
+    np.ppds = cupshelpers.ppds.PPDs({})
+    np._add_validated_driverless_ppd_to_catalog("driverless-fax:ipps://fax-device.local/")
+    assert len(np.ppds.ppds) == 0
+
+
+@pytest.mark.parametrize("uri", [
+    "ipp://localhost:60000/ipp/print",
+    "ipps://OfficeJet._ipps._tcp.local/",
+])
+def test_driverless_ipp_over_usb_and_network_ipps(uri):
+    """6. Existing driverless behavior for working IPP-over-USB and network IPP/IPPS printers continues to work."""
+    np = get_dummy_gui()
+    np.device = cupshelpers.Device(uri, **{"device-info": "driverless"})
+    np.device.driverless = True
+    np.ppds = cupshelpers.ppds.PPDs({})
+    mock_ppd = MagicMock(spec=cups.PPD)
+    np._validateDriverlessPPD = MagicMock(return_value=mock_ppd)
+    np._installPrinterOrSearchForDriver = MagicMock(return_value=newprinter.NewPrinterGUI.INSTALL_RESULT_DONE)
+
+    real_install = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np)
+    real_install(None, 0, 1)
+
+    expected_key = f"driverless:{uri}"
+    assert expected_key in np.ppds.ppds
+    assert np._cached_driverless_ppd == mock_ppd
+    np._installPrinterOrSearchForDriver.assert_called_with(None, expected_key, "exact", 0, 1)
+
+
+def test_regression_catalog_entry_contains_real_printer_identity():
+    """Requirement 6-A: Catalog entry contains real printer identity (MFG, MDL, ppd-device-id)."""
+    uri = "ipp://Xerox(R)%20B235%20MFP%20(USB)._ipp._tcp.local/"
+    np = get_dummy_gui()
+    np.device = cupshelpers.Device(
+        uri,
+        **{
+            "device-info": "driverless",
+            "device-id": "MFG:Xerox(R);MDL:B235 MFP;CMD:PCLM,PCL,PJL,PDF,POSTSCRIPT,FWV,URF;",
+            "device-make-and-model": "Xerox(R) B235 MFP",
+        }
+    )
+    np.device.driverless = True
+    np.ppds = cupshelpers.ppds.PPDs({})
+
+    np._add_validated_driverless_ppd_to_catalog(f"driverless:{uri}")
+
+    expected_key = f"driverless:{uri}"
+    assert expected_key in np.ppds.ppds
+    entry = np.ppds.ppds[expected_key]
+    assert entry["ppd-make"] == ["Xerox(R)"]
+    assert entry["ppd-make-and-model"] == ["Xerox(R) B235 MFP, driverless"]
+    assert entry["ppd-device-id"] == ["MFG:Xerox(R);MDL:B235 MFP;CMD:PCLM,PCL,PJL,PDF,POSTSCRIPT,FWV,URF;"]
+    assert entry["ppd-type"] == ["pdf"]
+    assert entry["ppd-natural-language"] == ["en"]
+
+
+def test_regression_get_ppd_names_from_device_id_matches_validated_driverless():
+    """Requirement 6-B: getPPDNamesFromDeviceID() matches the validated driverless PPD."""
+    uri = "ipp://Xerox(R)%20B235%20MFP%20(USB)._ipp._tcp.local/"
+    ppdname = f"driverless:{uri}"
+    entry = {
+        "ppd-make-and-model": ["Xerox B235 MFP, driverless, cups-filters 1.28.17"],
+        "ppd-natural-language": ["en"],
+        "ppd-make": ["Xerox"],
+        "ppd-device-id": ["MFG:Xerox(R);MDL:B235 MFP;CMD:PCLM,PCL,PJL,PDF,POSTSCRIPT,FWV,URF;"],
+        "ppd-type": ["pdf"],
+    }
+    ppds = cupshelpers.ppds.PPDs({ppdname: entry})
+    devid_dict = cupshelpers.parseDeviceID(entry["ppd-device-id"][0])
+
+    fit = ppds.getPPDNamesFromDeviceID(
+        devid_dict["MFG"],
+        devid_dict["MDL"],
+        devid_dict["DES"],
+        devid_dict["CMD"],
+        uri,
+        "Xerox(R) B235 MFP"
+    )
+    assert ppdname in fit
+    assert fit[ppdname] == cupshelpers.ppds.PPDs.FIT_EXACT_CMD
+
+
+def test_regression_order_ppd_names_by_preference_puts_driverless_first():
+    """Requirement 6-C: orderPPDNamesByPreference() puts driverless first according to preferreddrivers.xml."""
+    driverless_ppd = "driverless:ipp://Xerox(R)%20B235%20MFP%20(USB)._ipp._tcp.local/"
+    legacy_ppd = "postscript-hp:0/ppd/hplip/HP/hp-designjet_t920-postscript.ppd"
+    generic_ps_ppd = "drv:///sample.drv/generic.ppd"
+
+    catalog_dict = {
+        driverless_ppd: {
+            "ppd-make-and-model": ["Xerox B235 MFP, driverless"],
+            "ppd-natural-language": ["en"],
+            "ppd-make": ["Xerox"],
+            "ppd-device-id": ["MFG:Xerox(R);MDL:B235 MFP;CMD:PCLM,POSTSCRIPT;"],
+            "ppd-type": ["pdf"],
+        },
+        legacy_ppd: {
+            "ppd-make-and-model": ["HP DesignJet T920 Postscript"],
+            "ppd-natural-language": ["en"],
+            "ppd-make": ["HP"],
+            "ppd-device-id": ["MFG:HP;MDL:DesignJet T920;CMD:POSTSCRIPT;"],
+            "ppd-type": ["postscript"],
+        },
+        generic_ps_ppd: {
+            "ppd-make-and-model": ["Generic PostScript Printer"],
+            "ppd-natural-language": ["en"],
+            "ppd-make": ["Generic"],
+            "ppd-device-id": ["MFG:Generic;MDL:PostScript Printer;CMD:POSTSCRIPT;"],
+            "ppd-type": ["postscript"],
+        },
+    }
+    ppds = cupshelpers.ppds.PPDs(catalog_dict, xml_dir="xml")
+    devid_dict = {"MFG": "Xerox(R)", "MDL": "B235 MFP", "DES": "", "CMD": ["PCLM", "POSTSCRIPT"]}
+    fit = {
+        driverless_ppd: cupshelpers.ppds.PPDs.FIT_EXACT_CMD,
+        legacy_ppd: cupshelpers.ppds.PPDs.FIT_GENERIC,
+        generic_ps_ppd: cupshelpers.ppds.PPDs.FIT_GENERIC,
+    }
+    ordered = ppds.orderPPDNamesByPreference(list(fit.keys()), [], devid=devid_dict, fit=fit)
+    assert ordered[0] == driverless_ppd
+
+
+def test_regression_xerox_b235_ipp_device_does_not_match_hp_designjet():
+    """Requirement 6-D: Xerox B235 IPP device does not match hp-designjet_t920-postscript.ppd,
+    but recommends its driverless PPD."""
+    uri = "ipp://Xerox(R)%20B235%20MFP%20(USB)._ipp._tcp.local/"
+    driverless_ppd = f"driverless:{uri}"
+    hp_designjet_ppd = "postscript-hp:0/ppd/hplip/HP/hp-designjet_t920-postscript.ppd"
+
+    catalog_dict = {
+        driverless_ppd: {
+            "ppd-make-and-model": ["Xerox B235 MFP, driverless"],
+            "ppd-natural-language": ["en"],
+            "ppd-make": ["Xerox"],
+            "ppd-device-id": ["MFG:Xerox(R);MDL:B235 MFP;CMD:PCLM,PCL,PJL,PDF,POSTSCRIPT,FWV,URF;"],
+            "ppd-type": ["pdf"],
+        },
+        hp_designjet_ppd: {
+            "ppd-make-and-model": ["HP DesignJet T920 Postscript"],
+            "ppd-natural-language": ["en"],
+            "ppd-make": ["HP"],
+            "ppd-device-id": ["MFG:HP;MDL:DesignJet T920;CMD:POSTSCRIPT;"],
+            "ppd-type": ["postscript"],
+        },
+    }
+    ppds = cupshelpers.ppds.PPDs(catalog_dict, xml_dir="xml")
+
+    np = get_dummy_gui()
+    np.device = cupshelpers.Device(
+        uri,
+        **{
+            "device-info": "driverless",
+            "device-id": "MFG:Xerox(R);MDL:B235 MFP;CMD:PCLM,PCL,PJL,PDF,POSTSCRIPT,FWV,URF;",
+            "device-make-and-model": "Xerox(R) B235 MFP",
+        }
+    )
+    np.device.driverless = False
+    np.ppds = ppds
+    np.installed_driver_files = []
+    np.fillDriverList = MagicMock()
+    np.fillMakeList = MagicMock()
+    np._validateDriverlessPPD = MagicMock(return_value=MagicMock(spec=cups.PPD))
+
+    real_install = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np)
+    res = real_install(np.device.id, newprinter.NewPrinterGUI.PAGE_SELECT_INSTALL_METHOD, 0)
+
+    assert hp_designjet_ppd not in np.id_matched_ppdnames
+    assert np.auto_driver == driverless_ppd
+    assert np.auto_make in ("Xerox", "Xerox(R)")
+    assert np.auto_model == "B235 MFP"
+    assert np.exactdrivermatch is False
+    np.fillDriverList.assert_called_with(np.auto_make, "B235 MFP")
+
+
+def test_regression_broken_driverless_validation_does_not_add_driverless_entry():
+    """Requirement 6-E: Broken driverless validation does not add driverless entry."""
+    uri = "ipp://Broken%20Xerox%20B235%20MFP._ipp._tcp.local/"
+    np = get_dummy_gui()
+    np.device = cupshelpers.Device(
+        uri,
+        **{
+            "device-info": "driverless",
+            "device-id": "MFG:Xerox(R);MDL:B235 MFP;CMD:PCLM,POSTSCRIPT;",
+            "device-make-and-model": "Xerox(R) B235 MFP",
+        }
+    )
+    np.device.driverless = True
+    np.ppds = cupshelpers.ppds.PPDs({})
+    np._validateDriverlessPPD = MagicMock(return_value=None)
+    np._installPrinterOrSearchForDriver = MagicMock(return_value=newprinter.NewPrinterGUI.INSTALL_RESULT_DONE)
+
+    real_install = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np)
+    real_install(None, 0, 1)
+
+    assert len(np.ppds.ppds) == 0
+    assert np.device._driverless_failed is True
+    assert np.device.driverless is False
+    assert np.id_matched_ppdnames == []
+    np._installPrinterOrSearchForDriver.assert_called_with(None, None, None, 0, 1)
+
+
+def test_regression_choose_driver_preserves_validated_driverless_and_strips_broken():
+    """Requirement 6-F: 'Choose a different driver...' preserves the validated driverless
+    option as recommended, but strips it if _driverless_failed is True."""
+    uri = "ipp://Xerox%20B235._ipp._tcp.local/"
+    driverless_ppd = f"driverless:{uri}"
+    legacy_ppd = "foomatic:Generic-PostScript.ppd"
+
+    np1 = get_dummy_gui()
+    np1.device = cupshelpers.Device(
+        uri,
+        **{
+            "device-id": "MFG:Xerox;MDL:B235 MFP;CMD:POSTSCRIPT;",
+            "device-make-and-model": "Xerox B235 MFP",
+        }
+    )
+    np1.device.driverless = False
+    np1.device._driverless_failed = False
+    np1.ppds = cupshelpers.ppds.PPDs({
+        driverless_ppd: {
+            "ppd-make-and-model": ["Xerox B235 MFP, driverless"],
+            "ppd-natural-language": ["en"],
+            "ppd-make": ["Xerox"],
+            "ppd-device-id": ["MFG:Xerox;MDL:B235 MFP;CMD:POSTSCRIPT;"],
+            "ppd-type": ["pdf"],
+        },
+        legacy_ppd: {
+            "ppd-make-and-model": ["Generic PostScript Printer"],
+            "ppd-natural-language": ["en"],
+            "ppd-make": ["Generic"],
+            "ppd-device-id": ["MFG:Generic;MDL:PostScript;CMD:POSTSCRIPT;"],
+            "ppd-type": ["postscript"],
+        },
+    }, xml_dir="xml")
+    np1.installed_driver_files = []
+    np1.fillDriverList = MagicMock()
+    np1.fillMakeList = MagicMock()
+    np1._validateDriverlessPPD = MagicMock(return_value=MagicMock(spec=cups.PPD))
+
+    install1 = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np1)
+    install1(np1.device.id, newprinter.NewPrinterGUI.PAGE_SELECT_INSTALL_METHOD, 0)
+
+    assert driverless_ppd in np1.id_matched_ppdnames
+    assert np1.id_matched_ppdnames[0] == driverless_ppd
+    assert np1.auto_driver == driverless_ppd
+    assert np1.auto_make == "Xerox"
+    assert np1.auto_model == "B235 MFP"
+    assert np1.exactdrivermatch is False
+
+    np2 = get_dummy_gui()
+    np2.device = cupshelpers.Device(
+        uri,
+        **{
+            "device-id": "MFG:Xerox;MDL:B235 MFP;CMD:POSTSCRIPT;",
+            "device-make-and-model": "Xerox B235 MFP",
+        }
+    )
+    np2.device.driverless = False
+    np2.device._driverless_failed = True
+    np2.ppds = cupshelpers.ppds.PPDs({
+        driverless_ppd: {
+            "ppd-make-and-model": ["Xerox B235 MFP, driverless"],
+            "ppd-natural-language": ["en"],
+            "ppd-make": ["Xerox"],
+            "ppd-device-id": ["MFG:Xerox;MDL:B235 MFP;CMD:POSTSCRIPT;"],
+            "ppd-type": ["pdf"],
+        },
+        legacy_ppd: {
+            "ppd-make-and-model": ["Generic PostScript Printer"],
+            "ppd-natural-language": ["en"],
+            "ppd-make": ["Generic"],
+            "ppd-device-id": ["MFG:Generic;MDL:PostScript;CMD:POSTSCRIPT;"],
+            "ppd-type": ["postscript"],
+        },
+    }, xml_dir="xml")
+    np2.installed_driver_files = []
+    np2.fillDriverList = MagicMock()
+    np2.fillMakeList = MagicMock()
+
+    install2 = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np2)
+    install2(np2.device.id, newprinter.NewPrinterGUI.PAGE_SELECT_INSTALL_METHOD, 0)
+
+    assert driverless_ppd not in np2.id_matched_ppdnames
+    assert np2.exactdrivermatch is False
+
+def test_getNPPPD_explicit_legacy_override():
+    np = get_dummy_gui()
+    mock_ppd = MagicMock(spec=cups.PPD)
+    np._cached_driverless_ppd = mock_ppd
+    np._cached_driverless_ppd_name = "driverless:ipp://test"
+    np.device = cupshelpers.Device("usb://test", **{"device-id": "MFG:HP;MDL:Test;", "device-make-and-model": "HP Test"})
+    np.device.driverless = False
+    np.founddownloadableppd = False
+
+    np.rbtnNPFoomatic = MagicMock()
+    np.rbtnNPFoomatic.get_active.return_value = True
+    np.installed_driver_files = []
+
+    legacy_ppd_str = "foomatic:HP/hp-designjet.ppd"
+    np.NPDrivers = {0: legacy_ppd_str}
+
+    mock_model = MagicMock()
+    mock_iter = MagicMock()
+    mock_model.get_path.return_value = (0,)
+
+    np.tvNPDrivers = MagicMock()
+    np.tvNPDrivers.get_selection.return_value.get_selected.return_value = (mock_model, mock_iter)
+
+    result = np.getNPPPD()
+
+    assert result == legacy_ppd_str
+    assert result is not mock_ppd
