@@ -145,7 +145,8 @@ class PPDsLoader(GObject.GObject):
             return
 
         conn._begin_operation (_("fetching PPDs"))
-        conn.getPPDs2 (reply_handler=self._cups_reply,
+        conn.getPPDs2 (exclude_schemes=["driverless", "driverless-fax"],
+                       reply_handler=self._cups_reply,
                        error_handler=self._cups_error)
 
     def _cups_reply (self, conn, result):
