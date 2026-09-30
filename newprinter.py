@@ -310,6 +310,7 @@ class NewPrinterGUI(GtkGUI):
         self.installable_options = False
         self.ppdsloader = None
         self.installed_driver_files = []
+        self.driverless_ppds = {}
         self.searchedfordriverpackages = False
         self.founddownloadabledrivers = False
         self.founddownloadableppd = False
@@ -996,6 +997,8 @@ class NewPrinterGUI(GtkGUI):
                 return
 
         ppds = ppdsloader.get_ppds ()
+        if hasattr (ppdsloader, 'get_driverless_ppds'):
+            self.driverless_ppds = ppdsloader.get_driverless_ppds () or {}
         if ppds:
             self.ppds = ppds
             if getattr(self, '_cached_driverless_ppd', None) and getattr(self, '_cached_driverless_ppd_name', None):
@@ -1827,60 +1830,25 @@ class NewPrinterGUI(GtkGUI):
                 not ppdname.startswith("driverless-fax:")):
             return
 
-        if self.ppds is None:
+        if self.ppds is None or not getattr(self, 'driverless_ppds', None):
             return
 
-        make = None
-        model = None
-        devid = None
-        make_and_model = None
+        entry = self.driverless_ppds.get(ppdname)
+        if not entry:
+            if ppdname.endswith('/'):
+                entry = self.driverless_ppds.get(ppdname[:-1])
+            elif not ppdname.endswith('/'):
+                entry = self.driverless_ppds.get(ppdname + '/')
 
-        if self.device:
-            if getattr(self.device, 'id_dict', None):
-                if not make and self.device.id_dict.get('MFG'):
-                    make = self.device.id_dict.get('MFG')
-                if not model and self.device.id_dict.get('MDL'):
-                    model = self.device.id_dict.get('MDL')
-            if not devid and getattr(self.device, 'id', None):
-                devid = self.device.id
-            if getattr(self.device, 'make_and_model', None):
-                if not make or not model:
-                    m, mdl = cupshelpers.ppds.ppdMakeModelSplit(self.device.make_and_model)
-                    make = make or m
-                    model = model or mdl
-                if not make_and_model:
-                    make_and_model = f"{self.device.make_and_model}, driverless"
+        if not entry:
+            return
 
-        make = make or "Generic"
-        model = model or "Driverless IPP"
-        if not make_and_model:
-            make_and_model = f"{make} {model}, driverless"
-        if not devid:
-            cmd_str = ""
-            if self.device and getattr(self.device, 'id_dict', None):
-                cmd = self.device.id_dict.get('CMD')
-                if isinstance(cmd, list):
-                    cmd_str = ','.join(cmd)
-                elif isinstance(cmd, str):
-                    cmd_str = cmd
-            if cmd_str:
-                devid = f"MFG:{make};MDL:{model};CMD:{cmd_str};"
-            else:
-                devid = f"MFG:{make};MDL:{model};"
-
-        entry = {
-            "ppd-make-and-model": [make_and_model],
-            "ppd-natural-language": ["en"],
-            "ppd-make": [make],
-            "ppd-device-id": [devid],
-            "ppd-type": ["pdf"],
-        }
         if hasattr(self.ppds, 'ppds'):
-            self.ppds.ppds[ppdname] = entry
+            self.ppds.ppds[ppdname] = entry.copy()
             self.ppds.makes = None
             self.ppds.ids = None
         elif isinstance(self.ppds, dict):
-            self.ppds[ppdname] = entry
+            self.ppds[ppdname] = entry.copy()
 
     def _installPrinterFromDeviceID (self, devid, page_nr, step):
         ppdname = None
