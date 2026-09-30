@@ -1804,8 +1804,9 @@ class NewPrinterGUI(GtkGUI):
     def _validateDriverlessPPD(self, ppdname):
         cached = getattr(self, '_cached_driverless_ppd', None)
         cached_name = getattr(self, '_cached_driverless_ppd_name', None)
-        if cached is not None and cached_name == ppdname:
-            return cached
+        if cached is not None and cached_name:
+            if cached_name == ppdname or cached_name.rstrip('/') == ppdname.rstrip('/'):
+                return cached
 
         self.cups._begin_operation(_("validating driverless PPD"))
         try:
@@ -1834,21 +1835,26 @@ class NewPrinterGUI(GtkGUI):
             return
 
         entry = self.driverless_ppds.get(ppdname)
+        alt_ppdname = None
         if not entry:
-            if ppdname.endswith('/'):
-                entry = self.driverless_ppds.get(ppdname[:-1])
-            elif not ppdname.endswith('/'):
-                entry = self.driverless_ppds.get(ppdname + '/')
+            alt_ppdname = ppdname[:-1] if ppdname.endswith('/') else ppdname + '/'
+            entry = self.driverless_ppds.get(alt_ppdname)
 
         if not entry:
             return
 
         if hasattr(self.ppds, 'ppds'):
             self.ppds.ppds[ppdname] = entry.copy()
+            if alt_ppdname:
+                self.ppds.ppds[alt_ppdname] = entry.copy()
             self.ppds.makes = None
+            self.ppds.lmakes = None
+            self.ppds.lmodels = None
             self.ppds.ids = None
         elif isinstance(self.ppds, dict):
             self.ppds[ppdname] = entry.copy()
+            if alt_ppdname:
+                self.ppds[alt_ppdname] = entry.copy()
 
     def _installPrinterFromDeviceID (self, devid, page_nr, step):
         ppdname = None
@@ -4405,41 +4411,46 @@ class NewPrinterGUI(GtkGUI):
             ppd = self.ppds.getInfoFromPPDName (ppdname)
             driver = _singleton (ppd["ppd-make-and-model"])
             driver = driver.replace(" (recommended)", "")
+            is_driverless = (isinstance(ppdname, str) and
+                             ppdname.startswith("driverless:") and
+                             not ppdname.startswith("driverless-fax:"))
 
-            try:
-                lpostfix = " [%s]" % _singleton (ppd["ppd-natural-language"])
-                driver += lpostfix
-            except KeyError:
-                pass
+            if not is_driverless:
+                try:
+                    lpostfix = " [%s]" % _singleton (ppd["ppd-natural-language"])
+                    driver += lpostfix
+                except KeyError:
+                    pass
 
-            duplicate = driver in driverlist
+            duplicate = (driver, is_driverless) in driverlist
 
             if (not (self.device and self.device.make_and_model) and
                 self.auto_driver == ppdname):
-                driverlist.append (driver)
+                driverlist.append ((driver, is_driverless))
                 NPDrivers.append (ppdname)
                 i += 1
-                iter = model.append ((driver +
-                                      _(" (Current)"),))
+                suffix = _(" (driverless, Current)") if is_driverless else _(" (Current)")
+                iter = model.append ((driver + suffix,))
                 path = model.get_path (iter)
                 self.tvNPDrivers.get_selection().select_path(path)
                 self.tvNPDrivers.scroll_to_cell(path, None, True, 0.5, 0.0)
             elif self.device and i == 0:
-                driverlist.append (driver)
+                driverlist.append ((driver, is_driverless))
                 NPDrivers.append (ppdname)
                 i += 1
-                iter = model.append ((driver +
-                                      _(" (recommended)"),))
+                suffix = _(" (driverless, recommended)") if is_driverless else _(" (recommended)")
+                iter = model.append ((driver + suffix,))
                 path = model.get_path (iter)
                 self.tvNPDrivers.get_selection().select_path(path)
                 self.tvNPDrivers.scroll_to_cell(path, None, True, 0.5, 0.0)
             else:
                 if duplicate:
                     continue
-                driverlist.append (driver)
+                driverlist.append ((driver, is_driverless))
                 NPDrivers.append (ppdname)
                 i += 1
-                model.append((driver, ))
+                suffix = _(" (driverless)") if is_driverless else ""
+                model.append((driver + suffix, ))
 
         self.NPDrivers = NPDrivers
         self.tvNPDrivers.columns_autosize()
