@@ -87,7 +87,7 @@ Build requirements:
   - automake
   - desktop-file-install
   - intltool
-  - xmlto
+  - scdoc
   - gcc
   - python3-setuptools
   - python3-build
