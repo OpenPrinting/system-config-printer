@@ -1826,6 +1826,43 @@ class NewPrinterGUI(GtkGUI):
         finally:
             self.cups._end_operation()
 
+    def _ensure_driverless_ppd_in_cache(self, ppdname, validated_ppd):
+        if not (isinstance(ppdname, str) and ppdname.startswith("driverless:")
+                and not ppdname.startswith("driverless-fax:")):
+            return
+
+        if not hasattr(self, 'driverless_ppds') or self.driverless_ppds is None:
+            self.driverless_ppds = {}
+
+        if ppdname in self.driverless_ppds:
+            return
+
+        target_norm = urllib.parse.unquote(ppdname).rstrip('/')
+        for k in self.driverless_ppds:
+            if urllib.parse.unquote(k).rstrip('/') == target_norm:
+                self.driverless_ppds[ppdname] = self.driverless_ppds[k].copy()
+                return
+
+        entry = {}
+        if validated_ppd is not None and hasattr(validated_ppd, 'findAttr'):
+            nickname = validated_ppd.findAttr("NickName")
+            manufacturer = validated_ppd.findAttr("Manufacturer")
+            if nickname and nickname.value:
+                mm = nickname.value
+                mfg = manufacturer.value if manufacturer and manufacturer.value else ""
+                if mfg and mm.lower().startswith(mfg.lower() + "(r)"):
+                    mm = mfg + mm[len(mfg)+3:]
+                elif mfg and mm.lower().startswith(mfg.lower() + " (r)"):
+                    mm = mfg + mm[len(mfg)+4:]
+                entry["ppd-make-and-model"] = mm
+            if manufacturer and manufacturer.value:
+                entry["ppd-make"] = manufacturer.value
+        if not entry.get("ppd-make-and-model"):
+            entry["ppd-make-and-model"] = ppdname
+        entry.setdefault("ppd-type", "pdf")
+        entry.setdefault("ppd-natural-language", "en")
+        self.driverless_ppds[ppdname] = entry
+
     def _add_validated_driverless_ppd_to_catalog(self, ppdname):
         if not (isinstance(ppdname, str) and ppdname.startswith("driverless:") and
                 not ppdname.startswith("driverless-fax:")):
@@ -1841,16 +1878,31 @@ class NewPrinterGUI(GtkGUI):
             entry = self.driverless_ppds.get(alt_ppdname)
 
         if not entry:
+            target_norm = urllib.parse.unquote(ppdname).rstrip('/')
+            for k, v in self.driverless_ppds.items():
+                if urllib.parse.unquote(k).rstrip('/') == target_norm:
+                    entry = v
+                    alt_ppdname = k
+                    break
+
+        if not entry:
+            cached_name = getattr(self, '_cached_driverless_ppd_name', None)
+            if cached_name and cached_name in self.driverless_ppds:
+                entry = self.driverless_ppds[cached_name]
+                alt_ppdname = cached_name
+
+        if not entry:
             return
 
         if hasattr(self.ppds, 'ppds'):
-            self.ppds.ppds[ppdname] = entry.copy()
-            if alt_ppdname:
-                self.ppds.ppds[alt_ppdname] = entry.copy()
-            self.ppds.makes = None
-            self.ppds.lmakes = None
-            self.ppds.lmodels = None
-            self.ppds.ids = None
+            if ppdname not in self.ppds.ppds or (alt_ppdname and alt_ppdname not in self.ppds.ppds):
+                self.ppds.ppds[ppdname] = entry.copy()
+                if alt_ppdname:
+                    self.ppds.ppds[alt_ppdname] = entry.copy()
+                self.ppds.makes = None
+                self.ppds.lmakes = None
+                self.ppds.lmodels = None
+                self.ppds.ids = None
         elif isinstance(self.ppds, dict):
             self.ppds[ppdname] = entry.copy()
             if alt_ppdname:
@@ -1882,6 +1934,7 @@ class NewPrinterGUI(GtkGUI):
                     self._cached_driverless_ppd = validated_ppd
                     self._cached_driverless_ppd_name = ppdname
                     status = "exact"
+                    self._ensure_driverless_ppd_in_cache(ppdname, validated_ppd)
                     self._add_validated_driverless_ppd_to_catalog(ppdname)
             elif self.dialog_mode == "download_driver":
                 ppdname = "download"
@@ -1922,10 +1975,53 @@ class NewPrinterGUI(GtkGUI):
                                              search_uri,
                                              self.device.make_and_model)
                 debugprint ("Suitable PPDs found: %s" % repr(fit))
+                fit_before_override = fit.copy()
+                matched_ppd = None
+                if not getattr(self.device, '_driverless_failed', False):
+                    cached_name = getattr(self, '_cached_driverless_ppd_name', None)
+                    target_ppd = ("driverless:%s" % search_uri) if search_uri else None
+                    if cached_name:
+                        self._add_validated_driverless_ppd_to_catalog(cached_name)
+                    if target_ppd and target_ppd != cached_name:
+                        self._add_validated_driverless_ppd_to_catalog(target_ppd)
+
+                    catalog = getattr(self.ppds, 'ppds', self.ppds) if self.ppds is not None else {}
+                    if cached_name and cached_name in catalog:
+                        matched_ppd = cached_name
+                    elif target_ppd and target_ppd in catalog:
+                        matched_ppd = target_ppd
+                    elif target_ppd:
+                        alt_target = target_ppd[:-1] if target_ppd.endswith('/') else target_ppd + '/'
+                        if alt_target in catalog:
+                            matched_ppd = alt_target
+                        else:
+                            target_norm = urllib.parse.unquote(target_ppd).rstrip('/')
+                            for k in catalog.keys():
+                                if isinstance(k, str) and k.startswith("driverless:") and not k.startswith("driverless-fax:"):
+                                    if urllib.parse.unquote(k).rstrip('/') == target_norm:
+                                        matched_ppd = k
+                                        break
+
+                    if matched_ppd:
+                        fit = {k: v for k, v in fit.items() if v != getattr(self.ppds, 'FIT_NONE', 'none')}
+                        fit[matched_ppd] = getattr(self.ppds, 'FIT_EXACT', 'exact')
+
+                candidate_ppds = list(fit.keys())
+                if matched_ppd and matched_ppd in candidate_ppds:
+                    candidate_ppds.remove(matched_ppd)
+                    candidate_ppds.insert(0, matched_ppd)
+
                 ppdnamelist = self.ppds.\
-                    orderPPDNamesByPreference (list(fit.keys ()),
+                    orderPPDNamesByPreference (candidate_ppds,
                                                self.installed_driver_files,
                                                devid=id_dict, fit=fit)
+                if matched_ppd and matched_ppd in ppdnamelist:
+                    ppdnamelist.remove(matched_ppd)
+                    ppdnamelist.insert(0, matched_ppd)
+
+                catalog = getattr(self.ppds, 'ppds', self.ppds) if self.ppds is not None else {}
+                cached_name = getattr(self, '_cached_driverless_ppd_name', None)
+
                 debugprint ("PPDs in priority order: %s" % repr(ppdnamelist))
                 if page_nr == self.PAGE_SELECT_INSTALL_METHOD and getattr(self.device, '_driverless_failed', False):
                     ppdnamelist = [p for p in ppdnamelist if not (isinstance(p, str) and p.startswith("driverless:"))]
@@ -1945,6 +2041,7 @@ class NewPrinterGUI(GtkGUI):
                             self._cached_driverless_ppd_name = ppdnamelist[0]
                             if page_nr != self.PAGE_SELECT_INSTALL_METHOD:
                                 self.device.driverless = True
+                            self._ensure_driverless_ppd_in_cache(ppdnamelist[0], validated_ppd)
                             self._add_validated_driverless_ppd_to_catalog(ppdnamelist[0])
                             break
 
@@ -4249,7 +4346,18 @@ class NewPrinterGUI(GtkGUI):
             recommended = (auto_make_norm and
                            cupshelpers.ppds.normalize (make) == auto_make_norm)
             if self.device and self.device.make_and_model and recommended:
-                text = make + _(" (recommended)")
+                if getattr(self, 'auto_driver', None) and self.auto_driver.startswith("driverless:"):
+                    clean_name = self.device.make_and_model
+                    mfg = self.device.id_dict.get("MFG", "")
+                    mdl = self.device.id_dict.get("MDL", "")
+                    if mfg and mdl:
+                        if mdl.lower().startswith(mfg.lower()) or mdl.lower().replace("(r)","").startswith(mfg.lower()):
+                            clean_name = mdl
+                        elif clean_name.lower().startswith(mfg.lower() + " " + mfg.lower()):
+                            clean_name = clean_name[len(mfg)+1:]
+                    text = clean_name + _(" (driverless, recommended)")
+                else:
+                    text = make + _(" (recommended)")
             else:
                 text = make
 
