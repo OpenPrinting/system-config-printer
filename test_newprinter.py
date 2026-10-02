@@ -1544,3 +1544,35 @@ def test_state_machine_case5_choose_different_driver_after_legacy_fallback():
     np._loadPPDsForDevice.assert_not_called()
     assert np.ppdsloader is None
     assert len(fill_make_called) > 0
+
+def test_ppdsloader_packagekit_private_bus_disables_exit_on_disconnect_and_falls_back(monkeypatch):
+    """Verify that PPDsLoader's PackageKit worker disables exit_on_disconnect on its private
+    D-Bus connection, transfers the bus to the main thread callback where it is closed, and
+    falls back to querying CUPS."""
+    import ppdsloader
+    import dbus
+    import threading
+    from gi.repository import GLib
+
+    loader = ppdsloader.PPDsLoader(device_id="MFG:Test;MDL:Printer;", device_uri="ipp://test/ipp/print")
+    loader._gpk_device_id = "MFG:Test;MDL:Printer;"
+    loader._query_cups = MagicMock()
+
+    mock_bus = MagicMock()
+    monkeypatch.setattr(dbus, "SessionBus", MagicMock(return_value=mock_bus))
+
+    mock_proxy = MagicMock()
+    mock_proxy.InstallPrinterDrivers.side_effect = dbus.exceptions.DBusException("AppArmor blocked")
+    monkeypatch.setattr(dbus, "Interface", MagicMock(return_value=mock_proxy))
+
+    idle_add_mock = MagicMock(side_effect=lambda func, *args: func(*args))
+    monkeypatch.setattr(threading, "Thread", lambda target, daemon=True: MagicMock(start=target))
+    monkeypatch.setattr(GLib, "idle_add", idle_add_mock)
+
+    loader._query_packagekit()
+
+    dbus.SessionBus.assert_called_once_with(private=True)
+    mock_bus.set_exit_on_disconnect.assert_called_once_with(False)
+    idle_add_mock.assert_called_once_with(loader._on_packagekit_done, False, mock_bus)
+    mock_bus.close.assert_called_once()
+    loader._query_cups.assert_called_once()
