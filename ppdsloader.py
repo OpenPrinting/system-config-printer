@@ -211,6 +211,7 @@ class PPDsLoader(GObject.GObject):
             success = False
             try:
                 bus = dbus.SessionBus(private=True)
+                bus.set_exit_on_disconnect(False)
                 obj = bus.get_object("org.freedesktop.PackageKit",
                                      "/org/freedesktop/PackageKit")
                 proxy = dbus.Interface(obj, "org.freedesktop.PackageKit.Modify")
@@ -222,13 +223,14 @@ class PPDsLoader(GObject.GObject):
             except Exception as e:
                 debugprint("Got PackageKit error in worker: %s" % repr(e))
             finally:
-                if bus is not None:
-                    bus.close()
-                GLib.idle_add(self._on_packagekit_done, success)
+                GLib.idle_add(self._on_packagekit_done, success, bus)
 
         threading.Thread(target=worker, daemon=True).start()
 
-    def _on_packagekit_done(self, success):
+    def _on_packagekit_done(self, success, bus=None):
+        if bus is not None:
+            bus.close()
+
         if self._destroyed:
             return False
 
