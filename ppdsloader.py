@@ -71,6 +71,7 @@ class PPDsLoader(GObject.GObject):
         self._installed_files = []
         self._conn = None
         self._ppds = None
+        self._driverless_ppds = {}
         self._exc = None
 
         self._ppdsmatch_result = None
@@ -122,6 +123,9 @@ class PPDsLoader(GObject.GObject):
     def get_ppds (self):
         return self._ppds
 
+    def get_driverless_ppds (self):
+        return self._driverless_ppds
+
     def get_ppdsmatch_result (self):
         return self._ppdsmatch_result
 
@@ -152,7 +156,17 @@ class PPDsLoader(GObject.GObject):
         if self._destroyed:
             return
 
-        ppds = cupshelpers.ppds.PPDs (result, language=self._language)
+        driverless_ppds = {}
+        normal_ppds = {}
+        if result:
+            for name, ppd in result.items ():
+                if name.startswith ("driverless:") or name.startswith ("driverless-fax:"):
+                    driverless_ppds[name] = ppd
+                else:
+                    normal_ppds[name] = ppd
+
+        self._driverless_ppds = driverless_ppds
+        ppds = cupshelpers.ppds.PPDs (normal_ppds, language=self._language)
         self._ppds = ppds
         self._need_requery_cups = False
         if self._device_id:
@@ -197,6 +211,7 @@ class PPDsLoader(GObject.GObject):
         conn.destroy ()
         self._conn = None
         self._ppds = None
+        self._driverless_ppds = {}
         self._exc = exc
 
         self.emit ('finished')
