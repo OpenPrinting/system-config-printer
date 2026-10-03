@@ -209,7 +209,7 @@ else
 systemd_CLEANFILES=
 endif
 
-if XMLTO
+if SCDOC
 man_MANS=					\
 	man/system-config-printer.1		\
 	man/system-config-printer-applet.1
@@ -300,12 +300,14 @@ EXTRA_DIST=\
 	test_PhysicalDevice.py \
 	$(appdata_in_files)
 
-if XMLTO
-EXTRA_DIST+=man/system-config-printer.xml
+if SCDOC
+EXTRA_DIST+=man/system-config-printer.1.scd \
+	    man/system-config-printer-applet.1.scd
 
-# The man pages are generated from DocBook XML.
-.stamp-man-pages-built: $(top_srcdir)/man/system-config-printer.xml
-	xmlto man -o man $<
+# The man pages are generated with scdoc.
+.stamp-man-pages-built: $(top_srcdir)/man/system-config-printer.1.scd $(top_srcdir)/man/system-config-printer-applet.1.scd
+	scdoc < man/system-config-printer.1.scd > man/system-config-printer.1
+	scdoc < man/system-config-printer-applet.1.scd > man/system-config-printer-applet.1
 	touch .stamp-man-pages-built
 
 $(man_MANS): .stamp-man-pages-built
