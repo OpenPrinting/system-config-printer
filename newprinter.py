@@ -725,18 +725,25 @@ class NewPrinterGUI(GtkGUI):
         self.emit ('destroy')
 
     def init(self, dialog_mode, device_uri=None, name=None, ppd=None,
-             devid="", host=None, encryption=None, parent=None, xid=0):
+             devid="", host=None, encryption=None, parent=None, xid=0,
+             description="", location="", is_shared=False,
+             discovered_device=None):
         self.parent = parent
         if not self.parent:
             self.NewPrinterWindow.set_focus_on_map (False)
 
         self.dialog_mode = dialog_mode
+        self.duplicate_driver_selection = False
         self._device_uri = device_uri
         self.orig_ppd = ppd
         self.devid = devid
+        self.discovered_device = discovered_device
         self._host = host
         self._encryption = encryption
         self._name = name
+        self._description = description
+        self._location = location
+        self._is_shared = is_shared
         if not host:
             self._host = cups.getServer ()
         if not encryption:
@@ -827,6 +834,8 @@ class NewPrinterGUI(GtkGUI):
         elif self.dialog_mode == "download_driver":
             self._initialiseDownloadDriverMode ()
             return True
+        elif self.dialog_mode == "duplicate":
+            self._initialiseDuplicateMode ()
 
         if xid == 0 and self.parent:
             self.NewPrinterWindow.set_transient_for (parent)
@@ -836,7 +845,7 @@ class NewPrinterGUI(GtkGUI):
         return True
 
     def _validInitParameters (self):
-        if self.dialog_mode in ['printer_with_uri', 'device', 'ppd']:
+        if self.dialog_mode in ['printer_with_uri', 'device', 'ppd', 'duplicate']:
             return self._device_uri is not None
         elif self.dialog_mode == 'download_driver':
             return self.devid != ""
@@ -865,6 +874,25 @@ class NewPrinterGUI(GtkGUI):
         self.NewPrinterWindow.set_title (_("Change Device URI"))
         self.ntbkNewPrinter.set_current_page (self.PAGE_SELECT_DEVICE)
         self.fillDeviceTab (self._device_uri)
+
+    def _initialiseDuplicateMode (self):
+        self._initialiseWidgetsForMode ("duplicate")
+        if getattr(self, 'discovered_device', None) is not None:
+            self.device = self.discovered_device
+            if "driverless" in self.device.info:
+                self.device.driverless = True
+        else:
+            self._initialiseDeviceFromURI ()
+        if self.orig_ppd:
+            self.ppd = self.orig_ppd
+            self.entNPDriver.set_text (
+                _get_driver_name_from_ppd (self.ppd, self.ppds))
+            self.entNPDriver.get_style_context().add_class ("readonly")
+
+        self.NewPrinterWindow.set_title (_("Duplicate Printer"))
+        self.rbtnChangePPDKeepSettings.set_active (True)
+        self._initialiseAutoVariables ()
+        self.ntbkNewPrinter.set_current_page (self.PAGE_DESCRIBE_PRINTER)
 
     def _initialisePrinterWithURIMode (self):
         self._initialiseWidgetsForMode ("printer")
@@ -914,17 +942,28 @@ class NewPrinterGUI(GtkGUI):
         self._initialiseAutoVariables ()
 
     def _initialiseWidgetsForMode (self, mode_name):
-        self.entNPName.set_text (self.makeNameUnique (mode_name))
+        if mode_name == "duplicate":
+            self.entNPName.set_text (self.makeNameUnique (self._name + "_copy"))
+            self.isSharedCbx.set_active (self._is_shared)
+            self.entNPLocation.set_text (self._location)
+            self.entNPDescription.set_text (self._description)
+            self.entNPDriver.set_text ('')
+            self.entSMBURI.set_text ('')
+            self.entSMBUsername.set_text ('')
+            self.entSMBPassword.set_text ('')
+        else:
+            self.entNPName.set_text (self.makeNameUnique (mode_name))
+            self.isSharedCbx.set_active (self.isShared)
+            for widget in [self.entNPLocation,
+                           self.entNPDescription, self.entNPDriver,
+                           self.entSMBURI, self.entSMBUsername,
+                           self.entSMBPassword]:
+                widget.set_text ('')
         self.entNPName.grab_focus ()
-        self.isSharedCbx.set_active(self.isShared)
-        for widget in [self.entNPLocation,
-                       self.entNPDescription, self.entNPDriver,
-                       self.entSMBURI, self.entSMBUsername,
-                       self.entSMBPassword]:
-            widget.set_text ('')
 
-    def _initialiseDeviceFromURI (self):
-        device_dict = { }
+    def _initialiseDeviceFromURI (self, device_dict=None):
+        if device_dict is None:
+            device_dict = { }
         self.device = cupshelpers.Device (self._device_uri, **device_dict)
 
     def _initialiseAutoVariables (self):
@@ -962,11 +1001,12 @@ class NewPrinterGUI(GtkGUI):
         This method is called when the PPDs loader has finished
         loading PPDs in preparation for the next screen the user will
         see, having clicked 'Forward'.  We are creating a new queue,
-        and dialog_mode is either "printer" or "printer_with_uri".
+        and dialog_mode is one of the printer creation modes.
         """
 
         self._getPPDs_reply (ppdsloader)
         if not self.ppds:
+            self._set_driver_ppd_loading(False)
             self.setNPButtons()
             return
 
@@ -981,6 +1021,7 @@ class NewPrinterGUI(GtkGUI):
             self.nextNPTab (step = 0)
         else:
             self.nextNPTab ()
+        self._set_driver_ppd_loading(False)
 
     # get PPDs
 
@@ -1061,6 +1102,12 @@ class NewPrinterGUI(GtkGUI):
     # Navigation buttons
 
     def on_NPCancel(self, widget, event=None):
+        if getattr(self, '_driver_ppd_loading', False):
+            if self.ppdsloader:
+                self.ppdsloader.destroy ()
+                self.ppdsloader = None
+            self._set_driver_ppd_loading(False)
+
         if self.fetchDevices_conn:
             self.fetchDevices_conn.destroy ()
             self.fetchDevices_conn = None
@@ -1092,19 +1139,86 @@ class NewPrinterGUI(GtkGUI):
         return True
 
     def on_btnNPBack_clicked(self, widget):
+        if getattr(self, '_driver_ppd_loading', False):
+            if self.ppdsloader:
+                self.ppdsloader.destroy ()
+                self.ppdsloader = None
+            self._set_driver_ppd_loading(False)
         self.nextNPTab(-1)
 
     def on_btnNPForward_clicked(self, widget):
         self.nextNPTab()
 
     def on_btnNPChooseDriver_clicked(self, widget):
-        self.device.driverless = False
+        self.duplicate_driver_selection = self.dialog_mode == "duplicate"
+        if not (self.duplicate_driver_selection and
+            getattr(self.device, 'driverless', False)):
+            self.device.driverless = False
         self.exactdrivermatch = False
         self.searchedfordriverpackages = True
+        self._set_driver_ppd_loading(True)
         self.rbtnNPFoomatic.set_active(True)
         self.on_rbtnNPFoomatic_toggled(self.rbtnNPFoomatic)
         self.ntbkNewPrinter.set_current_page(self.PAGE_SELECT_INSTALL_METHOD)
         self.nextNPTab(step=0)
+        if self.ppds is not None and self.ppdsloader is None:
+            self._set_driver_ppd_loading(False)
+
+    def _set_driver_ppd_loading(self, loading):
+        if loading:
+            if getattr(self, '_driver_ppd_loading', False):
+                return
+            if not self._ensure_driver_selection_spinner():
+                return
+            self._driver_ppd_loading = True
+            self._driver_selection_stack.set_visible_child_name("loading")
+            self._driver_selection_spinner.start ()
+            self.ntbkPPDSource.set_sensitive(False)
+        elif getattr(self, '_driver_ppd_loading', False):
+            self._driver_ppd_loading = False
+            self._driver_selection_spinner.stop ()
+            self._driver_selection_stack.set_visible_child_name("content")
+            self.ntbkPPDSource.set_sensitive(True)
+
+    def _ensure_driver_selection_spinner(self):
+        if getattr(self, '_driver_selection_stack', None) is not None:
+            return True
+
+        makes_view = getattr(self, 'tvNPMakes', None)
+        if makes_view is None:
+            return False
+        makes_scroll = makes_view.get_parent()
+        makes_box = makes_scroll.get_parent() if makes_scroll else None
+        if not isinstance(makes_scroll, Gtk.Widget) or \
+                not isinstance(makes_box, Gtk.Widget):
+            return False
+
+        stack = Gtk.Stack()
+        stack.set_transition_type(Gtk.StackTransitionType.CROSSFADE)
+        stack.set_homogeneous(True)
+        makes_box.remove(makes_scroll)
+        stack.add_named(makes_scroll, "content")
+
+        loading_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
+        loading_box.set_halign(Gtk.Align.CENTER)
+        loading_box.set_valign(Gtk.Align.CENTER)
+        loading_box.set_vexpand(True)
+        loading_box.set_hexpand(True)
+
+        spinner = VectorSpinner(size=48)
+        spinner.set_halign(Gtk.Align.CENTER)
+        label = Gtk.Label(label=_("Loading printer drivers..."))
+        label.set_halign(Gtk.Align.CENTER)
+        loading_box.pack_start(spinner, False, False, 0)
+        loading_box.pack_start(label, False, False, 0)
+        stack.add_named(loading_box, "loading")
+
+        makes_box.pack_start(stack, True, True, 0)
+        stack.show_all()
+        stack.set_visible_child_name("content")
+        self._driver_selection_stack = stack
+        self._driver_selection_spinner = spinner
+        return True
 
     def installdriverpackage (self, driver):
         install_info = self._getDriverInstallationInfo (driver)
@@ -1331,8 +1445,16 @@ class NewPrinterGUI(GtkGUI):
         debugprint ("Next clicked on page %d" % page_nr)
 
         keep_going = True
-        if self.dialog_mode == "printer" or self.dialog_mode == "printer_with_uri" or \
-              self.dialog_mode == "ppd" or self.dialog_mode == "download_driver":
+        duplicate_uses_original_ppd = (
+            self.dialog_mode == "duplicate" and
+            not getattr(self, 'duplicate_driver_selection', False) and
+            getattr(self, 'orig_ppd', None) is not None)
+        if (self.dialog_mode == "printer" or
+              self.dialog_mode == "printer_with_uri" or
+              self.dialog_mode == "ppd" or
+              self.dialog_mode == "download_driver" or
+              (self.dialog_mode == "duplicate" and
+               not duplicate_uses_original_ppd)):
             install_result = self._handlePrinterInstallationMode (step)
             if install_result == self.INSTALL_RESULT_OPS_PENDING:
                 # Do not continue if the installation process says so
@@ -1358,7 +1480,9 @@ class NewPrinterGUI(GtkGUI):
 
         debugprint ("Will fetch ppd? %d" % fetch_ppd)
         if fetch_ppd:
-            self.ppd = self.getNPPPD()
+            if not (self.dialog_mode == "duplicate" and
+                    not self.duplicate_driver_selection):
+                self.ppd = self.getNPPPD()
             self.installable_options = False
             if self.ppd is None:
                 if getattr(self.device, 'driverless', False):
@@ -1387,7 +1511,11 @@ class NewPrinterGUI(GtkGUI):
             if not self.installable_options:
                 if next_page_nr == self.PAGE_INSTALLABLE_OPTIONS:
                     # step over if empty
-                    next_page_nr = order[order.index(next_page_nr)+1]
+                    if (self.dialog_mode == "duplicate" and
+                            not getattr(self, 'duplicate_driver_selection', False)):
+                        next_page_nr = self.PAGE_DESCRIBE_PRINTER
+                    else:
+                        next_page_nr = order[order.index(next_page_nr)+1]
 
         # Step over empty Installable Options tab when moving backwards.
         if next_page_nr == self.PAGE_INSTALLABLE_OPTIONS and \
@@ -1428,11 +1556,12 @@ class NewPrinterGUI(GtkGUI):
             else:
                 name = 'printer'
 
-            name = self.makeNameUnique (name)
-            self.entNPName.set_text (name)
+            if self.dialog_mode != "duplicate":
+                name = self.makeNameUnique (name)
+                self.entNPName.set_text (name)
 
-            if descr:
-                self.entNPDescription.set_text (descr)
+                if descr:
+                    self.entNPDescription.set_text (descr)
 
             # Set the read-only driver field.
             driver_name = _get_driver_name_from_ppd(self.ppd, self.ppds)
@@ -1446,7 +1575,20 @@ class NewPrinterGUI(GtkGUI):
 
     def _getPagesOrderForDialogMode (self):
         order = []
-        if self.dialog_mode == "class":
+        if self.dialog_mode == "duplicate":
+            if getattr(self, 'duplicate_driver_selection', False):
+                order = [
+                    self.PAGE_SELECT_INSTALL_METHOD,
+                    self.PAGE_CHOOSE_DRIVER_FROM_DB,
+                    self.PAGE_INSTALLABLE_OPTIONS,
+                    self.PAGE_DESCRIBE_PRINTER
+                ]
+            else:
+                order = [
+                    self.PAGE_DESCRIBE_PRINTER,
+                    self.PAGE_INSTALLABLE_OPTIONS
+                ]
+        elif self.dialog_mode == "class":
             order = [
                 self.PAGE_DESCRIBE_PRINTER,
                 self.PAGE_CHOOSE_CLASS_MEMBERS,
@@ -2364,7 +2506,15 @@ class NewPrinterGUI(GtkGUI):
         if nr == self.PAGE_DESCRIBE_PRINTER:
             self.btnNPBack.show()
             if self.dialog_mode == "printer" or \
-                    self.dialog_mode == "printer_with_uri":
+                    self.dialog_mode == "printer_with_uri" or \
+                    (self.dialog_mode == "duplicate" and
+                     getattr(self, 'duplicate_driver_selection', False)):
+                self.btnNPForward.hide()
+                self.btnNPApply.show()
+                self.btnNPApply.set_sensitive(
+                    checkNPName(self.printers, self.entNPName.get_text()))
+            elif (self.dialog_mode == "duplicate" and
+                  not getattr(self, 'installable_options', False)):
                 self.btnNPForward.hide()
                 self.btnNPApply.show()
                 self.btnNPApply.set_sensitive(
@@ -2411,6 +2561,12 @@ class NewPrinterGUI(GtkGUI):
             if self.dialog_mode == "printer_with_uri" and \
                     self.exactdrivermatch:
                 self.btnNPBack.hide ()
+            elif (self.dialog_mode == "duplicate" and
+                not getattr(self, 'duplicate_driver_selection', False)):
+                self.btnNPForward.hide ()
+                self.btnNPApply.show ()
+                self.btnNPApply.set_sensitive(
+                    checkNPName(self.printers, self.entNPName.get_text()))
         if nr == self.PAGE_DOWNLOAD_DRIVER:
             accepted = self._is_driver_license_accepted()
             self.btnNPForward.set_sensitive(accepted)
@@ -4909,7 +5065,7 @@ class NewPrinterGUI(GtkGUI):
             self.printer_finder = None
             self.dec_spinner_task ()
 
-        if self.dialog_mode in ("class", "printer", "printer_with_uri"):
+        if self.dialog_mode in ("class", "printer", "printer_with_uri", "duplicate"):
             name = self.entNPName.get_text()
             location = self.entNPLocation.get_text()
             info = self.entNPDescription.get_text()
@@ -4934,7 +5090,8 @@ class NewPrinterGUI(GtkGUI):
                 self.show_IPP_Error(e, msg)
                 return
         elif self.dialog_mode == "printer" or \
-                self.dialog_mode == "printer_with_uri":
+                self.dialog_mode == "printer_with_uri" or \
+                self.dialog_mode == "duplicate":
             uri = None
             if self.device.uri:
                 uri = self.device.uri
@@ -4980,7 +5137,7 @@ class NewPrinterGUI(GtkGUI):
                 fatalException (1)
             self.cups._end_operation()
             ready (self.NewPrinterWindow)
-        if self.dialog_mode in ("class", "printer", "printer_with_uri"):
+        if self.dialog_mode in ("class", "printer", "printer_with_uri", "duplicate"):
             self.cups._begin_operation (_("modifying printer %s") % name)
             try:
                 cupshelpers.activateNewPrinter (self.cups, name)
@@ -5072,7 +5229,7 @@ class NewPrinterGUI(GtkGUI):
             self.nextNPTab(0);
 
         self.NewPrinterWindow.hide()
-        if self.dialog_mode in ["printer", "printer_with_uri", "class"]:
+        if self.dialog_mode in ["printer", "printer_with_uri", "duplicate", "class"]:
             self.emit ('printer-added', name)
         elif self.dialog_mode == "download_driver":
             self.emit ('driver-download-checked', self.installed_driver_files)
