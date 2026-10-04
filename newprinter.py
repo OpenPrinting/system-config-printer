@@ -721,6 +721,25 @@ class NewPrinterGUI(GtkGUI):
             name += "-" + str (suffix)
         return name
 
+    def _makeDuplicateNameUnique(self, name):
+        """Make a duplicate queue name from the existing queue name."""
+        name = name.replace (" ", "-")
+        name = name.replace ("/", "-")
+        name = name.replace ("#", "-")
+        match = re.search (r"-(\d+)$", name)
+        if match:
+            suffix = int (match.group (1)) + 1
+            name = name[:match.start ()]
+        else:
+            suffix = 1
+
+        while not checkNPName (self.printers, name + "-" + str (suffix)):
+            suffix += 1
+            if suffix == 100:
+                break
+
+        return name + "-" + str (suffix)
+
     def destroy (self):
         self.emit ('destroy')
 
@@ -889,8 +908,7 @@ class NewPrinterGUI(GtkGUI):
                 _get_driver_name_from_ppd (self.ppd, self.ppds))
             self.entNPDriver.get_style_context().add_class ("readonly")
 
-        base_name = self._getSuggestedPrinterName () or self._name
-        self.entNPName.set_text (self.makeNameUnique (base_name))
+        self.entNPName.set_text (self._makeDuplicateNameUnique (self._name))
 
         self.NewPrinterWindow.set_title (_("Duplicate Printer"))
         self.rbtnChangePPDKeepSettings.set_active (True)
