@@ -1665,36 +1665,90 @@ class GUI(GtkGUI):
                                               parent=self.PrintersWindow)
         return ret
 
+    def _get_discovered_device_for_uri(self, uri):
+        """Recover the normal Add Printer Device identity for a queue URI."""
+        try:
+            devices = cupshelpers.getDevices(self.cups)
+        except Exception:
+            return None
+
+        normalized_uri = newprinter._normalize_uri(uri).rstrip('/')
+        for device in devices.values():
+            if newprinter._normalize_uri(device.uri).rstrip('/') == normalized_uri:
+                return device
+        return None
+
     def on_duplicate_activate(self, *UNUSED):
         iconview = self.dests_iconview
         paths = iconview.get_selected_items ()
         model = self.dests_iconview.get_model ()
         iter = model.get_iter (paths[0])
         name = model.get_value (iter, 2)
-        self.entDuplicateName.set_text(name)
-        self.NewPrinterName.set_transient_for (self.PrintersWindow)
-        result = self.NewPrinterName.run()
-        self.NewPrinterName.hide()
 
-        if result == Gtk.ResponseType.CANCEL:
+        printer = self.printers.get(name)
+        if not printer:
             return
 
+        if printer.is_class:
+            self.entDuplicateName.set_text(name)
+            self.NewPrinterName.set_transient_for (self.PrintersWindow)
+            result = self.NewPrinterName.run()
+            self.NewPrinterName.hide()
+
+            if result == Gtk.ResponseType.CANCEL:
+                return
+
+            try:
+                self.propertiesDlg.load (name,
+                                         host=self.connect_server,
+                                         encryption=self.connect_encrypt,
+                                         parent=self.PrintersWindow)
+            except RuntimeError:
+                # Perhaps cupsGetPPD2 failed for a browsed printer
+                pass
+            except cups.IPPError as e:
+                (e, m) = e.args
+                show_IPP_Error (e, m, self.PrintersWindow)
+                self.populateList ()
+                return
+
+            self.duplicate_printer (self.entDuplicateName.get_text ())
+            self.monitor.update ()
+            return
+
+        # For normal printers, use the New Printer GUI in duplicate mode
+        ppd_filename = None
         try:
-            self.propertiesDlg.load (name,
-                                     host=self.connect_server,
-                                     encryption=self.connect_encrypt,
-                                     parent=self.PrintersWindow)
-        except RuntimeError:
-            # Perhaps cupsGetPPD2 failed for a browsed printer
-            pass
-        except cups.IPPError as e:
-            (e, m) = e.args
-            show_IPP_Error (e, m, self.PrintersWindow)
-            self.populateList ()
-            return
+            ppd_filename = self.cups.getPPD(name)
+            ppd_obj = cups.PPD(ppd_filename)
+        except (cups.IPPError, RuntimeError):
+            ppd_obj = None
+        finally:
+            if ppd_filename:
+                try:
+                    os.unlink(ppd_filename)
+                except OSError:
+                    pass
 
-        self.duplicate_printer (self.entDuplicateName.get_text ())
-        self.monitor.update ()
+        discovered_device = self._get_discovered_device_for_uri(
+            printer.device_uri)
+
+        busy (self.PrintersWindow)
+        self.desensitise_new_printer_widgets ()
+        if not self.newPrinterGUI.init("duplicate",
+                                       device_uri=printer.device_uri,
+                                       name=name,
+                                       ppd=ppd_obj,
+                                       host=self.connect_server,
+                                       encryption=self.connect_encrypt,
+                                       parent=self.PrintersWindow,
+                                       description=printer.info,
+                                       location=printer.location,
+                                       is_shared=printer.is_shared,
+                                       discovered_device=discovered_device):
+            self.sensitise_new_printer_widgets ()
+            self.monitor.update ()
+        ready (self.PrintersWindow)
 
     def on_entDuplicateName_changed(self, widget):
         # restrict
