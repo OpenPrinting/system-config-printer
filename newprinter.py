@@ -889,6 +889,9 @@ class NewPrinterGUI(GtkGUI):
                 _get_driver_name_from_ppd (self.ppd, self.ppds))
             self.entNPDriver.get_style_context().add_class ("readonly")
 
+        base_name = self._getSuggestedPrinterName () or self._name
+        self.entNPName.set_text (self.makeNameUnique (base_name))
+
         self.NewPrinterWindow.set_title (_("Duplicate Printer"))
         self.rbtnChangePPDKeepSettings.set_active (True)
         self._initialiseAutoVariables ()
@@ -943,7 +946,7 @@ class NewPrinterGUI(GtkGUI):
 
     def _initialiseWidgetsForMode (self, mode_name):
         if mode_name == "duplicate":
-            self.entNPName.set_text (self.makeNameUnique (self._name + "_copy"))
+            self.entNPName.set_text ('')
             self.isSharedCbx.set_active (self._is_shared)
             self.entNPLocation.set_text (self._location)
             self.entNPDescription.set_text (self._description)
@@ -970,6 +973,30 @@ class NewPrinterGUI(GtkGUI):
         self.auto_make = ""
         self.auto_model = ""
         self.auto_driver = None
+
+    def _getSuggestedPrinterName (self):
+        name = None
+        try:
+            if (self.device.id and
+                not self.device.type in ("socket", "lpd", "ipp",
+                                          "http", "https", "bluetooth")):
+                name = "%s %s" % (self.device.id_dict["MFG"],
+                                   self.device.id_dict["MDL"])
+        except:
+            nonfatalException ()
+
+        try:
+            if name is None and isinstance (self.ppd, cups.PPD):
+                mname = self.ppd.findAttr ("modelName").value
+                make, model = cupshelpers.ppds.ppdMakeModelSplit (mname)
+                if make and model:
+                    name = "%s %s" % (make, model)
+                elif make or model:
+                    name = "%s%s" % (make, model)
+        except:
+            nonfatalException ()
+
+        return name
 
     def change_ppd_got_devs (self, conn, result):
         self.fetchDevices_conn._end_operation ()
@@ -1528,28 +1555,8 @@ class NewPrinterGUI(GtkGUI):
 
         if step >= 0 and next_page_nr == self.PAGE_DESCRIBE_PRINTER: # About to choose a name.
             # Suggest an appropriate name.
-            name = None
             descr = None
-
-            try:
-                if (self.device.id and
-                    not self.device.type in ("socket", "lpd", "ipp",
-                                             "http", "https", "bluetooth")):
-                    name = "%s %s" % (self.device.id_dict["MFG"],
-                                      self.device.id_dict["MDL"])
-            except:
-                nonfatalException ()
-
-            try:
-                if name is None and isinstance (self.ppd, cups.PPD):
-                    mname = self.ppd.findAttr ("modelName").value
-                    make, model = cupshelpers.ppds.ppdMakeModelSplit (mname)
-                    if make and model:
-                        name = "%s %s" % (make, model)
-                    elif make or model:
-                        name = "%s%s" % (make, model)
-            except:
-                nonfatalException ()
+            name = self._getSuggestedPrinterName ()
 
             if name:
                 descr = name

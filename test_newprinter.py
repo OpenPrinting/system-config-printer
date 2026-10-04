@@ -2626,6 +2626,31 @@ def test_duplicate_mode_page_order():
     ]
 
 
+def test_make_name_unique_uses_incrementing_collision_suffixes():
+    np = get_dummy_gui()
+    np.printers = {}
+    assert np.makeNameUnique("printer") == "printer"
+
+    existing = type("ExistingPrinter", (), {
+        "discovered": False,
+        "name": "printer",
+    })()
+    np.printers = {"printer": existing}
+    assert np.makeNameUnique("printer") == "printer-2"
+
+    np.printers["printer-1"] = type("ExistingPrinter", (), {
+        "discovered": False,
+        "name": "printer-1",
+    })()
+    assert np.makeNameUnique("printer") == "printer-2"
+
+    np.printers["printer-2"] = type("ExistingPrinter", (), {
+        "discovered": False,
+        "name": "printer-2",
+    })()
+    assert np.makeNameUnique("printer") == "printer-3"
+
+
 def test_duplicate_initialisation_preserves_metadata_and_original_ppd(monkeypatch):
     monkeypatch.setattr(cups, "PPD", MockCupsPPD)
     np = get_dummy_gui()
@@ -2635,7 +2660,7 @@ def test_duplicate_initialisation_preserves_metadata_and_original_ppd(monkeypatc
     np._location = "Reception"
     np._is_shared = True
     np.orig_ppd = MockCupsPPD({"NickName": "Xerox B235 MFP"})
-    np.makeNameUnique = MagicMock(return_value="Office-Printer_copy")
+    np.makeNameUnique = MagicMock(return_value="Office-Printer")
     np.entNPName = MagicMock()
     np.entNPLocation = MagicMock()
     np.entNPDescription = MagicMock()
@@ -2653,11 +2678,12 @@ def test_duplicate_initialisation_preserves_metadata_and_original_ppd(monkeypatc
     assert np.ppd is np.orig_ppd
     assert np.device.id == ""
     assert np.device.make_and_model == ""
-    np.entNPName.set_text.assert_called_with("Office-Printer_copy")
+    np.entNPName.set_text.assert_called_with("Office-Printer")
     np.entNPDescription.set_text.assert_called_with("Original description")
     np.entNPLocation.set_text.assert_called_with("Reception")
     np.isSharedCbx.set_active.assert_called_with(True)
     np.entNPDriver.set_text.assert_called_with("Xerox B235 MFP")
+    np.makeNameUnique.assert_called_with("Office Printer")
     np.ntbkNewPrinter.set_current_page.assert_called_with(
         np.PAGE_DESCRIBE_PRINTER)
 
@@ -2677,7 +2703,7 @@ def test_duplicate_initialisation_reuses_discovered_device_identity(monkeypatch)
            "CMD:PCLM,PS,PWGRaster;",
               "device-info": "Xerox printer (driverless)",
            "device-make-and-model": "Xerox Xerox(R) B235 MFP"})
-    np.makeNameUnique = MagicMock(return_value="Office-Printer_copy")
+    np.makeNameUnique = MagicMock(return_value="Office-Printer")
     np.entNPName = MagicMock()
     np.entNPLocation = MagicMock()
     np.entNPDescription = MagicMock()
@@ -2699,6 +2725,39 @@ def test_duplicate_initialisation_reuses_discovered_device_identity(monkeypatch)
     assert np.device.id_dict["CMD"] == ["PCLM", "PS", "PWGRaster"]
 
 
+def test_duplicate_uses_stable_device_name_for_suffixed_source(monkeypatch):
+    monkeypatch.setattr(cups, "PPD", MockCupsPPD)
+    np = get_dummy_gui()
+    np._name = "Xerox-Xerox(R)-B235-MFP-2"
+    np._device_uri = "ipps://Xerox%20B235._ipps._tcp.local"
+    np._description = "Original description"
+    np._location = "Reception"
+    np._is_shared = True
+    np.orig_ppd = MockCupsPPD({"NickName": "Xerox B235 MFP"})
+    np.discovered_device = cupshelpers.Device(
+        np._device_uri,
+        **{"device-id": "MFG:Xerox;MDL:Xerox(R) B235 MFP;",
+           "device-make-and-model": "Xerox Xerox(R) B235 MFP"})
+    np.makeNameUnique = MagicMock(return_value="Xerox-Xerox(R)-B235-MFP-4")
+    np.entNPName = MagicMock()
+    np.entNPLocation = MagicMock()
+    np.entNPDescription = MagicMock()
+    np.entNPDriver = MagicMock()
+    np.entSMBURI = MagicMock()
+    np.entSMBUsername = MagicMock()
+    np.entSMBPassword = MagicMock()
+    np.isSharedCbx = MagicMock()
+    np.rbtnChangePPDKeepSettings = MagicMock()
+    np.NewPrinterWindow = MagicMock()
+    np.ntbkNewPrinter = MagicMock()
+
+    np._initialiseDuplicateMode()
+
+    np.makeNameUnique.assert_called_with("Xerox Xerox(R) B235 MFP")
+    np.entNPName.set_text.assert_called_with(
+        "Xerox-Xerox(R)-B235-MFP-4")
+
+
 def test_duplicate_initialisation_falls_back_without_fake_device_identity(monkeypatch):
     monkeypatch.setattr(cups, "PPD", MockCupsPPD)
     np = get_dummy_gui()
@@ -2710,7 +2769,7 @@ def test_duplicate_initialisation_falls_back_without_fake_device_identity(monkey
     np.orig_ppd = MockCupsPPD({"NickName": "Original Driver"})
     np.device_id = ""
     np.device_make_and_model = ""
-    np.makeNameUnique = MagicMock(return_value="Unavailable-Printer_copy")
+    np.makeNameUnique = MagicMock(return_value="Unavailable-Printer")
     np.entNPName = MagicMock()
     np.entNPLocation = MagicMock()
     np.entNPDescription = MagicMock()
@@ -2743,7 +2802,7 @@ def test_duplicate_forward_uses_original_ppd_without_loading_or_matching():
     np.btnNPBack = MagicMock()
     np.entNPName = MagicMock()
     np.entNPDriver = MagicMock()
-    np.entNPName.get_text.return_value = "Xerox_copy"
+    np.entNPName.get_text.return_value = "Xerox"
     np.printers = {}
     np.installable_options = False
     np.fillNPInstallableOptions = MagicMock(
