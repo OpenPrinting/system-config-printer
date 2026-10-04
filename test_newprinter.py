@@ -2657,6 +2657,13 @@ def test_make_name_unique_uses_incrementing_collision_suffixes():
 
 
 @pytest.mark.parametrize("source_name,existing_names,expected_name", [
+    ("Printer", ["Printer"], "Printer-1"),
+    ("Printer", ["Printer", "Printer-1", "Printer-2"], "Printer-3"),
+    ("Printer-2", ["Printer-2"], "Printer-3"),
+    ("Printer-2", ["Printer-2", "Printer-3"], "Printer-4"),
+    ("Printer2", ["Printer2"], "Printer2-1"),
+    ("Printer123", ["Printer123"], "Printer123-1"),
+    ("Printer-2024-A", ["Printer-2024-A"], "Printer-2024-A-1"),
     ("Boomaga", ["Boomaga"], "Boomaga-1"),
     ("Boomaga", ["Boomaga", "Boomaga-1"], "Boomaga-2"),
     ("Boomaga", ["Boomaga", "Boomaga-1", "Boomaga-2"], "Boomaga-3"),
