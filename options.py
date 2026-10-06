@@ -63,6 +63,11 @@ class IPPResolution(tuple):
                                                    self.UNITS_DEFAULT))
 
 def OptionWidget(name, v, s, on_change):
+    if v is None:
+        # A queue default that is present but unset arrives with the IPP
+        # "no-value" tag, which pycups returns as None.  Treat it as empty so
+        # the conversions below take their existing unconvertible-value path.
+        v = ""
     if isinstance(v, list):
         # XXX
         if isinstance(s, list):
