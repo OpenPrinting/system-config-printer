@@ -1968,30 +1968,76 @@ class NewPrinterGUI(GtkGUI):
         self.ppdsloader = p
         p.connect ('finished',self.on_ppdsloader_finished_next)
         p.run ()
-    def _validateDriverlessPPD(self, ppdname):
-        cached = getattr(self, '_cached_driverless_ppd', None)
-        cached_name = getattr(self, '_cached_driverless_ppd_name', None)
-        if cached is not None and cached_name:
-            if cached_name == ppdname or cached_name.rstrip('/') == ppdname.rstrip('/'):
-                return cached
+    def _validateDriverlessPPD_async(self, ppdname, page_nr=None, step=None, on_done=None):
+        self._driverless_val_token = getattr(self, '_driverless_val_token', 0) + 1
+        token = self._driverless_val_token
+        self._show_searching_spinner(_("Searching for drivers"))
 
-        self.cups._begin_operation(_("validating driverless PPD"))
-        try:
-            f = self.cups.getServerPPD(ppdname)
+        host = getattr(self, '_host', None)
+        encryption = getattr(self, '_encryption', None)
+
+        def worker():
+            validated_ppd = None
             try:
-                ppd = cups.PPD(f)
-                return ppd
-            finally:
-                try:
-                    os.unlink(f)
-                except OSError:
-                    pass
-        except (RuntimeError, cups.IPPError):
-            nonfatalException()
-            debugprint("Driverless PPD validation failed for %s" % ppdname)
-            return None
-        finally:
-            self.cups._end_operation()
+                conn_kwargs = {}
+                if host:
+                    conn_kwargs['host'] = host
+                if encryption is not None:
+                    conn_kwargs['encryption'] = encryption
+                conn = cups.Connection(**conn_kwargs)
+
+                f = conn.getServerPPD(ppdname)
+                if f:
+                    try:
+                        validated_ppd = cups.PPD(f)
+                    finally:
+                        try:
+                            os.unlink(f)
+                        except OSError:
+                            pass
+            except (RuntimeError, cups.IPPError) as e:
+                nonfatalException()
+                debugprint("Driverless PPD async validation failed for %s: %s" % (ppdname, e))
+                validated_ppd = None
+
+            GLib.idle_add(self._on_driverless_validation_done, token, ppdname, validated_ppd, page_nr, step, on_done)
+
+        thread = threading.Thread(target=worker, daemon=True)
+        thread.start()
+
+    def _on_driverless_validation_done(self, token, ppdname, validated_ppd, page_nr, step, on_done=None):
+        if getattr(self, '_destroyed', False) or getattr(self, '_driverless_val_token', None) != token:
+            debugprint("Discarding stale driverless validation result for token %s" % token)
+            return False
+
+        if validated_ppd is None:
+            debugprint("Driverless PPD validation failed; abandoning driverless mode completely")
+            self.device.driverless = False
+            self.device._driverless_failed = True
+            self.searchedfordriverpackages = True
+            self.exactdrivermatch = False
+        else:
+            self._cached_driverless_ppd = validated_ppd
+            self._cached_driverless_ppd_name = ppdname
+            if page_nr != self.PAGE_SELECT_INSTALL_METHOD:
+                self.device.driverless = True
+            self._ensure_driverless_ppd_in_cache(ppdname, validated_ppd)
+            self._add_validated_driverless_ppd_to_catalog(ppdname)
+
+        if on_done:
+            on_done(validated_ppd)
+        else:
+            self._hide_searching_spinner()
+            debugprint("Driverless PPD validation finished this time; try nextNPTab again...")
+            self.nextnptab_rerun = True
+            if self.ntbkNewPrinter.get_current_page () in (self.PAGE_DESCRIBE_PRINTER,
+                                                           self.PAGE_SELECT_INSTALL_METHOD):
+                self.ntbkNewPrinter.set_current_page (self.PAGE_SELECT_INSTALL_METHOD)
+                self.nextNPTab (step = 0)
+            else:
+                self.nextNPTab (step = step if step is not None else 1)
+        return False
+
 
     def _ensure_driverless_ppd_in_cache(self, ppdname, validated_ppd):
         if not (isinstance(ppdname, str) and ppdname.startswith("driverless:")
@@ -2086,23 +2132,17 @@ class NewPrinterGUI(GtkGUI):
 
         try:
             if getattr(self.device, 'driverless', False):
-                ppdname = "driverless:%s" % self.device.uri
-                validated_ppd = self._validateDriverlessPPD(ppdname)
-                if validated_ppd is None:
-                    debugprint("Driverless PPD validation failed; abandoning driverless mode completely")
-                    self.device.driverless = False
-                    self.device._driverless_failed = True
-                    self.searchedfordriverpackages = True
-                    self.exactdrivermatch = False
-                    ppdname = None
-                    status = None
-                    self.id_matched_ppdnames = []
+                cached_name = getattr(self, '_cached_driverless_ppd_name', None)
+                if cached_name and cached_name.startswith("driverless:"):
+                    ppdname = cached_name
                 else:
-                    self._cached_driverless_ppd = validated_ppd
-                    self._cached_driverless_ppd_name = ppdname
+                    ppdname = "driverless:%s" % self.device.uri
+                cached = getattr(self, '_cached_driverless_ppd', None)
+                if cached_name == ppdname and cached is not None:
                     status = "exact"
-                    self._ensure_driverless_ppd_in_cache(ppdname, validated_ppd)
-                    self._add_validated_driverless_ppd_to_catalog(ppdname)
+                else:
+                    self._validateDriverlessPPD_async(ppdname, page_nr, step)
+                    return self.INSTALL_RESULT_OPS_PENDING
             elif self.dialog_mode == "download_driver":
                 ppdname = "download"
                 status = "generic"
@@ -2190,27 +2230,17 @@ class NewPrinterGUI(GtkGUI):
                 cached_name = getattr(self, '_cached_driverless_ppd_name', None)
 
                 debugprint ("PPDs in priority order: %s" % repr(ppdnamelist))
-                if page_nr == self.PAGE_SELECT_INSTALL_METHOD and getattr(self.device, '_driverless_failed', False):
+                if getattr(self.device, '_driverless_failed', False):
                     ppdnamelist = [p for p in ppdnamelist if not (isinstance(p, str) and p.startswith("driverless:"))]
                 else:
                     while ppdnamelist and isinstance(ppdnamelist[0], str) and ppdnamelist[0].startswith("driverless:"):
-                        validated_ppd = self._validateDriverlessPPD(ppdnamelist[0])
-                        if validated_ppd is None:
-                            debugprint("Driverless PPD validation failed; abandoning driverless mode completely")
-                            self.device.driverless = False
-                            self.device._driverless_failed = True
-                            self.searchedfordriverpackages = True
-                            self.exactdrivermatch = False
-                            ppdnamelist = [p for p in ppdnamelist if not (isinstance(p, str) and p.startswith("driverless:"))]
+                        # If we have a cached one, we just use it (the caching logic earlier put it in the catalog)
+                        # but if it's not in the catalog, it means it's not validated yet.
+                        cached = getattr(self, '_cached_driverless_ppd', None)
+                        if ppdnamelist[0] == cached_name and cached is not None:
                             break
-                        else:
-                            self._cached_driverless_ppd = validated_ppd
-                            self._cached_driverless_ppd_name = ppdnamelist[0]
-                            if page_nr != self.PAGE_SELECT_INSTALL_METHOD:
-                                self.device.driverless = True
-                            self._ensure_driverless_ppd_in_cache(ppdnamelist[0], validated_ppd)
-                            self._add_validated_driverless_ppd_to_catalog(ppdnamelist[0])
-                            break
+                        self._validateDriverlessPPD_async(ppdnamelist[0], page_nr, step)
+                        return self.INSTALL_RESULT_OPS_PENDING
 
                 self.id_matched_ppdnames = ppdnamelist
                 if ppdnamelist:
