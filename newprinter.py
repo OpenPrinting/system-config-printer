@@ -1978,6 +1978,14 @@ class NewPrinterGUI(GtkGUI):
         self.cups._begin_operation(_("validating driverless PPD"))
         try:
             f = self.cups.getServerPPD(ppdname)
+
+            if getattr(self, 'device', None) is None:
+                try:
+                    os.unlink(f)
+                except OSError:
+                    pass
+                return None
+
             try:
                 ppd = cups.PPD(f)
                 return ppd
@@ -2088,6 +2096,10 @@ class NewPrinterGUI(GtkGUI):
             if getattr(self.device, 'driverless', False):
                 ppdname = "driverless:%s" % self.device.uri
                 validated_ppd = self._validateDriverlessPPD(ppdname)
+
+                if getattr(self, 'device', None) is None:
+                    return
+
                 if validated_ppd is None:
                     debugprint("Driverless PPD validation failed; abandoning driverless mode completely")
                     self.device.driverless = False
@@ -2195,6 +2207,10 @@ class NewPrinterGUI(GtkGUI):
                 else:
                     while ppdnamelist and isinstance(ppdnamelist[0], str) and ppdnamelist[0].startswith("driverless:"):
                         validated_ppd = self._validateDriverlessPPD(ppdnamelist[0])
+
+                        if getattr(self, 'device', None) is None:
+                            return
+
                         if validated_ppd is None:
                             debugprint("Driverless PPD validation failed; abandoning driverless mode completely")
                             self.device.driverless = False

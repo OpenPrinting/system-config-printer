@@ -18,6 +18,7 @@
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 import threading
+import queue
 import config
 import cups
 import cupspk
@@ -231,6 +232,71 @@ class Connection:
     def _make_binding (self, fname, fn):
         return lambda *args, **kwds: self._authloop (fname, fn, *args, **kwds)
 
+    def _execute_in_worker(self, fname, *args, **kwds):
+        if not hasattr(self, '_worker_queue'):
+            self._worker_queue = queue.Queue()
+            self._worker_thread = threading.Thread(target=self._worker_loop, daemon=True)
+            self._worker_thread.start()
+
+        box = []
+        self._worker_queue.put((fname, args, kwds, box))
+
+        loop = GLib.MainLoop()
+        source_id = [None]
+        def poll():
+            if box:
+                if loop.is_running():
+                    loop.quit()
+                source_id[0] = None
+                return False
+            return True
+
+        source_id[0] = GLib.timeout_add(20, poll)
+        loop.run()
+        if source_id[0] is not None:
+            GLib.source_remove(source_id[0])
+
+        ok, res, exc = box[0]
+        if not ok:
+            raise exc
+        return res
+
+    def _worker_loop(self):
+        def worker_password_cb(prompt):
+            debugprint("Got worker password callback")
+            if getattr(self, '_cancel', False) or getattr(self, '_auth_called', False):
+                return ''
+            self._auth_called = True
+            self._prompt = prompt
+            return getattr(self, '_use_password', '')
+
+        cups.setPasswordCB(worker_password_cb)
+        conn = None
+
+        while True:
+            item = self._worker_queue.get()
+            if item is None:
+                break
+            fname, args, kwds, box = item
+
+            try:
+                if conn is None:
+                    conn = cups.Connection(host=self._server,
+                                           port=self._port,
+                                           encryption=self._encryption)
+
+                cups.setUser(self._use_user)
+                fn = getattr(conn, fname)
+                res = fn(*args, **kwds)
+
+                box.append((True, res, None))
+            except Exception as e:
+                box.append((False, None, e))
+            finally:
+                self._worker_queue.task_done()
+
+        cups.setPasswordCB(None)
+
     def _authloop (self, fname, fn, *args, **kwds):
         self._passes = 0
         # remove signature if dbus is not being used and signature is provided
@@ -251,7 +317,10 @@ class Connection:
 
                 cups.setUser (self._use_user)
 
-                result = fn.__call__ (*args, **kwds)
+                if fname == 'getServerPPD':
+                    result = self._execute_in_worker(fname, *args, **kwds)
+                else:
+                    result = fn.__call__ (*args, **kwds)
 
                 if fname == 'adminGetServerSettings':
                     # Special case for a rubbish bit of API.

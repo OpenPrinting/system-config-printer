@@ -2869,3 +2869,77 @@ def test_duplicate_state_two_uses_existing_ppd_loader():
 
     np._loadPPDsForDevice.assert_called_once()
     assert result == newprinter.NewPrinterGUI.INSTALL_RESULT_OPS_PENDING
+
+def test_regression_getServerPPD_cancellation_real_v2_race(monkeypatch):
+    """
+    Test the V2 worker + nested GLib + on_NPCancel() production path.
+    Verifies that real cancellation respects the worker thread lifecycle
+    and does not trigger AttributeError when the late worker completes.
+    """
+    import authconn
+    import threading
+    from gi.repository import GLib
+
+    np = get_dummy_gui()
+    np.device = cupshelpers.Device(
+        "ipp://test",
+        **{
+            "device-info": "driverless",
+            "device-id": "MFG:Test;MDL:Printer;",
+            "device-make-and-model": "Test Printer",
+        }
+    )
+    np.device.driverless = True
+
+    np.NewPrinterWindow = MagicMock()
+    np.emit = MagicMock()
+
+    np.cups = authconn.Connection(host='127.0.0.1', port=631, encryption=cups.HTTP_ENCRYPT_NEVER)
+    np.cups._begin_operation = MagicMock()
+    np.cups._end_operation = MagicMock()
+
+    worker_blocked = threading.Event()
+    cancel_completed = threading.Event()
+
+    main_thread_id = threading.get_ident()
+    worker_thread_id = [None]
+
+    class SlowSpyConnection:
+        def __init__(self, *args, **kwargs):
+            pass
+
+        def getServerPPD(self, ppdname):
+            worker_thread_id[0] = threading.get_ident()
+            worker_blocked.set()
+
+            if not cancel_completed.wait(timeout=5.0):
+                raise RuntimeError("Test timeout: GLib callback did not complete cancellation")
+
+            return "/tmp/fake_ppd"
+
+        def setClientName(self, name):
+            pass
+
+    monkeypatch.setattr(cups, "Connection", SlowSpyConnection)
+    monkeypatch.setattr(cups, "PPD", MagicMock())
+
+    def fire_cancel():
+        if not worker_blocked.is_set():
+            return True
+
+        real_cancel = newprinter.NewPrinterGUI.on_NPCancel.__get__(np)
+        real_cancel(None)
+
+        cancel_completed.set()
+        return False
+
+    GLib.idle_add(fire_cancel)
+
+    np._validateDriverlessPPD = newprinter.NewPrinterGUI._validateDriverlessPPD.__get__(np)
+    real_install = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np)
+
+    real_install(None, 0, 1)
+
+    assert worker_thread_id[0] is not None, "Worker never executed"
+    assert worker_thread_id[0] != main_thread_id, "Worker executed on the main thread"
+    assert np.device is None, "on_NPCancel failed to clear device state"
