@@ -18,6 +18,9 @@
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 import threading
+import queue
+import time
+
 import config
 import cups
 import cupspk
@@ -33,6 +36,11 @@ from debug import *
 import gettext
 gettext.install(domain=config.PACKAGE, localedir=config.localedir)
 N_ = lambda x: x
+class WorkerTimeoutError(RuntimeError):
+    pass
+
+class WorkerUnavailableError(RuntimeError):
+    pass
 
 cups.require("1.9.60")
 class AuthDialog(Gtk.Dialog):
@@ -231,6 +239,128 @@ class Connection:
     def _make_binding (self, fname, fn):
         return lambda *args, **kwds: self._authloop (fname, fn, *args, **kwds)
 
+    def _execute_in_worker(self, fname, *args, **kwds):
+        timeout_val = kwds.pop('_timeout', 30.0)
+
+        if not hasattr(self, '_worker_queue'):
+            self._worker_lock = threading.Lock()
+            self._worker_state = 'IDLE'
+            self._worker_queue = queue.Queue()
+            self._worker_thread = threading.Thread(target=self._worker_loop, daemon=True)
+            self._worker_thread.start()
+
+        with self._worker_lock:
+            if getattr(self, '_worker_state', 'IDLE') != 'IDLE':
+                raise WorkerUnavailableError("CUPS worker is unavailable or busy")
+            self._worker_state = 'BUSY'
+
+        box = []
+        req_state = {'completed': False, 'timed_out': False}
+        self._worker_queue.put((fname, args, kwds, box, req_state))
+
+        loop = GLib.MainLoop()
+        source_id = [None]
+        start_time = time.monotonic()
+
+        def poll():
+            with self._worker_lock:
+                is_completed = req_state['completed']
+
+            if is_completed:
+                if loop.is_running():
+                    loop.quit()
+                source_id[0] = None
+                return False
+
+            if time.monotonic() - start_time > timeout_val:
+                with self._worker_lock:
+                    if req_state['completed']:
+                        if loop.is_running():
+                            loop.quit()
+                        source_id[0] = None
+                        return False
+
+                    self._worker_state = 'UNAVAILABLE'
+                    req_state['timed_out'] = True
+
+                if loop.is_running():
+                    loop.quit()
+                source_id[0] = None
+                return False
+            return True
+
+        source_id[0] = GLib.timeout_add(20, poll)
+
+        try:
+            loop.run()
+        finally:
+            if source_id[0] is not None:
+                GLib.source_remove(source_id[0])
+                source_id[0] = None
+
+        if req_state['timed_out']:
+            raise WorkerTimeoutError("CUPS worker timeout")
+
+        ok, res, exc = box[0]
+        if not ok:
+            raise exc
+        return res
+
+    def _worker_loop(self):
+        def worker_password_cb(prompt):
+            debugprint("Got worker password callback")
+            if getattr(self, '_cancel', False) or getattr(self, '_auth_called', False):
+                return ''
+            self._auth_called = True
+            self._prompt = prompt
+            return getattr(self, '_use_password', '')
+
+        cups.setPasswordCB(worker_password_cb)
+        conn = None
+
+        while True:
+            item = self._worker_queue.get()
+            if item is None:
+                break
+            fname, args, kwds, box, req_state = item
+
+            try:
+                if conn is None:
+                    conn = cups.Connection(host=self._server,
+                                           port=self._port,
+                                           encryption=self._encryption)
+
+                cups.setUser(self._use_user)
+                fn = getattr(conn, fname)
+                res = fn(*args, **kwds)
+
+                res_tuple = (True, res, None)
+            except Exception as e:
+                res_tuple = (False, None, e)
+            finally:
+                with self._worker_lock:
+                    if req_state['timed_out']:
+                        if self._worker_state == 'UNAVAILABLE':
+                            conn = None
+                    else:
+                        req_state['completed'] = True
+                        box.append(res_tuple)
+                    self._worker_state = 'IDLE'
+
+                # Clear references to avoid retaining connection or data
+                fn = None
+                res = None
+                res_tuple = None
+                item = None
+                args = None
+                kwds = None
+                box = None
+                req_state = None
+
+                self._worker_queue.task_done()
+
+        cups.setPasswordCB(None)
+
     def _authloop (self, fname, fn, *args, **kwds):
         self._passes = 0
         # remove signature if dbus is not being used and signature is provided
@@ -251,7 +381,10 @@ class Connection:
 
                 cups.setUser (self._use_user)
 
-                result = fn.__call__ (*args, **kwds)
+                if fname == 'getServerPPD':
+                    result = self._execute_in_worker(fname, *args, **kwds)
+                else:
+                    result = fn.__call__ (*args, **kwds)
 
                 if fname == 'adminGetServerSettings':
                     # Special case for a rubbish bit of API.
