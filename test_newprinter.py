@@ -2943,3 +2943,209 @@ def test_regression_getServerPPD_cancellation_real_v2_race(monkeypatch):
     assert worker_thread_id[0] is not None, "Worker never executed"
     assert worker_thread_id[0] != main_thread_id, "Worker executed on the main thread"
     assert np.device is None, "on_NPCancel failed to clear device state"
+def test_regression_worker_timeout_races(monkeypatch):
+    import authconn
+    import threading
+    import time
+    from gi.repository import GLib
+
+    np = get_dummy_gui()
+    np.device = cupshelpers.Device(
+        "ipp://test",
+        **{
+            "device-info": "driverless",
+            "device-id": "MFG:Test;MDL:Printer;",
+            "device-make-and-model": "Test Printer",
+        }
+    )
+    np.device.driverless = True
+
+    np.NewPrinterWindow = MagicMock()
+    np.emit = MagicMock()
+
+    np.cups = authconn.Connection(host='127.0.0.1', port=631, encryption=cups.HTTP_ENCRYPT_NEVER)
+    np.cups._begin_operation = MagicMock()
+    np.cups._end_operation = MagicMock()
+    np.cups._cancel = False
+
+    worker_block_event = threading.Event()
+    worker_can_finish = threading.Event()
+    conn_created = [0]
+
+    class MasterSpyConnection:
+        def __init__(self, *args, **kwargs):
+            conn_created[0] += 1
+
+        def getServerPPD(self, ppdname):
+            if ppdname == "driverless:timeout":
+                worker_block_event.set()
+                worker_can_finish.wait()
+                return "/tmp/fake_ppd"
+            elif ppdname == "driverless:valueerror":
+                raise ValueError("Intentional worker exception")
+            elif ppdname == "driverless:authfail":
+                raise cups.IPPError(cups.IPP_NOT_AUTHORIZED, 'auth')
+            elif ppdname == "driverless:cancel":
+                worker_block_event.set()
+                worker_can_finish.wait()
+                return "/tmp/fake_ppd"
+            elif ppdname == "driverless:race":
+                worker_block_event.set()
+                worker_can_finish.wait()
+                return "/tmp/fake_ppd"
+            else:
+                return "/tmp/fake_ppd"
+
+        def setClientName(self, name):
+            pass
+
+    monkeypatch.setattr(cups, "Connection", MasterSpyConnection)
+    monkeypatch.setattr(cups, "PPD", MagicMock())
+    np._validateDriverlessPPD = newprinter.NewPrinterGUI._validateDriverlessPPD.__get__(np)
+
+    original_execute = np.cups._execute_in_worker
+    def execute_with_timeout(fname, *args, **kwds):
+        kwds.setdefault('_timeout', 0.1)
+        return original_execute(fname, *args, **kwds)
+    np.cups._execute_in_worker = execute_with_timeout
+
+    # Initialize worker by doing a normal request first
+    res = np.cups._execute_in_worker('getServerPPD', 'driverless:normal', _timeout=2.0)
+    assert res == "/tmp/fake_ppd"
+
+    worker_finished = threading.Event()
+    original_task_done = np.cups._worker_queue.task_done
+
+    def mock_task_done():
+        original_task_done()
+        worker_finished.set()
+
+    # Wrap the test body in try/finally to ensure background threads don't hang the suite on failure
+    try:
+        np.cups._worker_queue.task_done = mock_task_done
+
+
+
+        # 2. Blocked worker & Fail-fast
+        worker_block_event.clear()
+        worker_can_finish.clear()
+        worker_finished.clear()
+        try:
+            np.cups._execute_in_worker('getServerPPD', 'driverless:timeout', _timeout=0.1)
+            assert False, "Should have timed out"
+        except authconn.WorkerTimeoutError:
+            pass
+
+        assert worker_block_event.is_set(), "Worker should be blocked"
+
+        try:
+            np.cups._execute_in_worker('getServerPPD', 'driverless:normal')
+            assert False, "Should have raised WorkerUnavailableError immediately"
+        except authconn.WorkerUnavailableError as e:
+            assert "unavailable or busy" in str(e)
+
+        # Wait for IDLE deterministically
+        worker_can_finish.set() # Let it recover
+        worker_finished.wait(2.0)
+
+        with np.cups._worker_lock:
+            assert np.cups._worker_state == 'IDLE', "Did not recover to IDLE"
+
+        # 3. Late result isolation (Worker finishes after timeout has already triggered)
+        worker_block_event.clear()
+        worker_can_finish.clear()
+        worker_finished.clear()
+
+        try:
+            np.cups._execute_in_worker('getServerPPD', 'driverless:timeout', _timeout=0.1)
+            assert False, "Should have timed out"
+        except authconn.WorkerTimeoutError:
+            pass
+
+        # Main thread has exited timeout loop. Unblock worker.
+        worker_can_finish.set()
+        worker_finished.wait(2.0)
+
+        assert np.cups._worker_state == 'IDLE', "Worker must be IDLE after late completion"
+
+        # 4. Recovery safe
+        conn_count_before = conn_created[0]
+        res = np.cups._execute_in_worker('getServerPPD', 'driverless:normal', _timeout=2.0)
+        assert res == "/tmp/fake_ppd"
+        assert conn_created[0] > conn_count_before, "Connection must have been recreated"
+
+        # 5. Auth retry behavior through _authloop()
+        auth_called = [False]
+        def mock_perform_auth(*args, **kwds):
+            auth_called[0] = True
+            np.cups._cancel = True
+            np.cups._cannot_auth = False
+            return -1 # Cancel further retry
+        np.cups._perform_authentication = mock_perform_auth
+
+        try:
+            np.cups.getServerPPD('driverless:authfail')
+        except cups.IPPError:
+            pass
+        assert auth_called[0], "Authloop should have triggered _perform_authentication"
+
+        # 6. Cancellation during GLib loop
+        worker_block_event.clear()
+        worker_can_finish.clear()
+        def fire_cancel():
+            if worker_block_event.wait(0.5):
+                np.on_NPCancel(None)
+                worker_can_finish.set()
+            return False
+        GLib.idle_add(fire_cancel)
+
+        res = np._validateDriverlessPPD('driverless:cancel')
+        assert res is None, "Should discard late result due to cancellation"
+        assert np.device is None
+        assert np.cups._worker_state == 'IDLE'
+
+        # 7. Unavoidable Race Window (Worker finishes while main thread is evaluating timeout)
+        worker_block_event.clear()
+        worker_can_finish.clear()
+        worker_finished.clear()
+
+        original_monotonic = time.monotonic
+        def mock_monotonic():
+            if worker_block_event.is_set() and not worker_can_finish.is_set():
+                # We have entered the poll() evaluation and the worker is blocked on the CUPS call.
+                # Unblock the worker and wait for it to finish publishing the result.
+                worker_can_finish.set()
+                worker_finished.wait(2.0)
+                # Advance the clock to guarantee the timeout condition evaluates to True.
+                return original_monotonic() + 100.0
+            return original_monotonic()
+
+        monkeypatch.setattr(authconn.time, "monotonic", mock_monotonic)
+
+        res_race = np.cups._execute_in_worker('getServerPPD', 'driverless:race', _timeout=0.1)
+        assert res_race == "/tmp/fake_ppd", "Must succeed because worker finished during the poll evaluation"
+        assert np.cups._worker_state == 'IDLE'
+
+        # 8. Transient BUSY state
+        res1 = np.cups._execute_in_worker('getServerPPD', 'driverless:normal', _timeout=2.0)
+        assert res1 == "/tmp/fake_ppd"
+        res2 = np.cups._execute_in_worker('getServerPPD', 'driverless:normal', _timeout=2.0)
+        assert res2 == "/tmp/fake_ppd"
+
+        # 9. Exception propagation
+        try:
+            np.cups._execute_in_worker('getServerPPD', 'driverless:valueerror', _timeout=2.0)
+            assert False, "Should have raised ValueError"
+        except ValueError as e:
+            assert "Intentional worker exception" in str(e)
+
+        assert np.cups._worker_state == 'IDLE', "Worker must be IDLE after exception"
+
+        res_after_err = np.cups._execute_in_worker('getServerPPD', 'driverless:normal', _timeout=2.0)
+        assert res_after_err == "/tmp/fake_ppd"
+
+    finally:
+        worker_can_finish.set()
+        worker_block_event.set()
+        worker_finished.set()
+        np.cups._worker_queue.task_done = original_task_done
