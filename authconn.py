@@ -239,6 +239,20 @@ class Connection:
     def _make_binding (self, fname, fn):
         return lambda *args, **kwds: self._authloop (fname, fn, *args, **kwds)
 
+    def run_on_worker (self, op):
+        """
+        Returns a callable wrapper that executes the specified CUPS operation
+        on the dedicated background worker thread while pumping the GLib
+        main loop.
+
+        :param op: Either a method name string (e.g. 'getServerPPD', 'getPPD')
+                   or a callable accepting the worker-owned cups.Connection
+                   as its first parameter: op(conn, *args, **kwds).
+        """
+        def wrapper (*args, **kwds):
+            return self._execute_in_worker (op, *args, **kwds)
+        return wrapper
+
     def _execute_in_worker(self, fname, *args, **kwds):
         timeout_val = kwds.pop('_timeout', 30.0)
 
@@ -331,8 +345,12 @@ class Connection:
                                            encryption=self._encryption)
 
                 cups.setUser(self._use_user)
-                fn = getattr(conn, fname)
-                res = fn(*args, **kwds)
+                if callable(fname):
+                    fn = None
+                    res = fname(conn, *args, **kwds)
+                else:
+                    fn = getattr(conn, fname)
+                    res = fn(*args, **kwds)
 
                 res_tuple = (True, res, None)
             except Exception as e:
@@ -356,6 +374,7 @@ class Connection:
                 kwds = None
                 box = None
                 req_state = None
+                fname = None
 
                 self._worker_queue.task_done()
 
@@ -381,8 +400,8 @@ class Connection:
 
                 cups.setUser (self._use_user)
 
-                if fname == 'getServerPPD':
-                    result = self._execute_in_worker(fname, *args, **kwds)
+                if fname in ('getServerPPD', 'getPPD'):
+                    result = self.run_on_worker(fname)(*args, **kwds)
                 else:
                     result = fn.__call__ (*args, **kwds)
 
