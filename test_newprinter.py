@@ -3113,17 +3113,21 @@ def test_regression_worker_timeout_races(monkeypatch):
 
         # 5. Auth retry behavior through _authloop()
         auth_called = [False]
+        orig_perform_auth = np.cups._perform_authentication
         def mock_perform_auth(*args, **kwds):
             auth_called[0] = True
             np.cups._cancel = True
             np.cups._cannot_auth = False
             return -1 # Cancel further retry
-        np.cups._perform_authentication = mock_perform_auth
 
         try:
-            np.cups.getServerPPD('driverless:authfail')
-        except cups.IPPError:
-            pass
+            np.cups._perform_authentication = mock_perform_auth
+            try:
+                np.cups.run_on_worker(np.cups.getServerPPD)('driverless:authfail')
+            except cups.IPPError:
+                pass
+        finally:
+            np.cups._perform_authentication = orig_perform_auth
         assert auth_called[0], "Authloop should have triggered _perform_authentication"
 
         # 6. Cancellation during GLib loop
@@ -3230,6 +3234,7 @@ def test_generic_worker_wrapper_api(monkeypatch):
         worker_threads.append(threading.current_thread())
         assert isinstance(conn, SpyConn)
         return x + y
+    custom_worker_op._with_connection = True
 
     res2 = c.run_on_worker(custom_worker_op)(10, 20)
     assert res2 == 30
@@ -3279,7 +3284,7 @@ def test_authloop_getPPD_offloading_and_retry(monkeypatch):
 
     monkeypatch.setattr(c, "_perform_authentication", mock_perform_authentication)
 
-    res = c.getPPD("secure_printer")
+    res = c.run_on_worker(c.getPPD)("secure_printer")
     assert res == "/tmp/ppd_secure_printer"
     assert auth_calls[0] >= 2, "Authentication callback must be invoked on challenge"
     assert len(ppd_calls) == 2, "Worker must retry operation after authentication"

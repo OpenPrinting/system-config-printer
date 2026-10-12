@@ -2004,7 +2004,13 @@ class NewPrinterGUI(GtkGUI):
 
         self.cups._begin_operation(_("validating driverless PPD"))
         try:
-            f = self.cups.getServerPPD(ppdname)
+            if isinstance(getattr(self, 'cups', None), authconn.Connection):
+                f = self.cups.run_on_worker(
+                    self.cups.getServerPPD,
+                    spinner=getattr(self, 'spinner', None),
+                    cancel_check=lambda: getattr(self, 'device', None) is None)(ppdname)
+            else:
+                f = self.cups.getServerPPD(ppdname)
 
             if getattr(self, 'device', None) is None:
                 try:
@@ -5045,7 +5051,12 @@ class NewPrinterGUI(GtkGUI):
             self.cups._begin_operation (_("fetching PPD"))
             try:
                 if ppd != "raw":
-                    f = self.cups.getServerPPD(ppd)
+                    if isinstance(getattr(self, 'cups', None), authconn.Connection):
+                        f = self.cups.run_on_worker(
+                            self.cups.getServerPPD,
+                            spinner=getattr(self, 'spinner', None))(ppd)
+                    else:
+                        f = self.cups.getServerPPD(ppd)
                     ppd = cups.PPD(f)
                     os.unlink(f)
             except RuntimeError:

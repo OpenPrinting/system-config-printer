@@ -1806,7 +1806,12 @@ class GUI(GtkGUI):
         try:
             ppd_filename = None
             try:
-                ppd_filename = self.cups.getPPD(name)
+                if isinstance(getattr(self, 'cups', None), authconn.Connection):
+                    ppd_filename = self.cups.run_on_worker(
+                        self.cups.getPPD,
+                        spinner=spinner)(name)
+                else:
+                    ppd_filename = self.cups.getPPD(name)
                 ppd_obj = cups.PPD(ppd_filename)
             except (cups.IPPError, RuntimeError, authconn.WorkerTimeoutError, authconn.WorkerUnavailableError):
                 ppd_obj = None

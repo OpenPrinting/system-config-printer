@@ -36,6 +36,9 @@ from debug import *
 import gettext
 gettext.install(domain=config.PACKAGE, localedir=config.localedir)
 N_ = lambda x: x
+class OperationCanceled(RuntimeError):
+    pass
+
 class WorkerTimeoutError(RuntimeError):
     pass
 
@@ -162,6 +165,26 @@ class _AuthInfoCache:
 
 global_authinfocache = _AuthInfoCache ()
 
+def _dispatch_worker_op(op, conn, args, kwds):
+    """
+    Execute a worker operation against the worker-owned cups.Connection
+    or as a standalone callable.
+    """
+    if isinstance(op, str):
+        fn = getattr(conn, op)
+        return fn(*args, **kwds)
+
+    if hasattr(op, '_op_name') and getattr(op, '_target_conn', None) is not None:
+        fn = getattr(conn, op._op_name)
+        return fn(*args, **kwds)
+
+    if callable(op):
+        if getattr(op, '_with_connection', False):
+            return op(conn, *args, **kwds)
+        return op(*args, **kwds)
+
+    raise TypeError(f"Operation {op!r} is not callable or a valid method name")
+
 class Connection:
     def __init__ (self, parent=None, try_as_root=True, lock=False,
                   host=None, port=None, encryption=None):
@@ -183,8 +206,24 @@ class Connection:
         self._operation_stack = []
         self._lock = lock
         self._gui_event = threading.Event ()
+        self._auth_lock = threading.Lock ()
+        self._cancel = False
+        self._cannot_auth = False
+        self._worker_lock = threading.Lock()
+        self._pending_requests = []
+        self._active_req_state = None
 
         self._connect ()
+
+    def cancel (self):
+        """Signal cooperative cancellation to any in-flight worker operation."""
+        self._cancel = True
+        if hasattr(self, '_worker_lock'):
+            with self._worker_lock:
+                if getattr(self, '_active_req_state', None) is not None:
+                    self._active_req_state['cancelled'] = True
+                elif getattr(self, '_pending_requests', None):
+                    self._pending_requests[0]['cancelled'] = True
 
     def _begin_operation (self, operation):
         debugprint ("%s: Operation += %s" % (self, operation))
@@ -237,46 +276,116 @@ class Connection:
         return isinstance (self._connection, cupspk.Connection)
 
     def _make_binding (self, fname, fn):
-        return lambda *args, **kwds: self._authloop (fname, fn, *args, **kwds)
+        binding = lambda *args, **kwds: self._authloop (fname, fn, *args, **kwds)
+        binding._op_name = fname
+        binding._target_conn = self
+        return binding
 
-    def run_on_worker (self, op):
+    def run_on_worker (self, op, feedback=None, spinner=None, delay_ms=250, cancel_check=None, with_connection=False):
         """
         Returns a callable wrapper that executes the specified CUPS operation
         on the dedicated background worker thread while pumping the GLib
         main loop.
 
-        :param op: Either a method name string (e.g. 'getServerPPD', 'getPPD')
-                   or a callable accepting the worker-owned cups.Connection
-                   as its first parameter: op(conn, *args, **kwds).
+        :param op: Either a method name string (e.g. 'getServerPPD', 'getPPD'),
+                   a bound Connection method (self.cups.getServerPPD),
+                   or a callable: op(*args, **kwds) or op(conn, *args, **kwds) if with_connection.
+        :param feedback: Optional DelayedSpinner or WorkerFeedback instance.
+        :param spinner: Optional VectorSpinner or Gtk.Spinner widget.
+        :param delay_ms: Milliseconds to delay spinner appearance (default 250ms).
+        :param cancel_check: Optional callable returning True if caller was cancelled.
+        :param with_connection: If True, pass the worker cups.Connection to op.
         """
+        if feedback is None and spinner is not None:
+            from vectorspinner import DelayedSpinner
+            feedback = DelayedSpinner(spinner, delay_ms=delay_ms)
+
+        target_op = getattr(op, '_op_name', op)
+        if with_connection and callable(target_op):
+            try:
+                target_op._with_connection = True
+            except AttributeError:
+                pass
+
+        is_conn_method = False
+        if isinstance(target_op, str) and hasattr(self._connection, target_op):
+            is_conn_method = True
+        elif hasattr(op, '_op_name') and getattr(op, '_target_conn', None) is self:
+            is_conn_method = True
+
         def wrapper (*args, **kwds):
-            return self._execute_in_worker (op, *args, **kwds)
+            # Worker-thread re-entry: execute directly on worker connection to avoid deadlock
+            if hasattr(self, '_worker_thread') and threading.current_thread() == self._worker_thread:
+                conn = getattr(self, '_worker_conn', None)
+                if conn is None:
+                    with self._auth_lock:
+                        user = self._use_user
+                    cups.setUser(user)
+                    conn = cups.Connection(host=self._server,
+                                           port=self._port,
+                                           encryption=self._encryption)
+                    self._worker_conn = conn
+                return _dispatch_worker_op(target_op, conn, args, kwds)
+
+            with getattr(self, '_worker_lock', threading.Lock()):
+                has_active = bool(getattr(self, '_pending_requests', None)) or (getattr(self, '_active_req_state', None) is not None)
+            if not has_active:
+                self._cancel = False
+
+            # Execution on GTK / main thread:
+            if is_conn_method:
+                fn = getattr(self._connection, target_op)
+                return self._authloop(target_op, fn, *args, _on_worker=True,
+                                      _feedback=feedback, _cancel_check=cancel_check, **kwds)
+            else:
+                return self._execute_in_worker(target_op, *args, _feedback=feedback,
+                                               _cancel_check=cancel_check, **kwds)
+
         return wrapper
 
     def _execute_in_worker(self, fname, *args, **kwds):
         timeout_val = kwds.pop('_timeout', 30.0)
+        feedback = kwds.pop('_feedback', None)
+        cancel_check = kwds.pop('_cancel_check', None)
 
         if not hasattr(self, '_worker_queue'):
-            self._worker_lock = threading.Lock()
+            self._worker_lock = getattr(self, '_worker_lock', threading.Lock())
             self._worker_state = 'IDLE'
+            self._worker_conn = None
+            self._pending_requests = getattr(self, '_pending_requests', [])
+            self._active_req_state = getattr(self, '_active_req_state', None)
             self._worker_queue = queue.Queue()
             self._worker_thread = threading.Thread(target=self._worker_loop, daemon=True)
             self._worker_thread.start()
 
         with self._worker_lock:
-            if getattr(self, '_worker_state', 'IDLE') != 'IDLE':
-                raise WorkerUnavailableError("CUPS worker is unavailable or busy")
-            self._worker_state = 'BUSY'
+            if getattr(self, '_worker_unresponsive', False):
+                raise WorkerUnavailableError("Worker is unavailable or busy")
 
         box = []
-        req_state = {'completed': False, 'timed_out': False}
+        req_state = {'completed': False, 'timed_out': False, 'cancelled': False}
+        with self._worker_lock:
+            if not hasattr(self, '_pending_requests'):
+                self._pending_requests = []
+            self._pending_requests.append(req_state)
         self._worker_queue.put((fname, args, kwds, box, req_state))
 
         loop = GLib.MainLoop()
         source_id = [None]
         start_time = time.monotonic()
 
+        if feedback is not None:
+            feedback.start()
+
         def poll():
+            if (cancel_check and cancel_check()) or req_state['cancelled']:
+                with self._worker_lock:
+                    req_state['cancelled'] = True
+                if loop.is_running():
+                    loop.quit()
+                source_id[0] = None
+                return False
+
             with self._worker_lock:
                 is_completed = req_state['completed']
 
@@ -294,8 +403,8 @@ class Connection:
                         source_id[0] = None
                         return False
 
-                    self._worker_state = 'UNAVAILABLE'
                     req_state['timed_out'] = True
+                    self._worker_unresponsive = True
 
                 if loop.is_running():
                     loop.quit()
@@ -308,12 +417,23 @@ class Connection:
         try:
             loop.run()
         finally:
+            with self._worker_lock:
+                if hasattr(self, '_pending_requests') and req_state in self._pending_requests:
+                    self._pending_requests.remove(req_state)
             if source_id[0] is not None:
                 GLib.source_remove(source_id[0])
                 source_id[0] = None
+            if feedback is not None:
+                feedback.stop()
+
+        if req_state['cancelled']:
+            raise OperationCanceled(_("Operation canceled"))
 
         if req_state['timed_out']:
             raise WorkerTimeoutError("CUPS worker timeout")
+
+        if not box:
+            raise WorkerUnavailableError("CUPS worker returned no result")
 
         ok, res, exc = box[0]
         if not ok:
@@ -321,16 +441,8 @@ class Connection:
         return res
 
     def _worker_loop(self):
-        def worker_password_cb(prompt):
-            debugprint("Got worker password callback")
-            if getattr(self, '_cancel', False) or getattr(self, '_auth_called', False):
-                return ''
-            self._auth_called = True
-            self._prompt = prompt
-            return getattr(self, '_use_password', '')
-
-        cups.setPasswordCB(worker_password_cb)
         conn = None
+        conn_user = None
 
         while True:
             item = self._worker_queue.get()
@@ -338,28 +450,48 @@ class Connection:
                 break
             fname, args, kwds, box, req_state = item
 
+            with self._worker_lock:
+                if req_state['cancelled']:
+                    self._worker_queue.task_done()
+                    continue
+                self._worker_state = 'BUSY'
+                self._active_req_state = req_state
+
             try:
-                if conn is None:
+                with self._auth_lock:
+                    target_user = self._use_user
+
+                if conn is None or conn_user != target_user:
+                    cups.setUser(target_user)
                     conn = cups.Connection(host=self._server,
                                            port=self._port,
                                            encryption=self._encryption)
+                    conn_user = target_user
+                    self._worker_conn = conn
 
-                cups.setUser(self._use_user)
-                if callable(fname):
-                    fn = None
-                    res = fname(conn, *args, **kwds)
-                else:
-                    fn = getattr(conn, fname)
-                    res = fn(*args, **kwds)
+                cups.setUser(target_user)
+                res = _dispatch_worker_op(fname, conn, args, kwds)
 
                 res_tuple = (True, res, None)
             except Exception as e:
                 res_tuple = (False, None, e)
             finally:
                 with self._worker_lock:
-                    if req_state['timed_out']:
-                        if self._worker_state == 'UNAVAILABLE':
+                    self._active_req_state = None
+                    is_discarded = req_state['timed_out'] or req_state['cancelled']
+                    if is_discarded:
+                        # Clean up temporary files if a file path was returned
+                        if (res_tuple[0] and isinstance(res_tuple[1], str) and
+                                os.path.isabs(res_tuple[1]) and os.path.exists(res_tuple[1])):
+                            try:
+                                os.unlink(res_tuple[1])
+                            except OSError:
+                                pass
+                        if req_state['timed_out']:
                             conn = None
+                            conn_user = None
+                            self._worker_conn = None
+                            self._worker_unresponsive = False
                     else:
                         req_state['completed'] = True
                         box.append(res_tuple)
@@ -378,9 +510,9 @@ class Connection:
 
                 self._worker_queue.task_done()
 
-        cups.setPasswordCB(None)
+        self._worker_conn = None
 
-    def _authloop (self, fname, fn, *args, **kwds):
+    def _authloop (self, fname, fn, *args, _on_worker=False, _feedback=None, _cancel_check=None, **kwds):
         self._passes = 0
         # remove signature if dbus is not being used and signature is provided
         if not self._using_polkit():
@@ -390,7 +522,12 @@ class Connection:
         retry = False
         while True:
             try:
-                if self._perform_authentication () == 0:
+                auth_stat = self._perform_authentication ()
+                if auth_stat == 0:
+                    break
+                if auth_stat < 0 or self._cancel:
+                    if self._cancel and not self._cannot_auth:
+                        raise cups.IPPError (0, _("Operation canceled"))
                     break
 
                 if c != self._connection:
@@ -400,9 +537,12 @@ class Connection:
 
                 cups.setUser (self._use_user)
 
-                if fname in ('getServerPPD', 'getPPD'):
-                    result = self.run_on_worker(fname)(*args, **kwds)
+                if _on_worker:
+                    result = self._execute_in_worker (fname, *args, _feedback=_feedback,
+                                                      _cancel_check=_cancel_check, **kwds)
                 else:
+                    if fn is None:
+                        fn = getattr (self._connection, fname)
                     result = fn.__call__ (*args, **kwds)
 
                 if fname == 'adminGetServerSettings':
@@ -444,6 +584,8 @@ class Connection:
 
                     debugprint ("%s: %s" % (e, repr (m)))
                     raise
+            except OperationCanceled:
+                raise cups.IPPError (0, _("Operation canceled"))
             except cups.HTTPError as e:
                 (s,) = e.args
                 if not self._cancel:
@@ -492,7 +634,8 @@ class Connection:
 
         self._auth_called = True
         self._prompt = prompt
-        return self._use_password
+        with self._auth_lock:
+            return self._use_password
 
     def _perform_authentication (self):
         self._passes += 1
@@ -510,7 +653,15 @@ class Connection:
             self._has_failed = False
             self._forbidden = False
             self._auth_called = False
-            self._cancel = False
+            req_cancelled = False
+            if hasattr(self, '_worker_lock'):
+                with self._worker_lock:
+                    if getattr(self, '_active_req_state', None) is not None:
+                        req_cancelled = self._active_req_state.get('cancelled', False)
+                    elif getattr(self, '_pending_requests', None):
+                        req_cancelled = self._pending_requests[0].get('cancelled', False)
+            if not req_cancelled:
+                self._cancel = False
             self._cannot_auth = False
             self._dialog_shown = False
             cups.setPasswordCB (self._password_callback)
@@ -644,9 +795,11 @@ class Connection:
             self._on_authentication_response (d, response)
 
     def _on_authentication_response (self, dialog, response):
-        (user, self._use_password) = dialog.get_auth_info ()
-        if user != '':
-            self._use_user = user
+        (user, password) = dialog.get_auth_info ()
+        with self._auth_lock:
+            if user != '':
+                self._use_user = user
+            self._use_password = password
         global_authinfocache.cache_auth_info ((self._use_user,
                                                self._use_password),
                                               host=self._server,
@@ -656,6 +809,12 @@ class Connection:
         if (response == Gtk.ResponseType.CANCEL or
             response == Gtk.ResponseType.DELETE_EVENT):
             self._cancel = True
+            if hasattr(self, '_worker_lock'):
+                with self._worker_lock:
+                    if getattr(self, '_active_req_state', None) is not None:
+                        self._active_req_state['cancelled'] = True
+                    elif getattr(self, '_pending_requests', None):
+                        self._pending_requests[0]['cancelled'] = True
 
         if self._lock:
             self._gui_event.set ()
