@@ -3706,3 +3706,52 @@ def test_duplicate_printer_driverless_ppd_selection_fallback():
 
     gui.on_btnNPChooseDriver_clicked(None)
     assert gui.device.driverless is True
+
+
+def test_driverless_validation_does_not_pass_duplicate_spinner(monkeypatch):
+    """Verify driverless PPD validation runs on worker without passing a duplicate spinner,
+    preserving the 'Searching for drivers' UI spinner as the sole progress indicator."""
+    np = get_dummy_gui()
+    np.device = cupshelpers.Device(
+        "ipp://test-printer.local",
+        **{
+            "device-info": "Xerox Test Printer",
+            "device-id": "MFG:Xerox;MDL:B235;",
+            "device-make-and-model": "Xerox B235",
+        }
+    )
+    np.device.driverless = True
+    np.spinner = MagicMock(name="bottom_left_spinner")
+    np.cups = authconn.Connection(host='127.0.0.1', port=631, encryption=cups.HTTP_ENCRYPT_NEVER)
+    np.cups._begin_operation = MagicMock()
+    np.cups._end_operation = MagicMock()
+
+    captured_worker_calls = []
+
+    def spy_run_on_worker(op, **kwargs):
+        captured_worker_calls.append({
+            "op": op,
+            "spinner": kwargs.get("spinner", None),
+            "feedback": kwargs.get("feedback", None),
+            "cancel_check": kwargs.get("cancel_check", None),
+        })
+        def fake_worker_call(ppdname):
+            with tempfile.NamedTemporaryFile(delete=False, suffix=".ppd") as tmp:
+                tmp.write(b"*PPD-Adobe: \"4.3\"\n")
+                return tmp.name
+        return fake_worker_call
+
+    np.cups.run_on_worker = spy_run_on_worker
+    monkeypatch.setattr(cups, "PPD", MagicMock())
+
+    real_validate = newprinter.NewPrinterGUI._validateDriverlessPPD.__get__(np)
+    result = real_validate("driverless:ipp://test-printer.local")
+
+    assert len(captured_worker_calls) == 1, "Validation must run through run_on_worker"
+    call_info = captured_worker_calls[0]
+    assert call_info["op"] == np.cups.getServerPPD
+    assert call_info["spinner"] is None, "Must NOT pass self.spinner to run_on_worker to prevent duplicate spinner"
+    assert call_info["feedback"] is None, "Must NOT pass feedback to run_on_worker"
+    assert call_info["cancel_check"] is not None, "Cancel check callable must still be provided"
+    assert np.spinner.show.call_count == 0, "Bottom-left spinner must not be shown"
+    assert np.spinner.start.call_count == 0, "Bottom-left spinner must not be started"

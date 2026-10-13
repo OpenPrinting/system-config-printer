@@ -2007,7 +2007,6 @@ class NewPrinterGUI(GtkGUI):
             if isinstance(getattr(self, 'cups', None), authconn.Connection):
                 f = self.cups.run_on_worker(
                     self.cups.getServerPPD,
-                    spinner=getattr(self, 'spinner', None),
                     cancel_check=lambda: getattr(self, 'device', None) is None)(ppdname)
             else:
                 f = self.cups.getServerPPD(ppdname)
