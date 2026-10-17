@@ -21,13 +21,16 @@
 
 import gi
 import tempfile
+import threading
+import time
 import pytest
 import newprinter
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk
+from gi.repository import Gtk, GLib
 from unittest.mock import MagicMock
 import cupshelpers
 import cups
+import authconn
 
 class MockPrinter:
     def __init__(self, uri):
@@ -300,6 +303,40 @@ def test_driverless_installable_options_reached(monkeypatch):
     np.fillNPInstallableOptions.assert_called_once()
 
     np._loadPPDsForDevice.assert_not_called()
+
+def test_searching_spinner_visible_during_driverless_validation():
+    """Verify that the searching spinner remains visible while nextNPTab executes."""
+    np = get_dummy_gui()
+
+    loader = MagicMock()
+    loader._jockey_has_answered = False
+    loader.get_error.return_value = None
+    loader.get_ppds.return_value = {"driverless:foo": {}}
+    loader.get_ppdsmatch_result.return_value = {}
+
+    # We want to intercept nextNPTab and check if the spinner has been hidden yet.
+    spinner_states = []
+
+    def mock_hide():
+        spinner_states.append("hidden")
+    np._hide_searching_spinner = mock_hide
+
+    def mock_nextNPTab(step=1):
+        if "hidden" not in spinner_states:
+            spinner_states.append("visible")
+        else:
+            spinner_states.append("already_hidden")
+
+    np.nextNPTab = mock_nextNPTab
+    np.ntbkNewPrinter = MagicMock()
+    np.ntbkNewPrinter.get_current_page.return_value = np.PAGE_DESCRIBE_PRINTER
+    np._set_driver_ppd_loading = MagicMock()
+
+    np.on_ppdsloader_finished_next(loader)
+
+    assert "visible" in spinner_states, "Spinner was hidden before nextNPTab finished"
+    assert "hidden" in spinner_states, "Spinner was not hidden eventually"
+    assert spinner_states == ["visible", "hidden"], "Unexpected sequence of events"
 
 def test_broken_driverless_getnpppd_returns_none_on_runtime_error(monkeypatch):
     """When cups.PPD() raises RuntimeError for a driverless PPD,
@@ -2869,3 +2906,850 @@ def test_duplicate_state_two_uses_existing_ppd_loader():
 
     np._loadPPDsForDevice.assert_called_once()
     assert result == newprinter.NewPrinterGUI.INSTALL_RESULT_OPS_PENDING
+
+def test_regression_getServerPPD_cancellation_real_v2_race(monkeypatch):
+    """
+    Test the V2 worker + nested GLib + on_NPCancel() production path.
+    Verifies that real cancellation respects the worker thread lifecycle
+    and does not trigger AttributeError when the late worker completes.
+    """
+    import authconn
+    import threading
+    from gi.repository import GLib
+
+    np = get_dummy_gui()
+    np.device = cupshelpers.Device(
+        "ipp://test",
+        **{
+            "device-info": "driverless",
+            "device-id": "MFG:Test;MDL:Printer;",
+            "device-make-and-model": "Test Printer",
+        }
+    )
+    np.device.driverless = True
+
+    np.NewPrinterWindow = MagicMock()
+    np.emit = MagicMock()
+
+    np.cups = authconn.Connection(host='127.0.0.1', port=631, encryption=cups.HTTP_ENCRYPT_NEVER)
+    np.cups._begin_operation = MagicMock()
+    np.cups._end_operation = MagicMock()
+
+    worker_blocked = threading.Event()
+    cancel_completed = threading.Event()
+
+    main_thread_id = threading.get_ident()
+    worker_thread_id = [None]
+
+    class SlowSpyConnection:
+        def __init__(self, *args, **kwargs):
+            pass
+
+        def getServerPPD(self, ppdname):
+            worker_thread_id[0] = threading.get_ident()
+            worker_blocked.set()
+
+            if not cancel_completed.wait(timeout=5.0):
+                raise RuntimeError("Test timeout: GLib callback did not complete cancellation")
+
+            return "/tmp/fake_ppd"
+
+        def setClientName(self, name):
+            pass
+
+    monkeypatch.setattr(cups, "Connection", SlowSpyConnection)
+    monkeypatch.setattr(cups, "PPD", MagicMock())
+
+    def fire_cancel():
+        if not worker_blocked.is_set():
+            return True
+
+        real_cancel = newprinter.NewPrinterGUI.on_NPCancel.__get__(np)
+        real_cancel(None)
+
+        cancel_completed.set()
+        return False
+
+    GLib.idle_add(fire_cancel)
+
+    np._validateDriverlessPPD = newprinter.NewPrinterGUI._validateDriverlessPPD.__get__(np)
+    real_install = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np)
+
+    real_install(None, 0, 1)
+
+    assert worker_thread_id[0] is not None, "Worker never executed"
+    assert worker_thread_id[0] != main_thread_id, "Worker executed on the main thread"
+    assert np.device is None, "on_NPCancel failed to clear device state"
+def test_regression_worker_timeout_races(monkeypatch):
+    import authconn
+    import threading
+    import time
+    from gi.repository import GLib
+
+    np = get_dummy_gui()
+    np.device = cupshelpers.Device(
+        "ipp://test",
+        **{
+            "device-info": "driverless",
+            "device-id": "MFG:Test;MDL:Printer;",
+            "device-make-and-model": "Test Printer",
+        }
+    )
+    np.device.driverless = True
+
+    np.NewPrinterWindow = MagicMock()
+    np.emit = MagicMock()
+
+    np.cups = authconn.Connection(host='127.0.0.1', port=631, encryption=cups.HTTP_ENCRYPT_NEVER)
+    np.cups._begin_operation = MagicMock()
+    np.cups._end_operation = MagicMock()
+    np.cups._cancel = False
+
+    worker_block_event = threading.Event()
+    worker_can_finish = threading.Event()
+    conn_created = [0]
+
+    class MasterSpyConnection:
+        def __init__(self, *args, **kwargs):
+            conn_created[0] += 1
+
+        def getServerPPD(self, ppdname):
+            if ppdname == "driverless:timeout":
+                worker_block_event.set()
+                worker_can_finish.wait()
+                return "/tmp/fake_ppd"
+            elif ppdname == "driverless:valueerror":
+                raise ValueError("Intentional worker exception")
+            elif ppdname == "driverless:authfail":
+                raise cups.IPPError(cups.IPP_NOT_AUTHORIZED, 'auth')
+            elif ppdname == "driverless:cancel":
+                worker_block_event.set()
+                worker_can_finish.wait()
+                return "/tmp/fake_ppd"
+            elif ppdname == "driverless:race":
+                worker_block_event.set()
+                worker_can_finish.wait()
+                return "/tmp/fake_ppd"
+            else:
+                return "/tmp/fake_ppd"
+
+        def setClientName(self, name):
+            pass
+
+    monkeypatch.setattr(cups, "Connection", MasterSpyConnection)
+    monkeypatch.setattr(cups, "PPD", MagicMock())
+    np._validateDriverlessPPD = newprinter.NewPrinterGUI._validateDriverlessPPD.__get__(np)
+
+    original_execute = np.cups._execute_in_worker
+    def execute_with_timeout(fname, *args, **kwds):
+        kwds.setdefault('_timeout', 0.1)
+        return original_execute(fname, *args, **kwds)
+    np.cups._execute_in_worker = execute_with_timeout
+
+    # Initialize worker by doing a normal request first
+    res = np.cups._execute_in_worker('getServerPPD', 'driverless:normal', _timeout=2.0)
+    assert res == "/tmp/fake_ppd"
+
+    worker_finished = threading.Event()
+    original_task_done = np.cups._worker_queue.task_done
+
+    def mock_task_done():
+        original_task_done()
+        worker_finished.set()
+
+    # Wrap the test body in try/finally to ensure background threads don't hang the suite on failure
+    try:
+        np.cups._worker_queue.task_done = mock_task_done
+
+
+
+        # 2. Blocked worker & Fail-fast
+        worker_block_event.clear()
+        worker_can_finish.clear()
+        worker_finished.clear()
+        try:
+            np.cups._execute_in_worker('getServerPPD', 'driverless:timeout', _timeout=0.1)
+            assert False, "Should have timed out"
+        except authconn.WorkerTimeoutError:
+            pass
+
+        assert worker_block_event.is_set(), "Worker should be blocked"
+
+        try:
+            np.cups._execute_in_worker('getServerPPD', 'driverless:normal')
+            assert False, "Should have raised WorkerUnavailableError immediately"
+        except authconn.WorkerUnavailableError as e:
+            assert "unavailable or busy" in str(e)
+
+        # Wait for IDLE deterministically
+        worker_can_finish.set() # Let it recover
+        worker_finished.wait(2.0)
+
+        with np.cups._worker_lock:
+            assert np.cups._worker_state == 'IDLE', "Did not recover to IDLE"
+
+        # 3. Late result isolation (Worker finishes after timeout has already triggered)
+        worker_block_event.clear()
+        worker_can_finish.clear()
+        worker_finished.clear()
+
+        try:
+            np.cups._execute_in_worker('getServerPPD', 'driverless:timeout', _timeout=0.1)
+            assert False, "Should have timed out"
+        except authconn.WorkerTimeoutError:
+            pass
+
+        # Main thread has exited timeout loop. Unblock worker.
+        worker_can_finish.set()
+        worker_finished.wait(2.0)
+
+        assert np.cups._worker_state == 'IDLE', "Worker must be IDLE after late completion"
+
+        # 4. Recovery safe
+        conn_count_before = conn_created[0]
+        res = np.cups._execute_in_worker('getServerPPD', 'driverless:normal', _timeout=2.0)
+        assert res == "/tmp/fake_ppd"
+        assert conn_created[0] > conn_count_before, "Connection must have been recreated"
+
+        # 5. Auth retry behavior through _authloop()
+        auth_called = [False]
+        orig_perform_auth = np.cups._perform_authentication
+        def mock_perform_auth(*args, **kwds):
+            auth_called[0] = True
+            np.cups._cancel = True
+            np.cups._cannot_auth = False
+            return -1 # Cancel further retry
+
+        try:
+            np.cups._perform_authentication = mock_perform_auth
+            try:
+                np.cups.run_on_worker(np.cups.getServerPPD)('driverless:authfail')
+            except cups.IPPError:
+                pass
+        finally:
+            np.cups._perform_authentication = orig_perform_auth
+        assert auth_called[0], "Authloop should have triggered _perform_authentication"
+
+        # 6. Cancellation during GLib loop
+        worker_block_event.clear()
+        worker_can_finish.clear()
+        def fire_cancel():
+            if worker_block_event.wait(0.5):
+                np.on_NPCancel(None)
+                worker_can_finish.set()
+            return False
+        GLib.idle_add(fire_cancel)
+
+        res = np._validateDriverlessPPD('driverless:cancel')
+        assert res is None, "Should discard late result due to cancellation"
+        assert np.device is None
+        assert np.cups._worker_state == 'IDLE'
+
+        # 7. Unavoidable Race Window (Worker finishes while main thread is evaluating timeout)
+        worker_block_event.clear()
+        worker_can_finish.clear()
+        worker_finished.clear()
+
+        original_monotonic = time.monotonic
+        mock_calls = [0]
+        def mock_monotonic():
+            mock_calls[0] += 1
+            if mock_calls[0] > 1 and worker_block_event.is_set() and not worker_can_finish.is_set():
+                # We have entered the poll() evaluation and the worker is blocked on the CUPS call.
+                # Unblock the worker and wait for it to finish publishing the result.
+                worker_can_finish.set()
+                worker_finished.wait(2.0)
+                # Advance the clock to guarantee the timeout condition evaluates to True.
+                return original_monotonic() + 100.0
+            return original_monotonic()
+
+        monkeypatch.setattr(authconn.time, "monotonic", mock_monotonic)
+
+        res_race = np.cups._execute_in_worker('getServerPPD', 'driverless:race', _timeout=0.1)
+        assert res_race == "/tmp/fake_ppd", "Must succeed because worker finished during the poll evaluation"
+        assert np.cups._worker_state == 'IDLE'
+
+        # 8. Transient BUSY state
+        res1 = np.cups._execute_in_worker('getServerPPD', 'driverless:normal', _timeout=2.0)
+        assert res1 == "/tmp/fake_ppd"
+        res2 = np.cups._execute_in_worker('getServerPPD', 'driverless:normal', _timeout=2.0)
+        assert res2 == "/tmp/fake_ppd"
+
+        # 9. Exception propagation
+        try:
+            np.cups._execute_in_worker('getServerPPD', 'driverless:valueerror', _timeout=2.0)
+            assert False, "Should have raised ValueError"
+        except ValueError as e:
+            assert "Intentional worker exception" in str(e)
+
+        assert np.cups._worker_state == 'IDLE', "Worker must be IDLE after exception"
+
+        res_after_err = np.cups._execute_in_worker('getServerPPD', 'driverless:normal', _timeout=2.0)
+        assert res_after_err == "/tmp/fake_ppd"
+
+    finally:
+        worker_can_finish.set()
+        worker_block_event.set()
+        worker_finished.set()
+        np.cups._worker_queue.task_done = original_task_done
+
+
+def test_generic_worker_wrapper_api(monkeypatch):
+    """Verify run_on_worker executes off the main thread, pumps GLib events, supports both
+    string method names and worker-bound callables, and executes sequentially without leaks."""
+    c = authconn.Connection(host='127.0.0.1', port=631, encryption=cups.HTTP_ENCRYPT_NEVER)
+    main_thread = threading.current_thread()
+    worker_threads = []
+    glib_pumped = []
+
+    class SpyConn:
+        def __init__(self, *args, **kwargs):
+            pass
+
+        def getPPD(self, name):
+            worker_threads.append(threading.current_thread())
+            time.sleep(0.04)
+            if name == "broken":
+                raise cups.IPPError(cups.IPP_INTERNAL_ERROR, "failed")
+            return f"/tmp/ppd_{name}"
+
+    monkeypatch.setattr(authconn.cups, "Connection", SpyConn)
+
+    # Schedule a GLib idle callback with standard priority to verify main loop pumps during worker wait
+    def on_idle():
+        glib_pumped.append(True)
+        return False
+
+    GLib.idle_add(on_idle, priority=GLib.PRIORITY_DEFAULT)
+
+    # 1. String method name wrapper
+    res = c.run_on_worker('getPPD')("myprinter")
+    assert res == "/tmp/ppd_myprinter"
+    assert len(worker_threads) == 1
+    assert worker_threads[0] != main_thread
+    assert len(glib_pumped) > 0, "GLib main loop must pump events while worker is executing"
+
+    # 2. Worker-bound callable wrapper
+    def custom_worker_op(conn, x, y):
+        worker_threads.append(threading.current_thread())
+        assert isinstance(conn, SpyConn)
+        return x + y
+    custom_worker_op._with_connection = True
+
+    res2 = c.run_on_worker(custom_worker_op)(10, 20)
+    assert res2 == 30
+    assert len(worker_threads) == 2
+    assert worker_threads[1] != main_thread
+
+    # 3. Sequential execution immediately after previous completion
+    res3 = c.run_on_worker('getPPD')("secondprinter")
+    assert res3 == "/tmp/ppd_secondprinter"
+    assert c._worker_state == 'IDLE'
+
+    # 4. Exception propagation out of wrapper
+    try:
+        c.run_on_worker('getPPD')("broken")
+        assert False, "Should have raised IPPError"
+    except cups.IPPError as e:
+        assert e.args[0] == cups.IPP_INTERNAL_ERROR
+
+    assert c._worker_state == 'IDLE', "Worker must be IDLE after exception"
+
+
+def test_authloop_getPPD_offloading_and_retry(monkeypatch):
+    """Verify getPPD offloads through _authloop and handles authentication challenge and retry."""
+    c = authconn.Connection(host='127.0.0.1', port=631, encryption=cups.HTTP_ENCRYPT_NEVER)
+    c._prompt_allowed = True
+    c._cancel = False
+
+    auth_calls = [0]
+    ppd_calls = []
+
+    class SpyConn:
+        def __init__(self, *args, **kwargs):
+            pass
+
+        def getPPD(self, name):
+            ppd_calls.append(len(ppd_calls))
+            if len(ppd_calls) == 1:
+                raise cups.IPPError(cups.IPP_NOT_AUTHORIZED, "unauthorized")
+            return f"/tmp/ppd_{name}"
+
+    monkeypatch.setattr(authconn.cups, "Connection", SpyConn)
+
+    def mock_perform_authentication():
+        auth_calls[0] += 1
+        c._has_failed = False
+        return 1 if len(ppd_calls) < 2 else 0
+
+    monkeypatch.setattr(c, "_perform_authentication", mock_perform_authentication)
+
+    res = c.run_on_worker(c.getPPD)("secure_printer")
+    assert res == "/tmp/ppd_secure_printer"
+    assert auth_calls[0] >= 2, "Authentication callback must be invoked on challenge"
+    assert len(ppd_calls) == 2, "Worker must retry operation after authentication"
+    assert c._worker_state == 'IDLE'
+
+
+def test_ppdsloader_background_worker_responsiveness():
+    """Verify PPDsLoader processes CPU-bound PPD indexing in background thread without freezing GTK."""
+    import ppdsloader
+    loader = ppdsloader.PPDsLoader(device_id="MFG:Test;MDL:Printer;", device_uri="ipp://test/printer")
+    mock_conn = MagicMock()
+
+    cups_result = {
+        "foomatic:HP-LaserJet.ppd": {
+            "ppd-make-and-model": ["HP LaserJet"],
+            "ppd-natural-language": ["en"],
+            "ppd-make": ["HP"],
+        },
+        "driverless:ipps://TestPrinter._ipps._tcp.local/": {
+            "ppd-make-and-model": ["Test Printer, driverless"],
+            "ppd-natural-language": ["en"],
+            "ppd-make": ["Test"],
+            "ppd-device-id": ["MFG:Test;MDL:Printer;"],
+        }
+    }
+
+    finished_fired = []
+    glib_pumped_while_loading = []
+    loop = GLib.MainLoop()
+
+    def on_idle():
+        glib_pumped_while_loading.append(True)
+        return False
+
+    GLib.idle_add(on_idle, priority=GLib.PRIORITY_DEFAULT)
+
+    def on_finished(p):
+        finished_fired.append(True)
+        loop.quit()
+
+    loader.connect("finished", on_finished)
+
+    # Start processing via _cups_reply
+    loader._cups_reply(mock_conn, cups_result)
+    assert loader._processing_thread is not None, "Processing thread must be spawned"
+    assert loader._processing_thread != threading.current_thread(), "PPD processing must run outside GTK main thread"
+
+    # Run loop until finished signal fires from background worker completion
+    loop.run()
+
+    assert len(finished_fired) == 1
+    assert len(glib_pumped_while_loading) > 0, "GTK main loop must pump events while PPDs are parsed"
+    ppds_obj = loader.get_ppds()
+    assert "foomatic:HP-LaserJet.ppd" in ppds_obj.ppds
+    assert hasattr(ppds_obj, "makes") and bool(ppds_obj.makes), "Makes index must be pre-indexed on worker thread"
+    assert "driverless:ipps://TestPrinter._ipps._tcp.local/" in loader.get_driverless_ppds()
+    assert loader.get_ppdsmatch_result() is not None
+
+
+def test_ppdsloader_destroy_cancels_emission():
+    """Verify calling destroy() on PPDsLoader prevents finished signal emission."""
+    import ppdsloader
+    loader = ppdsloader.PPDsLoader(device_id="MFG:Test;MDL:Printer;", device_uri="ipp://test/printer")
+    mock_conn = MagicMock()
+
+    finished_fired = []
+    loader.connect("finished", lambda p: finished_fired.append(True))
+
+    loader.destroy()
+    loader._cups_reply(mock_conn, {})
+
+    if getattr(loader, '_processing_thread', None) is not None:
+        loader._processing_thread.join()
+
+    # Flush main loop
+    ctx = GLib.MainContext.default()
+    while ctx.pending():
+        ctx.iteration(False)
+
+    assert len(finished_fired) == 0, "Finished signal must not be emitted when destroyed"
+
+
+def test_choose_driver_responsiveness_and_spinner_lifecycle():
+    """Verify on_btnNPChooseDriver_clicked sets loading spinner, resets driverless flag,
+    and advances tab responsively."""
+    np = newprinter.NewPrinterGUI.__new__(newprinter.NewPrinterGUI)
+    np.dialog_mode = 'printer'
+    np.device = MagicMock()
+    np.device.driverless = True
+    np.exactdrivermatch = True
+    np.searchedfordriverpackages = False
+    spinner_states = []
+    np._set_driver_ppd_loading = lambda state: spinner_states.append(state)
+    np.rbtnNPFoomatic = MagicMock()
+    np.on_rbtnNPFoomatic_toggled = MagicMock()
+    np.ntbkNewPrinter = MagicMock()
+    np.PAGE_SELECT_INSTALL_METHOD = 1
+    next_tab_calls = []
+    np.nextNPTab = lambda step=None: next_tab_calls.append(step)
+    np.ppds = None
+    np.ppdsloader = None
+
+    np.on_btnNPChooseDriver_clicked(MagicMock())
+
+    assert spinner_states[0] is True, "Driver loading spinner must be started immediately"
+    assert np.device.driverless is False
+    assert np.exactdrivermatch is False
+    assert np.searchedfordriverpackages is True
+    assert next_tab_calls == [0]
+
+
+def test_duplicate_device_lookup_preserves_policykit_and_keeps_gtk_responsive(monkeypatch):
+    """Verify _get_discovered_device_for_uri uses asyncconn (PolicyKit) when cups is authconn.Connection,
+    pumps the GLib main loop while pending, limits schemes, cleans up connection, and spawns no threads."""
+    import importlib
+    import authconn
+    import asyncconn
+    scp_module = importlib.import_module("system-config-printer")
+
+    class DummySCP:
+        _get_discovered_device_for_uri = scp_module.GUI._get_discovered_device_for_uri
+
+    gui = DummySCP()
+    gui.PrintersWindow = MagicMock()
+    gui.connect_server = "local"
+    gui.connect_encrypt = 0
+    # Simulate production authconn
+    gui.cups = authconn.Connection.__new__(authconn.Connection)
+
+    events_pumped = []
+    conn_instances = []
+    get_devices_calls = []
+
+    class FakeAsyncConn:
+        def __init__(self, parent=None, host=None, encryption=None):
+            self.parent = parent
+            self.host = host
+            self.encryption = encryption
+            self.destroyed = False
+            conn_instances.append(self)
+
+        def destroy(self):
+            self.destroyed = True
+
+    def fake_get_devices(conn, **kwds):
+        get_devices_calls.append((conn, kwds))
+        reply_handler = kwds.get("reply_handler")
+
+        def deliver_reply():
+            dev_dict = {
+                "device-id": "MFG:Xerox;MDL:B235;",
+                "device-info": "Xerox B235 (driverless)",
+                "device-make-and-model": "Xerox B235",
+            }
+            fake_device = cupshelpers.Device("ipps://Xerox%20B235._ipps._tcp.local", **dev_dict)
+            reply_handler(conn, {fake_device.uri: fake_device})
+            return False
+
+        def on_idle():
+            events_pumped.append("idle_ran")
+            GLib.idle_add(deliver_reply)
+            return False
+
+        GLib.idle_add(on_idle)
+
+    monkeypatch.setattr(asyncconn, "Connection", FakeAsyncConn)
+    monkeypatch.setattr(cupshelpers, "getDevices", fake_get_devices)
+
+    thread_count_before = threading.active_count()
+    device = gui._get_discovered_device_for_uri("ipps://Xerox%20B235._ipps._tcp.local")
+    thread_count_after = threading.active_count()
+
+    assert thread_count_after == thread_count_before, "No extra threads must be created"
+    assert len(events_pumped) > 0, "GLib main loop must actively pump events while device lookup is pending"
+    assert device is not None
+    assert device.uri == "ipps://Xerox%20B235._ipps._tcp.local"
+    assert device.id_dict["MFG"] == "Xerox"
+    assert len(conn_instances) == 1
+    assert conn_instances[0].parent is gui.PrintersWindow
+    assert conn_instances[0].host == "local"
+    assert conn_instances[0].destroyed is True, "Connection must be destroyed after lookup"
+
+    conn_arg, kwds_arg = get_devices_calls[0]
+    assert "include_schemes" in kwds_arg
+    assert "ipps" in kwds_arg["include_schemes"]
+    assert "dnssd" in kwds_arg["include_schemes"]
+
+
+def test_duplicate_device_lookup_error_and_timeout_resilience(monkeypatch):
+    """Verify _get_discovered_device_for_uri exits cleanly on timeout or D-Bus error without freezing or raising."""
+    import importlib
+    import authconn
+    import asyncconn
+    scp_module = importlib.import_module("system-config-printer")
+
+    class DummySCP:
+        _get_discovered_device_for_uri = scp_module.GUI._get_discovered_device_for_uri
+
+    gui = DummySCP()
+    gui.PrintersWindow = MagicMock()
+    gui.connect_server = None
+    gui.connect_encrypt = None
+    gui.cups = authconn.Connection.__new__(authconn.Connection)
+
+    # 1. Error callback path
+    class ErrorAsyncConn:
+        def __init__(self, *a, **k):
+            self.destroyed = False
+
+        def destroy(self):
+            self.destroyed = True
+
+    def error_get_devices(conn, **kwds):
+        err_handler = kwds.get("error_handler")
+        GLib.idle_add(lambda: err_handler(conn, RuntimeError("PolicyKit error")) and False)
+
+    monkeypatch.setattr(asyncconn, "Connection", ErrorAsyncConn)
+    monkeypatch.setattr(cupshelpers, "getDevices", error_get_devices)
+
+    res_err = gui._get_discovered_device_for_uri("ipp://test/printer")
+    assert res_err is None, "Must return None on discovery error"
+
+    # 2. Timeout path & late reply isolation
+    captured_reply_handler = [None]
+    class TimeoutAsyncConn:
+        def __init__(self, *a, **k):
+            self.destroyed = False
+
+        def destroy(self):
+            self.destroyed = True
+
+    def timeout_get_devices(conn, **kwds):
+        captured_reply_handler[0] = kwds.get("reply_handler")
+
+    monkeypatch.setattr(asyncconn, "Connection", TimeoutAsyncConn)
+    monkeypatch.setattr(cupshelpers, "getDevices", timeout_get_devices)
+    orig_timeout_add = GLib.timeout_add
+    def fast_timeout_add(interval, callback):
+        return orig_timeout_add(10, callback)
+    monkeypatch.setattr(GLib, "timeout_add", fast_timeout_add)
+
+    res_timeout = gui._get_discovered_device_for_uri("ipp://test/printer")
+    assert res_timeout is None, "Must return None on discovery timeout"
+
+    # 3. Late reply after timeout does not raise or corrupt state
+    if captured_reply_handler[0]:
+        fake_dev = cupshelpers.Device("ipp://test/printer")
+        # Invoking late reply handler on destroyed/abandoned connection must be safe
+        captured_reply_handler[0](TimeoutAsyncConn(), {fake_dev.uri: fake_dev})
+
+
+def test_duplicate_printer_loading_ui_responsiveness(monkeypatch):
+    import importlib
+    import gi
+    gi.require_version('Gtk', '3.0')
+    from gi.repository import Gtk, GLib
+
+    scp_module = importlib.import_module("system-config-printer")
+
+    gui = scp_module.GUI.__new__(scp_module.GUI)
+    gui.PrintersWindow = Gtk.Window()
+    gui.dests_iconview = MagicMock()
+    gui.printers = {}
+    gui._duplicating = False
+    gui.desensitise_new_printer_widgets = MagicMock()
+    gui.sensitise_new_printer_widgets = MagicMock()
+    gui.monitor = MagicMock()
+    gui.newPrinterGUI = MagicMock()
+    gui.connect_server = None
+    gui.connect_encrypt = None
+
+    gui.cups = MagicMock()
+
+    # Set up selected item
+    gui.dests_iconview.get_selected_items.return_value = ["path"]
+    model_mock = MagicMock()
+    model_mock.get_value.return_value = "TestPrinter"
+    gui.dests_iconview.get_model.return_value = model_mock
+
+    printer_mock = MagicMock()
+    printer_mock.is_class = False
+    printer_mock.device_uri = "test://uri"
+    gui.printers["TestPrinter"] = printer_mock
+
+    # We will track dialog visibility by patching Gtk.Dialog.show_all and destroy
+    dialog_state = {"visible": False, "created": False}
+    original_show_all = Gtk.Dialog.show_all
+    original_destroy = Gtk.Dialog.destroy
+
+    def mock_show_all(self):
+        dialog_state["visible"] = True
+        dialog_state["created"] = True
+        original_show_all(self)
+
+    def mock_destroy(self):
+        dialog_state["visible"] = False
+        original_destroy(self)
+
+    monkeypatch.setattr(Gtk.Dialog, "show_all", mock_show_all)
+    monkeypatch.setattr(Gtk.Dialog, "destroy", mock_destroy)
+
+    events_pumped = []
+
+    def fake_getPPD(name):
+        assert dialog_state["visible"], "Loading dialog must be visible during retrieval"
+
+        # simulate user repeatedly clicking duplicate
+        gui.on_duplicate_activate()
+        assert gui.cups.getPPD.call_count == 1, "Repeated click should not launch concurrent operation"
+
+        def on_idle():
+            events_pumped.append("idle_ran")
+            loop.quit()
+            return False
+
+        loop = GLib.MainLoop()
+        GLib.idle_add(on_idle)
+        loop.run()
+
+        return "fake_ppd.ppd"
+
+    gui.cups.getPPD = MagicMock(side_effect=fake_getPPD)
+
+    gui._get_discovered_device_for_uri = MagicMock(return_value=None)
+
+    gui.on_duplicate_activate()
+
+    assert "idle_ran" in events_pumped, "GLib events were not processed"
+    assert not dialog_state["visible"], "Dialog was not cleaned up on success"
+    assert not gui._duplicating, "Duplicating flag was not reset on success"
+
+    # Now test error path
+    gui.cups.getPPD = MagicMock(side_effect=RuntimeError("timeout"))
+    dialog_state["visible"] = False
+    dialog_state["created"] = False
+    gui.on_duplicate_activate()
+
+    assert not dialog_state["visible"], "Dialog was not cleaned up on error"
+    assert not gui._duplicating, "Duplicating flag was not reset on error"
+def test_duplicate_choose_different_driver_preserves_uri():
+    """Verify that in duplicate mode, getDeviceURI returns the original device URI, and does not parse unvisited UI widgets."""
+    np = get_dummy_gui()
+    np.getDeviceURI = newprinter.NewPrinterGUI.getDeviceURI.__get__(np)
+    np.dialog_mode = "duplicate"
+    np.duplicate_driver_selection = True
+
+    np.device = MagicMock()
+    np.device.uri = "socket://192.168.1.50"
+    np.device.type = "socket"
+
+    uri = np.getDeviceURI()
+    assert uri == "socket://192.168.1.50", "getDeviceURI must preserve the device URI in duplicate driver selection."
+
+
+def test_duplicate_driver_selection_fallback_to_orig_ppd():
+    """Verify that if the device is not discovered on the network, duplicate mode falls back to matching the original PPD's Make/Model."""
+    np = get_dummy_gui()
+    np._installPrinterFromDeviceID = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np)
+    np.dialog_mode = "duplicate"
+    np.duplicate_driver_selection = True
+
+    np.device = MagicMock()
+    np.device.id = ""
+    np.device.make_and_model = ""
+    np.device.driverless = False
+    np.devid = ""
+    np.device._driverless_failed = False
+
+    np.orig_ppd = MockCupsPPD({"NickName": "Original Make Model Printer"})
+
+    np.ppds = MagicMock()
+    np.ppds.getInfoFromModel.return_value = {"original-driver": {"ppd-make-and-model": "Original Make Model Printer"}}
+
+    np._installPrinterOrSearchForDriver = MagicMock(return_value=True)
+
+    newprinter.nonfatalException = lambda *args: None
+
+    np._installPrinterFromDeviceID("", 2, 1)
+
+    np._installPrinterOrSearchForDriver.assert_called_with("", "original-driver", "exact", 2, 1)
+
+
+def test_duplicate_printer_driverless_ppd_selection_fallback():
+    import os
+    os.environ["SYSTEM_CONFIG_PRINTER_UI"] = "ui"
+    import gi
+    gi.require_version('Gtk', '3.0')
+    from gi.repository import Gtk, GLib
+    import newprinter
+    import cupshelpers
+
+    gui = newprinter.NewPrinterGUI()
+    gui.printers = {}
+    gui.cups = MagicMock()
+
+    class FakePPD:
+        def findAttr(self, name):
+            class Attr:
+                pass
+            a = Attr()
+            if name == "1284DeviceID":
+                a.value = "MFG:Xerox;MDL:B235;"
+                return a
+            elif name == "ModelName":
+                a.value = "Xerox B235"
+                return a
+            elif name == "NickName":
+                a.value = "Xerox B235, driverless, cups-filters 1.28.15"
+                return a
+            return None
+
+    orig_ppd = FakePPD()
+
+    gui.init("duplicate", device_uri="socket://192.168.1.100", name="Xerox", ppd=orig_ppd, discovered_device=None)
+
+    assert gui.device.id == "MFG:Xerox;MDL:B235;"
+    assert gui.device.make_and_model == "Xerox B235"
+    assert gui.device.driverless is True
+
+    gui.on_btnNPChooseDriver_clicked(None)
+    assert gui.device.driverless is True
+
+
+def test_driverless_validation_does_not_pass_duplicate_spinner(monkeypatch):
+    """Verify driverless PPD validation runs on worker without passing a duplicate spinner,
+    preserving the 'Searching for drivers' UI spinner as the sole progress indicator."""
+    np = get_dummy_gui()
+    np.device = cupshelpers.Device(
+        "ipp://test-printer.local",
+        **{
+            "device-info": "Xerox Test Printer",
+            "device-id": "MFG:Xerox;MDL:B235;",
+            "device-make-and-model": "Xerox B235",
+        }
+    )
+    np.device.driverless = True
+    np.spinner = MagicMock(name="bottom_left_spinner")
+    np.cups = authconn.Connection(host='127.0.0.1', port=631, encryption=cups.HTTP_ENCRYPT_NEVER)
+    np.cups._begin_operation = MagicMock()
+    np.cups._end_operation = MagicMock()
+
+    captured_worker_calls = []
+
+    def spy_run_on_worker(op, **kwargs):
+        captured_worker_calls.append({
+            "op": op,
+            "spinner": kwargs.get("spinner", None),
+            "feedback": kwargs.get("feedback", None),
+        })
+        def fake_worker_call(ppdname):
+            with tempfile.NamedTemporaryFile(delete=False, suffix=".ppd") as tmp:
+                tmp.write(b"*PPD-Adobe: \"4.3\"\n")
+                return tmp.name
+        return fake_worker_call
+
+    np.cups.run_on_worker = spy_run_on_worker
+    monkeypatch.setattr(cups, "PPD", MagicMock())
+
+    real_validate = newprinter.NewPrinterGUI._validateDriverlessPPD.__get__(np)
+    result = real_validate("driverless:ipp://test-printer.local")
+
+    assert len(captured_worker_calls) == 1, "Validation must run through run_on_worker"
+    call_info = captured_worker_calls[0]
+    assert call_info["op"] == np.cups.getServerPPD
+    assert call_info["spinner"] is None, "Must NOT pass self.spinner to run_on_worker to prevent duplicate spinner"
+    assert call_info["feedback"] is None, "Must NOT pass feedback to run_on_worker"
+    assert np.spinner.show.call_count == 0, "Bottom-left spinner must not be shown"
+    assert np.spinner.start.call_count == 0, "Bottom-left spinner must not be started"

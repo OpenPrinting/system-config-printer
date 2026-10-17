@@ -61,6 +61,10 @@ class PPDsLoader(GObject.GObject):
         GObject.GObject.__init__ (self)
         debugprint ("+%s" % self)
         self._device_id = device_id
+        if self._device_id:
+            self._devid_dict = cupshelpers.parseDeviceID (self._device_id)
+        else:
+            self._devid_dict = None
         self._device_uri = device_uri
         self._device_make_and_model = device_make_and_model
         self._parent = parent
@@ -120,16 +124,26 @@ class PPDsLoader(GObject.GObject):
     def get_installed_files (self):
         return self._installed_files
 
+    def _wait_for_processing (self):
+        thread = getattr (self, '_processing_thread', None)
+        if thread is not None:
+            thread.join ()
+            self._processing_thread = None
+
     def get_ppds (self):
+        self._wait_for_processing ()
         return self._ppds
 
     def get_driverless_ppds (self):
+        self._wait_for_processing ()
         return self._driverless_ppds
 
     def get_ppdsmatch_result (self):
+        self._wait_for_processing ()
         return self._ppdsmatch_result
 
     def get_error (self):
+        self._wait_for_processing ()
         debugprint ("%s: stored error is %s" % (self, repr (self._exc)))
         return self._exc
 
@@ -156,53 +170,92 @@ class PPDsLoader(GObject.GObject):
         if self._destroyed:
             return
 
-        driverless_ppds = {}
-        normal_ppds = {}
-        if result:
-            for name, ppd in result.items ():
-                if name.startswith ("driverless:") or name.startswith ("driverless-fax:"):
-                    driverless_ppds[name] = ppd
+        def process_ppds ():
+            try:
+                driverless_ppds = {}
+                normal_ppds = {}
+                if result:
+                    for name, ppd in result.items ():
+                        if name.startswith ("driverless:") or name.startswith ("driverless-fax:"):
+                            driverless_ppds[name] = ppd
+                        else:
+                            normal_ppds[name] = ppd
+
+                self._driverless_ppds = driverless_ppds
+                ppds = cupshelpers.ppds.PPDs (normal_ppds, language=self._language)
+                self._ppds = ppds
+                self._need_requery_cups = False
+                # Pre-index makes on background thread to avoid GTK stall during fillMakeList
+                try:
+                    ppds.getMakes ()
+                except Exception:
+                    pass
+                if self._device_id:
+                    fit = ppds.\
+                        getPPDNamesFromDeviceID (self._devid_dict["MFG"],
+                                                 self._devid_dict["MDL"],
+                                                 self._devid_dict["DES"],
+                                                 self._devid_dict["CMD"],
+                                                 self._device_uri,
+                                                 self._device_make_and_model)
+
+                    ppdnamelist = ppds.\
+                        orderPPDNamesByPreference (list(fit.keys ()),
+                                                   self._installed_files,
+                                                   devid=self._devid_dict,
+                                                   fit=fit)
+                    self._ppdsmatch_result = (fit, ppdnamelist)
                 else:
-                    normal_ppds[name] = ppd
+                    self._ppdsmatch_result = None
 
-        self._driverless_ppds = driverless_ppds
-        ppds = cupshelpers.ppds.PPDs (normal_ppds, language=self._language)
-        self._ppds = ppds
-        self._need_requery_cups = False
-        if self._device_id:
-            fit = ppds.\
-                getPPDNamesFromDeviceID (self._devid_dict["MFG"],
-                                         self._devid_dict["MDL"],
-                                         self._devid_dict["DES"],
-                                         self._devid_dict["CMD"],
-                                         self._device_uri,
-                                         self._device_make_and_model)
+                GLib.idle_add (self._on_ppds_processed, conn, None)
+            except Exception as e:
+                GLib.idle_add (self._on_ppds_processed, conn, e)
 
-            ppdnamelist = ppds.\
-                orderPPDNamesByPreference (list(fit.keys ()),
-                                           self._installed_files,
-                                           devid=self._devid_dict,
-                                           fit=fit)
-            self._ppdsmatch_result = (fit, ppdnamelist)
+        self._processing_thread = threading.Thread (target=process_ppds, daemon=True)
+        self._processing_thread.start ()
 
-            ppdname = ppdnamelist[0]
-            if (self._bus and
-                not fit[ppdname].startswith ("exact") and
-                not self._jockey_queried and
-                self._devid_dict["MFG"] and
-                self._devid_dict["MDL"] and
-                self._local_cups):
-                # Try to install packages using jockey if
-                # - there's no appropriate driver (PPD) locally available
-                # - we are configuring local CUPS server
-                self._jockey_queried = True
-                self._query_jockey ()
-                return
+    def _on_ppds_processed (self, conn, exc):
+        self._wait_for_processing ()
+        if self._destroyed:
+            if conn:
+                conn.destroy ()
+                self._conn = None
+            return False
 
-        conn.destroy ()
-        self._conn = None
+        if exc is not None:
+            if conn:
+                conn.destroy ()
+                self._conn = None
+            self._ppds = None
+            self._driverless_ppds = {}
+            self._exc = exc
+            self.emit ('finished')
+            return False
+
+        if self._device_id and self._ppdsmatch_result:
+            fit, ppdnamelist = self._ppdsmatch_result
+            if ppdnamelist:
+                ppdname = ppdnamelist[0]
+                if (self._bus and
+                    not fit[ppdname].startswith ("exact") and
+                    not self._jockey_queried and
+                    self._devid_dict["MFG"] and
+                    self._devid_dict["MDL"] and
+                    self._local_cups):
+                    # Try to install packages using jockey if
+                    # - there's no appropriate driver (PPD) locally available
+                    # - we are configuring local CUPS server
+                    self._jockey_queried = True
+                    self._query_jockey ()
+                    return False
+
+        if conn:
+            conn.destroy ()
+            self._conn = None
 
         self.emit ('finished')
+        return False
 
     def _cups_error (self, conn, exc):
         if self._destroyed:
