@@ -2005,9 +2005,7 @@ class NewPrinterGUI(GtkGUI):
         self.cups._begin_operation(_("validating driverless PPD"))
         try:
             if isinstance(getattr(self, 'cups', None), authconn.Connection):
-                f = self.cups.run_on_worker(
-                    self.cups.getServerPPD,
-                    cancel_check=lambda: getattr(self, 'device', None) is None)(ppdname)
+                f = self.cups.run_on_worker(self.cups.getServerPPD)(ppdname)
             else:
                 f = self.cups.getServerPPD(ppdname)
 

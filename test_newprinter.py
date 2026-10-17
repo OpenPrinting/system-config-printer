@@ -3733,7 +3733,6 @@ def test_driverless_validation_does_not_pass_duplicate_spinner(monkeypatch):
             "op": op,
             "spinner": kwargs.get("spinner", None),
             "feedback": kwargs.get("feedback", None),
-            "cancel_check": kwargs.get("cancel_check", None),
         })
         def fake_worker_call(ppdname):
             with tempfile.NamedTemporaryFile(delete=False, suffix=".ppd") as tmp:
@@ -3752,6 +3751,5 @@ def test_driverless_validation_does_not_pass_duplicate_spinner(monkeypatch):
     assert call_info["op"] == np.cups.getServerPPD
     assert call_info["spinner"] is None, "Must NOT pass self.spinner to run_on_worker to prevent duplicate spinner"
     assert call_info["feedback"] is None, "Must NOT pass feedback to run_on_worker"
-    assert call_info["cancel_check"] is not None, "Cancel check callable must still be provided"
     assert np.spinner.show.call_count == 0, "Bottom-left spinner must not be shown"
     assert np.spinner.start.call_count == 0, "Bottom-left spinner must not be started"

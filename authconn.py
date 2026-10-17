@@ -36,9 +36,6 @@ from debug import *
 import gettext
 gettext.install(domain=config.PACKAGE, localedir=config.localedir)
 N_ = lambda x: x
-class OperationCanceled(RuntimeError):
-    pass
-
 class WorkerTimeoutError(RuntimeError):
     pass
 
@@ -210,20 +207,11 @@ class Connection:
         self._cancel = False
         self._cannot_auth = False
         self._worker_lock = threading.Lock()
-        self._pending_requests = []
-        self._active_req_state = None
 
         self._connect ()
 
     def cancel (self):
-        """Signal cooperative cancellation to any in-flight worker operation."""
         self._cancel = True
-        if hasattr(self, '_worker_lock'):
-            with self._worker_lock:
-                if getattr(self, '_active_req_state', None) is not None:
-                    self._active_req_state['cancelled'] = True
-                elif getattr(self, '_pending_requests', None):
-                    self._pending_requests[0]['cancelled'] = True
 
     def _begin_operation (self, operation):
         debugprint ("%s: Operation += %s" % (self, operation))
@@ -281,7 +269,7 @@ class Connection:
         binding._target_conn = self
         return binding
 
-    def run_on_worker (self, op, feedback=None, spinner=None, delay_ms=250, cancel_check=None, with_connection=False):
+    def run_on_worker (self, op, feedback=None, spinner=None, delay_ms=250, with_connection=False):
         """
         Returns a callable wrapper that executes the specified CUPS operation
         on the dedicated background worker thread while pumping the GLib
@@ -293,7 +281,6 @@ class Connection:
         :param feedback: Optional DelayedSpinner or WorkerFeedback instance.
         :param spinner: Optional VectorSpinner or Gtk.Spinner widget.
         :param delay_ms: Milliseconds to delay spinner appearance (default 250ms).
-        :param cancel_check: Optional callable returning True if caller was cancelled.
         :param with_connection: If True, pass the worker cups.Connection to op.
         """
         if feedback is None and spinner is not None:
@@ -327,33 +314,24 @@ class Connection:
                     self._worker_conn = conn
                 return _dispatch_worker_op(target_op, conn, args, kwds)
 
-            with getattr(self, '_worker_lock', threading.Lock()):
-                has_active = bool(getattr(self, '_pending_requests', None)) or (getattr(self, '_active_req_state', None) is not None)
-            if not has_active:
-                self._cancel = False
-
             # Execution on GTK / main thread:
             if is_conn_method:
                 fn = getattr(self._connection, target_op)
                 return self._authloop(target_op, fn, *args, _on_worker=True,
-                                      _feedback=feedback, _cancel_check=cancel_check, **kwds)
+                                      _feedback=feedback, **kwds)
             else:
-                return self._execute_in_worker(target_op, *args, _feedback=feedback,
-                                               _cancel_check=cancel_check, **kwds)
+                return self._execute_in_worker(target_op, *args, _feedback=feedback, **kwds)
 
         return wrapper
 
     def _execute_in_worker(self, fname, *args, **kwds):
         timeout_val = kwds.pop('_timeout', 30.0)
         feedback = kwds.pop('_feedback', None)
-        cancel_check = kwds.pop('_cancel_check', None)
 
         if not hasattr(self, '_worker_queue'):
             self._worker_lock = getattr(self, '_worker_lock', threading.Lock())
             self._worker_state = 'IDLE'
             self._worker_conn = None
-            self._pending_requests = getattr(self, '_pending_requests', [])
-            self._active_req_state = getattr(self, '_active_req_state', None)
             self._worker_queue = queue.Queue()
             self._worker_thread = threading.Thread(target=self._worker_loop, daemon=True)
             self._worker_thread.start()
@@ -363,11 +341,7 @@ class Connection:
                 raise WorkerUnavailableError("Worker is unavailable or busy")
 
         box = []
-        req_state = {'completed': False, 'timed_out': False, 'cancelled': False}
-        with self._worker_lock:
-            if not hasattr(self, '_pending_requests'):
-                self._pending_requests = []
-            self._pending_requests.append(req_state)
+        req_state = {'completed': False, 'timed_out': False}
         self._worker_queue.put((fname, args, kwds, box, req_state))
 
         loop = GLib.MainLoop()
@@ -378,14 +352,6 @@ class Connection:
             feedback.start()
 
         def poll():
-            if (cancel_check and cancel_check()) or req_state['cancelled']:
-                with self._worker_lock:
-                    req_state['cancelled'] = True
-                if loop.is_running():
-                    loop.quit()
-                source_id[0] = None
-                return False
-
             with self._worker_lock:
                 is_completed = req_state['completed']
 
@@ -417,17 +383,11 @@ class Connection:
         try:
             loop.run()
         finally:
-            with self._worker_lock:
-                if hasattr(self, '_pending_requests') and req_state in self._pending_requests:
-                    self._pending_requests.remove(req_state)
             if source_id[0] is not None:
                 GLib.source_remove(source_id[0])
                 source_id[0] = None
             if feedback is not None:
                 feedback.stop()
-
-        if req_state['cancelled']:
-            raise OperationCanceled(_("Operation canceled"))
 
         if req_state['timed_out']:
             raise WorkerTimeoutError("CUPS worker timeout")
@@ -451,11 +411,7 @@ class Connection:
             fname, args, kwds, box, req_state = item
 
             with self._worker_lock:
-                if req_state['cancelled']:
-                    self._worker_queue.task_done()
-                    continue
                 self._worker_state = 'BUSY'
-                self._active_req_state = req_state
 
             try:
                 with self._auth_lock:
@@ -477,9 +433,7 @@ class Connection:
                 res_tuple = (False, None, e)
             finally:
                 with self._worker_lock:
-                    self._active_req_state = None
-                    is_discarded = req_state['timed_out'] or req_state['cancelled']
-                    if is_discarded:
+                    if req_state['timed_out']:
                         # Clean up temporary files if a file path was returned
                         if (res_tuple[0] and isinstance(res_tuple[1], str) and
                                 os.path.isabs(res_tuple[1]) and os.path.exists(res_tuple[1])):
@@ -487,11 +441,10 @@ class Connection:
                                 os.unlink(res_tuple[1])
                             except OSError:
                                 pass
-                        if req_state['timed_out']:
-                            conn = None
-                            conn_user = None
-                            self._worker_conn = None
-                            self._worker_unresponsive = False
+                        conn = None
+                        conn_user = None
+                        self._worker_conn = None
+                        self._worker_unresponsive = False
                     else:
                         req_state['completed'] = True
                         box.append(res_tuple)
@@ -512,7 +465,7 @@ class Connection:
 
         self._worker_conn = None
 
-    def _authloop (self, fname, fn, *args, _on_worker=False, _feedback=None, _cancel_check=None, **kwds):
+    def _authloop (self, fname, fn, *args, _on_worker=False, _feedback=None, **kwds):
         self._passes = 0
         # remove signature if dbus is not being used and signature is provided
         if not self._using_polkit():
@@ -538,8 +491,7 @@ class Connection:
                 cups.setUser (self._use_user)
 
                 if _on_worker:
-                    result = self._execute_in_worker (fname, *args, _feedback=_feedback,
-                                                      _cancel_check=_cancel_check, **kwds)
+                    result = self._execute_in_worker (fname, *args, _feedback=_feedback, **kwds)
                 else:
                     if fn is None:
                         fn = getattr (self._connection, fname)
@@ -584,8 +536,6 @@ class Connection:
 
                     debugprint ("%s: %s" % (e, repr (m)))
                     raise
-            except OperationCanceled:
-                raise cups.IPPError (0, _("Operation canceled"))
             except cups.HTTPError as e:
                 (s,) = e.args
                 if not self._cancel:
@@ -653,15 +603,7 @@ class Connection:
             self._has_failed = False
             self._forbidden = False
             self._auth_called = False
-            req_cancelled = False
-            if hasattr(self, '_worker_lock'):
-                with self._worker_lock:
-                    if getattr(self, '_active_req_state', None) is not None:
-                        req_cancelled = self._active_req_state.get('cancelled', False)
-                    elif getattr(self, '_pending_requests', None):
-                        req_cancelled = self._pending_requests[0].get('cancelled', False)
-            if not req_cancelled:
-                self._cancel = False
+            self._cancel = False
             self._cannot_auth = False
             self._dialog_shown = False
             cups.setPasswordCB (self._password_callback)
@@ -809,12 +751,6 @@ class Connection:
         if (response == Gtk.ResponseType.CANCEL or
             response == Gtk.ResponseType.DELETE_EVENT):
             self._cancel = True
-            if hasattr(self, '_worker_lock'):
-                with self._worker_lock:
-                    if getattr(self, '_active_req_state', None) is not None:
-                        self._active_req_state['cancelled'] = True
-                    elif getattr(self, '_pending_requests', None):
-                        self._pending_requests[0]['cancelled'] = True
 
         if self._lock:
             self._gui_event.set ()

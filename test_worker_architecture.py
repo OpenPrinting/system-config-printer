@@ -201,55 +201,89 @@ def test_worker_recovery_after_timeout():
     assert conn._worker_state == 'IDLE'
 
 
-def test_cooperative_cancellation():
+def test_concurrency_caller_abandons_a_while_b_queued():
     conn = authconn.Connection(host="127.0.0.1", port=631, encryption=cups.HTTP_ENCRYPT_NEVER)
-    worker_started = threading.Event()
-    worker_finish = threading.Event()
-    cancelled_flag = [False]
+    a_started = threading.Event()
+    a_release = threading.Event()
+    a_finished = threading.Event()
 
-    def cancellable_op():
-        worker_started.set()
-        worker_finish.wait(timeout=2.0)
-        return "result"
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".ppd") as tmp:
+        a_temp_file = tmp.name
 
-    def trigger_cancel():
-        worker_started.wait(timeout=2.0)
-        cancelled_flag[0] = True
+    assert os.path.exists(a_temp_file)
 
-    feeder = threading.Thread(target=trigger_cancel, daemon=True)
-    feeder.start()
+    ui_state = {'alive': True, 'result': None}
 
-    with pytest.raises(authconn.OperationCanceled):
-        conn.run_on_worker(cancellable_op, cancel_check=lambda: cancelled_flag[0])()
+    def op_a():
+        a_started.set()
+        a_release.wait(timeout=5.0)
+        a_finished.set()
+        return a_temp_file
 
-    worker_finish.set()
-    conn._worker_queue.join()
+    def caller_a_task():
+        res = conn.run_on_worker(op_a)()
+        if ui_state['alive']:
+            ui_state['result'] = res
+        else:
+            # Emulate NewPrinterGUI lifecycle: discard result and unlink temporary file
+            try:
+                os.unlink(res)
+            except OSError:
+                pass
+
+    t_a = threading.Thread(target=caller_a_task, daemon=True)
+    t_a.start()
+    assert a_started.wait(timeout=2.0), "Request A failed to start in worker"
+
+    b_results = []
+
+    def caller_b_task():
+        res = conn.run_on_worker(lambda: "result_b")()
+        b_results.append(res)
+
+    t_b = threading.Thread(target=caller_b_task, daemon=True)
+    t_b.start()
+    time.sleep(0.05)
+
+    # Caller A abandons/cancels UI operation
+    ui_state['alive'] = False
+
+    # Release A to finish
+    a_release.set()
+
+    t_a.join(timeout=2.0)
+    assert not t_a.is_alive()
+    assert a_finished.is_set(), "A must run to completion in worker"
+    assert ui_state['result'] is None, "A's result must not be applied to abandoned caller"
+    assert not os.path.exists(a_temp_file), "A's temporary file must be unlinked when abandoned"
+
+    t_b.join(timeout=2.0)
+    assert not t_b.is_alive()
+    assert b_results == ["result_b"], "B must execute normally and return expected result"
+
+    assert conn._worker_thread.is_alive(), "Worker thread must remain alive"
+    assert conn._worker_state == 'IDLE'
+
+    res_c = conn.run_on_worker(lambda: "result_c")()
+    assert res_c == "result_c", "Worker must remain usable for subsequent request C"
+    assert conn._worker_state == 'IDLE'
 
 
-def test_cancellation_followed_by_fresh_operation():
+def test_concurrency_a_raises_exception_b_and_c_still_run():
     conn = authconn.Connection(host="127.0.0.1", port=631, encryption=cups.HTTP_ENCRYPT_NEVER)
-    worker_started = threading.Event()
-    worker_finish = threading.Event()
 
-    def op1():
-        worker_started.set()
-        worker_finish.wait(timeout=2.0)
-        return "op1"
+    def failing_op():
+        raise cups.IPPError(cups.IPP_NOT_FOUND, "printer not found")
 
-    def cancel_thread():
-        worker_started.wait(timeout=2.0)
-        conn.cancel()
+    with pytest.raises(cups.IPPError) as exc_info:
+        conn.run_on_worker(failing_op)()
+    assert exc_info.value.args[0] == cups.IPP_NOT_FOUND
 
-    threading.Thread(target=cancel_thread, daemon=True).start()
+    res_b = conn.run_on_worker(lambda: "result_b")()
+    assert res_b == "result_b"
 
-    with pytest.raises(authconn.OperationCanceled):
-        conn.run_on_worker(op1)()
-
-    worker_finish.set()
-    conn._worker_queue.join()
-
-    res2 = conn.run_on_worker(lambda: "fresh_op_success")()
-    assert res2 == "fresh_op_success"
+    res_c = conn.run_on_worker(lambda: "result_c")()
+    assert res_c == "result_c"
 
 
 def test_authentication_retry(monkeypatch):
@@ -351,26 +385,51 @@ def test_worker_credential_change_recreates_connection(monkeypatch):
     assert "root" in connections_created
 
 
-def test_late_result_after_cancellation():
+def test_concurrency_fifo_ordering_preserved():
     conn = authconn.Connection(host="127.0.0.1", port=631, encryption=cups.HTTP_ENCRYPT_NEVER)
-    worker_started = threading.Event()
-    worker_finish = threading.Event()
+    a_started = threading.Event()
+    a_release = threading.Event()
+    execution_order = []
 
-    def slow_worker_op():
-        worker_started.set()
-        worker_finish.wait(timeout=2.0)
-        return "late_unwanted_result"
+    def op_a():
+        a_started.set()
+        a_release.wait(timeout=5.0)
+        execution_order.append("A")
+        return "result_a"
 
-    threading.Thread(target=lambda: (worker_started.wait(), conn.cancel()), daemon=True).start()
+    def op_b():
+        execution_order.append("B")
+        return "result_b"
 
-    with pytest.raises(authconn.OperationCanceled):
-        conn.run_on_worker(slow_worker_op)()
+    def op_c():
+        execution_order.append("C")
+        return "result_c"
 
-    worker_finish.set()
-    conn._worker_queue.join()
+    results = {}
 
-    res_next = conn.run_on_worker(lambda: "proper_next_result")()
-    assert res_next == "proper_next_result"
+    def run_op(name, fn):
+        results[name] = conn.run_on_worker(fn)()
+
+    t_a = threading.Thread(target=run_op, args=("A", op_a), daemon=True)
+    t_a.start()
+    assert a_started.wait(timeout=2.0)
+
+    t_b = threading.Thread(target=run_op, args=("B", op_b), daemon=True)
+    t_b.start()
+    time.sleep(0.05)
+
+    t_c = threading.Thread(target=run_op, args=("C", op_c), daemon=True)
+    t_c.start()
+    time.sleep(0.05)
+
+    a_release.set()
+
+    t_a.join(timeout=2.0)
+    t_b.join(timeout=2.0)
+    t_c.join(timeout=2.0)
+
+    assert execution_order == ["A", "B", "C"], "FIFO execution order must be preserved"
+    assert results == {"A": "result_a", "B": "result_b", "C": "result_c"}
 
 
 def test_cleanup_of_discarded_temporary_files():
@@ -388,15 +447,19 @@ def test_cleanup_of_discarded_temporary_files():
         worker_finish.wait(timeout=2.0)
         return temp_ppd_path
 
-    threading.Thread(target=lambda: (worker_started.wait(), conn.cancel()), daemon=True).start()
+    with pytest.raises(authconn.WorkerTimeoutError):
+        conn.run_on_worker(blocking_ppd_op)(_timeout=0.08)
 
-    with pytest.raises(authconn.OperationCanceled):
-        conn.run_on_worker(blocking_ppd_op)()
+    assert os.path.exists(temp_ppd_path), "File still exists while worker is blocked"
 
     worker_finish.set()
     conn._worker_queue.join()
 
-    assert not os.path.exists(temp_ppd_path), "Cancelled temporary file must be unlinked"
+    assert not os.path.exists(temp_ppd_path), "Timed out temporary file must be unlinked by worker"
+
+    res = conn.run_on_worker(lambda: "recovered")()
+    assert res == "recovered"
+    assert conn._worker_state == 'IDLE'
 
 
 def test_gtk_responsiveness_during_worker_execution():
@@ -472,100 +535,3 @@ def test_delayed_spinner_slow_operation():
 
     assert len(shown_events) == 1
     assert len(stopped_events) == 1
-
-
-def test_cancelled_in_queue_skips_execution():
-    conn = authconn.Connection(host="127.0.0.1", port=631, encryption=cups.HTTP_ENCRYPT_NEVER)
-    gate = threading.Event()
-    skipped_executed = [False]
-
-    def blocking_op():
-        gate.wait(timeout=2.0)
-        return "block_done"
-
-    def skipped_op():
-        skipped_executed[0] = True
-        return "should_not_run"
-
-    t1 = threading.Thread(target=lambda: conn.run_on_worker(blocking_op)(), daemon=True)
-    t1.start()
-
-    time.sleep(0.05)
-
-    with pytest.raises(authconn.OperationCanceled):
-        conn.run_on_worker(skipped_op, cancel_check=lambda: True)()
-
-    gate.set()
-    conn._worker_queue.join()
-
-    assert not skipped_executed[0], "Queued request with req_state['cancelled'] must be skipped"
-
-
-def test_cancellation_of_request_a_does_not_affect_request_b():
-    conn = authconn.Connection(host="127.0.0.1", port=631, encryption=cups.HTTP_ENCRYPT_NEVER)
-    a_started = threading.Event()
-    a_release = threading.Event()
-    a_errors = []
-    a_results = []
-    b_errors = []
-    b_results = []
-
-    def op_a():
-        a_started.set()
-        a_release.wait(timeout=2.0)
-        return "result_a"
-
-    def op_b():
-        return "result_b"
-
-    def run_a():
-        try:
-            res = conn.run_on_worker(op_a)()
-            a_results.append(res)
-        except Exception as e:
-            a_errors.append(e)
-
-    def run_b():
-        try:
-            res = conn.run_on_worker(op_b)()
-            b_results.append(res)
-        except Exception as e:
-            b_errors.append(e)
-
-    t_a = threading.Thread(target=run_a, daemon=True)
-    t_a.start()
-    assert a_started.wait(timeout=2.0), "Request A failed to start"
-
-    t_b = threading.Thread(target=run_b, daemon=True)
-    t_b.start()
-
-    deadline = time.monotonic() + 2.0
-    req_b = None
-    while time.monotonic() < deadline:
-        with conn._worker_lock:
-            if len(conn._pending_requests) >= 2:
-                req_b = conn._pending_requests[1]
-                break
-        time.sleep(0.01)
-    assert req_b is not None, "Request B was not queued in pending requests within timeout"
-
-    conn.cancel()
-
-    t_a.join(timeout=2.0)
-    assert not t_a.is_alive(), "Thread A did not exit after cancellation"
-    assert len(a_errors) == 1, "Request A should have raised an exception"
-    assert isinstance(a_errors[0], authconn.OperationCanceled), "Request A should raise OperationCanceled"
-
-    assert req_b['cancelled'] is False, "Request B's req_state must NOT be marked cancelled"
-
-    a_release.set()
-
-    t_b.join(timeout=2.0)
-    assert not t_b.is_alive(), "Thread B did not finish"
-    assert len(b_errors) == 0, f"Request B failed unexpectedly: {b_errors}"
-    assert b_results == ["result_b"], "Request B should return expected result"
-
-    res_c = conn.run_on_worker(lambda: "result_c")()
-    assert res_c == "result_c", "Independent Request C should execute and return normally"
-    assert conn._cancel is False, "Connection cancellation flag should be reset for fresh operation"
-
