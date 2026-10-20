@@ -898,10 +898,35 @@ class NewPrinterGUI(GtkGUI):
         self._initialiseWidgetsForMode ("duplicate")
         if getattr(self, 'discovered_device', None) is not None:
             self.device = self.discovered_device
-            if "driverless" in self.device.info:
+            if getattr(self.device, 'make_and_model', '') and "driverless" in self.device.make_and_model:
+                self.device.driverless = True
+            elif "driverless" in self.device.info:
                 self.device.driverless = True
         else:
             self._initialiseDeviceFromURI ()
+
+        # Fallback to reconstructing device metadata from the existing PPD
+        # so duplicate mode can match drivers as accurately as add printer mode
+        if self.orig_ppd and getattr(self, 'device', None):
+            if not getattr(self.device, 'id', ''):
+                attr = self.orig_ppd.findAttr("1284DeviceID")
+                if attr and attr.value:
+                    self.device.id = attr.value
+                    self.device.id_dict = cupshelpers.parseDeviceID(self.device.id)
+
+            if not getattr(self.device, 'make_and_model', ''):
+                attr = self.orig_ppd.findAttr("ModelName")
+                if attr and attr.value:
+                    self.device.make_and_model = attr.value
+
+            if not getattr(self.device, 'driverless', False):
+                # A driverless PPD might have "driverless" in its NickName or ShortNickName
+                for attr_name in ("ShortNickName", "NickName", "ModelName"):
+                    attr = self.orig_ppd.findAttr(attr_name)
+                    if attr and attr.value and "driverless" in attr.value.lower():
+                        self.device.driverless = True
+                        break
+
         if self.orig_ppd:
             self.ppd = self.orig_ppd
             self.entNPDriver.set_text (
@@ -1049,29 +1074,31 @@ class NewPrinterGUI(GtkGUI):
         and dialog_mode is one of the printer creation modes.
         """
 
-        self._getPPDs_reply (ppdsloader)
-        if not self.ppds:
+        try:
+            self._getPPDs_reply (ppdsloader)
+            if not self.ppds:
+                self._set_driver_ppd_loading(False)
+                self.setNPButtons()
+                return
+
+            if ppdsloader._jockey_has_answered:
+                self.searchedfordriverpackages = True
+
+            debugprint ("Loaded PPDs this time; try nextNPTab again...")
+            self.nextnptab_rerun = True
+            if self.ntbkNewPrinter.get_current_page () in (self.PAGE_DESCRIBE_PRINTER,
+                                                           self.PAGE_SELECT_INSTALL_METHOD):
+                self.ntbkNewPrinter.set_current_page (self.PAGE_SELECT_INSTALL_METHOD)
+                self.nextNPTab (step = 0)
+            else:
+                self.nextNPTab ()
             self._set_driver_ppd_loading(False)
-            self.setNPButtons()
-            return
-
-        if ppdsloader._jockey_has_answered:
-            self.searchedfordriverpackages = True
-
-        debugprint ("Loaded PPDs this time; try nextNPTab again...")
-        self.nextnptab_rerun = True
-        if self.ntbkNewPrinter.get_current_page () in (self.PAGE_DESCRIBE_PRINTER,
-                                                       self.PAGE_SELECT_INSTALL_METHOD):
-            self.ntbkNewPrinter.set_current_page (self.PAGE_SELECT_INSTALL_METHOD)
-            self.nextNPTab (step = 0)
-        else:
-            self.nextNPTab ()
-        self._set_driver_ppd_loading(False)
+        finally:
+            self._hide_searching_spinner()
 
     # get PPDs
 
     def _getPPDs_reply (self, ppdsloader):
-        self._hide_searching_spinner()
         exc = ppdsloader.get_error ()
         if exc:
             ppdsloader.destroy ()
@@ -1977,7 +2004,18 @@ class NewPrinterGUI(GtkGUI):
 
         self.cups._begin_operation(_("validating driverless PPD"))
         try:
-            f = self.cups.getServerPPD(ppdname)
+            if isinstance(getattr(self, 'cups', None), authconn.Connection):
+                f = self.cups.run_on_worker(self.cups.getServerPPD)(ppdname)
+            else:
+                f = self.cups.getServerPPD(ppdname)
+
+            if getattr(self, 'device', None) is None:
+                try:
+                    os.unlink(f)
+                except OSError:
+                    pass
+                return None
+
             try:
                 ppd = cups.PPD(f)
                 return ppd
@@ -2088,6 +2126,10 @@ class NewPrinterGUI(GtkGUI):
             if getattr(self.device, 'driverless', False):
                 ppdname = "driverless:%s" % self.device.uri
                 validated_ppd = self._validateDriverlessPPD(ppdname)
+
+                if getattr(self, 'device', None) is None:
+                    return
+
                 if validated_ppd is None:
                     debugprint("Driverless PPD validation failed; abandoning driverless mode completely")
                     self.device.driverless = False
@@ -2195,6 +2237,10 @@ class NewPrinterGUI(GtkGUI):
                 else:
                     while ppdnamelist and isinstance(ppdnamelist[0], str) and ppdnamelist[0].startswith("driverless:"):
                         validated_ppd = self._validateDriverlessPPD(ppdnamelist[0])
+
+                        if getattr(self, 'device', None) is None:
+                            return
+
                         if validated_ppd is None:
                             debugprint("Driverless PPD validation failed; abandoning driverless mode completely")
                             self.device.driverless = False
@@ -2219,7 +2265,7 @@ class NewPrinterGUI(GtkGUI):
                 else:
                     ppdname = None
                     status = None
-            elif (self.dialog_mode == "ppd" and self.orig_ppd):
+            elif (self.dialog_mode in ("ppd", "duplicate") and self.orig_ppd):
                 attr = self.orig_ppd.findAttr("NickName")
                 if not attr:
                     attr = self.orig_ppd.findAttr("ModelName")
@@ -4236,7 +4282,9 @@ class NewPrinterGUI(GtkGUI):
     ###
 
     def getDeviceURI(self):
-        if self.dialog_mode in ['printer_with_uri', 'ppd']:
+        if self.dialog_mode in ['printer_with_uri', 'ppd'] or (
+                self.dialog_mode == "duplicate" and
+                getattr(self, 'duplicate_driver_selection', False)):
             return self.device.uri
 
         type = self.device.type
@@ -5000,7 +5048,12 @@ class NewPrinterGUI(GtkGUI):
             self.cups._begin_operation (_("fetching PPD"))
             try:
                 if ppd != "raw":
-                    f = self.cups.getServerPPD(ppd)
+                    if isinstance(getattr(self, 'cups', None), authconn.Connection):
+                        f = self.cups.run_on_worker(
+                            self.cups.getServerPPD,
+                            spinner=getattr(self, 'spinner', None))(ppd)
+                    else:
+                        f = self.cups.getServerPPD(ppd)
                     ppd = cups.PPD(f)
                     os.unlink(f)
             except RuntimeError:

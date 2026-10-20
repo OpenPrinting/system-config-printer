@@ -94,3 +94,54 @@ class VectorSpinner(Gtk.DrawingArea):
 
         return False
 
+
+class DelayedSpinner:
+    """A wrapper for GTK/VectorSpinner widgets that delays spinner appearance
+    by a specified threshold (e.g. 200-300ms) to prevent visual flicker
+    for fast operations.
+    """
+
+    def __init__(self, spinner, delay_ms=250):
+        self._spinner = spinner
+        self._delay_ms = delay_ms
+        self._timer_id = None
+        self._is_shown = False
+
+    @property
+    def is_shown(self):
+        return self._is_shown
+
+    def start(self):
+        """Schedule delayed appearance of the spinner."""
+        if self._spinner is None or self._timer_id is not None or self._is_shown:
+            return
+        self._timer_id = GLib.timeout_add(self._delay_ms, self._on_delay_timer)
+
+    def _on_delay_timer(self):
+        self._timer_id = None
+        self._is_shown = True
+        if self._spinner is not None:
+            try:
+                self._spinner.show()
+                if hasattr(self._spinner, 'start'):
+                    self._spinner.start()
+            except (AttributeError, RuntimeError):
+                pass
+        return False
+
+    def stop(self):
+        """Cancel delayed timer if pending, or stop/hide spinner if visible."""
+        if self._timer_id is not None:
+            GLib.source_remove(self._timer_id)
+            self._timer_id = None
+
+        if self._is_shown:
+            self._is_shown = False
+            if self._spinner is not None:
+                try:
+                    if hasattr(self._spinner, 'stop'):
+                        self._spinner.stop()
+                    self._spinner.hide()
+                except (AttributeError, RuntimeError):
+                    pass
+

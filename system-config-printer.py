@@ -98,9 +98,11 @@ import troubleshoot
 import installpackage
 import jobviewer
 import authconn
+import asyncconn
 import monitor
 import errordialogs
 from errordialogs import *
+from vectorspinner import VectorSpinner
 import userdefault
 from serversettings import ServerSettings
 from ToolbarSearchEntry import *
@@ -1667,20 +1669,80 @@ class GUI(GtkGUI):
 
     def _get_discovered_device_for_uri(self, uri):
         """Recover the normal Add Printer Device identity for a queue URI."""
-        try:
-            devices = cupshelpers.getDevices(self.cups)
-        except Exception:
+        def match_device(devices):
+            normalized_uri = newprinter._normalize_uri(uri).rstrip('/')
+            for device in devices.values():
+                if newprinter._normalize_uri(device.uri).rstrip('/') == normalized_uri:
+                    return device
             return None
 
-        normalized_uri = newprinter._normalize_uri(uri).rstrip('/')
-        for device in devices.values():
-            if newprinter._normalize_uri(device.uri).rstrip('/') == normalized_uri:
-                return device
-        return None
+        # For unit tests where self.cups is mocked or not a production authconn:
+        if not isinstance(getattr(self, 'cups', None), authconn.Connection):
+            try:
+                devices = cupshelpers.getDevices(self.cups)
+                return match_device(devices)
+            except Exception:
+                return None
+
+        # In production, use asyncconn to preserve privileged PolicyKit semantics
+        # while pumping the GLib main loop to prevent GTK freezes.
+        matched_device = [None]
+        loop = GLib.MainLoop()
+        timeout_id = [None]
+        conn = None
+
+        def on_reply(c, devices):
+            matched_device[0] = match_device(devices)
+            if loop.is_running():
+                loop.quit()
+
+        def on_error(c, exc):
+            if loop.is_running():
+                loop.quit()
+
+        def on_timeout():
+            timeout_id[0] = None
+            if loop.is_running():
+                loop.quit()
+            return False
+
+        try:
+            conn = asyncconn.Connection(parent=self.PrintersWindow,
+                                        host=self.connect_server,
+                                        encryption=self.connect_encrypt)
+            scheme = str(uri.split(':', 1)[0]) if ':' in uri else ''
+            schemes = [scheme] if scheme else []
+            if scheme in ['socket', 'lpd', 'ipp', 'ipps', 'dnssd']:
+                schemes.extend(['dnssd', 'snmp'])
+            kwds = {'reply_handler': on_reply, 'error_handler': on_error}
+            if schemes:
+                kwds['include_schemes'] = schemes
+
+            cupshelpers.getDevices(conn, **kwds)
+            timeout_id[0] = GLib.timeout_add(3000, on_timeout)
+            loop.run()
+        except Exception:
+            pass
+        finally:
+            if timeout_id[0] is not None:
+                GLib.source_remove(timeout_id[0])
+            if conn is not None:
+                try:
+                    conn.destroy()
+                except Exception:
+                    pass
+
+        return matched_device[0]
 
     def on_duplicate_activate(self, *UNUSED):
+        if getattr(self, '_duplicating', False):
+            return
+
         iconview = self.dests_iconview
         paths = iconview.get_selected_items ()
+        if not paths:
+            return
+
         model = self.dests_iconview.get_model ()
         iter = model.get_iter (paths[0])
         name = model.get_value (iter, 2)
@@ -1717,38 +1779,70 @@ class GUI(GtkGUI):
             return
 
         # For normal printers, use the New Printer GUI in duplicate mode
-        ppd_filename = None
-        try:
-            ppd_filename = self.cups.getPPD(name)
-            ppd_obj = cups.PPD(ppd_filename)
-        except (cups.IPPError, RuntimeError):
-            ppd_obj = None
-        finally:
-            if ppd_filename:
-                try:
-                    os.unlink(ppd_filename)
-                except OSError:
-                    pass
-
-        discovered_device = self._get_discovered_device_for_uri(
-            printer.device_uri)
-
+        self._duplicating = True
         busy (self.PrintersWindow)
         self.desensitise_new_printer_widgets ()
-        if not self.newPrinterGUI.init("duplicate",
-                                       device_uri=printer.device_uri,
-                                       name=name,
-                                       ppd=ppd_obj,
-                                       host=self.connect_server,
-                                       encryption=self.connect_encrypt,
-                                       parent=self.PrintersWindow,
-                                       description=printer.info,
-                                       location=printer.location,
-                                       is_shared=printer.is_shared,
-                                       discovered_device=discovered_device):
-            self.sensitise_new_printer_widgets ()
-            self.monitor.update ()
-        ready (self.PrintersWindow)
+
+        loading_dialog = Gtk.Dialog(title="", transient_for=self.PrintersWindow, modal=True, destroy_with_parent=True)
+        loading_dialog.set_decorated(False)
+        loading_dialog.set_resizable(False)
+
+        hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=15)
+        hbox.set_margin_start(20)
+        hbox.set_margin_end(20)
+        hbox.set_margin_top(20)
+        hbox.set_margin_bottom(20)
+
+        spinner = VectorSpinner()
+        spinner.start()
+        hbox.pack_start(spinner, False, False, 0)
+
+        label = Gtk.Label(label=_("Preparing Duplicate Printer…"))
+        hbox.pack_start(label, True, True, 0)
+
+        loading_dialog.get_content_area().pack_start(hbox, True, True, 0)
+        loading_dialog.show_all()
+
+        try:
+            ppd_filename = None
+            try:
+                if isinstance(getattr(self, 'cups', None), authconn.Connection):
+                    ppd_filename = self.cups.run_on_worker(
+                        self.cups.getPPD,
+                        spinner=spinner)(name)
+                else:
+                    ppd_filename = self.cups.getPPD(name)
+                ppd_obj = cups.PPD(ppd_filename)
+            except (cups.IPPError, RuntimeError, authconn.WorkerTimeoutError, authconn.WorkerUnavailableError):
+                ppd_obj = None
+            finally:
+                if ppd_filename:
+                    try:
+                        os.unlink(ppd_filename)
+                    except OSError:
+                        pass
+
+            discovered_device = self._get_discovered_device_for_uri(
+                printer.device_uri)
+
+            if not self.newPrinterGUI.init("duplicate",
+                                           device_uri=printer.device_uri,
+                                           name=name,
+                                           ppd=ppd_obj,
+                                           host=self.connect_server,
+                                           encryption=self.connect_encrypt,
+                                           parent=self.PrintersWindow,
+                                           description=printer.info,
+                                           location=printer.location,
+                                           is_shared=printer.is_shared,
+                                           discovered_device=discovered_device):
+                self.sensitise_new_printer_widgets ()
+                self.monitor.update ()
+        finally:
+            spinner.stop()
+            loading_dialog.destroy()
+            self._duplicating = False
+            ready (self.PrintersWindow)
 
     def on_entDuplicateName_changed(self, widget):
         # restrict
