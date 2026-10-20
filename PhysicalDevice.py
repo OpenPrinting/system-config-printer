@@ -22,6 +22,7 @@ import config
 import gettext
 gettext.install(domain=config.PACKAGE, localedir=config.localedir)
 import cupshelpers
+import re
 import urllib.parse
 import ppdippstr
 import socket
@@ -114,6 +115,14 @@ class PhysicalDevice:
                     host = ip
             except:
                 pass
+
+            if not ip:
+                m = re.match(
+                    r'^(.+)\._[a-z][a-z0-9-]*\._(?:tcp|udp)\.local\.?$',
+                    host, re.IGNORECASE)
+                if m and dnssdhost is None:
+                    dnssdhost = m.group(1)
+                    host = None
         elif (dnssdhost):
             try:
                 host = self._get_address(dnssdhost)
