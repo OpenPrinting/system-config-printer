@@ -73,6 +73,20 @@ class PhysicalDevice:
                 address = None
         return address
 
+    def _extract_dnssd_instance (self, host):
+        if not host:
+            return None
+            
+        h = host.rstrip ('.')
+        elements = h.rsplit ('.', 3)
+        if len (elements) == 4:
+            name, stype, protocol, domain = elements
+            if (domain.lower () == 'local' and
+                protocol.lower () in ('_tcp', '_udp') and
+                stype.startswith ('_')):
+                return urllib.parse.unquote (name)
+        return None
+
     def _get_host_from_uri (self, uri):
         hostport = None
         host = None
@@ -114,6 +128,12 @@ class PhysicalDevice:
                     host = ip
             except:
                 pass
+
+            if not ip and dnssdhost is None:
+                instance = self._extract_dnssd_instance (host)
+                if instance:
+                    dnssdhost = instance
+                    host = None
         elif (dnssdhost):
             try:
                 host = self._get_address(dnssdhost)
@@ -249,22 +269,13 @@ class PhysicalDevice:
             info = self._ppdippstr.get (self.devices[0].info)
         else:
             info = "%s %s" % (self.mfg, self.mdl)
-        if ((self._network_host and len (self._network_host) > 0) or \
-            (self.dnssd_hostname and len (self.dnssd_hostname) > 0)) and not \
+        if self._network_host and not self.dnssd_hostname and not \
             ((self.devices[0].uri.startswith('dnssd:') or \
               self.devices[0].uri.startswith('mdns:')) and \
               self.devices[0].uri.endswith('/cups')) and \
-            (not self._network_host or \
-             info.find(self._network_host) == -1) and \
-            (not self.dnssd_hostname or \
-             info.find(self.dnssd_hostname) == -1):
-            if not self.dnssd_hostname:
-                info += " (%s)" % self._network_host
-            elif not self._network_host:
-                info += " (%s)" % self.dnssd_hostname
-            else:
-                info += " (%s, %s)" % (self.dnssd_hostname, self._network_host)
-        elif len (self.sn) > 0:
+            info.find(self._network_host) == -1:
+            info += " (%s)" % self._network_host
+        elif len (self.sn) > 0 and not (self._network_host or self.dnssd_hostname):
             info += " (%s)" % self.sn
         return info
 
