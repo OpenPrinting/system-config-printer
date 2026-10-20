@@ -3824,14 +3824,14 @@ class NewPrinterGUI(GtkGUI):
                 (scheme, rest) = urllib.parse.splittype (device.uri)
                 (hostport, rest) = urllib.parse.splithost (rest)
                 (queue, rest) = urllib.parse.splitquery (rest)
-                if queue != '':
-                    if queue[0] == '/':
-                        queue = queue[1:]
+                if queue and queue.startswith('/'):
+                    queue = queue[1:]
 
-                    device.menuentry = (_("LPD/LPR queue '%s'")
+                if queue:
+                    device.menuentry = (_("LPD/LPR (queue %s)")
                                         % queue)
                 else:
-                    device.menuentry = _("LPD/LPR queue")
+                    device.menuentry = _("LPD/LPR (queue \"\")")
 
             elif device.type == "smb":
                 device.menuentry = _("Windows Printer via SAMBA")

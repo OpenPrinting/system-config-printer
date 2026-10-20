@@ -3806,6 +3806,10 @@ def test_multiprotocol_device_grouped_in_ui_and_connection_selection():
     path, phys = matched_rows[0]
     assert len(phys.get_devices()) == 2
 
+    row_label = model.get_value(model.get_iter(path), 0)
+    assert row_label == 'Broken Xerox B235 MFP'
+    assert '.local' not in row_label
+
     if path.get_depth() > 1:
         p = path.copy()
         p.up()
@@ -3817,6 +3821,9 @@ def test_multiprotocol_device_grouped_in_ui_and_connection_selection():
     uris_model = gui.tvNPDeviceURIs.get_model()
     assert len(uris_model) == 2, f"Expected 2 connections, got {len(uris_model)}"
 
+    conn_labels = [uris_model[i][0] for i in range(len(uris_model))]
+    assert 'LPD/LPR (queue "")' in conn_labels
+
     gui.tvNPDeviceURIs.set_cursor(Gtk.TreePath.new_from_indices([0]))
     gui.on_tvNPDeviceURIs_cursor_changed(gui.tvNPDeviceURIs)
     assert gui.device.uri == dev1.uri
@@ -3824,4 +3831,46 @@ def test_multiprotocol_device_grouped_in_ui_and_connection_selection():
     gui.tvNPDeviceURIs.set_cursor(Gtk.TreePath.new_from_indices([1]))
     gui.on_tvNPDeviceURIs_cursor_changed(gui.tvNPDeviceURIs)
     assert gui.device.uri == dev2.uri
+
+
+def test_lpd_queue_formatting():
+    """Verify LPD queue formatting in connections view:
+    Empty queue should display as 'LPD/LPR (queue "")',
+    and named queue should display as 'LPD/LPR (queue <name>)'."""
+    import os
+    os.environ["SYSTEM_CONFIG_PRINTER_UI"] = "ui"
+    from unittest.mock import MagicMock
+    import newprinter
+    import cupshelpers
+    from PhysicalDevice import PhysicalDevice
+
+    gui = newprinter.NewPrinterGUI()
+    gui.start_fetching_devices = MagicMock()
+    gui.fillDeviceTab()
+
+    dev_empty = cupshelpers.Device(
+        'lpd://printer.example.com/',
+        **{'device-class': 'network',
+           'device-make-and-model': 'Test Printer',
+           'device-id': 'MFG:Test;MDL:Printer;'})
+    phys_empty = PhysicalDevice(dev_empty)
+    model = gui.tvNPDevices.get_model()
+    path = model.append(None, [phys_empty.get_info(), phys_empty, False])
+    gui.tvNPDevices.set_cursor(model.get_path(path))
+    gui.on_tvNPDevices_cursor_changed(gui.tvNPDevices)
+    uris_model = gui.tvNPDeviceURIs.get_model()
+    assert uris_model[0][0] == 'LPD/LPR (queue "")'
+
+    dev_named = cupshelpers.Device(
+        'lpd://printer.example.com/print',
+        **{'device-class': 'network',
+           'device-make-and-model': 'Test Printer 2',
+           'device-id': 'MFG:Test;MDL:Printer 2;'})
+    phys_named = PhysicalDevice(dev_named)
+    path2 = model.append(None, [phys_named.get_info(), phys_named, False])
+    gui.tvNPDevices.set_cursor(model.get_path(path2))
+    gui.on_tvNPDevices_cursor_changed(gui.tvNPDevices)
+    uris_model = gui.tvNPDeviceURIs.get_model()
+    assert uris_model[0][0] == 'LPD/LPR (queue print)'
+
 

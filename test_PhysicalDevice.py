@@ -278,3 +278,83 @@ def test_multiprotocol_grouping_loop():
     assert len(hp) == 1
     assert len(xerox[0].get_devices()) == 3
     assert len(hp[0].get_devices()) == 1
+
+
+@pytest.mark.skipif(cups is None, reason="cups module not available")
+def test_extract_dnssd_instance():
+    """Verify _extract_dnssd_instance accurately parses DNS-SD service hostnames
+    and ignores normal hostnames and IP addresses."""
+    phys = PhysicalDevice(cupshelpers.Device('ipp://localhost'))
+
+    assert phys._extract_dnssd_instance('Broken%20Xerox%20B235%20MFP._ipps._tcp.local') == 'Broken Xerox B235 MFP'
+    assert phys._extract_dnssd_instance('Office._printer._tcp.local.') == 'Office'
+    assert phys._extract_dnssd_instance('Floor.2.Printer._ipp._tcp.local') == 'Floor.2.Printer'
+    assert phys._extract_dnssd_instance('Device._service._udp.local') == 'Device'
+    assert phys._extract_dnssd_instance('B%C3%BCro%20Drucker._ipps._tcp.local') == 'Büro Drucker'
+
+    assert phys._extract_dnssd_instance('printer.example.com') is None
+    assert phys._extract_dnssd_instance('printer.local') is None
+    assert phys._extract_dnssd_instance('192.168.1.100') is None
+    assert phys._extract_dnssd_instance('server.sub.example.local') is None
+    assert phys._extract_dnssd_instance('') is None
+    assert phys._extract_dnssd_instance(None) is None
+
+
+@pytest.mark.skipif(cups is None, reason="cups module not available")
+def test_get_info_clean_printer_name():
+    """Verify get_info() displays a clean printer name without cryptic .local hostnames."""
+    dnssd_dev = cupshelpers.Device(
+        'ipps://Broken%20Xerox%20B235%20MFP._ipps._tcp.local/',
+        **{'device-class': 'network',
+           'device-make-and-model': 'Broken Xerox B235 MFP',
+           'device-id': 'MFG:Xerox;MDL:B235 MFP;'})
+    phys_dnssd = PhysicalDevice(dnssd_dev)
+    assert phys_dnssd.get_info() == 'Xerox B235 MFP'
+    assert '.local' not in phys_dnssd.get_info()
+
+    ip_dev = cupshelpers.Device(
+        'socket://192.168.1.100',
+        **{'device-class': 'network',
+           'device-make-and-model': 'HP LaserJet 4000',
+           'device-id': 'MFG:HP;MDL:LaserJet 4000;'})
+    phys_ip = PhysicalDevice(ip_dev)
+    assert phys_ip.get_info() == 'HP LaserJet 4000 (192.168.1.100)'
+
+    local_dev = cupshelpers.Device(
+        'ipp://printer.local/ipp/print',
+        **{'device-class': 'network',
+           'device-make-and-model': 'HP LaserJet 4000',
+           'device-id': 'MFG:HP;MDL:LaserJet 4000;'})
+    phys_local = PhysicalDevice(local_dev)
+    assert phys_local.get_info() == 'HP LaserJet 4000 (printer.local)'
+
+    fqdn_dev = cupshelpers.Device(
+        'ipp://printer.example.com/ipp/print',
+        **{'device-class': 'network',
+           'device-make-and-model': 'HP LaserJet 4000',
+           'device-id': 'MFG:HP;MDL:LaserJet 4000;'})
+    phys_fqdn = PhysicalDevice(fqdn_dev)
+    assert phys_fqdn.get_info() == 'HP LaserJet 4000 (printer.example.com)'
+
+    usb_dev = cupshelpers.Device(
+        'usb://HP/LaserJet?serial=XYZ123',
+        **{'device-class': 'direct',
+           'device-make-and-model': 'HP LaserJet',
+           'device-id': 'MFG:HP;MDL:LaserJet;SN:XYZ123;'})
+    phys_usb = PhysicalDevice(usb_dev)
+    assert phys_usb.get_info() == 'HP LaserJet (XYZ123)'
+
+
+@pytest.mark.skipif(cups is None, reason="cups module not available")
+def test_multiprotocol_encoded_unicode_instance_grouped():
+    """Verify that multi-protocol printers with percent-encoded Unicode instance names
+    (e.g., spaces and non-ASCII chars) are correctly unquoted and grouped."""
+    dev_ipps = _make_dnssd_device('ipps://B%C3%BCro%20Drucker._ipps._tcp.local/')
+    dev_lpd = _make_dnssd_device('lpd://B%C3%BCro%20Drucker._printer._tcp.local/')
+
+    p_ipps = PhysicalDevice(dev_ipps)
+    p_lpd = PhysicalDevice(dev_lpd)
+    assert p_ipps.dnssd_hostname == 'Büro Drucker.local'
+    assert p_lpd.dnssd_hostname == 'Büro Drucker.local'
+    assert p_ipps == p_lpd
+
