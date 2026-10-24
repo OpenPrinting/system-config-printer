@@ -202,24 +202,133 @@ def _normalize_uri(uri):
 
     return urllib.parse.urlunsplit((scheme, netloc, parsed.path, parsed.query, parsed.fragment))
 
+def _device_from_object(dev, is_printer=False):
+    if isinstance(dev, cupshelpers.Device):
+        return dev
+
+    uri = getattr(dev, 'device_uri' if is_printer else 'uri', '')
+    if not uri:
+        return None
+
+    kw = {}
+    for attr in ('device_class', 'id', 'id_dict', 'make_and_model', 'info', 'location'):
+        if hasattr(dev, attr):
+            kw[attr.replace('_', '-')] = getattr(dev, attr)
+
+    if 'device-class' not in kw:
+        scheme = uri.split(':', 1)[0].lower() if uri else ''
+        if scheme in ('ipp', 'ipps', 'socket', 'lpd', 'http', 'https', 'dnssd', 'mdns'):
+            kw['device-class'] = 'network'
+        elif scheme in ('usb', 'parallel', 'serial'):
+            kw['device-class'] = 'direct'
+
+    try:
+        c_dev = cupshelpers.Device(uri, **kw)
+        if hasattr(dev, 'address'):
+            c_dev.address = dev.address
+        if hasattr(dev, 'hostname'):
+            c_dev.hostname = dev.hostname
+        return c_dev
+    except Exception:
+        return None
+
+def _same_physical_device(p1, p2):
+    if p1 is None or p2 is None:
+        return False
+    if p1.dnssd_hostname and p2.dnssd_hostname and p1.dnssd_hostname == p2.dnssd_hostname:
+        return True
+    if p1._network_host and p2._network_host and p1._network_host == p2._network_host:
+        return True
+    if p1.sn and p2.sn and p1.sn == p2.sn:
+        return True
+    try:
+        return p1 == p2
+    except Exception:
+        return False
+
 def _filter_configured_devices(discovered_devices, configured_printers):
     """
     Filter out already configured printers from the discovered devices list.
-    Matching is based on URI comparison using identical normalization rules.
+    Matching is performed per physical printer: if any connection of a discovered
+    printer matches a configured queue (by URI, DNS-SD service name, or serial),
+    all connections belonging to that physical printer are hidden.
     """
+    if not configured_printers:
+        return list(discovered_devices)
+
     configured_uris = set()
-    if configured_printers:
-        for p in configured_printers.values():
-            uri = getattr(p, 'device_uri', "")
-            if uri:
-                configured_uris.add(_normalize_uri(uri))
+    configured_dnssd = set()
+    configured_serials = set()
+
+    for p in configured_printers.values():
+        uri = getattr(p, 'device_uri', "")
+        if not uri:
+            continue
+        configured_uris.add(_normalize_uri(uri))
+        c_dev = _device_from_object(p, is_printer=True)
+        if c_dev is not None:
+            try:
+                p_conf = PhysicalDevice(c_dev)
+                if p_conf.dnssd_hostname:
+                    configured_dnssd.add(p_conf.dnssd_hostname)
+                if p_conf.sn:
+                    configured_serials.add(p_conf.sn)
+            except Exception:
+                pass
+
+    if not configured_uris:
+        return list(discovered_devices)
+
+    groups = []
+    phys_list = []
+
+    for d in discovered_devices:
+        c_dev = _device_from_object(d)
+        new_phys = None
+        if c_dev is not None:
+            try:
+                new_phys = PhysicalDevice(c_dev)
+            except Exception:
+                new_phys = None
+        matched = False
+        if new_phys is not None:
+            for i, p in enumerate(phys_list):
+                if _same_physical_device(p, new_phys):
+                    try:
+                        p.add_device(c_dev)
+                    except ValueError:
+                        pass
+                    groups[i].append(d)
+                    matched = True
+                    break
+        if not matched:
+            phys_list.append(new_phys)
+            groups.append([d])
 
     filtered_devices = []
-    for d in discovered_devices:
-        if _normalize_uri(d.uri) not in configured_uris:
-            filtered_devices.append(d)
-        else:
-            debugprint("Suppressing already configured device: %s" % d.uri)
+    for i, group in enumerate(groups):
+        p = phys_list[i]
+        is_configured = False
+
+        # 1. Exact normalized URI match for any device in this physical printer group
+        for d in group:
+            uri = getattr(d, 'uri', '')
+            if uri and _normalize_uri(uri) in configured_uris:
+                is_configured = True
+                debugprint("Suppressing physical device due to configured URI match: %s" % uri)
+                break
+
+        # 2. DNS-SD service name or serial number match
+        if not is_configured and p is not None:
+            if p.dnssd_hostname and p.dnssd_hostname in configured_dnssd:
+                is_configured = True
+                debugprint("Suppressing physical device due to configured DNS-SD match: %s" % p.dnssd_hostname)
+            elif p.sn and p.sn in configured_serials:
+                is_configured = True
+                debugprint("Suppressing physical device due to configured serial match: %s" % p.sn)
+
+        if not is_configured:
+            filtered_devices.extend(group)
 
     return filtered_devices
 
