@@ -3874,3 +3874,92 @@ def test_lpd_queue_formatting():
     assert uris_model[0][0] == 'LPD/LPR (queue print)'
 
 
+def _setup_make_list_gui(device_kwargs, auto_make):
+    gui = newprinter.NewPrinterGUI.__new__(newprinter.NewPrinterGUI)
+    if device_kwargs is not None:
+        gui.device = cupshelpers.Device('lpd://192.168.1.50/queue', **device_kwargs)
+    else:
+        gui.device = None
+    gui.auto_make = auto_make
+    gui.auto_model = ""
+    gui.auto_driver = None
+    gui.ppds = MagicMock()
+    gui.ppds.getMakes.return_value = ["Generic", "Alps", "Brother", "Canon", "Epson", "HP"]
+    makes_model = Gtk.ListStore(str, str)
+    gui.tvNPMakes = MagicMock()
+    gui.tvNPMakes.get_model.return_value = makes_model
+    gui.entNPDownloadableDriverSearch = MagicMock()
+    return gui, makes_model
+
+
+def test_fill_make_list_detected_make_preselected():
+    """Case 1: Detected make: Canon MF645C, auto_make '' -> Canon selected and scrolled."""
+    dev = {"device-class": "network", "device-make-and-model": "Canon MF645C", "device-id": "MFG:Canon;MDL:MF645C;"}
+    gui, model = _setup_make_list_gui(dev, "")
+    gui.fillMakeList()
+
+    cursor_path = gui.tvNPMakes.set_cursor.call_args[0][0]
+    idx = cursor_path.get_indices()[0]
+    assert model[idx][1] == "Canon"
+    gui.tvNPMakes.scroll_to_cell.assert_called_with(cursor_path, None, True, 0.5, 0.5)
+
+
+def test_fill_make_list_generic_recommended_selects_detected_make():
+    """Case 2: Generic-recommended: Canon MF645C, auto_make 'Generic' -> Canon selected."""
+    dev = {"device-class": "network", "device-make-and-model": "Canon MF645C", "device-id": "MFG:Canon;MDL:MF645C;"}
+    gui, model = _setup_make_list_gui(dev, "Generic")
+    gui.fillMakeList()
+
+    cursor_path = gui.tvNPMakes.set_cursor.call_args[0][0]
+    idx = cursor_path.get_indices()[0]
+    assert model[idx][1] == "Canon"
+    gui.tvNPMakes.scroll_to_cell.assert_called_with(cursor_path, None, True, 0.5, 0.5)
+
+
+def test_fill_make_list_unavailable_make_keeps_generic():
+    """Case 3: Unavailable: empty or Unknown make -> first row (Generic) unchanged."""
+    dev = {"device-class": "network", "device-make-and-model": "Unknown", "device-id": ""}
+    gui, model = _setup_make_list_gui(dev, "")
+    gui.fillMakeList()
+
+    cursor_path = gui.tvNPMakes.set_cursor.call_args[0][0]
+    assert not cursor_path.get_indices() or cursor_path.get_indices() == [0]
+    gui.tvNPMakes.scroll_to_cell.assert_called_with(0, None, True, 0.0, 0.0)
+
+
+def test_fill_make_list_not_in_list_keeps_generic():
+    """Case 4: Not in list: CustomBrand 1000 -> first row (Generic) unchanged."""
+    dev = {"device-class": "network", "device-make-and-model": "CustomBrand 1000", "device-id": "MFG:CustomBrand;MDL:1000;"}
+    gui, model = _setup_make_list_gui(dev, "")
+    gui.fillMakeList()
+
+    cursor_path = gui.tvNPMakes.set_cursor.call_args[0][0]
+    assert not cursor_path.get_indices() or cursor_path.get_indices() == [0]
+    gui.tvNPMakes.scroll_to_cell.assert_called_with(0, None, True, 0.0, 0.0)
+
+
+def test_fill_make_list_case_normalization():
+    """Case 5: Normalization: CANON MF645C -> Canon selected."""
+    dev = {"device-class": "network", "device-make-and-model": "CANON MF645C", "device-id": "MFG:CANON;MDL:MF645C;"}
+    gui, model = _setup_make_list_gui(dev, "")
+    gui.fillMakeList()
+
+    cursor_path = gui.tvNPMakes.set_cursor.call_args[0][0]
+    idx = cursor_path.get_indices()[0]
+    assert model[idx][1] == "Canon"
+    gui.tvNPMakes.scroll_to_cell.assert_called_with(cursor_path, None, True, 0.5, 0.5)
+
+
+def test_fill_make_list_real_recommended_make_preserved():
+    """Case 6: Real recommended make: auto_make 'Brother' with Canon device -> Brother stays selected."""
+    dev = {"device-class": "network", "device-make-and-model": "Canon MF645C", "device-id": "MFG:Canon;MDL:MF645C;"}
+    gui, model = _setup_make_list_gui(dev, "Brother")
+    gui.fillMakeList()
+
+    cursor_path = gui.tvNPMakes.set_cursor.call_args[0][0]
+    idx = cursor_path.get_indices()[0]
+    assert model[idx][1] == "Brother"
+    gui.tvNPMakes.scroll_to_cell.assert_called_with(cursor_path, None, True, 0.5, 0.5)
+
+
+

@@ -4571,9 +4571,33 @@ class NewPrinterGUI(GtkGUI):
         else:
             auto_make_norm = None
 
+        has_real_recommended = (auto_make_norm is not None and
+                                auto_make_norm not in ("", "generic", "unknown"))
+
+        detected_make = None
+        if not has_real_recommended and self.device is not None:
+            id_dict = getattr(self.device, 'id_dict', None)
+            if isinstance(id_dict, dict):
+                mfg = id_dict.get("MFG")
+                if mfg and cupshelpers.ppds.normalize(mfg) not in ("", "generic", "unknown"):
+                    detected_make = mfg
+
+            if not detected_make:
+                make_and_model = getattr(self.device, 'make_and_model', None)
+                if make_and_model and cupshelpers.ppds.normalize(make_and_model) not in ("", "generic", "unknown"):
+                    try:
+                        mfg, mdl = cupshelpers.ppds.ppdMakeModelSplit(make_and_model)
+                        if mfg and cupshelpers.ppds.normalize(mfg) not in ("", "generic", "unknown"):
+                            detected_make = mfg
+                    except Exception:
+                        pass
+
+        detected_make_norm = cupshelpers.ppds.normalize(detected_make) if detected_make else None
+
         for make in makes:
+            make_norm = cupshelpers.ppds.normalize (make)
             recommended = (auto_make_norm and
-                           cupshelpers.ppds.normalize (make) == auto_make_norm)
+                           make_norm == auto_make_norm)
             if self.device and self.device.make_and_model and recommended:
                 if getattr(self, 'auto_driver', None) and self.auto_driver.startswith("driverless:"):
                     clean_name = self.device.make_and_model
@@ -4591,7 +4615,13 @@ class NewPrinterGUI(GtkGUI):
                 text = make
 
             iter = model.append((text, make,))
-            if recommended:
+
+            if has_real_recommended:
+                is_target = recommended
+            else:
+                is_target = bool(detected_make_norm and make_norm == detected_make_norm)
+
+            if is_target and not found:
                 path = model.get_path(iter)
                 self.tvNPMakes.set_cursor (path, None, False)
                 self.tvNPMakes.scroll_to_cell(path, None,
