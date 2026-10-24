@@ -22,7 +22,6 @@
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 import math
-import cairo
 
 from gi.repository import Gtk
 from gi.repository import GLib
@@ -83,7 +82,9 @@ class VectorSpinner(Gtk.DrawingArea):
         line_width = max(size * 0.08, 2.0)
 
         cr.set_line_width(line_width)
-        cr.set_line_cap(cairo.LINE_CAP_ROUND)
+        # cairo.Context is supplied by GTK; avoid importing the optional
+        # Python cairo bindings just for this enum value.
+        cr.set_line_cap(1)  # cairo.LINE_CAP_ROUND
         cr.set_source_rgba(0.4, 0.4, 0.4, 1.0)
         angle_offset = self._step * (2 * math.pi / 36)
         start_angle = angle_offset

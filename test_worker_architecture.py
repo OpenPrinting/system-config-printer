@@ -20,6 +20,7 @@
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 import os
+from pathlib import Path
 import tempfile
 import threading
 import time
@@ -28,6 +29,42 @@ import cups
 import authconn
 from vectorspinner import DelayedSpinner, VectorSpinner
 from gi.repository import GLib, Gtk
+
+
+def test_vector_spinner_does_not_import_python_cairo():
+    source = (Path(__file__).parent / "vectorspinner.py").read_text()
+    assert "import cairo" not in source
+    assert "from cairo" not in source
+
+
+def test_vector_spinner_draws_with_gtk_context():
+    # Avoid constructing a native widget in the headless unit-test process;
+    # exercise the drawing logic with the same state the constructor sets.
+    spinner = VectorSpinner.__new__(VectorSpinner)
+    spinner._size = 32
+    spinner._step = 0
+    calls = []
+
+    class DrawContext:
+        def set_line_width(self, value):
+            calls.append(("line_width", value))
+
+        def set_line_cap(self, value):
+            calls.append(("line_cap", value))
+
+        def set_source_rgba(self, *values):
+            calls.append(("color", values))
+
+        def arc(self, *values):
+            calls.append(("arc", values))
+
+        def stroke(self):
+            calls.append(("stroke",))
+
+    assert spinner._on_draw(spinner, DrawContext()) is False
+    assert ("line_cap", 1) in calls
+    assert any(call[0] == "arc" for call in calls)
+    assert ("stroke",) in calls
 
 
 class FakeCupsConnection:
