@@ -4572,7 +4572,8 @@ class NewPrinterGUI(GtkGUI):
             auto_make_norm = None
 
         has_real_recommended = (auto_make_norm is not None and
-                                auto_make_norm not in ("", "generic", "unknown"))
+                                auto_make_norm not in ("", "generic", "unknown") and
+                                any(cupshelpers.ppds.normalize(m) == auto_make_norm for m in makes))
 
         detected_make = None
         if not has_real_recommended and self.device is not None:

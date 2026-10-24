@@ -3874,7 +3874,7 @@ def test_lpd_queue_formatting():
     assert uris_model[0][0] == 'LPD/LPR (queue print)'
 
 
-def _setup_make_list_gui(device_kwargs, auto_make):
+def _setup_make_list_gui(device_kwargs, auto_make, makes=None):
     gui = newprinter.NewPrinterGUI.__new__(newprinter.NewPrinterGUI)
     if device_kwargs is not None:
         gui.device = cupshelpers.Device('lpd://192.168.1.50/queue', **device_kwargs)
@@ -3884,7 +3884,9 @@ def _setup_make_list_gui(device_kwargs, auto_make):
     gui.auto_model = ""
     gui.auto_driver = None
     gui.ppds = MagicMock()
-    gui.ppds.getMakes.return_value = ["Generic", "Alps", "Brother", "Canon", "Epson", "HP"]
+    if makes is None:
+        makes = ["Generic", "Alps", "Brother", "Canon", "Epson", "HP"]
+    gui.ppds.getMakes.return_value = makes
     makes_model = Gtk.ListStore(str, str)
     gui.tvNPMakes = MagicMock()
     gui.tvNPMakes.get_model.return_value = makes_model
@@ -3961,5 +3963,64 @@ def test_fill_make_list_real_recommended_make_preserved():
     assert model[idx][1] == "Brother"
     gui.tvNPMakes.scroll_to_cell.assert_called_with(cursor_path, None, True, 0.5, 0.5)
 
+
+def test_fill_make_list_auto_make_not_in_list_uses_detected_mfg():
+    """1. auto_make 'Xerox(R)', id_dict MFG 'Xerox', makes include Xerox -> Xerox selected."""
+    dev = {"device-class": "network",
+           "device-make-and-model": "Xerox(R) B235 MFP",
+           "device-id": "MFG:Xerox;MDL:B235 MFP;"}
+    gui, model = _setup_make_list_gui(
+        dev, "Xerox(R)",
+        makes=["Generic", "Alps", "Brother", "Canon", "Epson", "HP", "Xerox"]
+    )
+    gui.fillMakeList()
+
+    cursor_path = gui.tvNPMakes.set_cursor.call_args[0][0]
+    idx = cursor_path.get_indices()[0]
+    assert model[idx][1] == "Xerox"
+    gui.tvNPMakes.scroll_to_cell.assert_called_with(cursor_path, None, True, 0.5, 0.5)
+
+
+def test_fill_make_list_auto_make_matching_row_preserved_over_detected():
+    """2. auto_make 'Brother' matching a row, device make Canon -> Brother stays."""
+    dev = {"device-class": "network",
+           "device-make-and-model": "Canon MF645C",
+           "device-id": "MFG:Canon;MDL:MF645C;"}
+    gui, model = _setup_make_list_gui(dev, "Brother")
+    gui.fillMakeList()
+
+    cursor_path = gui.tvNPMakes.set_cursor.call_args[0][0]
+    idx = cursor_path.get_indices()[0]
+    assert model[idx][1] == "Brother"
+    gui.tvNPMakes.scroll_to_cell.assert_called_with(cursor_path, None, True, 0.5, 0.5)
+
+
+def test_fill_make_list_auto_make_not_in_list_no_mfg_make_and_model_not_in_list_keeps_generic():
+    """3. auto_make 'Xerox(R)', no MFG, make_and_model 'Xerox(R) B235 MFP' -> Generic."""
+    dev = {"device-class": "network",
+           "device-make-and-model": "Xerox(R) B235 MFP",
+           "device-id": ""}
+    gui, model = _setup_make_list_gui(
+        dev, "Xerox(R)",
+        makes=["Generic", "Alps", "Brother", "Canon", "Epson", "HP", "Xerox"]
+    )
+    gui.fillMakeList()
+
+    cursor_path = gui.tvNPMakes.set_cursor.call_args[0][0]
+    assert not cursor_path.get_indices() or cursor_path.get_indices() == [0]
+    gui.tvNPMakes.scroll_to_cell.assert_called_with(0, None, True, 0.0, 0.0)
+
+
+def test_fill_make_list_auto_make_not_in_list_no_detected_make_keeps_generic():
+    """4. auto_make not in list and no detected make -> Generic."""
+    dev = {"device-class": "network",
+           "device-make-and-model": "Unknown",
+           "device-id": ""}
+    gui, model = _setup_make_list_gui(dev, "CustomBrand")
+    gui.fillMakeList()
+
+    cursor_path = gui.tvNPMakes.set_cursor.call_args[0][0]
+    assert not cursor_path.get_indices() or cursor_path.get_indices() == [0]
+    gui.tvNPMakes.scroll_to_cell.assert_called_with(0, None, True, 0.0, 0.0)
 
 
