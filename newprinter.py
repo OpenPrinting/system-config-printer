@@ -665,6 +665,7 @@ class NewPrinterGUI(GtkGUI):
         self._cancel_openprinting_ppd ()
         self._cancel_local_ppd_validation ()
         self._cancel_gpg_fingerprint_download ()
+        self._cancel_remote_cups_retrieval ()
         if self.SMBBrowseDialog:
             self.SMBBrowseDialog.destroy ()
             self.SMBBrowseDialog = None
@@ -1205,6 +1206,7 @@ class NewPrinterGUI(GtkGUI):
         self._cancel_openprinting_ppd ()
         self._cancel_local_ppd_validation ()
         self._cancel_gpg_fingerprint_download ()
+        self._cancel_remote_cups_retrieval ()
 
         self.NewPrinterWindow.hide()
         self._hide_searching_spinner()
@@ -1232,6 +1234,7 @@ class NewPrinterGUI(GtkGUI):
         self._cancel_openprinting_ppd ()
         self._cancel_local_ppd_validation ()
         self._cancel_gpg_fingerprint_download ()
+        self._cancel_remote_cups_retrieval ()
         self.nextNPTab(-1)
 
     def on_btnNPForward_clicked(self, widget):
@@ -1849,7 +1852,8 @@ class NewPrinterGUI(GtkGUI):
                     return self.INSTALL_RESULT_OPS_PENDING
 
         if page_nr == self.PAGE_SELECT_DEVICE or page_nr == self.PAGE_SELECT_INSTALL_METHOD:
-            self._selectDeviceForInstallation (uri)
+            if self._selectDeviceForInstallation (uri, step) is False:
+                return self.INSTALL_RESULT_OPS_PENDING
         elif page_nr == self.PAGE_DOWNLOAD_DRIVER and self.nextnptab_rerun == False:
             result = self._handleDriverInstallation ()
             if result == self.INSTALL_RESULT_OPS_PENDING:
@@ -1937,9 +1941,80 @@ class NewPrinterGUI(GtkGUI):
         if getattr (self, 'NewPrinterWindow', None) is not None:
             self.nextNPTab (step=0)
 
-    def _selectDeviceForInstallation (self, uri):
+    def _start_remote_cups_retrieval (self, uri, groups, step):
+        self._remote_cups_serial = getattr(self, '_remote_cups_serial', 0) + 1
+        serial = self._remote_cups_serial
+        self._show_searching_spinner (_("Checking remote printer"))
+        self._remote_cups_operation = TimedOperation (
+            self._remote_cups_retrieval_worker, args=(uri, groups),
+            callback=self._remote_cups_retrieval_finished,
+            context=(serial, uri, step))
+
+    def _remote_cups_retrieval_worker (self, uri, groups):
+        host, port_text, queue = groups
+        port = int(port_text[1:]) if port_text else 631
+        remotecupsqueue = None
+        info = ''
+        location = ''
+
+        try:
+            conn = http.client.HTTPConnection (host, port)
+            conn.request ("GET", "/printers/%s.ppd" % queue)
+            resp = conn.getresponse ()
+            if resp.status == 200:
+                remotecupsqueue = queue
+            resp.read ()
+        except Exception:
+            pass
+
+        try:
+            c = cups.Connection (host=host, port=port,
+                                 encryption=cups.HTTP_ENCRYPT_IF_REQUESTED)
+            attrs = c.getPrinterAttributes (
+                uri=uri, requested_attributes=['printer-info', 'printer-location'])
+            info = attrs.get ('printer-info', '')
+            location = attrs.get ('printer-location', '')
+        except Exception:
+            pass
+
+        return remotecupsqueue, info, location
+
+    def _cancel_remote_cups_retrieval (self):
+        operation = getattr(self, '_remote_cups_operation', None)
+        if operation is None:
+            return
+        self._remote_cups_serial = getattr(self, '_remote_cups_serial', 0) + 1
+        operation.cancel ()
+        self._remote_cups_operation = None
+        self._hide_searching_spinner ()
+
+    def _remote_cups_retrieval_finished (self, result, exc, context):
+        serial, uri, step = context
+        if serial != getattr(self, '_remote_cups_serial', None):
+            return
+        if getattr(self, '_remote_cups_operation', None) is None:
+            return
+        self._remote_cups_operation = None
+        self._hide_searching_spinner ()
+        if exc is not None:
+            debugprint ('Remote CUPS retrieval failed: %s' % repr(exc))
+            return
+        self.remotecupsqueue, info, location = result
+        if info:
+            self.entNPDescription.set_text (info)
+        if location:
+            self.device.location = location
+        self.nextnptab_rerun = True
+        self.nextNPTab (step=step)
+
+    def _selectDeviceForInstallation (self, uri, step=1):
         self._initialiseAutoVariables ()
         self.device.uri = self.getDeviceURI ()
+
+        res = re.search (r"ipp://(\S+?)(:\d+|)/printers/(\S+)", uri)
+        if res and not self.nextnptab_rerun:
+            self._start_remote_cups_retrieval (uri, res.groups(), step)
+            return False
 
         # Cancel the printer finder now as the user has
         # already selected their device.
@@ -1963,9 +2038,10 @@ class NewPrinterGUI(GtkGUI):
         # printer is a queue on a remote CUPS server which is
         # not automatically set up on our local CUPS server
         # (for example DNS-SD broadcasted queue from Mac OS X)
-        self.remotecupsqueue = None
+        if not self.nextnptab_rerun:
+            self.remotecupsqueue = None
         res = re.search (r"ipp://(\S+?)(:\d+|)/printers/(\S+)", uri)
-        if res:
+        if res and not self.nextnptab_rerun:
             resg = res.groups()
             if len (resg[1]) > 0:
                 port = int (resg[1][1:])
@@ -2017,6 +2093,7 @@ class NewPrinterGUI(GtkGUI):
                 uri.find ("/cups") != -1 and self.device.info):
             # Remote CUPS queue discovered by "dnssd" CUPS backend
             self.remotecupsqueue = self.device.info
+        return True
 
     def _handleDriverInstallation (self, driver=None, fingerprint=None):
         # Install package of the driver found on OpenPrinting

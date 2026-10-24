@@ -236,6 +236,11 @@ def _prepare_openprinting_ppd_gui():
     np._show_searching_spinner = MagicMock()
     np._hide_searching_spinner = MagicMock()
     np.NewPrinterWindow = MagicMock()
+    np.entNPDescription = MagicMock()
+    np.printers = {}
+    np.ppd = None
+    np.entNPName = MagicMock()
+    np.entNPDriver = MagicMock()
     return np
 
 
@@ -772,6 +777,176 @@ def test_gpg_completion_resumes_real_navigation_without_restarting(monkeypatch):
     np._start_gpg_fingerprint_download.assert_not_called()
     np.installdriverpackage.assert_called_once_with(driver, 'ABC')
     assert np.nextnptab_rerun is False
+
+
+def test_remote_cups_selection_starts_async_retrieval(monkeypatch):
+    np = get_dummy_gui()
+    np.nextnptab_rerun = False
+    np._show_searching_spinner = MagicMock()
+    operations = []
+    monkeypatch.setattr(newprinter, "TimedOperation",
+                        lambda *args, **kwargs: operations.append(
+                            FakePPDOperation(*args, **kwargs)) or operations[-1])
+
+    assert np._selectDeviceForInstallation(
+        "ipp://remote.example/printers/queue") is False
+    assert len(operations) == 1
+    assert operations[0].target == np._remote_cups_retrieval_worker
+
+
+def test_remote_cups_worker_reads_http_and_attributes(monkeypatch):
+    np = get_dummy_gui()
+    response = MagicMock(status=200)
+    http_connection = MagicMock()
+    http_connection.getresponse.return_value = response
+    monkeypatch.setattr(newprinter.http.client, "HTTPConnection",
+                        lambda host, port: http_connection)
+    cups_connection = MagicMock()
+    cups_connection.getPrinterAttributes.return_value = {
+        'printer-info': 'Remote printer', 'printer-location': 'Lab'}
+    monkeypatch.setattr(newprinter.cups, "Connection",
+                        lambda **kwargs: cups_connection)
+
+    result = np._remote_cups_retrieval_worker(
+        "ipp://remote.example/printers/queue",
+        ('remote.example', '', 'queue'))
+
+    http_connection.request.assert_called_once_with(
+        "GET", "/printers/queue.ppd")
+    response.read.assert_called_once_with()
+    cups_connection.getPrinterAttributes.assert_called_once()
+    assert result == ('queue', 'Remote printer', 'Lab')
+
+
+def test_remote_cups_stale_completion_is_ignored():
+    np = get_dummy_gui()
+    np._remote_cups_serial = 2
+    np._remote_cups_operation = FakePPDOperation(lambda: None)
+    np.nextNPTab = MagicMock()
+    np._remote_cups_retrieval_finished(
+        ('queue', 'info', 'location'), None,
+        (1, "ipp://old.example/printers/queue", 1))
+
+    np.nextNPTab.assert_not_called()
+    assert np.remotecupsqueue is False
+
+
+def test_remote_cups_real_continuation_does_not_repeat_retrieval(monkeypatch):
+    monkeypatch.setattr(newprinter, "busy", lambda window: None)
+    np = get_dummy_gui()
+    np.dialog_mode = "printer"
+    np.nextnptab_rerun = False
+    np.ppds = object()
+    np.remotecupsqueue = False
+    np.ntbkNewPrinter = MagicMock()
+    np.ntbkNewPrinter.get_current_page.return_value = np.PAGE_SELECT_DEVICE
+    np.btnNPForward = MagicMock()
+    np.setNPButtons = MagicMock()
+    np.NewPrinterWindow = MagicMock()
+    np.entNPDescription = MagicMock()
+    np.printers = {}
+    np.ppd = None
+    np.entNPName = MagicMock()
+    np.entNPDriver = MagicMock()
+    np._installPrinterFromDeviceID = MagicMock(
+        return_value=np.INSTALL_RESULT_DONE)
+    np.getDeviceURI = MagicMock(
+        return_value="ipp://remote.example/printers/queue")
+    np.device.uri = "ipp://remote.example/printers/queue"
+    operations = []
+    monkeypatch.setattr(newprinter, "TimedOperation",
+                        lambda *args, **kwargs: operations.append(
+                            FakePPDOperation(*args, **kwargs)) or operations[-1])
+
+    result = np._handlePrinterInstallationStage(np.PAGE_SELECT_DEVICE, 1)
+    assert result == np.INSTALL_RESULT_OPS_PENDING
+    assert len(operations) == 1
+
+    np.nextNPTab = newprinter.NewPrinterGUI.nextNPTab.__get__(np)
+    np._handlePrinterInstallationMode = newprinter.NewPrinterGUI._handlePrinterInstallationMode.__get__(np)
+    np._handlePrinterInstallationStage = newprinter.NewPrinterGUI._handlePrinterInstallationStage.__get__(np)
+    np._remote_cups_retrieval_finished(
+        ('queue', 'Remote printer', 'Lab'), None,
+        (1, "ipp://remote.example/printers/queue", 1))
+
+    assert len(operations) == 1
+    np._installPrinterFromDeviceID.assert_called_once()
+    assert np.remotecupsqueue == 'queue'
+    assert np.nextnptab_rerun is False
+
+
+def test_remote_cups_http_failure_preserves_attribute_fallback(monkeypatch):
+    np = get_dummy_gui()
+    http_connection = MagicMock()
+    http_connection.request.side_effect = OSError("offline")
+    monkeypatch.setattr(newprinter.http.client, "HTTPConnection",
+                        lambda host, port: http_connection)
+    cups_connection = MagicMock()
+    cups_connection.getPrinterAttributes.return_value = {
+        'printer-info': 'Fallback printer', 'printer-location': 'Office'}
+    monkeypatch.setattr(newprinter.cups, "Connection",
+                        lambda **kwargs: cups_connection)
+
+    result = np._remote_cups_retrieval_worker(
+        "ipp://remote.example/printers/queue",
+        ('remote.example', '', 'queue'))
+
+    assert result == (None, 'Fallback printer', 'Office')
+
+
+def test_remote_cups_attribute_failure_preserves_http_result(monkeypatch):
+    np = get_dummy_gui()
+    response = MagicMock(status=200)
+    http_connection = MagicMock()
+    http_connection.getresponse.return_value = response
+    monkeypatch.setattr(newprinter.http.client, "HTTPConnection",
+                        lambda host, port: http_connection)
+    cups_connection = MagicMock()
+    cups_connection.getPrinterAttributes.side_effect = RuntimeError("offline")
+    monkeypatch.setattr(newprinter.cups, "Connection",
+                        lambda **kwargs: cups_connection)
+
+    result = np._remote_cups_retrieval_worker(
+        "ipp://remote.example/printers/queue",
+        ('remote.example', '', 'queue'))
+
+    assert result == ('queue', '', '')
+
+
+def test_remote_cups_stale_completion_preserves_all_metadata():
+    np = get_dummy_gui()
+    np._remote_cups_serial = 5
+    np._remote_cups_operation = FakePPDOperation(lambda: None)
+    np.remotecupsqueue = 'current-queue'
+    np.device.uri = 'ipp://current/printers/current'
+    np.device.location = 'Current location'
+    np.nextNPTab = MagicMock()
+    np._remote_cups_retrieval_finished(
+        ('old-queue', 'Old printer', 'Old location'), None,
+        (4, "ipp://old/printers/old", 1))
+
+    assert np.remotecupsqueue == 'current-queue'
+    assert np.device.uri == 'ipp://current/printers/current'
+    assert np.device.location == 'Current location'
+    np.nextNPTab.assert_not_called()
+
+
+def test_remote_cups_cancelled_completion_is_ignored():
+    np = get_dummy_gui()
+    operation = FakePPDOperation(lambda: None)
+    np._remote_cups_serial = 6
+    np._remote_cups_operation = operation
+    np.remotecupsqueue = 'current-queue'
+    np.nextNPTab = MagicMock()
+
+    np._cancel_remote_cups_retrieval()
+    np._remote_cups_retrieval_finished(
+        ('old-queue', 'Old printer', 'Old location'), None,
+        (6, "ipp://old/printers/old", 1))
+
+    assert operation.cancelled is True
+    assert np.remotecupsqueue == 'current-queue'
+    np.nextNPTab.assert_not_called()
 
 def test_driverless_skip_snmp():
     np = get_dummy_gui()
