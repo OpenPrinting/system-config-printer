@@ -964,6 +964,29 @@ class NewPrinterGUI(GtkGUI):
     def _initialisePPDMode (self):
         self._initialiseDeviceFromURI ()
 
+        # Fallback to reconstructing device metadata from the existing PPD
+        # so change PPD mode can match drivers as accurately as add printer mode
+        if self.orig_ppd and getattr(self, 'device', None):
+            if not getattr(self.device, 'id', ''):
+                attr = self.orig_ppd.findAttr("1284DeviceID")
+                if attr and attr.value:
+                    self.device.id = attr.value
+                    self.device.id_dict = cupshelpers.parseDeviceID(self.device.id)
+
+            if not getattr(self.device, 'make_and_model', ''):
+                for attr_name in ("ModelName", "ShortNickName", "NickName"):
+                    attr = self.orig_ppd.findAttr(attr_name)
+                    if attr and attr.value:
+                        self.device.make_and_model = attr.value
+                        break
+
+            if not getattr(self.device, 'driverless', False):
+                for attr_name in ("ShortNickName", "NickName", "ModelName"):
+                    attr = self.orig_ppd.findAttr(attr_name)
+                    if attr and attr.value and "driverless" in attr.value.lower():
+                        self.device.driverless = True
+                        break
+
         self.NewPrinterWindow.set_title (_("Change Driver"))
 
         # We'll need to know the Device ID for this device.
@@ -4575,6 +4598,13 @@ class NewPrinterGUI(GtkGUI):
         target_make = None
         max_prefix_len = 0
         make_and_model = getattr(self.device, 'make_and_model', None) if self.device is not None else None
+        if not make_and_model and getattr(self, 'orig_ppd', None):
+            for attr_name in ("ModelName", "ShortNickName", "NickName"):
+                attr = self.orig_ppd.findAttr(attr_name)
+                if attr and attr.value:
+                    make_and_model = attr.value
+                    break
+
         if make_and_model:
             mm_lower = make_and_model.strip().lower()
             for make in makes:
@@ -4583,6 +4613,17 @@ class NewPrinterGUI(GtkGUI):
                 if make_lower and mm_lower.startswith(make_lower) and len(make_lower) > max_prefix_len:
                     target_make = make
                     max_prefix_len = len(make_lower)
+
+        # Fallback to orig_ppd Manufacturer if no prefix matched
+        if target_make is None and getattr(self, 'orig_ppd', None):
+            attr = self.orig_ppd.findAttr("Manufacturer")
+            if attr and attr.value:
+                mfg_norm = cupshelpers.ppds.normalize(attr.value)
+                if mfg_norm and mfg_norm not in ("", "generic", "unknown"):
+                    for make in makes:
+                        if cupshelpers.ppds.normalize(make) == mfg_norm:
+                            target_make = make
+                            break
 
         # Fallback to recommended auto_make if no prefix matched
         if target_make is None and auto_make_norm and auto_make_norm not in ("", "generic", "unknown"):
