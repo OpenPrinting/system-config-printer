@@ -4024,3 +4024,28 @@ def test_fill_make_list_auto_make_not_in_list_no_detected_make_keeps_generic():
     gui.tvNPMakes.scroll_to_cell.assert_called_with(0, None, True, 0.0, 0.0)
 
 
+def test_fit_none_fallback_uses_detected_xerox_make():
+    """A non-matching HP fallback must not override detected Xerox."""
+    np = get_dummy_gui()
+    np.device = cupshelpers.Device(
+        "lpd://192.168.1.50/queue",
+        **{"device-class": "network",
+           "device-make-and-model": "Xerox B235",
+           "device-id": "MFG:Xerox;MDL:B235;"}
+    )
+    np.device.driverless = False
+    np.ppds = MagicMock()
+    np.ppds.FIT_NONE = "none"
+    np.ppds.getInfoFromPPDName.return_value = {
+        "ppd-make-and-model": ["HP LaserJet Postscript"]
+    }
+    np.fillDriverList = MagicMock()
+    np.fillMakeList = MagicMock()
+
+    real_search = newprinter.NewPrinterGUI._installPrinterOrSearchForDriver.__get__(np)
+    real_search(np.device.id, "postscript-hp:0/ppd/hp.ppd", "none", 0, 1)
+
+    assert np.auto_make == "Xerox"
+    assert np.auto_driver is None
+
+

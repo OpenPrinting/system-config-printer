@@ -2328,7 +2328,7 @@ class NewPrinterGUI(GtkGUI):
                 self.auto_make = "Generic"
                 self.auto_model = "Driverless IPP"
                 self.auto_driver = ppdname
-            elif ppdname is not None and ppdname != "download":
+            elif ppdname is not None and ppdname != "download" and status not in ("none", getattr(self.ppds, 'FIT_NONE', 'none')):
                 self.auto_driver = ppdname
                 try:
                     ppddict = self.ppds.getInfoFromPPDName (ppdname)
