@@ -29,6 +29,7 @@ from gi.repository import Gtk
 import os
 import pwd
 import smbc
+import threading
 from debug import *
 
 class _None(RuntimeError):
@@ -196,3 +197,108 @@ class AuthContext:
         user = ''
         password = ''
         return (workgroup, user, password)
+
+
+class AuthenticationRequest:
+    """Thread-safe handoff for credentials requested by an SMB worker."""
+    PENDING = 'pending'
+    SUCCESS = 'success'
+    CANCELLED = 'cancelled'
+
+    def __init__ (self, operation_serial, request_serial=1,
+                  credentials_rejected=False):
+        self.operation_serial = operation_serial
+        self.request_serial = request_serial
+        self.credentials_rejected = credentials_rejected
+        self.state = self.PENDING
+        self.credentials = None
+        self.event = threading.Event ()
+        self._lock = threading.Lock ()
+
+    def success (self, credentials):
+        with self._lock:
+            if self.state != self.PENDING:
+                return False
+            self.credentials = credentials
+            self.state = self.SUCCESS
+            self.event.set ()
+            return True
+
+    complete = success
+
+    def cancel (self):
+        with self._lock:
+            if self.state != self.PENDING:
+                return False
+            self.state = self.CANCELLED
+            self.event.set ()
+            return True
+
+    def wait (self):
+        self.event.wait ()
+        with self._lock:
+            return self.state, self.credentials
+
+
+class WorkerAuthContext (AuthContext):
+    """Authentication state machine that delegates prompts to the GTK thread.
+
+    The callback must enqueue UI work and return immediately. This class never
+    creates or accesses GTK objects.
+    """
+    def __init__ (self, request_authentication, operation_serial,
+                  cancelled=None, parent=None, workgroup='', user='',
+                  passwd=''):
+        AuthContext.__init__ (self, parent, workgroup, user, passwd)
+        self.request_authentication = request_authentication
+        self.operation_serial = operation_serial
+        self.cancelled = cancelled or threading.Event ()
+        self._request_serial = 0
+
+    def perform_authentication (self):
+        if self.cancelled.is_set ():
+            self.cancel = True
+            return 0
+
+        self.passes += 1
+        if self.passes == 1:
+            return 1
+        if not self.has_failed:
+            return 0
+        if not self.auth_called:
+            self.cancel = True
+            return 0
+
+        self.has_failed = False
+        if not self.tried_guest:
+            self.use_user = 'guest'
+            self.use_password = ''
+            self.tried_guest = True
+            return 1
+
+        self.auth_called = False
+        self._request_serial += 1
+        request = AuthenticationRequest (
+            self.operation_serial, self._request_serial,
+            credentials_rejected=self.dialog_shown)
+        request.server = getattr (self, 'for_server', '')
+        request.share = getattr (self, 'for_share', '')
+        request.workgroup = self.use_workgroup
+        request.username = self.use_user
+        if request.username == 'guest':
+            try:
+                request.username = pwd.getpwuid (os.getuid ())[0]
+            except KeyError:
+                request.username = ''
+        try:
+            self.request_authentication (request)
+        except Exception:
+            request.cancel ()
+
+        state, credentials = request.wait ()
+        if state != AuthenticationRequest.SUCCESS:
+            self.cancel = True
+            return 0
+        self.use_workgroup, self.use_user, self.use_password = credentials
+        self.dialog_shown = True
+        return 1

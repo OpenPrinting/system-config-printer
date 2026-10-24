@@ -33,6 +33,7 @@ import sys, os, tempfile, time, re, http.client
 import locale
 import string
 import subprocess
+import threading
 from timedops import *
 import dbus
 from gi.repository import Gdk
@@ -320,6 +321,10 @@ class NewPrinterGUI(GtkGUI):
         self.printers = {} # set in init()
         self.recommended_model_selected = False
         self._installdialog = None
+        self._smb_operation_serial = 0
+        self._smb_operation_state = None
+        self._smb_auth_dialog = None
+        self._smb_window_destroyed = False
 
         self.getWidgets({"NewPrinterWindow":
                              ["NewPrinterWindow",
@@ -499,7 +504,8 @@ class NewPrinterGUI(GtkGUI):
 
         # Since some dialogs are reused we can't let the delete-event's
         # default handler destroy them
-        self.SMBBrowseDialog.connect ("delete-event", on_delete_just_hide)
+        self.SMBBrowseDialog.connect ("delete-event",
+                                      self.on_btnSMBBrowseCancel_clicked)
         self.WaitWindow_handler = self.WaitWindow.connect ("delete-event",
                                                            on_delete_just_hide)
 
@@ -653,6 +659,10 @@ class NewPrinterGUI(GtkGUI):
         self.device_selected = -1
         self.dialog_mode = "printer"
         self.connect_signals ()
+        self.entSMBUsername.connect ('changed',
+                                     self._smb_verify_inputs_changed)
+        self.entSMBPassword.connect ('changed',
+                                     self._smb_verify_inputs_changed)
         debugprint ("+%s" % self)
 
     def __del__ (self):
@@ -660,6 +670,16 @@ class NewPrinterGUI(GtkGUI):
 
     def do_destroy (self):
         debugprint ("DESTROY: %s" % self)
+        self._smb_window_destroyed = True
+        self._cancel_smb_operation ()
+        self._cancel_lpd_probe (hide_window=False)
+        self._cancel_required_package_install ()
+        self._cancel_openprinting_ppd ()
+        self._cancel_local_ppd_validation ()
+        self._cancel_gpg_fingerprint_download ()
+        self._cancel_remote_cups_retrieval ()
+        self._cancel_driver_installation ()
+        self._cancel_smbc_installation ()
         if self.SMBBrowseDialog:
             self.SMBBrowseDialog.destroy ()
             self.SMBBrowseDialog = None
@@ -748,6 +768,7 @@ class NewPrinterGUI(GtkGUI):
              description="", location="", is_shared=False,
              discovered_device=None):
         self.parent = parent
+        self._smb_window_destroyed = False
         if not self.parent:
             self.NewPrinterWindow.set_focus_on_map (False)
 
@@ -1137,7 +1158,11 @@ class NewPrinterGUI(GtkGUI):
             self.driverless_ppds = ppdsloader.get_driverless_ppds () or {}
         if ppds:
             self.ppds = ppds
-            if getattr(self, '_cached_driverless_ppd', None) and getattr(self, '_cached_driverless_ppd_name', None):
+            cached_dict = getattr(self, '_cached_driverless_ppds', None)
+            if cached_dict:
+                for k in cached_dict:
+                    self._add_validated_driverless_ppd_to_catalog(k)
+            elif getattr(self, '_cached_driverless_ppd', None) and getattr(self, '_cached_driverless_ppd_name', None):
                 self._add_validated_driverless_ppd_to_catalog(
                     self._cached_driverless_ppd_name)
             self.ppdsmatch_result = ppdsloader.get_ppdsmatch_result ()
@@ -1218,6 +1243,16 @@ class NewPrinterGUI(GtkGUI):
             self.printer_finder = None
             self.dec_spinner_task ()
 
+        self._cancel_lpd_probe ()
+        self._cancel_required_package_install ()
+        self._cancel_openprinting_ppd ()
+        self._cancel_local_ppd_validation ()
+        self._cancel_gpg_fingerprint_download ()
+        self._cancel_remote_cups_retrieval ()
+        self._cancel_driver_installation ()
+        self._cancel_smbc_installation ()
+        self._cancel_smb_operation ()
+
         self.NewPrinterWindow.hide()
         self._hide_searching_spinner()
         if getattr(self, 'opreq', None) is not None:
@@ -1239,6 +1274,15 @@ class NewPrinterGUI(GtkGUI):
                 self.ppdsloader.destroy ()
                 self.ppdsloader = None
             self._set_driver_ppd_loading(False)
+        self._cancel_lpd_probe ()
+        self._cancel_required_package_install ()
+        self._cancel_openprinting_ppd ()
+        self._cancel_local_ppd_validation ()
+        self._cancel_gpg_fingerprint_download ()
+        self._cancel_remote_cups_retrieval ()
+        self._cancel_driver_installation ()
+        self._cancel_smbc_installation ()
+        self._cancel_smb_operation ()
         self.nextNPTab(-1)
 
     def on_btnNPForward_clicked(self, widget):
@@ -1315,8 +1359,8 @@ class NewPrinterGUI(GtkGUI):
         self._driver_selection_spinner = spinner
         return True
 
-    def installdriverpackage (self, driver):
-        install_info = self._getDriverInstallationInfo (driver)
+    def installdriverpackage (self, driver, fingerprint=None):
+        install_info = self._getDriverInstallationInfo (driver, fingerprint)
         if not install_info:
             return False
 
@@ -1483,7 +1527,7 @@ class NewPrinterGUI(GtkGUI):
 
         return ret
 
-    def _getDriverInstallationInfo (self, driver):
+    def _getDriverInstallationInfo (self, driver, fingerprint=None):
         pkgs = driver.get('packages', {})
         arches = list(pkgs.keys())
         if len(arches) == 0:
@@ -1516,7 +1560,10 @@ class NewPrinterGUI(GtkGUI):
                 debugprint('Not installing driver as it does not have a GPG fingerprint URL')
                 return None
         else:
-            keyid = download_gpg_fingerprint(pkgs[pkg]['fingerprint'])
+            if fingerprint is None:
+                keyid = download_gpg_fingerprint(pkgs[pkg]['fingerprint'])
+            else:
+                keyid = fingerprint
             if config.DOWNLOADABLE_PKG_ONLYSIGNED and arches[0] not in ['all', 'noarch'] and not keyid:
                 debugprint('Not installing driver as it does not have a valid GPG fingerprint')
                 return None
@@ -1577,6 +1624,9 @@ class NewPrinterGUI(GtkGUI):
         if fetch_ppd:
             if not (self.dialog_mode == "duplicate" and
                     not self.duplicate_driver_selection):
+                if self._start_async_openprinting_ppd (step):
+                    self.btnNPForward.set_sensitive (False)
+                    return
                 self.ppd = self.getNPPPD()
             self.installable_options = False
             if self.ppd is None:
@@ -1846,12 +1896,16 @@ class NewPrinterGUI(GtkGUI):
             if uri and uri.startswith ("smb"):
                 # User has selected an smb device
                 uri = SMBURI (uri=uri[6:]).sanitize_uri ()
-                self._installSMBBackendIfNeeded ()
+                if not self._installSMBBackendIfNeeded ():
+                    return self.INSTALL_RESULT_OPS_PENDING
 
         if page_nr == self.PAGE_SELECT_DEVICE or page_nr == self.PAGE_SELECT_INSTALL_METHOD:
-            self._selectDeviceForInstallation (uri)
+            if self._selectDeviceForInstallation (uri, step) is False:
+                return self.INSTALL_RESULT_OPS_PENDING
         elif page_nr == self.PAGE_DOWNLOAD_DRIVER and self.nextnptab_rerun == False:
-            self._handleDriverInstallation ()
+            result = self._handleDriverInstallation ()
+            if result == self.INSTALL_RESULT_OPS_PENDING:
+                return result
 
         devid = None
         if not self.remotecupsqueue or self.dialog_mode == "ppd":
@@ -1870,7 +1924,8 @@ class NewPrinterGUI(GtkGUI):
 
         self.nextnptab_rerun = False
         if page_nr == self.PAGE_SELECT_DEVICE or page_nr == self.PAGE_SELECT_INSTALL_METHOD:
-            self._installHPScannerFilesIfNeeded ()
+            if not self._installHPScannerFilesIfNeeded ():
+                return self.INSTALL_RESULT_OPS_PENDING
 
         return self._installPrinterFromDeviceID (devid, page_nr, step)
 
@@ -1880,16 +1935,190 @@ class NewPrinterGUI(GtkGUI):
                (self._host == 'localhost' or self._host[0] == '/') and
                not os.access ("/usr/lib/cups/backend/smb", os.F_OK)):
             debugprint ("No smb backend so attempting install")
-            try:
-                pk = installpackage.PackageKit ()
-                # The following call means a blocking, synchronous, D-Bus call
-                pk.InstallPackageName (0, 0, "samba-client")
-            except:
-                nonfatalException ()
+            if getattr (self, '_smb_backend_install_pending', False):
+                return False
+            if getattr (self, '_smb_backend_install_done', False):
+                return True
+            self._smb_backend_install_pending = True
+            self._package_install_serial = getattr (self, '_package_install_serial', 0) + 1
+            package_serial = self._package_install_serial
+            self._show_searching_spinner (_("Installing required components"))
+            self._smb_backend_operation = TimedOperation (
+                self._install_package_worker, args=("samba-client",),
+                callback=self._required_package_install_finished,
+                context=("smb-backend", package_serial))
+            return False
+        return True
 
-    def _selectDeviceForInstallation (self, uri):
+    def _install_package_worker (self, package_name):
+        pk = installpackage.PackageKit ()
+        pk.InstallPackageName (0, 0, package_name)
+        return True
+
+    def _cancel_required_package_install (self):
+        operation = getattr (self, '_smb_backend_operation', None)
+        if operation is None:
+            operation = getattr (self, '_hp_scanner_operation', None)
+        if operation is None and not getattr (self, '_smb_backend_install_pending', False) \
+                and not getattr (self, '_hp_scanner_install_pending', False):
+            return
+        self._package_install_serial = getattr (self, '_package_install_serial', 0) + 1
+        if operation is not None:
+            operation.cancel ()
+        self._smb_backend_operation = None
+        self._hp_scanner_operation = None
+        self._smb_backend_install_pending = False
+        self._hp_scanner_install_pending = False
+
+    def _required_package_install_finished (self, result, exc, context):
+        package_kind, package_serial = context
+        if package_serial != getattr (self, '_package_install_serial', None):
+            return
+        if package_kind == "smb-backend":
+            self._smb_backend_install_pending = False
+            self._smb_backend_install_done = True
+            self._smb_backend_operation = None
+        else:
+            self._hp_scanner_install_pending = False
+            self._hp_scanner_install_done = True
+            self._hp_scanner_operation = None
+        self._hide_searching_spinner ()
+        if exc is not None:
+            debugprint ("PackageKit installation failed for %s: %s" %
+                        (package_kind, repr (exc)))
+        if getattr (self, 'NewPrinterWindow', None) is not None:
+            self.nextNPTab (step=0)
+
+    def _start_remote_cups_retrieval (self, uri, groups, step):
+        # The remote lookup is asynchronous.  Preserve the selected device
+        # metadata while the device finder/continuation machinery is paused;
+        # these fields are consumed later by the PPD matcher.
+        self._remote_cups_device_state = {
+            name: getattr (self.device, name, None)
+            for name in ("id", "id_dict", "make_and_model", "info", "uri")
+        }
+        if self._remote_cups_device_state["id_dict"] is not None:
+            self._remote_cups_device_state["id_dict"] = dict (
+                self._remote_cups_device_state["id_dict"])
+        self._remote_cups_serial = getattr(self, '_remote_cups_serial', 0) + 1
+        serial = self._remote_cups_serial
+        self._show_searching_spinner (_("Checking remote printer"))
+        self._remote_cups_operation = TimedOperation (
+            self._remote_cups_retrieval_worker, args=(uri, groups),
+            callback=self._remote_cups_retrieval_finished,
+            context=(serial, uri, step))
+
+    def _reuse_prepared_remote_state (self, uri):
+        prepared = getattr (self, '_prepared_remote_state', None)
+        if (not prepared or prepared.get ("uri") != uri or
+                prepared.get ("driverless_dependency") !=
+                self._remote_driverless_dependency ()):
+            return False
+
+        self.remotecupsqueue = prepared.get ("remotecupsqueue")
+        for name, value in prepared.get ("device", {}).items ():
+            if value is not None:
+                setattr (self.device, name, value)
+        if prepared.get ("info"):
+            self.entNPDescription.set_text (prepared["info"])
+        if prepared.get ("location"):
+            self.device.location = prepared["location"]
+        self.nextnptab_rerun = True
+        return True
+
+    def _remote_driverless_dependency (self):
+        # These are the driverless states which can make a previously
+        # prepared selection unusable.  The driverless flag itself is a
+        # normal result of matching and may legitimately change as the
+        # prepared printer is processed.
+        return (getattr (self.device, '_driverless_failed', False),
+                getattr (self, '_cached_driverless_ppd_name', None))
+
+    def _remote_cups_retrieval_worker (self, uri, groups):
+        host, port_text, queue = groups
+        port = int(port_text[1:]) if port_text else 631
+        remotecupsqueue = None
+        info = ''
+        location = ''
+
+        try:
+            conn = http.client.HTTPConnection (host, port)
+            conn.request ("GET", "/printers/%s.ppd" % queue)
+            resp = conn.getresponse ()
+            if resp.status == 200:
+                remotecupsqueue = queue
+            resp.read ()
+        except Exception:
+            pass
+
+        try:
+            c = cups.Connection (host=host, port=port,
+                                 encryption=cups.HTTP_ENCRYPT_IF_REQUESTED)
+            attrs = c.getPrinterAttributes (
+                uri=uri, requested_attributes=['printer-info', 'printer-location'])
+            info = attrs.get ('printer-info', '')
+            location = attrs.get ('printer-location', '')
+        except Exception:
+            pass
+
+        return remotecupsqueue, info, location
+
+    def _cancel_remote_cups_retrieval (self):
+        operation = getattr(self, '_remote_cups_operation', None)
+        if operation is None:
+            return
+        self._remote_cups_serial = getattr(self, '_remote_cups_serial', 0) + 1
+        operation.cancel ()
+        self._remote_cups_operation = None
+        self._hide_searching_spinner ()
+
+    def _remote_cups_retrieval_finished (self, result, exc, context):
+        serial, uri, step = context
+        if serial != getattr(self, '_remote_cups_serial', None):
+            return
+        if getattr(self, '_remote_cups_operation', None) is None:
+            return
+        self._remote_cups_operation = None
+        self._hide_searching_spinner ()
+        if exc is not None:
+            debugprint ('Remote CUPS retrieval failed: %s' % repr(exc))
+            return
+        device_state = getattr (self, '_remote_cups_device_state', None)
+        if device_state is not None:
+            for name, value in device_state.items ():
+                if value is not None:
+                    setattr (self.device, name, value)
+            self._remote_cups_device_state = None
+        self.remotecupsqueue, info, location = result
+        self._prepared_remote_state = {
+            "uri": uri,
+            "remotecupsqueue": self.remotecupsqueue,
+            "info": info,
+            "location": location,
+            "device": dict (device_state or {}),
+            "driverless_dependency": self._remote_driverless_dependency (),
+        }
+        if info:
+            self.entNPDescription.set_text (info)
+        if location:
+            self.device.location = location
+        self.nextnptab_rerun = True
+        self.nextNPTab (step=step)
+
+    def _selectDeviceForInstallation (self, uri, step=1):
         self._initialiseAutoVariables ()
         self.device.uri = self.getDeviceURI ()
+
+        res = re.search (r"ipp://(\S+?)(:\d+|)/printers/(\S+)", uri)
+        if res and not self.nextnptab_rerun:
+            prepared = getattr (self, '_prepared_remote_state', None)
+            if prepared and prepared.get ("uri") != uri:
+                self._prepared_remote_state = None
+            if self._reuse_prepared_remote_state (uri):
+                res = None
+            else:
+                self._start_remote_cups_retrieval (uri, res.groups(), step)
+                return False
 
         # Cancel the printer finder now as the user has
         # already selected their device.
@@ -1913,9 +2142,10 @@ class NewPrinterGUI(GtkGUI):
         # printer is a queue on a remote CUPS server which is
         # not automatically set up on our local CUPS server
         # (for example DNS-SD broadcasted queue from Mac OS X)
-        self.remotecupsqueue = None
+        if not self.nextnptab_rerun:
+            self.remotecupsqueue = None
         res = re.search (r"ipp://(\S+?)(:\d+|)/printers/(\S+)", uri)
-        if res:
+        if res and not self.nextnptab_rerun:
             resg = res.groups()
             if len (resg[1]) > 0:
                 port = int (resg[1][1:])
@@ -1967,32 +2197,165 @@ class NewPrinterGUI(GtkGUI):
                 uri.find ("/cups") != -1 and self.device.info):
             # Remote CUPS queue discovered by "dnssd" CUPS backend
             self.remotecupsqueue = self.device.info
+        return True
 
-    def _handleDriverInstallation (self):
+    def _handleDriverInstallation (self, driver=None, fingerprint=None):
         # Install package of the driver found on OpenPrinting
         treeview = self.tvNPDownloadableDrivers
         model, iter = treeview.get_selection ().get_selected ()
-        driver = None
-        if iter is not None:
+        if driver is None and iter is not None:
             driver = model.get_value (iter, 1)
         if driver is None or driver == 0 or 'packages' not in driver:
             return
 
-        # Find the package name, repository, and fingerprint
-        # and install the package
-        result = self.installdriverpackage (driver)
-        if not result or len(self.installed_driver_files) == 0:
-          return
+        if fingerprint is None:
+            url = self._driver_fingerprint_url (driver)
+            if url:
+                self._start_gpg_fingerprint_download (driver, url)
+                return self.INSTALL_RESULT_OPS_PENDING
 
-        # We actually installed a package, delete the
-        # PPD list to get it regenerated
+        install_info = self._getDriverInstallationInfo (driver, fingerprint)
+        if not install_info:
+            return
+        self._start_driver_installation (driver, install_info)
+        return self.INSTALL_RESULT_OPS_PENDING
+
+    def _start_driver_installation (self, driver, install_info):
+        if getattr(self, '_driver_install_operation', None) is not None:
+            self._cancel_driver_installation ()
+        self._driver_install_serial = getattr(self, '_driver_install_serial', 0) + 1
+        serial = self._driver_install_serial
+        self._driver_install_driver = driver
+        self._show_searching_spinner (_("Installing driver"))
+        self._driver_install_operation = TimedOperation (
+            self._driver_install_worker,
+            args=(install_info['name'], install_info['repo'], install_info['keyid'], serial),
+            callback=self._driver_install_finished,
+            context=(serial, driver))
+
+    def _driver_install_worker (self, name, repo, keyid, serial):
+        new_environ = os.environ.copy()
+        new_environ['LC_ALL'] = "C"
+        if keyid:
+            args = ["install-printerdriver", name, repo, keyid]
+        else:
+            args = ["install-printerdriver", name, repo]
+        process = subprocess.Popen (args, env=new_environ, close_fds=True,
+                                    stdin=subprocess.DEVNULL,
+                                    stdout=subprocess.PIPE,
+                                    stderr=subprocess.PIPE)
+        self._driver_install_process = process
+        self._driver_install_process_serial = serial
+        try:
+            stdout, stderr = process.communicate ()
+        finally:
+            if (getattr(self, '_driver_install_process', None) is process and
+                    getattr(self, '_driver_install_process_serial', None) == serial):
+                self._driver_install_process = None
+                self._driver_install_process_serial = None
+        installed_files = []
+        done_received = False
+        for line in stdout.splitlines():
+            line = line.strip()
+            if line == b"done":
+                done_received = True
+            elif not line.startswith(b"P"):
+                installed_files.append(line.decode("utf-8", errors="replace"))
+        ret = process.returncode == 0 and done_received
+        return ret, installed_files, stdout, stderr
+
+    def _cancel_driver_installation (self):
+        operation = getattr(self, '_driver_install_operation', None)
+        if operation is None:
+            return
+        self._driver_install_serial = getattr(self, '_driver_install_serial', 0) + 1
+        operation.cancel ()
+        process = getattr(self, '_driver_install_process', None)
+        process_serial = getattr(self, '_driver_install_process_serial', None)
+        if (process is not None and process_serial == self._driver_install_serial - 1 and
+                process.poll () is None):
+            try:
+                process.terminate ()
+            except OSError:
+                pass
+        self._driver_install_operation = None
+        self._driver_install_driver = None
+        self._hide_searching_spinner ()
+
+    def _driver_install_finished (self, result, exc, context):
+        serial, driver = context
+        if serial != getattr(self, '_driver_install_serial', None):
+            return
+        if getattr(self, '_driver_install_operation', None) is None:
+            return
+        self._driver_install_operation = None
+        self._driver_install_driver = None
+        self._hide_searching_spinner ()
+        if exc is not None:
+            debugprint ('Driver installation failed: %s' % repr(exc))
+            return
+        installed, installed_files, stdout, stderr = result
+        if not installed or not installed_files:
+            debugprint ('Driver installation failed: %s' % stderr.decode(errors='replace'))
+            return
+        self.installed_driver_files = installed_files
         self.ppds = None
-
         if (self.dialog_mode != "download_driver" and
               (not self.device.id and
               (not self.device.make_and_model or self.device.make_and_model == "Unknown") and
               self.downloadable_driver_for_printer)):
             self.device.make_and_model = self.downloadable_driver_for_printer
+        self.nextnptab_rerun = True
+        self.nextNPTab (step=0)
+
+    def _driver_fingerprint_url (self, driver):
+        pkgs = driver.get('packages', {})
+        arches = list(pkgs.keys())
+        if len(arches) != 1:
+            return None
+        packages = pkgs[arches[0]]
+        if len(packages) != 1:
+            return None
+        package = list(packages.keys())[0]
+        return packages[package].get('fingerprint')
+
+    def _start_gpg_fingerprint_download (self, driver, url):
+        self._gpg_fingerprint_serial = getattr(
+            self, '_gpg_fingerprint_serial', 0) + 1
+        serial = self._gpg_fingerprint_serial
+        self._show_searching_spinner (_("Verifying driver signature"))
+        self._gpg_fingerprint_operation = TimedOperation (
+            self._gpg_fingerprint_worker, args=(url,),
+            callback=self._gpg_fingerprint_finished,
+            context=(serial, driver))
+
+    def _gpg_fingerprint_worker (self, url):
+        return download_gpg_fingerprint (url)
+
+    def _cancel_gpg_fingerprint_download (self):
+        operation = getattr (self, '_gpg_fingerprint_operation', None)
+        if operation is None:
+            return
+        self._gpg_fingerprint_serial = getattr(
+            self, '_gpg_fingerprint_serial', 0) + 1
+        operation.cancel ()
+        self._gpg_fingerprint_operation = None
+        self._hide_searching_spinner ()
+
+    def _gpg_fingerprint_finished (self, fingerprint, exc, context):
+        serial, driver = context
+        if serial != getattr(self, '_gpg_fingerprint_serial', None):
+            return
+        if getattr(self, '_gpg_fingerprint_operation', None) is None:
+            return
+        self._gpg_fingerprint_operation = None
+        self._hide_searching_spinner ()
+        if exc is not None or not fingerprint:
+            debugprint ('Unable to retrieve GPG fingerprint for driver')
+            return
+        if self._handleDriverInstallation (driver, fingerprint):
+            self.nextnptab_rerun = True
+            self.nextNPTab (step=0)
 
     def _installHPScannerFilesIfNeeded (self):
         if (hasattr (self.device, 'hp_scannable') and self.device.hp_scannable and
@@ -2000,12 +2363,20 @@ class NewPrinterGUI(GtkGUI):
                 not os.access ("/etc/sane.d/dll.d/hplip", os.R_OK)):
             debugprint ("No HPLIP sane backend so "
                         "attempting install")
-            try:
-                pk = installpackage.PackageKit ()
-                # The following call means a blocking, synchronous, D-Bus call
-                pk.InstallPackageName (0, 0, "libsane-hpaio")
-            except:
-                pass
+            if getattr (self, '_hp_scanner_install_pending', False):
+                return False
+            if getattr (self, '_hp_scanner_install_done', False):
+                return True
+            self._hp_scanner_install_pending = True
+            self._package_install_serial = getattr (self, '_package_install_serial', 0) + 1
+            package_serial = self._package_install_serial
+            self._show_searching_spinner (_("Installing required components"))
+            self._hp_scanner_operation = TimedOperation (
+                self._install_package_worker, args=("libsane-hpaio",),
+                callback=self._required_package_install_finished,
+                context=("hp-scanner", package_serial))
+            return False
+        return True
 
     def _loadPPDsForDevice (self, devid, uri):
         debugprint ("nextNPTab: need PPDs loaded")
@@ -2018,12 +2389,126 @@ class NewPrinterGUI(GtkGUI):
         self.ppdsloader = p
         p.connect ('finished',self.on_ppdsloader_finished_next)
         p.run ()
-    def _validateDriverlessPPD(self, ppdname):
+    @staticmethod
+    def _driverless_ppd_matches_device_uri(ppdname, device_uri):
+        """Return True if a driverless PPD's embedded URI refers to the same device as device_uri."""
+        if not ppdname or not device_uri:
+            return False
+
+        if not isinstance(ppdname, str) or not isinstance(device_uri, str):
+            return False
+
+        if ppdname.startswith("driverless-fax:") or device_uri.startswith("driverless-fax:"):
+            return False
+
+        cand_uri = ppdname[11:] if ppdname.startswith("driverless:") else ppdname
+        dev_uri = device_uri[11:] if device_uri.startswith("driverless:") else device_uri
+
+        if cand_uri == dev_uri or cand_uri.rstrip('/') == dev_uri.rstrip('/'):
+            return True
+
+        cand_unquoted = urllib.parse.unquote(cand_uri).rstrip('/')
+        dev_unquoted = urllib.parse.unquote(dev_uri).rstrip('/')
+        if cand_unquoted == dev_unquoted:
+            return True
+
+        try:
+            cand_parsed = urllib.parse.urlsplit(cand_unquoted)
+            dev_parsed = urllib.parse.urlsplit(dev_unquoted)
+
+            valid_schemes = ("ipp", "ipps", "http", "https")
+            if cand_parsed.scheme in valid_schemes and dev_parsed.scheme in valid_schemes:
+                cand_host = (cand_parsed.hostname or "").lower().rstrip('.')
+                dev_host = (dev_parsed.hostname or "").lower().rstrip('.')
+                if cand_host and dev_host and cand_host == dev_host:
+                    cand_port = cand_parsed.port or 631
+                    dev_port = dev_parsed.port or 631
+                    cand_path = cand_parsed.path.rstrip('/')
+                    dev_path = dev_parsed.path.rstrip('/')
+                    if cand_port == dev_port and cand_path == dev_path:
+                        return True
+        except Exception:
+            pass
+
+        return False
+
+    @staticmethod
+    def _driverless_ppd_is_different_host(ppdname, device_uri):
+        """Return True if ppdname and device_uri both specify network hosts and those hosts differ."""
+        if not ppdname or not device_uri:
+            return False
+        if not isinstance(ppdname, str) or not isinstance(device_uri, str):
+            return False
+        cand_uri = ppdname[11:] if ppdname.startswith("driverless:") else ppdname
+        dev_uri = device_uri[11:] if device_uri.startswith("driverless:") else device_uri
+        try:
+            cand_p = urllib.parse.urlsplit(urllib.parse.unquote(cand_uri))
+            dev_p = urllib.parse.urlsplit(urllib.parse.unquote(dev_uri))
+            cand_h = (cand_p.hostname or "").lower().rstrip('.')
+            dev_h = (dev_p.hostname or "").lower().rstrip('.')
+            if cand_h and dev_h and cand_h != dev_h:
+                return True
+        except Exception:
+            pass
+        return False
+
+    def _get_cached_driverless_ppd(self, ppdname):
+        """Retrieve a validated driverless PPD from memory cache if available."""
+        if not ppdname or not isinstance(ppdname, str):
+            return None
+
+        cached_dict = getattr(self, '_cached_driverless_ppds', None)
+        if cached_dict:
+            if ppdname in cached_dict:
+                return cached_dict[ppdname]
+            cand_uri = ppdname[11:] if ppdname.startswith("driverless:") else ppdname
+            for k, ppd in cached_dict.items():
+                if self._driverless_ppd_matches_device_uri(k, cand_uri):
+                    return ppd
+
         cached = getattr(self, '_cached_driverless_ppd', None)
         cached_name = getattr(self, '_cached_driverless_ppd_name', None)
         if cached is not None and cached_name:
-            if cached_name == ppdname or cached_name.rstrip('/') == ppdname.rstrip('/'):
+            cand_uri = ppdname[11:] if ppdname.startswith("driverless:") else ppdname
+            if self._driverless_ppd_matches_device_uri(cached_name, cand_uri):
                 return cached
+
+        return None
+
+    def _set_cached_driverless_ppd(self, ppdname, validated_ppd):
+        """Store a validated driverless PPD in cache."""
+        if not hasattr(self, '_cached_driverless_ppds') or self._cached_driverless_ppds is None:
+            self._cached_driverless_ppds = {}
+        if ppdname and validated_ppd is not None:
+            self._cached_driverless_ppds[ppdname] = validated_ppd
+            self._cached_driverless_ppd = validated_ppd
+            self._cached_driverless_ppd_name = ppdname
+
+    def _find_cached_driverless_ppd_name_for_device(self, search_uri):
+        """Find the PPD name of a previously validated driverless PPD for this device URI."""
+        if not search_uri:
+            return None
+        cached_dict = getattr(self, '_cached_driverless_ppds', None)
+        if cached_dict:
+            for k in cached_dict:
+                if self._driverless_ppd_matches_device_uri(k, search_uri):
+                    return k
+        cached_name = getattr(self, '_cached_driverless_ppd_name', None)
+        if cached_name and self._driverless_ppd_matches_device_uri(cached_name, search_uri):
+            return cached_name
+        return None
+
+    def _validateDriverlessPPD(self, ppdname):
+        cached = self._get_cached_driverless_ppd(ppdname)
+        if cached is not None:
+            return cached
+
+        show_spinner = (
+            getattr(self, '_searching_stack', None) is not None and
+            self._searching_stack.get_visible_child_name() != "spinner"
+        )
+        if show_spinner:
+            self._show_searching_spinner(_("Searching for drivers"))
 
         self.cups._begin_operation(_("validating driverless PPD"))
         try:
@@ -2041,6 +2526,7 @@ class NewPrinterGUI(GtkGUI):
 
             try:
                 ppd = cups.PPD(f)
+                self._set_cached_driverless_ppd(ppdname, ppd)
                 return ppd
             finally:
                 try:
@@ -2053,6 +2539,8 @@ class NewPrinterGUI(GtkGUI):
             return None
         finally:
             self.cups._end_operation()
+            if show_spinner:
+                self._hide_searching_spinner()
 
     def _ensure_driverless_ppd_in_cache(self, ppdname, validated_ppd):
         if not (isinstance(ppdname, str) and ppdname.startswith("driverless:")
@@ -2075,6 +2563,7 @@ class NewPrinterGUI(GtkGUI):
         if validated_ppd is not None and hasattr(validated_ppd, 'findAttr'):
             nickname = validated_ppd.findAttr("NickName")
             manufacturer = validated_ppd.findAttr("Manufacturer")
+            device_id = validated_ppd.findAttr("1284DeviceID")
             if nickname and nickname.value:
                 mm = nickname.value
                 mfg = manufacturer.value if manufacturer and manufacturer.value else ""
@@ -2085,6 +2574,10 @@ class NewPrinterGUI(GtkGUI):
                 entry["ppd-make-and-model"] = mm
             if manufacturer and manufacturer.value:
                 entry["ppd-make"] = manufacturer.value
+            if device_id and device_id.value:
+                entry["ppd-device-id"] = [device_id.value]
+        if not entry.get("ppd-device-id") and getattr(self, 'device', None) and getattr(self.device, 'id', None):
+            entry["ppd-device-id"] = [self.device.id]
         if not entry.get("ppd-make-and-model"):
             entry["ppd-make-and-model"] = ppdname
         entry.setdefault("ppd-type", "pdf")
@@ -2114,10 +2607,20 @@ class NewPrinterGUI(GtkGUI):
                     break
 
         if not entry:
-            cached_name = getattr(self, '_cached_driverless_ppd_name', None)
-            if cached_name and cached_name in self.driverless_ppds:
-                entry = self.driverless_ppds[cached_name]
-                alt_ppdname = cached_name
+            cand_uri = ppdname[11:] if ppdname.startswith("driverless:") else ppdname
+            cached_dict = getattr(self, '_cached_driverless_ppds', None)
+            if cached_dict:
+                for k in cached_dict:
+                    if k in self.driverless_ppds and self._driverless_ppd_matches_device_uri(k, cand_uri):
+                        entry = self.driverless_ppds[k]
+                        alt_ppdname = k
+                        break
+            if not entry:
+                cached_name = getattr(self, '_cached_driverless_ppd_name', None)
+                if (cached_name and cached_name in self.driverless_ppds and
+                        self._driverless_ppd_matches_device_uri(cached_name, cand_uri)):
+                    entry = self.driverless_ppds[cached_name]
+                    alt_ppdname = cached_name
 
         if not entry:
             return
@@ -2136,10 +2639,76 @@ class NewPrinterGUI(GtkGUI):
             if alt_ppdname:
                 self.ppds[alt_ppdname] = entry.copy()
 
+    def _find_driverless_ppd_for_device(self, id_dict, make_and_model, device_uri=None):
+        """Find a driverless PPD whose device metadata matches the device.
+
+        Driverless PPDs returned by CUPS are keyed by their original device
+        URI.  A remote CUPS queue can expose the same printer through a
+        different URI, so the key itself is not always a usable association.
+        Prefer the IEEE 1284 metadata carried by the PPD entry instead.
+        """
+        if not getattr(self, 'driverless_ppds', None):
+            return None
+
+        wanted_mfg = cupshelpers.ppds.normalize(id_dict.get("MFG", ""))
+        wanted_mdl = cupshelpers.ppds.normalize(id_dict.get("MDL", ""))
+        wanted_mm = cupshelpers.ppds.normalize(make_and_model or "")
+        if not wanted_mfg and not wanted_mdl and not wanted_mm:
+            return None
+
+        is_remote_queue = bool(
+            getattr(self, 'remotecupsqueue', None) or
+            (device_uri and "/printers/" in device_uri)
+        )
+
+        id_matches = []
+        mm_matches = []
+        for ppdname, entry in self.driverless_ppds.items():
+            if not (isinstance(ppdname, str) and ppdname.startswith("driverless:") and
+                    not ppdname.startswith("driverless-fax:")):
+                continue
+
+            # If the device is a direct network device with a specific host,
+            # never associate it with a driverless PPD belonging to a different host.
+            if device_uri and not is_remote_queue:
+                if self._driverless_ppd_is_different_host(ppdname, device_uri):
+                    continue
+
+            ppd_id = entry.get("ppd-device-id", "")
+            if isinstance(ppd_id, (list, tuple)):
+                ppd_id = ppd_id[0] if ppd_id else ""
+            candidate = cupshelpers.parseDeviceID(ppd_id) if ppd_id else {}
+            candidate_mfg = cupshelpers.ppds.normalize(candidate.get("MFG", ""))
+            candidate_mdl = cupshelpers.ppds.normalize(candidate.get("MDL", ""))
+            if isinstance(entry.get("ppd-make-and-model"), (list, tuple)):
+                candidate_mm_value = (entry["ppd-make-and-model"][0]
+                                      if entry["ppd-make-and-model"] else "")
+            else:
+                candidate_mm_value = entry.get("ppd-make-and-model", "")
+            candidate_mm = cupshelpers.ppds.normalize(candidate_mm_value)
+
+            if (wanted_mfg and candidate_mfg == wanted_mfg and
+                    (not wanted_mdl or candidate_mdl == wanted_mdl)):
+                id_matches.append(ppdname)
+            elif wanted_mm and candidate_mm and wanted_mm == candidate_mm:
+                mm_matches.append(ppdname)
+
+        # Never select an arbitrary entry when the metadata is ambiguous.
+        if len(id_matches) == 1:
+            return id_matches[0]
+        if len(id_matches) > 1:
+            return None
+        if len(mm_matches) == 1:
+            return mm_matches[0]
+        return None
+
     def _installPrinterFromDeviceID (self, devid, page_nr, step):
         ppdname = None
         status = None
         self.id_matched_ppdnames = []
+        self.auto_driver = None
+        self.auto_make = ""
+        self.auto_model = ""
 
         search_uri = self.device.uri
         if getattr(self.device, '_driverless_failed', False):
@@ -2148,7 +2717,11 @@ class NewPrinterGUI(GtkGUI):
         try:
             if getattr(self.device, 'driverless', False):
                 ppdname = "driverless:%s" % self.device.uri
-                validated_ppd = self._validateDriverlessPPD(ppdname)
+                cached = self._get_cached_driverless_ppd(ppdname)
+                if cached is not None:
+                    validated_ppd = cached
+                else:
+                    validated_ppd = self._validateDriverlessPPD(ppdname)
 
                 if getattr(self, 'device', None) is None:
                     return
@@ -2163,9 +2736,9 @@ class NewPrinterGUI(GtkGUI):
                     status = None
                     self.id_matched_ppdnames = []
                 else:
-                    self._cached_driverless_ppd = validated_ppd
-                    self._cached_driverless_ppd_name = ppdname
+                    self._set_cached_driverless_ppd(ppdname, validated_ppd)
                     status = "exact"
+                    self.id_matched_ppdnames = [ppdname]
                     self._ensure_driverless_ppd_in_cache(ppdname, validated_ppd)
                     self._add_validated_driverless_ppd_to_catalog(ppdname)
             elif self.dialog_mode == "download_driver":
@@ -2207,32 +2780,71 @@ class NewPrinterGUI(GtkGUI):
                                              search_uri,
                                              self.device.make_and_model)
                 debugprint ("Suitable PPDs found: %s" % repr(fit))
+                is_remote_queue = bool(
+                    getattr(self, 'remotecupsqueue', None) or
+                    (search_uri and "/printers/" in search_uri)
+                )
+                if search_uri and not is_remote_queue:
+                    fit = {k: v for k, v in fit.items()
+                           if not (isinstance(k, str) and
+                                   k.startswith("driverless:") and
+                                   self._driverless_ppd_is_different_host(k, search_uri))}
                 fit_before_override = fit.copy()
                 matched_ppd = None
                 if not getattr(self.device, '_driverless_failed', False):
-                    cached_name = getattr(self, '_cached_driverless_ppd_name', None)
-                    target_ppd = ("driverless:%s" % search_uri) if search_uri else None
-                    if cached_name:
-                        self._add_validated_driverless_ppd_to_catalog(cached_name)
-                    if target_ppd and target_ppd != cached_name:
+                    is_ipp = bool(search_uri and (search_uri.startswith("ipp://") or search_uri.startswith("ipps://")))
+                    target_ppd = ("driverless:%s" % search_uri) if (search_uri and is_ipp) else None
+
+                    # Check if this specific device already has a validated driverless PPD in cache
+                    cached_for_device = self._find_cached_driverless_ppd_name_for_device(search_uri)
+                    if cached_for_device:
+                        self._add_validated_driverless_ppd_to_catalog(cached_for_device)
+
+                    # If target_ppd is in driverless_ppds, add it to catalog
+                    if target_ppd and target_ppd != cached_for_device:
                         self._add_validated_driverless_ppd_to_catalog(target_ppd)
 
+                    # For remote CUPS queues, attempt association by device ID
+                    if not matched_ppd and is_remote_queue:
+                        associated_ppd = self._find_driverless_ppd_for_device(
+                            id_dict, self.device.make_and_model, device_uri=search_uri)
+                        if associated_ppd:
+                            self._add_validated_driverless_ppd_to_catalog(associated_ppd)
+                            matched_ppd = associated_ppd
+
+                    # Look for matching PPD in catalog for THIS device only
                     catalog = getattr(self.ppds, 'ppds', self.ppds) if self.ppds is not None else {}
-                    if cached_name and cached_name in catalog:
-                        matched_ppd = cached_name
-                    elif target_ppd and target_ppd in catalog:
-                        matched_ppd = target_ppd
-                    elif target_ppd:
-                        alt_target = target_ppd[:-1] if target_ppd.endswith('/') else target_ppd + '/'
-                        if alt_target in catalog:
-                            matched_ppd = alt_target
-                        else:
-                            target_norm = urllib.parse.unquote(target_ppd).rstrip('/')
-                            for k in catalog.keys():
-                                if isinstance(k, str) and k.startswith("driverless:") and not k.startswith("driverless-fax:"):
-                                    if urllib.parse.unquote(k).rstrip('/') == target_norm:
-                                        matched_ppd = k
-                                        break
+                    if not matched_ppd:
+                        if cached_for_device and cached_for_device in catalog:
+                            matched_ppd = cached_for_device
+                        elif target_ppd and target_ppd in catalog:
+                            matched_ppd = target_ppd
+                        elif target_ppd:
+                            alt_target = target_ppd[:-1] if target_ppd.endswith('/') else target_ppd + '/'
+                            if alt_target in catalog:
+                                matched_ppd = alt_target
+                            else:
+                                target_norm = urllib.parse.unquote(target_ppd).rstrip('/')
+                                for k in catalog.keys():
+                                    if isinstance(k, str) and k.startswith("driverless:") and not k.startswith("driverless-fax:"):
+                                        if urllib.parse.unquote(k).rstrip('/') == target_norm:
+                                            matched_ppd = k
+                                            break
+
+                    # On-demand validation for this device if absent
+                    if not matched_ppd:
+                        if is_ipp and target_ppd and not getattr(self.device, '_driverless_failed', False):
+                            validated_ppd = self._validateDriverlessPPD(target_ppd)
+                            if getattr(self, 'device', None) is None:
+                                return
+                            if validated_ppd is not None:
+                                self._set_cached_driverless_ppd(target_ppd, validated_ppd)
+                                self._ensure_driverless_ppd_in_cache(target_ppd, validated_ppd)
+                                self._add_validated_driverless_ppd_to_catalog(target_ppd)
+                                matched_ppd = target_ppd
+                            else:
+                                self.device.driverless = False
+                                self.device._driverless_failed = True
 
                     if matched_ppd:
                         fit = {k: v for k, v in fit.items() if v != getattr(self.ppds, 'FIT_NONE', 'none')}
@@ -2247,6 +2859,11 @@ class NewPrinterGUI(GtkGUI):
                     orderPPDNamesByPreference (candidate_ppds,
                                                self.installed_driver_files,
                                                devid=id_dict, fit=fit)
+                if search_uri and not is_remote_queue:
+                    ppdnamelist = [p for p in ppdnamelist
+                                   if not (isinstance(p, str) and
+                                           p.startswith("driverless:") and
+                                           self._driverless_ppd_is_different_host(p, search_uri))]
                 if matched_ppd and matched_ppd in ppdnamelist:
                     ppdnamelist.remove(matched_ppd)
                     ppdnamelist.insert(0, matched_ppd)
@@ -2259,7 +2876,15 @@ class NewPrinterGUI(GtkGUI):
                     ppdnamelist = [p for p in ppdnamelist if not (isinstance(p, str) and p.startswith("driverless:"))]
                 else:
                     while ppdnamelist and isinstance(ppdnamelist[0], str) and ppdnamelist[0].startswith("driverless:"):
-                        validated_ppd = self._validateDriverlessPPD(ppdnamelist[0])
+                        cand_ppd = ppdnamelist[0]
+                        if search_uri and not is_remote_queue and self._driverless_ppd_is_different_host(cand_ppd, search_uri):
+                            ppdnamelist.pop(0)
+                            continue
+                        cached = self._get_cached_driverless_ppd(cand_ppd)
+                        if cached is not None:
+                            validated_ppd = cached
+                        else:
+                            validated_ppd = self._validateDriverlessPPD(cand_ppd)
 
                         if getattr(self, 'device', None) is None:
                             return
@@ -2273,12 +2898,11 @@ class NewPrinterGUI(GtkGUI):
                             ppdnamelist = [p for p in ppdnamelist if not (isinstance(p, str) and p.startswith("driverless:"))]
                             break
                         else:
-                            self._cached_driverless_ppd = validated_ppd
-                            self._cached_driverless_ppd_name = ppdnamelist[0]
+                            self._set_cached_driverless_ppd(cand_ppd, validated_ppd)
                             if page_nr != self.PAGE_SELECT_INSTALL_METHOD:
                                 self.device.driverless = True
-                            self._ensure_driverless_ppd_in_cache(ppdnamelist[0], validated_ppd)
-                            self._add_validated_driverless_ppd_to_catalog(ppdnamelist[0])
+                            self._ensure_driverless_ppd_in_cache(cand_ppd, validated_ppd)
+                            self._add_validated_driverless_ppd_to_catalog(cand_ppd)
                             break
 
                 self.id_matched_ppdnames = ppdnamelist
@@ -2338,6 +2962,9 @@ class NewPrinterGUI(GtkGUI):
             status = None
             self.id_matched_ppdnames = []
             self.searchedfordriverpackages = True
+            self.auto_driver = None
+            self.auto_make = ""
+            self.auto_model = ""
 
         if (not self.remotecupsqueue or self.dialog_mode == "ppd"):
             return self._installPrinterOrSearchForDriver (devid, ppdname, status, page_nr, step)
@@ -2363,6 +2990,8 @@ class NewPrinterGUI(GtkGUI):
                     self.fillDriverList(make, model)
                 except:
                     nonfatalException ()
+            elif ppdname is None:
+                self.auto_driver = None
             if ((status == "exact" or status == "exact-cmd") and \
                 getattr(self.device, 'driverless', False) and \
                 self.dialog_mode != "ppd" and \
@@ -3258,7 +3887,7 @@ class NewPrinterGUI(GtkGUI):
 
     ## SMB browsing
 
-    def install_python3_smbc_if_needed (self):
+    def install_python3_smbc_if_needed (self, continuation=None):
         global PYSMB_AVAILABLE
         global pysmb # Make the import of pysmb globally available
         # Does the SMB client library  need to be installed?
@@ -3266,30 +3895,263 @@ class NewPrinterGUI(GtkGUI):
             return True
 
         debugprint ("No SMB client library present so attempting install")
-
-        try:
-            pk = installpackage.PackageKit ()
-            # The following call means a blocking, synchronous, D-Bus call
-            pk.InstallPackageName (0, 0, "python3-smbc")
-        except DBusException as e:
-            debugprint ("Error during installation/setup of SMB client.")
-            debugprint("{}".format(e))
+        if getattr(self, '_smbc_install_operation', None) is not None:
             return False
+        self._smbc_install_serial = getattr(self, '_smbc_install_serial', 0) + 1
+        serial = self._smbc_install_serial
+        self._smbc_install_continuation = continuation
+        self._show_searching_spinner (_("Installing required components"))
+        self._smbc_install_operation = TimedOperation (
+            self._smbc_install_worker, callback=self._smbc_install_finished,
+            context=serial)
+        return False
 
-        try:
-            import pysmb
-            PYSMB_AVAILABLE=True
-        except ModuleNotFoundError as e:
-            debugprint ("SMB client setup failed.")
-            debugprint("{}".format(e))
-            return False
-
-        debugprint ("SMB client successfully installed and set up.")
-
+    def _smbc_install_worker (self):
+        pk = installpackage.PackageKit ()
+        pk.InstallPackageName (0, 0, "python3-smbc")
         return True
 
+    def _cancel_smbc_installation (self):
+        operation = getattr(self, '_smbc_install_operation', None)
+        if operation is None:
+            return
+        self._smbc_install_serial = getattr(self, '_smbc_install_serial', 0) + 1
+        operation.cancel ()
+        self._smbc_install_operation = None
+        self._smbc_install_continuation = None
+        self._hide_searching_spinner ()
+
+    def _smbc_install_finished (self, result, exc, serial):
+        if serial != getattr(self, '_smbc_install_serial', None):
+            return
+        if getattr(self, '_smbc_install_operation', None) is None:
+            return
+        continuation = self._smbc_install_continuation
+        self._smbc_install_operation = None
+        self._smbc_install_continuation = None
+        self._hide_searching_spinner ()
+        if exc is not None:
+            debugprint ("Error during installation/setup of SMB client: %s" % repr(exc))
+            return
+        global PYSMB_AVAILABLE
+        global pysmb
+        try:
+            import pysmb
+            PYSMB_AVAILABLE = True
+        except ModuleNotFoundError as e:
+            debugprint ("SMB client setup failed: %s" % repr(e))
+            return
+        if continuation == "browse":
+            self.on_btnSMBBrowse_clicked (None)
+        elif continuation == "verify":
+            self.on_btnSMBVerify_clicked (None)
+
+    def _start_smb_operation (self, kind, worker, args, completion,
+                              payload=None):
+        self._cancel_smb_operation ()
+        self._smb_operation_serial += 1
+        serial = self._smb_operation_serial
+        cancelled = threading.Event ()
+        state = {'serial': serial, 'kind': kind, 'cancelled': cancelled,
+                 'auth_request': None, 'completion': completion,
+                 'payload': payload, 'operation': None}
+        self._smb_operation_state = state
+        state['operation'] = TimedOperation (
+            worker, args=(serial, cancelled) + tuple(args),
+            callback=self._smb_operation_finished, context=serial)
+        return serial
+
+    def _cancel_smb_operation (self):
+        self._smb_operation_serial = getattr(
+            self, '_smb_operation_serial', 0) + 1
+        state = getattr(self, '_smb_operation_state', None)
+        if state is None:
+            return
+        state['cancelled'].set ()
+        request = state.get('auth_request')
+        if request is not None:
+            request.cancel ()
+        dialog = getattr(self, '_smb_auth_dialog', None)
+        self._smb_auth_dialog = None
+        if dialog is not None:
+            dialog.destroy ()
+        operation = state.get('operation')
+        if operation is not None:
+            operation.cancel ()
+        self._smb_operation_state = None
+        if hasattr(self, 'expanding_row'):
+            del self.expanding_row
+
+    def _smb_operation_finished (self, result, exc, serial):
+        state = getattr(self, '_smb_operation_state', None)
+        if (state is None or state['serial'] != serial or
+                self._smb_window_destroyed or state['cancelled'].is_set ()):
+            return
+        self._smb_operation_state = None
+        state['completion'](result, exc, serial, state.get('payload'))
+
+    def _request_smb_authentication (self, serial, request):
+        state = getattr(self, '_smb_operation_state', None)
+        if (state is None or state['serial'] != serial or
+                state['cancelled'].is_set () or self._smb_window_destroyed):
+            request.cancel ()
+            return
+        previous = state.get('auth_request')
+        if previous is not None:
+            previous.cancel ()
+        state['auth_request'] = request
+        try:
+            GLib.idle_add (self._show_smb_authentication_dialog,
+                           serial, request)
+        except Exception:
+            request.cancel ()
+
+    def _show_smb_authentication_dialog (self, serial, request):
+        state = getattr(self, '_smb_operation_state', None)
+        if (state is None or state['serial'] != serial or
+                state.get('auth_request') is not request or
+                state['cancelled'].is_set () or self._smb_window_destroyed):
+            request.cancel ()
+            return False
+
+        parent = (self.SMBBrowseDialog if state['kind'] in
+                  ('smb-browse', 'smb-expand') else self.NewPrinterWindow)
+        dialog = Gtk.Dialog (title=_('Authentication'),
+                             transient_for=parent, modal=True)
+        dialog.set_default_response (Gtk.ResponseType.OK)
+        dialog.set_border_width (6)
+        dialog.set_resizable (False)
+        dialog.add_buttons (_('Cancel'), Gtk.ResponseType.CANCEL,
+                            _('OK'), Gtk.ResponseType.OK)
+        grid = Gtk.Grid ()
+        grid.set_row_spacing (6)
+        grid.set_column_spacing (6)
+        entries = []
+        for row, (label, value, visible) in enumerate (
+                (( _('Username:'), getattr(request, 'username', ''), True),
+                 ( _('Domain:'), getattr(request, 'workgroup', ''), True),
+                 ( _('Password:'), '', False))):
+            grid.attach (Gtk.Label (label=label), 0, row, 1, 1)
+            entry = Gtk.Entry ()
+            entry.set_visibility (visible)
+            entry.set_text (value or '')
+            if row == 2:
+                entry.set_activates_default (True)
+            grid.attach (entry, 1, row, 1, 1)
+            entries.append (entry)
+        box = dialog.get_content_area ()
+        if getattr(request, 'credentials_rejected', False):
+            box.pack_start (Gtk.Label (
+                label=_('The credentials were not accepted.')),
+                False, False, 6)
+        server = getattr(request, 'server', '')
+        prompt = (_('Log in to access %s.') % server if server else
+                  _('Enter credentials to access the printer share.'))
+        box.pack_start (Gtk.Label (label=prompt), False, False, 6)
+        box.pack_start (grid, False, False, 6)
+        dialog.connect ('response', self._smb_authentication_response,
+                        serial, request, entries)
+        self._smb_auth_dialog = dialog
+        dialog.show_all ()
+        return False
+
+    def _smb_authentication_response (self, dialog, response, serial,
+                                      request, entries):
+        state = getattr(self, '_smb_operation_state', None)
+        if (state is not None and state['serial'] == serial and
+                state.get('auth_request') is request and
+                response == Gtk.ResponseType.OK):
+            request.success ((entries[1].get_text (),
+                              entries[0].get_text (),
+                              entries[2].get_text ()))
+        else:
+            request.cancel ()
+        if state is not None and state.get('auth_request') is request:
+            state['auth_request'] = None
+        if getattr(self, '_smb_auth_dialog', None) is dialog:
+            self._smb_auth_dialog = None
+        dialog.destroy ()
+
+    def _new_smb_auth_context (self, serial, cancelled, workgroup='',
+                               user='', passwd=''):
+        return pysmb.WorkerAuthContext (
+            lambda request: self._request_smb_authentication(serial, request),
+            serial, cancelled=cancelled, workgroup=workgroup, user=user,
+            passwd=passwd)
+
+    def _smb_list_worker (self, serial, cancelled, uri, workgroup='',
+                          user='', passwd=''):
+        debug = 10 if get_debugging () else 0
+        auth = self._new_smb_auth_context (
+            serial, cancelled, workgroup, user, passwd)
+        try:
+            context = pysmb.smbc.Context (debug=debug,
+                                          auth_fn=auth.callback)
+            while auth.perform_authentication () > 0:
+                if cancelled.is_set ():
+                    return {'entries': [], 'cancelled': True}
+                try:
+                    entries = context.opendir (uri).getdents ()
+                    return {'entries': entries, 'cancelled': False}
+                except Exception as error:
+                    auth.failed (error)
+            return {'entries': [], 'cancelled': auth.cancel}
+        except Exception as error:
+            return {'entries': [],
+                    'cancelled': auth.cancel or cancelled.is_set (),
+                    'error': error}
+
+    def _smb_verify_worker (self, serial, cancelled, group, host, share,
+                            user, passwd, auth_set):
+        debug = 10 if get_debugging () else 0
+        uri = "smb://%s/%s" % (host, share)
+        auth = None
+        try:
+            if auth_set:
+                def do_auth (server, smb_share, workgroup, username,
+                             password):
+                    return group, user, passwd
+                context = pysmb.smbc.Context (debug=debug, auth_fn=do_auth)
+                try:
+                    context.optionUseKerberos = True
+                except AttributeError:
+                    pass
+                if cancelled.is_set ():
+                    return {'accessible': False, 'cancelled': True}
+                handle = context.open (uri, os.O_RDWR, 0o777)
+                close = getattr (handle, 'close', None)
+                if close:
+                    close ()
+                return {'accessible': True, 'cancelled': False}
+
+            auth = self._new_smb_auth_context (
+                serial, cancelled, group, user, passwd)
+            context = pysmb.smbc.Context (debug=debug,
+                                          auth_fn=auth.callback)
+            while auth.perform_authentication () > 0:
+                if cancelled.is_set ():
+                    return {'accessible': False, 'cancelled': True}
+                try:
+                    handle = context.open (uri, os.O_RDWR, 0o777)
+                    close = getattr (handle, 'close', None)
+                    if close:
+                        close ()
+                    return {'accessible': True, 'cancelled': False}
+                except Exception as error:
+                    auth.failed (error)
+            return {'accessible': False, 'cancelled': auth.cancel}
+        except RuntimeError as error:
+            reason = error.args[1] if len (error.args) > 1 else str (error)
+            return {'accessible': False,
+                    'cancelled': bool (auth and auth.cancel) or cancelled.is_set (),
+                    'reason': reason, 'error': error}
+        except Exception as error:
+            return {'accessible': False,
+                    'cancelled': bool (auth and auth.cancel) or cancelled.is_set (),
+                    'error': error}
+
     def browse_smb_hosts(self):
-        """Initialise the SMB tree store."""
+        """Start SMB root enumeration in a worker thread."""
         store = self.smb_store
         store.clear ()
         busy(self.SMBBrowseDialog)
@@ -3300,57 +4162,52 @@ class NewPrinterGUI(GtkGUI):
         dummy.name = _('Scanning...')
         dummy.comment = ''
         store.append(None, [dummy])
-        while Gtk.events_pending ():
-            Gtk.main_iteration ()
-
-        debug = 0
-        if get_debugging ():
-            debug = 10
-        smbc_auth = pysmb.AuthContext (self.SMBBrowseDialog)
-        ctx = pysmb.smbc.Context (debug=debug,
-                                  auth_fn=smbc_auth.callback)
-        entries = None
-        try:
-            while smbc_auth.perform_authentication () > 0:
-                try:
-                    entries = ctx.opendir ("smb://").getdents ()
-                except Exception as e:
-                    smbc_auth.failed (e)
-        except RuntimeError as e:
-            (e, s) = e.args
-            if e != errno.ENOENT:
-                debugprint ("Runtime error: %s" % repr ((e, s)))
-        except:
-            nonfatalException ()
-
-        store.clear ()
-        if entries:
-            for entry in entries:
-                if entry.smbc_type in [pysmb.smbc.WORKGROUP,
-                                       pysmb.smbc.SERVER]:
-                    iter = store.append (None, [entry])
-                    i = store.append (iter)
-
         specified_uri = SMBURI (uri=self.entSMBURI.get_text ())
-        (group, host, share, user, password) = specified_uri.separate ()
-        if len (host) > 0:
-            # The user has specified a server before clicking Browse.
-            # Append the server as a top-level entry.
+        (group, host, share, _user, _password) = specified_uri.separate ()
+        auth_set = self.rbtnSMBAuthSet.get_active ()
+        user = self.entSMBUsername.get_text () if auth_set else ''
+        password = self.entSMBPassword.get_text () if auth_set else ''
+        self._start_smb_operation (
+            'smb-browse', self._smb_list_worker,
+            ("smb://", group, user, password),
+            self._smb_root_browse_finished,
+            payload={'host': host, 'group': group})
+
+    def _smb_root_browse_finished (self, result, exc, serial, payload):
+        store = self.smb_store
+        store.clear ()
+        if exc is None and result.get ('cancelled'):
+            ready (self.SMBBrowseDialog)
+            return
+        if exc is not None:
+            debugprint ("SMB browse failed: %s" % repr (exc))
+            entries = []
+        else:
+            if result.get ('error') is not None:
+                debugprint ("SMB browse failed: %s" % repr (result['error']))
+            entries = result.get ('entries', [])
+        for entry in entries or []:
+            if entry.smbc_type in (pysmb.smbc.WORKGROUP,
+                                   pysmb.smbc.SERVER):
+                parent_iter = store.append (None, [entry])
+                store.append (parent_iter)
+
+        host = (payload or {}).get ('host', '')
+        group = (payload or {}).get ('group', '')
+        if host:
             class FakeEntry:
                 pass
-            toplevel = FakeEntry ()
-            toplevel.smbc_type = pysmb.smbc.SERVER
-            toplevel.name = host
-            toplevel.comment = ''
-            iter = store.append (None, [toplevel])
-            i = store.append (iter)
+            server = FakeEntry ()
+            server.smbc_type = pysmb.smbc.SERVER
+            server.name = host
+            server.comment = ''
+            server.group = group
+            parent_iter = store.append (None, [server])
+            store.append (parent_iter)
+            self.tvSMBBrowser.expand_row (store.get_path (parent_iter), 0)
+            return
 
-            # Now expand it.
-            path = store.get_path (iter)
-            self.tvSMBBrowser.expand_row (path, 0)
-
-        ready(self.SMBBrowseDialog)
-
+        ready (self.SMBBrowseDialog)
         if store.get_iter_first () is None:
             self.SMBBrowseDialog.hide ()
             show_info_dialog (_("No Print Shares"),
@@ -3395,102 +4252,78 @@ class NewPrinterGUI(GtkGUI):
             self.on_tvSMBBrowser_row_expanded (view, iter, path)
 
     def on_tvSMBBrowser_row_expanded (self, view, iter, path):
-        """Handler for expanding a row in the SMB tree view."""
+        """Enumerate workgroup/server contents asynchronously."""
         model = view.get_model ()
         entry = model.get_value (iter, 0)
-        if entry is None:
+        if entry is None or entry.smbc_type not in (
+                pysmb.smbc.WORKGROUP, pysmb.smbc.SERVER):
             return
 
-        if entry.smbc_type == pysmb.smbc.WORKGROUP:
-            # Workgroup
-            # Be careful though: if there is a server with the
-            # same name as the workgroup we will get a list of its
-            # shares, not the workgroup's servers.
-            try:
-                if self.expanding_row:
-                    return
-            except:
-                self.expanding_row = 1
+        row_type = entry.smbc_type
+        row_name = entry.name
+        workgroup = getattr (entry, 'group', '')
+        if not workgroup and row_type == pysmb.smbc.SERVER:
+            parent_iter = model.iter_parent (iter)
+            if parent_iter is not None:
+                parent = model.get_value (parent_iter, 0)
+                if parent and parent.smbc_type == pysmb.smbc.WORKGROUP:
+                    workgroup = parent.name
+        auth_set = self.rbtnSMBAuthSet.get_active ()
+        user = self.entSMBUsername.get_text () if auth_set else ''
+        password = self.entSMBPassword.get_text () if auth_set else ''
+        path_string = path.to_string ()
+        self.expanding_row = path_string
+        busy (self.SMBBrowseDialog)
+        self._start_smb_operation (
+            'smb-expand', self._smb_list_worker,
+            ("smb://%s/" % row_name, workgroup, user, password),
+            self._smb_expansion_finished,
+            payload={'view': view, 'path': path_string,
+                     'name': row_name, 'row_type': row_type})
 
-            busy (self.SMBBrowseDialog)
-            uri = "smb://%s/" % entry.name
-            debug = 0
-            if get_debugging ():
-                debug = 10
-            smbc_auth = pysmb.AuthContext (self.SMBBrowseDialog)
-            ctx = pysmb.smbc.Context (debug=debug,
-                                      auth_fn=smbc_auth.callback)
+    def _smb_expansion_finished (self, result, exc, serial, payload):
+        self.expanding_row = None
+        if exc is None and result.get ('cancelled'):
+            ready (self.SMBBrowseDialog)
+            return
+        if exc is not None:
+            debugprint ("SMB row expansion failed: %s" % repr (exc))
             entries = []
-            try:
-                while smbc_auth.perform_authentication () > 0:
-                    try:
-                        entries = ctx.opendir (uri).getdents ()
-                    except Exception as e:
-                        smbc_auth.failed (e)
-            except RuntimeError as e:
-                (e, s) = e.args
-                if e != errno.ENOENT:
-                    debugprint ("Runtime error: %s" % repr ((e, s)))
-            except:
-                nonfatalException()
+        else:
+            if result.get ('error') is not None:
+                debugprint ("SMB row expansion failed: %s" %
+                            repr (result['error']))
+            entries = result.get ('entries', [])
 
-            while model.iter_has_child (iter):
-                i = model.iter_nth_child (iter, 0)
-                model.remove (i)
-
-            for entry in entries:
-                if entry.smbc_type in [pysmb.smbc.SERVER,
-                                       pysmb.smbc.PRINTER_SHARE]:
-                    i = model.append (iter, [entry])
-                if entry.smbc_type == pysmb.smbc.SERVER:
-                    n = model.append (i)
-
-            view.expand_row (path, 0)
-            del self.expanding_row
+        view = payload['view']
+        model = view.get_model ()
+        try:
+            path = Gtk.TreePath.new_from_string (payload['path'])
+            parent_iter = model.get_iter (path)
+        except (TypeError, ValueError):
             ready (self.SMBBrowseDialog)
+            return
+        current = model.get_value (parent_iter, 0)
+        if (current is None or current.name != payload['name'] or
+                current.smbc_type != payload['row_type']):
+            ready (self.SMBBrowseDialog)
+            return
 
-        elif entry.smbc_type == pysmb.smbc.SERVER:
-            # Server
-            try:
-                if self.expanding_row:
-                    return
-            except:
-                self.expanding_row = 1
-
-            busy (self.SMBBrowseDialog)
-            uri = "smb://%s/" % entry.name
-            debug = 0
-            if get_debugging ():
-                debug = 10
-            smbc_auth = pysmb.AuthContext (self.SMBBrowseDialog)
-            ctx = pysmb.smbc.Context (debug=debug,
-                                      auth_fn=smbc_auth.callback)
-            shares = []
-            try:
-                while smbc_auth.perform_authentication () > 0:
-                    try:
-                        shares = ctx.opendir (uri).getdents ()
-                    except Exception as e:
-                        smbc_auth.failed (e)
-            except RuntimeError as e:
-                (e, s) = e.args
-                if e != errno.EACCES and e != errno.EPERM:
-                    debugprint ("Runtime error: %s" % repr ((e, s)))
-            except:
-                nonfatalException()
-
-            while model.iter_has_child (iter):
-                i = model.iter_nth_child (iter, 0)
-                model.remove (i)
-
-            for share in shares:
+        while model.iter_has_child (parent_iter):
+            model.remove (model.iter_nth_child (parent_iter, 0))
+        if payload['row_type'] == pysmb.smbc.WORKGROUP:
+            for child in entries or []:
+                if child.smbc_type in (pysmb.smbc.SERVER,
+                                        pysmb.smbc.PRINTER_SHARE):
+                    child_iter = model.append (parent_iter, [child])
+                    if child.smbc_type == pysmb.smbc.SERVER:
+                        model.append (child_iter)
+        else:
+            for share in entries or []:
                 if share.smbc_type == pysmb.smbc.PRINTER_SHARE:
-                    i = model.append (iter, [share])
-                    debugprint (repr (share))
-
-            view.expand_row (path, 0)
-            del self.expanding_row
-            ready (self.SMBBrowseDialog)
+                    model.append (parent_iter, [share])
+        view.expand_row (path, 0)
+        ready (self.SMBBrowseDialog)
 
     def set_btnSMBVerify_sensitivity (self, on):
         self.btnSMBVerify.set_sensitive (on)
@@ -3534,7 +4367,7 @@ class NewPrinterGUI(GtkGUI):
     def on_btnSMBBrowse_clicked(self, button):
         """Check whether the needed SMB client library is available and"""
         """install it if needed"""
-        if not self.install_python3_smbc_if_needed():
+        if not self.install_python3_smbc_if_needed ("browse"):
             return
 
         self.btnSMBBrowseOk.set_sensitive(False)
@@ -3602,90 +4435,88 @@ class NewPrinterGUI(GtkGUI):
         self.SMBBrowseDialog.hide()
 
     def on_btnSMBBrowseCancel_clicked(self, widget, *args):
+        state = getattr(self, '_smb_operation_state', None)
+        if state and state['kind'] in ('smb-browse', 'smb-expand'):
+            self._cancel_smb_operation ()
+            ready (self.SMBBrowseDialog)
         self.SMBBrowseDialog.hide()
+        return True
 
     def on_btnSMBBrowseRefresh_clicked(self, button):
         self.browse_smb_hosts()
 
     def on_rbtnSMBAuthSet_toggled(self, widget):
+        self._cancel_smb_verify_for_changed_input ()
         self.tblSMBAuth.set_sensitive(widget.get_active())
+
+    def _smb_verify_inputs_changed (self, widget):
+        self._cancel_smb_verify_for_changed_input ()
+
+    def _cancel_smb_verify_for_changed_input (self):
+        state = getattr(self, '_smb_operation_state', None)
+        if state is None or state['kind'] != 'smb-verify':
+            return
+        expected = state['payload']['snapshot']
+        current = (self.entSMBURI.get_text (),
+                   self.rbtnSMBAuthSet.get_active (),
+                   self.entSMBUsername.get_text (),
+                   self.entSMBPassword.get_text ())
+        if current != expected:
+            self._cancel_smb_operation ()
+            ready (self.NewPrinterWindow)
 
     def on_btnSMBVerify_clicked(self, button):
         """Check whether the needed SMB client library is available and"""
         """install it if needed"""
-        if not self.install_python3_smbc_if_needed():
+        if not self.install_python3_smbc_if_needed ("verify"):
             return
 
         uri = self.entSMBURI.get_text ()
         (group, host, share, u, p) = SMBURI (uri=uri).separate ()
         user = ''
         passwd = ''
-        reason = None
         auth_set = self.rbtnSMBAuthSet.get_active()
         if auth_set:
             user = self.entSMBUsername.get_text ()
             passwd = self.entSMBPassword.get_text ()
 
-        accessible = False
-        canceled = False
+        snapshot = (uri, auth_set, self.entSMBUsername.get_text (),
+                    self.entSMBPassword.get_text ())
+        payload = {'snapshot': snapshot}
         busy (self.NewPrinterWindow)
-        try:
-            debug = 0
-            if get_debugging ():
-                debug = 10
+        self._start_smb_operation (
+            'smb-verify', self._smb_verify_worker,
+            (group, host, share, user, passwd, auth_set),
+            self._smb_verify_finished, payload=payload)
 
-            if auth_set:
-                # No prompting.
-                def do_auth (svr, shr, wg, un, pw):
-                    return (group, user, passwd)
-                ctx = pysmb.smbc.Context (debug=debug, auth_fn=do_auth)
-                try:
-                    ctx.optionUseKerberos = True
-                except AttributeError:
-                    # requires pysmbc >= 1.0.12
-                    pass
-
-                f = ctx.open ("smb://%s/%s" % (host, share),
-                              os.O_RDWR, 0o777)
-                accessible = True
-            else:
-                # May need to prompt.
-                smbc_auth = pysmb.AuthContext (self.NewPrinterWindow,
-                                               workgroup=group,
-                                               user=user,
-                                               passwd=passwd)
-                ctx = pysmb.smbc.Context (debug=debug,
-                                          auth_fn=smbc_auth.callback)
-                while smbc_auth.perform_authentication () > 0:
-                    try:
-                        f = ctx.open ("smb://%s/%s" % (host, share),
-                                      os.O_RDWR, 0o777)
-                        accessible = True
-                    except Exception as e:
-                        smbc_auth.failed (e)
-
-                if not accessible:
-                    canceled = True
-        except RuntimeError as e:
-            (e, s) = e.args
-            debugprint ("Error accessing share: %s" % repr ((e, s)))
-            reason = s
-        except:
-            nonfatalException()
+    def _smb_verify_finished (self, result, exc, serial, payload):
         ready (self.NewPrinterWindow)
-
-        if accessible:
+        if self._smb_window_destroyed or self.NewPrinterWindow is None:
+            return
+        uri, auth_set, user, passwd = payload['snapshot']
+        current = (self.entSMBURI.get_text (),
+                   self.rbtnSMBAuthSet.get_active (),
+                   self.entSMBUsername.get_text (),
+                   self.entSMBPassword.get_text ())
+        if current != (uri, auth_set, user, passwd):
+            return
+        if exc is not None:
+            debugprint ("SMB verification failed: %s" % repr (exc))
+            result = {'accessible': False, 'cancelled': False}
+        elif result.get ('error') is not None:
+            debugprint ("SMB verification failed: %s" %
+                        repr (result['error']))
+        if result.get ('cancelled'):
+            return
+        if result.get ('accessible'):
             show_info_dialog (_("Print Share Verified"),
                               _("This print share is accessible."),
                               parent=self.NewPrinterWindow)
             return
-
-        if not canceled:
-            text = _("This print share is not accessible.")
-            if reason:
-                text = reason
-            show_error_dialog (_("Print Share Inaccessible"), text,
-                               parent=self.NewPrinterWindow)
+        text = result.get ('reason') or _(
+            "This print share is not accessible.")
+        show_error_dialog (_("Print Share Inaccessible"), text,
+                           parent=self.NewPrinterWindow)
 
     def entry_changed(self, entry, allowed_chars):
         "Remove all chars from entry's text that are not in allowed_chars."
@@ -4190,6 +5021,15 @@ class NewPrinterGUI(GtkGUI):
         hostname = self.entNPTLpdHost.get_text()
         server = probe_printer.LpdServer(hostname)
 
+        # Only one direct LPD probe owns the WaitWindow at a time.
+        self._cancel_lpd_probe ()
+
+        # LPD probing performs DNS resolution and socket I/O for every
+        # candidate queue.  Keep the complete probe, but run it outside the
+        # GTK thread so a slow or unreachable server cannot freeze the UI.
+        self._lpd_probe_serial = getattr(self, '_lpd_probe_serial', 0) + 1
+        probe_serial = self._lpd_probe_serial
+
         self.lblWait.set_markup ('<span weight="bold" size="larger">' +
                                  _('Searching') + '</span>\n\n' +
                                  _('Searching for printers'))
@@ -4202,14 +5042,64 @@ class NewPrinterGUI(GtkGUI):
 
         self.WaitWindow.disconnect (self.WaitWindow_handler)
         signal = self.WaitWindow.connect ("delete-event", stop)
-        printers = server.probe()
-        self.WaitWindow.disconnect (signal)
-        self.WaitWindow_handler = self.WaitWindow.connect ("delete-event",
-                                                           on_delete_just_hide)
+        self._lpd_probe_dialog_signal = signal
+        self._lpd_probe_server = server
+
+        self.lpd_probe_operation = TimedOperation (
+            server.probe,
+            callback=self._lpd_probe_finished,
+            context=(server, probe_serial))
+
+    def _cancel_lpd_probe (self, hide_window=True):
+        operation = getattr (self, 'lpd_probe_operation', None)
+        server = getattr (self, '_lpd_probe_server', None)
+        signal = getattr (self, '_lpd_probe_dialog_signal', None)
+        if operation is None and server is None and signal is None:
+            return
+
+        self._lpd_probe_serial = getattr (self, '_lpd_probe_serial', 0) + 1
+        if server is not None:
+            server.destroy ()
+        if operation is not None:
+            operation.cancel ()
+        self.lpd_probe_operation = None
+        self._lpd_probe_server = None
+
+        if signal is not None and getattr (self, 'WaitWindow', None) is not None:
+            try:
+                self.WaitWindow.disconnect (signal)
+            except (TypeError, ValueError):
+                pass
+        self._lpd_probe_dialog_signal = None
+        if hide_window and getattr (self, 'WaitWindow', None) is not None:
+            self.WaitWindow.hide ()
+
+    def _lpd_probe_finished (self, printers, exc, context):
+        server, probe_serial = context
+
+        if probe_serial != getattr(self, '_lpd_probe_serial', None):
+            return
+
+        if getattr(self, 'lpd_probe_operation', None) is not None:
+            self.lpd_probe_operation = None
+        self._lpd_probe_server = None
+
+        if getattr(self, '_lpd_probe_dialog_signal', None) is not None:
+            try:
+                self.WaitWindow.disconnect (self._lpd_probe_dialog_signal)
+            except (TypeError, ValueError):
+                pass
+            self._lpd_probe_dialog_signal = None
+            self.WaitWindow_handler = self.WaitWindow.connect (
+                "delete-event", on_delete_just_hide)
+
         self.WaitWindow.hide ()
+        if exc is not None:
+            debugprint ("LPD probe failed: %s" % repr (exc))
+            return
 
         model = Gtk.ListStore (str)
-        for printer in printers:
+        for printer in printers or []:
             model.append ([printer])
 
         completion = Gtk.EntryCompletion ()
@@ -5013,6 +5903,11 @@ class NewPrinterGUI(GtkGUI):
         self.setNPButtons()
 
     def getNPPPD(self):
+        async_ppd = getattr (self, '_async_openprinting_ppd_result', None)
+        if async_ppd is not None:
+            self._async_openprinting_ppd_result = None
+            return async_ppd
+
         cached = getattr(self, '_cached_driverless_ppd', None)
 
         ppd = None
@@ -5039,19 +5934,9 @@ class NewPrinterGUI(GtkGUI):
                     model, iter = treeview.get_selection ().get_selected ()
                     driver = model.get_value (iter, 1)
                     if driver != 0 and 'ppds' in driver:
-                        # Only need to download a PPD.
-                        if (len(driver['ppds']) > 0):
-                            file_to_download = driver['ppds'][0]
-                            debugprint ("ppd file to download [" + file_to_download+ "]")
-                            file_to_download = file_to_download.strip()
-                            if (len(file_to_download) > 0):
-                                ppdurlobj = urllib.request.urlopen(file_to_download)
-                                ppdcontent = ppdurlobj.read()
-                                ppdurlobj.close()
-                                with tempfile.NamedTemporaryFile () as tmpf:
-                                    tmpf.write(ppdcontent)
-                                    tmpf.flush ()
-                                    ppd = cups.PPD(tmpf.name)
+                        # Downloadable PPDs are prepared asynchronously before
+                        # this function is called.
+                        ppd = None
 
             except (RuntimeError, urllib.error.HTTPError) as e:
                 debugprint ("RuntimeError: " + repr (e))
@@ -5075,24 +5960,9 @@ class NewPrinterGUI(GtkGUI):
                         err = err_text % (driver, self.NPMake, self.NPModel)
                 elif self.rbtnNPPPD.get_active():
                     # This error came from trying to open the PPD file.
-                    err_title = _('PPD error')
                     filename = self.filechooserPPD.get_filename()
-                    err = _('Failed to read PPD file.  Possible reason '
-                            'follows:') + '\n'
-                    try:
-                        # We want this to be in the current natural language,
-                        # so we intentionally don't set LC_ALL=C here.
-                        p = subprocess.Popen (['/usr/bin/cupstestppd',
-                                               '-rvv', filename],
-                                              close_fds=True,
-                                              stdin=subprocess.DEVNULL,
-                                              stdout=subprocess.PIPE,
-                                              stderr=subprocess.PIPE)
-                        (stdout, stderr) = p.communicate ()
-                        err += stdout.decode ()
-                    except:
-                        # Problem executing command.
-                        raise
+                    self._start_local_ppd_validation (filename)
+                    return None
                 else:
                     # Failed to get PPD downloaded from OpenPrinting XXX
                     err_title = _('Downloadable drivers')
@@ -5133,6 +6003,165 @@ class NewPrinterGUI(GtkGUI):
             self.cups._end_operation ()
 
         return ppd
+
+    def _start_local_ppd_validation (self, filename):
+        if getattr (self, '_local_ppd_validation_operation', None) is not None:
+            return
+        self._local_ppd_validation_serial = getattr (
+            self, '_local_ppd_validation_serial', 0) + 1
+        serial = self._local_ppd_validation_serial
+        self._show_searching_spinner (_("Checking printer description"))
+        self._local_ppd_validation_operation = TimedOperation (
+            self._local_ppd_validation_worker,
+            args=(filename,),
+            callback=self._local_ppd_validation_finished,
+            context=(serial, filename))
+
+    def _local_ppd_validation_worker (self, filename):
+        process = subprocess.Popen (['/usr/bin/cupstestppd', '-rvv', filename],
+                                    close_fds=True,
+                                    stdin=subprocess.DEVNULL,
+                                    stdout=subprocess.PIPE,
+                                    stderr=subprocess.PIPE)
+        stdout, stderr = process.communicate ()
+        return process.returncode, stdout, stderr
+
+    def _cancel_local_ppd_validation (self):
+        operation = getattr (self, '_local_ppd_validation_operation', None)
+        if operation is None:
+            return
+        self._local_ppd_validation_serial = getattr (
+            self, '_local_ppd_validation_serial', 0) + 1
+        operation.cancel ()
+        self._local_ppd_validation_operation = None
+        self._hide_searching_spinner ()
+
+    def _local_ppd_validation_finished (self, result, exc, context):
+        serial, filename = context
+        if serial != getattr (self, '_local_ppd_validation_serial', None):
+            return
+        if getattr (self, '_local_ppd_validation_operation', None) is None:
+            return
+        self._local_ppd_validation_operation = None
+        self._hide_searching_spinner ()
+
+        if exc is not None:
+            debugprint ("cupstestppd failed to run: %s" % repr (exc))
+            return
+
+        returncode, stdout, stderr = result
+        err = _('Failed to read PPD file.  Possible reason follows:') + '\n'
+        err += stdout.decode ()
+        show_error_dialog (_('PPD error'), err, self.NewPrinterWindow)
+
+    def _get_openprinting_ppd_url (self):
+        """Return the selected downloadable PPD URL, if this path applies."""
+        if (getattr (self.device, 'driverless', False) or
+                self.rbtnNPFoomatic.get_active() or
+                self.rbtnNPPPD.get_active()):
+            return None
+        model, iter = self.tvNPDownloadableDrivers.get_selection ().get_selected ()
+        if iter is None:
+            return None
+        driver = model.get_value (iter, 1)
+        if not driver or 'ppds' not in driver or not driver['ppds']:
+            return None
+        url = driver['ppds'][0].strip ()
+        return url or None
+
+    def _start_async_openprinting_ppd (self, step, continuation="next"):
+        """Start complete downloadable-PPD preparation outside GTK."""
+        if getattr (self, '_async_openprinting_ppd_result', None) is not None:
+            return False
+
+        url = self._get_openprinting_ppd_url ()
+        if url is None:
+            return False
+        if getattr (self, '_openprinting_ppd_operation', None) is not None:
+            return True
+
+        self._openprinting_ppd_serial = getattr (
+            self, '_openprinting_ppd_serial', 0) + 1
+        serial = self._openprinting_ppd_serial
+        self._openprinting_ppd_step = step
+        self._openprinting_ppd_continuation = continuation
+        self._show_searching_spinner (_("Downloading printer description"))
+        self._openprinting_ppd_operation = TimedOperation (
+            self._download_openprinting_ppd_worker,
+            args=(url,),
+            callback=self._openprinting_ppd_finished,
+            context=(serial, url))
+        return True
+
+    def _cancel_openprinting_ppd (self):
+        operation = getattr (self, '_openprinting_ppd_operation', None)
+        if operation is None:
+            return
+        self._openprinting_ppd_serial = getattr (
+            self, '_openprinting_ppd_serial', 0) + 1
+        operation.cancel ()
+        self._openprinting_ppd_operation = None
+        self._async_openprinting_ppd_result = None
+        self._hide_searching_spinner ()
+
+    def _download_openprinting_ppd_worker (self, url):
+        ppdurlobj = urllib.request.urlopen (url)
+        try:
+            ppdcontent = ppdurlobj.read ()
+        finally:
+            ppdurlobj.close ()
+
+        with tempfile.NamedTemporaryFile () as tmpf:
+            tmpf.write (ppdcontent)
+            tmpf.flush ()
+            ppd = cups.PPD (tmpf.name)
+            process = subprocess.Popen (
+                ['/usr/bin/cupstestppd', '-rvv', tmpf.name],
+                close_fds=True,
+                stdin=subprocess.DEVNULL,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE)
+            stdout, stderr = process.communicate ()
+            if process.returncode != 0:
+                details = stdout.decode (errors="replace")
+                if not details:
+                    details = stderr.decode (errors="replace")
+                raise RuntimeError (details or
+                                    "cupstestppd validation failed")
+            return ppd
+
+    def _openprinting_ppd_finished (self, ppd, exc, context):
+        serial, url = context
+        if serial != getattr (self, '_openprinting_ppd_serial', None):
+            return
+        if getattr (self, '_openprinting_ppd_operation', None) is None:
+            return
+
+        self._openprinting_ppd_operation = None
+        self._hide_searching_spinner ()
+        if exc is not None:
+            self._show_openprinting_ppd_error (exc)
+            return
+
+        continuation = getattr (self, '_openprinting_ppd_continuation', "next")
+        if continuation == "apply":
+            self.ppd = ppd
+        else:
+            self._async_openprinting_ppd_result = ppd
+        # Re-enter the same forward navigation step.  getNPPPD() consumes
+        # the prepared result, so the URL is not downloaded twice.
+        if getattr (self, 'NewPrinterWindow', None) is not None and \
+                continuation == "apply":
+            self.on_btnNPApply_clicked (None)
+        elif getattr (self, 'NewPrinterWindow', None) is not None:
+            self.nextNPTab (self._openprinting_ppd_step)
+
+    def _show_openprinting_ppd_error (self, exc):
+        debugprint ("Failed to prepare downloadable PPD: %s" % repr (exc))
+        details = str (exc) or _("The printer description could not be validated.")
+        show_error_dialog (_("Downloadable drivers"),
+                           _("Failed to download or validate PPD.\n\n%s") % details,
+                           self.NewPrinterWindow)
 
     # Installable Options
 
@@ -5191,6 +6220,10 @@ class NewPrinterGUI(GtkGUI):
 
     # Create new Printer
     def on_btnNPApply_clicked(self, widget):
+        if (self.dialog_mode == "ppd" and self.ppd is None and
+                self._start_async_openprinting_ppd (0, continuation="apply")):
+            return
+
         if self.fetchDevices_conn:
             self.fetchDevices_conn.destroy ()
             self.fetchDevices_conn = None

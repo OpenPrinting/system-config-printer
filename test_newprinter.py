@@ -207,6 +207,994 @@ def get_dummy_gui():
     np.cups.getServerPPD = MagicMock(return_value='/tmp/mock.ppd')
     return np
 
+
+class FakePPDOperation:
+    def __init__(self, target, args=(), callback=None, context=None):
+        self.target = target
+        self.args = args
+        self.callback = callback
+        self.context = context
+        self.cancelled = False
+
+    def cancel(self):
+        self.cancelled = True
+
+
+def _prepare_openprinting_ppd_gui():
+    np = get_dummy_gui()
+    np.ppd = None
+    np.device.driverless = False
+    np.rbtnNPFoomatic.get_active.return_value = False
+    np.rbtnNPPPD.get_active.return_value = False
+    selection = MagicMock()
+    model = MagicMock()
+    iterator = object()
+    selection.get_selected.return_value = (model, iterator)
+    model.get_value.return_value = {'ppds': ['https://example.test/printer.ppd']}
+    np.tvNPDownloadableDrivers = MagicMock()
+    np.tvNPDownloadableDrivers.get_selection.return_value = selection
+    np._show_searching_spinner = MagicMock()
+    np._hide_searching_spinner = MagicMock()
+    np.entNPDescription = MagicMock()
+    np.NewPrinterWindow = MagicMock()
+    np.entNPDescription = MagicMock()
+    np.printers = {}
+    np.ppd = None
+    np.entNPName = MagicMock()
+    np.entNPDriver = MagicMock()
+    return np
+
+
+def test_openprinting_ppd_preparation_starts_asynchronous_operation(monkeypatch):
+    np = _prepare_openprinting_ppd_gui()
+    operations = []
+
+    def fake_operation(*args, **kwargs):
+        op = FakePPDOperation(*args, **kwargs)
+        operations.append(op)
+        return op
+
+    monkeypatch.setattr(newprinter, "TimedOperation", fake_operation)
+
+    assert np._start_async_openprinting_ppd(1) is True
+    assert len(operations) == 1
+    assert operations[0].target == np._download_openprinting_ppd_worker
+    assert operations[0].args == ('https://example.test/printer.ppd',)
+    assert np._openprinting_ppd_operation is operations[0]
+
+
+def test_openprinting_ppd_worker_downloads_parses_and_validates(monkeypatch):
+    np = _prepare_openprinting_ppd_gui()
+    response = MagicMock()
+    response.read.return_value = b"PPD CONTENT"
+    opened = []
+    monkeypatch.setattr(newprinter.urllib.request, "urlopen",
+                        lambda url: opened.append(url) or response)
+
+    parsed_paths = []
+
+    def fake_ppd(path):
+        import os
+        assert os.path.exists(path)
+        parsed_paths.append(path)
+        return "parsed-ppd"
+
+    monkeypatch.setattr(cups, "PPD", fake_ppd)
+
+    class Completed:
+        returncode = 0
+
+        def communicate(self):
+            return b"validated", b""
+
+    def fake_popen(args, **kwargs):
+        import os
+        assert args == ['/usr/bin/cupstestppd', '-rvv', args[-1]]
+        assert os.path.exists(args[-1])
+        return Completed()
+
+    monkeypatch.setattr(newprinter.subprocess, "Popen", fake_popen)
+    result = np._download_openprinting_ppd_worker(
+        'https://example.test/printer.ppd')
+
+    assert result == "parsed-ppd"
+    assert opened == ['https://example.test/printer.ppd']
+    assert len(parsed_paths) == 1
+
+
+def test_openprinting_ppd_validation_failure_does_not_resume(monkeypatch):
+    np = _prepare_openprinting_ppd_gui()
+    np._openprinting_ppd_serial = 4
+    np._openprinting_ppd_operation = object()
+    np.nextNPTab = MagicMock()
+    np._show_openprinting_ppd_error = MagicMock()
+
+    np._openprinting_ppd_finished(
+        None, RuntimeError("invalid PPD"), (4, 'https://example.test/printer.ppd'))
+
+    np.nextNPTab.assert_not_called()
+    np._show_openprinting_ppd_error.assert_called_once()
+    assert getattr(np, '_async_openprinting_ppd_result', None) is None
+
+
+def test_openprinting_ppd_normal_continuation_assigns_result_and_resumes(monkeypatch):
+    np = _prepare_openprinting_ppd_gui()
+    np._openprinting_ppd_serial = 7
+    np._openprinting_ppd_step = 1
+    np._openprinting_ppd_operation = object()
+    np.nextNPTab = MagicMock()
+    prepared = object()
+
+    np._openprinting_ppd_finished(
+        prepared, None, (7, 'https://example.test/printer.ppd'))
+
+    assert np._async_openprinting_ppd_result is prepared
+    np.nextNPTab.assert_called_once_with(1)
+
+
+def test_openprinting_ppd_apply_continuation_assigns_ppd_and_reenters():
+    np = _prepare_openprinting_ppd_gui()
+    np._openprinting_ppd_serial = 8
+    np._openprinting_ppd_operation = object()
+    np._openprinting_ppd_continuation = "apply"
+    np.on_btnNPApply_clicked = MagicMock()
+    prepared = object()
+
+    np._openprinting_ppd_finished(
+        prepared, None, (8, 'https://example.test/printer.ppd'))
+
+    assert np.ppd is prepared
+    np.on_btnNPApply_clicked.assert_called_once_with(None)
+
+
+def test_openprinting_ppd_stale_callback_does_nothing():
+    np = _prepare_openprinting_ppd_gui()
+    np._openprinting_ppd_serial = 10
+    np._openprinting_ppd_operation = object()
+    np.nextNPTab = MagicMock()
+    np._show_openprinting_ppd_error = MagicMock()
+    original_ppd = getattr(np, 'ppd', None)
+
+    np._openprinting_ppd_finished(
+        object(), None, (9, 'https://example.test/printer.ppd'))
+
+    assert np.ppd is original_ppd
+    np.nextNPTab.assert_not_called()
+    np._show_openprinting_ppd_error.assert_not_called()
+
+
+def test_openprinting_ppd_cancellation_invalidates_completion(monkeypatch):
+    np = _prepare_openprinting_ppd_gui()
+    np._openprinting_ppd_serial = 11
+    operation = FakePPDOperation(lambda: None)
+    np._openprinting_ppd_operation = operation
+    np.nextNPTab = MagicMock()
+
+    np._cancel_openprinting_ppd()
+    np._openprinting_ppd_finished(
+        object(), None, (11, 'https://example.test/printer.ppd'))
+
+    assert operation.cancelled is True
+    np.nextNPTab.assert_not_called()
+
+
+def test_next_nptab_starts_openprinting_preparation_and_returns_pending(monkeypatch):
+    np = _prepare_openprinting_ppd_gui()
+    np.btnNPForward = MagicMock()
+    np.ntbkNewPrinter = MagicMock()
+    np.ntbkNewPrinter.get_current_page.return_value = np.PAGE_APPLY
+    np.setNPButtons = MagicMock()
+    started = []
+
+    def start(step):
+        started.append(step)
+        return True
+
+    np._start_async_openprinting_ppd = start
+
+    def handle(step):
+        np._start_async_openprinting_ppd(step)
+        return np.INSTALL_RESULT_OPS_PENDING
+
+    np._handlePrinterInstallationMode = handle
+
+    result = np.nextNPTab(1)
+
+    assert result is None
+    assert started == [1]
+    np.btnNPForward.set_sensitive.assert_called_with(False)
+
+
+def test_next_nptab_real_installation_state_machine_reaches_pending(monkeypatch):
+    monkeypatch.setattr(newprinter, "busy", lambda window: None)
+    np = _prepare_openprinting_ppd_gui()
+    np.dialog_mode = "ppd"
+    np.rbtnNPFoomatic.get_active.return_value = False
+    np.rbtnNPPPD.get_active.return_value = False
+    np.ppds = object()
+    np.remotecupsqueue = False
+    np.nextnptab_rerun = False
+    np.ntbkNewPrinter = MagicMock()
+    np.ntbkNewPrinter.get_current_page.return_value = np.PAGE_SELECT_INSTALL_METHOD
+    np.btnNPForward = MagicMock()
+    np.setNPButtons = MagicMock()
+    np._selectDeviceForInstallation = MagicMock()
+    np._installHPScannerFilesIfNeeded = MagicMock(return_value=True)
+    np._installPrinterFromDeviceID = MagicMock(return_value=np.INSTALL_RESULT_DONE)
+    operations = []
+
+    def start(step):
+        operations.append(step)
+        return True
+
+    np._start_async_openprinting_ppd = start
+
+    # The real navigation and installation-mode/stage functions run here;
+    # only external device/package/CUPS effects are mocked.
+    np.nextNPTab(2)
+
+    assert operations == [2]
+    np.btnNPForward.set_sensitive.assert_called_with(False)
+
+
+def test_next_nptab_async_completion_preserves_original_step(monkeypatch):
+    np = _prepare_openprinting_ppd_gui()
+    np._openprinting_ppd_serial = 20
+    np._openprinting_ppd_step = 1
+    np._openprinting_ppd_operation = object()
+    resumed = []
+    np.nextNPTab = lambda step: resumed.append(step)
+    prepared = object()
+
+    np._openprinting_ppd_finished(
+        prepared, None, (20, 'https://example.test/printer.ppd'))
+
+    assert np._async_openprinting_ppd_result is prepared
+    assert resumed == [1]
+    np._start_async_openprinting_ppd = MagicMock(return_value=False)
+    assert np.getNPPPD() is prepared
+    np._start_async_openprinting_ppd.assert_not_called()
+
+
+def test_apply_entry_point_starts_async_preparation_and_reenters(monkeypatch):
+    np = _prepare_openprinting_ppd_gui()
+    np.dialog_mode = "ppd"
+    np._name = "Test printer"
+    np.isShared = False
+    started = []
+
+    def start(step, continuation="next"):
+        started.append((step, continuation))
+        return True
+
+    np._start_async_openprinting_ppd = start
+    np.on_btnNPApply_clicked(None)
+    assert started == [(0, "apply")]
+
+    np.ppd = object()
+    np._start_async_openprinting_ppd = MagicMock(return_value=False)
+    np.cups._begin_operation = MagicMock()
+    np.cups._end_operation = MagicMock()
+    np.cups.addPrinter = MagicMock()
+    np.cups.getServerPPD = MagicMock()
+    np.cups.setPrinterLocation = MagicMock()
+    np.cups.setPrinterInfo = MagicMock()
+    np.cups.setPrinterShared = MagicMock()
+    np.NewPrinterWindow = MagicMock()
+    np.language = ("C", "UTF-8")
+    np.rbtnChangePPDasIs = MagicMock()
+    np.rbtnChangePPDasIs.get_active.return_value = False
+    np.orig_ppd = None
+    np.options = {}
+    np.emit = MagicMock()
+
+    newprinter.NewPrinterGUI.on_btnNPApply_clicked(np, None)
+    np._start_async_openprinting_ppd.assert_not_called()
+
+
+def test_openprinting_ppd_worker_validation_failure_raises(monkeypatch):
+    np = _prepare_openprinting_ppd_gui()
+    response = MagicMock()
+    response.read.return_value = b"PPD CONTENT"
+    monkeypatch.setattr(newprinter.urllib.request, "urlopen",
+                        lambda url: response)
+    monkeypatch.setattr(cups, "PPD", lambda path: object())
+
+    class FailedProcess:
+        returncode = 1
+
+        def communicate(self):
+            return b"validation failed", b"stderr details"
+
+    monkeypatch.setattr(newprinter.subprocess, "Popen",
+                        lambda *args, **kwargs: FailedProcess())
+
+    with pytest.raises(RuntimeError, match="validation failed"):
+        np._download_openprinting_ppd_worker(
+            'https://example.test/printer.ppd')
+
+
+def test_on_npcancel_invalidates_openprinting_completion():
+    np = _prepare_openprinting_ppd_gui()
+    operation = FakePPDOperation(lambda: None)
+    np._openprinting_ppd_serial = 30
+    np._openprinting_ppd_operation = operation
+    np.fetchDevices_conn = None
+    np.ppdsloader = None
+    np.printer_finder = None
+    np.opreq = None
+    np.emit = MagicMock()
+    np.NewPrinterWindow = MagicMock()
+    np.nextNPTab = MagicMock()
+
+    np.on_NPCancel(None)
+    np._openprinting_ppd_finished(
+        object(), None, (30, 'https://example.test/printer.ppd'))
+
+    assert operation.cancelled is True
+    np.nextNPTab.assert_not_called()
+
+
+def _prepare_local_ppd_validation_gui():
+    np = get_dummy_gui()
+    np.device.driverless = False
+    np.rbtnNPFoomatic.get_active.return_value = False
+    np.rbtnNPPPD.get_active.return_value = True
+    np.filechooserPPD = MagicMock()
+    np.filechooserPPD.get_filename.return_value = "/tmp/local.ppd"
+    np._show_searching_spinner = MagicMock()
+    np._hide_searching_spinner = MagicMock()
+    np.NewPrinterWindow = MagicMock()
+    return np
+
+
+def test_local_ppd_entry_starts_async_validation(monkeypatch):
+    np = _prepare_local_ppd_validation_gui()
+    operations = []
+
+    def fake_operation(*args, **kwargs):
+        operation = FakePPDOperation(*args, **kwargs)
+        operations.append(operation)
+        return operation
+
+    monkeypatch.setattr(newprinter, "TimedOperation", fake_operation)
+    monkeypatch.setattr(cups, "PPD",
+                        lambda filename: (_ for _ in ()).throw(
+                            RuntimeError("invalid PPD")))
+    popen = MagicMock(side_effect=AssertionError(
+        "Popen must not run on the GTK entry path"))
+    monkeypatch.setattr(newprinter.subprocess, "Popen", popen)
+
+    assert np.getNPPPD() is None
+    assert len(operations) == 1
+    assert operations[0].target == np._local_ppd_validation_worker
+    assert operations[0].args == ("/tmp/local.ppd",)
+    popen.assert_not_called()
+
+
+def test_local_ppd_validation_worker_preserves_command_and_result(monkeypatch):
+    np = _prepare_local_ppd_validation_gui()
+    process = MagicMock()
+    process.returncode = 1
+    process.communicate.return_value = (b"stdout details", b"stderr details")
+    popen = MagicMock(return_value=process)
+    monkeypatch.setattr(newprinter.subprocess, "Popen", popen)
+
+    result = np._local_ppd_validation_worker("/tmp/local.ppd")
+
+    popen.assert_called_once_with(
+        ['/usr/bin/cupstestppd', '-rvv', '/tmp/local.ppd'],
+        close_fds=True, stdin=newprinter.subprocess.DEVNULL,
+        stdout=newprinter.subprocess.PIPE, stderr=newprinter.subprocess.PIPE)
+    process.communicate.assert_called_once_with()
+    assert result == (1, b"stdout details", b"stderr details")
+
+
+def test_local_ppd_validation_success_preserves_existing_error_behavior(monkeypatch):
+    np = _prepare_local_ppd_validation_gui()
+    np._local_ppd_validation_serial = 1
+    np._local_ppd_validation_operation = object()
+    np.nextNPTab = MagicMock()
+    errors = []
+    monkeypatch.setattr(newprinter, "show_error_dialog",
+                        lambda title, text, window: errors.append((title, text)))
+
+    np._local_ppd_validation_finished(
+        (0, b"validation output", b"stderr output"), None,
+        (1, "/tmp/local.ppd"))
+
+    assert len(errors) == 1
+    assert "validation output" in errors[0][1]
+    np.nextNPTab.assert_not_called()
+    assert np._local_ppd_validation_operation is None
+
+
+def test_local_ppd_validation_failure_does_not_continue(monkeypatch):
+    np = _prepare_local_ppd_validation_gui()
+    np._local_ppd_validation_serial = 2
+    np._local_ppd_validation_operation = object()
+    np.nextNPTab = MagicMock()
+    errors = []
+    monkeypatch.setattr(newprinter, "show_error_dialog",
+                        lambda title, text, window: errors.append(text))
+
+    np._local_ppd_validation_finished(
+        (1, b"invalid PPD", b"diagnostic"), None,
+        (2, "/tmp/local.ppd"))
+
+    assert errors and "invalid PPD" in errors[0]
+    np.nextNPTab.assert_not_called()
+
+
+def test_local_ppd_validation_cancel_ignores_late_completion():
+    np = _prepare_local_ppd_validation_gui()
+    operation = FakePPDOperation(lambda: None)
+    np._local_ppd_validation_serial = 3
+    np._local_ppd_validation_operation = operation
+    np.nextNPTab = MagicMock()
+    np._cancel_local_ppd_validation()
+
+    np._local_ppd_validation_finished(
+        (0, b"obsolete", b""), None, (3, "/tmp/local.ppd"))
+
+    assert operation.cancelled is True
+    np.nextNPTab.assert_not_called()
+
+
+def test_local_ppd_validation_destruction_ignores_late_completion():
+    np = _prepare_local_ppd_validation_gui()
+    operation = FakePPDOperation(lambda: None)
+    np._local_ppd_validation_serial = 4
+    np._local_ppd_validation_operation = operation
+    np._cancel_local_ppd_validation()
+    np._local_ppd_validation_finished(
+        (0, b"obsolete", b""), None, (4, "/tmp/local.ppd"))
+
+    assert operation.cancelled is True
+    assert np._local_ppd_validation_operation is None
+
+
+def _gpg_driver():
+    return {
+        'packages': {'x86_64': {
+            'printer-driver_1.0.rpm': {
+                'fingerprint': 'https://example.test/fingerprint',
+                'repositories': {'dnf': 'repo'},
+            }
+        }}
+    }
+
+
+def _prepare_gpg_install_gui():
+    np = get_dummy_gui()
+    selection = MagicMock()
+    model = MagicMock()
+    selection.get_selected.return_value = (model, object())
+    model.get_value.return_value = _gpg_driver()
+    np.tvNPDownloadableDrivers = MagicMock()
+    np.tvNPDownloadableDrivers.get_selection.return_value = selection
+    np._show_searching_spinner = MagicMock()
+    np._hide_searching_spinner = MagicMock()
+    np.installdriverpackage = MagicMock(return_value=True)
+    np.packageinstaller = 'dnf'
+    np._start_driver_installation = MagicMock()
+    np.installed_driver_files = ["driver.ppd"]
+    np.downloadable_driver_for_printer = None
+    np.nextNPTab = MagicMock()
+    return np
+
+
+def test_gpg_fingerprint_worker_uses_existing_download_logic(monkeypatch):
+    np = _prepare_gpg_install_gui()
+    monkeypatch.setattr(newprinter, "download_gpg_fingerprint",
+                        lambda url: url == 'https://example.test/fingerprint' and 'ABC')
+    assert np._gpg_fingerprint_worker('https://example.test/fingerprint') == 'ABC'
+
+
+def test_driver_install_entry_starts_async_gpg_download(monkeypatch):
+    np = _prepare_gpg_install_gui()
+    operations = []
+    monkeypatch.setattr(newprinter, "TimedOperation",
+                        lambda *args, **kwargs: operations.append(
+                            FakePPDOperation(*args, **kwargs)) or operations[-1])
+
+    result = np._handleDriverInstallation()
+
+    assert result == np.INSTALL_RESULT_OPS_PENDING
+    assert len(operations) == 1
+    assert operations[0].args == ('https://example.test/fingerprint',)
+    np.installdriverpackage.assert_not_called()
+
+
+def test_gpg_completion_resumes_installation_once():
+    np = _prepare_gpg_install_gui()
+    driver = _gpg_driver()
+    np._gpg_fingerprint_serial = 1
+    np._gpg_fingerprint_operation = object()
+
+    np._gpg_fingerprint_finished('ABC', None, (1, driver))
+
+    np._start_driver_installation.assert_called_once()
+    np.nextNPTab.assert_not_called()
+    assert np._gpg_fingerprint_operation is None
+
+
+def test_invalid_gpg_fingerprint_does_not_install():
+    np = _prepare_gpg_install_gui()
+    np._gpg_fingerprint_serial = 2
+    np._gpg_fingerprint_operation = object()
+
+    np._gpg_fingerprint_finished(None, None, (2, _gpg_driver()))
+
+    np.installdriverpackage.assert_not_called()
+
+
+def test_cancelled_gpg_completion_is_stale():
+    np = _prepare_gpg_install_gui()
+    operation = FakePPDOperation(lambda: None)
+    np._gpg_fingerprint_serial = 3
+    np._gpg_fingerprint_operation = operation
+    driver = _gpg_driver()
+
+    np._cancel_gpg_fingerprint_download()
+    np._gpg_fingerprint_finished('ABC', None, (3, driver))
+
+    assert operation.cancelled is True
+    np.installdriverpackage.assert_not_called()
+
+
+def test_gpg_completion_resumes_real_navigation_without_restarting(monkeypatch):
+    monkeypatch.setattr(newprinter, "busy", lambda window: None)
+    np = _prepare_gpg_install_gui()
+    np.dialog_mode = "download_driver"
+    np.nextnptab_rerun = False
+    np.ntbkNewPrinter = MagicMock()
+    np.ntbkNewPrinter.get_current_page.return_value = np.PAGE_DOWNLOAD_DRIVER
+    np.btnNPForward = MagicMock()
+    np.setNPButtons = MagicMock()
+    np._installPrinterFromDeviceID = MagicMock(
+        return_value=np.INSTALL_RESULT_DONE)
+    np.NewPrinterWindow = MagicMock()
+    np.fillDownloadableDrivers = MagicMock()
+    starts = []
+
+    def start(driver, url):
+        starts.append((driver, url))
+
+    np._start_gpg_fingerprint_download = start
+    driver = _gpg_driver()
+    np.tvNPDownloadableDrivers.get_selection().get_selected.return_value = (
+        MagicMock(), object())
+    np.tvNPDownloadableDrivers.get_selection().get_selected.return_value[0].get_value.return_value = driver
+
+    assert np._handleDriverInstallation() == np.INSTALL_RESULT_OPS_PENDING
+    np._start_gpg_fingerprint_download = MagicMock()
+    np._gpg_fingerprint_serial = 1
+    np._gpg_fingerprint_operation = object()
+    np._start_driver_installation.reset_mock()
+    np.nextNPTab = newprinter.NewPrinterGUI.nextNPTab.__get__(np)
+
+    np._gpg_fingerprint_finished('ABC', None, (1, driver))
+
+    assert len(starts) == 1
+    np._start_gpg_fingerprint_download.assert_not_called()
+    np._start_driver_installation.assert_called_once()
+    assert np.nextnptab_rerun is False
+
+
+def test_remote_cups_selection_starts_async_retrieval(monkeypatch):
+    np = get_dummy_gui()
+    np.nextnptab_rerun = False
+    np._show_searching_spinner = MagicMock()
+    operations = []
+    monkeypatch.setattr(newprinter, "TimedOperation",
+                        lambda *args, **kwargs: operations.append(
+                            FakePPDOperation(*args, **kwargs)) or operations[-1])
+
+    assert np._selectDeviceForInstallation(
+        "ipp://remote.example/printers/queue") is False
+    assert len(operations) == 1
+    assert operations[0].target == np._remote_cups_retrieval_worker
+
+
+def test_remote_cups_worker_reads_http_and_attributes(monkeypatch):
+    np = get_dummy_gui()
+    response = MagicMock(status=200)
+    http_connection = MagicMock()
+    http_connection.getresponse.return_value = response
+    monkeypatch.setattr(newprinter.http.client, "HTTPConnection",
+                        lambda host, port: http_connection)
+    cups_connection = MagicMock()
+    cups_connection.getPrinterAttributes.return_value = {
+        'printer-info': 'Remote printer', 'printer-location': 'Lab'}
+    monkeypatch.setattr(newprinter.cups, "Connection",
+                        lambda **kwargs: cups_connection)
+
+    result = np._remote_cups_retrieval_worker(
+        "ipp://remote.example/printers/queue",
+        ('remote.example', '', 'queue'))
+
+    http_connection.request.assert_called_once_with(
+        "GET", "/printers/queue.ppd")
+    response.read.assert_called_once_with()
+    cups_connection.getPrinterAttributes.assert_called_once()
+    assert result == ('queue', 'Remote printer', 'Lab')
+
+
+def test_remote_cups_stale_completion_is_ignored():
+    np = get_dummy_gui()
+    np._remote_cups_serial = 2
+    np._remote_cups_operation = FakePPDOperation(lambda: None)
+    np.nextNPTab = MagicMock()
+    np._remote_cups_retrieval_finished(
+        ('queue', 'info', 'location'), None,
+        (1, "ipp://old.example/printers/queue", 1))
+
+    np.nextNPTab.assert_not_called()
+    assert np.remotecupsqueue is False
+
+
+def test_remote_cups_real_continuation_does_not_repeat_retrieval(monkeypatch):
+    monkeypatch.setattr(newprinter, "busy", lambda window: None)
+    np = get_dummy_gui()
+    np.dialog_mode = "printer"
+    np.nextnptab_rerun = False
+    np.ppds = object()
+    np.remotecupsqueue = False
+    np.ntbkNewPrinter = MagicMock()
+    np.ntbkNewPrinter.get_current_page.return_value = np.PAGE_SELECT_DEVICE
+    np.btnNPForward = MagicMock()
+    np.setNPButtons = MagicMock()
+    np.NewPrinterWindow = MagicMock()
+    np.entNPDescription = MagicMock()
+    np.printers = {}
+    np.ppd = None
+    np.entNPName = MagicMock()
+    np.entNPDriver = MagicMock()
+    np._installPrinterFromDeviceID = MagicMock(
+        return_value=np.INSTALL_RESULT_DONE)
+    np.getDeviceURI = MagicMock(
+        return_value="ipp://remote.example/printers/queue")
+    np.device.uri = "ipp://remote.example/printers/queue"
+    np.device.id = "MFG:Xerox;MDL:Normal Xerox;"
+    np.device.id_dict = {"MFG": "Xerox", "MDL": "Normal Xerox"}
+    np.device.make_and_model = "Xerox Normal Xerox"
+    np.device.info = "Normal Xerox"
+    expected_metadata = {
+        "id": np.device.id,
+        "id_dict": dict(np.device.id_dict),
+        "make_and_model": np.device.make_and_model,
+        "info": np.device.info,
+        "uri": np.device.uri,
+    }
+    operations = []
+    monkeypatch.setattr(newprinter, "TimedOperation",
+                        lambda *args, **kwargs: operations.append(
+                            FakePPDOperation(*args, **kwargs)) or operations[-1])
+
+    result = np._handlePrinterInstallationStage(np.PAGE_SELECT_DEVICE, 1)
+    assert result == np.INSTALL_RESULT_OPS_PENDING
+    assert len(operations) == 1
+    np.device.id = "MFG:HP;MDL:LaserJet;"
+    np.device.id_dict = {"MFG": "HP", "MDL": "LaserJet"}
+    np.device.make_and_model = "HP LaserJet"
+    np.device.info = "HP"
+
+    np.nextNPTab = newprinter.NewPrinterGUI.nextNPTab.__get__(np)
+    np._handlePrinterInstallationMode = newprinter.NewPrinterGUI._handlePrinterInstallationMode.__get__(np)
+    np._handlePrinterInstallationStage = newprinter.NewPrinterGUI._handlePrinterInstallationStage.__get__(np)
+    np._remote_cups_retrieval_finished(
+        ('queue', 'Remote printer', 'Lab'), None,
+        (1, "ipp://remote.example/printers/queue", 1))
+
+    assert len(operations) == 1
+    np._installPrinterFromDeviceID.assert_called_once()
+    assert np.remotecupsqueue == 'queue'
+    assert np.nextnptab_rerun is False
+    for name, value in expected_metadata.items():
+        assert getattr(np.device, name) == value
+
+
+def test_remote_cups_prepared_state_reused_only_for_same_uri(monkeypatch):
+    np = get_dummy_gui()
+    np._show_searching_spinner = MagicMock()
+    np._hide_searching_spinner = MagicMock()
+    np.entNPDescription = MagicMock()
+    np.getDeviceURI = MagicMock(return_value="ipp://remote.example/printers/a")
+    operations = []
+    monkeypatch.setattr(newprinter, "TimedOperation", lambda *args, **kwargs:
+                        operations.append(FakePPDOperation(*args, **kwargs)) or operations[-1])
+
+    assert np._selectDeviceForInstallation(
+        "ipp://remote.example/printers/a") is False
+    np.nextNPTab = MagicMock()
+    np._remote_cups_retrieval_finished(
+        ("a", "Xerox", "Office"), None,
+        (1, "ipp://remote.example/printers/a", 1))
+    assert np._prepared_remote_state["uri"] == "ipp://remote.example/printers/a"
+
+    np.nextnptab_rerun = False
+    np._start_remote_cups_retrieval = MagicMock()
+    assert np._selectDeviceForInstallation(
+        "ipp://remote.example/printers/a") is True
+    np._start_remote_cups_retrieval.assert_not_called()
+    assert np.nextnptab_rerun is True
+
+    np.nextnptab_rerun = False
+    np.getDeviceURI.return_value = "ipp://remote.example/printers/b"
+    np._start_remote_cups_retrieval = MagicMock()
+    assert np._selectDeviceForInstallation(
+        "ipp://remote.example/printers/b") is False
+    np._start_remote_cups_retrieval.assert_called_once()
+    assert np._prepared_remote_state is None
+
+
+def test_remote_cups_failed_retrieval_is_retryable(monkeypatch):
+    np = get_dummy_gui()
+    np._show_searching_spinner = MagicMock()
+    np._hide_searching_spinner = MagicMock()
+    np.getDeviceURI = MagicMock(return_value="ipp://remote.example/printers/a")
+    np.entNPDescription = MagicMock()
+    operations = []
+    monkeypatch.setattr(newprinter, "TimedOperation", lambda *args, **kwargs:
+                        operations.append(FakePPDOperation(*args, **kwargs)) or operations[-1])
+
+    assert np._selectDeviceForInstallation(np.getDeviceURI()) is False
+    np._remote_cups_retrieval_finished(
+        (None, "", ""), RuntimeError("offline"),
+        (1, np.getDeviceURI(), 1))
+    assert not getattr(np, '_prepared_remote_state', None)
+
+    assert np._selectDeviceForInstallation(np.getDeviceURI()) is False
+    assert len(operations) == 2
+
+
+def test_remote_cups_cancelled_and_stale_completion_cannot_prepare(monkeypatch):
+    np = get_dummy_gui()
+    np._show_searching_spinner = MagicMock()
+    np._hide_searching_spinner = MagicMock()
+    np.getDeviceURI = MagicMock(return_value="ipp://remote.example/printers/a")
+    np.entNPDescription = MagicMock()
+    operations = []
+    monkeypatch.setattr(newprinter, "TimedOperation", lambda *args, **kwargs:
+                        operations.append(FakePPDOperation(*args, **kwargs)) or operations[-1])
+
+    assert np._selectDeviceForInstallation(np.getDeviceURI()) is False
+    operation = operations[0]
+    np._cancel_remote_cups_retrieval()
+    np._remote_cups_retrieval_finished(
+        ("a", "Xerox", "Office"), None,
+        (1, np.getDeviceURI(), 1))
+    assert not getattr(np, '_prepared_remote_state', None)
+
+    np._remote_cups_serial = 3
+    np._remote_cups_operation = FakePPDOperation(lambda: None)
+    np._remote_cups_retrieval_finished(
+        ("old", "Old", "Old"), None,
+        (2, "ipp://remote.example/printers/old", 1))
+    assert not getattr(np, '_prepared_remote_state', None)
+
+    assert np._selectDeviceForInstallation(np.getDeviceURI()) is False
+    assert len(operations) == 2
+
+
+def test_remote_cups_prepared_state_invalidates_on_driverless_failure():
+    np = get_dummy_gui()
+    np._prepared_remote_state = {
+        "uri": "ipp://remote.example/printers/a",
+        "remotecupsqueue": None,
+        "info": "Xerox",
+        "location": "Office",
+        "device": {},
+        "driverless_dependency": (False, None),
+    }
+    np.device._driverless_failed = True
+
+    assert np._reuse_prepared_remote_state(
+        "ipp://remote.example/printers/a") is False
+
+
+def test_remote_cups_http_failure_preserves_attribute_fallback(monkeypatch):
+    np = get_dummy_gui()
+    http_connection = MagicMock()
+    http_connection.request.side_effect = OSError("offline")
+    monkeypatch.setattr(newprinter.http.client, "HTTPConnection",
+                        lambda host, port: http_connection)
+    cups_connection = MagicMock()
+    cups_connection.getPrinterAttributes.return_value = {
+        'printer-info': 'Fallback printer', 'printer-location': 'Office'}
+    monkeypatch.setattr(newprinter.cups, "Connection",
+                        lambda **kwargs: cups_connection)
+
+    result = np._remote_cups_retrieval_worker(
+        "ipp://remote.example/printers/queue",
+        ('remote.example', '', 'queue'))
+
+    assert result == (None, 'Fallback printer', 'Office')
+
+
+def test_remote_cups_attribute_failure_preserves_http_result(monkeypatch):
+    np = get_dummy_gui()
+    response = MagicMock(status=200)
+    http_connection = MagicMock()
+    http_connection.getresponse.return_value = response
+    monkeypatch.setattr(newprinter.http.client, "HTTPConnection",
+                        lambda host, port: http_connection)
+    cups_connection = MagicMock()
+    cups_connection.getPrinterAttributes.side_effect = RuntimeError("offline")
+    monkeypatch.setattr(newprinter.cups, "Connection",
+                        lambda **kwargs: cups_connection)
+
+    result = np._remote_cups_retrieval_worker(
+        "ipp://remote.example/printers/queue",
+        ('remote.example', '', 'queue'))
+
+    assert result == ('queue', '', '')
+
+
+def test_remote_cups_stale_completion_preserves_all_metadata():
+    np = get_dummy_gui()
+    np._remote_cups_serial = 5
+    np._remote_cups_operation = FakePPDOperation(lambda: None)
+    np.remotecupsqueue = 'current-queue'
+    np.device.uri = 'ipp://current/printers/current'
+    np.device.location = 'Current location'
+    np.nextNPTab = MagicMock()
+    np._remote_cups_retrieval_finished(
+        ('old-queue', 'Old printer', 'Old location'), None,
+        (4, "ipp://old/printers/old", 1))
+
+    assert np.remotecupsqueue == 'current-queue'
+    assert np.device.uri == 'ipp://current/printers/current'
+    assert np.device.location == 'Current location'
+    np.nextNPTab.assert_not_called()
+
+
+def test_remote_cups_cancelled_completion_is_ignored():
+    np = get_dummy_gui()
+    operation = FakePPDOperation(lambda: None)
+    np._remote_cups_serial = 6
+    np._remote_cups_operation = operation
+    np.remotecupsqueue = 'current-queue'
+    np.nextNPTab = MagicMock()
+
+    np._cancel_remote_cups_retrieval()
+    np._remote_cups_retrieval_finished(
+        ('old-queue', 'Old printer', 'Old location'), None,
+        (6, "ipp://old/printers/old", 1))
+
+    assert operation.cancelled is True
+    assert np.remotecupsqueue == 'current-queue'
+    np.nextNPTab.assert_not_called()
+
+
+def test_driver_installation_entry_starts_async_worker(monkeypatch):
+    np = _prepare_gpg_install_gui()
+    np._start_driver_installation = newprinter.NewPrinterGUI._start_driver_installation.__get__(np)
+    operations = []
+    monkeypatch.setattr(newprinter, "TimedOperation",
+                        lambda *args, **kwargs: operations.append(
+                            FakePPDOperation(*args, **kwargs)) or operations[-1])
+
+    result = np._handleDriverInstallation(fingerprint='ABC')
+
+    assert result == np.INSTALL_RESULT_OPS_PENDING
+    assert len(operations) == 1
+    assert operations[0].target == np._driver_install_worker
+
+
+def test_driver_install_worker_preserves_command_and_output(monkeypatch):
+    np = _prepare_gpg_install_gui()
+    process = MagicMock(returncode=0)
+    process.communicate.return_value = (b"P50\ninstalled.ppd\ndone\n", b"")
+    popen = MagicMock(return_value=process)
+    monkeypatch.setattr(newprinter.subprocess, "Popen", popen)
+
+    result = np._driver_install_worker('driver', 'repo', 'ABC', 1)
+
+    popen.assert_called_once()
+    args, kwargs = popen.call_args
+    assert args[0] == ['install-printerdriver', 'driver', 'repo', 'ABC']
+    assert kwargs['stdin'] is newprinter.subprocess.DEVNULL
+    process.communicate.assert_called_once_with()
+    assert result[0] is True
+    assert result[1] == ['installed.ppd']
+
+
+def test_driver_install_cancel_terminates_active_process():
+    np = _prepare_gpg_install_gui()
+    process = MagicMock()
+    process.poll.return_value = None
+    operation = FakePPDOperation(lambda: None)
+    np._driver_install_serial = 4
+    np._driver_install_operation = operation
+    np._driver_install_process = process
+    np._driver_install_process_serial = 4
+
+    np._cancel_driver_installation()
+
+    process.terminate.assert_called_once_with()
+    assert operation.cancelled is True
+
+
+def test_driver_install_cancel_does_not_terminate_finished_process():
+    np = _prepare_gpg_install_gui()
+    process = MagicMock()
+    process.poll.return_value = 0
+    np._driver_install_serial = 5
+    np._driver_install_operation = FakePPDOperation(lambda: None)
+    np._driver_install_process = process
+    np._driver_install_process_serial = 5
+
+    np._cancel_driver_installation()
+
+    process.terminate.assert_not_called()
+
+
+def test_smbc_installation_starts_async_packagekit(monkeypatch):
+    np = get_dummy_gui()
+    np._show_searching_spinner = MagicMock()
+    operations = []
+    monkeypatch.setattr(newprinter, "PYSMB_AVAILABLE", False)
+    monkeypatch.setattr(newprinter, "TimedOperation",
+                        lambda *args, **kwargs: operations.append(
+                            FakePPDOperation(*args, **kwargs)) or operations[-1])
+
+    assert np.install_python3_smbc_if_needed("browse") is False
+    assert len(operations) == 1
+    assert operations[0].target == np._smbc_install_worker
+
+
+def test_smbc_installation_worker_uses_expected_package(monkeypatch):
+    np = get_dummy_gui()
+    packagekit = MagicMock()
+    monkeypatch.setattr(newprinter.installpackage, "PackageKit",
+                        lambda: packagekit)
+
+    assert np._smbc_install_worker() is True
+    packagekit.InstallPackageName.assert_called_once_with(0, 0, "python3-smbc")
+
+
+def test_smbc_installation_cancel_ignores_late_completion():
+    np = get_dummy_gui()
+    operation = FakePPDOperation(lambda: None)
+    np._smbc_install_serial = 1
+    np._smbc_install_operation = operation
+    np._smbc_install_continuation = "browse"
+    np.on_btnSMBBrowse_clicked = MagicMock()
+
+    np._cancel_smbc_installation()
+    np._smbc_install_finished(True, None, 1)
+
+    assert operation.cancelled is True
+    np.on_btnSMBBrowse_clicked.assert_not_called()
+
+
+def test_driver_install_failure_does_not_continue():
+    np = _prepare_gpg_install_gui()
+    np._driver_install_serial = 1
+    np._driver_install_operation = object()
+    np.nextNPTab = MagicMock()
+    np._driver_install_finished(
+        (False, [], b"", b"installer failed"), None, (1, _gpg_driver()))
+
+    np.nextNPTab.assert_not_called()
+    assert np.installed_driver_files == ['driver.ppd']
+
+
+def test_driver_install_cancel_ignores_late_completion():
+    np = _prepare_gpg_install_gui()
+    operation = FakePPDOperation(lambda: None)
+    np._driver_install_serial = 2
+    np._driver_install_operation = operation
+    np.nextNPTab = MagicMock()
+    np._cancel_driver_installation()
+    np._driver_install_finished(
+        (True, ['new.ppd'], b'', b''), None, (2, _gpg_driver()))
+
+    assert operation.cancelled is True
+    np.nextNPTab.assert_not_called()
+
 def test_driverless_skip_snmp():
     np = get_dummy_gui()
     np._selectDeviceForInstallation("ipp://localhost:60000/ipp/print")
@@ -1224,7 +2212,7 @@ def test_choose_driver_ppdsloader_completion_populates_makes_without_back_forwar
 
     # 4. Without any user Back/Forward action, page transitions to Choose Driver and Make list is populated
     assert fill_make_called == [True]
-    assert np.auto_make == "Xerox"
+    assert np.auto_make in ("Xerox", "Xerox(R)")
     assert current_page[0] == newprinter.NewPrinterGUI.PAGE_SELECT_INSTALL_METHOD
     assert mock_opreq_cls.called is False
     assert np.device.uri == "ipps://Broken%20Xerox%20B235%20MFP._ipps._tcp.local"
@@ -1319,7 +2307,7 @@ def test_choose_driver_with_existing_ppds_populates_makes_immediately(monkeypatc
     assert np.ppdsloader is None
     np.btnNPChooseDriver.set_sensitive.assert_not_called()
     assert fill_make_called == [True]
-    assert np.auto_make == "Xerox"
+    assert np.auto_make in ("Xerox", "Xerox(R)")
     assert current_page[0] == newprinter.NewPrinterGUI.PAGE_SELECT_INSTALL_METHOD
     assert mock_opreq_cls.called is False
     assert np.device.uri == "ipps://Broken%20Xerox%20B235%20MFP._ipps._tcp.local"
@@ -1874,6 +2862,94 @@ def test_regression_get_ppd_names_from_device_id_matches_validated_driverless():
     )
     assert ppdname in fit
     assert fit[ppdname] == cupshelpers.ppds.PPDs.FIT_EXACT_CMD
+
+
+def test_driverless_ppd_association_uses_device_id_when_uri_differs():
+    np = get_dummy_gui()
+    driverless_uri = "ipps://Xerox%20B235._ipp._tcp.local/"
+    np.driverless_ppds = {
+        "driverless:" + driverless_uri: {
+            "ppd-make": ["Xerox"],
+            "ppd-make-and-model": ["Xerox(R) B235 MFP, driverless"],
+            "ppd-device-id": ["MFG:Xerox;MDL:Xerox(R) B235 MFP;CMD:POSTSCRIPT;"],
+        }
+    }
+
+    selected_id = cupshelpers.parseDeviceID(
+        "MFG:Xerox;MDL:Xerox(R) B235 MFP;CMD:POSTSCRIPT;")
+    associated = np._find_driverless_ppd_for_device(
+        selected_id, "Xerox(R) B235 MFP")
+
+    assert associated == "driverless:" + driverless_uri
+
+
+def test_normal_xerox_uri_mismatch_selects_validated_driverless_over_hp():
+    np = get_dummy_gui()
+    queue_uri = "ipp://remote.example/printers/xerox"
+    driverless_name = "driverless:ipps://Xerox%20B235._ipp._tcp.local/"
+    hp_name = "postscript-hp:0/ppd/hplip/HP/hp-designjet_t920-postscript.ppd"
+    np.device = cupshelpers.Device(queue_uri, **{
+        "device-id": "MFG:Xerox;MDL:Xerox(R) B235 MFP;CMD:POSTSCRIPT;",
+        "device-make-and-model": "Xerox(R) B235 MFP",
+    })
+    np.device.driverless = False
+    np.ppds = cupshelpers.ppds.PPDs({hp_name: {
+        "ppd-make": ["HP"],
+        "ppd-make-and-model": ["HP DesignJet T920 Postscript"],
+        "ppd-device-id": ["MFG:HP;MDL:DesignJet T920;CMD:POSTSCRIPT;"],
+    }})
+    np.driverless_ppds = {driverless_name: {
+        "ppd-make": ["Xerox"],
+        "ppd-make-and-model": ["Xerox(R) B235 MFP, driverless"],
+        "ppd-device-id": ["MFG:Xerox;MDL:Xerox(R) B235 MFP;CMD:POSTSCRIPT;"],
+    }}
+    np.installed_driver_files = []
+    np.fillDriverList = MagicMock()
+    np.fillMakeList = MagicMock()
+    np._validateDriverlessPPD = MagicMock(return_value=MagicMock(spec=cups.PPD))
+    np.opreq = None
+
+    real_install = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np)
+    real_install(np.device.id, newprinter.NewPrinterGUI.PAGE_SELECT_DEVICE, 1)
+
+    assert driverless_name in np.ppds.ppds
+    assert np.id_matched_ppdnames[0] == driverless_name
+    assert np.auto_driver == driverless_name
+    assert np.auto_make in ("Xerox", "Xerox(R)")
+    assert hp_name not in np.id_matched_ppdnames
+    np._validateDriverlessPPD.assert_called_once_with(driverless_name)
+
+
+def test_driverless_ppd_association_rejects_ambiguous_metadata():
+    np = get_dummy_gui()
+    entry = {
+        "ppd-make": ["Xerox"],
+        "ppd-make-and-model": ["Xerox B235 MFP, driverless"],
+        "ppd-device-id": ["MFG:Xerox;MDL:B235 MFP;CMD:POSTSCRIPT;"],
+    }
+    np.driverless_ppds = {
+        "driverless:ipps://one/": dict(entry),
+        "driverless:ipps://two/": dict(entry),
+    }
+    selected_id = cupshelpers.parseDeviceID(
+        "MFG:Xerox;MDL:B235 MFP;CMD:POSTSCRIPT;")
+
+    assert np._find_driverless_ppd_for_device(
+        selected_id, "Xerox B235 MFP") is None
+
+
+def test_driverless_ppd_association_rejects_broad_model_match():
+    np = get_dummy_gui()
+    np.driverless_ppds = {
+        "driverless:ipps://extended/": {
+            "ppd-make-and-model": ["Xerox B235 MFP Extended, driverless"],
+            "ppd-device-id": ["MFG:Xerox;MDL:B235 MFP Extended;"],
+        }
+    }
+    selected_id = cupshelpers.parseDeviceID("MFG:Xerox;MDL:B235 MFP;")
+
+    assert np._find_driverless_ppd_for_device(
+        selected_id, "Xerox B235 MFP") is None
 
 
 def test_regression_order_ppd_names_by_preference_puts_driverless_first():
@@ -4150,3 +5226,1057 @@ def test_fit_none_fallback_uses_detected_xerox_make():
     assert np.auto_driver is None
 
 
+class CapturedSMBOperation(FakePPDOperation):
+    pass
+
+
+def _prepare_smb_gui(monkeypatch):
+    np = get_dummy_gui()
+    monkeypatch.setattr(newprinter, 'busy', lambda *args, **kwargs: None)
+    monkeypatch.setattr(newprinter, 'ready', lambda *args, **kwargs: None)
+    np._smb_operation_serial = 0
+    np._smb_operation_state = None
+    np._smb_auth_dialog = None
+    np._smb_window_destroyed = False
+    np.SMBBrowseDialog = MagicMock()
+    np.NewPrinterWindow = MagicMock()
+    np.smb_store = MagicMock()
+    np.smb_store.get_iter_first.return_value = object()
+    np.tvSMBBrowser = MagicMock()
+    np.btnSMBBrowseOk = MagicMock()
+    np.entSMBURI = MagicMock()
+    np.entSMBURI.get_text.return_value = 'smb://server/share'
+    np.entSMBUsername = MagicMock()
+    np.entSMBPassword = MagicMock()
+    np.entSMBUsername.get_text.return_value = 'user'
+    np.entSMBPassword.get_text.return_value = 'password'
+    np.rbtnSMBAuthSet = MagicMock()
+    np.rbtnSMBAuthSet.get_active.return_value = True
+    np.tblSMBAuth = MagicMock()
+    operations = []
+    monkeypatch.setattr(
+        newprinter, 'TimedOperation',
+        lambda target, args=(), kwargs=None, callback=None, context=None,
+        **options: operations.append(CapturedSMBOperation(
+            target, args=args, callback=callback, context=context)) or
+        operations[-1])
+    return np, operations
+
+
+def _run_smb_operation_in_worker(operation):
+    result = []
+    errors = []
+    def run():
+        try:
+            result.append(operation.target(*operation.args))
+        except Exception as error:
+            errors.append(error)
+    worker = threading.Thread(target=run)
+    worker.start()
+    worker.join(timeout=3)
+    assert not worker.is_alive()
+    assert not errors
+    return result[0]
+
+
+def test_smb_stored_verify_runs_context_and_open_in_worker(monkeypatch):
+    np, operations = _prepare_smb_gui(monkeypatch)
+    calls = []
+    class Context:
+        def __init__(self, **kwargs):
+            calls.append(('context', threading.current_thread()))
+        def open(self, uri, flags, mode):
+            calls.append(('open', uri, threading.current_thread()))
+            return MagicMock(close=MagicMock())
+    monkeypatch.setattr(newprinter.pysmb.smbc, 'Context', Context)
+    newprinter.NewPrinterGUI.on_btnSMBVerify_clicked(np, None)
+    assert len(operations) == 1
+    result = _run_smb_operation_in_worker(operations[0])
+    assert result['accessible'] is True
+    assert calls[0][1] != threading.current_thread()
+    assert calls[1][2] != threading.current_thread()
+
+
+def test_smb_browse_and_expansion_network_calls_run_in_workers(monkeypatch):
+    from types import SimpleNamespace
+    np, operations = _prepare_smb_gui(monkeypatch)
+    np.entSMBURI.get_text.return_value = ''
+    calls = []
+    class Directory:
+        def getdents(self):
+            calls.append(threading.current_thread())
+            return []
+    class Context:
+        def __init__(self, **kwargs):
+            calls.append(threading.current_thread())
+        def opendir(self, uri):
+            calls.append(uri)
+            return Directory()
+    monkeypatch.setattr(newprinter.pysmb.smbc, 'Context', Context)
+    np.smb_store = MagicMock()
+    np.smb_store.get_iter_first.return_value = object()
+    newprinter.NewPrinterGUI.browse_smb_hosts(np)
+    result = _run_smb_operation_in_worker(operations[-1])
+    assert result['entries'] == []
+    assert all(call != threading.current_thread() for call in calls
+               if isinstance(call, threading.Thread))
+    assert 'smb://' in calls
+
+    model = MagicMock()
+    entry = SimpleNamespace(smbc_type=newprinter.pysmb.smbc.WORKGROUP,
+                            name='WORKGROUP', comment='')
+    row = object()
+    model.get_value.return_value = entry
+    path = MagicMock()
+    path.to_string.return_value = '0'
+    view = MagicMock()
+    view.get_model.return_value = model
+    newprinter.NewPrinterGUI.on_tvSMBBrowser_row_expanded(
+        np, view, row, path)
+    expansion = operations[-1]
+    result = _run_smb_operation_in_worker(expansion)
+    assert result['entries'] == []
+    assert calls[-3] != threading.current_thread()
+    assert calls[-2] == 'smb://WORKGROUP/'
+
+
+def test_smb_auth_request_cancel_wakes_waiting_worker():
+    request = newprinter.pysmb.AuthenticationRequest(1)
+    outcome = []
+    worker = threading.Thread(target=lambda: outcome.append(request.wait()))
+    worker.start()
+    assert request.cancel()
+    worker.join(timeout=2)
+    assert not worker.is_alive()
+    assert outcome == [(newprinter.pysmb.AuthenticationRequest.CANCELLED,
+                        None)]
+
+
+def test_smb_interactive_authentication_handoff_resumes_worker(monkeypatch):
+    import errno
+    import queue
+    np, operations = _prepare_smb_gui(monkeypatch)
+    requests = queue.Queue()
+    main_thread = threading.current_thread()
+    monkeypatch.setattr(
+        newprinter.GLib, 'idle_add',
+        lambda callback, *args: requests.put(
+            (callback, args, threading.current_thread())) or 1)
+    class Context:
+        def __init__(self, **kwargs):
+            self.auth_fn = kwargs.get('auth_fn')
+            self.attempts = 0
+            self.workgroup = 'DOMAIN'
+        def open(self, uri, flags, mode):
+            self.attempts += 1
+            self.auth_fn('server', 'share', 'DOMAIN', '', '')
+            if self.attempts < 4:
+                raise RuntimeError(errno.EACCES, 'credentials rejected')
+            return MagicMock(close=MagicMock())
+    monkeypatch.setattr(newprinter.pysmb.smbc, 'Context', Context)
+    np.rbtnSMBAuthSet.get_active.return_value = False
+    newprinter.NewPrinterGUI.on_btnSMBVerify_clicked(np, None)
+    operation = operations[-1]
+    result = []
+    worker = threading.Thread(
+        target=lambda: result.append(operation.target(*operation.args)))
+    worker.start()
+    callback, args, caller = requests.get(timeout=3)
+    assert callback == np._show_smb_authentication_dialog
+    assert caller != main_thread
+    request = args[1]
+    assert request.success(('DOMAIN', 'alice', 'wrong'))
+    callback, args, caller = requests.get(timeout=3)
+    assert callback == np._show_smb_authentication_dialog
+    request = args[1]
+    assert request.credentials_rejected
+    assert request.success(('DOMAIN', 'alice', 'secret'))
+    worker.join(timeout=3)
+    assert not worker.is_alive()
+    assert result[0]['accessible'] is True
+
+
+def test_smb_cancel_invalidates_stale_completion(monkeypatch):
+    np, operations = _prepare_smb_gui(monkeypatch)
+    completed = []
+    np._start_smb_operation('smb-browse', lambda *args: {}, (),
+                            lambda *args: completed.append(args))
+    state = np._smb_operation_state
+    serial = state['serial']
+    np._cancel_smb_operation()
+    assert state['cancelled'].is_set()
+    np._smb_operation_finished({}, None, serial)
+    assert completed == []
+
+
+def test_smb_back_and_window_destroy_cancel_active_worker(monkeypatch):
+    np, operations = _prepare_smb_gui(monkeypatch)
+    for method in ('_cancel_lpd_probe', '_cancel_required_package_install',
+                   '_cancel_openprinting_ppd', '_cancel_local_ppd_validation',
+                   '_cancel_gpg_fingerprint_download',
+                   '_cancel_remote_cups_retrieval',
+                   '_cancel_driver_installation',
+                   '_cancel_smbc_installation'):
+        setattr(np, method, MagicMock())
+    np.nextNPTab = MagicMock()
+    np._start_smb_operation('smb-browse', lambda *args: {}, (),
+                            lambda *args: None)
+    back_state = np._smb_operation_state
+    newprinter.NewPrinterGUI.on_btnNPBack_clicked(np, None)
+    assert back_state['cancelled'].is_set()
+    np.nextNPTab.assert_called_once_with(-1)
+
+    np._start_smb_operation('smb-browse', lambda *args: {}, (),
+                            lambda *args: None)
+    destroyed_state = np._smb_operation_state
+    np.WaitWindow = MagicMock()
+    newprinter.NewPrinterGUI.do_destroy(np)
+    assert destroyed_state['cancelled'].is_set()
+    assert np._smb_window_destroyed
+
+
+def test_smb_verify_changed_uri_invalidates_old_result(monkeypatch):
+    np, operations = _prepare_smb_gui(monkeypatch)
+    completed = []
+    snapshot = ('smb://server/share', True, 'user', 'password')
+    np._start_smb_operation(
+        'smb-verify', lambda *args: {}, (),
+        lambda *args: completed.append(args), payload={'snapshot': snapshot})
+    state = np._smb_operation_state
+    serial = state['serial']
+    np.entSMBURI.get_text.return_value = 'smb://other/share'
+    newprinter.NewPrinterGUI._cancel_smb_verify_for_changed_input(np)
+    np._smb_operation_finished({'accessible': True}, None, serial)
+    assert state['cancelled'].is_set()
+    assert completed == []
+
+
+@pytest.mark.parametrize(
+    "first,second", [("normal", "broken"), ("broken", "normal")])
+def test_xerox_driverless_cache_does_not_cross_device_selection(first, second):
+    np = get_dummy_gui()
+    devices = {
+        "normal": {
+            "uri": "ipps://Xerox%20B235._ipps._tcp.local/",
+            "id": "MFG:Xerox;MDL:Xerox B235;CMD:POSTSCRIPT;",
+            "make": "Xerox B235",
+            "driverless": False,
+            "ppd": "driverless:ipps://Xerox%20B235._ipps._tcp.local/",
+        },
+        "broken": {
+            "uri": "ipps://Broken%20Xerox._ipps._tcp.local/",
+            "id": "MFG:Broken Xerox;MDL:B235;CMD:POSTSCRIPT;",
+            "make": "Broken Xerox B235",
+            "driverless": True,
+            "ppd": "driverless:ipps://Broken%20Xerox._ipps._tcp.local/",
+        },
+    }
+    entries = {}
+    for key, device in devices.items():
+        make = "Xerox" if key == "normal" else "Broken Xerox"
+        model = "Xerox B235" if key == "normal" else "B235"
+        entries[device['ppd']] = {
+            "ppd-make": [make],
+            "ppd-make-and-model": [device['make'] + ", driverless"],
+            "ppd-device-id": [device['id']],
+        }
+    np.ppds = cupshelpers.ppds.PPDs(dict(entries))
+    np.driverless_ppds = dict(entries)
+    np.installed_driver_files = []
+    np.fillDriverList = MagicMock()
+    np.fillMakeList = MagicMock()
+    np.opreq = None
+
+    def validated(name):
+        selected = next(value for value in devices.values()
+                        if value['ppd'] == name)
+        make = "Xerox" if selected['make'].startswith("Xerox ") else "Broken Xerox"
+        return MockCupsPPD({
+            "NickName": selected['make'] + ", driverless",
+            "Manufacturer": make,
+            "1284DeviceID": selected['id'],
+        })
+    np._validateDriverlessPPD = MagicMock(side_effect=validated)
+
+    real_install = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np)
+    for key in (first, second):
+        selected = devices[key]
+        np.device = cupshelpers.Device(selected['uri'], **{
+            "device-class": "network",
+            "device-id": selected['id'],
+            "device-make-and-model": selected['make'],
+        })
+        np.device.driverless = selected['driverless']
+        np.device._driverless_failed = False
+        real_install(np.device.id,
+                     newprinter.NewPrinterGUI.PAGE_SELECT_DEVICE, 1)
+        assert np.auto_make.lower().startswith(
+            "broken" if key == "broken" else "xerox")
+
+
+def test_normal_xerox_on_demand_driverless_validation_success(monkeypatch):
+    """Normal Xerox IPPS device whose driverless PPD is absent from driverless_ppds
+    triggers on-demand driverless validation, adds the driverless candidate, prefers it
+    over HP fallback, sets auto_make to Xerox, and makes zero OpenPrinting queries."""
+    np = get_dummy_gui()
+    uri = "ipps://Xerox(R)%20B235%20MFP._ipps._tcp.local/"
+    driverless_name = f"driverless:{uri}"
+    hp_name = "postscript-hp:0/ppd/hplip/HP/hp-designjet_t920-postscript.ppd"
+
+    np.device = cupshelpers.Device(uri, **{
+        "device-class": "network",
+        "device-id": "MFG:Xerox;MDL:Xerox(R) B235 MFP;CMD:PCLM,AppleRaster,URF,PWGRaster,PWG,JPEG,PS,TEXT;",
+        "device-make-and-model": "Xerox(R) B235 MFP",
+    })
+    np.device.driverless = False
+    np.device._driverless_failed = False
+
+    # Simulate real CUPS state where driverless_ppds has only Broken Xerox
+    np.driverless_ppds = {
+        "driverless:ipps://Broken%20Xerox%20B235%20MFP._ipps._tcp.local/": {
+            "ppd-make": ["Broken Xerox"],
+            "ppd-make-and-model": ["Broken Xerox B235 MFP, driverless"],
+            "ppd-device-id": ["MFG:Broken Xerox;MDL:B235 MFP;CMD:PCLM,AppleRaster,URF,PWGRaster,PWG,JPEG,PS,TEXT;"],
+        }
+    }
+    np.ppds = cupshelpers.ppds.PPDs({
+        hp_name: {
+            "ppd-make": ["HP"],
+            "ppd-make-and-model": ["HP DesignJet T920 Postscript"],
+            "ppd-device-id": ["MFG:HP;MDL:DesignJet T920;CMD:POSTSCRIPT;"],
+        }
+    })
+    np.installed_driver_files = []
+    np.fillDriverList = MagicMock()
+    np.fillMakeList = MagicMock()
+    np.opreq = None
+
+    mock_opreq_cls = MagicMock()
+    monkeypatch.setattr(newprinter, "OpenPrintingRequest", mock_opreq_cls)
+
+    fake_ppd = MockCupsPPD({
+        "NickName": "Xerox(R) B235 MFP, driverless, cups-filters 2.0.0",
+        "Manufacturer": "Xerox",
+        "1284DeviceID": "MFG:Xerox;MDL:Xerox(R) B235 MFP;CMD:PCLM,AppleRaster,URF,PWGRaster,PWG,JPEG,PS,TEXT;",
+    })
+    np._validateDriverlessPPD = MagicMock(return_value=fake_ppd)
+
+    real_install = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np)
+    real_install(np.device.id, newprinter.NewPrinterGUI.PAGE_SELECT_DEVICE, 1)
+
+    np._validateDriverlessPPD.assert_called_once_with(driverless_name)
+    assert driverless_name in np.ppds.ppds
+    assert np.auto_driver == driverless_name
+    assert np.auto_make in ("Xerox", "Xerox(R)")
+    assert np.id_matched_ppdnames[0] == driverless_name
+    assert hp_name not in np.id_matched_ppdnames
+    assert mock_opreq_cls.called is False
+
+
+def test_normal_xerox_on_demand_driverless_validation_failure(monkeypatch):
+    """When on-demand driverless validation fails for Normal IPP/IPPS:
+    _driverless_failed is marked True, driverless candidate is not added,
+    HP fallback remains present in catalog, and validation is not retried endlessly."""
+    np = get_dummy_gui()
+    uri = "ipps://Xerox(R)%20B235%20MFP._ipps._tcp.local/"
+    driverless_name = f"driverless:{uri}"
+    hp_name = "postscript-hp:0/ppd/hplip/HP/hp-designjet_t920-postscript.ppd"
+
+    np.device = cupshelpers.Device(uri, **{
+        "device-class": "network",
+        "device-id": "MFG:Xerox;MDL:Xerox(R) B235 MFP;CMD:PCLM,AppleRaster,URF,PWGRaster,PWG,JPEG,PS,TEXT;",
+        "device-make-and-model": "Xerox(R) B235 MFP",
+    })
+    np.device.driverless = False
+    np.device._driverless_failed = False
+    np.driverless_ppds = {}
+    np.ppds = cupshelpers.ppds.PPDs({
+        hp_name: {
+            "ppd-make": ["HP"],
+            "ppd-make-and-model": ["HP DesignJet T920 Postscript"],
+            "ppd-device-id": ["MFG:HP;MDL:DesignJet T920;CMD:POSTSCRIPT;"],
+        }
+    })
+    np.installed_driver_files = []
+    np.fillDriverList = MagicMock()
+    np.fillMakeList = MagicMock()
+    np.opreq = None
+
+    mock_opreq_cls = MagicMock()
+    monkeypatch.setattr(newprinter, "OpenPrintingRequest", mock_opreq_cls)
+
+    np._validateDriverlessPPD = MagicMock(return_value=None)
+
+    real_install = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np)
+    real_install(np.device.id, newprinter.NewPrinterGUI.PAGE_SELECT_DEVICE, 1)
+
+    assert np.device.driverless is False
+    assert np.device._driverless_failed is True
+    assert driverless_name not in np.ppds.ppds
+    # HP PPD remains available in self.ppds for manual fallback
+    assert hp_name in np.ppds.ppds
+    assert np.auto_driver != driverless_name
+    np._validateDriverlessPPD.assert_called_once_with(driverless_name)
+
+    # Re-invocation does not retry validation endlessly
+    np._validateDriverlessPPD.reset_mock()
+    real_install(np.device.id, newprinter.NewPrinterGUI.PAGE_SELECT_DEVICE, 1)
+    np._validateDriverlessPPD.assert_not_called()
+
+
+def test_broken_xerox_existing_driverless_ppd_skips_on_demand_validation():
+    """Broken Xerox with pre-existing driverless PPD in driverless_ppds
+    does not perform unnecessary on-demand validation and selects driverless candidate."""
+    np = get_dummy_gui()
+    broken_uri = "ipps://Broken%20Xerox%20B235%20MFP._ipps._tcp.local/"
+    driverless_name = f"driverless:{broken_uri}"
+
+    np.device = cupshelpers.Device(broken_uri, **{
+        "device-class": "network",
+        "device-id": "MFG:Broken Xerox;MDL:B235 MFP;CMD:PCLM,AppleRaster,URF,PWGRaster,PWG,JPEG,PS,TEXT;",
+        "device-make-and-model": "Broken Xerox B235 MFP",
+    })
+    np.device.driverless = True
+    np.driverless_ppds = {
+        driverless_name: {
+            "ppd-make": ["Broken Xerox"],
+            "ppd-make-and-model": ["Broken Xerox B235 MFP, driverless"],
+            "ppd-device-id": ["MFG:Broken Xerox;MDL:B235 MFP;CMD:PCLM,AppleRaster,URF,PWGRaster,PWG,JPEG,PS,TEXT;"],
+        }
+    }
+    np.ppds = cupshelpers.ppds.PPDs({
+        driverless_name: {
+            "ppd-make": ["Broken Xerox"],
+            "ppd-make-and-model": ["Broken Xerox B235 MFP, driverless"],
+            "ppd-device-id": ["MFG:Broken Xerox;MDL:B235 MFP;CMD:PCLM,AppleRaster,URF,PWGRaster,PWG,JPEG,PS,TEXT;"],
+        }
+    })
+    np.installed_driver_files = []
+    np.fillDriverList = MagicMock()
+    np.fillMakeList = MagicMock()
+    np.opreq = None
+
+    fake_ppd = MockCupsPPD({
+        "NickName": "Broken Xerox B235 MFP, driverless",
+        "Manufacturer": "Broken Xerox",
+        "1284DeviceID": "MFG:Broken Xerox;MDL:B235 MFP;CMD:PCLM,AppleRaster,URF,PWGRaster,PWG,JPEG,PS,TEXT;",
+    })
+    np._validateDriverlessPPD = MagicMock(return_value=fake_ppd)
+
+    real_install = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np)
+    real_install(np.device.id, newprinter.NewPrinterGUI.PAGE_SELECT_DEVICE, 1)
+
+    assert np.auto_driver == driverless_name
+    assert np.auto_make in ("Broken Xerox", "Broken")
+    # Validated exactly once for the known driverless candidate (no fallback validation)
+    assert np._validateDriverlessPPD.call_count == 1
+
+
+def test_normal_xerox_second_visit_reuses_cache():
+    """Visiting Normal Xerox a second time reuses cached driverless PPD
+    without repeated network/CUPS validation."""
+    np = get_dummy_gui()
+    uri = "ipps://Xerox(R)%20B235%20MFP._ipps._tcp.local/"
+    driverless_name = f"driverless:{uri}"
+    hp_name = "postscript-hp:0/ppd/hplip/HP/hp-designjet_t920-postscript.ppd"
+
+    np.device = cupshelpers.Device(uri, **{
+        "device-class": "network",
+        "device-id": "MFG:Xerox;MDL:Xerox(R) B235 MFP;CMD:PCLM,AppleRaster,URF,PWGRaster,PWG,JPEG,PS,TEXT;",
+        "device-make-and-model": "Xerox(R) B235 MFP",
+    })
+    np.device.driverless = False
+    np.driverless_ppds = {}
+    np.ppds = cupshelpers.ppds.PPDs({
+        hp_name: {
+            "ppd-make": ["HP"],
+            "ppd-make-and-model": ["HP DesignJet T920 Postscript"],
+            "ppd-device-id": ["MFG:HP;MDL:DesignJet T920;CMD:POSTSCRIPT;"],
+        }
+    })
+    np.installed_driver_files = []
+    np.fillDriverList = MagicMock()
+    np.fillMakeList = MagicMock()
+    np.opreq = None
+
+    fake_ppd = MockCupsPPD({
+        "NickName": "Xerox(R) B235 MFP, driverless, cups-filters 2.0.0",
+        "Manufacturer": "Xerox",
+        "1284DeviceID": "MFG:Xerox;MDL:Xerox(R) B235 MFP;CMD:PCLM,AppleRaster,URF,PWGRaster,PWG,JPEG,PS,TEXT;",
+    })
+    np._validateDriverlessPPD = MagicMock(return_value=fake_ppd)
+
+    real_install = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np)
+
+    # First visit: on-demand validation runs once and populates cache
+    real_install(np.device.id, newprinter.NewPrinterGUI.PAGE_SELECT_DEVICE, 1)
+    assert np.auto_driver == driverless_name
+    assert np.auto_make in ("Xerox", "Xerox(R)")
+    assert np._validateDriverlessPPD.call_count == 1
+
+    # Second visit: Back button clicked, then device selected again
+    np._validateDriverlessPPD.reset_mock()
+    real_install(np.device.id, newprinter.NewPrinterGUI.PAGE_SELECT_DEVICE, 1)
+    assert np.auto_driver == driverless_name
+    assert np.auto_make in ("Xerox", "Xerox(R)")
+    # Validation was not called again; cache was reused
+    np._validateDriverlessPPD.assert_not_called()
+
+
+def test_driverless_multidevice_isolation_prevents_leakage():
+    """Test A: Normal Xerox is validated on demand and cached. Then Broken Xerox is selected.
+    Verify Broken Xerox does NOT match Normal Xerox's PPD, does not put Normal Xerox's PPD
+    in id_matched_ppdnames, and selects Broken Xerox's own driverless PPD."""
+    np = get_dummy_gui()
+    uri_normal = "ipps://Xerox(R)%20B235%20MFP._ipps._tcp.local/"
+    ppd_normal = f"driverless:{uri_normal}"
+    uri_broken = "ipps://Broken%20Xerox%20B235%20MFP._ipps._tcp.local/"
+    ppd_broken = f"driverless:{uri_broken}"
+    hp_name = "postscript-hp:0/ppd/hplip/HP/hp-designjet_t920-postscript.ppd"
+
+    dev_normal = cupshelpers.Device(uri_normal, **{
+        "device-class": "network",
+        "device-id": "MFG:Xerox;MDL:Xerox(R) B235 MFP;CMD:PCLM,AppleRaster,URF,PWGRaster,PWG,JPEG,PS,TEXT;",
+        "device-make-and-model": "Xerox(R) B235 MFP",
+    })
+    dev_normal.driverless = False
+
+    dev_broken = cupshelpers.Device(uri_broken, **{
+        "device-class": "network",
+        "device-id": "MFG:Broken Xerox;MDL:B235 MFP;CMD:PCLM,AppleRaster,URF,PWGRaster,PWG,JPEG,PS,TEXT;",
+        "device-make-and-model": "Broken Xerox B235 MFP",
+    })
+    dev_broken.driverless = True
+
+    np.driverless_ppds = {
+        ppd_broken: {
+            "ppd-make": ["Broken Xerox"],
+            "ppd-make-and-model": ["Broken Xerox B235 MFP, driverless"],
+            "ppd-device-id": ["MFG:Broken Xerox;MDL:B235 MFP;CMD:PCLM,AppleRaster,URF,PWGRaster,PWG,JPEG,PS,TEXT;"],
+        }
+    }
+    np.ppds = cupshelpers.ppds.PPDs({
+        hp_name: {
+            "ppd-make": ["HP"],
+            "ppd-make-and-model": ["HP DesignJet T920 Postscript"],
+            "ppd-device-id": ["MFG:HP;MDL:DesignJet T920;CMD:POSTSCRIPT;"],
+        }
+    })
+    np.installed_driver_files = []
+    np.fillDriverList = MagicMock()
+    np.fillMakeList = MagicMock()
+    np.opreq = None
+
+    normal_ppd_obj = MockCupsPPD({
+        "NickName": "Xerox(R) B235 MFP, driverless, cups-filters 2.0.0",
+        "Manufacturer": "Xerox",
+        "1284DeviceID": "MFG:Xerox;MDL:Xerox(R) B235 MFP;CMD:PCLM,AppleRaster,URF,PWGRaster,PWG,JPEG,PS,TEXT;",
+    })
+    broken_ppd_obj = MockCupsPPD({
+        "NickName": "Broken Xerox B235 MFP, driverless",
+        "Manufacturer": "Broken Xerox",
+        "1284DeviceID": "MFG:Broken Xerox;MDL:B235 MFP;CMD:PCLM,AppleRaster,URF,PWGRaster,PWG,JPEG,PS,TEXT;",
+    })
+
+    def mock_validate(name):
+        if name == ppd_normal:
+            return normal_ppd_obj
+        if name == ppd_broken:
+            return broken_ppd_obj
+        return None
+
+    np._validateDriverlessPPD = MagicMock(side_effect=mock_validate)
+    real_install = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np)
+
+    # 1. Visit Normal Xerox
+    np.device = dev_normal
+    real_install(np.device.id, newprinter.NewPrinterGUI.PAGE_SELECT_DEVICE, 1)
+
+    assert np.auto_driver == ppd_normal
+    assert np.auto_make in ("Xerox", "Xerox(R)")
+    assert ppd_normal in np.ppds.ppds
+    assert np._validateDriverlessPPD.call_count == 1
+    assert np._validateDriverlessPPD.call_args[0][0] == ppd_normal
+
+    # 2. Switch to Broken Xerox
+    np.device = dev_broken
+    np.id_matched_ppdnames = []
+    np.auto_driver = None
+    np.auto_make = ""
+    real_install(np.device.id, newprinter.NewPrinterGUI.PAGE_SELECT_DEVICE, 1)
+
+    # CRITICAL: Normal Xerox PPD must NOT be in Broken Xerox's matched PPDs
+    assert ppd_normal not in np.id_matched_ppdnames
+    # Broken Xerox must receive its own driverless PPD
+    assert np.auto_driver == ppd_broken
+    assert np.auto_make in ("Broken Xerox", "Broken")
+    assert np.id_matched_ppdnames[0] == ppd_broken
+
+
+def test_driverless_multidevice_same_device_cache_reuse():
+    """Test B: Select Device A (validated on demand), select Device B, then return to Device A.
+    Verify Device A reuses its cached driverless PPD with 0 repeat validation calls."""
+    np = get_dummy_gui()
+    uri_a = "ipps://printer-a.local/"
+    ppd_a = f"driverless:{uri_a}"
+    uri_b = "ipps://printer-b.local/"
+    ppd_b = f"driverless:{uri_b}"
+
+    dev_a = cupshelpers.Device(uri_a, **{
+        "device-class": "network",
+        "device-id": "MFG:VendorA;MDL:ModelA;CMD:PCLM,PWG;",
+        "device-make-and-model": "VendorA ModelA",
+    })
+    dev_a.driverless = False
+
+    dev_b = cupshelpers.Device(uri_b, **{
+        "device-class": "network",
+        "device-id": "MFG:VendorB;MDL:ModelB;CMD:PCLM,PWG;",
+        "device-make-and-model": "VendorB ModelB",
+    })
+    dev_b.driverless = True
+
+    np.driverless_ppds = {
+        ppd_b: {
+            "ppd-make": ["VendorB"],
+            "ppd-make-and-model": ["VendorB ModelB, driverless"],
+            "ppd-device-id": ["MFG:VendorB;MDL:ModelB;CMD:PCLM,PWG;"],
+        }
+    }
+    np.ppds = cupshelpers.ppds.PPDs({
+        "postscript-hp:hp.ppd": {
+            "ppd-make": ["HP"],
+            "ppd-make-and-model": ["HP Generic Postscript"],
+            "ppd-device-id": ["MFG:HP;MDL:Generic;CMD:POSTSCRIPT;"],
+        }
+    })
+    np.installed_driver_files = []
+    np.fillDriverList = MagicMock()
+    np.fillMakeList = MagicMock()
+    np.opreq = None
+
+    ppd_obj_a = MockCupsPPD({
+        "NickName": "VendorA ModelA, driverless",
+        "Manufacturer": "VendorA",
+        "1284DeviceID": "MFG:VendorA;MDL:ModelA;CMD:PCLM,PWG;",
+    })
+    ppd_obj_b = MockCupsPPD({
+        "NickName": "VendorB ModelB, driverless",
+        "Manufacturer": "VendorB",
+        "1284DeviceID": "MFG:VendorB;MDL:ModelB;CMD:PCLM,PWG;",
+    })
+
+    def mock_validate(name):
+        if name == ppd_a:
+            return ppd_obj_a
+        if name == ppd_b:
+            return ppd_obj_b
+        return None
+
+    np._validateDriverlessPPD = MagicMock(side_effect=mock_validate)
+    real_install = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np)
+
+    # 1. Visit Device A -> validates on demand
+    np.device = dev_a
+    real_install(np.device.id, newprinter.NewPrinterGUI.PAGE_SELECT_DEVICE, 1)
+    assert np.auto_driver == ppd_a
+    assert np._validateDriverlessPPD.call_count == 1
+
+    # 2. Visit Device B
+    np.device = dev_b
+    real_install(np.device.id, newprinter.NewPrinterGUI.PAGE_SELECT_DEVICE, 1)
+    assert np.auto_driver == ppd_b
+    assert ppd_a not in np.id_matched_ppdnames
+
+    # 3. Return to Device A -> reuses cache with 0 validation calls
+    np._validateDriverlessPPD.reset_mock()
+    np.device = dev_a
+    real_install(np.device.id, newprinter.NewPrinterGUI.PAGE_SELECT_DEVICE, 1)
+    assert np.auto_driver == ppd_a
+    assert np.auto_make in ("VendorA",)
+    assert ppd_b not in np.id_matched_ppdnames
+    np._validateDriverlessPPD.assert_not_called()
+
+
+def test_driverless_multidevice_independent_on_demand_validation():
+    """Test C: Neither Device A nor Device B is in driverless_ppds.
+    Both devices are validated on demand and cached independently in _cached_driverless_ppds.
+    Switching between them reuses the respective cache without cross-contamination."""
+    np = get_dummy_gui()
+    uri_a = "ipps://printer-a.local/"
+    ppd_a = f"driverless:{uri_a}"
+    uri_b = "ipps://printer-b.local/"
+    ppd_b = f"driverless:{uri_b}"
+
+    dev_a = cupshelpers.Device(uri_a, **{
+        "device-class": "network",
+        "device-id": "MFG:BrandA;MDL:Printer100;CMD:PCLM,PWG;",
+        "device-make-and-model": "BrandA Printer100",
+    })
+    dev_a.driverless = False
+
+    dev_b = cupshelpers.Device(uri_b, **{
+        "device-class": "network",
+        "device-id": "MFG:BrandB;MDL:Printer200;CMD:PCLM,PWG;",
+        "device-make-and-model": "BrandB Printer200",
+    })
+    dev_b.driverless = False
+
+    np.driverless_ppds = {}
+    np.ppds = cupshelpers.ppds.PPDs({
+        "generic:fallback.ppd": {
+            "ppd-make": ["Generic"],
+            "ppd-make-and-model": ["Generic Postscript"],
+            "ppd-device-id": ["MFG:Generic;MDL:Postscript;CMD:POSTSCRIPT;"],
+        }
+    })
+    np.installed_driver_files = []
+    np.fillDriverList = MagicMock()
+    np.fillMakeList = MagicMock()
+    np.opreq = None
+
+    ppd_obj_a = MockCupsPPD({
+        "NickName": "BrandA Printer100, driverless",
+        "Manufacturer": "BrandA",
+        "1284DeviceID": "MFG:BrandA;MDL:Printer100;CMD:PCLM,PWG;",
+    })
+    ppd_obj_b = MockCupsPPD({
+        "NickName": "BrandB Printer200, driverless",
+        "Manufacturer": "BrandB",
+        "1284DeviceID": "MFG:BrandB;MDL:Printer200;CMD:PCLM,PWG;",
+    })
+
+    def mock_validate(name):
+        if name == ppd_a:
+            return ppd_obj_a
+        if name == ppd_b:
+            return ppd_obj_b
+        return None
+
+    np._validateDriverlessPPD = MagicMock(side_effect=mock_validate)
+    real_install = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np)
+
+    # 1. Device A validates on demand
+    np.device = dev_a
+    real_install(np.device.id, newprinter.NewPrinterGUI.PAGE_SELECT_DEVICE, 1)
+    assert np.auto_driver == ppd_a
+    assert np.auto_make == "BrandA"
+    assert np._validateDriverlessPPD.call_count == 1
+    assert np._validateDriverlessPPD.call_args[0][0] == ppd_a
+
+    # 2. Device B validates on demand (does not leak A)
+    np.device = dev_b
+    real_install(np.device.id, newprinter.NewPrinterGUI.PAGE_SELECT_DEVICE, 1)
+    assert np.auto_driver == ppd_b
+    assert np.auto_make == "BrandB"
+    assert ppd_a not in np.id_matched_ppdnames
+    assert np._validateDriverlessPPD.call_count == 2
+    assert np._validateDriverlessPPD.call_args[0][0] == ppd_b
+
+    # Verify both are independently cached in _cached_driverless_ppds
+    assert ppd_a in np._cached_driverless_ppds
+    assert ppd_b in np._cached_driverless_ppds
+
+    # 3. Return to Device A -> 0 validation calls
+    np._validateDriverlessPPD.reset_mock()
+    np.device = dev_a
+    real_install(np.device.id, newprinter.NewPrinterGUI.PAGE_SELECT_DEVICE, 1)
+    assert np.auto_driver == ppd_a
+    assert np.auto_make == "BrandA"
+    assert ppd_b not in np.id_matched_ppdnames
+    np._validateDriverlessPPD.assert_not_called()
+
+    # 4. Return to Device B -> 0 validation calls
+    np.device = dev_b
+    real_install(np.device.id, newprinter.NewPrinterGUI.PAGE_SELECT_DEVICE, 1)
+    assert np.auto_driver == ppd_b
+    assert np.auto_make == "BrandB"
+    assert ppd_a not in np.id_matched_ppdnames
+    np._validateDriverlessPPD.assert_not_called()
+
+
+def test_driverless_multidevice_failure_isolation():
+    """Test D: Device A succeeds validation, Device B fails validation.
+    Device B gets _driverless_failed = True, does NOT inherit Device A's PPD,
+    and cleanly falls back to manual/generic driver. Device A's cache is unaffected."""
+    np = get_dummy_gui()
+    uri_a = "ipps://printer-good.local/"
+    ppd_a = f"driverless:{uri_a}"
+    uri_b = "ipps://printer-bad.local/"
+    ppd_b = f"driverless:{uri_b}"
+    generic_name = "generic:postscript.ppd"
+
+    dev_a = cupshelpers.Device(uri_a, **{
+        "device-class": "network",
+        "device-id": "MFG:GoodVendor;MDL:GoodPrinter;CMD:PCLM,PWG;",
+        "device-make-and-model": "GoodVendor GoodPrinter",
+    })
+    dev_a.driverless = False
+
+    dev_b = cupshelpers.Device(uri_b, **{
+        "device-class": "network",
+        "device-id": "MFG:BadVendor;MDL:BadPrinter;CMD:PCLM,PWG;",
+        "device-make-and-model": "BadVendor BadPrinter",
+    })
+    dev_b.driverless = False
+
+    np.driverless_ppds = {}
+    np.ppds = cupshelpers.ppds.PPDs({
+        generic_name: {
+            "ppd-make": ["Generic"],
+            "ppd-make-and-model": ["Generic Postscript"],
+            "ppd-device-id": ["MFG:Generic;MDL:Postscript;CMD:POSTSCRIPT;"],
+        }
+    })
+    np.installed_driver_files = []
+    np.fillDriverList = MagicMock()
+    np.fillMakeList = MagicMock()
+    np.opreq = None
+
+    ppd_obj_a = MockCupsPPD({
+        "NickName": "GoodVendor GoodPrinter, driverless",
+        "Manufacturer": "GoodVendor",
+        "1284DeviceID": "MFG:GoodVendor;MDL:GoodPrinter;CMD:PCLM,PWG;",
+    })
+
+    def mock_validate(name):
+        if name == ppd_a:
+            return ppd_obj_a
+        return None
+
+    np._validateDriverlessPPD = MagicMock(side_effect=mock_validate)
+    real_install = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np)
+
+    # 1. Device A succeeds
+    np.device = dev_a
+    real_install(np.device.id, newprinter.NewPrinterGUI.PAGE_SELECT_DEVICE, 1)
+    assert np.auto_driver == ppd_a
+    assert np.auto_make == "GoodVendor"
+
+    # 2. Device B fails validation
+    np.device = dev_b
+    real_install(np.device.id, newprinter.NewPrinterGUI.PAGE_SELECT_DEVICE, 1)
+
+    assert np.device.driverless is False
+    assert np.device._driverless_failed is True
+    # Crucial: Must NOT inherit Device A's PPD
+    assert np.auto_driver != ppd_a
+    assert ppd_a not in np.id_matched_ppdnames
+    assert ppd_b not in np.id_matched_ppdnames
+
+    # 3. Return to Device A: cache intact
+    np._validateDriverlessPPD.reset_mock()
+    np.device = dev_a
+    real_install(np.device.id, newprinter.NewPrinterGUI.PAGE_SELECT_DEVICE, 1)
+    assert np.auto_driver == ppd_a
+    assert np.auto_make == "GoodVendor"
+    np._validateDriverlessPPD.assert_not_called()
+
+
+def test_driverless_multidevice_reversed_selection_order():
+    """Test E: Select Broken Xerox first, then Normal Xerox second.
+    Verify that discovery/selection order does not affect isolation or correctness:
+    Broken Xerox gets its own driverless PPD, and Normal Xerox validates its own on demand."""
+    np = get_dummy_gui()
+    uri_normal = "ipps://Xerox(R)%20B235%20MFP._ipps._tcp.local/"
+    ppd_normal = f"driverless:{uri_normal}"
+    uri_broken = "ipps://Broken%20Xerox%20B235%20MFP._ipps._tcp.local/"
+    ppd_broken = f"driverless:{uri_broken}"
+    hp_name = "postscript-hp:0/ppd/hplip/HP/hp-designjet_t920-postscript.ppd"
+
+    dev_normal = cupshelpers.Device(uri_normal, **{
+        "device-class": "network",
+        "device-id": "MFG:Xerox;MDL:Xerox(R) B235 MFP;CMD:PCLM,AppleRaster,URF,PWGRaster,PWG,JPEG,PS,TEXT;",
+        "device-make-and-model": "Xerox(R) B235 MFP",
+    })
+    dev_normal.driverless = False
+
+    dev_broken = cupshelpers.Device(uri_broken, **{
+        "device-class": "network",
+        "device-id": "MFG:Broken Xerox;MDL:B235 MFP;CMD:PCLM,AppleRaster,URF,PWGRaster,PWG,JPEG,PS,TEXT;",
+        "device-make-and-model": "Broken Xerox B235 MFP",
+    })
+    dev_broken.driverless = True
+
+    np.driverless_ppds = {
+        ppd_broken: {
+            "ppd-make": ["Broken Xerox"],
+            "ppd-make-and-model": ["Broken Xerox B235 MFP, driverless"],
+            "ppd-device-id": ["MFG:Broken Xerox;MDL:B235 MFP;CMD:PCLM,AppleRaster,URF,PWGRaster,PWG,JPEG,PS,TEXT;"],
+        }
+    }
+    np.ppds = cupshelpers.ppds.PPDs({
+        hp_name: {
+            "ppd-make": ["HP"],
+            "ppd-make-and-model": ["HP DesignJet T920 Postscript"],
+            "ppd-device-id": ["MFG:HP;MDL:DesignJet T920;CMD:POSTSCRIPT;"],
+        }
+    })
+    np.installed_driver_files = []
+    np.fillDriverList = MagicMock()
+    np.fillMakeList = MagicMock()
+    np.opreq = None
+
+    normal_ppd_obj = MockCupsPPD({
+        "NickName": "Xerox(R) B235 MFP, driverless, cups-filters 2.0.0",
+        "Manufacturer": "Xerox",
+        "1284DeviceID": "MFG:Xerox;MDL:Xerox(R) B235 MFP;CMD:PCLM,AppleRaster,URF,PWGRaster,PWG,JPEG,PS,TEXT;",
+    })
+    broken_ppd_obj = MockCupsPPD({
+        "NickName": "Broken Xerox B235 MFP, driverless",
+        "Manufacturer": "Broken Xerox",
+        "1284DeviceID": "MFG:Broken Xerox;MDL:B235 MFP;CMD:PCLM,AppleRaster,URF,PWGRaster,PWG,JPEG,PS,TEXT;",
+    })
+
+    def mock_validate(name):
+        if name == ppd_normal:
+            return normal_ppd_obj
+        if name == ppd_broken:
+            return broken_ppd_obj
+        return None
+
+    np._validateDriverlessPPD = MagicMock(side_effect=mock_validate)
+    real_install = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np)
+
+    # 1. Broken Xerox selected first
+    np.device = dev_broken
+    real_install(np.device.id, newprinter.NewPrinterGUI.PAGE_SELECT_DEVICE, 1)
+
+    assert np.auto_driver == ppd_broken
+    assert np.auto_make in ("Broken Xerox", "Broken")
+    assert np.id_matched_ppdnames[0] == ppd_broken
+    assert np._validateDriverlessPPD.call_count == 1
+    assert np._validateDriverlessPPD.call_args[0][0] == ppd_broken
+
+    # 2. Normal Xerox selected second
+    np.device = dev_normal
+    real_install(np.device.id, newprinter.NewPrinterGUI.PAGE_SELECT_DEVICE, 1)
+
+    assert np.auto_driver == ppd_normal
+    assert np.auto_make in ("Xerox", "Xerox(R)")
+    assert ppd_broken not in np.id_matched_ppdnames
+    assert np.id_matched_ppdnames[0] == ppd_normal
+    assert np._validateDriverlessPPD.call_count == 2
+    assert np._validateDriverlessPPD.call_args[0][0] == ppd_normal
+
+
+def test_driverless_multidevice_identical_model_different_hosts_isolated():
+    """Verify that two devices with identical IEEE 1284 Device ID and make/model
+    located at different network hosts (e.g. Printer 1 and Printer 2) do not share
+    or leak driverless PPDs, even when the first is added to the global catalog."""
+    np = get_dummy_gui()
+    uri_1 = "ipps://printer-dept1.local:631/ipp/print"
+    ppd_1 = f"driverless:{uri_1}"
+    uri_2 = "ipps://printer-dept2.local:631/ipp/print"
+    ppd_2 = f"driverless:{uri_2}"
+
+    shared_devid = "MFG:Acme;MDL:LaserPro 5000;CMD:PCLM,PWG,URF;"
+    shared_mm = "Acme LaserPro 5000"
+
+    dev_1 = cupshelpers.Device(uri_1, **{
+        "device-class": "network",
+        "device-id": shared_devid,
+        "device-make-and-model": shared_mm,
+    })
+    dev_1.driverless = False
+
+    dev_2 = cupshelpers.Device(uri_2, **{
+        "device-class": "network",
+        "device-id": shared_devid,
+        "device-make-and-model": shared_mm,
+    })
+    dev_2.driverless = False
+
+    np.driverless_ppds = {}
+    np.ppds = cupshelpers.ppds.PPDs({
+        "generic:laser.ppd": {
+            "ppd-make": ["Generic"],
+            "ppd-make-and-model": ["Generic Laser"],
+            "ppd-device-id": ["MFG:Generic;MDL:Laser;CMD:POSTSCRIPT;"],
+        }
+    })
+    np.installed_driver_files = []
+    np.fillDriverList = MagicMock()
+    np.fillMakeList = MagicMock()
+    np.opreq = None
+
+    ppd_obj_1 = MockCupsPPD({
+        "NickName": "Acme LaserPro 5000, driverless",
+        "Manufacturer": "Acme",
+        "1284DeviceID": shared_devid,
+    })
+    ppd_obj_2 = MockCupsPPD({
+        "NickName": "Acme LaserPro 5000, driverless",
+        "Manufacturer": "Acme",
+        "1284DeviceID": shared_devid,
+    })
+
+    def mock_validate(name):
+        if name == ppd_1:
+            return ppd_obj_1
+        if name == ppd_2:
+            return ppd_obj_2
+        return None
+
+    np._validateDriverlessPPD = MagicMock(side_effect=mock_validate)
+    real_install = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np)
+
+    # 1. Dept 1 is validated on demand and enters self.ppds
+    np.device = dev_1
+    real_install(np.device.id, newprinter.NewPrinterGUI.PAGE_SELECT_DEVICE, 1)
+    assert np.auto_driver == ppd_1
+    assert ppd_1 in np.ppds.ppds
+
+    # 2. Dept 2 is selected. Despite identical MFG/MDL, Dept 2 MUST NOT use ppd_1!
+    np.device = dev_2
+    real_install(np.device.id, newprinter.NewPrinterGUI.PAGE_SELECT_DEVICE, 1)
+
+    assert np.auto_driver == ppd_2
+    assert ppd_1 not in np.id_matched_ppdnames
+    assert np.id_matched_ppdnames[0] == ppd_2
+
+
+def test_driverless_validation_provides_searching_spinner_feedback(monkeypatch):
+    """Verify that when PPDs are already loaded (e.g. second device visit),
+    _validateDriverlessPPD displays the searching spinner for visual feedback,
+    and does not interfere when the searching spinner is already active."""
+    np = get_dummy_gui()
+    np.device = cupshelpers.Device(
+        "ipps://test-printer.local/",
+        **{
+            "device-info": "Test IPPS",
+            "device-id": "MFG:Test;MDL:Printer;",
+            "device-make-and-model": "Test Printer",
+        }
+    )
+    np._cached_driverless_ppds = {}
+    np.cups = MagicMock()
+    np.cups.run_on_worker = MagicMock(return_value=lambda ppdname: "/tmp/fake.ppd")
+    np._set_cached_driverless_ppd = MagicMock()
+
+    stack = MagicMock()
+    np._searching_stack = stack
+    np._show_searching_spinner = MagicMock()
+    np._hide_searching_spinner = MagicMock()
+
+    import os
+    monkeypatch.setattr(cups, "PPD", MagicMock())
+    monkeypatch.setattr(os, "unlink", MagicMock())
+
+    # Case 1: Spinner not currently active (e.g. second visit)
+    stack.get_visible_child_name.return_value = "notebook"
+    real_validate = newprinter.NewPrinterGUI._validateDriverlessPPD.__get__(np)
+    real_validate("driverless:ipps://test-printer.local/")
+
+    np._show_searching_spinner.assert_called_once()
+    np._hide_searching_spinner.assert_called_once()
+
+    # Case 2: Spinner ALREADY active (e.g. initial visit via PPDsLoader)
+    np._show_searching_spinner.reset_mock()
+    np._hide_searching_spinner.reset_mock()
+    stack.get_visible_child_name.return_value = "spinner"
+    real_validate("driverless:ipps://test-printer-2.local/")
+
+    # Must NOT call _show_searching_spinner or _hide_searching_spinner when already active
+    np._show_searching_spinner.assert_not_called()
+    np._hide_searching_spinner.assert_not_called()
