@@ -661,6 +661,7 @@ class NewPrinterGUI(GtkGUI):
     def do_destroy (self):
         debugprint ("DESTROY: %s" % self)
         self._cancel_lpd_probe (hide_window=False)
+        self._cancel_required_package_install ()
         if self.SMBBrowseDialog:
             self.SMBBrowseDialog.destroy ()
             self.SMBBrowseDialog = None
@@ -1197,6 +1198,7 @@ class NewPrinterGUI(GtkGUI):
             self.dec_spinner_task ()
 
         self._cancel_lpd_probe ()
+        self._cancel_required_package_install ()
 
         self.NewPrinterWindow.hide()
         self._hide_searching_spinner()
@@ -1220,6 +1222,7 @@ class NewPrinterGUI(GtkGUI):
                 self.ppdsloader = None
             self._set_driver_ppd_loading(False)
         self._cancel_lpd_probe ()
+        self._cancel_required_package_install ()
         self.nextNPTab(-1)
 
     def on_btnNPForward_clicked(self, widget):
@@ -1827,7 +1830,8 @@ class NewPrinterGUI(GtkGUI):
             if uri and uri.startswith ("smb"):
                 # User has selected an smb device
                 uri = SMBURI (uri=uri[6:]).sanitize_uri ()
-                self._installSMBBackendIfNeeded ()
+                if not self._installSMBBackendIfNeeded ():
+                    return self.INSTALL_RESULT_OPS_PENDING
 
         if page_nr == self.PAGE_SELECT_DEVICE or page_nr == self.PAGE_SELECT_INSTALL_METHOD:
             self._selectDeviceForInstallation (uri)
@@ -1851,7 +1855,8 @@ class NewPrinterGUI(GtkGUI):
 
         self.nextnptab_rerun = False
         if page_nr == self.PAGE_SELECT_DEVICE or page_nr == self.PAGE_SELECT_INSTALL_METHOD:
-            self._installHPScannerFilesIfNeeded ()
+            if not self._installHPScannerFilesIfNeeded ():
+                return self.INSTALL_RESULT_OPS_PENDING
 
         return self._installPrinterFromDeviceID (devid, page_nr, step)
 
@@ -1861,12 +1866,59 @@ class NewPrinterGUI(GtkGUI):
                (self._host == 'localhost' or self._host[0] == '/') and
                not os.access ("/usr/lib/cups/backend/smb", os.F_OK)):
             debugprint ("No smb backend so attempting install")
-            try:
-                pk = installpackage.PackageKit ()
-                # The following call means a blocking, synchronous, D-Bus call
-                pk.InstallPackageName (0, 0, "samba-client")
-            except:
-                nonfatalException ()
+            if getattr (self, '_smb_backend_install_pending', False):
+                return False
+            if getattr (self, '_smb_backend_install_done', False):
+                return True
+            self._smb_backend_install_pending = True
+            self._package_install_serial = getattr (self, '_package_install_serial', 0) + 1
+            package_serial = self._package_install_serial
+            self._show_searching_spinner (_("Installing required components"))
+            self._smb_backend_operation = TimedOperation (
+                self._install_package_worker, args=("samba-client",),
+                callback=self._required_package_install_finished,
+                context=("smb-backend", package_serial))
+            return False
+        return True
+
+    def _install_package_worker (self, package_name):
+        pk = installpackage.PackageKit ()
+        pk.InstallPackageName (0, 0, package_name)
+        return True
+
+    def _cancel_required_package_install (self):
+        operation = getattr (self, '_smb_backend_operation', None)
+        if operation is None:
+            operation = getattr (self, '_hp_scanner_operation', None)
+        if operation is None and not getattr (self, '_smb_backend_install_pending', False) \
+                and not getattr (self, '_hp_scanner_install_pending', False):
+            return
+        self._package_install_serial = getattr (self, '_package_install_serial', 0) + 1
+        if operation is not None:
+            operation.cancel ()
+        self._smb_backend_operation = None
+        self._hp_scanner_operation = None
+        self._smb_backend_install_pending = False
+        self._hp_scanner_install_pending = False
+
+    def _required_package_install_finished (self, result, exc, context):
+        package_kind, package_serial = context
+        if package_serial != getattr (self, '_package_install_serial', None):
+            return
+        if package_kind == "smb-backend":
+            self._smb_backend_install_pending = False
+            self._smb_backend_install_done = True
+            self._smb_backend_operation = None
+        else:
+            self._hp_scanner_install_pending = False
+            self._hp_scanner_install_done = True
+            self._hp_scanner_operation = None
+        self._hide_searching_spinner ()
+        if exc is not None:
+            debugprint ("PackageKit installation failed for %s: %s" %
+                        (package_kind, repr (exc)))
+        if getattr (self, 'NewPrinterWindow', None) is not None:
+            self.nextNPTab (step=0)
 
     def _selectDeviceForInstallation (self, uri):
         self._initialiseAutoVariables ()
@@ -1981,12 +2033,20 @@ class NewPrinterGUI(GtkGUI):
                 not os.access ("/etc/sane.d/dll.d/hplip", os.R_OK)):
             debugprint ("No HPLIP sane backend so "
                         "attempting install")
-            try:
-                pk = installpackage.PackageKit ()
-                # The following call means a blocking, synchronous, D-Bus call
-                pk.InstallPackageName (0, 0, "libsane-hpaio")
-            except:
-                pass
+            if getattr (self, '_hp_scanner_install_pending', False):
+                return False
+            if getattr (self, '_hp_scanner_install_done', False):
+                return True
+            self._hp_scanner_install_pending = True
+            self._package_install_serial = getattr (self, '_package_install_serial', 0) + 1
+            package_serial = self._package_install_serial
+            self._show_searching_spinner (_("Installing required components"))
+            self._hp_scanner_operation = TimedOperation (
+                self._install_package_worker, args=("libsane-hpaio",),
+                callback=self._required_package_install_finished,
+                context=("hp-scanner", package_serial))
+            return False
+        return True
 
     def _loadPPDsForDevice (self, devid, uri):
         debugprint ("nextNPTab: need PPDs loaded")
