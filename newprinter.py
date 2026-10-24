@@ -662,6 +662,7 @@ class NewPrinterGUI(GtkGUI):
         debugprint ("DESTROY: %s" % self)
         self._cancel_lpd_probe (hide_window=False)
         self._cancel_required_package_install ()
+        self._cancel_openprinting_ppd ()
         if self.SMBBrowseDialog:
             self.SMBBrowseDialog.destroy ()
             self.SMBBrowseDialog = None
@@ -1199,6 +1200,7 @@ class NewPrinterGUI(GtkGUI):
 
         self._cancel_lpd_probe ()
         self._cancel_required_package_install ()
+        self._cancel_openprinting_ppd ()
 
         self.NewPrinterWindow.hide()
         self._hide_searching_spinner()
@@ -1223,6 +1225,7 @@ class NewPrinterGUI(GtkGUI):
             self._set_driver_ppd_loading(False)
         self._cancel_lpd_probe ()
         self._cancel_required_package_install ()
+        self._cancel_openprinting_ppd ()
         self.nextNPTab(-1)
 
     def on_btnNPForward_clicked(self, widget):
@@ -1561,6 +1564,9 @@ class NewPrinterGUI(GtkGUI):
         if fetch_ppd:
             if not (self.dialog_mode == "duplicate" and
                     not self.duplicate_driver_selection):
+                if self._start_async_openprinting_ppd (step):
+                    self.btnNPForward.set_sensitive (False)
+                    return
                 self.ppd = self.getNPPPD()
             self.installable_options = False
             if self.ppd is None:
@@ -5073,6 +5079,11 @@ class NewPrinterGUI(GtkGUI):
         self.setNPButtons()
 
     def getNPPPD(self):
+        async_ppd = getattr (self, '_async_openprinting_ppd_result', None)
+        if async_ppd is not None:
+            self._async_openprinting_ppd_result = None
+            return async_ppd
+
         cached = getattr(self, '_cached_driverless_ppd', None)
 
         ppd = None
@@ -5099,19 +5110,9 @@ class NewPrinterGUI(GtkGUI):
                     model, iter = treeview.get_selection ().get_selected ()
                     driver = model.get_value (iter, 1)
                     if driver != 0 and 'ppds' in driver:
-                        # Only need to download a PPD.
-                        if (len(driver['ppds']) > 0):
-                            file_to_download = driver['ppds'][0]
-                            debugprint ("ppd file to download [" + file_to_download+ "]")
-                            file_to_download = file_to_download.strip()
-                            if (len(file_to_download) > 0):
-                                ppdurlobj = urllib.request.urlopen(file_to_download)
-                                ppdcontent = ppdurlobj.read()
-                                ppdurlobj.close()
-                                with tempfile.NamedTemporaryFile () as tmpf:
-                                    tmpf.write(ppdcontent)
-                                    tmpf.flush ()
-                                    ppd = cups.PPD(tmpf.name)
+                        # Downloadable PPDs are prepared asynchronously before
+                        # this function is called.
+                        ppd = None
 
             except (RuntimeError, urllib.error.HTTPError) as e:
                 debugprint ("RuntimeError: " + repr (e))
@@ -5194,6 +5195,115 @@ class NewPrinterGUI(GtkGUI):
 
         return ppd
 
+    def _get_openprinting_ppd_url (self):
+        """Return the selected downloadable PPD URL, if this path applies."""
+        if (getattr (self.device, 'driverless', False) or
+                self.rbtnNPFoomatic.get_active() or
+                self.rbtnNPPPD.get_active()):
+            return None
+        model, iter = self.tvNPDownloadableDrivers.get_selection ().get_selected ()
+        if iter is None:
+            return None
+        driver = model.get_value (iter, 1)
+        if not driver or 'ppds' not in driver or not driver['ppds']:
+            return None
+        url = driver['ppds'][0].strip ()
+        return url or None
+
+    def _start_async_openprinting_ppd (self, step, continuation="next"):
+        """Start complete downloadable-PPD preparation outside GTK."""
+        if getattr (self, '_async_openprinting_ppd_result', None) is not None:
+            return False
+
+        url = self._get_openprinting_ppd_url ()
+        if url is None:
+            return False
+        if getattr (self, '_openprinting_ppd_operation', None) is not None:
+            return True
+
+        self._openprinting_ppd_serial = getattr (
+            self, '_openprinting_ppd_serial', 0) + 1
+        serial = self._openprinting_ppd_serial
+        self._openprinting_ppd_step = step
+        self._openprinting_ppd_continuation = continuation
+        self._show_searching_spinner (_("Downloading printer description"))
+        self._openprinting_ppd_operation = TimedOperation (
+            self._download_openprinting_ppd_worker,
+            args=(url,),
+            callback=self._openprinting_ppd_finished,
+            context=(serial, url))
+        return True
+
+    def _cancel_openprinting_ppd (self):
+        operation = getattr (self, '_openprinting_ppd_operation', None)
+        if operation is None:
+            return
+        self._openprinting_ppd_serial = getattr (
+            self, '_openprinting_ppd_serial', 0) + 1
+        operation.cancel ()
+        self._openprinting_ppd_operation = None
+        self._async_openprinting_ppd_result = None
+        self._hide_searching_spinner ()
+
+    def _download_openprinting_ppd_worker (self, url):
+        ppdurlobj = urllib.request.urlopen (url)
+        try:
+            ppdcontent = ppdurlobj.read ()
+        finally:
+            ppdurlobj.close ()
+
+        with tempfile.NamedTemporaryFile () as tmpf:
+            tmpf.write (ppdcontent)
+            tmpf.flush ()
+            ppd = cups.PPD (tmpf.name)
+            process = subprocess.Popen (
+                ['/usr/bin/cupstestppd', '-rvv', tmpf.name],
+                close_fds=True,
+                stdin=subprocess.DEVNULL,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE)
+            stdout, stderr = process.communicate ()
+            if process.returncode != 0:
+                details = stdout.decode (errors="replace")
+                if not details:
+                    details = stderr.decode (errors="replace")
+                raise RuntimeError (details or
+                                    "cupstestppd validation failed")
+            return ppd
+
+    def _openprinting_ppd_finished (self, ppd, exc, context):
+        serial, url = context
+        if serial != getattr (self, '_openprinting_ppd_serial', None):
+            return
+        if getattr (self, '_openprinting_ppd_operation', None) is None:
+            return
+
+        self._openprinting_ppd_operation = None
+        self._hide_searching_spinner ()
+        if exc is not None:
+            self._show_openprinting_ppd_error (exc)
+            return
+
+        continuation = getattr (self, '_openprinting_ppd_continuation', "next")
+        if continuation == "apply":
+            self.ppd = ppd
+        else:
+            self._async_openprinting_ppd_result = ppd
+        # Re-enter the same forward navigation step.  getNPPPD() consumes
+        # the prepared result, so the URL is not downloaded twice.
+        if getattr (self, 'NewPrinterWindow', None) is not None and \
+                continuation == "apply":
+            self.on_btnNPApply_clicked (None)
+        elif getattr (self, 'NewPrinterWindow', None) is not None:
+            self.nextNPTab (self._openprinting_ppd_step)
+
+    def _show_openprinting_ppd_error (self, exc):
+        debugprint ("Failed to prepare downloadable PPD: %s" % repr (exc))
+        details = str (exc) or _("The printer description could not be validated.")
+        show_error_dialog (_("Downloadable drivers"),
+                           _("Failed to download or validate PPD.\n\n%s") % details,
+                           self.NewPrinterWindow)
+
     # Installable Options
 
     def fillNPInstallableOptions(self):
@@ -5251,6 +5361,10 @@ class NewPrinterGUI(GtkGUI):
 
     # Create new Printer
     def on_btnNPApply_clicked(self, widget):
+        if (self.dialog_mode == "ppd" and self.ppd is None and
+                self._start_async_openprinting_ppd (0, continuation="apply")):
+            return
+
         if self.fetchDevices_conn:
             self.fetchDevices_conn.destroy ()
             self.fetchDevices_conn = None

@@ -207,6 +207,327 @@ def get_dummy_gui():
     np.cups.getServerPPD = MagicMock(return_value='/tmp/mock.ppd')
     return np
 
+
+class FakePPDOperation:
+    def __init__(self, target, args=(), callback=None, context=None):
+        self.target = target
+        self.args = args
+        self.callback = callback
+        self.context = context
+        self.cancelled = False
+
+    def cancel(self):
+        self.cancelled = True
+
+
+def _prepare_openprinting_ppd_gui():
+    np = get_dummy_gui()
+    np.ppd = None
+    np.device.driverless = False
+    np.rbtnNPFoomatic.get_active.return_value = False
+    np.rbtnNPPPD.get_active.return_value = False
+    selection = MagicMock()
+    model = MagicMock()
+    iterator = object()
+    selection.get_selected.return_value = (model, iterator)
+    model.get_value.return_value = {'ppds': ['https://example.test/printer.ppd']}
+    np.tvNPDownloadableDrivers = MagicMock()
+    np.tvNPDownloadableDrivers.get_selection.return_value = selection
+    np._show_searching_spinner = MagicMock()
+    np._hide_searching_spinner = MagicMock()
+    np.NewPrinterWindow = MagicMock()
+    return np
+
+
+def test_openprinting_ppd_preparation_starts_asynchronous_operation(monkeypatch):
+    np = _prepare_openprinting_ppd_gui()
+    operations = []
+
+    def fake_operation(*args, **kwargs):
+        op = FakePPDOperation(*args, **kwargs)
+        operations.append(op)
+        return op
+
+    monkeypatch.setattr(newprinter, "TimedOperation", fake_operation)
+
+    assert np._start_async_openprinting_ppd(1) is True
+    assert len(operations) == 1
+    assert operations[0].target == np._download_openprinting_ppd_worker
+    assert operations[0].args == ('https://example.test/printer.ppd',)
+    assert np._openprinting_ppd_operation is operations[0]
+
+
+def test_openprinting_ppd_worker_downloads_parses_and_validates(monkeypatch):
+    np = _prepare_openprinting_ppd_gui()
+    response = MagicMock()
+    response.read.return_value = b"PPD CONTENT"
+    opened = []
+    monkeypatch.setattr(newprinter.urllib.request, "urlopen",
+                        lambda url: opened.append(url) or response)
+
+    parsed_paths = []
+
+    def fake_ppd(path):
+        import os
+        assert os.path.exists(path)
+        parsed_paths.append(path)
+        return "parsed-ppd"
+
+    monkeypatch.setattr(cups, "PPD", fake_ppd)
+
+    class Completed:
+        returncode = 0
+
+        def communicate(self):
+            return b"validated", b""
+
+    def fake_popen(args, **kwargs):
+        import os
+        assert args == ['/usr/bin/cupstestppd', '-rvv', args[-1]]
+        assert os.path.exists(args[-1])
+        return Completed()
+
+    monkeypatch.setattr(newprinter.subprocess, "Popen", fake_popen)
+    result = np._download_openprinting_ppd_worker(
+        'https://example.test/printer.ppd')
+
+    assert result == "parsed-ppd"
+    assert opened == ['https://example.test/printer.ppd']
+    assert len(parsed_paths) == 1
+
+
+def test_openprinting_ppd_validation_failure_does_not_resume(monkeypatch):
+    np = _prepare_openprinting_ppd_gui()
+    np._openprinting_ppd_serial = 4
+    np._openprinting_ppd_operation = object()
+    np.nextNPTab = MagicMock()
+    np._show_openprinting_ppd_error = MagicMock()
+
+    np._openprinting_ppd_finished(
+        None, RuntimeError("invalid PPD"), (4, 'https://example.test/printer.ppd'))
+
+    np.nextNPTab.assert_not_called()
+    np._show_openprinting_ppd_error.assert_called_once()
+    assert getattr(np, '_async_openprinting_ppd_result', None) is None
+
+
+def test_openprinting_ppd_normal_continuation_assigns_result_and_resumes(monkeypatch):
+    np = _prepare_openprinting_ppd_gui()
+    np._openprinting_ppd_serial = 7
+    np._openprinting_ppd_step = 1
+    np._openprinting_ppd_operation = object()
+    np.nextNPTab = MagicMock()
+    prepared = object()
+
+    np._openprinting_ppd_finished(
+        prepared, None, (7, 'https://example.test/printer.ppd'))
+
+    assert np._async_openprinting_ppd_result is prepared
+    np.nextNPTab.assert_called_once_with(1)
+
+
+def test_openprinting_ppd_apply_continuation_assigns_ppd_and_reenters():
+    np = _prepare_openprinting_ppd_gui()
+    np._openprinting_ppd_serial = 8
+    np._openprinting_ppd_operation = object()
+    np._openprinting_ppd_continuation = "apply"
+    np.on_btnNPApply_clicked = MagicMock()
+    prepared = object()
+
+    np._openprinting_ppd_finished(
+        prepared, None, (8, 'https://example.test/printer.ppd'))
+
+    assert np.ppd is prepared
+    np.on_btnNPApply_clicked.assert_called_once_with(None)
+
+
+def test_openprinting_ppd_stale_callback_does_nothing():
+    np = _prepare_openprinting_ppd_gui()
+    np._openprinting_ppd_serial = 10
+    np._openprinting_ppd_operation = object()
+    np.nextNPTab = MagicMock()
+    np._show_openprinting_ppd_error = MagicMock()
+    original_ppd = getattr(np, 'ppd', None)
+
+    np._openprinting_ppd_finished(
+        object(), None, (9, 'https://example.test/printer.ppd'))
+
+    assert np.ppd is original_ppd
+    np.nextNPTab.assert_not_called()
+    np._show_openprinting_ppd_error.assert_not_called()
+
+
+def test_openprinting_ppd_cancellation_invalidates_completion(monkeypatch):
+    np = _prepare_openprinting_ppd_gui()
+    np._openprinting_ppd_serial = 11
+    operation = FakePPDOperation(lambda: None)
+    np._openprinting_ppd_operation = operation
+    np.nextNPTab = MagicMock()
+
+    np._cancel_openprinting_ppd()
+    np._openprinting_ppd_finished(
+        object(), None, (11, 'https://example.test/printer.ppd'))
+
+    assert operation.cancelled is True
+    np.nextNPTab.assert_not_called()
+
+
+def test_next_nptab_starts_openprinting_preparation_and_returns_pending(monkeypatch):
+    np = _prepare_openprinting_ppd_gui()
+    np.btnNPForward = MagicMock()
+    np.ntbkNewPrinter = MagicMock()
+    np.ntbkNewPrinter.get_current_page.return_value = np.PAGE_APPLY
+    np.setNPButtons = MagicMock()
+    started = []
+
+    def start(step):
+        started.append(step)
+        return True
+
+    np._start_async_openprinting_ppd = start
+
+    def handle(step):
+        np._start_async_openprinting_ppd(step)
+        return np.INSTALL_RESULT_OPS_PENDING
+
+    np._handlePrinterInstallationMode = handle
+
+    result = np.nextNPTab(1)
+
+    assert result is None
+    assert started == [1]
+    np.btnNPForward.set_sensitive.assert_called_with(False)
+
+
+def test_next_nptab_real_installation_state_machine_reaches_pending(monkeypatch):
+    monkeypatch.setattr(newprinter, "busy", lambda window: None)
+    np = _prepare_openprinting_ppd_gui()
+    np.dialog_mode = "ppd"
+    np.rbtnNPFoomatic.get_active.return_value = False
+    np.rbtnNPPPD.get_active.return_value = False
+    np.ppds = object()
+    np.remotecupsqueue = False
+    np.nextnptab_rerun = False
+    np.ntbkNewPrinter = MagicMock()
+    np.ntbkNewPrinter.get_current_page.return_value = np.PAGE_SELECT_INSTALL_METHOD
+    np.btnNPForward = MagicMock()
+    np.setNPButtons = MagicMock()
+    np._selectDeviceForInstallation = MagicMock()
+    np._installHPScannerFilesIfNeeded = MagicMock(return_value=True)
+    np._installPrinterFromDeviceID = MagicMock(return_value=np.INSTALL_RESULT_DONE)
+    operations = []
+
+    def start(step):
+        operations.append(step)
+        return True
+
+    np._start_async_openprinting_ppd = start
+
+    # The real navigation and installation-mode/stage functions run here;
+    # only external device/package/CUPS effects are mocked.
+    np.nextNPTab(2)
+
+    assert operations == [2]
+    np.btnNPForward.set_sensitive.assert_called_with(False)
+
+
+def test_next_nptab_async_completion_preserves_original_step(monkeypatch):
+    np = _prepare_openprinting_ppd_gui()
+    np._openprinting_ppd_serial = 20
+    np._openprinting_ppd_step = 1
+    np._openprinting_ppd_operation = object()
+    resumed = []
+    np.nextNPTab = lambda step: resumed.append(step)
+    prepared = object()
+
+    np._openprinting_ppd_finished(
+        prepared, None, (20, 'https://example.test/printer.ppd'))
+
+    assert np._async_openprinting_ppd_result is prepared
+    assert resumed == [1]
+    np._start_async_openprinting_ppd = MagicMock(return_value=False)
+    assert np.getNPPPD() is prepared
+    np._start_async_openprinting_ppd.assert_not_called()
+
+
+def test_apply_entry_point_starts_async_preparation_and_reenters(monkeypatch):
+    np = _prepare_openprinting_ppd_gui()
+    np.dialog_mode = "ppd"
+    np._name = "Test printer"
+    np.isShared = False
+    started = []
+
+    def start(step, continuation="next"):
+        started.append((step, continuation))
+        return True
+
+    np._start_async_openprinting_ppd = start
+    np.on_btnNPApply_clicked(None)
+    assert started == [(0, "apply")]
+
+    np.ppd = object()
+    np._start_async_openprinting_ppd = MagicMock(return_value=False)
+    np.cups._begin_operation = MagicMock()
+    np.cups._end_operation = MagicMock()
+    np.cups.addPrinter = MagicMock()
+    np.cups.getServerPPD = MagicMock()
+    np.cups.setPrinterLocation = MagicMock()
+    np.cups.setPrinterInfo = MagicMock()
+    np.cups.setPrinterShared = MagicMock()
+    np.NewPrinterWindow = MagicMock()
+    np.language = ("C", "UTF-8")
+    np.rbtnChangePPDasIs = MagicMock()
+    np.rbtnChangePPDasIs.get_active.return_value = False
+    np.orig_ppd = None
+    np.options = {}
+    np.emit = MagicMock()
+
+    newprinter.NewPrinterGUI.on_btnNPApply_clicked(np, None)
+    np._start_async_openprinting_ppd.assert_not_called()
+
+
+def test_openprinting_ppd_worker_validation_failure_raises(monkeypatch):
+    np = _prepare_openprinting_ppd_gui()
+    response = MagicMock()
+    response.read.return_value = b"PPD CONTENT"
+    monkeypatch.setattr(newprinter.urllib.request, "urlopen",
+                        lambda url: response)
+    monkeypatch.setattr(cups, "PPD", lambda path: object())
+
+    class FailedProcess:
+        returncode = 1
+
+        def communicate(self):
+            return b"validation failed", b"stderr details"
+
+    monkeypatch.setattr(newprinter.subprocess, "Popen",
+                        lambda *args, **kwargs: FailedProcess())
+
+    with pytest.raises(RuntimeError, match="validation failed"):
+        np._download_openprinting_ppd_worker(
+            'https://example.test/printer.ppd')
+
+
+def test_on_npcancel_invalidates_openprinting_completion():
+    np = _prepare_openprinting_ppd_gui()
+    operation = FakePPDOperation(lambda: None)
+    np._openprinting_ppd_serial = 30
+    np._openprinting_ppd_operation = operation
+    np.fetchDevices_conn = None
+    np.ppdsloader = None
+    np.printer_finder = None
+    np.opreq = None
+    np.emit = MagicMock()
+    np.NewPrinterWindow = MagicMock()
+    np.nextNPTab = MagicMock()
+
+    np.on_NPCancel(None)
+    np._openprinting_ppd_finished(
+        object(), None, (30, 'https://example.test/printer.ppd'))
+
+    assert operation.cancelled is True
+    np.nextNPTab.assert_not_called()
+
 def test_driverless_skip_snmp():
     np = get_dummy_gui()
     np._selectDeviceForInstallation("ipp://localhost:60000/ipp/print")
