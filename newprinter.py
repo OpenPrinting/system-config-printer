@@ -211,16 +211,32 @@ def _device_from_object(dev, is_printer=False):
         return None
 
     kw = {}
-    for attr in ('device_class', 'id', 'id_dict', 'make_and_model', 'info', 'location'):
-        if hasattr(dev, attr):
-            kw[attr.replace('_', '-')] = getattr(dev, attr)
 
-    if 'device-class' not in kw:
+    dev_id = getattr(dev, 'id', None) or getattr(dev, 'device_id', None)
+    if dev_id:
+        kw['device-id'] = dev_id
+
+    make_and_model = getattr(dev, 'make_and_model', None) or getattr(dev, 'device_make_and_model', None)
+    if make_and_model:
+        kw['device-make-and-model'] = make_and_model
+
+    info = getattr(dev, 'info', None) or getattr(dev, 'device_info', None)
+    if info:
+        kw['device-info'] = info
+
+    location = getattr(dev, 'location', None) or getattr(dev, 'device_location', None)
+    if location:
+        kw['device-location'] = location
+
+    dev_class = getattr(dev, 'device_class', None)
+    if not dev_class:
         scheme = uri.split(':', 1)[0].lower() if uri else ''
         if scheme in ('ipp', 'ipps', 'socket', 'lpd', 'http', 'https', 'dnssd', 'mdns'):
-            kw['device-class'] = 'network'
+            dev_class = 'network'
         elif scheme in ('usb', 'parallel', 'serial'):
-            kw['device-class'] = 'direct'
+            dev_class = 'direct'
+    if dev_class:
+        kw['device-class'] = dev_class
 
     try:
         c_dev = cupshelpers.Device(uri, **kw)
@@ -229,7 +245,8 @@ def _device_from_object(dev, is_printer=False):
         if hasattr(dev, 'hostname'):
             c_dev.hostname = dev.hostname
         return c_dev
-    except Exception:
+    except (ValueError, TypeError, AttributeError) as e:
+        debugprint("Failed to construct Device from object: %s" % e)
         return None
 
 def _same_physical_device(p1, p2):
@@ -237,13 +254,12 @@ def _same_physical_device(p1, p2):
         return False
     if p1.dnssd_hostname and p2.dnssd_hostname and p1.dnssd_hostname == p2.dnssd_hostname:
         return True
-    if p1._network_host and p2._network_host and p1._network_host == p2._network_host:
-        return True
     if p1.sn and p2.sn and p1.sn == p2.sn:
         return True
     try:
         return p1 == p2
-    except Exception:
+    except (TypeError, AttributeError, ValueError) as e:
+        debugprint("Error comparing physical devices: %s" % e)
         return False
 
 def _filter_configured_devices(discovered_devices, configured_printers):
@@ -273,8 +289,8 @@ def _filter_configured_devices(discovered_devices, configured_printers):
                     configured_dnssd.add(p_conf.dnssd_hostname)
                 if p_conf.sn:
                     configured_serials.add(p_conf.sn)
-            except Exception:
-                pass
+            except (ValueError, TypeError, AttributeError, OSError) as e:
+                debugprint("Could not create PhysicalDevice for configured queue %s: %s" % (uri, e))
 
     if not configured_uris:
         return list(discovered_devices)
@@ -288,7 +304,8 @@ def _filter_configured_devices(discovered_devices, configured_printers):
         if c_dev is not None:
             try:
                 new_phys = PhysicalDevice(c_dev)
-            except Exception:
+            except (ValueError, TypeError, AttributeError, OSError) as e:
+                debugprint("Could not create PhysicalDevice for discovered device %s: %s" % (getattr(d, 'uri', ''), e))
                 new_phys = None
         matched = False
         if new_phys is not None:
@@ -296,8 +313,8 @@ def _filter_configured_devices(discovered_devices, configured_printers):
                 if _same_physical_device(p, new_phys):
                     try:
                         p.add_device(c_dev)
-                    except ValueError:
-                        pass
+                    except ValueError as e:
+                        debugprint("Device %s could not be merged into physical device: %s" % (getattr(d, 'uri', ''), e))
                     groups[i].append(d)
                     matched = True
                     break

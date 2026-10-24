@@ -168,6 +168,34 @@ def test_filter_configured_devices_no_configured_queues_all_visible():
     filtered = newprinter._filter_configured_devices([dev_ipps, dev_lpd], {})
     assert len(filtered) == 2
 
+def test_filter_configured_devices_same_ip_different_queues_stay_separate():
+    """Two queues on the same host/IP without DNS-SD must not be merged or hidden together."""
+    dev1 = MockDevice("socket://192.168.1.50:9100")
+    dev2 = MockDevice("socket://192.168.1.50:9101")
+    printers = {"Printer1": MockPrinter("socket://192.168.1.50:9100")}
+    filtered = newprinter._filter_configured_devices([dev1, dev2], printers)
+    assert len(filtered) == 1
+    assert filtered[0].uri == dev2.uri
+
+def test_device_from_object_explicit_kwargs():
+    """Verify _device_from_object passes expected device-* keywords to Device.__init__."""
+    class DummyObj:
+        def __init__(self):
+            self.uri = "ipp://192.168.1.5/ipp/print"
+            self.id = "MFG:Test;MDL:Printer;"
+            self.make_and_model = "Test Printer"
+            self.info = "Test Info"
+            self.location = "Room 101"
+            self.device_class = "network"
+
+    dev = newprinter._device_from_object(DummyObj())
+    assert dev is not None
+    assert dev.id == "MFG:Test;MDL:Printer;"
+    assert dev.make_and_model == "Test Printer"
+    assert dev.info == "Test Info"
+    assert dev.location == "Room 101"
+    assert dev.device_class == "network"
+
 
 class MockPPDAttr:
     def __init__(self, value):
