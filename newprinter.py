@@ -442,6 +442,8 @@ class NewPrinterGUI(GtkGUI):
         self.founddownloadableppd = False
         self.downloadable_driver_for_printer = None
         self.downloadable_printers = []
+        self._cached_driverless_ppd = None
+        self._cached_driverless_ppd_name = None
         self.nextnptab_rerun = False
         self.printers = {} # set in init()
         self.recommended_model_selected = False
@@ -2219,8 +2221,11 @@ class NewPrinterGUI(GtkGUI):
         if not entry:
             cached_name = getattr(self, '_cached_driverless_ppd_name', None)
             if cached_name and cached_name in self.driverless_ppds:
-                entry = self.driverless_ppds[cached_name]
-                alt_ppdname = cached_name
+                target_norm = urllib.parse.unquote(ppdname).rstrip('/')
+                cached_norm = urllib.parse.unquote(cached_name).rstrip('/')
+                if cached_norm == target_norm:
+                    entry = self.driverless_ppds[cached_name]
+                    alt_ppdname = cached_name
 
         if not entry:
             return
@@ -2315,6 +2320,14 @@ class NewPrinterGUI(GtkGUI):
                 if not getattr(self.device, '_driverless_failed', False):
                     cached_name = getattr(self, '_cached_driverless_ppd_name', None)
                     target_ppd = ("driverless:%s" % search_uri) if search_uri else None
+                    if cached_name and target_ppd:
+                        target_norm = urllib.parse.unquote(target_ppd).rstrip('/')
+                        cached_norm = urllib.parse.unquote(cached_name).rstrip('/')
+                        if cached_norm != target_norm:
+                            cached_name = None
+                    elif cached_name and not target_ppd:
+                        cached_name = None
+
                     if cached_name:
                         self._add_validated_driverless_ppd_to_catalog(cached_name)
                     if target_ppd and target_ppd != cached_name:
@@ -3912,6 +3925,8 @@ class NewPrinterGUI(GtkGUI):
         self.founddownloadabledrivers = False
         self.founddownloadableppd = False
         self.downloadable_printers = []
+        self._cached_driverless_ppd = None
+        self._cached_driverless_ppd_name = None
 
         self.device_selected += 1
         path, column = widget.get_cursor ()
@@ -4123,6 +4138,14 @@ class NewPrinterGUI(GtkGUI):
         model = widget.get_model ()
         iter = model.get_iter (path)
         device = model.get_value(iter, 1)
+        if getattr(self, 'device', None) is not None and getattr(self.device, 'uri', None) != getattr(device, 'uri', None):
+            cached_name = getattr(self, '_cached_driverless_ppd_name', None)
+            if cached_name:
+                target_norm = urllib.parse.unquote("driverless:%s" % device.uri).rstrip('/')
+                cached_norm = urllib.parse.unquote(cached_name).rstrip('/')
+                if cached_norm != target_norm:
+                    self._cached_driverless_ppd = None
+                    self._cached_driverless_ppd_name = None
         self.device = device
         self.lblNPDeviceDescription.set_text ('')
         page = self.new_printer_device_tabs.get (device.type, self.PAGE_SELECT_DEVICE)
