@@ -660,6 +660,14 @@ class NewPrinterGUI(GtkGUI):
 
     def do_destroy (self):
         debugprint ("DESTROY: %s" % self)
+        self._cancel_lpd_probe (hide_window=False)
+        self._cancel_required_package_install ()
+        self._cancel_openprinting_ppd ()
+        self._cancel_local_ppd_validation ()
+        self._cancel_gpg_fingerprint_download ()
+        self._cancel_remote_cups_retrieval ()
+        self._cancel_driver_installation ()
+        self._cancel_smbc_installation ()
         if self.SMBBrowseDialog:
             self.SMBBrowseDialog.destroy ()
             self.SMBBrowseDialog = None
@@ -1195,6 +1203,15 @@ class NewPrinterGUI(GtkGUI):
             self.printer_finder = None
             self.dec_spinner_task ()
 
+        self._cancel_lpd_probe ()
+        self._cancel_required_package_install ()
+        self._cancel_openprinting_ppd ()
+        self._cancel_local_ppd_validation ()
+        self._cancel_gpg_fingerprint_download ()
+        self._cancel_remote_cups_retrieval ()
+        self._cancel_driver_installation ()
+        self._cancel_smbc_installation ()
+
         self.NewPrinterWindow.hide()
         self._hide_searching_spinner()
         if getattr(self, 'opreq', None) is not None:
@@ -1216,6 +1233,14 @@ class NewPrinterGUI(GtkGUI):
                 self.ppdsloader.destroy ()
                 self.ppdsloader = None
             self._set_driver_ppd_loading(False)
+        self._cancel_lpd_probe ()
+        self._cancel_required_package_install ()
+        self._cancel_openprinting_ppd ()
+        self._cancel_local_ppd_validation ()
+        self._cancel_gpg_fingerprint_download ()
+        self._cancel_remote_cups_retrieval ()
+        self._cancel_driver_installation ()
+        self._cancel_smbc_installation ()
         self.nextNPTab(-1)
 
     def on_btnNPForward_clicked(self, widget):
@@ -1292,8 +1317,8 @@ class NewPrinterGUI(GtkGUI):
         self._driver_selection_spinner = spinner
         return True
 
-    def installdriverpackage (self, driver):
-        install_info = self._getDriverInstallationInfo (driver)
+    def installdriverpackage (self, driver, fingerprint=None):
+        install_info = self._getDriverInstallationInfo (driver, fingerprint)
         if not install_info:
             return False
 
@@ -1460,7 +1485,7 @@ class NewPrinterGUI(GtkGUI):
 
         return ret
 
-    def _getDriverInstallationInfo (self, driver):
+    def _getDriverInstallationInfo (self, driver, fingerprint=None):
         pkgs = driver.get('packages', {})
         arches = list(pkgs.keys())
         if len(arches) == 0:
@@ -1493,7 +1518,10 @@ class NewPrinterGUI(GtkGUI):
                 debugprint('Not installing driver as it does not have a GPG fingerprint URL')
                 return None
         else:
-            keyid = download_gpg_fingerprint(pkgs[pkg]['fingerprint'])
+            if fingerprint is None:
+                keyid = download_gpg_fingerprint(pkgs[pkg]['fingerprint'])
+            else:
+                keyid = fingerprint
             if config.DOWNLOADABLE_PKG_ONLYSIGNED and arches[0] not in ['all', 'noarch'] and not keyid:
                 debugprint('Not installing driver as it does not have a valid GPG fingerprint')
                 return None
@@ -1554,6 +1582,9 @@ class NewPrinterGUI(GtkGUI):
         if fetch_ppd:
             if not (self.dialog_mode == "duplicate" and
                     not self.duplicate_driver_selection):
+                if self._start_async_openprinting_ppd (step):
+                    self.btnNPForward.set_sensitive (False)
+                    return
                 self.ppd = self.getNPPPD()
             self.installable_options = False
             if self.ppd is None:
@@ -1823,12 +1854,16 @@ class NewPrinterGUI(GtkGUI):
             if uri and uri.startswith ("smb"):
                 # User has selected an smb device
                 uri = SMBURI (uri=uri[6:]).sanitize_uri ()
-                self._installSMBBackendIfNeeded ()
+                if not self._installSMBBackendIfNeeded ():
+                    return self.INSTALL_RESULT_OPS_PENDING
 
         if page_nr == self.PAGE_SELECT_DEVICE or page_nr == self.PAGE_SELECT_INSTALL_METHOD:
-            self._selectDeviceForInstallation (uri)
+            if self._selectDeviceForInstallation (uri, step) is False:
+                return self.INSTALL_RESULT_OPS_PENDING
         elif page_nr == self.PAGE_DOWNLOAD_DRIVER and self.nextnptab_rerun == False:
-            self._handleDriverInstallation ()
+            result = self._handleDriverInstallation ()
+            if result == self.INSTALL_RESULT_OPS_PENDING:
+                return result
 
         devid = None
         if not self.remotecupsqueue or self.dialog_mode == "ppd":
@@ -1847,7 +1882,8 @@ class NewPrinterGUI(GtkGUI):
 
         self.nextnptab_rerun = False
         if page_nr == self.PAGE_SELECT_DEVICE or page_nr == self.PAGE_SELECT_INSTALL_METHOD:
-            self._installHPScannerFilesIfNeeded ()
+            if not self._installHPScannerFilesIfNeeded ():
+                return self.INSTALL_RESULT_OPS_PENDING
 
         return self._installPrinterFromDeviceID (devid, page_nr, step)
 
@@ -1857,16 +1893,134 @@ class NewPrinterGUI(GtkGUI):
                (self._host == 'localhost' or self._host[0] == '/') and
                not os.access ("/usr/lib/cups/backend/smb", os.F_OK)):
             debugprint ("No smb backend so attempting install")
-            try:
-                pk = installpackage.PackageKit ()
-                # The following call means a blocking, synchronous, D-Bus call
-                pk.InstallPackageName (0, 0, "samba-client")
-            except:
-                nonfatalException ()
+            if getattr (self, '_smb_backend_install_pending', False):
+                return False
+            if getattr (self, '_smb_backend_install_done', False):
+                return True
+            self._smb_backend_install_pending = True
+            self._package_install_serial = getattr (self, '_package_install_serial', 0) + 1
+            package_serial = self._package_install_serial
+            self._show_searching_spinner (_("Installing required components"))
+            self._smb_backend_operation = TimedOperation (
+                self._install_package_worker, args=("samba-client",),
+                callback=self._required_package_install_finished,
+                context=("smb-backend", package_serial))
+            return False
+        return True
 
-    def _selectDeviceForInstallation (self, uri):
+    def _install_package_worker (self, package_name):
+        pk = installpackage.PackageKit ()
+        pk.InstallPackageName (0, 0, package_name)
+        return True
+
+    def _cancel_required_package_install (self):
+        operation = getattr (self, '_smb_backend_operation', None)
+        if operation is None:
+            operation = getattr (self, '_hp_scanner_operation', None)
+        if operation is None and not getattr (self, '_smb_backend_install_pending', False) \
+                and not getattr (self, '_hp_scanner_install_pending', False):
+            return
+        self._package_install_serial = getattr (self, '_package_install_serial', 0) + 1
+        if operation is not None:
+            operation.cancel ()
+        self._smb_backend_operation = None
+        self._hp_scanner_operation = None
+        self._smb_backend_install_pending = False
+        self._hp_scanner_install_pending = False
+
+    def _required_package_install_finished (self, result, exc, context):
+        package_kind, package_serial = context
+        if package_serial != getattr (self, '_package_install_serial', None):
+            return
+        if package_kind == "smb-backend":
+            self._smb_backend_install_pending = False
+            self._smb_backend_install_done = True
+            self._smb_backend_operation = None
+        else:
+            self._hp_scanner_install_pending = False
+            self._hp_scanner_install_done = True
+            self._hp_scanner_operation = None
+        self._hide_searching_spinner ()
+        if exc is not None:
+            debugprint ("PackageKit installation failed for %s: %s" %
+                        (package_kind, repr (exc)))
+        if getattr (self, 'NewPrinterWindow', None) is not None:
+            self.nextNPTab (step=0)
+
+    def _start_remote_cups_retrieval (self, uri, groups, step):
+        self._remote_cups_serial = getattr(self, '_remote_cups_serial', 0) + 1
+        serial = self._remote_cups_serial
+        self._show_searching_spinner (_("Checking remote printer"))
+        self._remote_cups_operation = TimedOperation (
+            self._remote_cups_retrieval_worker, args=(uri, groups),
+            callback=self._remote_cups_retrieval_finished,
+            context=(serial, uri, step))
+
+    def _remote_cups_retrieval_worker (self, uri, groups):
+        host, port_text, queue = groups
+        port = int(port_text[1:]) if port_text else 631
+        remotecupsqueue = None
+        info = ''
+        location = ''
+
+        try:
+            conn = http.client.HTTPConnection (host, port)
+            conn.request ("GET", "/printers/%s.ppd" % queue)
+            resp = conn.getresponse ()
+            if resp.status == 200:
+                remotecupsqueue = queue
+            resp.read ()
+        except Exception:
+            pass
+
+        try:
+            c = cups.Connection (host=host, port=port,
+                                 encryption=cups.HTTP_ENCRYPT_IF_REQUESTED)
+            attrs = c.getPrinterAttributes (
+                uri=uri, requested_attributes=['printer-info', 'printer-location'])
+            info = attrs.get ('printer-info', '')
+            location = attrs.get ('printer-location', '')
+        except Exception:
+            pass
+
+        return remotecupsqueue, info, location
+
+    def _cancel_remote_cups_retrieval (self):
+        operation = getattr(self, '_remote_cups_operation', None)
+        if operation is None:
+            return
+        self._remote_cups_serial = getattr(self, '_remote_cups_serial', 0) + 1
+        operation.cancel ()
+        self._remote_cups_operation = None
+        self._hide_searching_spinner ()
+
+    def _remote_cups_retrieval_finished (self, result, exc, context):
+        serial, uri, step = context
+        if serial != getattr(self, '_remote_cups_serial', None):
+            return
+        if getattr(self, '_remote_cups_operation', None) is None:
+            return
+        self._remote_cups_operation = None
+        self._hide_searching_spinner ()
+        if exc is not None:
+            debugprint ('Remote CUPS retrieval failed: %s' % repr(exc))
+            return
+        self.remotecupsqueue, info, location = result
+        if info:
+            self.entNPDescription.set_text (info)
+        if location:
+            self.device.location = location
+        self.nextnptab_rerun = True
+        self.nextNPTab (step=step)
+
+    def _selectDeviceForInstallation (self, uri, step=1):
         self._initialiseAutoVariables ()
         self.device.uri = self.getDeviceURI ()
+
+        res = re.search (r"ipp://(\S+?)(:\d+|)/printers/(\S+)", uri)
+        if res and not self.nextnptab_rerun:
+            self._start_remote_cups_retrieval (uri, res.groups(), step)
+            return False
 
         # Cancel the printer finder now as the user has
         # already selected their device.
@@ -1890,9 +2044,10 @@ class NewPrinterGUI(GtkGUI):
         # printer is a queue on a remote CUPS server which is
         # not automatically set up on our local CUPS server
         # (for example DNS-SD broadcasted queue from Mac OS X)
-        self.remotecupsqueue = None
+        if not self.nextnptab_rerun:
+            self.remotecupsqueue = None
         res = re.search (r"ipp://(\S+?)(:\d+|)/printers/(\S+)", uri)
-        if res:
+        if res and not self.nextnptab_rerun:
             resg = res.groups()
             if len (resg[1]) > 0:
                 port = int (resg[1][1:])
@@ -1944,32 +2099,165 @@ class NewPrinterGUI(GtkGUI):
                 uri.find ("/cups") != -1 and self.device.info):
             # Remote CUPS queue discovered by "dnssd" CUPS backend
             self.remotecupsqueue = self.device.info
+        return True
 
-    def _handleDriverInstallation (self):
+    def _handleDriverInstallation (self, driver=None, fingerprint=None):
         # Install package of the driver found on OpenPrinting
         treeview = self.tvNPDownloadableDrivers
         model, iter = treeview.get_selection ().get_selected ()
-        driver = None
-        if iter is not None:
+        if driver is None and iter is not None:
             driver = model.get_value (iter, 1)
         if driver is None or driver == 0 or 'packages' not in driver:
             return
 
-        # Find the package name, repository, and fingerprint
-        # and install the package
-        result = self.installdriverpackage (driver)
-        if not result or len(self.installed_driver_files) == 0:
-          return
+        if fingerprint is None:
+            url = self._driver_fingerprint_url (driver)
+            if url:
+                self._start_gpg_fingerprint_download (driver, url)
+                return self.INSTALL_RESULT_OPS_PENDING
 
-        # We actually installed a package, delete the
-        # PPD list to get it regenerated
+        install_info = self._getDriverInstallationInfo (driver, fingerprint)
+        if not install_info:
+            return
+        self._start_driver_installation (driver, install_info)
+        return self.INSTALL_RESULT_OPS_PENDING
+
+    def _start_driver_installation (self, driver, install_info):
+        if getattr(self, '_driver_install_operation', None) is not None:
+            self._cancel_driver_installation ()
+        self._driver_install_serial = getattr(self, '_driver_install_serial', 0) + 1
+        serial = self._driver_install_serial
+        self._driver_install_driver = driver
+        self._show_searching_spinner (_("Installing driver"))
+        self._driver_install_operation = TimedOperation (
+            self._driver_install_worker,
+            args=(install_info['name'], install_info['repo'], install_info['keyid'], serial),
+            callback=self._driver_install_finished,
+            context=(serial, driver))
+
+    def _driver_install_worker (self, name, repo, keyid, serial):
+        new_environ = os.environ.copy()
+        new_environ['LC_ALL'] = "C"
+        if keyid:
+            args = ["install-printerdriver", name, repo, keyid]
+        else:
+            args = ["install-printerdriver", name, repo]
+        process = subprocess.Popen (args, env=new_environ, close_fds=True,
+                                    stdin=subprocess.DEVNULL,
+                                    stdout=subprocess.PIPE,
+                                    stderr=subprocess.PIPE)
+        self._driver_install_process = process
+        self._driver_install_process_serial = serial
+        try:
+            stdout, stderr = process.communicate ()
+        finally:
+            if (getattr(self, '_driver_install_process', None) is process and
+                    getattr(self, '_driver_install_process_serial', None) == serial):
+                self._driver_install_process = None
+                self._driver_install_process_serial = None
+        installed_files = []
+        done_received = False
+        for line in stdout.splitlines():
+            line = line.strip()
+            if line == b"done":
+                done_received = True
+            elif not line.startswith(b"P"):
+                installed_files.append(line.decode("utf-8", errors="replace"))
+        ret = process.returncode == 0 and done_received
+        return ret, installed_files, stdout, stderr
+
+    def _cancel_driver_installation (self):
+        operation = getattr(self, '_driver_install_operation', None)
+        if operation is None:
+            return
+        self._driver_install_serial = getattr(self, '_driver_install_serial', 0) + 1
+        operation.cancel ()
+        process = getattr(self, '_driver_install_process', None)
+        process_serial = getattr(self, '_driver_install_process_serial', None)
+        if (process is not None and process_serial == self._driver_install_serial - 1 and
+                process.poll () is None):
+            try:
+                process.terminate ()
+            except OSError:
+                pass
+        self._driver_install_operation = None
+        self._driver_install_driver = None
+        self._hide_searching_spinner ()
+
+    def _driver_install_finished (self, result, exc, context):
+        serial, driver = context
+        if serial != getattr(self, '_driver_install_serial', None):
+            return
+        if getattr(self, '_driver_install_operation', None) is None:
+            return
+        self._driver_install_operation = None
+        self._driver_install_driver = None
+        self._hide_searching_spinner ()
+        if exc is not None:
+            debugprint ('Driver installation failed: %s' % repr(exc))
+            return
+        installed, installed_files, stdout, stderr = result
+        if not installed or not installed_files:
+            debugprint ('Driver installation failed: %s' % stderr.decode(errors='replace'))
+            return
+        self.installed_driver_files = installed_files
         self.ppds = None
-
         if (self.dialog_mode != "download_driver" and
               (not self.device.id and
               (not self.device.make_and_model or self.device.make_and_model == "Unknown") and
               self.downloadable_driver_for_printer)):
             self.device.make_and_model = self.downloadable_driver_for_printer
+        self.nextnptab_rerun = True
+        self.nextNPTab (step=0)
+
+    def _driver_fingerprint_url (self, driver):
+        pkgs = driver.get('packages', {})
+        arches = list(pkgs.keys())
+        if len(arches) != 1:
+            return None
+        packages = pkgs[arches[0]]
+        if len(packages) != 1:
+            return None
+        package = list(packages.keys())[0]
+        return packages[package].get('fingerprint')
+
+    def _start_gpg_fingerprint_download (self, driver, url):
+        self._gpg_fingerprint_serial = getattr(
+            self, '_gpg_fingerprint_serial', 0) + 1
+        serial = self._gpg_fingerprint_serial
+        self._show_searching_spinner (_("Verifying driver signature"))
+        self._gpg_fingerprint_operation = TimedOperation (
+            self._gpg_fingerprint_worker, args=(url,),
+            callback=self._gpg_fingerprint_finished,
+            context=(serial, driver))
+
+    def _gpg_fingerprint_worker (self, url):
+        return download_gpg_fingerprint (url)
+
+    def _cancel_gpg_fingerprint_download (self):
+        operation = getattr (self, '_gpg_fingerprint_operation', None)
+        if operation is None:
+            return
+        self._gpg_fingerprint_serial = getattr(
+            self, '_gpg_fingerprint_serial', 0) + 1
+        operation.cancel ()
+        self._gpg_fingerprint_operation = None
+        self._hide_searching_spinner ()
+
+    def _gpg_fingerprint_finished (self, fingerprint, exc, context):
+        serial, driver = context
+        if serial != getattr(self, '_gpg_fingerprint_serial', None):
+            return
+        if getattr(self, '_gpg_fingerprint_operation', None) is None:
+            return
+        self._gpg_fingerprint_operation = None
+        self._hide_searching_spinner ()
+        if exc is not None or not fingerprint:
+            debugprint ('Unable to retrieve GPG fingerprint for driver')
+            return
+        if self._handleDriverInstallation (driver, fingerprint):
+            self.nextnptab_rerun = True
+            self.nextNPTab (step=0)
 
     def _installHPScannerFilesIfNeeded (self):
         if (hasattr (self.device, 'hp_scannable') and self.device.hp_scannable and
@@ -1977,12 +2265,20 @@ class NewPrinterGUI(GtkGUI):
                 not os.access ("/etc/sane.d/dll.d/hplip", os.R_OK)):
             debugprint ("No HPLIP sane backend so "
                         "attempting install")
-            try:
-                pk = installpackage.PackageKit ()
-                # The following call means a blocking, synchronous, D-Bus call
-                pk.InstallPackageName (0, 0, "libsane-hpaio")
-            except:
-                pass
+            if getattr (self, '_hp_scanner_install_pending', False):
+                return False
+            if getattr (self, '_hp_scanner_install_done', False):
+                return True
+            self._hp_scanner_install_pending = True
+            self._package_install_serial = getattr (self, '_package_install_serial', 0) + 1
+            package_serial = self._package_install_serial
+            self._show_searching_spinner (_("Installing required components"))
+            self._hp_scanner_operation = TimedOperation (
+                self._install_package_worker, args=("libsane-hpaio",),
+                callback=self._required_package_install_finished,
+                context=("hp-scanner", package_serial))
+            return False
+        return True
 
     def _loadPPDsForDevice (self, devid, uri):
         debugprint ("nextNPTab: need PPDs loaded")
@@ -3235,7 +3531,7 @@ class NewPrinterGUI(GtkGUI):
 
     ## SMB browsing
 
-    def install_python3_smbc_if_needed (self):
+    def install_python3_smbc_if_needed (self, continuation=None):
         global PYSMB_AVAILABLE
         global pysmb # Make the import of pysmb globally available
         # Does the SMB client library  need to be installed?
@@ -3243,27 +3539,56 @@ class NewPrinterGUI(GtkGUI):
             return True
 
         debugprint ("No SMB client library present so attempting install")
-
-        try:
-            pk = installpackage.PackageKit ()
-            # The following call means a blocking, synchronous, D-Bus call
-            pk.InstallPackageName (0, 0, "python3-smbc")
-        except DBusException as e:
-            debugprint ("Error during installation/setup of SMB client.")
-            debugprint("{}".format(e))
+        if getattr(self, '_smbc_install_operation', None) is not None:
             return False
+        self._smbc_install_serial = getattr(self, '_smbc_install_serial', 0) + 1
+        serial = self._smbc_install_serial
+        self._smbc_install_continuation = continuation
+        self._show_searching_spinner (_("Installing required components"))
+        self._smbc_install_operation = TimedOperation (
+            self._smbc_install_worker, callback=self._smbc_install_finished,
+            context=serial)
+        return False
 
+    def _smbc_install_worker (self):
+        pk = installpackage.PackageKit ()
+        pk.InstallPackageName (0, 0, "python3-smbc")
+        return True
+
+    def _cancel_smbc_installation (self):
+        operation = getattr(self, '_smbc_install_operation', None)
+        if operation is None:
+            return
+        self._smbc_install_serial = getattr(self, '_smbc_install_serial', 0) + 1
+        operation.cancel ()
+        self._smbc_install_operation = None
+        self._smbc_install_continuation = None
+        self._hide_searching_spinner ()
+
+    def _smbc_install_finished (self, result, exc, serial):
+        if serial != getattr(self, '_smbc_install_serial', None):
+            return
+        if getattr(self, '_smbc_install_operation', None) is None:
+            return
+        continuation = self._smbc_install_continuation
+        self._smbc_install_operation = None
+        self._smbc_install_continuation = None
+        self._hide_searching_spinner ()
+        if exc is not None:
+            debugprint ("Error during installation/setup of SMB client: %s" % repr(exc))
+            return
+        global PYSMB_AVAILABLE
+        global pysmb
         try:
             import pysmb
-            PYSMB_AVAILABLE=True
+            PYSMB_AVAILABLE = True
         except ModuleNotFoundError as e:
-            debugprint ("SMB client setup failed.")
-            debugprint("{}".format(e))
-            return False
-
-        debugprint ("SMB client successfully installed and set up.")
-
-        return True
+            debugprint ("SMB client setup failed: %s" % repr(e))
+            return
+        if continuation == "browse":
+            self.on_btnSMBBrowse_clicked (None)
+        elif continuation == "verify":
+            self.on_btnSMBVerify_clicked (None)
 
     def browse_smb_hosts(self):
         """Initialise the SMB tree store."""
@@ -3511,7 +3836,7 @@ class NewPrinterGUI(GtkGUI):
     def on_btnSMBBrowse_clicked(self, button):
         """Check whether the needed SMB client library is available and"""
         """install it if needed"""
-        if not self.install_python3_smbc_if_needed():
+        if not self.install_python3_smbc_if_needed ("browse"):
             return
 
         self.btnSMBBrowseOk.set_sensitive(False)
@@ -3590,7 +3915,7 @@ class NewPrinterGUI(GtkGUI):
     def on_btnSMBVerify_clicked(self, button):
         """Check whether the needed SMB client library is available and"""
         """install it if needed"""
-        if not self.install_python3_smbc_if_needed():
+        if not self.install_python3_smbc_if_needed ("verify"):
             return
 
         uri = self.entSMBURI.get_text ()
@@ -4167,6 +4492,15 @@ class NewPrinterGUI(GtkGUI):
         hostname = self.entNPTLpdHost.get_text()
         server = probe_printer.LpdServer(hostname)
 
+        # Only one direct LPD probe owns the WaitWindow at a time.
+        self._cancel_lpd_probe ()
+
+        # LPD probing performs DNS resolution and socket I/O for every
+        # candidate queue.  Keep the complete probe, but run it outside the
+        # GTK thread so a slow or unreachable server cannot freeze the UI.
+        self._lpd_probe_serial = getattr(self, '_lpd_probe_serial', 0) + 1
+        probe_serial = self._lpd_probe_serial
+
         self.lblWait.set_markup ('<span weight="bold" size="larger">' +
                                  _('Searching') + '</span>\n\n' +
                                  _('Searching for printers'))
@@ -4179,14 +4513,64 @@ class NewPrinterGUI(GtkGUI):
 
         self.WaitWindow.disconnect (self.WaitWindow_handler)
         signal = self.WaitWindow.connect ("delete-event", stop)
-        printers = server.probe()
-        self.WaitWindow.disconnect (signal)
-        self.WaitWindow_handler = self.WaitWindow.connect ("delete-event",
-                                                           on_delete_just_hide)
+        self._lpd_probe_dialog_signal = signal
+        self._lpd_probe_server = server
+
+        self.lpd_probe_operation = TimedOperation (
+            server.probe,
+            callback=self._lpd_probe_finished,
+            context=(server, probe_serial))
+
+    def _cancel_lpd_probe (self, hide_window=True):
+        operation = getattr (self, 'lpd_probe_operation', None)
+        server = getattr (self, '_lpd_probe_server', None)
+        signal = getattr (self, '_lpd_probe_dialog_signal', None)
+        if operation is None and server is None and signal is None:
+            return
+
+        self._lpd_probe_serial = getattr (self, '_lpd_probe_serial', 0) + 1
+        if server is not None:
+            server.destroy ()
+        if operation is not None:
+            operation.cancel ()
+        self.lpd_probe_operation = None
+        self._lpd_probe_server = None
+
+        if signal is not None and getattr (self, 'WaitWindow', None) is not None:
+            try:
+                self.WaitWindow.disconnect (signal)
+            except (TypeError, ValueError):
+                pass
+        self._lpd_probe_dialog_signal = None
+        if hide_window and getattr (self, 'WaitWindow', None) is not None:
+            self.WaitWindow.hide ()
+
+    def _lpd_probe_finished (self, printers, exc, context):
+        server, probe_serial = context
+
+        if probe_serial != getattr(self, '_lpd_probe_serial', None):
+            return
+
+        if getattr(self, 'lpd_probe_operation', None) is not None:
+            self.lpd_probe_operation = None
+        self._lpd_probe_server = None
+
+        if getattr(self, '_lpd_probe_dialog_signal', None) is not None:
+            try:
+                self.WaitWindow.disconnect (self._lpd_probe_dialog_signal)
+            except (TypeError, ValueError):
+                pass
+            self._lpd_probe_dialog_signal = None
+            self.WaitWindow_handler = self.WaitWindow.connect (
+                "delete-event", on_delete_just_hide)
+
         self.WaitWindow.hide ()
+        if exc is not None:
+            debugprint ("LPD probe failed: %s" % repr (exc))
+            return
 
         model = Gtk.ListStore (str)
-        for printer in printers:
+        for printer in printers or []:
             model.append ([printer])
 
         completion = Gtk.EntryCompletion ()
@@ -4950,6 +5334,11 @@ class NewPrinterGUI(GtkGUI):
         self.setNPButtons()
 
     def getNPPPD(self):
+        async_ppd = getattr (self, '_async_openprinting_ppd_result', None)
+        if async_ppd is not None:
+            self._async_openprinting_ppd_result = None
+            return async_ppd
+
         cached = getattr(self, '_cached_driverless_ppd', None)
 
         ppd = None
@@ -4976,19 +5365,9 @@ class NewPrinterGUI(GtkGUI):
                     model, iter = treeview.get_selection ().get_selected ()
                     driver = model.get_value (iter, 1)
                     if driver != 0 and 'ppds' in driver:
-                        # Only need to download a PPD.
-                        if (len(driver['ppds']) > 0):
-                            file_to_download = driver['ppds'][0]
-                            debugprint ("ppd file to download [" + file_to_download+ "]")
-                            file_to_download = file_to_download.strip()
-                            if (len(file_to_download) > 0):
-                                ppdurlobj = urllib.request.urlopen(file_to_download)
-                                ppdcontent = ppdurlobj.read()
-                                ppdurlobj.close()
-                                with tempfile.NamedTemporaryFile () as tmpf:
-                                    tmpf.write(ppdcontent)
-                                    tmpf.flush ()
-                                    ppd = cups.PPD(tmpf.name)
+                        # Downloadable PPDs are prepared asynchronously before
+                        # this function is called.
+                        ppd = None
 
             except (RuntimeError, urllib.error.HTTPError) as e:
                 debugprint ("RuntimeError: " + repr (e))
@@ -5012,24 +5391,9 @@ class NewPrinterGUI(GtkGUI):
                         err = err_text % (driver, self.NPMake, self.NPModel)
                 elif self.rbtnNPPPD.get_active():
                     # This error came from trying to open the PPD file.
-                    err_title = _('PPD error')
                     filename = self.filechooserPPD.get_filename()
-                    err = _('Failed to read PPD file.  Possible reason '
-                            'follows:') + '\n'
-                    try:
-                        # We want this to be in the current natural language,
-                        # so we intentionally don't set LC_ALL=C here.
-                        p = subprocess.Popen (['/usr/bin/cupstestppd',
-                                               '-rvv', filename],
-                                              close_fds=True,
-                                              stdin=subprocess.DEVNULL,
-                                              stdout=subprocess.PIPE,
-                                              stderr=subprocess.PIPE)
-                        (stdout, stderr) = p.communicate ()
-                        err += stdout.decode ()
-                    except:
-                        # Problem executing command.
-                        raise
+                    self._start_local_ppd_validation (filename)
+                    return None
                 else:
                     # Failed to get PPD downloaded from OpenPrinting XXX
                     err_title = _('Downloadable drivers')
@@ -5070,6 +5434,165 @@ class NewPrinterGUI(GtkGUI):
             self.cups._end_operation ()
 
         return ppd
+
+    def _start_local_ppd_validation (self, filename):
+        if getattr (self, '_local_ppd_validation_operation', None) is not None:
+            return
+        self._local_ppd_validation_serial = getattr (
+            self, '_local_ppd_validation_serial', 0) + 1
+        serial = self._local_ppd_validation_serial
+        self._show_searching_spinner (_("Checking printer description"))
+        self._local_ppd_validation_operation = TimedOperation (
+            self._local_ppd_validation_worker,
+            args=(filename,),
+            callback=self._local_ppd_validation_finished,
+            context=(serial, filename))
+
+    def _local_ppd_validation_worker (self, filename):
+        process = subprocess.Popen (['/usr/bin/cupstestppd', '-rvv', filename],
+                                    close_fds=True,
+                                    stdin=subprocess.DEVNULL,
+                                    stdout=subprocess.PIPE,
+                                    stderr=subprocess.PIPE)
+        stdout, stderr = process.communicate ()
+        return process.returncode, stdout, stderr
+
+    def _cancel_local_ppd_validation (self):
+        operation = getattr (self, '_local_ppd_validation_operation', None)
+        if operation is None:
+            return
+        self._local_ppd_validation_serial = getattr (
+            self, '_local_ppd_validation_serial', 0) + 1
+        operation.cancel ()
+        self._local_ppd_validation_operation = None
+        self._hide_searching_spinner ()
+
+    def _local_ppd_validation_finished (self, result, exc, context):
+        serial, filename = context
+        if serial != getattr (self, '_local_ppd_validation_serial', None):
+            return
+        if getattr (self, '_local_ppd_validation_operation', None) is None:
+            return
+        self._local_ppd_validation_operation = None
+        self._hide_searching_spinner ()
+
+        if exc is not None:
+            debugprint ("cupstestppd failed to run: %s" % repr (exc))
+            return
+
+        returncode, stdout, stderr = result
+        err = _('Failed to read PPD file.  Possible reason follows:') + '\n'
+        err += stdout.decode ()
+        show_error_dialog (_('PPD error'), err, self.NewPrinterWindow)
+
+    def _get_openprinting_ppd_url (self):
+        """Return the selected downloadable PPD URL, if this path applies."""
+        if (getattr (self.device, 'driverless', False) or
+                self.rbtnNPFoomatic.get_active() or
+                self.rbtnNPPPD.get_active()):
+            return None
+        model, iter = self.tvNPDownloadableDrivers.get_selection ().get_selected ()
+        if iter is None:
+            return None
+        driver = model.get_value (iter, 1)
+        if not driver or 'ppds' not in driver or not driver['ppds']:
+            return None
+        url = driver['ppds'][0].strip ()
+        return url or None
+
+    def _start_async_openprinting_ppd (self, step, continuation="next"):
+        """Start complete downloadable-PPD preparation outside GTK."""
+        if getattr (self, '_async_openprinting_ppd_result', None) is not None:
+            return False
+
+        url = self._get_openprinting_ppd_url ()
+        if url is None:
+            return False
+        if getattr (self, '_openprinting_ppd_operation', None) is not None:
+            return True
+
+        self._openprinting_ppd_serial = getattr (
+            self, '_openprinting_ppd_serial', 0) + 1
+        serial = self._openprinting_ppd_serial
+        self._openprinting_ppd_step = step
+        self._openprinting_ppd_continuation = continuation
+        self._show_searching_spinner (_("Downloading printer description"))
+        self._openprinting_ppd_operation = TimedOperation (
+            self._download_openprinting_ppd_worker,
+            args=(url,),
+            callback=self._openprinting_ppd_finished,
+            context=(serial, url))
+        return True
+
+    def _cancel_openprinting_ppd (self):
+        operation = getattr (self, '_openprinting_ppd_operation', None)
+        if operation is None:
+            return
+        self._openprinting_ppd_serial = getattr (
+            self, '_openprinting_ppd_serial', 0) + 1
+        operation.cancel ()
+        self._openprinting_ppd_operation = None
+        self._async_openprinting_ppd_result = None
+        self._hide_searching_spinner ()
+
+    def _download_openprinting_ppd_worker (self, url):
+        ppdurlobj = urllib.request.urlopen (url)
+        try:
+            ppdcontent = ppdurlobj.read ()
+        finally:
+            ppdurlobj.close ()
+
+        with tempfile.NamedTemporaryFile () as tmpf:
+            tmpf.write (ppdcontent)
+            tmpf.flush ()
+            ppd = cups.PPD (tmpf.name)
+            process = subprocess.Popen (
+                ['/usr/bin/cupstestppd', '-rvv', tmpf.name],
+                close_fds=True,
+                stdin=subprocess.DEVNULL,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE)
+            stdout, stderr = process.communicate ()
+            if process.returncode != 0:
+                details = stdout.decode (errors="replace")
+                if not details:
+                    details = stderr.decode (errors="replace")
+                raise RuntimeError (details or
+                                    "cupstestppd validation failed")
+            return ppd
+
+    def _openprinting_ppd_finished (self, ppd, exc, context):
+        serial, url = context
+        if serial != getattr (self, '_openprinting_ppd_serial', None):
+            return
+        if getattr (self, '_openprinting_ppd_operation', None) is None:
+            return
+
+        self._openprinting_ppd_operation = None
+        self._hide_searching_spinner ()
+        if exc is not None:
+            self._show_openprinting_ppd_error (exc)
+            return
+
+        continuation = getattr (self, '_openprinting_ppd_continuation', "next")
+        if continuation == "apply":
+            self.ppd = ppd
+        else:
+            self._async_openprinting_ppd_result = ppd
+        # Re-enter the same forward navigation step.  getNPPPD() consumes
+        # the prepared result, so the URL is not downloaded twice.
+        if getattr (self, 'NewPrinterWindow', None) is not None and \
+                continuation == "apply":
+            self.on_btnNPApply_clicked (None)
+        elif getattr (self, 'NewPrinterWindow', None) is not None:
+            self.nextNPTab (self._openprinting_ppd_step)
+
+    def _show_openprinting_ppd_error (self, exc):
+        debugprint ("Failed to prepare downloadable PPD: %s" % repr (exc))
+        details = str (exc) or _("The printer description could not be validated.")
+        show_error_dialog (_("Downloadable drivers"),
+                           _("Failed to download or validate PPD.\n\n%s") % details,
+                           self.NewPrinterWindow)
 
     # Installable Options
 
@@ -5128,6 +5651,10 @@ class NewPrinterGUI(GtkGUI):
 
     # Create new Printer
     def on_btnNPApply_clicked(self, widget):
+        if (self.dialog_mode == "ppd" and self.ppd is None and
+                self._start_async_openprinting_ppd (0, continuation="apply")):
+            return
+
         if self.fetchDevices_conn:
             self.fetchDevices_conn.destroy ()
             self.fetchDevices_conn = None
