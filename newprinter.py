@@ -4571,29 +4571,25 @@ class NewPrinterGUI(GtkGUI):
         else:
             auto_make_norm = None
 
-        has_real_recommended = (auto_make_norm is not None and
-                                auto_make_norm not in ("", "generic", "unknown") and
-                                any(cupshelpers.ppds.normalize(m) == auto_make_norm for m in makes))
+        # Find make with the longest prefix matching device-make-and-model
+        target_make = None
+        max_prefix_len = 0
+        make_and_model = getattr(self.device, 'make_and_model', None) if self.device is not None else None
+        if make_and_model:
+            mm_lower = make_and_model.strip().lower()
+            for make in makes:
+                make_clean = make.strip()
+                make_lower = make_clean.lower()
+                if make_lower and mm_lower.startswith(make_lower) and len(make_lower) > max_prefix_len:
+                    target_make = make
+                    max_prefix_len = len(make_lower)
 
-        detected_make = None
-        if not has_real_recommended and self.device is not None:
-            id_dict = getattr(self.device, 'id_dict', None)
-            if isinstance(id_dict, dict):
-                mfg = id_dict.get("MFG")
-                if mfg and cupshelpers.ppds.normalize(mfg) not in ("", "generic", "unknown"):
-                    detected_make = mfg
-
-            if not detected_make:
-                make_and_model = getattr(self.device, 'make_and_model', None)
-                if make_and_model and cupshelpers.ppds.normalize(make_and_model) not in ("", "generic", "unknown"):
-                    try:
-                        mfg, mdl = cupshelpers.ppds.ppdMakeModelSplit(make_and_model)
-                        if mfg and cupshelpers.ppds.normalize(mfg) not in ("", "generic", "unknown"):
-                            detected_make = mfg
-                    except Exception:
-                        pass
-
-        detected_make_norm = cupshelpers.ppds.normalize(detected_make) if detected_make else None
+        # Fallback to recommended auto_make if no prefix matched
+        if target_make is None and auto_make_norm and auto_make_norm not in ("", "generic", "unknown"):
+            for make in makes:
+                if cupshelpers.ppds.normalize(make) == auto_make_norm:
+                    target_make = make
+                    break
 
         for make in makes:
             make_norm = cupshelpers.ppds.normalize (make)
@@ -4617,12 +4613,7 @@ class NewPrinterGUI(GtkGUI):
 
             iter = model.append((text, make,))
 
-            if has_real_recommended:
-                is_target = recommended
-            else:
-                is_target = bool(detected_make_norm and make_norm == detected_make_norm)
-
-            if is_target and not found:
+            if target_make is not None and make == target_make and not found:
                 path = model.get_path(iter)
                 self.tvNPMakes.set_cursor (path, None, False)
                 self.tvNPMakes.scroll_to_cell(path, None,

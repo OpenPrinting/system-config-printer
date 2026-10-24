@@ -3952,25 +3952,28 @@ def test_fill_make_list_case_normalization():
     gui.tvNPMakes.scroll_to_cell.assert_called_with(cursor_path, None, True, 0.5, 0.5)
 
 
-def test_fill_make_list_real_recommended_make_preserved():
-    """Case 6: Real recommended make: auto_make 'Brother' with Canon device -> Brother stays selected."""
-    dev = {"device-class": "network", "device-make-and-model": "Canon MF645C", "device-id": "MFG:Canon;MDL:MF645C;"}
-    gui, model = _setup_make_list_gui(dev, "Brother")
+def test_fill_make_list_longest_prefix_match():
+    """Longest prefix: Hewlett-Packard HP LaserJet with makes containing HP and Hewlett-Packard -> Hewlett-Packard selected."""
+    dev = {"device-class": "network", "device-make-and-model": "Hewlett-Packard HP LaserJet 4000", "device-id": ""}
+    gui, model = _setup_make_list_gui(
+        dev, "",
+        makes=["Generic", "Brother", "Canon", "HP", "Hewlett-Packard", "Xerox"]
+    )
     gui.fillMakeList()
 
     cursor_path = gui.tvNPMakes.set_cursor.call_args[0][0]
     idx = cursor_path.get_indices()[0]
-    assert model[idx][1] == "Brother"
+    assert model[idx][1] == "Hewlett-Packard"
     gui.tvNPMakes.scroll_to_cell.assert_called_with(cursor_path, None, True, 0.5, 0.5)
 
 
-def test_fill_make_list_auto_make_not_in_list_uses_detected_mfg():
-    """1. auto_make 'Xerox(R)', id_dict MFG 'Xerox', makes include Xerox -> Xerox selected."""
+def test_fill_make_list_prefix_match_no_mfg_needed():
+    """Xerox(R) B235 MFP with no device-id/MFG -> Xerox selected by prefix."""
     dev = {"device-class": "network",
            "device-make-and-model": "Xerox(R) B235 MFP",
-           "device-id": "MFG:Xerox;MDL:B235 MFP;"}
+           "device-id": ""}
     gui, model = _setup_make_list_gui(
-        dev, "Xerox(R)",
+        dev, "",
         makes=["Generic", "Alps", "Brother", "Canon", "Epson", "HP", "Xerox"]
     )
     gui.fillMakeList()
@@ -3981,11 +3984,26 @@ def test_fill_make_list_auto_make_not_in_list_uses_detected_mfg():
     gui.tvNPMakes.scroll_to_cell.assert_called_with(cursor_path, None, True, 0.5, 0.5)
 
 
-def test_fill_make_list_auto_make_matching_row_preserved_over_detected():
-    """2. auto_make 'Brother' matching a row, device make Canon -> Brother stays."""
+def test_fill_make_list_properties_change_driverless_xerox_simulation():
+    """Properties -> Change Make and Model with simulated Xerox driverless printer -> Xerox selected."""
     dev = {"device-class": "network",
-           "device-make-and-model": "Canon MF645C",
-           "device-id": "MFG:Canon;MDL:MF645C;"}
+           "device-make-and-model": "Xerox B235 MFP, driverless, cups-filters 1.28.17",
+           "device-id": ""}
+    gui, model = _setup_make_list_gui(
+        dev, "Generic",
+        makes=["Generic", "Alps", "Brother", "Canon", "Epson", "HP", "Xerox"]
+    )
+    gui.fillMakeList()
+
+    cursor_path = gui.tvNPMakes.set_cursor.call_args[0][0]
+    idx = cursor_path.get_indices()[0]
+    assert model[idx][1] == "Xerox"
+    gui.tvNPMakes.scroll_to_cell.assert_called_with(cursor_path, None, True, 0.5, 0.5)
+
+
+def test_fill_make_list_real_recommended_make_preserved_when_no_prefix_match():
+    """A valid real auto_make remains selected when there is no matching make-and-model prefix."""
+    dev = {"device-class": "network", "device-make-and-model": "CustomBrand 1000", "device-id": ""}
     gui, model = _setup_make_list_gui(dev, "Brother")
     gui.fillMakeList()
 
@@ -3995,20 +4013,15 @@ def test_fill_make_list_auto_make_matching_row_preserved_over_detected():
     gui.tvNPMakes.scroll_to_cell.assert_called_with(cursor_path, None, True, 0.5, 0.5)
 
 
-def test_fill_make_list_auto_make_not_in_list_no_mfg_make_and_model_not_in_list_keeps_generic():
-    """3. auto_make 'Xerox(R)', no MFG, make_and_model 'Xerox(R) B235 MFP' -> Generic."""
-    dev = {"device-class": "network",
-           "device-make-and-model": "Xerox(R) B235 MFP",
-           "device-id": ""}
-    gui, model = _setup_make_list_gui(
-        dev, "Xerox(R)",
-        makes=["Generic", "Alps", "Brother", "Canon", "Epson", "HP", "Xerox"]
-    )
+def test_fill_make_list_fallback_to_auto_make_when_no_make_and_model():
+    """When device has no make_and_model, fallback to valid auto_make (e.g. Brother)."""
+    gui, model = _setup_make_list_gui(None, "Brother")
     gui.fillMakeList()
 
     cursor_path = gui.tvNPMakes.set_cursor.call_args[0][0]
-    assert not cursor_path.get_indices() or cursor_path.get_indices() == [0]
-    gui.tvNPMakes.scroll_to_cell.assert_called_with(0, None, True, 0.0, 0.0)
+    idx = cursor_path.get_indices()[0]
+    assert model[idx][1] == "Brother"
+    gui.tvNPMakes.scroll_to_cell.assert_called_with(cursor_path, None, True, 0.5, 0.5)
 
 
 def test_fill_make_list_auto_make_not_in_list_no_detected_make_keeps_generic():
