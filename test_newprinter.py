@@ -107,6 +107,95 @@ def test_hp_no_device_found_does_not_match_real_printer():
     filtered = newprinter._filter_configured_devices([dev], printers)
     assert len(filtered) == 1, "hp:/no_device_found should not match a real HP printer"
 
+def test_filter_configured_devices_multiprotocol_hidden():
+    """A discovered printer with ipps:// and lpd:// sharing DNS-SD name, configured as ipps://, hides both."""
+    dev_ipps = cupshelpers.Device("ipps://Xerox%20B235._ipps._tcp.local/",
+                                  **{"device-class": "network",
+                                     "device-make-and-model": "Xerox B235 MFP",
+                                     "device-id": "MFG:Xerox;MDL:B235 MFP;"})
+    dev_lpd = cupshelpers.Device("lpd://Xerox%20B235._printer._tcp.local/",
+                                 **{"device-class": "network",
+                                    "device-make-and-model": "Xerox B235 MFP",
+                                    "device-id": "MFG:Xerox;MDL:B235 MFP;"})
+    printers = {"Xerox": MockPrinter("ipps://Xerox%20B235._ipps._tcp.local/")}
+    filtered = newprinter._filter_configured_devices([dev_ipps, dev_lpd], printers)
+    assert len(filtered) == 0, "Both IPP and LPD connections of the configured printer must be hidden"
+
+def test_filter_configured_devices_unrelated_printer_visible():
+    """Unrelated printer stays visible when multi-protocol printer is hidden."""
+    dev_ipps = cupshelpers.Device("ipps://Xerox%20B235._ipps._tcp.local/",
+                                  **{"device-class": "network",
+                                     "device-make-and-model": "Xerox B235 MFP",
+                                     "device-id": "MFG:Xerox;MDL:B235 MFP;"})
+    dev_lpd = cupshelpers.Device("lpd://Xerox%20B235._printer._tcp.local/",
+                                 **{"device-class": "network",
+                                    "device-make-and-model": "Xerox B235 MFP",
+                                    "device-id": "MFG:Xerox;MDL:B235 MFP;"})
+    dev_hp = cupshelpers.Device("usb://HP/LaserJet?serial=ABC",
+                                **{"device-class": "direct",
+                                   "device-make-and-model": "HP LaserJet",
+                                   "device-id": "MFG:HP;MDL:LaserJet;SN:ABC;"})
+    printers = {"Xerox": MockPrinter("ipps://Xerox%20B235._ipps._tcp.local/")}
+    filtered = newprinter._filter_configured_devices([dev_ipps, dev_lpd, dev_hp], printers)
+    assert len(filtered) == 1
+    assert filtered[0].uri == dev_hp.uri
+
+def test_filter_configured_devices_identical_models_different_hosts_separate():
+    """Two identical models with different DNS-SD hosts stay separate."""
+    dev_x1 = cupshelpers.Device("ipps://Xerox%201._ipps._tcp.local/",
+                                **{"device-class": "network",
+                                   "device-make-and-model": "Xerox B235 MFP",
+                                   "device-id": "MFG:Xerox;MDL:B235 MFP;"})
+    dev_x2 = cupshelpers.Device("ipps://Xerox%202._ipps._tcp.local/",
+                                **{"device-class": "network",
+                                   "device-make-and-model": "Xerox B235 MFP",
+                                   "device-id": "MFG:Xerox;MDL:B235 MFP;"})
+    printers = {"Xerox1": MockPrinter("ipps://Xerox%201._ipps._tcp.local/")}
+    filtered = newprinter._filter_configured_devices([dev_x1, dev_x2], printers)
+    assert len(filtered) == 1
+    assert filtered[0].uri == dev_x2.uri
+
+def test_filter_configured_devices_no_configured_queues_all_visible():
+    """With no configured queues, all discovered devices remain visible."""
+    dev_ipps = cupshelpers.Device("ipps://Xerox%20B235._ipps._tcp.local/",
+                                  **{"device-class": "network",
+                                     "device-make-and-model": "Xerox B235 MFP",
+                                     "device-id": "MFG:Xerox;MDL:B235 MFP;"})
+    dev_lpd = cupshelpers.Device("lpd://Xerox%20B235._printer._tcp.local/",
+                                 **{"device-class": "network",
+                                    "device-make-and-model": "Xerox B235 MFP",
+                                    "device-id": "MFG:Xerox;MDL:B235 MFP;"})
+    filtered = newprinter._filter_configured_devices([dev_ipps, dev_lpd], {})
+    assert len(filtered) == 2
+
+def test_filter_configured_devices_same_ip_different_queues_stay_separate():
+    """Two queues on the same host/IP without DNS-SD must not be merged or hidden together."""
+    dev1 = MockDevice("socket://192.168.1.50:9100")
+    dev2 = MockDevice("socket://192.168.1.50:9101")
+    printers = {"Printer1": MockPrinter("socket://192.168.1.50:9100")}
+    filtered = newprinter._filter_configured_devices([dev1, dev2], printers)
+    assert len(filtered) == 1
+    assert filtered[0].uri == dev2.uri
+
+def test_device_from_object_explicit_kwargs():
+    """Verify _device_from_object passes expected device-* keywords to Device.__init__."""
+    class DummyObj:
+        def __init__(self):
+            self.uri = "ipp://192.168.1.5/ipp/print"
+            self.id = "MFG:Test;MDL:Printer;"
+            self.make_and_model = "Test Printer"
+            self.info = "Test Info"
+            self.location = "Room 101"
+            self.device_class = "network"
+
+    dev = newprinter._device_from_object(DummyObj())
+    assert dev is not None
+    assert dev.id == "MFG:Test;MDL:Printer;"
+    assert dev.make_and_model == "Test Printer"
+    assert dev.info == "Test Info"
+    assert dev.location == "Room 101"
+    assert dev.device_class == "network"
+
 
 class MockPPDAttr:
     def __init__(self, value):
@@ -3873,4 +3962,94 @@ def test_lpd_queue_formatting():
     uris_model = gui.tvNPDeviceURIs.get_model()
     assert uris_model[0][0] == 'LPD/LPR (queue print)'
 
+
+def test_switching_connection_does_not_reuse_stale_driverless_ppd():
+    """Verify that when switching from an IPPS connection to an LPD connection
+    on the same printer, the driverless IPP PPD is not reused for the LPD connection."""
+    import cupshelpers
+    import ppdsloader
+
+    ipps_uri = "ipps://Xerox(R)%20B235%20MFP._ipps._tcp.local/"
+    lpd_uri = "lpd://192.168.1.50/queue"
+    ipps_ppd = f"driverless:{ipps_uri}"
+    generic_ppd = "foomatic:Generic-PostScript.ppd"
+
+    loader = ppdsloader.PPDsLoader()
+    mock_conn = MagicMock()
+    loader._cups_reply(mock_conn, {
+        generic_ppd: {
+            "ppd-make": ["Generic"],
+            "ppd-make-and-model": ["Generic PostScript Printer"],
+            "ppd-natural-language": ["en"],
+            "ppd-device-id": ["MFG:Generic;MDL:PostScript;CMD:POSTSCRIPT;"],
+            "ppd-type": ["postscript"],
+        }
+    })
+
+    np = get_dummy_gui()
+    dev_ipps = cupshelpers.Device(ipps_uri, **{
+        "device-class": "network",
+        "device-info": "driverless",
+        "device-id": "MFG:Xerox;MDL:Xerox(R) B235 MFP;CMD:POSTSCRIPT;",
+        "device-make-and-model": "Xerox(R) B235 MFP",
+    })
+    dev_ipps.driverless = True
+
+    dev_lpd = cupshelpers.Device(lpd_uri, **{
+        "device-class": "network",
+        "device-info": "Xerox B235 MFP",
+        "device-id": "MFG:Xerox;MDL:Xerox(R) B235 MFP;CMD:POSTSCRIPT;",
+        "device-make-and-model": "Xerox(R) B235 MFP",
+    })
+    dev_lpd.driverless = False
+
+    np.device = dev_ipps
+    np.installed_driver_files = []
+    np.searchedfordriverpackages = False
+    np.exactdrivermatch = False
+    np.id_matched_ppdnames = []
+    np.auto_make = ""
+    np.auto_model = ""
+    np.auto_driver = None
+    np.fillDriverList = MagicMock()
+    np.fillMakeList = MagicMock()
+    np.rbtnNPFoomatic = MagicMock()
+    np.on_rbtnNPFoomatic_toggled = MagicMock()
+    np.ntbkNewPrinter = MagicMock()
+
+    mock_ppd = MagicMock(spec=cups.PPD)
+    mock_nickname = MagicMock()
+    mock_nickname.value = "Xerox B235 MFP, driverless, 2.0.0"
+    mock_manufacturer = MagicMock()
+    mock_manufacturer.value = "Xerox"
+    def mock_findAttr(name):
+        if name == "NickName":
+            return mock_nickname
+        if name == "Manufacturer":
+            return mock_manufacturer
+        return None
+    mock_ppd.findAttr = mock_findAttr
+    np._validateDriverlessPPD = MagicMock(return_value=mock_ppd)
+
+    np._getPPDs_reply(loader)
+    install_func = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np)
+
+    # 1. Select IPPS connection and advance
+    install_func(np.device.id, newprinter.NewPrinterGUI.PAGE_SELECT_DEVICE, 1)
+    assert np._cached_driverless_ppd_name == ipps_ppd
+    assert np.auto_driver == ipps_ppd
+
+    # 2. Go back and select LPD connection of the same physical printer
+    np.device = dev_lpd
+    np.id_matched_ppdnames = []
+    np.auto_driver = None
+    np.auto_make = ""
+    np.auto_model = ""
+
+    # 3. Advance with LPD connection
+    install_func(np.device.id, newprinter.NewPrinterGUI.PAGE_SELECT_INSTALL_METHOD, 0)
+
+    # For the LPD connection, the driverless IPPS PPD must NOT be chosen
+    assert np.auto_driver != ipps_ppd
+    assert ipps_ppd not in np.id_matched_ppdnames
 

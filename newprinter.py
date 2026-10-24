@@ -202,24 +202,150 @@ def _normalize_uri(uri):
 
     return urllib.parse.urlunsplit((scheme, netloc, parsed.path, parsed.query, parsed.fragment))
 
+def _device_from_object(dev, is_printer=False):
+    if isinstance(dev, cupshelpers.Device):
+        return dev
+
+    uri = getattr(dev, 'device_uri' if is_printer else 'uri', '')
+    if not uri:
+        return None
+
+    kw = {}
+
+    dev_id = getattr(dev, 'id', None) or getattr(dev, 'device_id', None)
+    if dev_id:
+        kw['device-id'] = dev_id
+
+    make_and_model = getattr(dev, 'make_and_model', None) or getattr(dev, 'device_make_and_model', None)
+    if make_and_model:
+        kw['device-make-and-model'] = make_and_model
+
+    info = getattr(dev, 'info', None) or getattr(dev, 'device_info', None)
+    if info:
+        kw['device-info'] = info
+
+    location = getattr(dev, 'location', None) or getattr(dev, 'device_location', None)
+    if location:
+        kw['device-location'] = location
+
+    dev_class = getattr(dev, 'device_class', None)
+    if not dev_class:
+        scheme = uri.split(':', 1)[0].lower() if uri else ''
+        if scheme in ('ipp', 'ipps', 'socket', 'lpd', 'http', 'https', 'dnssd', 'mdns'):
+            dev_class = 'network'
+        elif scheme in ('usb', 'parallel', 'serial'):
+            dev_class = 'direct'
+    if dev_class:
+        kw['device-class'] = dev_class
+
+    try:
+        c_dev = cupshelpers.Device(uri, **kw)
+        if hasattr(dev, 'address'):
+            c_dev.address = dev.address
+        if hasattr(dev, 'hostname'):
+            c_dev.hostname = dev.hostname
+        return c_dev
+    except (ValueError, TypeError, AttributeError) as e:
+        debugprint("Failed to construct Device from object: %s" % e)
+        return None
+
+def _same_physical_device(p1, p2):
+    if p1 is None or p2 is None:
+        return False
+    if p1.dnssd_hostname and p2.dnssd_hostname and p1.dnssd_hostname == p2.dnssd_hostname:
+        return True
+    if p1.sn and p2.sn and p1.sn == p2.sn:
+        return True
+    try:
+        return p1 == p2
+    except (TypeError, AttributeError, ValueError) as e:
+        debugprint("Error comparing physical devices: %s" % e)
+        return False
+
 def _filter_configured_devices(discovered_devices, configured_printers):
     """
     Filter out already configured printers from the discovered devices list.
-    Matching is based on URI comparison using identical normalization rules.
+    Matching is performed per physical printer: if any connection of a discovered
+    printer matches a configured queue (by URI, DNS-SD service name, or serial),
+    all connections belonging to that physical printer are hidden.
     """
+    if not configured_printers:
+        return list(discovered_devices)
+
     configured_uris = set()
-    if configured_printers:
-        for p in configured_printers.values():
-            uri = getattr(p, 'device_uri', "")
-            if uri:
-                configured_uris.add(_normalize_uri(uri))
+    configured_dnssd = set()
+    configured_serials = set()
+
+    for p in configured_printers.values():
+        uri = getattr(p, 'device_uri', "")
+        if not uri:
+            continue
+        configured_uris.add(_normalize_uri(uri))
+        c_dev = _device_from_object(p, is_printer=True)
+        if c_dev is not None:
+            try:
+                p_conf = PhysicalDevice(c_dev)
+                if p_conf.dnssd_hostname:
+                    configured_dnssd.add(p_conf.dnssd_hostname)
+                if p_conf.sn:
+                    configured_serials.add(p_conf.sn)
+            except (ValueError, TypeError, AttributeError, OSError) as e:
+                debugprint("Could not create PhysicalDevice for configured queue %s: %s" % (uri, e))
+
+    if not configured_uris:
+        return list(discovered_devices)
+
+    groups = []
+    phys_list = []
+
+    for d in discovered_devices:
+        c_dev = _device_from_object(d)
+        new_phys = None
+        if c_dev is not None:
+            try:
+                new_phys = PhysicalDevice(c_dev)
+            except (ValueError, TypeError, AttributeError, OSError) as e:
+                debugprint("Could not create PhysicalDevice for discovered device %s: %s" % (getattr(d, 'uri', ''), e))
+                new_phys = None
+        matched = False
+        if new_phys is not None:
+            for i, p in enumerate(phys_list):
+                if _same_physical_device(p, new_phys):
+                    try:
+                        p.add_device(c_dev)
+                    except ValueError as e:
+                        debugprint("Device %s could not be merged into physical device: %s" % (getattr(d, 'uri', ''), e))
+                    groups[i].append(d)
+                    matched = True
+                    break
+        if not matched:
+            phys_list.append(new_phys)
+            groups.append([d])
 
     filtered_devices = []
-    for d in discovered_devices:
-        if _normalize_uri(d.uri) not in configured_uris:
-            filtered_devices.append(d)
-        else:
-            debugprint("Suppressing already configured device: %s" % d.uri)
+    for i, group in enumerate(groups):
+        p = phys_list[i]
+        is_configured = False
+
+        # 1. Exact normalized URI match for any device in this physical printer group
+        for d in group:
+            uri = getattr(d, 'uri', '')
+            if uri and _normalize_uri(uri) in configured_uris:
+                is_configured = True
+                debugprint("Suppressing physical device due to configured URI match: %s" % uri)
+                break
+
+        # 2. DNS-SD service name or serial number match
+        if not is_configured and p is not None:
+            if p.dnssd_hostname and p.dnssd_hostname in configured_dnssd:
+                is_configured = True
+                debugprint("Suppressing physical device due to configured DNS-SD match: %s" % p.dnssd_hostname)
+            elif p.sn and p.sn in configured_serials:
+                is_configured = True
+                debugprint("Suppressing physical device due to configured serial match: %s" % p.sn)
+
+        if not is_configured:
+            filtered_devices.extend(group)
 
     return filtered_devices
 
@@ -316,6 +442,8 @@ class NewPrinterGUI(GtkGUI):
         self.founddownloadableppd = False
         self.downloadable_driver_for_printer = None
         self.downloadable_printers = []
+        self._cached_driverless_ppd = None
+        self._cached_driverless_ppd_name = None
         self.nextnptab_rerun = False
         self.printers = {} # set in init()
         self.recommended_model_selected = False
@@ -2093,8 +2221,11 @@ class NewPrinterGUI(GtkGUI):
         if not entry:
             cached_name = getattr(self, '_cached_driverless_ppd_name', None)
             if cached_name and cached_name in self.driverless_ppds:
-                entry = self.driverless_ppds[cached_name]
-                alt_ppdname = cached_name
+                target_norm = urllib.parse.unquote(ppdname).rstrip('/')
+                cached_norm = urllib.parse.unquote(cached_name).rstrip('/')
+                if cached_norm == target_norm:
+                    entry = self.driverless_ppds[cached_name]
+                    alt_ppdname = cached_name
 
         if not entry:
             return
@@ -2189,6 +2320,14 @@ class NewPrinterGUI(GtkGUI):
                 if not getattr(self.device, '_driverless_failed', False):
                     cached_name = getattr(self, '_cached_driverless_ppd_name', None)
                     target_ppd = ("driverless:%s" % search_uri) if search_uri else None
+                    if cached_name and target_ppd:
+                        target_norm = urllib.parse.unquote(target_ppd).rstrip('/')
+                        cached_norm = urllib.parse.unquote(cached_name).rstrip('/')
+                        if cached_norm != target_norm:
+                            cached_name = None
+                    elif cached_name and not target_ppd:
+                        cached_name = None
+
                     if cached_name:
                         self._add_validated_driverless_ppd_to_catalog(cached_name)
                     if target_ppd and target_ppd != cached_name:
@@ -3786,6 +3925,8 @@ class NewPrinterGUI(GtkGUI):
         self.founddownloadabledrivers = False
         self.founddownloadableppd = False
         self.downloadable_printers = []
+        self._cached_driverless_ppd = None
+        self._cached_driverless_ppd_name = None
 
         self.device_selected += 1
         path, column = widget.get_cursor ()
@@ -3997,6 +4138,14 @@ class NewPrinterGUI(GtkGUI):
         model = widget.get_model ()
         iter = model.get_iter (path)
         device = model.get_value(iter, 1)
+        if getattr(self, 'device', None) is not None and getattr(self.device, 'uri', None) != getattr(device, 'uri', None):
+            cached_name = getattr(self, '_cached_driverless_ppd_name', None)
+            if cached_name:
+                target_norm = urllib.parse.unquote("driverless:%s" % device.uri).rstrip('/')
+                cached_norm = urllib.parse.unquote(cached_name).rstrip('/')
+                if cached_norm != target_norm:
+                    self._cached_driverless_ppd = None
+                    self._cached_driverless_ppd_name = None
         self.device = device
         self.lblNPDeviceDescription.set_text ('')
         page = self.new_printer_device_tabs.get (device.type, self.PAGE_SELECT_DEVICE)
