@@ -660,6 +660,7 @@ class NewPrinterGUI(GtkGUI):
 
     def do_destroy (self):
         debugprint ("DESTROY: %s" % self)
+        self._cancel_lpd_probe (hide_window=False)
         if self.SMBBrowseDialog:
             self.SMBBrowseDialog.destroy ()
             self.SMBBrowseDialog = None
@@ -1195,6 +1196,8 @@ class NewPrinterGUI(GtkGUI):
             self.printer_finder = None
             self.dec_spinner_task ()
 
+        self._cancel_lpd_probe ()
+
         self.NewPrinterWindow.hide()
         self._hide_searching_spinner()
         if getattr(self, 'opreq', None) is not None:
@@ -1216,6 +1219,7 @@ class NewPrinterGUI(GtkGUI):
                 self.ppdsloader.destroy ()
                 self.ppdsloader = None
             self._set_driver_ppd_loading(False)
+        self._cancel_lpd_probe ()
         self.nextNPTab(-1)
 
     def on_btnNPForward_clicked(self, widget):
@@ -4167,6 +4171,15 @@ class NewPrinterGUI(GtkGUI):
         hostname = self.entNPTLpdHost.get_text()
         server = probe_printer.LpdServer(hostname)
 
+        # Only one direct LPD probe owns the WaitWindow at a time.
+        self._cancel_lpd_probe ()
+
+        # LPD probing performs DNS resolution and socket I/O for every
+        # candidate queue.  Keep the complete probe, but run it outside the
+        # GTK thread so a slow or unreachable server cannot freeze the UI.
+        self._lpd_probe_serial = getattr(self, '_lpd_probe_serial', 0) + 1
+        probe_serial = self._lpd_probe_serial
+
         self.lblWait.set_markup ('<span weight="bold" size="larger">' +
                                  _('Searching') + '</span>\n\n' +
                                  _('Searching for printers'))
@@ -4179,14 +4192,64 @@ class NewPrinterGUI(GtkGUI):
 
         self.WaitWindow.disconnect (self.WaitWindow_handler)
         signal = self.WaitWindow.connect ("delete-event", stop)
-        printers = server.probe()
-        self.WaitWindow.disconnect (signal)
-        self.WaitWindow_handler = self.WaitWindow.connect ("delete-event",
-                                                           on_delete_just_hide)
+        self._lpd_probe_dialog_signal = signal
+        self._lpd_probe_server = server
+
+        self.lpd_probe_operation = TimedOperation (
+            server.probe,
+            callback=self._lpd_probe_finished,
+            context=(server, probe_serial))
+
+    def _cancel_lpd_probe (self, hide_window=True):
+        operation = getattr (self, 'lpd_probe_operation', None)
+        server = getattr (self, '_lpd_probe_server', None)
+        signal = getattr (self, '_lpd_probe_dialog_signal', None)
+        if operation is None and server is None and signal is None:
+            return
+
+        self._lpd_probe_serial = getattr (self, '_lpd_probe_serial', 0) + 1
+        if server is not None:
+            server.destroy ()
+        if operation is not None:
+            operation.cancel ()
+        self.lpd_probe_operation = None
+        self._lpd_probe_server = None
+
+        if signal is not None and getattr (self, 'WaitWindow', None) is not None:
+            try:
+                self.WaitWindow.disconnect (signal)
+            except (TypeError, ValueError):
+                pass
+        self._lpd_probe_dialog_signal = None
+        if hide_window and getattr (self, 'WaitWindow', None) is not None:
+            self.WaitWindow.hide ()
+
+    def _lpd_probe_finished (self, printers, exc, context):
+        server, probe_serial = context
+
+        if probe_serial != getattr(self, '_lpd_probe_serial', None):
+            return
+
+        if getattr(self, 'lpd_probe_operation', None) is not None:
+            self.lpd_probe_operation = None
+        self._lpd_probe_server = None
+
+        if getattr(self, '_lpd_probe_dialog_signal', None) is not None:
+            try:
+                self.WaitWindow.disconnect (self._lpd_probe_dialog_signal)
+            except (TypeError, ValueError):
+                pass
+            self._lpd_probe_dialog_signal = None
+            self.WaitWindow_handler = self.WaitWindow.connect (
+                "delete-event", on_delete_just_hide)
+
         self.WaitWindow.hide ()
+        if exc is not None:
+            debugprint ("LPD probe failed: %s" % repr (exc))
+            return
 
         model = Gtk.ListStore (str)
-        for printer in printers:
+        for printer in printers or []:
             model.append ([printer])
 
         completion = Gtk.EntryCompletion ()
