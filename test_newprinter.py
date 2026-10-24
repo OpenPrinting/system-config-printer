@@ -675,6 +675,8 @@ def _prepare_gpg_install_gui():
     np._show_searching_spinner = MagicMock()
     np._hide_searching_spinner = MagicMock()
     np.installdriverpackage = MagicMock(return_value=True)
+    np.packageinstaller = 'dnf'
+    np._start_driver_installation = MagicMock()
     np.installed_driver_files = ["driver.ppd"]
     np.downloadable_driver_for_printer = None
     np.nextNPTab = MagicMock()
@@ -711,8 +713,8 @@ def test_gpg_completion_resumes_installation_once():
 
     np._gpg_fingerprint_finished('ABC', None, (1, driver))
 
-    np.installdriverpackage.assert_called_once_with(driver, 'ABC')
-    np.nextNPTab.assert_called_once_with(step=0)
+    np._start_driver_installation.assert_called_once()
+    np.nextNPTab.assert_not_called()
     assert np._gpg_fingerprint_operation is None
 
 
@@ -768,14 +770,14 @@ def test_gpg_completion_resumes_real_navigation_without_restarting(monkeypatch):
     np._start_gpg_fingerprint_download = MagicMock()
     np._gpg_fingerprint_serial = 1
     np._gpg_fingerprint_operation = object()
-    np.installdriverpackage.reset_mock()
+    np._start_driver_installation.reset_mock()
     np.nextNPTab = newprinter.NewPrinterGUI.nextNPTab.__get__(np)
 
     np._gpg_fingerprint_finished('ABC', None, (1, driver))
 
     assert len(starts) == 1
     np._start_gpg_fingerprint_download.assert_not_called()
-    np.installdriverpackage.assert_called_once_with(driver, 'ABC')
+    np._start_driver_installation.assert_called_once()
     assert np.nextnptab_rerun is False
 
 
@@ -946,6 +948,134 @@ def test_remote_cups_cancelled_completion_is_ignored():
 
     assert operation.cancelled is True
     assert np.remotecupsqueue == 'current-queue'
+    np.nextNPTab.assert_not_called()
+
+
+def test_driver_installation_entry_starts_async_worker(monkeypatch):
+    np = _prepare_gpg_install_gui()
+    np._start_driver_installation = newprinter.NewPrinterGUI._start_driver_installation.__get__(np)
+    operations = []
+    monkeypatch.setattr(newprinter, "TimedOperation",
+                        lambda *args, **kwargs: operations.append(
+                            FakePPDOperation(*args, **kwargs)) or operations[-1])
+
+    result = np._handleDriverInstallation(fingerprint='ABC')
+
+    assert result == np.INSTALL_RESULT_OPS_PENDING
+    assert len(operations) == 1
+    assert operations[0].target == np._driver_install_worker
+
+
+def test_driver_install_worker_preserves_command_and_output(monkeypatch):
+    np = _prepare_gpg_install_gui()
+    process = MagicMock(returncode=0)
+    process.communicate.return_value = (b"P50\ninstalled.ppd\ndone\n", b"")
+    popen = MagicMock(return_value=process)
+    monkeypatch.setattr(newprinter.subprocess, "Popen", popen)
+
+    result = np._driver_install_worker('driver', 'repo', 'ABC', 1)
+
+    popen.assert_called_once()
+    args, kwargs = popen.call_args
+    assert args[0] == ['install-printerdriver', 'driver', 'repo', 'ABC']
+    assert kwargs['stdin'] is newprinter.subprocess.DEVNULL
+    process.communicate.assert_called_once_with()
+    assert result[0] is True
+    assert result[1] == ['installed.ppd']
+
+
+def test_driver_install_cancel_terminates_active_process():
+    np = _prepare_gpg_install_gui()
+    process = MagicMock()
+    process.poll.return_value = None
+    operation = FakePPDOperation(lambda: None)
+    np._driver_install_serial = 4
+    np._driver_install_operation = operation
+    np._driver_install_process = process
+    np._driver_install_process_serial = 4
+
+    np._cancel_driver_installation()
+
+    process.terminate.assert_called_once_with()
+    assert operation.cancelled is True
+
+
+def test_driver_install_cancel_does_not_terminate_finished_process():
+    np = _prepare_gpg_install_gui()
+    process = MagicMock()
+    process.poll.return_value = 0
+    np._driver_install_serial = 5
+    np._driver_install_operation = FakePPDOperation(lambda: None)
+    np._driver_install_process = process
+    np._driver_install_process_serial = 5
+
+    np._cancel_driver_installation()
+
+    process.terminate.assert_not_called()
+
+
+def test_smbc_installation_starts_async_packagekit(monkeypatch):
+    np = get_dummy_gui()
+    np._show_searching_spinner = MagicMock()
+    operations = []
+    monkeypatch.setattr(newprinter, "PYSMB_AVAILABLE", False)
+    monkeypatch.setattr(newprinter, "TimedOperation",
+                        lambda *args, **kwargs: operations.append(
+                            FakePPDOperation(*args, **kwargs)) or operations[-1])
+
+    assert np.install_python3_smbc_if_needed("browse") is False
+    assert len(operations) == 1
+    assert operations[0].target == np._smbc_install_worker
+
+
+def test_smbc_installation_worker_uses_expected_package(monkeypatch):
+    np = get_dummy_gui()
+    packagekit = MagicMock()
+    monkeypatch.setattr(newprinter.installpackage, "PackageKit",
+                        lambda: packagekit)
+
+    assert np._smbc_install_worker() is True
+    packagekit.InstallPackageName.assert_called_once_with(0, 0, "python3-smbc")
+
+
+def test_smbc_installation_cancel_ignores_late_completion():
+    np = get_dummy_gui()
+    operation = FakePPDOperation(lambda: None)
+    np._smbc_install_serial = 1
+    np._smbc_install_operation = operation
+    np._smbc_install_continuation = "browse"
+    np.on_btnSMBBrowse_clicked = MagicMock()
+
+    np._cancel_smbc_installation()
+    np._smbc_install_finished(True, None, 1)
+
+    assert operation.cancelled is True
+    np.on_btnSMBBrowse_clicked.assert_not_called()
+
+
+def test_driver_install_failure_does_not_continue():
+    np = _prepare_gpg_install_gui()
+    np._driver_install_serial = 1
+    np._driver_install_operation = object()
+    np.nextNPTab = MagicMock()
+    np._driver_install_finished(
+        (False, [], b"", b"installer failed"), None, (1, _gpg_driver()))
+
+    np.nextNPTab.assert_not_called()
+    assert np.installed_driver_files == ['driver.ppd']
+
+
+def test_driver_install_cancel_ignores_late_completion():
+    np = _prepare_gpg_install_gui()
+    operation = FakePPDOperation(lambda: None)
+    np._driver_install_serial = 2
+    np._driver_install_operation = operation
+    np.nextNPTab = MagicMock()
+    np._cancel_driver_installation()
+    np._driver_install_finished(
+        (True, ['new.ppd'], b'', b''), None, (2, _gpg_driver()))
+
+    assert operation.cancelled is True
     np.nextNPTab.assert_not_called()
 
 def test_driverless_skip_snmp():

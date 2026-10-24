@@ -666,6 +666,8 @@ class NewPrinterGUI(GtkGUI):
         self._cancel_local_ppd_validation ()
         self._cancel_gpg_fingerprint_download ()
         self._cancel_remote_cups_retrieval ()
+        self._cancel_driver_installation ()
+        self._cancel_smbc_installation ()
         if self.SMBBrowseDialog:
             self.SMBBrowseDialog.destroy ()
             self.SMBBrowseDialog = None
@@ -1207,6 +1209,8 @@ class NewPrinterGUI(GtkGUI):
         self._cancel_local_ppd_validation ()
         self._cancel_gpg_fingerprint_download ()
         self._cancel_remote_cups_retrieval ()
+        self._cancel_driver_installation ()
+        self._cancel_smbc_installation ()
 
         self.NewPrinterWindow.hide()
         self._hide_searching_spinner()
@@ -1235,6 +1239,8 @@ class NewPrinterGUI(GtkGUI):
         self._cancel_local_ppd_validation ()
         self._cancel_gpg_fingerprint_download ()
         self._cancel_remote_cups_retrieval ()
+        self._cancel_driver_installation ()
+        self._cancel_smbc_installation ()
         self.nextNPTab(-1)
 
     def on_btnNPForward_clicked(self, widget):
@@ -2110,22 +2116,99 @@ class NewPrinterGUI(GtkGUI):
                 self._start_gpg_fingerprint_download (driver, url)
                 return self.INSTALL_RESULT_OPS_PENDING
 
-        # Find the package name, repository, and fingerprint
-        # and install the package
-        result = self.installdriverpackage (driver, fingerprint)
-        if not result or len(self.installed_driver_files) == 0:
-          return
+        install_info = self._getDriverInstallationInfo (driver, fingerprint)
+        if not install_info:
+            return
+        self._start_driver_installation (driver, install_info)
+        return self.INSTALL_RESULT_OPS_PENDING
 
-        # We actually installed a package, delete the
-        # PPD list to get it regenerated
+    def _start_driver_installation (self, driver, install_info):
+        if getattr(self, '_driver_install_operation', None) is not None:
+            self._cancel_driver_installation ()
+        self._driver_install_serial = getattr(self, '_driver_install_serial', 0) + 1
+        serial = self._driver_install_serial
+        self._driver_install_driver = driver
+        self._show_searching_spinner (_("Installing driver"))
+        self._driver_install_operation = TimedOperation (
+            self._driver_install_worker,
+            args=(install_info['name'], install_info['repo'], install_info['keyid'], serial),
+            callback=self._driver_install_finished,
+            context=(serial, driver))
+
+    def _driver_install_worker (self, name, repo, keyid, serial):
+        new_environ = os.environ.copy()
+        new_environ['LC_ALL'] = "C"
+        if keyid:
+            args = ["install-printerdriver", name, repo, keyid]
+        else:
+            args = ["install-printerdriver", name, repo]
+        process = subprocess.Popen (args, env=new_environ, close_fds=True,
+                                    stdin=subprocess.DEVNULL,
+                                    stdout=subprocess.PIPE,
+                                    stderr=subprocess.PIPE)
+        self._driver_install_process = process
+        self._driver_install_process_serial = serial
+        try:
+            stdout, stderr = process.communicate ()
+        finally:
+            if (getattr(self, '_driver_install_process', None) is process and
+                    getattr(self, '_driver_install_process_serial', None) == serial):
+                self._driver_install_process = None
+                self._driver_install_process_serial = None
+        installed_files = []
+        done_received = False
+        for line in stdout.splitlines():
+            line = line.strip()
+            if line == b"done":
+                done_received = True
+            elif not line.startswith(b"P"):
+                installed_files.append(line.decode("utf-8", errors="replace"))
+        ret = process.returncode == 0 and done_received
+        return ret, installed_files, stdout, stderr
+
+    def _cancel_driver_installation (self):
+        operation = getattr(self, '_driver_install_operation', None)
+        if operation is None:
+            return
+        self._driver_install_serial = getattr(self, '_driver_install_serial', 0) + 1
+        operation.cancel ()
+        process = getattr(self, '_driver_install_process', None)
+        process_serial = getattr(self, '_driver_install_process_serial', None)
+        if (process is not None and process_serial == self._driver_install_serial - 1 and
+                process.poll () is None):
+            try:
+                process.terminate ()
+            except OSError:
+                pass
+        self._driver_install_operation = None
+        self._driver_install_driver = None
+        self._hide_searching_spinner ()
+
+    def _driver_install_finished (self, result, exc, context):
+        serial, driver = context
+        if serial != getattr(self, '_driver_install_serial', None):
+            return
+        if getattr(self, '_driver_install_operation', None) is None:
+            return
+        self._driver_install_operation = None
+        self._driver_install_driver = None
+        self._hide_searching_spinner ()
+        if exc is not None:
+            debugprint ('Driver installation failed: %s' % repr(exc))
+            return
+        installed, installed_files, stdout, stderr = result
+        if not installed or not installed_files:
+            debugprint ('Driver installation failed: %s' % stderr.decode(errors='replace'))
+            return
+        self.installed_driver_files = installed_files
         self.ppds = None
-
         if (self.dialog_mode != "download_driver" and
               (not self.device.id and
               (not self.device.make_and_model or self.device.make_and_model == "Unknown") and
               self.downloadable_driver_for_printer)):
             self.device.make_and_model = self.downloadable_driver_for_printer
-        return True
+        self.nextnptab_rerun = True
+        self.nextNPTab (step=0)
 
     def _driver_fingerprint_url (self, driver):
         pkgs = driver.get('packages', {})
@@ -3448,7 +3531,7 @@ class NewPrinterGUI(GtkGUI):
 
     ## SMB browsing
 
-    def install_python3_smbc_if_needed (self):
+    def install_python3_smbc_if_needed (self, continuation=None):
         global PYSMB_AVAILABLE
         global pysmb # Make the import of pysmb globally available
         # Does the SMB client library  need to be installed?
@@ -3456,27 +3539,56 @@ class NewPrinterGUI(GtkGUI):
             return True
 
         debugprint ("No SMB client library present so attempting install")
-
-        try:
-            pk = installpackage.PackageKit ()
-            # The following call means a blocking, synchronous, D-Bus call
-            pk.InstallPackageName (0, 0, "python3-smbc")
-        except DBusException as e:
-            debugprint ("Error during installation/setup of SMB client.")
-            debugprint("{}".format(e))
+        if getattr(self, '_smbc_install_operation', None) is not None:
             return False
+        self._smbc_install_serial = getattr(self, '_smbc_install_serial', 0) + 1
+        serial = self._smbc_install_serial
+        self._smbc_install_continuation = continuation
+        self._show_searching_spinner (_("Installing required components"))
+        self._smbc_install_operation = TimedOperation (
+            self._smbc_install_worker, callback=self._smbc_install_finished,
+            context=serial)
+        return False
 
+    def _smbc_install_worker (self):
+        pk = installpackage.PackageKit ()
+        pk.InstallPackageName (0, 0, "python3-smbc")
+        return True
+
+    def _cancel_smbc_installation (self):
+        operation = getattr(self, '_smbc_install_operation', None)
+        if operation is None:
+            return
+        self._smbc_install_serial = getattr(self, '_smbc_install_serial', 0) + 1
+        operation.cancel ()
+        self._smbc_install_operation = None
+        self._smbc_install_continuation = None
+        self._hide_searching_spinner ()
+
+    def _smbc_install_finished (self, result, exc, serial):
+        if serial != getattr(self, '_smbc_install_serial', None):
+            return
+        if getattr(self, '_smbc_install_operation', None) is None:
+            return
+        continuation = self._smbc_install_continuation
+        self._smbc_install_operation = None
+        self._smbc_install_continuation = None
+        self._hide_searching_spinner ()
+        if exc is not None:
+            debugprint ("Error during installation/setup of SMB client: %s" % repr(exc))
+            return
+        global PYSMB_AVAILABLE
+        global pysmb
         try:
             import pysmb
-            PYSMB_AVAILABLE=True
+            PYSMB_AVAILABLE = True
         except ModuleNotFoundError as e:
-            debugprint ("SMB client setup failed.")
-            debugprint("{}".format(e))
-            return False
-
-        debugprint ("SMB client successfully installed and set up.")
-
-        return True
+            debugprint ("SMB client setup failed: %s" % repr(e))
+            return
+        if continuation == "browse":
+            self.on_btnSMBBrowse_clicked (None)
+        elif continuation == "verify":
+            self.on_btnSMBVerify_clicked (None)
 
     def browse_smb_hosts(self):
         """Initialise the SMB tree store."""
@@ -3724,7 +3836,7 @@ class NewPrinterGUI(GtkGUI):
     def on_btnSMBBrowse_clicked(self, button):
         """Check whether the needed SMB client library is available and"""
         """install it if needed"""
-        if not self.install_python3_smbc_if_needed():
+        if not self.install_python3_smbc_if_needed ("browse"):
             return
 
         self.btnSMBBrowseOk.set_sensitive(False)
@@ -3803,7 +3915,7 @@ class NewPrinterGUI(GtkGUI):
     def on_btnSMBVerify_clicked(self, button):
         """Check whether the needed SMB client library is available and"""
         """install it if needed"""
-        if not self.install_python3_smbc_if_needed():
+        if not self.install_python3_smbc_if_needed ("verify"):
             return
 
         uri = self.entSMBURI.get_text ()
