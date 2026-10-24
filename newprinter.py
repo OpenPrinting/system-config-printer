@@ -663,6 +663,8 @@ class NewPrinterGUI(GtkGUI):
         self._cancel_lpd_probe (hide_window=False)
         self._cancel_required_package_install ()
         self._cancel_openprinting_ppd ()
+        self._cancel_local_ppd_validation ()
+        self._cancel_gpg_fingerprint_download ()
         if self.SMBBrowseDialog:
             self.SMBBrowseDialog.destroy ()
             self.SMBBrowseDialog = None
@@ -1201,6 +1203,8 @@ class NewPrinterGUI(GtkGUI):
         self._cancel_lpd_probe ()
         self._cancel_required_package_install ()
         self._cancel_openprinting_ppd ()
+        self._cancel_local_ppd_validation ()
+        self._cancel_gpg_fingerprint_download ()
 
         self.NewPrinterWindow.hide()
         self._hide_searching_spinner()
@@ -1226,6 +1230,8 @@ class NewPrinterGUI(GtkGUI):
         self._cancel_lpd_probe ()
         self._cancel_required_package_install ()
         self._cancel_openprinting_ppd ()
+        self._cancel_local_ppd_validation ()
+        self._cancel_gpg_fingerprint_download ()
         self.nextNPTab(-1)
 
     def on_btnNPForward_clicked(self, widget):
@@ -1302,8 +1308,8 @@ class NewPrinterGUI(GtkGUI):
         self._driver_selection_spinner = spinner
         return True
 
-    def installdriverpackage (self, driver):
-        install_info = self._getDriverInstallationInfo (driver)
+    def installdriverpackage (self, driver, fingerprint=None):
+        install_info = self._getDriverInstallationInfo (driver, fingerprint)
         if not install_info:
             return False
 
@@ -1470,7 +1476,7 @@ class NewPrinterGUI(GtkGUI):
 
         return ret
 
-    def _getDriverInstallationInfo (self, driver):
+    def _getDriverInstallationInfo (self, driver, fingerprint=None):
         pkgs = driver.get('packages', {})
         arches = list(pkgs.keys())
         if len(arches) == 0:
@@ -1503,7 +1509,10 @@ class NewPrinterGUI(GtkGUI):
                 debugprint('Not installing driver as it does not have a GPG fingerprint URL')
                 return None
         else:
-            keyid = download_gpg_fingerprint(pkgs[pkg]['fingerprint'])
+            if fingerprint is None:
+                keyid = download_gpg_fingerprint(pkgs[pkg]['fingerprint'])
+            else:
+                keyid = fingerprint
             if config.DOWNLOADABLE_PKG_ONLYSIGNED and arches[0] not in ['all', 'noarch'] and not keyid:
                 debugprint('Not installing driver as it does not have a valid GPG fingerprint')
                 return None
@@ -1842,7 +1851,9 @@ class NewPrinterGUI(GtkGUI):
         if page_nr == self.PAGE_SELECT_DEVICE or page_nr == self.PAGE_SELECT_INSTALL_METHOD:
             self._selectDeviceForInstallation (uri)
         elif page_nr == self.PAGE_DOWNLOAD_DRIVER and self.nextnptab_rerun == False:
-            self._handleDriverInstallation ()
+            result = self._handleDriverInstallation ()
+            if result == self.INSTALL_RESULT_OPS_PENDING:
+                return result
 
         devid = None
         if not self.remotecupsqueue or self.dialog_mode == "ppd":
@@ -2007,19 +2018,24 @@ class NewPrinterGUI(GtkGUI):
             # Remote CUPS queue discovered by "dnssd" CUPS backend
             self.remotecupsqueue = self.device.info
 
-    def _handleDriverInstallation (self):
+    def _handleDriverInstallation (self, driver=None, fingerprint=None):
         # Install package of the driver found on OpenPrinting
         treeview = self.tvNPDownloadableDrivers
         model, iter = treeview.get_selection ().get_selected ()
-        driver = None
-        if iter is not None:
+        if driver is None and iter is not None:
             driver = model.get_value (iter, 1)
         if driver is None or driver == 0 or 'packages' not in driver:
             return
 
+        if fingerprint is None:
+            url = self._driver_fingerprint_url (driver)
+            if url:
+                self._start_gpg_fingerprint_download (driver, url)
+                return self.INSTALL_RESULT_OPS_PENDING
+
         # Find the package name, repository, and fingerprint
         # and install the package
-        result = self.installdriverpackage (driver)
+        result = self.installdriverpackage (driver, fingerprint)
         if not result or len(self.installed_driver_files) == 0:
           return
 
@@ -2032,6 +2048,56 @@ class NewPrinterGUI(GtkGUI):
               (not self.device.make_and_model or self.device.make_and_model == "Unknown") and
               self.downloadable_driver_for_printer)):
             self.device.make_and_model = self.downloadable_driver_for_printer
+        return True
+
+    def _driver_fingerprint_url (self, driver):
+        pkgs = driver.get('packages', {})
+        arches = list(pkgs.keys())
+        if len(arches) != 1:
+            return None
+        packages = pkgs[arches[0]]
+        if len(packages) != 1:
+            return None
+        package = list(packages.keys())[0]
+        return packages[package].get('fingerprint')
+
+    def _start_gpg_fingerprint_download (self, driver, url):
+        self._gpg_fingerprint_serial = getattr(
+            self, '_gpg_fingerprint_serial', 0) + 1
+        serial = self._gpg_fingerprint_serial
+        self._show_searching_spinner (_("Verifying driver signature"))
+        self._gpg_fingerprint_operation = TimedOperation (
+            self._gpg_fingerprint_worker, args=(url,),
+            callback=self._gpg_fingerprint_finished,
+            context=(serial, driver))
+
+    def _gpg_fingerprint_worker (self, url):
+        return download_gpg_fingerprint (url)
+
+    def _cancel_gpg_fingerprint_download (self):
+        operation = getattr (self, '_gpg_fingerprint_operation', None)
+        if operation is None:
+            return
+        self._gpg_fingerprint_serial = getattr(
+            self, '_gpg_fingerprint_serial', 0) + 1
+        operation.cancel ()
+        self._gpg_fingerprint_operation = None
+        self._hide_searching_spinner ()
+
+    def _gpg_fingerprint_finished (self, fingerprint, exc, context):
+        serial, driver = context
+        if serial != getattr(self, '_gpg_fingerprint_serial', None):
+            return
+        if getattr(self, '_gpg_fingerprint_operation', None) is None:
+            return
+        self._gpg_fingerprint_operation = None
+        self._hide_searching_spinner ()
+        if exc is not None or not fingerprint:
+            debugprint ('Unable to retrieve GPG fingerprint for driver')
+            return
+        if self._handleDriverInstallation (driver, fingerprint):
+            self.nextnptab_rerun = True
+            self.nextNPTab (step=0)
 
     def _installHPScannerFilesIfNeeded (self):
         if (hasattr (self.device, 'hp_scannable') and self.device.hp_scannable and
@@ -5136,24 +5202,9 @@ class NewPrinterGUI(GtkGUI):
                         err = err_text % (driver, self.NPMake, self.NPModel)
                 elif self.rbtnNPPPD.get_active():
                     # This error came from trying to open the PPD file.
-                    err_title = _('PPD error')
                     filename = self.filechooserPPD.get_filename()
-                    err = _('Failed to read PPD file.  Possible reason '
-                            'follows:') + '\n'
-                    try:
-                        # We want this to be in the current natural language,
-                        # so we intentionally don't set LC_ALL=C here.
-                        p = subprocess.Popen (['/usr/bin/cupstestppd',
-                                               '-rvv', filename],
-                                              close_fds=True,
-                                              stdin=subprocess.DEVNULL,
-                                              stdout=subprocess.PIPE,
-                                              stderr=subprocess.PIPE)
-                        (stdout, stderr) = p.communicate ()
-                        err += stdout.decode ()
-                    except:
-                        # Problem executing command.
-                        raise
+                    self._start_local_ppd_validation (filename)
+                    return None
                 else:
                     # Failed to get PPD downloaded from OpenPrinting XXX
                     err_title = _('Downloadable drivers')
@@ -5194,6 +5245,56 @@ class NewPrinterGUI(GtkGUI):
             self.cups._end_operation ()
 
         return ppd
+
+    def _start_local_ppd_validation (self, filename):
+        if getattr (self, '_local_ppd_validation_operation', None) is not None:
+            return
+        self._local_ppd_validation_serial = getattr (
+            self, '_local_ppd_validation_serial', 0) + 1
+        serial = self._local_ppd_validation_serial
+        self._show_searching_spinner (_("Checking printer description"))
+        self._local_ppd_validation_operation = TimedOperation (
+            self._local_ppd_validation_worker,
+            args=(filename,),
+            callback=self._local_ppd_validation_finished,
+            context=(serial, filename))
+
+    def _local_ppd_validation_worker (self, filename):
+        process = subprocess.Popen (['/usr/bin/cupstestppd', '-rvv', filename],
+                                    close_fds=True,
+                                    stdin=subprocess.DEVNULL,
+                                    stdout=subprocess.PIPE,
+                                    stderr=subprocess.PIPE)
+        stdout, stderr = process.communicate ()
+        return process.returncode, stdout, stderr
+
+    def _cancel_local_ppd_validation (self):
+        operation = getattr (self, '_local_ppd_validation_operation', None)
+        if operation is None:
+            return
+        self._local_ppd_validation_serial = getattr (
+            self, '_local_ppd_validation_serial', 0) + 1
+        operation.cancel ()
+        self._local_ppd_validation_operation = None
+        self._hide_searching_spinner ()
+
+    def _local_ppd_validation_finished (self, result, exc, context):
+        serial, filename = context
+        if serial != getattr (self, '_local_ppd_validation_serial', None):
+            return
+        if getattr (self, '_local_ppd_validation_operation', None) is None:
+            return
+        self._local_ppd_validation_operation = None
+        self._hide_searching_spinner ()
+
+        if exc is not None:
+            debugprint ("cupstestppd failed to run: %s" % repr (exc))
+            return
+
+        returncode, stdout, stderr = result
+        err = _('Failed to read PPD file.  Possible reason follows:') + '\n'
+        err += stdout.decode ()
+        show_error_dialog (_('PPD error'), err, self.NewPrinterWindow)
 
     def _get_openprinting_ppd_url (self):
         """Return the selected downloadable PPD URL, if this path applies."""
