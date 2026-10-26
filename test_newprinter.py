@@ -3797,6 +3797,41 @@ def test_duplicate_printer_driverless_ppd_selection_fallback():
     assert gui.device.driverless is True
 
 
+def test_change_ppd_mode_reconstructs_device_from_orig_ppd():
+    import os
+    os.environ["SYSTEM_CONFIG_PRINTER_UI"] = "ui"
+    import gi
+    gi.require_version('Gtk', '3.0')
+    import newprinter
+
+    gui = newprinter.NewPrinterGUI()
+    gui.printers = {}
+    gui.cups = MagicMock()
+
+    class FakePPD:
+        def findAttr(self, name):
+            class Attr:
+                pass
+            a = Attr()
+            if name == "1284DeviceID":
+                a.value = "MFG:Xerox;MDL:B235;"
+                return a
+            elif name == "ModelName":
+                a.value = "Xerox B235 MFP"
+                return a
+            elif name == "NickName":
+                a.value = "Xerox B235 MFP, driverless, cups-filters 1.28.15"
+                return a
+            return None
+
+    orig_ppd = FakePPD()
+    gui.init("ppd", device_uri="ipp://printer.local/ipp/print", name="Xerox_B235", ppd=orig_ppd, devid="")
+
+    assert gui.device.id == "MFG:Xerox;MDL:B235;"
+    assert gui.device.make_and_model == "Xerox B235 MFP"
+    assert gui.device.driverless is True
+
+
 def test_driverless_validation_does_not_pass_duplicate_spinner(monkeypatch):
     """Verify driverless PPD validation runs on worker without passing a duplicate spinner,
     preserving the 'Searching for drivers' UI spinner as the sole progress indicator."""
@@ -4052,4 +4087,244 @@ def test_switching_connection_does_not_reuse_stale_driverless_ppd():
     # For the LPD connection, the driverless IPPS PPD must NOT be chosen
     assert np.auto_driver != ipps_ppd
     assert ipps_ppd not in np.id_matched_ppdnames
+def _setup_make_list_gui(device_kwargs, auto_make, makes=None):
+    gui = newprinter.NewPrinterGUI.__new__(newprinter.NewPrinterGUI)
+    if device_kwargs is not None:
+        gui.device = cupshelpers.Device('lpd://192.168.1.50/queue', **device_kwargs)
+    else:
+        gui.device = None
+    gui.auto_make = auto_make
+    gui.auto_model = ""
+    gui.auto_driver = None
+    gui.ppds = MagicMock()
+    if makes is None:
+        makes = ["Generic", "Alps", "Brother", "Canon", "Epson", "HP"]
+    gui.ppds.getMakes.return_value = makes
+    makes_model = Gtk.ListStore(str, str)
+    gui.tvNPMakes = MagicMock()
+    gui.tvNPMakes.get_model.return_value = makes_model
+    gui.entNPDownloadableDriverSearch = MagicMock()
+    return gui, makes_model
+
+
+def test_fill_make_list_detected_make_preselected():
+    """Case 1: Detected make: Canon MF645C, auto_make '' -> Canon selected and scrolled."""
+    dev = {"device-class": "network", "device-make-and-model": "Canon MF645C", "device-id": "MFG:Canon;MDL:MF645C;"}
+    gui, model = _setup_make_list_gui(dev, "")
+    gui.fillMakeList()
+
+    cursor_path = gui.tvNPMakes.set_cursor.call_args[0][0]
+    idx = cursor_path.get_indices()[0]
+    assert model[idx][1] == "Canon"
+    gui.tvNPMakes.scroll_to_cell.assert_called_with(cursor_path, None, True, 0.5, 0.5)
+
+
+def test_fill_make_list_generic_recommended_selects_detected_make():
+    """Case 2: Generic-recommended: Canon MF645C, auto_make 'Generic' -> Canon selected."""
+    dev = {"device-class": "network", "device-make-and-model": "Canon MF645C", "device-id": "MFG:Canon;MDL:MF645C;"}
+    gui, model = _setup_make_list_gui(dev, "Generic")
+    gui.fillMakeList()
+
+    cursor_path = gui.tvNPMakes.set_cursor.call_args[0][0]
+    idx = cursor_path.get_indices()[0]
+    assert model[idx][1] == "Canon"
+    gui.tvNPMakes.scroll_to_cell.assert_called_with(cursor_path, None, True, 0.5, 0.5)
+
+
+def test_fill_make_list_unavailable_make_keeps_generic():
+    """Case 3: Unavailable: empty or Unknown make -> first row (Generic) unchanged."""
+    dev = {"device-class": "network", "device-make-and-model": "Unknown", "device-id": ""}
+    gui, model = _setup_make_list_gui(dev, "")
+    gui.fillMakeList()
+
+    cursor_path = gui.tvNPMakes.set_cursor.call_args[0][0]
+    assert not cursor_path.get_indices() or cursor_path.get_indices() == [0]
+    gui.tvNPMakes.scroll_to_cell.assert_called_with(0, None, True, 0.0, 0.0)
+
+
+def test_fill_make_list_not_in_list_keeps_generic():
+    """Case 4: Not in list: CustomBrand 1000 -> first row (Generic) unchanged."""
+    dev = {"device-class": "network", "device-make-and-model": "CustomBrand 1000", "device-id": "MFG:CustomBrand;MDL:1000;"}
+    gui, model = _setup_make_list_gui(dev, "")
+    gui.fillMakeList()
+
+    cursor_path = gui.tvNPMakes.set_cursor.call_args[0][0]
+    assert not cursor_path.get_indices() or cursor_path.get_indices() == [0]
+    gui.tvNPMakes.scroll_to_cell.assert_called_with(0, None, True, 0.0, 0.0)
+
+
+def test_fill_make_list_case_normalization():
+    """Case 5: Normalization: CANON MF645C -> Canon selected."""
+    dev = {"device-class": "network", "device-make-and-model": "CANON MF645C", "device-id": "MFG:CANON;MDL:MF645C;"}
+    gui, model = _setup_make_list_gui(dev, "")
+    gui.fillMakeList()
+
+    cursor_path = gui.tvNPMakes.set_cursor.call_args[0][0]
+    idx = cursor_path.get_indices()[0]
+    assert model[idx][1] == "Canon"
+    gui.tvNPMakes.scroll_to_cell.assert_called_with(cursor_path, None, True, 0.5, 0.5)
+
+
+def test_fill_make_list_longest_prefix_match():
+    """Longest prefix: Hewlett-Packard HP LaserJet with makes containing HP and Hewlett-Packard -> Hewlett-Packard selected."""
+    dev = {"device-class": "network", "device-make-and-model": "Hewlett-Packard HP LaserJet 4000", "device-id": ""}
+    gui, model = _setup_make_list_gui(
+        dev, "",
+        makes=["Generic", "Brother", "Canon", "HP", "Hewlett-Packard", "Xerox"]
+    )
+    gui.fillMakeList()
+
+    cursor_path = gui.tvNPMakes.set_cursor.call_args[0][0]
+    idx = cursor_path.get_indices()[0]
+    assert model[idx][1] == "Hewlett-Packard"
+    gui.tvNPMakes.scroll_to_cell.assert_called_with(cursor_path, None, True, 0.5, 0.5)
+
+
+def test_fill_make_list_prefix_match_no_mfg_needed():
+    """Xerox(R) B235 MFP with no device-id/MFG -> Xerox selected by prefix."""
+    dev = {"device-class": "network",
+           "device-make-and-model": "Xerox(R) B235 MFP",
+           "device-id": ""}
+    gui, model = _setup_make_list_gui(
+        dev, "",
+        makes=["Generic", "Alps", "Brother", "Canon", "Epson", "HP", "Xerox"]
+    )
+    gui.fillMakeList()
+
+    cursor_path = gui.tvNPMakes.set_cursor.call_args[0][0]
+    idx = cursor_path.get_indices()[0]
+    assert model[idx][1] == "Xerox"
+    gui.tvNPMakes.scroll_to_cell.assert_called_with(cursor_path, None, True, 0.5, 0.5)
+
+
+def test_fill_make_list_properties_change_driverless_xerox_simulation():
+    """Properties -> Change Make and Model with simulated Xerox driverless printer -> Xerox selected."""
+    dev = {"device-class": "network",
+           "device-make-and-model": "Xerox B235 MFP, driverless, cups-filters 1.28.17",
+           "device-id": ""}
+    gui, model = _setup_make_list_gui(
+        dev, "Generic",
+        makes=["Generic", "Alps", "Brother", "Canon", "Epson", "HP", "Xerox"]
+    )
+    gui.fillMakeList()
+
+    cursor_path = gui.tvNPMakes.set_cursor.call_args[0][0]
+    idx = cursor_path.get_indices()[0]
+    assert model[idx][1] == "Xerox"
+    gui.tvNPMakes.scroll_to_cell.assert_called_with(cursor_path, None, True, 0.5, 0.5)
+
+
+def test_fill_make_list_real_recommended_make_preserved_when_no_prefix_match():
+    """A valid real auto_make remains selected when there is no matching make-and-model prefix."""
+    dev = {"device-class": "network", "device-make-and-model": "CustomBrand 1000", "device-id": ""}
+    gui, model = _setup_make_list_gui(dev, "Brother")
+    gui.fillMakeList()
+
+    cursor_path = gui.tvNPMakes.set_cursor.call_args[0][0]
+    idx = cursor_path.get_indices()[0]
+    assert model[idx][1] == "Brother"
+    gui.tvNPMakes.scroll_to_cell.assert_called_with(cursor_path, None, True, 0.5, 0.5)
+
+
+def test_fill_make_list_fallback_to_auto_make_when_no_make_and_model():
+    """When device has no make_and_model, fallback to valid auto_make (e.g. Brother)."""
+    gui, model = _setup_make_list_gui(None, "Brother")
+    gui.fillMakeList()
+
+    cursor_path = gui.tvNPMakes.set_cursor.call_args[0][0]
+    idx = cursor_path.get_indices()[0]
+    assert model[idx][1] == "Brother"
+    gui.tvNPMakes.scroll_to_cell.assert_called_with(cursor_path, None, True, 0.5, 0.5)
+
+
+def test_fill_make_list_auto_make_not_in_list_no_detected_make_keeps_generic():
+    """4. auto_make not in list and no detected make -> Generic."""
+    dev = {"device-class": "network",
+           "device-make-and-model": "Unknown",
+           "device-id": ""}
+    gui, model = _setup_make_list_gui(dev, "CustomBrand")
+    gui.fillMakeList()
+
+    cursor_path = gui.tvNPMakes.set_cursor.call_args[0][0]
+    assert not cursor_path.get_indices() or cursor_path.get_indices() == [0]
+    gui.tvNPMakes.scroll_to_cell.assert_called_with(0, None, True, 0.0, 0.0)
+
+
+def test_fill_make_list_orig_ppd_fallback_model_name():
+    """When device has empty make_and_model, fillMakeList falls back to orig_ppd ModelName."""
+    dev = {"device-class": "network", "device-make-and-model": "", "device-id": ""}
+    gui, model = _setup_make_list_gui(
+        dev, "",
+        makes=["Generic", "Brother", "Canon", "HP", "Xerox"]
+    )
+    class FakePPD:
+        def findAttr(self, name):
+            class Attr:
+                pass
+            a = Attr()
+            if name == "ModelName":
+                a.value = "Xerox Printer"
+                return a
+            return None
+    gui.orig_ppd = FakePPD()
+    gui.fillMakeList()
+
+    cursor_path = gui.tvNPMakes.set_cursor.call_args[0][0]
+    idx = cursor_path.get_indices()[0]
+    assert model[idx][1] == "Xerox"
+    gui.tvNPMakes.scroll_to_cell.assert_called_with(cursor_path, None, True, 0.5, 0.5)
+
+
+def test_fill_make_list_orig_ppd_fallback_manufacturer():
+    """When device make_and_model does not match, fillMakeList falls back to orig_ppd Manufacturer."""
+    dev = {"device-class": "network", "device-make-and-model": "", "device-id": ""}
+    gui, model = _setup_make_list_gui(
+        dev, "",
+        makes=["Generic", "Brother", "Canon", "HP", "Xerox"]
+    )
+    class FakePPD:
+        def findAttr(self, name):
+            class Attr:
+                pass
+            a = Attr()
+            if name == "ModelName":
+                a.value = "CustomLaser 2000"
+                return a
+            elif name == "Manufacturer":
+                a.value = "Xerox"
+                return a
+            return None
+    gui.orig_ppd = FakePPD()
+    gui.fillMakeList()
+
+    cursor_path = gui.tvNPMakes.set_cursor.call_args[0][0]
+    idx = cursor_path.get_indices()[0]
+    assert model[idx][1] == "Xerox"
+    gui.tvNPMakes.scroll_to_cell.assert_called_with(cursor_path, None, True, 0.5, 0.5)
+
+
+def test_fit_none_fallback_uses_detected_xerox_make():
+    """A non-matching HP fallback must not override detected Xerox."""
+    np = get_dummy_gui()
+    np.device = cupshelpers.Device(
+        "lpd://192.168.1.50/queue",
+        **{"device-class": "network",
+           "device-make-and-model": "Xerox B235",
+           "device-id": "MFG:Xerox;MDL:B235;"}
+    )
+    np.device.driverless = False
+    np.ppds = MagicMock()
+    np.ppds.FIT_NONE = "none"
+    np.ppds.getInfoFromPPDName.return_value = {
+        "ppd-make-and-model": ["HP LaserJet Postscript"]
+    }
+    np.fillDriverList = MagicMock()
+    np.fillMakeList = MagicMock()
+
+    real_search = newprinter.NewPrinterGUI._installPrinterOrSearchForDriver.__get__(np)
+    real_search(np.device.id, "postscript-hp:0/ppd/hp.ppd", "none", 0, 1)
+
+    assert np.auto_make == "Xerox"
+    assert np.auto_driver is None
+
 
