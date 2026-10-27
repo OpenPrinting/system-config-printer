@@ -2747,13 +2747,16 @@ class NewPrinterGUI(GtkGUI):
                 cached_name = getattr(self, '_cached_driverless_ppd_name', None)
                 if (cached_name and cached_name in self.driverless_ppds and
                         self._driverless_ppd_matches_device_uri(cached_name, cand_uri)):
-            cached_name = getattr(self, '_cached_driverless_ppd_name', None)
-            if cached_name and cached_name in self.driverless_ppds:
-                target_norm = urllib.parse.unquote(ppdname).rstrip('/')
-                cached_norm = urllib.parse.unquote(cached_name).rstrip('/')
-                if cached_norm == target_norm:
                     entry = self.driverless_ppds[cached_name]
                     alt_ppdname = cached_name
+            if not entry:
+                cached_name = getattr(self, '_cached_driverless_ppd_name', None)
+                if cached_name and cached_name in self.driverless_ppds:
+                    target_norm = urllib.parse.unquote(ppdname).rstrip('/')
+                    cached_norm = urllib.parse.unquote(cached_name).rstrip('/')
+                    if cached_norm == target_norm:
+                        entry = self.driverless_ppds[cached_name]
+                        alt_ppdname = cached_name
 
         if not entry:
             return
@@ -2935,6 +2938,7 @@ class NewPrinterGUI(GtkGUI):
 
                     # If target_ppd is in driverless_ppds, add it to catalog
                     if target_ppd and target_ppd != cached_for_device:
+                        self._add_validated_driverless_ppd_to_catalog(target_ppd)
                     cached_name = getattr(self, '_cached_driverless_ppd_name', None)
                     target_ppd = ("driverless:%s" % search_uri) if search_uri else None
                     if cached_name and target_ppd:
