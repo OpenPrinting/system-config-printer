@@ -834,8 +834,10 @@ class PrinterPropertiesDialog(GtkGUI):
         try:
             option = options.OptionWidget(name, value, supported,
                                           self.option_changed)
-        except ValueError:
+        except (ValueError, TypeError):
             # We can't deal with this option type for some reason.
+            # TypeError can occur when value is None (e.g. job-cancel-after
+            # reported as None by CUPS), which int()/float() cannot handle.
             nonfatalException ()
             return
 
