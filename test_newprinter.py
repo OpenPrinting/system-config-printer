@@ -4475,3 +4475,133 @@ def test_one_loader_at_a_time_skips_overlay_when_page_loading():
     np._overlay_spinner.start.assert_called_once()
 
 
+def test_apply_printer_creation_sync_wrapper_and_error_handling():
+    """Verify Apply wraps addPrinter via _run_blocking, disables double-click, and handles errors."""
+    import cups
+    np = get_dummy_gui()
+    np.dialog_mode = "printer"
+    np.ppd = "foomatic:HP-LaserJet_1200-pxlmono.ppd"
+    np.options = {}
+    np.entNPName = MagicMock()
+    np.entNPName.get_text.return_value = "TestPrinter"
+    np.entNPLocation = MagicMock()
+    np.entNPLocation.get_text.return_value = "Office"
+    np.entNPDescription = MagicMock()
+    np.entNPDescription.get_text.return_value = "HP LaserJet"
+    np.isSharedCbx = MagicMock()
+    np.isSharedCbx.get_active.return_value = False
+    np.device = cupshelpers.Device("ipp://test.local/ipp/print")
+    np.NewPrinterWindow = MagicMock()
+
+    np.ntbkNewPrinter = MagicMock()
+    np.btnNPForward = MagicMock()
+    np.btnNPBack = MagicMock()
+    np.btnNPApply = MagicMock()
+    np.btnNPCancel = MagicMock()
+    np.spinner = MagicMock()
+    np.spinner_count = 0
+    np.show_IPP_Error = MagicMock()
+    np.setNPButtons = MagicMock()
+    np.emit = MagicMock()
+
+    # Track sensitivity calls on btnNPApply
+    sensitivity_history = []
+    np.btnNPApply.set_sensitive.side_effect = lambda val: sensitivity_history.append(val)
+
+    # 1. Successful apply
+    np._run_blocking = MagicMock(return_value=None)
+    with patch("cupshelpers.activateNewPrinter") as mock_activate:
+        np.on_btnNPApply_clicked(np.btnNPApply)
+        assert False in sensitivity_history  # Disabled during run
+        np._run_blocking.assert_called()
+        mock_activate.assert_called_with(np.cups, "TestPrinter")
+        np.emit.assert_called_with("printer-added", "TestPrinter")
+
+    # 2. Failure with IPPError: show_IPP_Error called, buttons re-enabled
+    sensitivity_history.clear()
+    np.device = cupshelpers.Device("ipp://test.local/ipp/print")
+    np._run_blocking = MagicMock(side_effect=cups.IPPError(cups.IPP_NOT_AUTHORIZED, "Not authorized"))
+    np.on_btnNPApply_clicked(np.btnNPApply)
+    np.show_IPP_Error.assert_called_with(cups.IPP_NOT_AUTHORIZED, "Not authorized")
+    np.setNPButtons.assert_called()
+
+    # 3. Cancellation mid-apply: no signals emitted, no activateNewPrinter
+    np.device = cupshelpers.Device("ipp://test.local/ipp/print")
+    np.emit.reset_mock()
+    def mock_cancel_blocking(*args, **kwargs):
+        np._cancelled = True
+        return None
+    np._run_blocking = MagicMock(side_effect=mock_cancel_blocking)
+    with patch("cupshelpers.activateNewPrinter") as mock_activate:
+        np.on_btnNPApply_clicked(np.btnNPApply)
+        mock_activate.assert_not_called()
+        np.emit.assert_not_called()
+
+
+def test_back_button_during_apply_abandons_printer_creation():
+    """Verify clicking Back during Apply drops late printer creation and does not activate queue."""
+    np = get_dummy_gui()
+    np.dialog_mode = "printer"
+    np.entNPName = MagicMock()
+    np.entNPName.get_text.return_value = "TestPrinter"
+    np.entNPLocation = MagicMock()
+    np.entNPLocation.get_text.return_value = "Desk"
+    np.entNPDescription = MagicMock()
+    np.entNPDescription.get_text.return_value = "Test Desc"
+    np.isSharedCbx = MagicMock()
+    np.isSharedCbx.get_active.return_value = False
+    np.ppd = None
+    np.device = cupshelpers.Device("ipp://test.local/ipp/print")
+    np.btnNPApply = MagicMock()
+    np.btnNPBack = MagicMock()
+    np.nextNPTab = MagicMock()
+    np.emit = MagicMock()
+    np.setNPButtons = MagicMock()
+
+    # Simulate Back clicked during apply
+    def mock_blocking(op, *args, **kwargs):
+        np._blocking_operation_in_flight = True
+        np.on_btnNPBack_clicked(np.btnNPBack)
+        np._blocking_operation_in_flight = False
+        return None
+
+    np._run_blocking = mock_blocking
+
+    with patch("cupshelpers.activateNewPrinter") as mock_activate:
+        np.on_btnNPApply_clicked(np.btnNPApply)
+        # Should NOT activate printer or emit printer-added
+        mock_activate.assert_not_called()
+        np.emit.assert_not_called()
+        # Back navigation happened
+        np.nextNPTab.assert_called_with(-1)
+
+
+def test_centered_overlay_spinner_during_apply():
+    """Verify centered overlay spinner is used and visible on non-device pages (such as Apply)."""
+    np = get_dummy_gui()
+    np.PAGE_SELECT_DEVICE = 0
+    np.PAGE_APPLY = 5
+    np.ntbkNewPrinter = MagicMock()
+    np.ntbkNewPrinter.get_current_page.return_value = np.PAGE_APPLY
+
+    np._overlay_vbox = MagicMock()
+    np._overlay_spinner = MagicMock()
+    np._overlay_label = MagicMock()
+    np._searching_stack = MagicMock()
+    np._searching_spinner = MagicMock()
+    np._searching_label = MagicMock()
+
+    # On Apply page, _show_searching_spinner uses overlay
+    np._show_searching_spinner("Applying changes")
+    np._overlay_label.set_markup.assert_called_with("<b>Applying changes</b>")
+    np._overlay_spinner.show.assert_called()
+    np._overlay_spinner.start.assert_called()
+    np._overlay_vbox.show.assert_called()
+    np._searching_spinner.start.assert_not_called()
+
+    # _hide_searching_spinner stops and hides overlay
+    np._hide_searching_spinner()
+    np._overlay_spinner.stop.assert_called()
+    np._overlay_vbox.hide.assert_called()
+
+

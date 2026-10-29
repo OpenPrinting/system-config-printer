@@ -5477,7 +5477,6 @@ class NewPrinterGUI(GtkGUI):
         if self.fetchDevices_conn:
             self.fetchDevices_conn.destroy ()
             self.fetchDevices_conn = None
-            self.dec_spinner_task ()
 
         if self.ppdsloader:
             self.ppdsloader.destroy ()
@@ -5487,7 +5486,6 @@ class NewPrinterGUI(GtkGUI):
         if self.printer_finder:
             self.printer_finder.cancel ()
             self.printer_finder = None
-            self.dec_spinner_task ()
 
         if self.dialog_mode in ("class", "printer", "printer_with_uri", "duplicate"):
             name = self.entNPName.get_text()
@@ -5501,17 +5499,23 @@ class NewPrinterGUI(GtkGUI):
         ppd = self.ppd
 
         if self.dialog_mode == "class":
+            self.btnNPApply.set_sensitive(False)
             members = getCurrentClassMembers(self.tvNCMembers)
             try:
                 for member in members:
                     try:
-                        self.cups.addPrinterToClass(member, name)
+                        self._run_blocking(self.cups.addPrinterToClass, member, name,
+                                           spinner_text=_("Applying changes"))
                     except RuntimeError:
                         # Printer already in class?
                         continue
             except cups.IPPError as e:
                 (e, msg) = e.args
                 self.show_IPP_Error(e, msg)
+                self.setNPButtons()
+                return
+            if getattr(self, '_cancelled', False) or getattr(self, '_op_abandoned', False):
+                self._op_abandoned = False
                 return
         elif self.dialog_mode == "printer" or \
                 self.dialog_mode == "printer_with_uri" or \
@@ -5530,38 +5534,44 @@ class NewPrinterGUI(GtkGUI):
             for option in self.options.values():
                 option.writeback()
 
-            busy (self.NewPrinterWindow)
-            while Gtk.events_pending ():
-                Gtk.main_iteration ()
+            self.btnNPApply.set_sensitive(False)
             self.cups._begin_operation (_("adding printer %s") % name)
             try:
                 if isinstance(ppd, str):
-                    self.cups.addPrinter(name, ppdname=ppd,
-                         device=uri, info=info, location=location)
+                    self._run_blocking(self.cups.addPrinter, name, ppdname=ppd,
+                                       device=uri, info=info, location=location,
+                                       spinner_text=_("Applying changes"))
                 elif ppd is None: # raw queue
-                    self.cups.addPrinter(name, device=uri,
-                                         info=info, location=location)
+                    self._run_blocking(self.cups.addPrinter, name, device=uri,
+                                       info=info, location=location,
+                                       spinner_text=_("Applying changes"))
                 else:
                     # Note: LC_MESSAGES is used here to determine the
                     # page size instead of LC_PAPER. This is not
                     # really correct, but it's what CUPS does so to
                     # avoid confusion we'll follow that method.
                     cupshelpers.setPPDPageSize(ppd, self.language[0])
-                    self.cups.addPrinter(name, ppd=ppd, device=uri,
-                                         info=info, location=location)
+                    self._run_blocking(self.cups.addPrinter, name, ppd=ppd, device=uri,
+                                       info=info, location=location,
+                                       spinner_text=_("Applying changes"))
             except cups.IPPError as e:
                 (e, msg) = e.args
-                ready (self.NewPrinterWindow)
                 self.show_IPP_Error(e, msg)
                 self.cups._end_operation()
+                self.setNPButtons()
                 return
             except:
-                ready (self.NewPrinterWindow)
                 self.cups._end_operation()
+                self.setNPButtons()
                 fatalException (1)
             self.cups._end_operation()
-            ready (self.NewPrinterWindow)
+            if getattr(self, '_cancelled', False) or getattr(self, '_op_abandoned', False) or getattr(self, 'device', None) is None:
+                self._op_abandoned = False
+                return
         if self.dialog_mode in ("class", "printer", "printer_with_uri", "duplicate"):
+            if getattr(self, '_cancelled', False) or getattr(self, '_op_abandoned', False):
+                self._op_abandoned = False
+                return
             self.cups._begin_operation (_("modifying printer %s") % name)
             try:
                 cupshelpers.activateNewPrinter (self.cups, name)
@@ -5572,17 +5582,21 @@ class NewPrinterGUI(GtkGUI):
                 (e, msg) = e.args
                 self.show_IPP_Error(e, msg)
                 self.cups._end_operation ()
+                self.setNPButtons()
                 return
             self.cups._end_operation ()
         elif self.dialog_mode == "device":
+            self.btnNPApply.set_sensitive(False)
             self.cups._begin_operation (_("modifying printer %s") % name)
             try:
                 uri = self.getDeviceURI()
-                self.cups.addPrinter(name, device=uri)
+                self._run_blocking(self.cups.addPrinter, name, device=uri,
+                                   spinner_text=_("Applying changes"))
             except cups.IPPError as e:
                 (e, msg) = e.args
                 self.show_IPP_Error(e, msg)
                 self.cups._end_operation ()
+                self.setNPButtons()
                 return
             self.cups._end_operation ()
         elif self.dialog_mode == "ppd":
