@@ -27,7 +27,7 @@ import pytest
 import newprinter
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, GLib
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 import cupshelpers
 import cups
 import authconn
@@ -3885,7 +3885,7 @@ def test_multiprotocol_device_grouped_in_ui_and_connection_selection():
     the Connections view allows switching between connection methods."""
     import os
     os.environ["SYSTEM_CONFIG_PRINTER_UI"] = "ui"
-    from unittest.mock import MagicMock
+    from unittest.mock import MagicMock, patch
     import gi
     gi.require_version('Gtk', '3.0')
     from gi.repository import Gtk
@@ -3963,7 +3963,7 @@ def test_lpd_queue_formatting():
     and named queue should display as 'LPD/LPR (queue <name>)'."""
     import os
     os.environ["SYSTEM_CONFIG_PRINTER_UI"] = "ui"
-    from unittest.mock import MagicMock
+    from unittest.mock import MagicMock, patch
     import newprinter
     import cupshelpers
     from PhysicalDevice import PhysicalDevice
@@ -4326,5 +4326,152 @@ def test_fit_none_fallback_uses_detected_xerox_make():
 
     assert np.auto_make == "Xerox"
     assert np.auto_driver is None
+
+def test_driverless_ppd_validation_cancellation(tmp_path):
+    """Verify that cancelling during validation cleanly returns None."""
+    np = get_dummy_gui()
+    np.ntbkNewPrinter = MagicMock()
+    np.btnNPForward = MagicMock()
+    np.btnNPBack = MagicMock()
+    np.btnNPApply = MagicMock()
+    np.btnNPCancel = MagicMock()
+    np.spinner = MagicMock()
+    np.spinner_count = 0
+
+    tfile = str(tmp_path / "cancel_test.ppd")
+    with open(tfile, "w") as f:
+        f.write("*PPD-Adobe: \"4.3\"\n*ModelName: \"Test\"\n")
+
+    def mock_get_server_ppd(name):
+        np._cancelled = True
+        return tfile
+
+    np.cups = MagicMock()
+    np.cups.getServerPPD = MagicMock(side_effect=mock_get_server_ppd)
+
+    result = np._validateDriverlessPPD("driverless:ipp://test/ipp/print")
+    assert result is None
+    import os
+    assert not os.path.exists(tfile)
+
+
+def test_back_button_during_driverless_ppd_validation_abandons_operation():
+    """Verify clicking Back during driverless validation marks op abandoned and drops late result."""
+    np = get_dummy_gui()
+    np.ntbkNewPrinter = MagicMock()
+    np.ntbkNewPrinter.get_current_page.return_value = newprinter.NewPrinterGUI.PAGE_SELECT_DEVICE
+    np.btnNPForward = MagicMock()
+    np.btnNPBack = MagicMock()
+    np.btnNPApply = MagicMock()
+    np.btnNPCancel = MagicMock()
+    np.device = cupshelpers.Device("ipp://test.local/ipp/print")
+    np.device.driverless = True
+
+    # Simulate Back clicked while _run_blocking is active
+    def mock_blocking(op, *args, **kwargs):
+        np._blocking_operation_in_flight = True
+        np.on_btnNPBack_clicked(np.btnNPBack)
+        np._blocking_operation_in_flight = False
+        return "/tmp/fake_ppd"
+
+    np._run_blocking = mock_blocking
+    np.nextNPTab = MagicMock()
+
+    # Call _validateDriverlessPPD with Back clicked mid-operation
+    result = np._validateDriverlessPPD("driverless:ipp://test.local/ipp/print")
+
+    # Late result is dropped
+    assert result is None
+    # Back button triggered nextNPTab(-1)
+    np.nextNPTab.assert_called_with(-1)
+
+
+def test_dialog_opened_notebook_visible_and_overlay_spinner_hidden():
+    """Verify that after opening the New Printer dialog, the notebook and overlay
+    are visible and the overlay spinner box starts hidden."""
+    import os
+    os.environ["SYSTEM_CONFIG_PRINTER_UI"] = "ui"
+    import newprinter
+    np = newprinter.NewPrinterGUI()
+    np.cups = MagicMock()
+    np.cups.getPrinters.return_value = {}
+    np.init("printer")
+
+    # Dialog window is visible
+    assert np.NewPrinterWindow.get_visible() is True
+
+    # The overlay and notebook must be visible
+    assert np._overlay is not None
+    assert np._overlay.get_visible() is True
+    assert np.ntbkNewPrinter.is_visible() is True
+
+    # Active notebook page must be visible
+    current_page = np.ntbkNewPrinter.get_nth_page(np.ntbkNewPrinter.get_current_page())
+    assert current_page.is_visible() is True
+
+    # Overlay spinner box must start hidden
+    assert np._overlay_vbox.get_visible() is False
+    assert np._overlay_vbox.is_visible() is False
+
+
+def test_set_wizard_busy_blocks_clicks_without_dimming():
+    """Verify _set_wizard_busy uses an overlay EventBox blocker without dimming notebook."""
+    np = get_dummy_gui()
+    np._overlay = Gtk.Overlay()
+    np.ntbkNewPrinter = Gtk.Notebook()
+    np._overlay.add(np.ntbkNewPrinter)
+    np._overlay_vbox = Gtk.Box()
+    np._overlay_spinner = MagicMock()
+    np._overlay_label = MagicMock()
+    np.btnNPForward = Gtk.Button()
+    np.btnNPApply = Gtk.Button()
+    np.btnNPCancel = Gtk.Button()
+    np.btnNPBack = Gtk.Button()
+    np.setNPButtons = MagicMock()
+
+    # Initially notebook is sensitive
+    assert np.ntbkNewPrinter.get_sensitive() is True
+
+    # When wizard becomes busy:
+    newprinter.NewPrinterGUI._set_wizard_busy(np, True, "Searching")
+    # Notebook must NOT be dimmed / set insensitive
+    assert np.ntbkNewPrinter.get_sensitive() is True
+    # Blocker EventBox is in overlay
+    assert getattr(np, '_overlay_blocker', None) is not None
+    assert np._overlay_blocker.get_parent() is np._overlay
+    assert np._overlay_blocker.get_visible_window() is False
+    assert np._overlay_blocker.get_above_child() is True
+    # Buttons sensitivity
+    assert np.btnNPForward.get_sensitive() is False
+    assert np.btnNPApply.get_sensitive() is False
+    assert np.btnNPCancel.get_sensitive() is True
+    assert np.btnNPBack.get_sensitive() is True
+
+    # When wizard is no longer busy:
+    newprinter.NewPrinterGUI._set_wizard_busy(np, False)
+    assert np._overlay_blocker.get_parent() is None
+    assert np.ntbkNewPrinter.get_sensitive() is True
+
+
+def test_one_loader_at_a_time_skips_overlay_when_page_loading():
+    """Verify overlay spinner is skipped if the page already has its own loader up."""
+    np = get_dummy_gui()
+    np._overlay_vbox = MagicMock()
+    np._overlay_spinner = MagicMock()
+    np._overlay_label = MagicMock()
+
+    # Case 1: _driver_ppd_loading is True -> overlay is skipped
+    np._driver_ppd_loading = True
+    newprinter.NewPrinterGUI._show_searching_spinner(np, "Searching for drivers")
+    np._overlay_vbox.show.assert_not_called()
+    np._overlay_spinner.show.assert_not_called()
+    np._overlay_spinner.start.assert_not_called()
+
+    # Case 2: _driver_ppd_loading is False -> overlay shows with spinner shown & started
+    np._driver_ppd_loading = False
+    newprinter.NewPrinterGUI._show_searching_spinner(np, "Searching for drivers")
+    np._overlay_vbox.show.assert_called_once()
+    np._overlay_spinner.show.assert_called_once()
+    np._overlay_spinner.start.assert_called_once()
 
 
