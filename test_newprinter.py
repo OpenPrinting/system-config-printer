@@ -4327,6 +4327,83 @@ def test_fit_none_fallback_uses_detected_xerox_make():
     assert np.auto_make == "Xerox"
     assert np.auto_driver is None
 
+
+def test_driverless_ppd_cache_no_leak_between_devices(monkeypatch, tmp_path):
+    """Verify driverless PPD cache does not leak between Xerox and Broken Xerox."""
+    import cups
+    np = get_dummy_gui()
+    np._searching_stack = MagicMock()
+    np._searching_spinner = MagicMock()
+    np._searching_label = MagicMock()
+    np.ntbkNewPrinter = MagicMock()
+    np.ntbkNewPrinter.get_current_page.return_value = np.PAGE_SELECT_DEVICE
+    np.btnNPForward = MagicMock()
+    np.btnNPBack = MagicMock()
+    np.btnNPApply = MagicMock()
+    np.btnNPCancel = MagicMock()
+    np.spinner = MagicMock()
+    np.spinner_count = 0
+
+    xerox_file = str(tmp_path / "xerox.ppd")
+    broken_file = str(tmp_path / "broken.ppd")
+    with open(xerox_file, "w") as f:
+        f.write("*PPD-Adobe: \"4.3\"\n*ModelName: \"Xerox B235\"\n*NickName: \"Xerox B235\"\n")
+    with open(broken_file, "w") as f:
+        f.write("*PPD-Adobe: \"4.3\"\n*ModelName: \"Broken Xerox B235\"\n*NickName: \"Broken Xerox B235\"\n")
+
+    def mock_get_server_ppd(name):
+        # Create temp copies because _validateDriverlessPPD unlinks them
+        t = str(tmp_path / f"tmp_{len(tmp_copies)}.ppd")
+        tmp_copies.append(t)
+        src = broken_file if "Broken" in name or "broken" in name else xerox_file
+        with open(src) as f_in, open(t, "w") as f_out:
+            f_out.write(f_in.read())
+        return t
+
+    tmp_copies = []
+    np.cups = MagicMock()
+    np.cups.getServerPPD = MagicMock(side_effect=mock_get_server_ppd)
+
+    xerox_uri = "ipp://xerox.local/ipp/print"
+    broken_uri = "ipp://broken-xerox.local/ipp/print"
+    xerox_ppd = f"driverless:{xerox_uri}"
+    broken_ppd = f"driverless:{broken_uri}"
+
+    # 1. Select Xerox
+    dev_xerox = cupshelpers.Device(xerox_uri, **{"device-class": "network", "device-make-and-model": "Xerox B235"})
+    dev_xerox.driverless = True
+    np.device = dev_xerox
+
+    ppd_xerox = np._validateDriverlessPPD(xerox_ppd)
+    assert ppd_xerox is not None
+    np._cached_driverless_ppd = ppd_xerox
+    np._cached_driverless_ppd_name = xerox_ppd
+
+    # 2. Select Broken Xerox without cache clear: must NOT match cached name
+    dev_broken = cupshelpers.Device(broken_uri, **{"device-class": "network", "device-make-and-model": "Broken Xerox B235"})
+    dev_broken.driverless = True
+    np.device = dev_broken
+
+    ppd_broken = np._validateDriverlessPPD(broken_ppd)
+    assert ppd_broken is not None
+    assert ppd_broken != ppd_xerox
+
+    # 3. Simulate Back -> Broken Xerox -> Xerox with cursor reset
+    np._cached_driverless_ppd = None
+    np._cached_driverless_ppd_name = None
+    np.device = dev_broken
+    ppd_b = np._validateDriverlessPPD(broken_ppd)
+    np._cached_driverless_ppd = ppd_b
+    np._cached_driverless_ppd_name = broken_ppd
+
+    # Back -> Xerox
+    np._cached_driverless_ppd = None
+    np._cached_driverless_ppd_name = None
+    np.device = dev_xerox
+    ppd_x = np._validateDriverlessPPD(xerox_ppd)
+    assert ppd_x is not None
+
+
 def test_driverless_ppd_validation_cancellation(tmp_path):
     """Verify that cancelling during validation cleanly returns None."""
     np = get_dummy_gui()
@@ -4353,126 +4430,6 @@ def test_driverless_ppd_validation_cancellation(tmp_path):
     assert result is None
     import os
     assert not os.path.exists(tfile)
-
-
-def test_back_button_during_driverless_ppd_validation_abandons_operation():
-    """Verify clicking Back during driverless validation marks op abandoned and drops late result."""
-    np = get_dummy_gui()
-    np.ntbkNewPrinter = MagicMock()
-    np.ntbkNewPrinter.get_current_page.return_value = newprinter.NewPrinterGUI.PAGE_SELECT_DEVICE
-    np.btnNPForward = MagicMock()
-    np.btnNPBack = MagicMock()
-    np.btnNPApply = MagicMock()
-    np.btnNPCancel = MagicMock()
-    np.device = cupshelpers.Device("ipp://test.local/ipp/print")
-    np.device.driverless = True
-
-    # Simulate Back clicked while _run_blocking is active
-    def mock_blocking(op, *args, **kwargs):
-        np._blocking_operation_in_flight = True
-        np.on_btnNPBack_clicked(np.btnNPBack)
-        np._blocking_operation_in_flight = False
-        return "/tmp/fake_ppd"
-
-    np._run_blocking = mock_blocking
-    np.nextNPTab = MagicMock()
-
-    # Call _validateDriverlessPPD with Back clicked mid-operation
-    result = np._validateDriverlessPPD("driverless:ipp://test.local/ipp/print")
-
-    # Late result is dropped
-    assert result is None
-    # Back button triggered nextNPTab(-1)
-    np.nextNPTab.assert_called_with(-1)
-
-
-def test_dialog_opened_notebook_visible_and_overlay_spinner_hidden():
-    """Verify that after opening the New Printer dialog, the notebook and overlay
-    are visible and the overlay spinner box starts hidden."""
-    import os
-    os.environ["SYSTEM_CONFIG_PRINTER_UI"] = "ui"
-    import newprinter
-    np = newprinter.NewPrinterGUI()
-    np.cups = MagicMock()
-    np.cups.getPrinters.return_value = {}
-    np.init("printer")
-
-    # Dialog window is visible
-    assert np.NewPrinterWindow.get_visible() is True
-
-    # The overlay and notebook must be visible
-    assert np._overlay is not None
-    assert np._overlay.get_visible() is True
-    assert np.ntbkNewPrinter.is_visible() is True
-
-    # Active notebook page must be visible
-    current_page = np.ntbkNewPrinter.get_nth_page(np.ntbkNewPrinter.get_current_page())
-    assert current_page.is_visible() is True
-
-    # Overlay spinner box must start hidden
-    assert np._overlay_vbox.get_visible() is False
-    assert np._overlay_vbox.is_visible() is False
-
-
-def test_set_wizard_busy_blocks_clicks_without_dimming():
-    """Verify _set_wizard_busy uses an overlay EventBox blocker without dimming notebook."""
-    np = get_dummy_gui()
-    np._overlay = Gtk.Overlay()
-    np.ntbkNewPrinter = Gtk.Notebook()
-    np._overlay.add(np.ntbkNewPrinter)
-    np._overlay_vbox = Gtk.Box()
-    np._overlay_spinner = MagicMock()
-    np._overlay_label = MagicMock()
-    np.btnNPForward = Gtk.Button()
-    np.btnNPApply = Gtk.Button()
-    np.btnNPCancel = Gtk.Button()
-    np.btnNPBack = Gtk.Button()
-    np.setNPButtons = MagicMock()
-
-    # Initially notebook is sensitive
-    assert np.ntbkNewPrinter.get_sensitive() is True
-
-    # When wizard becomes busy:
-    newprinter.NewPrinterGUI._set_wizard_busy(np, True, "Searching")
-    # Notebook must NOT be dimmed / set insensitive
-    assert np.ntbkNewPrinter.get_sensitive() is True
-    # Blocker EventBox is in overlay
-    assert getattr(np, '_overlay_blocker', None) is not None
-    assert np._overlay_blocker.get_parent() is np._overlay
-    assert np._overlay_blocker.get_visible_window() is False
-    assert np._overlay_blocker.get_above_child() is True
-    # Buttons sensitivity
-    assert np.btnNPForward.get_sensitive() is False
-    assert np.btnNPApply.get_sensitive() is False
-    assert np.btnNPCancel.get_sensitive() is True
-    assert np.btnNPBack.get_sensitive() is True
-
-    # When wizard is no longer busy:
-    newprinter.NewPrinterGUI._set_wizard_busy(np, False)
-    assert np._overlay_blocker.get_parent() is None
-    assert np.ntbkNewPrinter.get_sensitive() is True
-
-
-def test_one_loader_at_a_time_skips_overlay_when_page_loading():
-    """Verify overlay spinner is skipped if the page already has its own loader up."""
-    np = get_dummy_gui()
-    np._overlay_vbox = MagicMock()
-    np._overlay_spinner = MagicMock()
-    np._overlay_label = MagicMock()
-
-    # Case 1: _driver_ppd_loading is True -> overlay is skipped
-    np._driver_ppd_loading = True
-    newprinter.NewPrinterGUI._show_searching_spinner(np, "Searching for drivers")
-    np._overlay_vbox.show.assert_not_called()
-    np._overlay_spinner.show.assert_not_called()
-    np._overlay_spinner.start.assert_not_called()
-
-    # Case 2: _driver_ppd_loading is False -> overlay shows with spinner shown & started
-    np._driver_ppd_loading = False
-    newprinter.NewPrinterGUI._show_searching_spinner(np, "Searching for drivers")
-    np._overlay_vbox.show.assert_called_once()
-    np._overlay_spinner.show.assert_called_once()
-    np._overlay_spinner.start.assert_called_once()
 
 
 def test_apply_printer_creation_sync_wrapper_and_error_handling():
@@ -4536,6 +4493,199 @@ def test_apply_printer_creation_sync_wrapper_and_error_handling():
         np.on_btnNPApply_clicked(np.btnNPApply)
         mock_activate.assert_not_called()
         np.emit.assert_not_called()
+
+
+def test_broken_xerox_driverless_make_selection():
+    """Verify 'Broken Xerox B235' with unknown make defaults to Generic with no recommended driver."""
+    # 1. Normal Xerox scenario: Xerox is known make, selects and recommends Xerox
+    np_normal = get_dummy_gui()
+    np_normal.ppds = MagicMock()
+    np_normal.ppds.ppds = {}
+    np_normal.ppds.getMakes.return_value = ["Generic", "Brother", "Canon", "HP", "Xerox"]
+    normal_makes_model = Gtk.ListStore(str, str)
+    np_normal.tvNPMakes = MagicMock()
+    np_normal.tvNPMakes.get_model.return_value = normal_makes_model
+    np_normal.fillDriverList = MagicMock()
+    np_normal.entNPDownloadableDriverSearch = MagicMock()
+    normal_uri = "ipp://Xerox-B235.local/"
+    np_normal.device = cupshelpers.Device(
+        normal_uri,
+        **{"device-info": "driverless",
+           "device-id": "MFG:Xerox;MDL:B235 MFP;",
+           "device-make-and-model": "Xerox B235 MFP"}
+    )
+    np_normal.device.driverless = True
+    mock_ppd = MagicMock(spec=cups.PPD)
+    def mock_find_attr(name):
+        attr = MagicMock()
+        if name == "NickName":
+            attr.value = "Xerox B235 MFP, driverless, cups-filters 2.0.0"
+            return attr
+        elif name == "Manufacturer":
+            attr.value = "Xerox"
+            return attr
+        return None
+    mock_ppd.findAttr.side_effect = mock_find_attr
+    np_normal.ppds.getInfoFromPPDName.return_value = {
+        'ppd-make-and-model': ['Xerox B235 MFP, driverless, cups-filters 2.0.0']
+    }
+    np_normal._validateDriverlessPPD = MagicMock(return_value=mock_ppd)
+
+    real_install_normal = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np_normal)
+    real_install_normal(np_normal.device.id, newprinter.NewPrinterGUI.PAGE_SELECT_DEVICE, 1)
+
+    assert np_normal.auto_make == "Xerox"
+
+    real_fill_normal = newprinter.NewPrinterGUI.fillMakeList.__get__(np_normal)
+    real_fill_normal()
+
+    normal_make_rows = [row[0] for row in normal_makes_model]
+    assert any("Xerox" in r and "recommended" in r for r in normal_make_rows)
+
+    # Select Xerox in tvNPMakes (trigger cursor changed -> fillModelList)
+    np_normal.models_liststore = Gtk.ListStore(str, str)
+    np_normal.models_filter = np_normal.models_liststore.filter_new()
+    np_normal.entryNPModelsSearch = MagicMock()
+    np_normal.tvNPModels = MagicMock()
+    np_normal.ppds.getModels.return_value = ["B235 MFP", "Phaser 3020"]
+    np_normal.fillModelList = newprinter.NewPrinterGUI.fillModelList.__get__(np_normal)
+
+    xerox_idx = [i for i, row in enumerate(normal_makes_model) if row[1] == "Xerox"][0]
+    np_normal.tvNPMakes.get_cursor.return_value = (Gtk.TreePath((xerox_idx,)), None)
+    real_cursor_changed_normal = newprinter.NewPrinterGUI.on_tvNPMakes_cursor_changed.__get__(np_normal)
+    real_cursor_changed_normal(np_normal.tvNPMakes)
+
+    assert np_normal.NPMake == "Xerox"
+    assert np_normal.recommended_make_selected is True
+    normal_model_rows = [row[0] for row in np_normal.models_liststore]
+    assert any("B235 MFP" in r and "recommended" in r for r in normal_model_rows)
+
+    # 2. Broken Xerox scenario: MFG: Broken Xerox does not exist in makes list
+    np_broken = get_dummy_gui()
+
+    broken_uri = "ipps://Broken-Xerox-B235.local/"
+    broken_ppdname = f"driverless:{broken_uri}"
+    broken_cups_entry = {
+        "ppd-make": ["Broken Xerox"],
+        "ppd-make-and-model": ["Broken Xerox B235 MFP, driverless, cups-filters 2.0.0"],
+        "ppd-device-id": ["MFG:Broken Xerox;MDL:Broken B235;CMD:PCLM;"],
+        "ppd-type": ["pdf"],
+        "ppd-natural-language": ["en"],
+    }
+    generic_entry = {
+        "ppd-make": ["Generic"],
+        "ppd-make-and-model": ["Generic PostScript Printer"],
+        "ppd-device-id": [""],
+        "ppd-type": ["postscript"],
+        "ppd-natural-language": ["en"],
+    }
+    xerox_entry = {
+        "ppd-make": ["Xerox"],
+        "ppd-make-and-model": ["Xerox Phaser 3020"],
+        "ppd-device-id": [""],
+        "ppd-type": ["postscript"],
+        "ppd-natural-language": ["en"],
+    }
+    ppds_fixture = {
+        broken_ppdname: broken_cups_entry,
+        "foomatic:Generic-PostScript.ppd": generic_entry,
+        "foomatic:Xerox-Phaser_3020.ppd": xerox_entry,
+    }
+    np_broken.ppds = cupshelpers.ppds.PPDs(ppds_fixture)
+    np_broken.driverless_ppds = {broken_ppdname: broken_cups_entry}
+    np_broken.device = cupshelpers.Device(
+        broken_uri,
+        **{"device-info": "driverless",
+           "device-id": "MFG:Broken Xerox;MDL:B235 MFP;CMD:PCLM;",
+           "device-make-and-model": "Broken Xerox B235 MFP"}
+    )
+    np_broken.device.driverless = True
+    np_broken.installed_driver_files = []
+    np_broken.searchedfordriverpackages = False
+    np_broken._validateDriverlessPPD = MagicMock(return_value=None)
+    makes_model = Gtk.ListStore(str, str)
+    np_broken.tvNPMakes = MagicMock()
+    np_broken.tvNPMakes.get_model.return_value = makes_model
+    np_broken.tvNPMakes.get_cursor.return_value = (None, None)
+    np_broken.fillDriverList = MagicMock()
+    np_broken.entNPDownloadableDriverSearch = MagicMock()
+
+    real_install_broken = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np_broken)
+    real_install_broken(np_broken.device.id, newprinter.NewPrinterGUI.PAGE_SELECT_DEVICE, 1)
+
+    # auto_make and auto_model must preserve detected manufacturer/model (Broken Xerox / B235 MFP)
+    assert np_broken.auto_make == "Broken Xerox"
+    assert np_broken.auto_model == "B235 MFP"
+    assert np_broken.device._driverless_failed is True
+
+    # Test fillMakeList selection
+    real_fill = newprinter.NewPrinterGUI.fillMakeList.__get__(np_broken)
+    real_fill()
+
+    make_rows = [row[0] for row in makes_model]
+    # No "Broken" or "Broken Xerox" row in Make list
+    assert not any("Broken" in r for r in make_rows)
+    # Nothing marked recommended
+    assert not any("(recommended)" in r for r in make_rows)
+    # Cursor lands on Generic (row 0)
+    cursor_calls = np_broken.tvNPMakes.set_cursor.call_args_list
+    assert cursor_calls, "set_cursor was not called"
+    last_cursor_path = cursor_calls[-1][0][0]
+    iter_at_cursor = makes_model.get_iter(last_cursor_path)
+    assert makes_model.get_value(iter_at_cursor, 1) == "Generic"
+
+    # Select make in tvNPMakes (Generic) and trigger cursor changed -> fillModelList runs with no exception
+    np_broken.models_liststore = Gtk.ListStore(str, str)
+    np_broken.models_filter = np_broken.models_liststore.filter_new()
+    np_broken.entryNPModelsSearch = MagicMock()
+    np_broken.tvNPModels = MagicMock()
+    np_broken.ppds.getModels = MagicMock(return_value=["Generic PostScript Printer"])
+    np_broken.fillModelList = newprinter.NewPrinterGUI.fillModelList.__get__(np_broken)
+    np_broken.tvNPMakes.get_cursor.return_value = (last_cursor_path, None)
+
+    real_cursor_changed_broken = newprinter.NewPrinterGUI.on_tvNPMakes_cursor_changed.__get__(np_broken)
+    real_cursor_changed_broken(np_broken.tvNPMakes)
+
+    assert np_broken.NPMake == "Generic"
+    assert not np_broken.recommended_make_selected
+
+    # Select another make (e.g. Xerox) -> fillModelList runs with no exception
+    xerox_idx = [i for i, row in enumerate(makes_model) if row[1] == "Xerox"][0]
+    np_broken.tvNPMakes.get_cursor.return_value = (Gtk.TreePath((xerox_idx,)), None)
+    real_cursor_changed_broken(np_broken.tvNPMakes)
+    assert np_broken.NPMake == "Xerox"
+    assert not np_broken.recommended_make_selected
+
+
+def test_back_button_during_driverless_ppd_validation_abandons_operation():
+    """Verify clicking Back during driverless validation marks op abandoned and drops late result."""
+    np = get_dummy_gui()
+    np.ntbkNewPrinter = MagicMock()
+    np.ntbkNewPrinter.get_current_page.return_value = newprinter.NewPrinterGUI.PAGE_SELECT_DEVICE
+    np.btnNPForward = MagicMock()
+    np.btnNPBack = MagicMock()
+    np.btnNPApply = MagicMock()
+    np.btnNPCancel = MagicMock()
+    np.device = cupshelpers.Device("ipp://test.local/ipp/print")
+    np.device.driverless = True
+
+    # Simulate Back clicked while _run_blocking is active
+    def mock_blocking(op, *args, **kwargs):
+        np._blocking_operation_in_flight = True
+        np.on_btnNPBack_clicked(np.btnNPBack)
+        np._blocking_operation_in_flight = False
+        return "/tmp/fake_ppd"
+
+    np._run_blocking = mock_blocking
+    np.nextNPTab = MagicMock()
+
+    # Call _validateDriverlessPPD with Back clicked mid-operation
+    result = np._validateDriverlessPPD("driverless:ipp://test.local/ipp/print")
+
+    # Late result is dropped
+    assert result is None
+    # Back button triggered nextNPTab(-1)
+    np.nextNPTab.assert_called_with(-1)
 
 
 def test_back_button_during_apply_abandons_printer_creation():
@@ -4604,4 +4754,613 @@ def test_centered_overlay_spinner_during_apply():
     np._overlay_spinner.stop.assert_called()
     np._overlay_vbox.hide.assert_called()
 
+
+def test_dialog_opened_notebook_visible_and_overlay_spinner_hidden():
+    """Verify that after opening the New Printer dialog, the notebook and overlay
+    are visible and the overlay spinner box starts hidden."""
+    import os
+    os.environ["SYSTEM_CONFIG_PRINTER_UI"] = "ui"
+    import newprinter
+    np = newprinter.NewPrinterGUI()
+    np.cups = MagicMock()
+    np.cups.getPrinters.return_value = {}
+    np.init("printer")
+
+    # Dialog window is visible
+    assert np.NewPrinterWindow.get_visible() is True
+
+    # The overlay and notebook must be visible
+    assert np._overlay is not None
+    assert np._overlay.get_visible() is True
+    assert np.ntbkNewPrinter.is_visible() is True
+
+    # Active notebook page must be visible
+    current_page = np.ntbkNewPrinter.get_nth_page(np.ntbkNewPrinter.get_current_page())
+    assert current_page.is_visible() is True
+
+    # Overlay spinner box must start hidden
+    assert np._overlay_vbox.get_visible() is False
+    assert np._overlay_vbox.is_visible() is False
+
+
+def _driverless_resolution_gui(advertisements):
+    np = get_dummy_gui()
+    normal_ppds = cupshelpers.ppds.PPDs({
+        "foomatic:Generic-PostScript.ppd": {
+            "ppd-make": ["Generic"],
+            "ppd-make-and-model": ["Generic PostScript Printer"],
+            "ppd-device-id": [""],
+            "ppd-type": ["postscript"],
+            "ppd-natural-language": ["en"],
+        },
+        "foomatic:Xerox-Legacy.ppd": {
+            "ppd-make": ["Xerox"],
+            "ppd-make-and-model": ["Xerox B235 MFP Legacy"],
+            "ppd-device-id": [""],
+            "ppd-type": ["postscript"],
+            "ppd-natural-language": ["en"],
+        },
+    })
+    loader = MagicMock()
+    loader.get_error.return_value = None
+    loader.get_ppds.return_value = normal_ppds
+    loader.get_driverless_ppds.return_value = advertisements
+    loader.get_ppdsmatch_result.return_value = None
+    loader._jockey_has_answered = False
+    newprinter.NewPrinterGUI._getPPDs_reply.__get__(np)(loader)
+
+    np.installed_driver_files = []
+    np.searchedfordriverpackages = True
+    np.remotecupsqueue = False
+    np.fillDriverList = MagicMock()
+    np.fillMakeList = MagicMock()
+    np.entNPDownloadableDriverSearch = MagicMock()
+    np.tvNPMakes = MagicMock()
+    np.tvNPMakes.get_model.return_value = Gtk.ListStore(str, str)
+    np.tvNPMakes.get_cursor.return_value = (None, None)
+    return np
+
+
+def _driverless_xerox_device(uri):
+    device = cupshelpers.Device(
+        uri,
+        **{"device-info": "driverless",
+           "device-id": "MFG:Xerox;MDL:B235 MFP;CMD:PCLM;",
+           "device-make-and-model": "Xerox B235 MFP"})
+    device.driverless = False
+    return device
+
+
+def _validated_xerox_ppd():
+    ppd = MagicMock(spec=cups.PPD)
+
+    def find_attr(name):
+        attr = MagicMock()
+        if name in ("NickName", "ShortNickName"):
+            attr.value = "Xerox B235 MFP, driverless, cups-filters 2.0.0"
+            return attr
+        if name == "Manufacturer":
+            attr.value = "Xerox"
+            return attr
+        return None
+
+    ppd.findAttr.side_effect = find_attr
+    return ppd
+
+
+def _run_selected_printer_resolution(np, device):
+    np.device = device
+    np._validateDriverlessPPD = MagicMock(
+        side_effect=lambda ppdname: (
+            (_validated_xerox_ppd()
+             if "Broken" not in ppdname else None)
+            if ppdname == "driverless:%s" % device.uri
+            else None))
+    install = newprinter.NewPrinterGUI._installPrinterFromDeviceID.__get__(np)
+    install(device.id, newprinter.NewPrinterGUI.PAGE_SELECT_DEVICE, 1)
+    return np._validateDriverlessPPD
+
+
+def test_only_xerox_advertisement_resolves_selected_xerox():
+    xerox_uri = "ipps://Xerox-B235.local/"
+    xerox_ppd = "driverless:%s" % xerox_uri
+    np = _driverless_resolution_gui({xerox_ppd: {
+        "ppd-make": ["Xerox"],
+        "ppd-make-and-model": ["Xerox B235 MFP, driverless, cups-filters 2.0.0"],
+        "ppd-device-id": ["MFG:Xerox;MDL:B235 MFP;CMD:PCLM;"],
+        "ppd-type": ["pdf"],
+        "ppd-natural-language": ["en"],
+    }})
+
+    validate = _run_selected_printer_resolution(
+        np, _driverless_xerox_device(xerox_uri))
+
+    assert [call.args[0] for call in validate.call_args_list] == [xerox_ppd]
+    assert np.auto_driver == xerox_ppd
+    assert np.auto_make == "Xerox"
+
+
+def test_broken_xerox_advertisement_never_enters_selected_xerox_resolution():
+    broken_uri = "ipps://Broken-Xerox-B235.local/"
+    xerox_uri = "ipps://Xerox-B235.local/"
+    broken_ppd = "driverless:%s" % broken_uri
+    xerox_ppd = "driverless:%s" % xerox_uri
+    shared_advertisements = {
+        broken_ppd: {
+            "ppd-make": ["Xerox"],
+            "ppd-make-and-model": ["Xerox B235 MFP, broken simulator"],
+            "ppd-device-id": ["MFG:Xerox;MDL:B235 MFP;CMD:PCLM;"],
+            "ppd-type": ["pdf"],
+            "ppd-natural-language": ["en"],
+        },
+        xerox_ppd: {
+            "ppd-make": ["Xerox"],
+            "ppd-make-and-model": ["Xerox B235 MFP, driverless, cups-filters 2.0.0"],
+            "ppd-device-id": ["MFG:Xerox;MDL:B235 MFP;CMD:PCLM;"],
+            "ppd-type": ["pdf"],
+            "ppd-natural-language": ["en"],
+        },
+    }
+    np = _driverless_resolution_gui(shared_advertisements)
+    assert set(np.driverless_ppds) == {broken_ppd, xerox_ppd}
+    assert broken_ppd not in np.ppds.ppds
+
+    # Simulate a previously validated entry left in the shared PPD catalog.
+    np._add_validated_driverless_ppd_to_catalog(broken_ppd)
+    ordered_candidates = []
+    real_order = np.ppds.orderPPDNamesByPreference
+
+    def record_ordered_candidates(ppdnames, *args, **kwargs):
+        ordered_candidates.extend(ppdnames)
+        return real_order(ppdnames, *args, **kwargs)
+
+    np.ppds.orderPPDNamesByPreference = record_ordered_candidates
+    validate = _run_selected_printer_resolution(
+        np, _driverless_xerox_device(xerox_uri))
+
+    assert broken_ppd not in ordered_candidates
+    assert [call.args[0] for call in validate.call_args_list] == [xerox_ppd]
+    assert np.auto_driver == xerox_ppd
+    assert np.auto_make == "Xerox"
+    assert getattr(np.device, "_driverless_failed", False) is False
+
+
+def test_xerox_candidate_does_not_enter_selected_broken_xerox_resolution():
+    broken_uri = "ipps://Broken-Xerox-B235.local/"
+    xerox_uri = "ipps://Xerox-B235.local/"
+    broken_ppd = "driverless:%s" % broken_uri
+    xerox_ppd = "driverless:%s" % xerox_uri
+    shared_advertisements = {
+        broken_ppd: {
+            "ppd-make": ["Xerox"],
+            "ppd-make-and-model": ["Xerox B235 MFP, broken simulator"],
+            "ppd-device-id": ["MFG:Xerox;MDL:B235 MFP;CMD:PCLM;"],
+            "ppd-type": ["pdf"],
+            "ppd-natural-language": ["en"],
+        },
+        xerox_ppd: {
+            "ppd-make": ["Xerox"],
+            "ppd-make-and-model": ["Xerox B235 MFP, driverless, cups-filters 2.0.0"],
+            "ppd-device-id": ["MFG:Xerox;MDL:B235 MFP;CMD:PCLM;"],
+            "ppd-type": ["pdf"],
+            "ppd-natural-language": ["en"],
+        },
+    }
+    np = _driverless_resolution_gui(shared_advertisements)
+    np._add_validated_driverless_ppd_to_catalog(xerox_ppd)
+    ordered_candidates = []
+    real_order = np.ppds.orderPPDNamesByPreference
+
+    def record_ordered_candidates(ppdnames, *args, **kwargs):
+        ordered_candidates.extend(ppdnames)
+        return real_order(ppdnames, *args, **kwargs)
+
+    np.ppds.orderPPDNamesByPreference = record_ordered_candidates
+    validate = _run_selected_printer_resolution(
+        np, _driverless_xerox_device(broken_uri))
+
+    assert xerox_ppd not in ordered_candidates
+    assert [call.args[0] for call in validate.call_args_list] == [broken_ppd]
+    assert getattr(np.device, "_driverless_failed", False) is True
+
+
+def test_new_selection_resets_resolution_state_and_scopes_to_new_device():
+    uris = [
+        "ipps://Printer-A.local/",
+        "ipps://Xerox-B235.local/",
+        "ipps://Printer-C.local/",
+    ]
+    advertisements = {
+        "driverless:%s" % uri: {
+            "ppd-make": ["Xerox"],
+            "ppd-make-and-model": ["Xerox B235 MFP, driverless"],
+            "ppd-device-id": ["MFG:Xerox;MDL:B235 MFP;CMD:PCLM;"],
+            "ppd-type": ["pdf"],
+            "ppd-natural-language": ["en"],
+        }
+        for uri in uris
+    }
+    np = _driverless_resolution_gui(advertisements)
+    np._add_validated_driverless_ppd_to_catalog("driverless:%s" % uris[0])
+    np._add_validated_driverless_ppd_to_catalog("driverless:%s" % uris[1])
+    np.auto_driver = "driverless:%s" % uris[1]
+    np.auto_make = "Stale make"
+    np.auto_model = "Stale model"
+    np.id_matched_ppdnames = ["stale"]
+    np._cached_driverless_ppd = object()
+    np._cached_driverless_ppd_name = "driverless:%s" % uris[1]
+
+    selected = _driverless_xerox_device(uris[2])
+    np.tvNPDeviceURIs = MagicMock()
+    np.tvNPDeviceURIs.get_cursor.return_value = (0, None)
+    device_model = MagicMock()
+    device_model.get_iter.return_value = "iter-c"
+    device_model.get_value.return_value = selected
+    np.tvNPDeviceURIs.get_model.return_value = device_model
+    np.lblNPDeviceDescription = MagicMock()
+    np.new_printer_device_tabs = {}
+    np.ntbkNPType = MagicMock()
+    np.entNPTDevice = MagicMock()
+    np.entNPLocation = MagicMock()
+    np._host = "localhost"
+    np.setNPButtons = MagicMock()
+
+    newprinter.NewPrinterGUI.on_tvNPDeviceURIs_cursor_changed.__get__(np)(
+        np.tvNPDeviceURIs)
+    ordered_candidates = []
+    real_order = np.ppds.orderPPDNamesByPreference
+
+    def record_ordered_candidates(ppdnames, *args, **kwargs):
+        ordered_candidates.extend(ppdnames)
+        return real_order(ppdnames, *args, **kwargs)
+
+    np.ppds.orderPPDNamesByPreference = record_ordered_candidates
+    validate = _run_selected_printer_resolution(np, selected)
+
+    assert np.auto_driver == "driverless:%s" % uris[2]
+    assert np.auto_make == "Xerox"
+    assert getattr(selected, "_driverless_failed", False) is False
+    assert "driverless:%s" % uris[0] not in ordered_candidates
+    assert "driverless:%s" % uris[1] not in ordered_candidates
+    assert [call.args[0] for call in validate.call_args_list] == [
+        "driverless:%s" % uris[2]]
+
+
+def test_set_wizard_busy_blocks_clicks_without_dimming():
+    """Verify _set_wizard_busy uses an overlay EventBox blocker without dimming notebook."""
+    np = get_dummy_gui()
+    np._overlay = Gtk.Overlay()
+    np.ntbkNewPrinter = Gtk.Notebook()
+    np._overlay.add(np.ntbkNewPrinter)
+    np._overlay_vbox = Gtk.Box()
+    np._overlay_spinner = MagicMock()
+    np._overlay_label = MagicMock()
+    np.btnNPForward = Gtk.Button()
+    np.btnNPApply = Gtk.Button()
+    np.btnNPCancel = Gtk.Button()
+    np.btnNPBack = Gtk.Button()
+    np.setNPButtons = MagicMock()
+
+    # Initially notebook is sensitive
+    assert np.ntbkNewPrinter.get_sensitive() is True
+
+    # When wizard becomes busy:
+    newprinter.NewPrinterGUI._set_wizard_busy(np, True, "Searching")
+    # Notebook must NOT be dimmed / set insensitive
+    assert np.ntbkNewPrinter.get_sensitive() is True
+    # Blocker EventBox is in overlay
+    assert getattr(np, '_overlay_blocker', None) is not None
+    assert np._overlay_blocker.get_parent() is np._overlay
+    assert np._overlay_blocker.get_visible_window() is False
+    assert np._overlay_blocker.get_above_child() is True
+    # Buttons sensitivity
+    assert np.btnNPForward.get_sensitive() is False
+    assert np.btnNPApply.get_sensitive() is False
+    assert np.btnNPCancel.get_sensitive() is True
+    assert np.btnNPBack.get_sensitive() is True
+
+    # When wizard is no longer busy:
+    newprinter.NewPrinterGUI._set_wizard_busy(np, False)
+    assert np._overlay_blocker.get_parent() is None
+    assert np.ntbkNewPrinter.get_sensitive() is True
+
+
+def test_one_loader_at_a_time_skips_overlay_when_page_loading():
+    """Verify overlay spinner is skipped if the page already has its own loader up."""
+    np = get_dummy_gui()
+    np._overlay_vbox = MagicMock()
+    np._overlay_spinner = MagicMock()
+    np._overlay_label = MagicMock()
+
+    # Case 1: _driver_ppd_loading is True -> overlay is skipped
+    np._driver_ppd_loading = True
+    newprinter.NewPrinterGUI._show_searching_spinner(np, "Searching for drivers")
+    np._overlay_vbox.show.assert_not_called()
+    np._overlay_spinner.show.assert_not_called()
+    np._overlay_spinner.start.assert_not_called()
+
+    # Case 2: _driver_ppd_loading is False -> overlay shows with spinner shown & started
+    np._driver_ppd_loading = False
+    newprinter.NewPrinterGUI._show_searching_spinner(np, "Searching for drivers")
+    np._overlay_vbox.show.assert_called_once()
+    np._overlay_spinner.show.assert_called_once()
+    np._overlay_spinner.start.assert_called_once()
+
+
+def test_selection_order_xerox_then_broken_xerox():
+    """Verify selecting normal Xerox then Broken Xerox correctly transitions to Generic fallback."""
+    np = get_dummy_gui()
+    xerox_uri = "ipp://xerox.local/"
+    broken_uri = "ipps://broken-xerox.local/"
+    xerox_ppd = f"driverless:{xerox_uri}"
+    broken_ppd = f"driverless:{broken_uri}"
+
+    ppds_dict = {
+        "foomatic:Generic-PostScript.ppd": {
+            "ppd-make": ["Generic"],
+            "ppd-make-and-model": ["Generic PostScript Printer"],
+            "ppd-device-id": [""],
+            "ppd-type": ["postscript"],
+            "ppd-natural-language": ["en"],
+        },
+        "foomatic:Xerox-Phaser_3020.ppd": {
+            "ppd-make": ["Xerox"],
+            "ppd-make-and-model": ["Xerox Phaser 3020"],
+            "ppd-device-id": [""],
+            "ppd-type": ["postscript"],
+            "ppd-natural-language": ["en"],
+        },
+        xerox_ppd: {
+            "ppd-make": ["Xerox"],
+            "ppd-make-and-model": ["Xerox B235 MFP, driverless, cups-filters 2.0.0"],
+            "ppd-device-id": ["MFG:Xerox;MDL:B235 MFP;CMD:PCLM;"],
+            "ppd-type": ["pdf"],
+            "ppd-natural-language": ["en"],
+        },
+        broken_ppd: {
+            "ppd-make": ["Broken Xerox"],
+            "ppd-make-and-model": ["Broken Xerox B235 MFP, driverless, cups-filters 2.0.0"],
+            "ppd-device-id": ["MFG:Broken Xerox;MDL:B235 MFP;CMD:PCLM;"],
+            "ppd-type": ["pdf"],
+            "ppd-natural-language": ["en"],
+        },
+    }
+    np.ppds = cupshelpers.ppds.PPDs(ppds_dict)
+    np.driverless_ppds = {
+        xerox_ppd: ppds_dict[xerox_ppd],
+        broken_ppd: ppds_dict[broken_ppd],
+    }
+
+    mock_xerox_ppd = MagicMock(spec=cups.PPD)
+    def mock_find_attr(name):
+        attr = MagicMock()
+        if name in ("NickName", "ModelName"):
+            attr.value = "Xerox B235 MFP, driverless, cups-filters 2.0.0"
+            return attr
+        elif name == "Manufacturer":
+            attr.value = "Xerox"
+            return attr
+        return None
+    mock_xerox_ppd.findAttr.side_effect = mock_find_attr
+
+    def mock_validate(name):
+        if name == xerox_ppd:
+            return mock_xerox_ppd
+        return None
+    np._validateDriverlessPPD = MagicMock(side_effect=mock_validate)
+    np.fillDriverList = MagicMock()
+    np.entNPDownloadableDriverSearch = MagicMock()
+    np.searchedfordriverpackages = False
+    np.installed_driver_files = []
+    makes_model_xerox = Gtk.ListStore(str, str)
+    np.tvNPMakes = MagicMock()
+    np.tvNPMakes.get_model.return_value = makes_model_xerox
+    np.tvNPMakes.get_cursor.return_value = (None, None)
+
+    # 1. Select normal Xerox
+    dev_xerox = cupshelpers.Device(
+        xerox_uri,
+        **{"device-info": "driverless",
+           "device-id": "MFG:Xerox;MDL:B235 MFP;CMD:PCLM;",
+           "device-make-and-model": "Xerox B235 MFP"}
+    )
+    dev_xerox.driverless = True
+    np.device = dev_xerox
+
+    newprinter.NewPrinterGUI._installPrinterFromDeviceID(np, dev_xerox.id, np.PAGE_SELECT_DEVICE, 1)
+    assert np.auto_driver == xerox_ppd
+    assert np.auto_make == "Xerox"
+
+    makes_model_xerox = Gtk.ListStore(str, str)
+    np.tvNPMakes = MagicMock()
+    np.tvNPMakes.get_model.return_value = makes_model_xerox
+    np.tvNPMakes.get_cursor.return_value = (None, None)
+    newprinter.NewPrinterGUI.fillMakeList(np)
+    make_rows_xerox = [row[0] for row in makes_model_xerox]
+    assert any("Xerox" in r and "recommended" in r for r in make_rows_xerox)
+
+    # 2. Switch to Broken Xerox
+    dev_broken = cupshelpers.Device(
+        broken_uri,
+        **{"device-info": "driverless",
+           "device-id": "MFG:Broken Xerox;MDL:B235 MFP;CMD:PCLM;",
+           "device-make-and-model": "Broken Xerox B235 MFP"}
+    )
+    dev_broken.driverless = True
+
+    # Simulate device selection change in treeview
+    device_model = MagicMock()
+    device_model.get_iter.return_value = "iter-broken"
+    device_model.get_value.return_value = dev_broken
+    np.tvNPDeviceURIs = MagicMock()
+    np.tvNPDeviceURIs.get_model.return_value = device_model
+    np.tvNPDeviceURIs.get_cursor.return_value = (0, None)
+    np.lblNPDeviceDescription = MagicMock()
+    np.new_printer_device_tabs = {}
+    np.ntbkNPType = MagicMock()
+    np.entNPTDevice = MagicMock()
+    np.entNPLocation = MagicMock()
+    np._host = "localhost"
+    np.setNPButtons = MagicMock()
+    newprinter.NewPrinterGUI.on_tvNPDeviceURIs_cursor_changed(np, np.tvNPDeviceURIs)
+
+    assert np.device is dev_broken
+    assert np._cached_driverless_ppd is None
+
+    makes_model_broken = Gtk.ListStore(str, str)
+    np.tvNPMakes.get_model.return_value = makes_model_broken
+    np.tvNPMakes.get_cursor.return_value = (None, None)
+    newprinter.NewPrinterGUI._installPrinterFromDeviceID(np, dev_broken.id, np.PAGE_SELECT_DEVICE, 1)
+    assert dev_broken._driverless_failed is True
+    assert np.auto_make == "Broken Xerox"
+
+    make_rows_broken = [row[0] for row in makes_model_broken]
+
+    # No Broken make row, nothing recommended, lands on Generic (row 0)
+    assert not any("Broken" in r for r in make_rows_broken)
+    assert not any("(recommended)" in r for r in make_rows_broken)
+    cursor_calls = np.tvNPMakes.set_cursor.call_args_list
+    assert cursor_calls
+    last_path = cursor_calls[-1][0][0]
+    iter_at_cursor = makes_model_broken.get_iter(last_path)
+    assert makes_model_broken.get_value(iter_at_cursor, 1) == "Generic"
+
+
+def test_selection_order_broken_xerox_then_xerox_via_back():
+    """Verify selecting Broken Xerox, clicking Back, and selecting Xerox works correctly."""
+    np = get_dummy_gui()
+    xerox_uri = "ipp://xerox.local/"
+    broken_uri = "ipps://broken-xerox.local/"
+    xerox_ppd = f"driverless:{xerox_uri}"
+    broken_ppd = f"driverless:{broken_uri}"
+
+    ppds_dict = {
+        "foomatic:Generic-PostScript.ppd": {
+            "ppd-make": ["Generic"],
+            "ppd-make-and-model": ["Generic PostScript Printer"],
+            "ppd-device-id": [""],
+            "ppd-type": ["postscript"],
+            "ppd-natural-language": ["en"],
+        },
+        "foomatic:Xerox-Phaser_3020.ppd": {
+            "ppd-make": ["Xerox"],
+            "ppd-make-and-model": ["Xerox Phaser 3020"],
+            "ppd-device-id": [""],
+            "ppd-type": ["postscript"],
+            "ppd-natural-language": ["en"],
+        },
+        xerox_ppd: {
+            "ppd-make": ["Xerox"],
+            "ppd-make-and-model": ["Xerox B235 MFP, driverless, cups-filters 2.0.0"],
+            "ppd-device-id": ["MFG:Xerox;MDL:B235 MFP;CMD:PCLM;"],
+            "ppd-type": ["pdf"],
+            "ppd-natural-language": ["en"],
+        },
+        broken_ppd: {
+            "ppd-make": ["Broken Xerox"],
+            "ppd-make-and-model": ["Broken Xerox B235 MFP, driverless, cups-filters 2.0.0"],
+            "ppd-device-id": ["MFG:Broken Xerox;MDL:B235 MFP;CMD:PCLM;"],
+            "ppd-type": ["pdf"],
+            "ppd-natural-language": ["en"],
+        },
+    }
+    np.ppds = cupshelpers.ppds.PPDs(ppds_dict)
+    np.driverless_ppds = {
+        xerox_ppd: ppds_dict[xerox_ppd],
+        broken_ppd: ppds_dict[broken_ppd],
+    }
+
+    mock_xerox_ppd = MagicMock(spec=cups.PPD)
+    def mock_find_attr(name):
+        attr = MagicMock()
+        if name in ("NickName", "ModelName"):
+            attr.value = "Xerox B235 MFP, driverless, cups-filters 2.0.0"
+            return attr
+        elif name == "Manufacturer":
+            attr.value = "Xerox"
+            return attr
+        return None
+    mock_xerox_ppd.findAttr.side_effect = mock_find_attr
+
+    def mock_validate(name):
+        if name == xerox_ppd:
+            return mock_xerox_ppd
+        return None
+    np._validateDriverlessPPD = MagicMock(side_effect=mock_validate)
+    np.fillDriverList = MagicMock()
+    np.entNPDownloadableDriverSearch = MagicMock()
+    np.searchedfordriverpackages = False
+    np.installed_driver_files = []
+
+    # 1. Select Broken Xerox first
+    dev_broken = cupshelpers.Device(
+        broken_uri,
+        **{"device-info": "driverless",
+           "device-id": "MFG:Broken Xerox;MDL:B235 MFP;CMD:PCLM;",
+           "device-make-and-model": "Broken Xerox B235 MFP"}
+    )
+    dev_broken.driverless = True
+    np.device = dev_broken
+
+    makes_model_broken = Gtk.ListStore(str, str)
+    np.tvNPMakes = MagicMock()
+    np.tvNPMakes.get_model.return_value = makes_model_broken
+    np.tvNPMakes.get_cursor.return_value = (None, None)
+
+    newprinter.NewPrinterGUI._installPrinterFromDeviceID(np, dev_broken.id, np.PAGE_SELECT_DEVICE, 1)
+    assert dev_broken._driverless_failed is True
+    assert np.auto_make == "Broken Xerox"
+
+    make_rows_broken = [row[0] for row in makes_model_broken]
+    assert not any("Broken" in r for r in make_rows_broken)
+    assert not any("(recommended)" in r for r in make_rows_broken)
+    cursor_calls = np.tvNPMakes.set_cursor.call_args_list
+    assert cursor_calls
+    last_path = cursor_calls[-1][0][0]
+    iter_at_cursor = makes_model_broken.get_iter(last_path)
+    assert makes_model_broken.get_value(iter_at_cursor, 1) == "Generic"
+
+    # 2. Simulate Back button to device selection page
+    np.ntbkNewPrinter = MagicMock()
+    np.ntbkNewPrinter.get_current_page.return_value = np.PAGE_SELECT_INSTALL_METHOD
+    np.nextNPTab = MagicMock()
+    newprinter.NewPrinterGUI.on_btnNPBack_clicked(np, None)
+    np.nextNPTab.assert_called_with(-1)
+
+    # 3. Select normal Xerox
+    dev_xerox = cupshelpers.Device(
+        xerox_uri,
+        **{"device-info": "driverless",
+           "device-id": "MFG:Xerox;MDL:B235 MFP;CMD:PCLM;",
+           "device-make-and-model": "Xerox B235 MFP"}
+    )
+    dev_xerox.driverless = True
+
+    device_model = MagicMock()
+    device_model.get_iter.return_value = "iter-xerox"
+    device_model.get_value.return_value = dev_xerox
+    np.tvNPDeviceURIs = MagicMock()
+    np.tvNPDeviceURIs.get_model.return_value = device_model
+    np.tvNPDeviceURIs.get_cursor.return_value = (0, None)
+    np.lblNPDeviceDescription = MagicMock()
+    np.new_printer_device_tabs = {}
+    np.ntbkNPType = MagicMock()
+    np.entNPTDevice = MagicMock()
+    np.entNPLocation = MagicMock()
+    np._host = "localhost"
+    np.setNPButtons = MagicMock()
+    newprinter.NewPrinterGUI.on_tvNPDeviceURIs_cursor_changed(np, np.tvNPDeviceURIs)
+
+    assert np.device is dev_xerox
+    assert np._cached_driverless_ppd is None
+
+    makes_model_xerox = Gtk.ListStore(str, str)
+    np.tvNPMakes.get_model.return_value = makes_model_xerox
+    np.tvNPMakes.get_cursor.return_value = (None, None)
+    newprinter.NewPrinterGUI._installPrinterFromDeviceID(np, dev_xerox.id, np.PAGE_SELECT_DEVICE, 1)
+    assert np.auto_driver == xerox_ppd
+    assert np.auto_make == "Xerox"
+
+    make_rows_xerox = [row[0] for row in makes_model_xerox]
+    assert any("Xerox" in r and "recommended" in r for r in make_rows_xerox)
 

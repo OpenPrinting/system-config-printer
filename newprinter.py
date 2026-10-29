@@ -1763,6 +1763,7 @@ class NewPrinterGUI(GtkGUI):
                     self.device._driverless_failed = True
                     self.searchedfordriverpackages = True
                     self.exactdrivermatch = False
+                    self._remove_driverless_ppd_from_catalog(self.device.uri)
                     self.nextnptab_rerun = False
                     result = self._handlePrinterInstallationMode(step)
                     if result == self.INSTALL_RESULT_OPS_PENDING:
@@ -2313,6 +2314,41 @@ class NewPrinterGUI(GtkGUI):
             if alt_ppdname:
                 self.ppds[alt_ppdname] = entry.copy()
 
+    def _remove_driverless_ppd_from_catalog(self, uri=None):
+        if not uri or not self.ppds:
+            return
+
+        catalog = getattr(self.ppds, 'ppds', self.ppds)
+        if not isinstance(catalog, dict):
+            return
+
+        key = uri if uri.startswith("driverless:") else "driverless:" + uri
+        norm_key = urllib.parse.unquote(key).rstrip('/')
+
+        to_remove = [k for k in list(catalog.keys())
+                     if k == key or (isinstance(k, str) and urllib.parse.unquote(k).rstrip('/') == norm_key)]
+
+        if to_remove:
+            for k in to_remove:
+                catalog.pop(k, None)
+            if hasattr(self.ppds, 'makes'):
+                self.ppds.makes = None
+                self.ppds.lmakes = None
+                self.ppds.lmodels = None
+                self.ppds.ids = None
+
+        if getattr(self, 'driverless_ppds', None) and isinstance(self.driverless_ppds, dict):
+            dl_remove = [k for k in list(self.driverless_ppds.keys())
+                         if k == key or (isinstance(k, str) and urllib.parse.unquote(k).rstrip('/') == norm_key)]
+            for k in dl_remove:
+                self.driverless_ppds.pop(k, None)
+
+        if getattr(self, '_cached_driverless_ppd_name', None):
+            cached_norm = urllib.parse.unquote(self._cached_driverless_ppd_name).rstrip('/')
+            if self._cached_driverless_ppd_name == key or cached_norm == norm_key:
+                self._cached_driverless_ppd = None
+                self._cached_driverless_ppd_name = None
+
     def _installPrinterFromDeviceID (self, devid, page_nr, step):
         ppdname = None
         status = None
@@ -2336,6 +2372,7 @@ class NewPrinterGUI(GtkGUI):
                     self.device._driverless_failed = True
                     self.searchedfordriverpackages = True
                     self.exactdrivermatch = False
+                    self._remove_driverless_ppd_from_catalog(self.device.uri)
                     ppdname = None
                     status = None
                     self.id_matched_ppdnames = []
@@ -2423,6 +2460,23 @@ class NewPrinterGUI(GtkGUI):
                         fit = {k: v for k, v in fit.items() if v != getattr(self.ppds, 'FIT_NONE', 'none')}
                         fit[matched_ppd] = getattr(self.ppds, 'FIT_EXACT', 'exact')
 
+                # self.ppds is shared across printer selections and may retain
+                # validated driverless PPDs from a different selected device.
+                selected_driverless = (
+                    "driverless:%s" % search_uri if search_uri else None)
+                selected_driverless_norm = (
+                    urllib.parse.unquote(selected_driverless).rstrip('/')
+                    if selected_driverless else None)
+                fit = {
+                    name: score for name, score in fit.items()
+                    if not (isinstance(name, str) and
+                            name.startswith("driverless:") and
+                            not name.startswith("driverless-fax:") and
+                            (selected_driverless_norm is None or
+                             urllib.parse.unquote(name).rstrip('/') !=
+                             selected_driverless_norm))
+                }
+
                 candidate_ppds = list(fit.keys())
                 if matched_ppd and matched_ppd in candidate_ppds:
                     candidate_ppds.remove(matched_ppd)
@@ -2443,28 +2497,39 @@ class NewPrinterGUI(GtkGUI):
                 if page_nr == self.PAGE_SELECT_INSTALL_METHOD and getattr(self.device, '_driverless_failed', False):
                     ppdnamelist = [p for p in ppdnamelist if not (isinstance(p, str) and p.startswith("driverless:"))]
                 else:
+                    driverless_candidate_validated = False
+                    driverless_candidate_failed = False
                     while ppdnamelist and isinstance(ppdnamelist[0], str) and ppdnamelist[0].startswith("driverless:"):
-                        validated_ppd = self._validateDriverlessPPD(ppdnamelist[0])
+                        candidate = ppdnamelist[0]
+                        validated_ppd = self._validateDriverlessPPD(candidate)
 
                         if getattr(self, 'device', None) is None or getattr(self, '_op_abandoned', False) or getattr(self, '_cancelled', False):
                             return self.INSTALL_RESULT_DONE
 
                         if validated_ppd is None:
-                            debugprint("Driverless PPD validation failed; abandoning driverless mode completely")
-                            self.device.driverless = False
-                            self.device._driverless_failed = True
-                            self.searchedfordriverpackages = True
-                            self.exactdrivermatch = False
-                            ppdnamelist = [p for p in ppdnamelist if not (isinstance(p, str) and p.startswith("driverless:"))]
-                            break
+                            driverless_candidate_failed = True
+                            ppdnamelist.pop(0)
+                            continue
                         else:
                             self._cached_driverless_ppd = validated_ppd
-                            self._cached_driverless_ppd_name = ppdnamelist[0]
+                            self._cached_driverless_ppd_name = candidate
                             if page_nr != self.PAGE_SELECT_INSTALL_METHOD:
                                 self.device.driverless = True
-                            self._ensure_driverless_ppd_in_cache(ppdnamelist[0], validated_ppd)
-                            self._add_validated_driverless_ppd_to_catalog(ppdnamelist[0])
+                            self.device._driverless_failed = False
+                            self._ensure_driverless_ppd_in_cache(candidate, validated_ppd)
+                            self._add_validated_driverless_ppd_to_catalog(candidate)
+                            driverless_candidate_validated = True
                             break
+
+                    if (driverless_candidate_failed and
+                            not driverless_candidate_validated and
+                            not any(isinstance(p, str) and p.startswith("driverless:")
+                                    for p in ppdnamelist)):
+                        self.device.driverless = False
+                        self.device._driverless_failed = True
+                        self.searchedfordriverpackages = True
+                        self.exactdrivermatch = False
+                        self._remove_driverless_ppd_from_catalog(self.device.uri)
 
                 self.id_matched_ppdnames = ppdnamelist
                 if ppdnamelist:
@@ -4301,9 +4366,17 @@ class NewPrinterGUI(GtkGUI):
         model = widget.get_model ()
         iter = model.get_iter (path)
         device = model.get_value(iter, 1)
-        if getattr(self, 'device', None) is not None and getattr(self.device, 'uri', None) != getattr(device, 'uri', None):
+        previous_device = getattr(self, 'device', None)
+        selection_changed = (
+            previous_device is None or
+            getattr(previous_device, 'uri', None) != getattr(device, 'uri', None))
+        if selection_changed:
             self._cached_driverless_ppd = None
             self._cached_driverless_ppd_name = None
+            device._driverless_failed = False
+            self._initialiseAutoVariables()
+            self.id_matched_ppdnames = []
+            self.ppd = None
         self.device = device
         self.lblNPDeviceDescription.set_text ('')
         page = self.new_printer_device_tabs.get (device.type, self.PAGE_SELECT_DEVICE)
