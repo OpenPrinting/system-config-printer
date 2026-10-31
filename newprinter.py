@@ -930,6 +930,11 @@ class NewPrinterGUI(GtkGUI):
         self.ppds = None
         self.ppdsmatch_result = None
         self.printer_finder = None
+        self._cached_driverless_ppd = None
+        self._cached_driverless_ppd_name = None
+        self._cancelled = False
+        self._op_abandoned = False
+        self._set_wizard_busy(False)
 
         if not self._validInitParameters ():
             raise RuntimeError
@@ -1370,14 +1375,13 @@ class NewPrinterGUI(GtkGUI):
         if self.ppdsloader:
             self.ppdsloader.destroy ()
             self.ppdsloader = None
-            self._hide_searching_spinner()
 
         if self.printer_finder:
             self.printer_finder.cancel ()
             self.printer_finder = None
 
+        self._set_wizard_busy(False)
         self.NewPrinterWindow.hide()
-        self._hide_searching_spinner()
         if getattr(self, 'opreq', None) is not None:
             for handler in self.opreq_handlers:
                 self.opreq.disconnect (handler)
@@ -1401,11 +1405,12 @@ class NewPrinterGUI(GtkGUI):
                 except (AttributeError, RuntimeError):
                     pass
 
-        if getattr(self, '_driver_ppd_loading', False):
+        if getattr(self, '_driver_ppd_loading', False) or self.ppdsloader:
             if self.ppdsloader:
                 self.ppdsloader.destroy ()
                 self.ppdsloader = None
             self._set_driver_ppd_loading(False)
+            self._set_wizard_busy(False)
         self.nextNPTab(-1)
 
     def on_btnNPForward_clicked(self, widget):

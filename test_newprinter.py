@@ -5364,3 +5364,175 @@ def test_selection_order_broken_xerox_then_xerox_via_back():
     make_rows_xerox = [row[0] for row in makes_model_xerox]
     assert any("Xerox" in r and "recommended" in r for r in make_rows_xerox)
 
+
+
+def test_cancel_then_add_resets_cancelled_and_populates_driver_list():
+    """Verify that cancelling a search and opening Add again properly resets
+    _cancelled and _op_abandoned, and populates the driver list for a Xerox printer."""
+    import os
+    os.environ["SYSTEM_CONFIG_PRINTER_UI"] = "ui"
+    import newprinter
+    np = newprinter.NewPrinterGUI()
+
+    # 1. Start initial Add session
+    np.init("printer")
+    assert np._cancelled is False
+
+    # 2. User cancels search
+    np.on_NPCancel(None)
+    assert np._cancelled is True
+
+    # 3. User clicks Add again on the same reused instance
+    np.init("printer")
+    assert np._cancelled is False
+    assert np._op_abandoned is False
+    assert np._cached_driverless_ppd is None
+
+    # Mock cups for the subsequent driverless PPD validation
+    np.cups = MagicMock()
+    np.cups.getServerPPD = MagicMock(return_value="/tmp/mock.ppd")
+
+    # 4. Driverless Xerox printer detected
+    xerox_uri = "ipps://Xerox(R)%20B235%20MFP._ipps._tcp.local/"
+    xerox_ppd = f"driverless:{xerox_uri}"
+    dev_xerox = cupshelpers.Device(
+        xerox_uri,
+        **{"device-class": "network",
+           "device-info": "Xerox B235 MFP (driverless)",
+           "device-id": "MANUFACTURER:Xerox;MODEL:B235 MFP;CMD:PCLM;",
+           "device-make-and-model": "Xerox B235 MFP"}
+    )
+    dev_xerox.driverless = True
+    np.device = dev_xerox
+
+    ppds_dict = {
+        "foomatic:Generic-PostScript.ppd": {
+            "ppd-make": ["Generic"],
+            "ppd-make-and-model": ["Generic PostScript Printer"],
+            "ppd-device-id": [""],
+        },
+        xerox_ppd: {
+            "ppd-make": ["Xerox"],
+            "ppd-make-and-model": ["Xerox B235 MFP, driverless, cups-filters 2.0.0"],
+            "ppd-device-id": ["MANUFACTURER:Xerox;MODEL:B235 MFP;CMD:PCLM;"],
+        },
+    }
+    np.ppds = cupshelpers.ppds.PPDs(ppds_dict)
+    np.driverless_ppds = {xerox_ppd: ppds_dict[xerox_ppd]}
+
+    mock_ppd_obj = MagicMock(spec=cups.PPD)
+    def mock_find_attr(name):
+        attr = MagicMock()
+        if name in ("NickName", "ModelName"):
+            attr.value = "Xerox B235 MFP, driverless, cups-filters 2.0.0"
+            return attr
+        elif name == "Manufacturer":
+            attr.value = "Xerox"
+            return attr
+        return None
+    mock_ppd_obj.findAttr.side_effect = mock_find_attr
+
+    with patch('cups.PPD', return_value=mock_ppd_obj), patch('os.unlink'):
+        np._installPrinterFromDeviceID(np.device.id, np.PAGE_SELECT_DEVICE, 1)
+
+        makes_model = np.tvNPMakes.get_model()
+        rows = [row[0] for row in makes_model] if makes_model else []
+        assert len(rows) > 0, "Makes list must not be empty after cancelling previous search"
+        assert any("Xerox" in r for r in rows)
+
+
+def test_repeated_cancel_then_add_lifecycle():
+    """Verify that repeated Add -> Cancel cycles repeatedly reset _cancelled and _op_abandoned."""
+    import os
+    os.environ["SYSTEM_CONFIG_PRINTER_UI"] = "ui"
+    import newprinter
+    np = newprinter.NewPrinterGUI()
+
+    for i in range(3):
+        np.init("printer")
+        assert np._cancelled is False
+        assert np._op_abandoned is False
+        np._op_abandoned = True
+        np.on_NPCancel(None)
+        assert np._cancelled is True
+        assert np.device is None
+
+    np.init("printer")
+    assert np._cancelled is False
+    assert np._op_abandoned is False
+
+
+def test_cancel_during_forward_ppd_loading_unblocks_overlay():
+    """Verify that cancelling while loading PPDs removes the overlay blocker,
+    and a subsequent Add session is completely unblocked."""
+    import os
+    os.environ["SYSTEM_CONFIG_PRINTER_UI"] = "ui"
+    import newprinter
+    np = newprinter.NewPrinterGUI()
+
+    # Session 1: Add
+    np.init("printer")
+    assert getattr(np, '_overlay_blocker', None) is None or np._overlay_blocker.get_parent() is None
+
+    dev = cupshelpers.Device("ipps://Xerox-B235.local/", **{
+        "device-class": "network",
+        "device-info": "Xerox B235 MFP (driverless)",
+        "device-make-and-model": "Xerox B235 MFP",
+        "device-id": "MANUFACTURER:Xerox;MODEL:B235 MFP;"
+    })
+    dev.driverless = True
+    np.device = dev
+
+    # Forward clicked -> _loadPPDsForDevice runs
+    with patch('ppdsloader.PPDsLoader.run'):
+        np._loadPPDsForDevice(dev.id, dev.uri)
+
+    # During load, wizard is busy and blocker is attached to overlay
+    assert np.ppdsloader is not None
+    assert getattr(np, '_overlay_blocker', None) is not None
+    assert np._overlay_blocker.get_parent() is np._overlay
+
+    # Immediately Cancel
+    np.on_NPCancel(None)
+
+    # After Cancel, ppdsloader is destroyed and blocker is detached
+    assert np.ppdsloader is None
+    assert np._overlay_blocker.get_parent() is None
+    assert np._cancelled is True
+
+    # Session 2: User opens Add Printer again
+    np.init("printer")
+
+    # In session 2, flags are reset and blocker remains detached
+    assert np._cancelled is False
+    assert np._op_abandoned is False
+    assert getattr(np, '_overlay_blocker', None) is None or np._overlay_blocker.get_parent() is None
+
+
+def test_back_during_forward_ppd_loading_unblocks_overlay():
+    """Verify that clicking Back while loading PPDs removes the overlay blocker."""
+    import os
+    os.environ["SYSTEM_CONFIG_PRINTER_UI"] = "ui"
+    import newprinter
+    np = newprinter.NewPrinterGUI()
+
+    np.init("printer")
+    dev = cupshelpers.Device("ipps://Xerox-B235.local/", **{
+        "device-class": "network",
+        "device-info": "Xerox B235 MFP (driverless)",
+        "device-id": "MANUFACTURER:Xerox;MODEL:B235 MFP;"
+    })
+    np.device = dev
+
+    with patch('ppdsloader.PPDsLoader.run'):
+        np._loadPPDsForDevice(dev.id, dev.uri)
+
+    assert np.ppdsloader is not None
+    assert getattr(np, '_overlay_blocker', None) is not None
+    assert np._overlay_blocker.get_parent() is np._overlay
+
+    # User clicks Back
+    np.on_btnNPBack_clicked(np.btnNPBack)
+
+    assert np.ppdsloader is None
+    assert np._overlay_blocker.get_parent() is None
