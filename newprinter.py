@@ -444,6 +444,7 @@ class NewPrinterGUI(GtkGUI):
         self.downloadable_printers = []
         self._cached_driverless_ppd = None
         self._cached_driverless_ppd_name = None
+        self._cancelled = False
         self.nextnptab_rerun = False
         self.printers = {} # set in init()
         self.recommended_model_selected = False
@@ -637,13 +638,46 @@ class NewPrinterGUI(GtkGUI):
         self.ntbkNPDownloadableDriverProperties.set_show_tabs(False)
 
         self.spinner_count = 0
-        old_spinner = self.spinner
-        spinner_parent = old_spinner.get_parent ()
-        if spinner_parent is not None:
-            spinner_parent.remove (old_spinner)
-            self.spinner = VectorSpinner (size=32)
-            spinner_parent.pack_start (self.spinner, False, True, 0)
-            spinner_parent.reorder_child (self.spinner, 0)
+        if hasattr(self, 'spinner') and self.spinner is not None:
+            self.spinner.hide()
+            self.spinner.set_no_show_all(True)
+
+        # Overlay for centered spinner across all wizard pages (e.g. Apply, Describe)
+        ntbk_parent = self.ntbkNewPrinter.get_parent() if hasattr(self, 'ntbkNewPrinter') and self.ntbkNewPrinter is not None else None
+        if ntbk_parent is not None:
+            self._overlay = Gtk.Overlay()
+            ntbk_parent.remove(self.ntbkNewPrinter)
+            self._overlay.add(self.ntbkNewPrinter)
+            ntbk_parent.pack_start(self._overlay, True, True, 0)
+            ntbk_parent.reorder_child(self._overlay, 0)
+
+            self._overlay_vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
+            self._overlay_vbox.set_halign(Gtk.Align.CENTER)
+            self._overlay_vbox.set_valign(Gtk.Align.CENTER)
+            self._overlay_vbox.set_vexpand(True)
+            self._overlay_vbox.set_hexpand(True)
+
+            self._overlay_spinner = VectorSpinner(size=48)
+            self._overlay_spinner.set_halign(Gtk.Align.CENTER)
+
+            self._overlay_label = Gtk.Label()
+            self._overlay_label.set_use_markup(True)
+            self._overlay_label.set_halign(Gtk.Align.CENTER)
+            self._overlay_label.set_justify(Gtk.Justification.CENTER)
+
+            self._overlay_vbox.pack_start(self._overlay_spinner, False, False, 0)
+            self._overlay_vbox.pack_start(self._overlay_label, False, False, 0)
+
+            self._overlay_vbox.set_no_show_all(True)
+            self._overlay_vbox.hide()
+            self._overlay.add_overlay(self._overlay_vbox)
+            self._overlay.show()
+            self.ntbkNewPrinter.show()
+        else:
+            self._overlay = None
+            self._overlay_vbox = None
+            self._overlay_spinner = None
+            self._overlay_label = None
 
         # Set up OpenPrinting widgets.
         self.opreq = None
@@ -801,17 +835,10 @@ class NewPrinterGUI(GtkGUI):
             self.WaitWindow = None
 
     def inc_spinner_task (self):
-        if self.spinner_count == 0:
-            self.spinner.show ()
-            self.spinner.start ()
-
-        self.spinner_count += 1
+        pass
 
     def dec_spinner_task (self):
-        self.spinner_count -= 1
-        if self.spinner_count == 0:
-            self.spinner.hide ()
-            self.spinner.stop ()
+        pass
 
     def show_IPP_Error (self, exception, message):
         debugprint ("%s: IPP error dialog (%s, %s)" % (self, repr (exception),
@@ -903,6 +930,11 @@ class NewPrinterGUI(GtkGUI):
         self.ppds = None
         self.ppdsmatch_result = None
         self.printer_finder = None
+        self._cached_driverless_ppd = None
+        self._cached_driverless_ppd_name = None
+        self._cancelled = False
+        self._op_abandoned = False
+        self._set_wizard_busy(False)
 
         if not self._validInitParameters ():
             raise RuntimeError
@@ -1125,7 +1157,6 @@ class NewPrinterGUI(GtkGUI):
                 schemes.extend (["snmp", "dnssd"])
             self.fetchDevices_conn = asyncconn.Connection ()
             self.fetchDevices_conn._begin_operation (_("fetching device list"))
-            self.inc_spinner_task ()
             cupshelpers.getDevices (self.fetchDevices_conn,
                                     include_schemes=schemes,
                                     reply_handler=self.change_ppd_got_devs,
@@ -1196,7 +1227,6 @@ class NewPrinterGUI(GtkGUI):
         self.fetchDevices_conn._end_operation ()
         self.fetchDevices_conn.destroy ()
         self.fetchDevices_conn = None
-        self.dec_spinner_task ()
         if isinstance (result, Exception):
             current_devices = {}
         else:
@@ -1245,7 +1275,7 @@ class NewPrinterGUI(GtkGUI):
                 self.nextNPTab ()
             self._set_driver_ppd_loading(False)
         finally:
-            self._hide_searching_spinner()
+            self._set_wizard_busy(False)
 
     # get PPDs
 
@@ -1325,6 +1355,13 @@ class NewPrinterGUI(GtkGUI):
     # Navigation buttons
 
     def on_NPCancel(self, widget, event=None):
+        self._cancelled = True
+        if getattr(self, 'cups', None) is not None:
+            try:
+                self.cups.cancel()
+            except (AttributeError, RuntimeError):
+                pass
+
         if getattr(self, '_driver_ppd_loading', False):
             if self.ppdsloader:
                 self.ppdsloader.destroy ()
@@ -1334,20 +1371,17 @@ class NewPrinterGUI(GtkGUI):
         if self.fetchDevices_conn:
             self.fetchDevices_conn.destroy ()
             self.fetchDevices_conn = None
-            self.dec_spinner_task ()
 
         if self.ppdsloader:
             self.ppdsloader.destroy ()
             self.ppdsloader = None
-            self._hide_searching_spinner()
 
         if self.printer_finder:
             self.printer_finder.cancel ()
             self.printer_finder = None
-            self.dec_spinner_task ()
 
+        self._set_wizard_busy(False)
         self.NewPrinterWindow.hide()
-        self._hide_searching_spinner()
         if getattr(self, 'opreq', None) is not None:
             for handler in self.opreq_handlers:
                 self.opreq.disconnect (handler)
@@ -1362,11 +1396,21 @@ class NewPrinterGUI(GtkGUI):
         return True
 
     def on_btnNPBack_clicked(self, widget):
-        if getattr(self, '_driver_ppd_loading', False):
+        if getattr(self, '_blocking_operation_in_flight', False):
+            self._op_abandoned = True
+            self._async_op_serial = getattr(self, '_async_op_serial', 0) + 1
+            if getattr(self, 'cups', None) is not None:
+                try:
+                    self.cups.cancel()
+                except (AttributeError, RuntimeError):
+                    pass
+
+        if getattr(self, '_driver_ppd_loading', False) or self.ppdsloader:
             if self.ppdsloader:
                 self.ppdsloader.destroy ()
                 self.ppdsloader = None
             self._set_driver_ppd_loading(False)
+            self._set_wizard_busy(False)
         self.nextNPTab(-1)
 
     def on_btnNPForward_clicked(self, widget):
@@ -1684,13 +1728,23 @@ class NewPrinterGUI(GtkGUI):
                 # (e.g. waiting for a CUPS to return a list of PPDs)
                 keep_going = False
 
-        if not keep_going:
-            debugprint ('Interrupting execution of nextNPTab(): Operations pending')
-            self.btnNPForward.set_sensitive (False)
+        if not keep_going or getattr(self, '_op_abandoned', False):
+            if getattr(self, '_op_abandoned', False):
+                self._op_abandoned = False
+                debugprint ('Interrupting execution of nextNPTab(): Operation abandoned')
+            else:
+                debugprint ('Interrupting execution of nextNPTab(): Operations pending')
+                self.btnNPForward.set_sensitive (False)
             return
 
         order = self._getPagesOrderForDialogMode ()
-        next_page_nr = order[order.index(page_nr)+step]
+        try:
+            curr_idx = order.index(page_nr)
+        except ValueError:
+            curr_idx = 0
+        if curr_idx + step < 0 or curr_idx + step >= len(order):
+            return
+        next_page_nr = order[curr_idx + step]
 
         # fill Installable Options tab
         fetch_ppd = False
@@ -1714,6 +1768,7 @@ class NewPrinterGUI(GtkGUI):
                     self.device._driverless_failed = True
                     self.searchedfordriverpackages = True
                     self.exactdrivermatch = False
+                    self._remove_driverless_ppd_from_catalog(self.device.uri)
                     self.nextnptab_rerun = False
                     result = self._handlePrinterInstallationMode(step)
                     if result == self.INSTALL_RESULT_OPS_PENDING:
@@ -2024,11 +2079,9 @@ class NewPrinterGUI(GtkGUI):
         if self.fetchDevices_conn:
             self.fetchDevices_conn.destroy ()
             self.fetchDevices_conn = None
-            self.dec_spinner_task ()
         if self.printer_finder:
             self.printer_finder.cancel ()
             self.printer_finder = None
-            self.dec_spinner_task ()
 
         if (not self.device.id and
             self.device.type in ["socket", "lpd", "ipp"] and
@@ -2137,7 +2190,7 @@ class NewPrinterGUI(GtkGUI):
 
     def _loadPPDsForDevice (self, devid, uri):
         debugprint ("nextNPTab: need PPDs loaded")
-        self._show_searching_spinner(_("Searching for drivers"))
+        self._set_wizard_busy(True, _("Searching for drivers"))
         p = ppdsloader.PPDsLoader (device_id=devid,
                                    device_uri=uri,
                                    parent=self.NewPrinterWindow,
@@ -2155,16 +2208,15 @@ class NewPrinterGUI(GtkGUI):
 
         self.cups._begin_operation(_("validating driverless PPD"))
         try:
-            if isinstance(getattr(self, 'cups', None), authconn.Connection):
-                f = self.cups.run_on_worker(self.cups.getServerPPD)(ppdname)
-            else:
-                f = self.cups.getServerPPD(ppdname)
+            f = self._run_blocking(self.cups.getServerPPD, ppdname,
+                                   spinner_text=_("Searching for drivers"))
 
-            if getattr(self, 'device', None) is None:
-                try:
-                    os.unlink(f)
-                except OSError:
-                    pass
+            if getattr(self, '_cancelled', False) or getattr(self, '_op_abandoned', False) or getattr(self, 'device', None) is None:
+                if f:
+                    try:
+                        os.unlink(f)
+                    except OSError:
+                        pass
                 return None
 
             try:
@@ -2267,6 +2319,41 @@ class NewPrinterGUI(GtkGUI):
             if alt_ppdname:
                 self.ppds[alt_ppdname] = entry.copy()
 
+    def _remove_driverless_ppd_from_catalog(self, uri=None):
+        if not uri or not self.ppds:
+            return
+
+        catalog = getattr(self.ppds, 'ppds', self.ppds)
+        if not isinstance(catalog, dict):
+            return
+
+        key = uri if uri.startswith("driverless:") else "driverless:" + uri
+        norm_key = urllib.parse.unquote(key).rstrip('/')
+
+        to_remove = [k for k in list(catalog.keys())
+                     if k == key or (isinstance(k, str) and urllib.parse.unquote(k).rstrip('/') == norm_key)]
+
+        if to_remove:
+            for k in to_remove:
+                catalog.pop(k, None)
+            if hasattr(self.ppds, 'makes'):
+                self.ppds.makes = None
+                self.ppds.lmakes = None
+                self.ppds.lmodels = None
+                self.ppds.ids = None
+
+        if getattr(self, 'driverless_ppds', None) and isinstance(self.driverless_ppds, dict):
+            dl_remove = [k for k in list(self.driverless_ppds.keys())
+                         if k == key or (isinstance(k, str) and urllib.parse.unquote(k).rstrip('/') == norm_key)]
+            for k in dl_remove:
+                self.driverless_ppds.pop(k, None)
+
+        if getattr(self, '_cached_driverless_ppd_name', None):
+            cached_norm = urllib.parse.unquote(self._cached_driverless_ppd_name).rstrip('/')
+            if self._cached_driverless_ppd_name == key or cached_norm == norm_key:
+                self._cached_driverless_ppd = None
+                self._cached_driverless_ppd_name = None
+
     def _installPrinterFromDeviceID (self, devid, page_nr, step):
         ppdname = None
         status = None
@@ -2281,8 +2368,8 @@ class NewPrinterGUI(GtkGUI):
                 ppdname = "driverless:%s" % self.device.uri
                 validated_ppd = self._validateDriverlessPPD(ppdname)
 
-                if getattr(self, 'device', None) is None:
-                    return
+                if getattr(self, 'device', None) is None or getattr(self, '_op_abandoned', False) or getattr(self, '_cancelled', False):
+                    return self.INSTALL_RESULT_DONE
 
                 if validated_ppd is None:
                     debugprint("Driverless PPD validation failed; abandoning driverless mode completely")
@@ -2290,6 +2377,7 @@ class NewPrinterGUI(GtkGUI):
                     self.device._driverless_failed = True
                     self.searchedfordriverpackages = True
                     self.exactdrivermatch = False
+                    self._remove_driverless_ppd_from_catalog(self.device.uri)
                     ppdname = None
                     status = None
                     self.id_matched_ppdnames = []
@@ -2377,6 +2465,23 @@ class NewPrinterGUI(GtkGUI):
                         fit = {k: v for k, v in fit.items() if v != getattr(self.ppds, 'FIT_NONE', 'none')}
                         fit[matched_ppd] = getattr(self.ppds, 'FIT_EXACT', 'exact')
 
+                # self.ppds is shared across printer selections and may retain
+                # validated driverless PPDs from a different selected device.
+                selected_driverless = (
+                    "driverless:%s" % search_uri if search_uri else None)
+                selected_driverless_norm = (
+                    urllib.parse.unquote(selected_driverless).rstrip('/')
+                    if selected_driverless else None)
+                fit = {
+                    name: score for name, score in fit.items()
+                    if not (isinstance(name, str) and
+                            name.startswith("driverless:") and
+                            not name.startswith("driverless-fax:") and
+                            (selected_driverless_norm is None or
+                             urllib.parse.unquote(name).rstrip('/') !=
+                             selected_driverless_norm))
+                }
+
                 candidate_ppds = list(fit.keys())
                 if matched_ppd and matched_ppd in candidate_ppds:
                     candidate_ppds.remove(matched_ppd)
@@ -2397,28 +2502,39 @@ class NewPrinterGUI(GtkGUI):
                 if page_nr == self.PAGE_SELECT_INSTALL_METHOD and getattr(self.device, '_driverless_failed', False):
                     ppdnamelist = [p for p in ppdnamelist if not (isinstance(p, str) and p.startswith("driverless:"))]
                 else:
+                    driverless_candidate_validated = False
+                    driverless_candidate_failed = False
                     while ppdnamelist and isinstance(ppdnamelist[0], str) and ppdnamelist[0].startswith("driverless:"):
-                        validated_ppd = self._validateDriverlessPPD(ppdnamelist[0])
+                        candidate = ppdnamelist[0]
+                        validated_ppd = self._validateDriverlessPPD(candidate)
 
-                        if getattr(self, 'device', None) is None:
-                            return
+                        if getattr(self, 'device', None) is None or getattr(self, '_op_abandoned', False) or getattr(self, '_cancelled', False):
+                            return self.INSTALL_RESULT_DONE
 
                         if validated_ppd is None:
-                            debugprint("Driverless PPD validation failed; abandoning driverless mode completely")
-                            self.device.driverless = False
-                            self.device._driverless_failed = True
-                            self.searchedfordriverpackages = True
-                            self.exactdrivermatch = False
-                            ppdnamelist = [p for p in ppdnamelist if not (isinstance(p, str) and p.startswith("driverless:"))]
-                            break
+                            driverless_candidate_failed = True
+                            ppdnamelist.pop(0)
+                            continue
                         else:
                             self._cached_driverless_ppd = validated_ppd
-                            self._cached_driverless_ppd_name = ppdnamelist[0]
+                            self._cached_driverless_ppd_name = candidate
                             if page_nr != self.PAGE_SELECT_INSTALL_METHOD:
                                 self.device.driverless = True
-                            self._ensure_driverless_ppd_in_cache(ppdnamelist[0], validated_ppd)
-                            self._add_validated_driverless_ppd_to_catalog(ppdnamelist[0])
+                            self.device._driverless_failed = False
+                            self._ensure_driverless_ppd_in_cache(candidate, validated_ppd)
+                            self._add_validated_driverless_ppd_to_catalog(candidate)
+                            driverless_candidate_validated = True
                             break
+
+                    if (driverless_candidate_failed and
+                            not driverless_candidate_validated and
+                            not any(isinstance(p, str) and p.startswith("driverless:")
+                                    for p in ppdnamelist)):
+                        self.device.driverless = False
+                        self.device._driverless_failed = True
+                        self.searchedfordriverpackages = True
+                        self.exactdrivermatch = False
+                        self._remove_driverless_ppd_from_catalog(self.device.uri)
 
                 self.id_matched_ppdnames = ppdnamelist
                 if ppdnamelist:
@@ -2553,16 +2669,27 @@ class NewPrinterGUI(GtkGUI):
             nonfatalException ()
 
         if not getattr(self, 'auto_make', None):
-            if getattr(self.device, 'make_and_model', None):
-                (make, model) = cupshelpers.ppds.ppdMakeModelSplit(self.device.make_and_model)
-                self.auto_make = make
+            make = ""
+            model = ""
+            if self.device and self.device.id_dict and self.device.id_dict.get("MFG"):
+                make = self.device.id_dict["MFG"] or ""
+                model = self.device.id_dict.get("MDL") or ""
             elif devid:
                 try:
                     id_dict = self.device.id_dict if self.device and self.device.id else cupshelpers.parseDeviceID(devid)
                     if id_dict.get("MFG"):
-                        self.auto_make = id_dict["MFG"]
+                        make = id_dict["MFG"] or ""
+                        model = id_dict.get("MDL") or ""
                 except:
                     pass
+            if not make and getattr(self.device, 'make_and_model', None):
+                (m, mdl) = cupshelpers.ppds.ppdMakeModelSplit(self.device.make_and_model)
+                make = m or ""
+                if not model:
+                    model = mdl or ""
+
+            self.auto_make = make
+            self.auto_model = model
 
         if self.ppds is not None:
             if (self.dialog_mode == "ppd" or
@@ -3191,7 +3318,8 @@ class NewPrinterGUI(GtkGUI):
         del self.current_uri
 
     def _show_searching_spinner (self, text=""):
-        if getattr(self, '_searching_stack', None) is not None:
+        page_nr = self.ntbkNewPrinter.get_current_page() if hasattr(self, 'ntbkNewPrinter') else -1
+        if page_nr == self.PAGE_SELECT_DEVICE and getattr(self, '_searching_stack', None) is not None:
             if text:
                 self._searching_label.set_markup("<b>%s</b>" % text)
                 self._searching_label.show()
@@ -3199,11 +3327,93 @@ class NewPrinterGUI(GtkGUI):
                 self._searching_label.hide()
             self._searching_spinner.start ()
             self._searching_stack.set_visible_child_name("spinner")
+        elif getattr(self, '_overlay_vbox', None) is not None:
+            if getattr(self, '_driver_ppd_loading', False):
+                return
+            if (getattr(self, '_driver_selection_stack', None) is not None and
+                    self._driver_selection_stack.get_visible_child_name() == "loading"):
+                return
+            if text:
+                self._overlay_label.set_markup("<b>%s</b>" % text)
+                self._overlay_label.show()
+            else:
+                self._overlay_label.hide()
+            self._overlay_spinner.show ()
+            self._overlay_spinner.start ()
+            self._overlay_vbox.show ()
 
     def _hide_searching_spinner (self):
         if getattr(self, '_searching_stack', None) is not None:
             self._searching_spinner.stop ()
             self._searching_stack.set_visible_child_name("notebook")
+        if getattr(self, '_overlay_vbox', None) is not None:
+            self._overlay_spinner.stop ()
+            self._overlay_vbox.hide ()
+
+    def _set_wizard_busy (self, busy, spinner_text=""):
+        if busy:
+            try:
+                if hasattr(self, '_overlay') and self._overlay is not None:
+                    if getattr(self, '_overlay_blocker', None) is None:
+                        self._overlay_blocker = Gtk.EventBox()
+                        self._overlay_blocker.set_visible_window(False)
+                        self._overlay_blocker.set_above_child(True)
+                    if self._overlay_blocker.get_parent() is None:
+                        self._overlay.add_overlay(self._overlay_blocker)
+                        self._overlay_blocker.show()
+
+                if hasattr(self, 'btnNPForward'):
+                    self.btnNPForward.set_sensitive(False)
+                if hasattr(self, 'btnNPApply'):
+                    self.btnNPApply.set_sensitive(False)
+                if hasattr(self, 'btnNPCancel'):
+                    self.btnNPCancel.set_sensitive(True)
+                if hasattr(self, 'btnNPBack'):
+                    self.btnNPBack.set_sensitive(True)
+            except (AttributeError, RuntimeError):
+                pass
+
+            try:
+                self._show_searching_spinner(spinner_text)
+            except (AttributeError, RuntimeError):
+                pass
+        else:
+            try:
+                self._hide_searching_spinner()
+                if (getattr(self, '_overlay', None) is not None and
+                        getattr(self, '_overlay_blocker', None) is not None and
+                        self._overlay_blocker.get_parent() is self._overlay):
+                    self._overlay.remove(self._overlay_blocker)
+                if hasattr(self, 'setNPButtons'):
+                    self.setNPButtons()
+            except (AttributeError, RuntimeError):
+                pass
+
+    def _run_blocking (self, op, *args, spinner_text="", **kwargs):
+        """Run a blocking operation on the worker thread while pumping the GTK loop.
+        Keeps caller syntax/semantics synchronous, prevents UI re-entrancy except
+        Cancel and Back, and displays the spinner immediately."""
+        self._blocking_operation_in_flight = True
+        self._set_wizard_busy(True, spinner_text)
+        try:
+            if isinstance(getattr(self, 'cups', None), authconn.Connection):
+                wrapper = self.cups.run_on_worker(op)
+                try:
+                    return wrapper(*args, _timeout=float('inf'), **kwargs)
+                except TypeError as e:
+                    if '_timeout' in str(e):
+                        return wrapper(*args, **kwargs)
+                    raise
+            else:
+                return op(*args, **kwargs)
+        finally:
+            self._blocking_operation_in_flight = False
+            self._set_wizard_busy(False)
+            if getattr(self, 'cups', None) is not None and not getattr(self, '_cancelled', False):
+                try:
+                    self.cups._cancel = False
+                except AttributeError:
+                    pass
 
     def add_devices (self, devices, current_uri, no_more=False):
         if no_more:
@@ -3891,7 +4101,7 @@ class NewPrinterGUI(GtkGUI):
             # Already checked
             return
 
-        if self.spinner_count > 0:
+        if getattr(self, 'fetchDevices_conn', None) is not None or getattr(self, 'printer_finder', None) is not None:
             # Still discovering devices?
             debugprint ("Skipping firewall adjustment: "
                         "discovery in progress")
@@ -4161,14 +4371,17 @@ class NewPrinterGUI(GtkGUI):
         model = widget.get_model ()
         iter = model.get_iter (path)
         device = model.get_value(iter, 1)
-        if getattr(self, 'device', None) is not None and getattr(self.device, 'uri', None) != getattr(device, 'uri', None):
-            cached_name = getattr(self, '_cached_driverless_ppd_name', None)
-            if cached_name:
-                target_norm = urllib.parse.unquote("driverless:%s" % device.uri).rstrip('/')
-                cached_norm = urllib.parse.unquote(cached_name).rstrip('/')
-                if cached_norm != target_norm:
-                    self._cached_driverless_ppd = None
-                    self._cached_driverless_ppd_name = None
+        previous_device = getattr(self, 'device', None)
+        selection_changed = (
+            previous_device is None or
+            getattr(previous_device, 'uri', None) != getattr(device, 'uri', None))
+        if selection_changed:
+            self._cached_driverless_ppd = None
+            self._cached_driverless_ppd_name = None
+            device._driverless_failed = False
+            self._initialiseAutoVariables()
+            self.id_matched_ppdnames = []
+            self.ppd = None
         self.device = device
         self.lblNPDeviceDescription.set_text ('')
         page = self.new_printer_device_tabs.get (device.type, self.PAGE_SELECT_DEVICE)
@@ -4405,7 +4618,6 @@ class NewPrinterGUI(GtkGUI):
         self.lblNetworkFindNotFound.hide ()
         self.lblNetworkFindSearching.show_all ()
         finder = probe_printer.PrinterFinder ()
-        self.inc_spinner_task ()
         finder.find (host, found_callback)
         self.printer_finder = finder
 
@@ -4440,7 +4652,6 @@ class NewPrinterGUI(GtkGUI):
                     self.tvNPDevices.set_cursor (path, None, False)
         else:
             self.printer_finder = None
-            self.dec_spinner_task ()
             self.lblNetworkFindSearching.hide ()
             self.entNPTNetworkHostname.set_sensitive (True)
             self.btnNetworkFind.set_sensitive (True)
@@ -4735,6 +4946,7 @@ class NewPrinterGUI(GtkGUI):
     def fillMakeList(self):
         self.recommended_make_selected = False
         makes = self.ppds.getMakes()
+        debugprint("fillMakeList: makes=%s, auto_make=%s" % (makes, self.auto_make))
         model = self.tvNPMakes.get_model()
         model.clear()
         found = False
@@ -4813,6 +5025,8 @@ class NewPrinterGUI(GtkGUI):
         if not found:
             self.tvNPMakes.set_cursor (Gtk.TreePath(), None, False)
             self.tvNPMakes.scroll_to_cell(0, None, True, 0.0, 0.0)
+
+        debugprint("fillMakeList: target_make=%s, cursor_found=%s" % (target_make, found))
 
         # Also pre-fill the OpenPrinting.org search box.
         search = ''
@@ -5261,9 +5475,7 @@ class NewPrinterGUI(GtkGUI):
             try:
                 if ppd != "raw":
                     if isinstance(getattr(self, 'cups', None), authconn.Connection):
-                        f = self.cups.run_on_worker(
-                            self.cups.getServerPPD,
-                            spinner=getattr(self, 'spinner', None))(ppd)
+                        f = self.cups.run_on_worker(self.cups.getServerPPD)(ppd)
                     else:
                         f = self.cups.getServerPPD(ppd)
                     ppd = cups.PPD(f)
@@ -5343,7 +5555,6 @@ class NewPrinterGUI(GtkGUI):
         if self.fetchDevices_conn:
             self.fetchDevices_conn.destroy ()
             self.fetchDevices_conn = None
-            self.dec_spinner_task ()
 
         if self.ppdsloader:
             self.ppdsloader.destroy ()
@@ -5353,7 +5564,6 @@ class NewPrinterGUI(GtkGUI):
         if self.printer_finder:
             self.printer_finder.cancel ()
             self.printer_finder = None
-            self.dec_spinner_task ()
 
         if self.dialog_mode in ("class", "printer", "printer_with_uri", "duplicate"):
             name = self.entNPName.get_text()
@@ -5367,17 +5577,23 @@ class NewPrinterGUI(GtkGUI):
         ppd = self.ppd
 
         if self.dialog_mode == "class":
+            self.btnNPApply.set_sensitive(False)
             members = getCurrentClassMembers(self.tvNCMembers)
             try:
                 for member in members:
                     try:
-                        self.cups.addPrinterToClass(member, name)
+                        self._run_blocking(self.cups.addPrinterToClass, member, name,
+                                           spinner_text=_("Applying changes"))
                     except RuntimeError:
                         # Printer already in class?
                         continue
             except cups.IPPError as e:
                 (e, msg) = e.args
                 self.show_IPP_Error(e, msg)
+                self.setNPButtons()
+                return
+            if getattr(self, '_cancelled', False) or getattr(self, '_op_abandoned', False):
+                self._op_abandoned = False
                 return
         elif self.dialog_mode == "printer" or \
                 self.dialog_mode == "printer_with_uri" or \
@@ -5396,38 +5612,44 @@ class NewPrinterGUI(GtkGUI):
             for option in self.options.values():
                 option.writeback()
 
-            busy (self.NewPrinterWindow)
-            while Gtk.events_pending ():
-                Gtk.main_iteration ()
+            self.btnNPApply.set_sensitive(False)
             self.cups._begin_operation (_("adding printer %s") % name)
             try:
                 if isinstance(ppd, str):
-                    self.cups.addPrinter(name, ppdname=ppd,
-                         device=uri, info=info, location=location)
+                    self._run_blocking(self.cups.addPrinter, name, ppdname=ppd,
+                                       device=uri, info=info, location=location,
+                                       spinner_text=_("Applying changes"))
                 elif ppd is None: # raw queue
-                    self.cups.addPrinter(name, device=uri,
-                                         info=info, location=location)
+                    self._run_blocking(self.cups.addPrinter, name, device=uri,
+                                       info=info, location=location,
+                                       spinner_text=_("Applying changes"))
                 else:
                     # Note: LC_MESSAGES is used here to determine the
                     # page size instead of LC_PAPER. This is not
                     # really correct, but it's what CUPS does so to
                     # avoid confusion we'll follow that method.
                     cupshelpers.setPPDPageSize(ppd, self.language[0])
-                    self.cups.addPrinter(name, ppd=ppd, device=uri,
-                                         info=info, location=location)
+                    self._run_blocking(self.cups.addPrinter, name, ppd=ppd, device=uri,
+                                       info=info, location=location,
+                                       spinner_text=_("Applying changes"))
             except cups.IPPError as e:
                 (e, msg) = e.args
-                ready (self.NewPrinterWindow)
                 self.show_IPP_Error(e, msg)
                 self.cups._end_operation()
+                self.setNPButtons()
                 return
             except:
-                ready (self.NewPrinterWindow)
                 self.cups._end_operation()
+                self.setNPButtons()
                 fatalException (1)
             self.cups._end_operation()
-            ready (self.NewPrinterWindow)
+            if getattr(self, '_cancelled', False) or getattr(self, '_op_abandoned', False) or getattr(self, 'device', None) is None:
+                self._op_abandoned = False
+                return
         if self.dialog_mode in ("class", "printer", "printer_with_uri", "duplicate"):
+            if getattr(self, '_cancelled', False) or getattr(self, '_op_abandoned', False):
+                self._op_abandoned = False
+                return
             self.cups._begin_operation (_("modifying printer %s") % name)
             try:
                 cupshelpers.activateNewPrinter (self.cups, name)
@@ -5438,17 +5660,21 @@ class NewPrinterGUI(GtkGUI):
                 (e, msg) = e.args
                 self.show_IPP_Error(e, msg)
                 self.cups._end_operation ()
+                self.setNPButtons()
                 return
             self.cups._end_operation ()
         elif self.dialog_mode == "device":
+            self.btnNPApply.set_sensitive(False)
             self.cups._begin_operation (_("modifying printer %s") % name)
             try:
                 uri = self.getDeviceURI()
-                self.cups.addPrinter(name, device=uri)
+                self._run_blocking(self.cups.addPrinter, name, device=uri,
+                                   spinner_text=_("Applying changes"))
             except cups.IPPError as e:
                 (e, msg) = e.args
                 self.show_IPP_Error(e, msg)
                 self.cups._end_operation ()
+                self.setNPButtons()
                 return
             self.cups._end_operation ()
         elif self.dialog_mode == "ppd":
