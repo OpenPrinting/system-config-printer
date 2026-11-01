@@ -148,6 +148,10 @@ USB entry superseded by its IPP-over-USB destination is removed and must be
 selected again. Search errors differ from an empty successful search. Results
 from cancelled or superseded discovery requests are ignored.
 
+Only the active wizard and connection forms contribute to requested size.
+Short connection forms fit their contents; longer forms scroll. The window
+remains resizable and may retain extra space after showing a larger form.
+
 Testing the discovery interface
 -------------------------------
 
@@ -171,7 +175,8 @@ xvfb-run -a dbus-run-session -- timeout 45s python3 -m pytest -q test_discovery_
 ```
 
 Focused tests cover selection, manual URI validation, refresh, cancellation,
-stale callbacks, USB replacement, progress, and supplied-URI modes. They do not
+stale callbacks, USB replacement, progress, supplied-URI modes, visible
+connection descriptions, and page switching without losing field values. They do not
 replace real printer/driver, SMB authentication, legacy hardware, or screen
 reader testing. No claim is made that the entire upstream test suite or every
 printer backend has been validated by these tests.

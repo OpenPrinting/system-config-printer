@@ -727,14 +727,13 @@ class NewPrinterGUI(GtkGUI):
         self.tvNPDevices.connect ("row-activated", self.device_row_activated)
         self.tvNPDevices.connect ("row-expanded", self.device_row_expanded)
 
-        # Searching spinner — placed in a Gtk.Stack alongside the Description
-        # notebook. This prevents the left and right panes from resizing when
-        # switching between them, as the Stack maintains the max size of both.
+        # Size the connection area for its visible content, rather than the
+        # largest inactive protocol form or searching indicator.
         vbNPDevices = self.ntbkNPType.get_parent ()
         if vbNPDevices is not None:
             self._searching_stack = Gtk.Stack()
             self._searching_stack.set_transition_type(Gtk.StackTransitionType.CROSSFADE)
-            self._searching_stack.set_homogeneous(True)
+            self._searching_stack.set_homogeneous(False)
             
             vbNPDevices.remove(self.ntbkNPType)
             self._searching_stack.add_named(self.ntbkNPType, "notebook")
@@ -819,19 +818,41 @@ class NewPrinterGUI(GtkGUI):
         self._setup_discovery_page ()
         debugprint ("+%s" % self)
 
+    @staticmethod
+    def _select_notebook_page (notebook, page):
+        # Hidden pages retain their indices and field values, but do not force
+        # the current page to reserve space for an unrelated, larger form.
+        target = notebook.get_nth_page (page)
+        target.show ()
+        notebook.set_current_page (page)
+        for index in range (notebook.get_n_pages ()):
+            if index != page:
+                notebook.get_nth_page (index).hide ()
+
     def _setup_discovery_page (self):
+        self._select_notebook_page (self.ntbkNewPrinter,
+                                   self.ntbkNewPrinter.get_current_page ())
         scroller = self.tvNPDevices.get_parent ()
         layout = scroller.get_parent ()
         layout.set_orientation (Gtk.Orientation.VERTICAL)
-        scroller.set_size_request (-1, 160)
+        scroller.set_size_request (-1, -1)
+        scroller.set_min_content_height (120)
+        scroller.set_max_content_height (180)
+        scroller.set_propagate_natural_height (True)
         self.tvNPDevices.set_headers_visible (False)
         self.tvNPDevices.set_tooltip_column (0)
         column = self.tvNPDevices.get_column (0)
         cell = column.get_cells ()[0]
         cell.set_property ('wrap-mode', Pango.WrapMode.WORD_CHAR)
-        self.tvNPDevices.connect ('size-allocate',
-            lambda view, allocation: cell.set_property (
-                'wrap-width', max (160, allocation.width - 64)))
+        cell.set_property ('wrap-width', 512)
+
+        def fit_device_names (view, allocation):
+            if allocation.width > 64:
+                width = max (160, allocation.width - 64)
+                if cell.get_property ('wrap-width') != width:
+                    cell.set_property ('wrap-width', width)
+
+        self.tvNPDevices.connect ('size-allocate', fit_device_names)
 
         self.lblDiscoveryStatus = Gtk.Label (xalign=0)
         self.lblDiscoveryStatus.set_line_wrap (True)
@@ -854,10 +875,21 @@ class NewPrinterGUI(GtkGUI):
         details.reorder_child (self.expNPDeviceURIs, 0)
         details_scroll = Gtk.ScrolledWindow ()
         details_scroll.set_policy (Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
-        details_scroll.set_min_content_height (160)
+        details_scroll.set_min_content_height (0)
         details_scroll.set_max_content_height (240)
         details_scroll.set_propagate_natural_height (True)
         details_scroll.add (details)
+
+        def fit_connection_details (widget, allocation):
+            # Natural-height propagation alone still allows GtkBox to shrink
+            # this viewport below a short form's height. Fit short forms in
+            # full, while retaining scrolling for larger protocol forms.
+            minimum, natural = widget.get_preferred_height_for_width (allocation.width)
+            height = min (natural, 240)
+            if details_scroll.get_min_content_height () != height:
+                details_scroll.set_min_content_height (height)
+
+        details.connect ('size-allocate', fit_connection_details)
         self.expConnectionDetails = Gtk.Expander.new (_("Other connection methods"))
         self.expConnectionDetails.add (details_scroll)
         self.expConnectionDetails.set_no_show_all (True)
@@ -865,6 +897,11 @@ class NewPrinterGUI(GtkGUI):
         details_scroll.show ()
         self.expConnectionDetails.hide ()
         self.expNPDeviceURIs.set_expanded (True)
+        self.expNPDeviceURIs.set_size_request (-1, -1)
+        connections_scroll = self.tvNPDeviceURIs.get_parent ()
+        connections_scroll.set_min_content_height (0)
+        connections_scroll.set_max_content_height (100)
+        connections_scroll.set_propagate_natural_height (True)
 
     @staticmethod
     def _is_manual_device (device):
@@ -1119,8 +1156,8 @@ class NewPrinterGUI(GtkGUI):
         if xid == 0 and self.parent:
             self.NewPrinterWindow.set_transient_for (parent)
 
-        self.NewPrinterWindow.show()
         self.setNPButtons()
+        self.NewPrinterWindow.show()
         return True
 
     def _validInitParameters (self):
@@ -1137,21 +1174,21 @@ class NewPrinterGUI(GtkGUI):
         self.fillNewClassMembers ()
 
         # Start on name page
-        self.ntbkNewPrinter.set_current_page (self.PAGE_DESCRIBE_PRINTER)
+        self._select_notebook_page (self.ntbkNewPrinter, self.PAGE_DESCRIBE_PRINTER)
 
     def _initialisePrinterMode (self):
         self._initialiseWidgetsForMode ("printer")
         self.NewPrinterWindow.set_title (_("New Printer"))
 
         # Start on devices page (SELECT_DEVICE, not DESCRIBE_PRINTER)
-        self.ntbkNewPrinter.set_current_page (self.PAGE_SELECT_DEVICE)
+        self._select_notebook_page (self.ntbkNewPrinter, self.PAGE_SELECT_DEVICE)
         self.fillDeviceTab ()
         self.rbtnNPFoomatic.set_active (True)
         self.on_rbtnNPFoomatic_toggled (self.rbtnNPFoomatic)
 
     def _initialiseDeviceMode (self):
         self.NewPrinterWindow.set_title (_("Change Device URI"))
-        self.ntbkNewPrinter.set_current_page (self.PAGE_SELECT_DEVICE)
+        self._select_notebook_page (self.ntbkNewPrinter, self.PAGE_SELECT_DEVICE)
         self.fillDeviceTab (self._device_uri)
 
     def _initialiseDuplicateMode (self):
@@ -1198,7 +1235,7 @@ class NewPrinterGUI(GtkGUI):
         self.NewPrinterWindow.set_title (_("Duplicate Printer"))
         self.rbtnChangePPDKeepSettings.set_active (True)
         self._initialiseAutoVariables ()
-        self.ntbkNewPrinter.set_current_page (self.PAGE_DESCRIBE_PRINTER)
+        self._select_notebook_page (self.ntbkNewPrinter, self.PAGE_DESCRIBE_PRINTER)
 
     def _initialisePrinterWithURIMode (self):
         self._initialiseWidgetsForMode ("printer")
@@ -1206,7 +1243,7 @@ class NewPrinterGUI(GtkGUI):
 
         self.NewPrinterWindow.set_title (_("New Printer"))
 
-        self.ntbkNewPrinter.set_current_page (self.PAGE_SELECT_INSTALL_METHOD)
+        self._select_notebook_page (self.ntbkNewPrinter, self.PAGE_SELECT_INSTALL_METHOD)
         self.rbtnNPFoomatic.set_active (True)
         self.on_rbtnNPFoomatic_toggled (self.rbtnNPFoomatic)
         self.rbtnChangePPDKeepSettings.set_active (True)
@@ -1217,7 +1254,7 @@ class NewPrinterGUI(GtkGUI):
     def _initialiseDownloadDriverMode (self):
         self.NewPrinterWindow.set_title (_("Download Printer Driver"))
 
-        self.ntbkNewPrinter.set_current_page (self.PAGE_DOWNLOAD_DRIVER)
+        self._select_notebook_page (self.ntbkNewPrinter, self.PAGE_DOWNLOAD_DRIVER)
         self.nextnptab_rerun = True
         self.nextNPTab (step = 0)
 
@@ -1262,7 +1299,7 @@ class NewPrinterGUI(GtkGUI):
                                     reply_handler=self.change_ppd_got_devs,
                                     error_handler=self.change_ppd_got_devs)
 
-        self.ntbkNewPrinter.set_current_page (self.PAGE_SELECT_INSTALL_METHOD)
+        self._select_notebook_page (self.ntbkNewPrinter, self.PAGE_SELECT_INSTALL_METHOD)
         self.rbtnNPFoomatic.set_active (True)
         self.on_rbtnNPFoomatic_toggled (self.rbtnNPFoomatic)
         self.rbtnChangePPDKeepSettings.set_active (True)
@@ -1344,7 +1381,7 @@ class NewPrinterGUI(GtkGUI):
                 self.device = device
 
         # We'll also need the list of PPDs
-        self.ntbkNewPrinter.set_current_page (self.PAGE_SELECT_INSTALL_METHOD)
+        self._select_notebook_page (self.ntbkNewPrinter, self.PAGE_SELECT_INSTALL_METHOD)
         self.nextNPTab(step = 0)
 
     def on_ppdsloader_finished_next (self, ppdsloader):
@@ -1369,7 +1406,7 @@ class NewPrinterGUI(GtkGUI):
             self.nextnptab_rerun = True
             if self.ntbkNewPrinter.get_current_page () in (self.PAGE_DESCRIBE_PRINTER,
                                                            self.PAGE_SELECT_INSTALL_METHOD):
-                self.ntbkNewPrinter.set_current_page (self.PAGE_SELECT_INSTALL_METHOD)
+                self._select_notebook_page (self.ntbkNewPrinter, self.PAGE_SELECT_INSTALL_METHOD)
                 self.nextNPTab (step = 0)
             else:
                 self.nextNPTab ()
@@ -1528,7 +1565,7 @@ class NewPrinterGUI(GtkGUI):
         self._set_driver_ppd_loading(True)
         self.rbtnNPFoomatic.set_active(True)
         self.on_rbtnNPFoomatic_toggled(self.rbtnNPFoomatic)
-        self.ntbkNewPrinter.set_current_page(self.PAGE_SELECT_INSTALL_METHOD)
+        self._select_notebook_page (self.ntbkNewPrinter, self.PAGE_SELECT_INSTALL_METHOD)
         self.nextNPTab(step=0)
         if self.ppds is not None and self.ppdsloader is None:
             self._set_driver_ppd_loading(False)
@@ -1928,7 +1965,7 @@ class NewPrinterGUI(GtkGUI):
             self.entNPDriver.set_text(driver_name)
             self.entNPDriver.get_style_context().add_class("readonly")
 
-        self.ntbkNewPrinter.set_current_page(next_page_nr)
+        self._select_notebook_page (self.ntbkNewPrinter, next_page_nr)
 
         self.setNPButtons()
 
@@ -4480,7 +4517,7 @@ class NewPrinterGUI(GtkGUI):
         self.device = device
         self.lblNPDeviceDescription.set_text ('')
         page = self.new_printer_device_tabs.get (device.type, self.PAGE_SELECT_DEVICE)
-        self.ntbkNPType.set_current_page(page)
+        self._select_notebook_page (self.ntbkNPType, page)
 
         debugprint("Selected connection type. URI: %s" % device.uri)
         location = ''

@@ -265,3 +265,61 @@ def test_address_search_ignores_queued_result_from_old_finder(ui, monkeypatch):
     assert ui.printer_finder is current
     assert ui.network_found == 0
     assert ui.tvNPDevices.get_model().iter_n_children(None) == 1
+
+
+def settle_layout():
+    import time
+    deadline = time.monotonic() + 0.25
+    while time.monotonic() < deadline:
+        while Gtk.events_pending():
+            Gtk.main_iteration_do(False)
+        time.sleep(0.01)
+
+
+def test_compact_discovery_and_expanded_description_not_clipped(ui):
+    settle_layout()
+    scroller = ui.tvNPDevices.get_parent()
+    assert scroller.get_preferred_height().natural_height <= 182
+    records = [device('ipp://192.0.2.10/ipp/print'),
+               device('socket://192.0.2.10')]
+    ui.add_devices({d.uri: d for d in records}, None, no_more=True)
+    select(ui, records[0].uri)
+    ui.expConnectionDetails.set_expanded(True)
+    settle_layout()
+    scroll = ui.expConnectionDetails.get_child()
+    label = ui.lblNPDeviceDescription
+    assert label.get_mapped()
+    _, y = label.translate_coordinates(scroll, 0, 0)
+    assert y >= 0
+    assert y + label.get_allocated_height() <= scroll.get_allocated_height()
+
+
+def test_protocol_switches_keep_indices_and_conditional_children(ui):
+    records = [device('ipp://192.0.2.10/ipp/print'),
+               device('serial:/dev/ttyS0?baud=9600', kind='direct')]
+    ui.add_devices({d.uri: d for d in records}, None, no_more=True)
+    pages = [ui.ntbkNPType.get_nth_page(i)
+             for i in range(ui.ntbkNPType.get_n_pages())]
+    for uri in ['smb', records[0].uri, records[1].uri, 'smb']:
+        select(ui, uri)
+        current = ui.ntbkNPType.get_current_page()
+        assert [p.get_visible() for p in pages] == [
+            i == current for i in range(len(pages))]
+        assert all(ui.ntbkNPType.get_nth_page(i) is p
+                   for i, p in enumerate(pages))
+    child = ui.entSMBUsername
+    child.hide()
+    select(ui, records[0].uri)
+    select(ui, 'smb')
+    assert not child.get_visible()
+
+
+def test_wizard_pages_preserve_fields_and_indices(ui):
+    ui.entNPName.set_text('Preserved-name')
+    for page in [ui.PAGE_DESCRIBE_PRINTER, ui.PAGE_SELECT_DEVICE,
+                 ui.PAGE_SELECT_INSTALL_METHOD, ui.PAGE_SELECT_DEVICE]:
+        ui._select_notebook_page(ui.ntbkNewPrinter, page)
+        assert ui.ntbkNewPrinter.get_current_page() == page
+        assert sum(ui.ntbkNewPrinter.get_nth_page(i).get_visible()
+                   for i in range(ui.ntbkNewPrinter.get_n_pages())) == 1
+    assert ui.entNPName.get_text() == 'Preserved-name'
