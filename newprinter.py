@@ -923,7 +923,7 @@ class NewPrinterGUI(GtkGUI):
         elif failed:
             text = _("Could not search for printers. Try again or add by address.")
         else:
-            count = sum (1 for physical in self.devices
+            count = sum (1 for physical in getattr (self, 'devices', [])
                          if any (not self._is_manual_device (d)
                                  for d in physical.get_devices ()))
             if count:
