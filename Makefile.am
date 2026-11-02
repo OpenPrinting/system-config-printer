@@ -299,6 +299,7 @@ EXTRA_DIST=\
 	xml/preferreddrivers.xml \
 	test_PhysicalDevice.py \
 	test_discovery_ui.py \
+	test_apply_double_click.py \
 	test_newprinter.py \
 	$(appdata_in_files)
 
