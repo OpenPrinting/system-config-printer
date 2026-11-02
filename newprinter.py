@@ -5691,6 +5691,14 @@ class NewPrinterGUI(GtkGUI):
 
     # Create new Printer
     def on_btnNPApply_clicked(self, widget):
+        # Refuse a second Apply activation while a blocking operation
+        # (e.g. the first addPrinter) is still in flight. Apply is
+        # desensitised during blocking operations, but button refreshes
+        # do not check for an operation in flight, so sensitivity alone
+        # cannot be relied on to suppress a double activation.
+        if getattr(self, '_blocking_operation_in_flight', False):
+            return
+
         if self.fetchDevices_conn:
             self.fetchDevices_conn.destroy ()
             self.fetchDevices_conn = None
