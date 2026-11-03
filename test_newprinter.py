@@ -5536,3 +5536,136 @@ def test_back_during_forward_ppd_loading_unblocks_overlay():
 
     assert np.ppdsloader is None
     assert np._overlay_blocker.get_parent() is None
+
+
+def test_btnNPCancel_loaded_in_getWidgets():
+    """Verify that btnNPCancel is properly bound as a widget when NewPrinterGUI initializes."""
+    import os
+    os.environ["SYSTEM_CONFIG_PRINTER_UI"] = "ui"
+    import newprinter
+    np = newprinter.NewPrinterGUI()
+    assert hasattr(np, "btnNPCancel")
+    assert isinstance(np.btnNPCancel, Gtk.Button)
+
+
+def test_cancel_button_sensitivity_during_search_and_noncancelable_operations():
+    """Verify Cancel button is enabled during search operations, disabled during
+    non-cancelable operations, and re-enabled when the wizard returns to idle."""
+    np = get_dummy_gui()
+    np._overlay = Gtk.Overlay()
+    np.ntbkNewPrinter = Gtk.Notebook()
+    np._overlay.add(np.ntbkNewPrinter)
+    np._overlay_vbox = Gtk.Box()
+    np._overlay_spinner = MagicMock()
+    np._overlay_label = MagicMock()
+    np.btnNPForward = Gtk.Button()
+    np.btnNPApply = Gtk.Button()
+    np.btnNPCancel = Gtk.Button()
+    np.btnNPBack = Gtk.Button()
+    np.setNPButtons = MagicMock()
+
+    # 1. Search operation: Cancel button remains enabled
+    newprinter.NewPrinterGUI._set_wizard_busy(np, True, "Searching for drivers", cancelable=True)
+    assert np.btnNPCancel.get_sensitive() is True
+    assert np.btnNPForward.get_sensitive() is False
+    assert np.btnNPApply.get_sensitive() is False
+
+    # 2. Return to idle: Cancel button is enabled
+    newprinter.NewPrinterGUI._set_wizard_busy(np, False)
+    assert np.btnNPCancel.get_sensitive() is True
+
+    # 3. Non-cancelable operation: Cancel button is disabled/greyed out
+    newprinter.NewPrinterGUI._set_wizard_busy(np, True, "Applying changes", cancelable=False)
+    assert np.btnNPCancel.get_sensitive() is False
+    assert np.btnNPForward.get_sensitive() is False
+    assert np.btnNPApply.get_sensitive() is False
+
+    # 4. Return to idle: Cancel button is re-enabled
+    newprinter.NewPrinterGUI._set_wizard_busy(np, False)
+    assert np.btnNPCancel.get_sensitive() is True
+
+
+def test_run_blocking_cancel_button_state_for_search_and_apply():
+    """Verify _run_blocking keeps Cancel enabled for search operations (e.g. getServerPPD)
+    and disables Cancel during non-cancelable operations (e.g. addPrinter)."""
+    np = get_dummy_gui()
+    np._overlay = Gtk.Overlay()
+    np.ntbkNewPrinter = Gtk.Notebook()
+    np._overlay.add(np.ntbkNewPrinter)
+    np._overlay_vbox = Gtk.Box()
+    np._overlay_spinner = MagicMock()
+    np._overlay_label = MagicMock()
+    np.btnNPForward = Gtk.Button()
+    np.btnNPApply = Gtk.Button()
+    np.btnNPCancel = Gtk.Button()
+    np.btnNPBack = Gtk.Button()
+    np.setNPButtons = MagicMock()
+
+    # Mock cups connection that runs operation on worker and allows checking sensitivity during op
+    observed_sensitivity = []
+
+    def mock_search_op():
+        observed_sensitivity.append(np.btnNPCancel.get_sensitive())
+        return "ppd_content"
+
+    def mock_apply_op():
+        observed_sensitivity.append(np.btnNPCancel.get_sensitive())
+        return None
+
+    # Search op (e.g., getServerPPD): Cancel button must be sensitive during execution
+    observed_sensitivity.clear()
+    np.cups.getServerPPD = mock_search_op
+    np._run_blocking(np.cups.getServerPPD, spinner_text="Searching for drivers")
+    assert observed_sensitivity == [True]
+    assert np.btnNPCancel.get_sensitive() is True
+
+    # Apply op (e.g., addPrinter): Cancel button must be insensitive during execution
+    observed_sensitivity.clear()
+    np.cups.addPrinter = mock_apply_op
+    np._run_blocking(np.cups.addPrinter, spinner_text="Applying changes")
+    assert observed_sensitivity == [False]
+    assert np.btnNPCancel.get_sensitive() is True
+
+
+def test_cancel_button_disabled_during_apply_and_restored_on_error():
+    """Verify that on_btnNPApply_clicked disables btnNPCancel, and restores it on error."""
+    np = get_dummy_gui()
+    np.dialog_mode = "printer"
+    np.entNPName = MagicMock()
+    np.entNPName.get_text.return_value = "TestPrinter"
+    np.entNPLocation = MagicMock()
+    np.entNPLocation.get_text.return_value = "Office"
+    np.entNPDescription = MagicMock()
+    np.entNPDescription.get_text.return_value = "LaserJet"
+    np.isSharedCbx = MagicMock()
+    np.isSharedCbx.get_active.return_value = False
+    np.ppd = "foomatic:Generic.ppd"
+    np.options = {}
+    np.device = cupshelpers.Device("ipp://test.local/ipp/print")
+    np.NewPrinterWindow = MagicMock()
+    np.ntbkNewPrinter = MagicMock()
+    np.btnNPForward = MagicMock()
+    np.btnNPBack = MagicMock()
+    np.btnNPApply = Gtk.Button()
+    np.btnNPCancel = Gtk.Button()
+    np._overlay = Gtk.Overlay()
+    np._overlay_vbox = Gtk.Box()
+    np._overlay_spinner = MagicMock()
+    np._overlay_label = MagicMock()
+    np.show_IPP_Error = MagicMock()
+
+    cancel_sensitivity_history = []
+
+    def mock_add_printer(*args, **kwargs):
+        cancel_sensitivity_history.append(np.btnNPCancel.get_sensitive())
+        raise cups.IPPError(cups.IPP_NOT_AUTHORIZED, "Not authorized")
+
+    np.cups.addPrinter = mock_add_printer
+
+    # Apply attempted and fails with IPPError
+    np.on_btnNPApply_clicked(np.btnNPApply)
+
+    # Cancel button was disabled during the operation
+    assert False in cancel_sensitivity_history
+    # After error handling and _set_wizard_busy(False), Cancel button is re-enabled
+    assert np.btnNPCancel.get_sensitive() is True

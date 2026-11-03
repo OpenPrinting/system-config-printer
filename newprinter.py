@@ -456,6 +456,7 @@ class NewPrinterGUI(GtkGUI):
                               "btnNPBack",
                               "btnNPForward",
                               "btnNPApply",
+                              "btnNPCancel",
                               "spinner",
                               "entNPName",
                               "entNPDescription",
@@ -2209,7 +2210,8 @@ class NewPrinterGUI(GtkGUI):
         self.cups._begin_operation(_("validating driverless PPD"))
         try:
             f = self._run_blocking(self.cups.getServerPPD, ppdname,
-                                   spinner_text=_("Searching for drivers"))
+                                   spinner_text=_("Searching for drivers"),
+                                   cancelable=True)
 
             if getattr(self, '_cancelled', False) or getattr(self, '_op_abandoned', False) or getattr(self, 'device', None) is None:
                 if f:
@@ -3350,7 +3352,7 @@ class NewPrinterGUI(GtkGUI):
             self._overlay_spinner.stop ()
             self._overlay_vbox.hide ()
 
-    def _set_wizard_busy (self, busy, spinner_text=""):
+    def _set_wizard_busy (self, busy, spinner_text="", cancelable=True):
         if busy:
             try:
                 if hasattr(self, '_overlay') and self._overlay is not None:
@@ -3367,7 +3369,7 @@ class NewPrinterGUI(GtkGUI):
                 if hasattr(self, 'btnNPApply'):
                     self.btnNPApply.set_sensitive(False)
                 if hasattr(self, 'btnNPCancel'):
-                    self.btnNPCancel.set_sensitive(True)
+                    self.btnNPCancel.set_sensitive(bool(cancelable))
                 if hasattr(self, 'btnNPBack'):
                     self.btnNPBack.set_sensitive(True)
             except (AttributeError, RuntimeError):
@@ -3384,17 +3386,22 @@ class NewPrinterGUI(GtkGUI):
                         getattr(self, '_overlay_blocker', None) is not None and
                         self._overlay_blocker.get_parent() is self._overlay):
                     self._overlay.remove(self._overlay_blocker)
+                if hasattr(self, 'btnNPCancel'):
+                    self.btnNPCancel.set_sensitive(True)
                 if hasattr(self, 'setNPButtons'):
                     self.setNPButtons()
             except (AttributeError, RuntimeError):
                 pass
 
-    def _run_blocking (self, op, *args, spinner_text="", **kwargs):
+    def _run_blocking (self, op, *args, spinner_text="", cancelable=None, **kwargs):
         """Run a blocking operation on the worker thread while pumping the GTK loop.
         Keeps caller syntax/semantics synchronous, prevents UI re-entrancy except
-        Cancel and Back, and displays the spinner immediately."""
+        Back (and Cancel if cancelable), and displays the spinner immediately."""
+        if cancelable is None:
+            cancelable = (op == getattr(getattr(self, 'cups', None), 'getServerPPD', None) or
+                          getattr(op, '__name__', '') == 'getServerPPD')
         self._blocking_operation_in_flight = True
-        self._set_wizard_busy(True, spinner_text)
+        self._set_wizard_busy(True, spinner_text, cancelable=cancelable)
         try:
             if isinstance(getattr(self, 'cups', None), authconn.Connection):
                 wrapper = self.cups.run_on_worker(op)
@@ -5578,6 +5585,8 @@ class NewPrinterGUI(GtkGUI):
 
         if self.dialog_mode == "class":
             self.btnNPApply.set_sensitive(False)
+            if hasattr(self, 'btnNPCancel'):
+                self.btnNPCancel.set_sensitive(False)
             members = getCurrentClassMembers(self.tvNCMembers)
             try:
                 for member in members:
@@ -5613,6 +5622,8 @@ class NewPrinterGUI(GtkGUI):
                 option.writeback()
 
             self.btnNPApply.set_sensitive(False)
+            if hasattr(self, 'btnNPCancel'):
+                self.btnNPCancel.set_sensitive(False)
             self.cups._begin_operation (_("adding printer %s") % name)
             try:
                 if isinstance(ppd, str):
@@ -5665,6 +5676,8 @@ class NewPrinterGUI(GtkGUI):
             self.cups._end_operation ()
         elif self.dialog_mode == "device":
             self.btnNPApply.set_sensitive(False)
+            if hasattr(self, 'btnNPCancel'):
+                self.btnNPCancel.set_sensitive(False)
             self.cups._begin_operation (_("modifying printer %s") % name)
             try:
                 uri = self.getDeviceURI()
