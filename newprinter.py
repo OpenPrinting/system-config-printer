@@ -3267,6 +3267,28 @@ class NewPrinterGUI(GtkGUI):
         self.start_fetching_devices ()
 
     def on_firewall_read (self, data):
+        # A firewall reply is only meaningful while the user is still
+        # browsing devices. If it lands while a blocking operation is in
+        # flight (e.g. driverless-PPD validation, whose nested MainLoop
+        # delivers it mid-validation), while the wizard was cancelled, or
+        # after the wizard left the device page, the prompt is stale:
+        # opening a modal dialog then would interrupt the in-flight work,
+        # and answering it would refresh devices mid-operation. Drop it
+        # and clear self.firewall so check_firewall() can re-run the read
+        # the next time discovery completes or the network row expands.
+        # (Dropping is safe, not a loss: once the user has chosen a device
+        # the firewall prompt is moot for this install, and a later
+        # discovery completion or network-row re-expansion re-triggers
+        # the check. Merely returning to the device page does not.)
+        if (getattr (self, '_blocking_operation_in_flight', False) or
+            getattr (self, '_cancelled', False)):
+            self.firewall = None
+            return
+        notebook = getattr (self, 'ntbkNewPrinter', None)
+        if (notebook is not None and
+            notebook.get_current_page () != self.PAGE_SELECT_DEVICE):
+            self.firewall = None
+            return
         f = self.firewall
         mdns_allowed = False
 
@@ -3302,6 +3324,18 @@ class NewPrinterGUI(GtkGUI):
         dialog.destroy ()
         if response == Gtk.ResponseType.YES:
             self.firewall.write ()
+
+        # Defense in depth: a dialog shown before a blocking operation
+        # started must not refresh devices mid-operation if it is answered
+        # while one is in flight (normally unreachable, as the dialog is
+        # modal over the wizard, but the nested MainLoop can deliver the
+        # response late). The firewall write above is still honoured; only
+        # the device refresh is skipped, and clearing self.firewall lets
+        # check_firewall() re-run the read later.
+        if (getattr (self, '_blocking_operation_in_flight', False) or
+            getattr (self, '_cancelled', False)):
+            self.firewall = None
+            return
 
         debugprint ("Fetching network devices after firewall dialog response")
         self._show_searching_spinner (_("Searching for printers"))
