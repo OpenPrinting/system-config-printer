@@ -2965,14 +2965,15 @@ class NewPrinterGUI(GtkGUI):
 
         # Search for Bluetooth printers together with the network printers
         # as the Bluetooth search takes rather long time
-        network_schemes = ["dnssd", "snmp", "driverless", "bjnp", "bluetooth"]
+        all_network_schemes = ["dnssd", "snmp", "driverless", "bjnp", "bluetooth"]
+        network_schemes = ["dnssd", "driverless", "bjnp", "bluetooth"]
         error_handler = self.error_getting_devices
         if network == False:
             reply_handler = (lambda x, y:
                                  self.local_devices_reply (x, y,
                                                            current_uri))
             cupshelpers.getDevices (self.fetchDevices_conn,
-                                    exclude_schemes=network_schemes,
+                                    exclude_schemes=all_network_schemes,
                                     reply_handler=reply_handler,
                                     error_handler=error_handler)
         else:
