@@ -1,7 +1,7 @@
 # system-config-printer
 
-It uses IPP to configure a CUPS server. Additionally it provides dBUS interface
-for several operations which aren't directly available in cupsd, and automatic USB
+It uses IPP to configure a CUPS server. Additionally it provides dBUS interface.
+for several operations which aren't directly available in cupsd, and automatic USB.
 printer installation daemon for non-IPP-over-USB printers.
 
 The alternatives for the graphical configuration tool are CUPS Web
