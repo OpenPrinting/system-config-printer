@@ -130,3 +130,53 @@ Translations:
 Translations are available at [Fedora Weblate](https://translate.fedoraproject.org).
 If you want to update translations, please update it in Weblate. The Weblate then creates
 automatic PR, which keeps upstream project and Weblate project in synch.
+
+
+Printer discovery interface
+---------------------------
+
+Add Printer lists discovered USB and network destinations first. Select a
+printer to continue. Names wrap rather than being clipped into a narrow column.
+The collapsed “Printer not listed?” category contains Find by address, explicit
+printer URI entry, SMB, and other available backend methods. Existing driver,
+authentication, naming, and installation stages remain in use.
+
+Connection settings are collapsed for discovered printers and open for manual
+methods. Search again retains previously found destinations and the chosen
+connection; absence from one scan does not prove a printer is offline. A legacy
+USB entry superseded by its IPP-over-USB destination is removed and must be
+selected again. Search errors differ from an empty successful search. Results
+from cancelled or superseded discovery requests are ignored.
+
+Only the active wizard and connection forms contribute to requested size.
+Short connection forms fit their contents; longer forms scroll. The window
+remains resizable and may retain extra space after showing a larger form.
+
+Testing the discovery interface
+-------------------------------
+
+After generating the build configuration with the commands above, install
+pytest and Xvfb in the development environment. The GTK tests mock CUPS and
+printer discovery; they do not create queues or submit print jobs. Run them on
+a private display and runtime, never the active desktop:
+
+```sh
+runtime=$(mktemp -d /tmp/scp-tests.XXXXXX)
+chmod 700 "$runtime"
+trap 'rm -rf "$runtime"' EXIT
+unset DISPLAY WAYLAND_DISPLAY HYPRLAND_INSTANCE_SIGNATURE DBUS_SESSION_BUS_ADDRESS
+export XDG_RUNTIME_DIR="$runtime" XDG_CACHE_HOME="$runtime/cache"
+export XDG_CONFIG_HOME="$runtime/config" NO_AT_BRIDGE=1
+export GIO_USE_VFS=local GIO_USE_VOLUME_MONITOR=unix
+export CUPS_SERVER="$runtime/no-cups.sock"
+export DBUS_SYSTEM_BUS_ADDRESS="unix:path=$runtime/no-system-bus"
+export SYSTEM_CONFIG_PRINTER_UI=ui GDK_BACKEND=x11
+xvfb-run -a dbus-run-session -- timeout 45s python3 -m pytest -q test_discovery_ui.py
+```
+
+Focused tests cover selection, manual URI validation, refresh, cancellation,
+stale callbacks, USB replacement, progress, supplied-URI modes, visible
+connection descriptions, and page switching without losing field values. They do not
+replace real printer/driver, SMB authentication, legacy hardware, or screen
+reader testing. No claim is made that the entire upstream test suite or every
+printer backend has been validated by these tests.

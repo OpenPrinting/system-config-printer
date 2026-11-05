@@ -51,6 +51,7 @@ except:
 import options
 from gi.repository import GObject
 from gi.repository import GLib
+from gi.repository import Pango
 from gui import GtkGUI
 from optionwidgets import OptionWidget
 from debug import *
@@ -727,14 +728,13 @@ class NewPrinterGUI(GtkGUI):
         self.tvNPDevices.connect ("row-activated", self.device_row_activated)
         self.tvNPDevices.connect ("row-expanded", self.device_row_expanded)
 
-        # Searching spinner — placed in a Gtk.Stack alongside the Description
-        # notebook. This prevents the left and right panes from resizing when
-        # switching between them, as the Stack maintains the max size of both.
+        # Size the connection area for its visible content, rather than the
+        # largest inactive protocol form or searching indicator.
         vbNPDevices = self.ntbkNPType.get_parent ()
         if vbNPDevices is not None:
             self._searching_stack = Gtk.Stack()
             self._searching_stack.set_transition_type(Gtk.StackTransitionType.CROSSFADE)
-            self._searching_stack.set_homogeneous(True)
+            self._searching_stack.set_homogeneous(False)
             
             vbNPDevices.remove(self.ntbkNPType)
             self._searching_stack.add_named(self.ntbkNPType, "notebook")
@@ -816,7 +816,144 @@ class NewPrinterGUI(GtkGUI):
         self.device_selected = -1
         self.dialog_mode = "printer"
         self.connect_signals ()
+        self._setup_discovery_page ()
         debugprint ("+%s" % self)
+
+    @staticmethod
+    def _select_notebook_page (notebook, page):
+        # Hidden pages retain their indices and field values, but do not force
+        # the current page to reserve space for an unrelated, larger form.
+        target = notebook.get_nth_page (page)
+        target.show ()
+        notebook.set_current_page (page)
+        for index in range (notebook.get_n_pages ()):
+            if index != page:
+                notebook.get_nth_page (index).hide ()
+
+    def _setup_discovery_page (self):
+        self._select_notebook_page (self.ntbkNewPrinter,
+                                   self.ntbkNewPrinter.get_current_page ())
+        scroller = self.tvNPDevices.get_parent ()
+        layout = scroller.get_parent ()
+        layout.set_orientation (Gtk.Orientation.VERTICAL)
+        scroller.set_size_request (-1, -1)
+        scroller.set_min_content_height (120)
+        scroller.set_max_content_height (180)
+        scroller.set_propagate_natural_height (True)
+        self.tvNPDevices.set_headers_visible (False)
+        self.tvNPDevices.set_tooltip_column (0)
+        column = self.tvNPDevices.get_column (0)
+        cell = column.get_cells ()[0]
+        cell.set_property ('wrap-mode', Pango.WrapMode.WORD_CHAR)
+        cell.set_property ('wrap-width', 512)
+
+        def fit_device_names (view, allocation):
+            if allocation.width > 64:
+                width = max (160, allocation.width - 64)
+                if cell.get_property ('wrap-width') != width:
+                    cell.set_property ('wrap-width', width)
+
+        self.tvNPDevices.connect ('size-allocate', fit_device_names)
+
+        self.lblDiscoveryStatus = Gtk.Label (xalign=0)
+        self.lblDiscoveryStatus.set_line_wrap (True)
+        self.btnSearchAgain = Gtk.Button.new_with_mnemonic (_("_Search again"))
+        self.btnSearchAgain.connect ('clicked', self.on_search_again_clicked)
+        status = Gtk.Box (spacing=12)
+        self.discoveryProgress = Gtk.Spinner ()
+        self.discoveryProgress.set_no_show_all (True)
+        status.pack_start (self.discoveryProgress, False, False, 0)
+        status.pack_start (self.lblDiscoveryStatus, True, True, 0)
+        status.pack_end (self.btnSearchAgain, False, False, 0)
+        layout.pack_start (status, False, False, 0)
+        layout.reorder_child (status, 0)
+        status.show_all ()
+
+        details = self.ntbkNPType.get_parent ().get_parent ()
+        # The notebook is in the existing searching stack inside vbNPDevices.
+        layout.remove (details)
+        details.set_child_packing (self.expNPDeviceURIs, False, True, 0, Gtk.PackType.START)
+        details.reorder_child (self.expNPDeviceURIs, 0)
+        details_scroll = Gtk.ScrolledWindow ()
+        details_scroll.set_policy (Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
+        details_scroll.set_min_content_height (0)
+        details_scroll.set_max_content_height (240)
+        details_scroll.set_propagate_natural_height (True)
+        details_scroll.add (details)
+
+        def fit_connection_details (widget, allocation):
+            # Natural-height propagation alone still allows GtkBox to shrink
+            # this viewport below a short form's height. Fit short forms in
+            # full, while retaining scrolling for larger protocol forms.
+            minimum, natural = widget.get_preferred_height_for_width (allocation.width)
+            height = min (natural, 240)
+            if details_scroll.get_min_content_height () != height:
+                details_scroll.set_min_content_height (height)
+
+        details.connect ('size-allocate', fit_connection_details)
+        self.expConnectionDetails = Gtk.Expander.new (_("Other connection methods"))
+        self.expConnectionDetails.add (details_scroll)
+        self.expConnectionDetails.set_no_show_all (True)
+        layout.pack_start (self.expConnectionDetails, False, True, 0)
+        details_scroll.show ()
+        self.expConnectionDetails.hide ()
+        self.expNPDeviceURIs.set_expanded (True)
+        self.expNPDeviceURIs.set_size_request (-1, -1)
+        connections_scroll = self.tvNPDeviceURIs.get_parent ()
+        connections_scroll.set_min_content_height (0)
+        connections_scroll.set_max_content_height (100)
+        connections_scroll.set_propagate_natural_height (True)
+
+    @staticmethod
+    def _is_manual_device (device):
+        return (not device.uri or device.uri == device.type or
+                device.type in ('serial', 'parallel', 'file', 'scsi'))
+
+    def _set_discovery_status (self, searching=False, failed=False):
+        if not hasattr (self, 'lblDiscoveryStatus'):
+            return
+        self._discovery_searching = searching
+        self.btnSearchAgain.set_sensitive (not searching)
+        self.discoveryProgress.set_visible (searching)
+        if searching:
+            self.discoveryProgress.start ()
+        else:
+            self.discoveryProgress.stop ()
+        if searching:
+            text = _("Looking for printers… You can select a printer already found.")
+        elif failed:
+            text = _("Could not search for printers. Try again or add by address.")
+        else:
+            count = sum (1 for physical in getattr (self, 'devices', [])
+                         if any (not self._is_manual_device (d)
+                                 for d in physical.get_devices ()))
+            if count:
+                text = gettext.dngettext (config.PACKAGE, "%d printer found. Select a printer to continue.",
+                                 "%d printers found. Select a printer to continue.",
+                                 count) % count
+            else:
+                text = _("No printers found. Check the connection or add by address.")
+        self.lblDiscoveryStatus.set_text (text)
+
+    def _invalidate_discovery (self):
+        self._discovery_generation = getattr (self, '_discovery_generation', 0) + 1
+        self._pending_devices = None
+
+    def _discovery_callback (self, callback):
+        generation = getattr (self, '_discovery_generation', 0)
+        def deliver (*args):
+            if generation == getattr (self, '_discovery_generation', 0):
+                return callback (*args)
+        return deliver
+
+    def on_search_again_clicked (self, button):
+        if getattr (self, '_discovery_searching', False):
+            return
+        self._invalidate_discovery ()
+        self.current_uri = None
+        self._set_discovery_status (searching=True)
+        # Keep the current model, selection and manually chosen connection.
+        self.start_fetching_devices ()
 
     def __del__ (self):
         debugprint ("-%s" % self)
@@ -1020,8 +1157,8 @@ class NewPrinterGUI(GtkGUI):
         if xid == 0 and self.parent:
             self.NewPrinterWindow.set_transient_for (parent)
 
-        self.NewPrinterWindow.show()
         self.setNPButtons()
+        self.NewPrinterWindow.show()
         return True
 
     def _validInitParameters (self):
@@ -1038,21 +1175,21 @@ class NewPrinterGUI(GtkGUI):
         self.fillNewClassMembers ()
 
         # Start on name page
-        self.ntbkNewPrinter.set_current_page (self.PAGE_DESCRIBE_PRINTER)
+        self._select_notebook_page (self.ntbkNewPrinter, self.PAGE_DESCRIBE_PRINTER)
 
     def _initialisePrinterMode (self):
         self._initialiseWidgetsForMode ("printer")
         self.NewPrinterWindow.set_title (_("New Printer"))
 
         # Start on devices page (SELECT_DEVICE, not DESCRIBE_PRINTER)
-        self.ntbkNewPrinter.set_current_page (self.PAGE_SELECT_DEVICE)
+        self._select_notebook_page (self.ntbkNewPrinter, self.PAGE_SELECT_DEVICE)
         self.fillDeviceTab ()
         self.rbtnNPFoomatic.set_active (True)
         self.on_rbtnNPFoomatic_toggled (self.rbtnNPFoomatic)
 
     def _initialiseDeviceMode (self):
         self.NewPrinterWindow.set_title (_("Change Device URI"))
-        self.ntbkNewPrinter.set_current_page (self.PAGE_SELECT_DEVICE)
+        self._select_notebook_page (self.ntbkNewPrinter, self.PAGE_SELECT_DEVICE)
         self.fillDeviceTab (self._device_uri)
 
     def _initialiseDuplicateMode (self):
@@ -1099,7 +1236,7 @@ class NewPrinterGUI(GtkGUI):
         self.NewPrinterWindow.set_title (_("Duplicate Printer"))
         self.rbtnChangePPDKeepSettings.set_active (True)
         self._initialiseAutoVariables ()
-        self.ntbkNewPrinter.set_current_page (self.PAGE_DESCRIBE_PRINTER)
+        self._select_notebook_page (self.ntbkNewPrinter, self.PAGE_DESCRIBE_PRINTER)
 
     def _initialisePrinterWithURIMode (self):
         self._initialiseWidgetsForMode ("printer")
@@ -1107,7 +1244,7 @@ class NewPrinterGUI(GtkGUI):
 
         self.NewPrinterWindow.set_title (_("New Printer"))
 
-        self.ntbkNewPrinter.set_current_page (self.PAGE_SELECT_INSTALL_METHOD)
+        self._select_notebook_page (self.ntbkNewPrinter, self.PAGE_SELECT_INSTALL_METHOD)
         self.rbtnNPFoomatic.set_active (True)
         self.on_rbtnNPFoomatic_toggled (self.rbtnNPFoomatic)
         self.rbtnChangePPDKeepSettings.set_active (True)
@@ -1118,7 +1255,7 @@ class NewPrinterGUI(GtkGUI):
     def _initialiseDownloadDriverMode (self):
         self.NewPrinterWindow.set_title (_("Download Printer Driver"))
 
-        self.ntbkNewPrinter.set_current_page (self.PAGE_DOWNLOAD_DRIVER)
+        self._select_notebook_page (self.ntbkNewPrinter, self.PAGE_DOWNLOAD_DRIVER)
         self.nextnptab_rerun = True
         self.nextNPTab (step = 0)
 
@@ -1163,7 +1300,7 @@ class NewPrinterGUI(GtkGUI):
                                     reply_handler=self.change_ppd_got_devs,
                                     error_handler=self.change_ppd_got_devs)
 
-        self.ntbkNewPrinter.set_current_page (self.PAGE_SELECT_INSTALL_METHOD)
+        self._select_notebook_page (self.ntbkNewPrinter, self.PAGE_SELECT_INSTALL_METHOD)
         self.rbtnNPFoomatic.set_active (True)
         self.on_rbtnNPFoomatic_toggled (self.rbtnNPFoomatic)
         self.rbtnChangePPDKeepSettings.set_active (True)
@@ -1245,7 +1382,7 @@ class NewPrinterGUI(GtkGUI):
                 self.device = device
 
         # We'll also need the list of PPDs
-        self.ntbkNewPrinter.set_current_page (self.PAGE_SELECT_INSTALL_METHOD)
+        self._select_notebook_page (self.ntbkNewPrinter, self.PAGE_SELECT_INSTALL_METHOD)
         self.nextNPTab(step = 0)
 
     def on_ppdsloader_finished_next (self, ppdsloader):
@@ -1270,7 +1407,7 @@ class NewPrinterGUI(GtkGUI):
             self.nextnptab_rerun = True
             if self.ntbkNewPrinter.get_current_page () in (self.PAGE_DESCRIBE_PRINTER,
                                                            self.PAGE_SELECT_INSTALL_METHOD):
-                self.ntbkNewPrinter.set_current_page (self.PAGE_SELECT_INSTALL_METHOD)
+                self._select_notebook_page (self.ntbkNewPrinter, self.PAGE_SELECT_INSTALL_METHOD)
                 self.nextNPTab (step = 0)
             else:
                 self.nextNPTab ()
@@ -1363,6 +1500,8 @@ class NewPrinterGUI(GtkGUI):
             except (AttributeError, RuntimeError):
                 pass
 
+        self._invalidate_discovery ()
+        self._discovery_searching = False
         if getattr(self, '_driver_ppd_loading', False):
             if self.ppdsloader:
                 self.ppdsloader.destroy ()
@@ -1427,7 +1566,7 @@ class NewPrinterGUI(GtkGUI):
         self._set_driver_ppd_loading(True)
         self.rbtnNPFoomatic.set_active(True)
         self.on_rbtnNPFoomatic_toggled(self.rbtnNPFoomatic)
-        self.ntbkNewPrinter.set_current_page(self.PAGE_SELECT_INSTALL_METHOD)
+        self._select_notebook_page (self.ntbkNewPrinter, self.PAGE_SELECT_INSTALL_METHOD)
         self.nextNPTab(step=0)
         if self.ppds is not None and self.ppdsloader is None:
             self._set_driver_ppd_loading(False)
@@ -1827,7 +1966,7 @@ class NewPrinterGUI(GtkGUI):
             self.entNPDriver.set_text(driver_name)
             self.entNPDriver.get_style_context().add_class("readonly")
 
-        self.ntbkNewPrinter.set_current_page(next_page_nr)
+        self._select_notebook_page (self.ntbkNewPrinter, next_page_nr)
 
         self.setNPButtons()
 
@@ -2077,6 +2216,8 @@ class NewPrinterGUI(GtkGUI):
 
         # Cancel the printer finder now as the user has
         # already selected their device.
+        self._invalidate_discovery ()
+        self._set_discovery_status ()
         if self.fetchDevices_conn:
             self.fetchDevices_conn.destroy ()
             self.fetchDevices_conn = None
@@ -2968,19 +3109,17 @@ class NewPrinterGUI(GtkGUI):
         # Search for Bluetooth printers together with the network printers
         # as the Bluetooth search takes rather long time
         network_schemes = ["dnssd", "snmp", "driverless", "bjnp", "bluetooth"]
-        error_handler = self.error_getting_devices
+        error_handler = self._discovery_callback (self.error_getting_devices)
         if network == False:
-            reply_handler = (lambda x, y:
-                                 self.local_devices_reply (x, y,
-                                                           current_uri))
+            reply_handler = self._discovery_callback (lambda x, y:
+                                 self.local_devices_reply (x, y, current_uri))
             cupshelpers.getDevices (self.fetchDevices_conn,
                                     exclude_schemes=network_schemes,
                                     reply_handler=reply_handler,
                                     error_handler=error_handler)
         else:
-            reply_handler = (lambda x, y:
-                                 self.network_devices_reply (x, y,
-                                                             current_uri))
+            reply_handler = self._discovery_callback (lambda x, y:
+                                 self.network_devices_reply (x, y, current_uri))
             cupshelpers.getDevices (self.fetchDevices_conn,
                                     include_schemes=network_schemes,
                                     reply_handler=reply_handler,
@@ -2999,6 +3138,7 @@ class NewPrinterGUI(GtkGUI):
             self.add_devices (pending, None, no_more=True)
         else:
             self._hide_searching_spinner ()
+        self._set_discovery_status (failed=True)
 
     def local_devices_reply (self, conn, result, current_uri):
         # Buffer local devices rather than displaying them immediately.
@@ -3033,9 +3173,9 @@ class NewPrinterGUI(GtkGUI):
         if len (need_resolving) > 0:
             # DNS-SD resolution required — keep buffering.
             resolver = dnssdresolve.DNSSDHostNamesResolver (need_resolving)
-            resolver.resolve (reply_handler=lambda devices:
+            resolver.resolve (reply_handler=self._discovery_callback (lambda devices:
                                   self.dnssd_resolve_reply (current_uri,
-                                                            devices))
+                                                            devices)))
         else:
             # No DNS-SD resolution needed — display the final device list.
             pending = self._pending_devices
@@ -3225,32 +3365,22 @@ class NewPrinterGUI(GtkGUI):
         return (host, uri)
 
     def fillDeviceTab(self, current_uri=None):
-        self.device_selected = -1
-        model = Gtk.TreeStore (str,                   # device-info
-                               GObject.TYPE_PYOBJECT, # PhysicalDevice obj
-                               bool)                  # Separator?
-        other = cupshelpers.Device('', **{'device-info' :_("Enter URI")})
+        self._invalidate_discovery ()
+        self.device_selected = 0
+        self.device = None
+        model = Gtk.TreeStore (str, GObject.TYPE_PYOBJECT, bool)
+        network_iter = model.append (None, row=[_("Printer not listed? Add by address or other method"),
+                                                 None, False])
+        other = cupshelpers.Device ('', **{'device-info': _("Enter printer URI")})
         physother = PhysicalDevice (other)
         self.devices = [physother]
-        uri_iter = model.append (None, row=[physother.get_info (),
-                                            physother, False])
-        network_iter = model.append (None, row=[_("Network Printer"),
-                                                None,
-                                                False])
-        network_dict = { 'device-class': 'network',
-                         'device-info': _("Find Network Printer") }
-        network = cupshelpers.Device ('network', **network_dict)
-        find_nw_iter = model.append (network_iter,
-                                     row=[network_dict['device-info'],
-                                          PhysicalDevice (network), False])
-        model.insert_after (network_iter, find_nw_iter, row=['', None, True])
-        smbdev_dict = { 'device-class': 'network',
-                        'device-info': _("Windows Printer via SAMBA") }
-        smbdev = cupshelpers.Device ('smb', **smbdev_dict)
-        find_smb_iter = model.append (network_iter,
-                                     row=[smbdev_dict['device-info'],
-                                          PhysicalDevice (smbdev), False])
-        model.insert_after (find_nw_iter, find_smb_iter, row=['', None, True])
+        network = cupshelpers.Device ('network', **{'device-class': 'network',
+                                                    'device-info': _("Find by address")})
+        find_nw_iter = model.append (network_iter, row=[network.info, PhysicalDevice (network), False])
+        uri_iter = model.append (network_iter, row=[other.info, physother, False])
+        smbdev = cupshelpers.Device ('smb', **{'device-class': 'network',
+                                              'device-info': _("Windows Printer via SAMBA")})
+        model.append (network_iter, row=[smbdev.info, PhysicalDevice (smbdev), False])
         self.devices_uri_iter = uri_iter
         self.devices_find_nw_iter = find_nw_iter
         self.devices_network_iter = network_iter
@@ -3260,8 +3390,11 @@ class NewPrinterGUI(GtkGUI):
         self.tvNPDevices.set_model (model)
         self.entNPTDevice.set_text ('')
         self.expNPDeviceURIs.hide ()
-        column = self.tvNPDevices.get_column (0)
-        self.tvNPDevices.set_cursor (Gtk.TreePath(), column, False)
+        self.tvNPDevices.get_selection ().unselect_all ()
+        self.expConnectionDetails.hide ()
+        self.expConnectionDetails.set_expanded (False)
+        self.btnNPForward.set_sensitive (False)
+        self._set_discovery_status (searching=True)
 
         self.current_uri = current_uri
         self.firewall = None
@@ -3321,6 +3454,14 @@ class NewPrinterGUI(GtkGUI):
 
     def _show_searching_spinner (self, text=""):
         page_nr = self.ntbkNewPrinter.get_current_page() if hasattr(self, 'ntbkNewPrinter') else -1
+        if (hasattr (self, 'lblDiscoveryStatus') and
+            self.ntbkNewPrinter.get_current_page () == self.PAGE_SELECT_DEVICE):
+            # Progress must remain visible with connection details collapsed.
+            self.lblDiscoveryStatus.set_text (text or _("Looking for printers…"))
+            self.discoveryProgress.show ()
+            self.discoveryProgress.start ()
+            self.btnSearchAgain.set_sensitive (False)
+            return
         if page_nr == self.PAGE_SELECT_DEVICE and getattr(self, '_searching_stack', None) is not None:
             if text:
                 self._searching_label.set_markup("<b>%s</b>" % text)
@@ -3345,6 +3486,9 @@ class NewPrinterGUI(GtkGUI):
             self._overlay_vbox.show ()
 
     def _hide_searching_spinner (self):
+        if hasattr (self, 'lblDiscoveryStatus'):
+            self._set_discovery_status (
+                searching=getattr (self, '_discovery_searching', False))
         if getattr(self, '_searching_stack', None) is not None:
             self._searching_spinner.stop ()
             self._searching_stack.set_visible_child_name("notebook")
@@ -3486,6 +3630,8 @@ class NewPrinterGUI(GtkGUI):
             if to_remove:
                 model = self.tvNPDevices.get_model ()
                 for phys in to_remove:
+                    selected_removed = (self.device is not None and
+                        any (self.device.uri == d.uri for d in phys.get_devices ()))
                     self.devices.remove (phys)
                     if model:
                         it = model.get_iter_first ()
@@ -3494,6 +3640,12 @@ class NewPrinterGUI(GtkGUI):
                                 model.remove (it)
                                 break
                             it = model.iter_next (it)
+                    if selected_removed:
+                        self.device = None
+                        self.tvNPDevices.get_selection ().unselect_all ()
+                        self.entNPTDevice.set_text ('')
+                        self.btnNPForward.set_sensitive (False)
+                        self.expConnectionDetails.hide ()
 
         newdevices = []
         for device in devices:
@@ -3550,40 +3702,14 @@ class NewPrinterGUI(GtkGUI):
             if device == current_device:
                 info += _(" (Current)")
             row=[info, device, False]
-            if network:
-                if devs[0].uri != devs[0].type:
-                    # Show discovered network printers as selectable top-level devices.
-                    iter = model.insert_before (network_iter, find_nw_iter,
-                                                row=row)
-                    if device == current_device:
-                        network_path = model.get_path(network_iter)
-                        child_path = model.get_path(iter)
-                        self.tvNPDevices.expand_row(network_path, False)
-
-                        def _select_ipp_device(tv, path):
-                            tv.scroll_to_cell(path, None, True, 0.5, 0.0)
-                            col = tv.get_column(0)
-                            tv.set_cursor(path, col, False)
-                            return False
-                        GLib.idle_add(_select_ipp_device,
-                                     self.tvNPDevices, child_path)
-                else:
-                    # Just a method of finding one.
-                    iter = model.append (network_iter, row=row)
+            if self._is_manual_device (devs[0]):
+                # Generic backend entries are manual connection methods.
+                iter = model.append (network_iter, row=row)
             else:
-                # Insert this local device in order.
-                network_path = model.get_path (network_iter)
-                iter = model.get_iter_first ()
-                while model.get_path (iter) != network_path:
-                    physdev = model.get_value (iter, 1)
-                    if physdev > device:
-                        break
+                # USB and discovered network destinations share the main list.
+                iter = model.insert_before (None, network_iter, row=row)
 
-                    iter = model.iter_next (iter)
-
-                iter = model.insert_before (None, iter, row=row)
-
-            if device == current_device or dnssdresolve.is_ipp_over_usb_device(devs[0]):
+            if device == current_device:
                 device_select_path = model.get_path (iter)
                 self.tvNPDevices.scroll_to_cell (device_select_path,
                                                  row_align=0.5)
@@ -3603,14 +3729,11 @@ class NewPrinterGUI(GtkGUI):
 
                 iter = model.iter_next (iter)
                 i += 1
-        elif not self.device_selected:
-            # Select the device.
-            column = self.tvNPDevices.get_column (0)
-            self.tvNPDevices.set_cursor (Gtk.TreePath(), column, False)
-
-            # Select the connection.
-            column = self.tvNPDeviceURIs.get_column (0)
-            self.tvNPDeviceURIs.set_cursor (connection_select_path, column, False)
+            if iter is not None:
+                self.tvNPDeviceURIs.set_cursor (connection_select_path,
+                                                self.tvNPDeviceURIs.get_column (0), False)
+        if no_more:
+            self._set_discovery_status ()
 
     ## SMB browsing
 
@@ -4147,18 +4270,27 @@ class NewPrinterGUI(GtkGUI):
 
     def device_select_function (self, selection, model, path, *UNUSED):
         """
-        Allow this path to be selected as long as there
-        is a device associated with it.  Otherwise, expand or collapse it.
+        Allow only actual device/method rows to be selected.
         """
         model = self.tvNPDevices.get_model ()
         iter = model.get_iter (path)
         if model.get_value (iter, 1) is not None:
             return True
 
-        self.device_row_activated (self.tvNPDevices, path, None)
+        # Merely focusing the tree must not expose manual methods. The
+        # expander arrow and row activation still toggle this category.
         return False
 
     def on_tvNPDevices_cursor_changed(self, widget):
+        path, column = widget.get_cursor ()
+        if path is None:
+            return
+
+        model = widget.get_model ()
+        iter = model.get_iter (path)
+        physicaldevice = model.get_value (iter, 1)
+        if physicaldevice is None:
+            return
         # Reset previous driver search result
         self.installed_driver_files = []
         self.searchedfordriverpackages = False
@@ -4169,15 +4301,15 @@ class NewPrinterGUI(GtkGUI):
         self._cached_driverless_ppd_name = None
 
         self.device_selected += 1
-        path, column = widget.get_cursor ()
-        if path is None:
-            return
-
-        model = widget.get_model ()
-        iter = model.get_iter (path)
-        physicaldevice = model.get_value (iter, 1)
-        if physicaldevice is None:
-            return
+        if hasattr (self, 'expConnectionDetails'):
+            endpoints = physicaldevice.get_devices ()
+            manual = self._is_manual_device (endpoints[0])
+            self.expConnectionDetails.set_label (
+                _("Other connection methods") if len (endpoints) > 1
+                else _("Connection settings"))
+            self.expConnectionDetails.set_expanded (manual)
+            self.expConnectionDetails.set_visible (
+                manual or len (endpoints) > 1 or endpoints[0].type != 'usb')
         show_uris = True
         for device in physicaldevice.get_devices ():
             if device.type == "parallel":
@@ -4365,7 +4497,7 @@ class NewPrinterGUI(GtkGUI):
             n += 1
         column = self.tvNPDeviceURIs.get_column (0)
         self.tvNPDeviceURIs.set_cursor (Gtk.TreePath(), column, False)
-        if show_uris:
+        if show_uris and n > 1:
             self.expNPDeviceURIs.show_all ()
         else:
             self.expNPDeviceURIs.hide ()
@@ -4392,7 +4524,7 @@ class NewPrinterGUI(GtkGUI):
         self.device = device
         self.lblNPDeviceDescription.set_text ('')
         page = self.new_printer_device_tabs.get (device.type, self.PAGE_SELECT_DEVICE)
-        self.ntbkNPType.set_current_page(page)
+        self._select_notebook_page (self.ntbkNPType, page)
 
         debugprint("Selected connection type. URI: %s" % device.uri)
         location = ''
@@ -4613,11 +4745,13 @@ class NewPrinterGUI(GtkGUI):
     def on_btnNetworkFind_clicked(self, button):
         host = self.entNPTNetworkHostname.get_text ()
 
-        def found_callback (new_device):
-            if self.printer_finder is None:
-                return
+        def deliver_found (new_device):
+            if self.printer_finder is finder:
+                self.found_network_printer_callback (new_device)
+            return False
 
-            GLib.idle_add (self.found_network_printer_callback, new_device)
+        def found_callback (new_device):
+            GLib.idle_add (deliver_found, new_device)
 
         self.btnNetworkFind.set_sensitive (False)
         self.entNPTNetworkHostname.set_sensitive (False)
@@ -4625,8 +4759,8 @@ class NewPrinterGUI(GtkGUI):
         self.lblNetworkFindNotFound.hide ()
         self.lblNetworkFindSearching.show_all ()
         finder = probe_printer.PrinterFinder ()
-        finder.find (host, found_callback)
         self.printer_finder = finder
+        finder.find (host, found_callback)
 
     def found_network_printer_callback (self, new_device):
         if new_device:
@@ -4650,7 +4784,7 @@ class NewPrinterGUI(GtkGUI):
                 self.devices.append (dev)
                 self.devices.sort ()
                 model = self.tvNPDevices.get_model ()
-                iter = model.insert_before (None, self.devices_find_nw_iter,
+                iter = model.insert_before (None, self.devices_network_iter,
                                             row=[dev.get_info (), dev, False])
 
                 # If this is the first one we've found, select it.
@@ -4659,6 +4793,8 @@ class NewPrinterGUI(GtkGUI):
                     self.tvNPDevices.set_cursor (path, None, False)
         else:
             self.printer_finder = None
+            if not getattr (self, '_discovery_searching', False):
+                self._set_discovery_status ()
             self.lblNetworkFindSearching.hide ()
             self.entNPTNetworkHostname.set_sensitive (True)
             self.btnNetworkFind.set_sensitive (True)
@@ -4675,7 +4811,10 @@ class NewPrinterGUI(GtkGUI):
         if self.dialog_mode in ['printer_with_uri', 'ppd'] or (
                 self.dialog_mode == "duplicate" and
                 getattr(self, 'duplicate_driver_selection', False)):
-            return self.device.uri
+            return (self.device.uri if self.device is not None
+                    else getattr (self, '_device_uri', '') or '')
+        if self.device is None:
+            return ''
 
         type = self.device.type
         page = self.new_printer_device_tabs.get (type, self.PAGE_SELECT_DEVICE)
@@ -5559,6 +5698,14 @@ class NewPrinterGUI(GtkGUI):
 
     # Create new Printer
     def on_btnNPApply_clicked(self, widget):
+        # Refuse a second Apply activation while a blocking operation
+        # (e.g. the first addPrinter) is still in flight. Apply is
+        # desensitised during blocking operations, but button refreshes
+        # do not check for an operation in flight, so sensitivity alone
+        # cannot be relied on to suppress a double activation.
+        if getattr(self, '_blocking_operation_in_flight', False):
+            return
+
         if self.fetchDevices_conn:
             self.fetchDevices_conn.destroy ()
             self.fetchDevices_conn = None
