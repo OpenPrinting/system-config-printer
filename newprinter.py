@@ -444,6 +444,7 @@ class NewPrinterGUI(GtkGUI):
         self.downloadable_printers = []
         self._cached_driverless_ppd = None
         self._cached_driverless_ppd_name = None
+        self._physicaldevice_has_both_connections = False
         self._cancelled = False
         self.nextnptab_rerun = False
         self.printers = {} # set in init()
@@ -933,6 +934,7 @@ class NewPrinterGUI(GtkGUI):
         self.printer_finder = None
         self._cached_driverless_ppd = None
         self._cached_driverless_ppd_name = None
+        self._physicaldevice_has_both_connections = False
         self._cancelled = False
         self._op_abandoned = False
         self._set_wizard_busy(False)
@@ -3255,7 +3257,6 @@ class NewPrinterGUI(GtkGUI):
         self.devices_find_nw_iter = find_nw_iter
         self.devices_network_iter = network_iter
         self.devices_network_fetched = False
-        self._legacy_usb_cache = dnssdresolve.LegacyUSBDeviceCache ()
         self._pending_devices = None
         self.tvNPDevices.set_model (model)
         self.entNPTDevice.set_text ('')
@@ -3352,6 +3353,35 @@ class NewPrinterGUI(GtkGUI):
             self._overlay_spinner.stop ()
             self._overlay_vbox.hide ()
 
+    def _show_legacy_usb_warning(self):
+        """
+        Show a warning dialog when the user selects legacy USB while IPP-over-USB is available.
+        Returns True if user confirms (continues with USB), False if user cancels (stays with IPP-over-USB).
+        """
+        dialog = Gtk.MessageDialog(
+            parent=self.NewPrinterWindow,
+            modal=True,
+            destroy_with_parent=True,
+            message_type=Gtk.MessageType.WARNING,
+            buttons=Gtk.ButtonsType.NONE,
+            text=_("Legacy USB connection is not recommended"))
+        dialog.format_secondary_text(_(
+            "Using the legacy USB connection will disable driverless\n"
+            "printing and driverless scanning for this printer.\n\n"
+            "You may need to install proprietary printer and scanner\n"
+            "drivers.\n\n"
+            "You can cancel to keep the recommended IPP-over-USB connection.\n\n"
+            "Do you want to continue using the legacy USB connection?"))
+        dialog.add_buttons(
+            _("Continue using USB"), Gtk.ResponseType.YES,
+            _("Cancel"), Gtk.ResponseType.NO)
+        dialog.set_default_response(Gtk.ResponseType.NO)
+
+        response = dialog.run()
+        dialog.destroy()
+
+        return response == Gtk.ResponseType.YES
+
     def _set_wizard_busy (self, busy, spinner_text="", cancelable=True):
         if busy:
             try:
@@ -3442,7 +3472,6 @@ class NewPrinterGUI(GtkGUI):
                 current_uri = None
 
         devices = list(devices.values())
-        devices = dnssdresolve.suppress_legacy_usb_devices (devices, self._legacy_usb_cache)
         if current_from_batch and current_uri and \
            not any (device.uri == current_uri for device in devices):
             current_uri = None
@@ -3472,28 +3501,6 @@ class NewPrinterGUI(GtkGUI):
                                                        "hal", "beh", "smb",
                                                        "scsi", "http", "bjnp",
                                                        "delete")]
-
-        ipp_serials = dnssdresolve.ipp_usb_serials (devices)
-        if ipp_serials:
-            to_remove = []
-            for phys in self.devices:
-                devs = phys.get_devices ()
-                if devs and any (getattr (d, 'type', '') == 'usb' for d in devs):
-                    if phys.sn in ipp_serials:
-                        debugprint ("Removing stale USB PhysicalDevice with SN %s" % phys.sn)
-                        to_remove.append (phys)
-
-            if to_remove:
-                model = self.tvNPDevices.get_model ()
-                for phys in to_remove:
-                    self.devices.remove (phys)
-                    if model:
-                        it = model.get_iter_first ()
-                        while it:
-                            if model.get_value (it, 1) == phys:
-                                model.remove (it)
-                                break
-                            it = model.iter_next (it)
 
         newdevices = []
         for device in devices:
@@ -4359,12 +4366,39 @@ class NewPrinterGUI(GtkGUI):
         device.hp_scannable = getattr (physicaldevice, 'hp_scannable', None)
 
         # Fill the list of connections for this device.
+        # First, collect all devices and determine connection types
+        devices_list = physicaldevice.get_devices()
+        ipp_over_usb_devices = []
+        legacy_usb_devices = []
+        other_devices = []
+
+        for device in devices_list:
+            if device.type == "usb" and not dnssdresolve.is_ipp_over_usb_device(device):
+                # Legacy USB connection
+                legacy_usb_devices.append(device)
+            elif dnssdresolve.is_ipp_over_usb_device(device):
+                # IPP-over-USB connection
+                ipp_over_usb_devices.append(device)
+            else:
+                other_devices.append(device)
+
+        # Build the ordered list: IPP over USB first, then USB, then others
+        ordered_devices = ipp_over_usb_devices + legacy_usb_devices + other_devices
+
+        # Track if we have both IPP-over-USB and legacy USB
+        has_ipp_over_usb = len(ipp_over_usb_devices) > 0
+        has_legacy_usb = len(legacy_usb_devices) > 0
+        self._physicaldevice_has_both_connections = has_ipp_over_usb and has_legacy_usb
+
         n = 0
-        for device in physicaldevice.get_devices ():
+        for device in ordered_devices:
             model.append ((device.menuentry, device))
             n += 1
+
+        # Select IPP-over-USB by default if available, otherwise first item
         column = self.tvNPDeviceURIs.get_column (0)
-        self.tvNPDeviceURIs.set_cursor (Gtk.TreePath(), column, False)
+        self.tvNPDeviceURIs.set_cursor (Gtk.TreePath(0), column, False)
+
         if show_uris:
             self.expNPDeviceURIs.show_all ()
         else:
@@ -4382,6 +4416,25 @@ class NewPrinterGUI(GtkGUI):
         selection_changed = (
             previous_device is None or
             getattr(previous_device, 'uri', None) != getattr(device, 'uri', None))
+
+        is_selecting_legacy_usb = (
+            device.type == "usb" and
+            not dnssdresolve.is_ipp_over_usb_device(device) and
+            getattr(self, '_physicaldevice_has_both_connections', False))
+
+        if selection_changed and is_selecting_legacy_usb:
+            if not self._show_legacy_usb_warning():
+                column = self.tvNPDeviceURIs.get_column(0)
+                model_iter = model.get_iter_first()
+                while model_iter:
+                    dev = model.get_value(model_iter, 1)
+                    if dnssdresolve.is_ipp_over_usb_device(dev):
+                        self.tvNPDeviceURIs.set_cursor(model.get_path(model_iter), column, False)
+                        return
+                    model_iter = model.iter_next(model_iter)
+                self.tvNPDeviceURIs.set_cursor(Gtk.TreePath(0), column, False)
+                return
+
         if selection_changed:
             self._cached_driverless_ppd = None
             self._cached_driverless_ppd_name = None
