@@ -358,3 +358,190 @@ def test_multiprotocol_encoded_unicode_instance_grouped():
     assert p_lpd.dnssd_hostname == 'Büro Drucker.local'
     assert p_ipps == p_lpd
 
+
+@pytest.mark.skipif(cups is None, reason="cups module not available")
+def test_ipp_over_usb_and_legacy_usb_grouping():
+    """Verify IPP-over-USB and legacy USB devices for the same printer merge into one PhysicalDevice."""
+    dev_usb = cupshelpers.Device(
+        'usb://Xerox/B235%20MFP?serial=34004H030206H&interface=1',
+        **{'device-class': 'direct',
+           'device-make-and-model': 'Xerox B235 MFP',
+           'device-id': 'MFG:Xerox;MDL:B235 MFP;SN:34004H030206H;'})
+
+    dev_ipp = cupshelpers.Device(
+        'ipp://Xerox(R)%20B235%20MFP%20(USB)._ipp._tcp.local/',
+        **{'device-class': 'network',
+           'device-make-and-model': 'Xerox(R) B235 MFP',
+           'device-id': 'MFG:Xerox;MDL:B235 MFP;SN:34004H030206H;'})
+    dev_ipp.address = '127.0.0.1'
+
+    p_usb = PhysicalDevice(dev_usb)
+    p_ipp = PhysicalDevice(dev_ipp)
+
+    assert p_usb == p_ipp
+    assert p_ipp == p_usb
+
+    p_usb.add_device(dev_ipp)
+    assert len(p_usb.get_devices()) == 2
+
+    p_ipp.add_device(dev_usb)
+    assert len(p_ipp.get_devices()) == 2
+
+
+@pytest.mark.skipif(cups is None, reason="cups module not available")
+def test_ipp_over_usb_different_serial_not_grouped():
+    """Verify IPP-over-USB and legacy USB with different serial numbers do NOT merge."""
+    dev_usb = cupshelpers.Device(
+        'usb://Xerox/B235%20MFP?serial=SERIAL1&interface=1',
+        **{'device-class': 'direct',
+           'device-make-and-model': 'Xerox B235 MFP',
+           'device-id': 'MFG:Xerox;MDL:B235 MFP;SN:SERIAL1;'})
+
+    dev_ipp = cupshelpers.Device(
+        'ipp://Xerox(R)%20B235%20MFP%20(USB)._ipp._tcp.local/',
+        **{'device-class': 'network',
+           'device-make-and-model': 'Xerox(R) B235 MFP',
+           'device-id': 'MFG:Xerox;MDL:B235 MFP;SN:SERIAL2;'})
+    dev_ipp.address = '127.0.0.1'
+
+    p_usb = PhysicalDevice(dev_usb)
+    p_ipp = PhysicalDevice(dev_ipp)
+
+    assert p_usb != p_ipp
+    with pytest.raises(ValueError):
+        p_usb.add_device(dev_ipp)
+
+
+@pytest.mark.skipif(cups is None, reason="cups module not available")
+def test_lan_ipp_and_legacy_usb_not_grouped():
+    """Verify normal LAN network IPP printer is NOT grouped with legacy USB even with same serial."""
+    dev_usb = cupshelpers.Device(
+        'usb://Xerox/B235%20MFP?serial=34004H030206H&interface=1',
+        **{'device-class': 'direct',
+           'device-make-and-model': 'Xerox B235 MFP',
+           'device-id': 'MFG:Xerox;MDL:B235 MFP;SN:34004H030206H;'})
+
+    dev_ipp_lan = cupshelpers.Device(
+        'ipp://Xerox%20B235._ipp._tcp.local/',
+        **{'device-class': 'network',
+           'device-make-and-model': 'Xerox B235 MFP',
+           'device-id': 'MFG:Xerox;MDL:B235 MFP;SN:34004H030206H;'})
+    dev_ipp_lan.address = '192.168.1.100'
+
+    p_usb = PhysicalDevice(dev_usb)
+    p_ipp_lan = PhysicalDevice(dev_ipp_lan)
+
+    assert p_usb != p_ipp_lan
+    with pytest.raises(ValueError):
+        p_usb.add_device(dev_ipp_lan)
+
+
+@pytest.mark.skipif(cups is None, reason="cups module not available")
+def test_missing_serial_not_grouped():
+    """Verify IPP-over-USB and legacy USB without serial numbers are NOT grouped."""
+    # Case A: Neither device has a serial
+    dev_usb_no_sn = cupshelpers.Device(
+        'usb://Xerox/B235%20MFP?interface=1',
+        **{'device-class': 'direct',
+           'device-make-and-model': 'Xerox B235 MFP',
+           'device-id': 'MFG:Xerox;MDL:B235 MFP;'})
+
+    dev_ipp_no_sn = cupshelpers.Device(
+        'ipp://Xerox(R)%20B235%20MFP%20(USB)._ipp._tcp.local/',
+        **{'device-class': 'network',
+           'device-make-and-model': 'Xerox(R) B235 MFP',
+           'device-id': 'MFG:Xerox;MDL:B235 MFP;'})
+    dev_ipp_no_sn.address = '127.0.0.1'
+
+    p_usb = PhysicalDevice(dev_usb_no_sn)
+    p_ipp = PhysicalDevice(dev_ipp_no_sn)
+
+    assert p_usb != p_ipp
+    with pytest.raises(ValueError):
+        p_ipp.add_device(dev_usb_no_sn)
+
+    # Case B: USB has serial, IPP has no serial
+    dev_usb_sn = cupshelpers.Device(
+        'usb://Xerox/B235%20MFP?serial=34004H030206H&interface=1',
+        **{'device-class': 'direct',
+           'device-make-and-model': 'Xerox B235 MFP',
+           'device-id': 'MFG:Xerox;MDL:B235 MFP;SN:34004H030206H;'})
+
+    p_usb_sn = PhysicalDevice(dev_usb_sn)
+    assert p_usb_sn != p_ipp
+    with pytest.raises(ValueError):
+        p_ipp.add_device(dev_usb_sn)
+
+
+@pytest.mark.skipif(cups is None, reason="cups module not available")
+def test_two_usb_different_serials_not_grouped():
+    """Verify two direct USB printers with different serials are separate."""
+    dev_usb1 = cupshelpers.Device(
+        'usb://Xerox/B235%20MFP?serial=SER1&interface=1',
+        **{'device-class': 'direct',
+           'device-make-and-model': 'Xerox B235 MFP',
+           'device-id': 'MFG:Xerox;MDL:B235 MFP;SN:SER1;'})
+
+    dev_usb2 = cupshelpers.Device(
+        'usb://Xerox/B235%20MFP?serial=SER2&interface=1',
+        **{'device-class': 'direct',
+           'device-make-and-model': 'Xerox B235 MFP',
+           'device-id': 'MFG:Xerox;MDL:B235 MFP;SN:SER2;'})
+
+    p1 = PhysicalDevice(dev_usb1)
+    p2 = PhysicalDevice(dev_usb2)
+    assert p1 != p2
+    with pytest.raises(ValueError):
+        p1.add_device(dev_usb2)
+
+
+@pytest.mark.skipif(cups is None, reason="cups module not available")
+def test_two_ipp_over_usb_different_serials_not_grouped():
+    """Verify two IPP-over-USB printers with different serials are separate."""
+    dev_ipp1 = cupshelpers.Device(
+        'ipp://Xerox1._ipp._tcp.local/',
+        **{'device-class': 'network',
+           'device-make-and-model': 'Xerox(R) B235 MFP',
+           'device-id': 'MFG:Xerox;MDL:B235 MFP;SN:SER1;'})
+    dev_ipp1.address = '127.0.0.1'
+
+    dev_ipp2 = cupshelpers.Device(
+        'ipp://Xerox2._ipp._tcp.local/',
+        **{'device-class': 'network',
+           'device-make-and-model': 'Xerox(R) B235 MFP',
+           'device-id': 'MFG:Xerox;MDL:B235 MFP;SN:SER2;'})
+    dev_ipp2.address = '127.0.0.1'
+
+    p1 = PhysicalDevice(dev_ipp1)
+    p2 = PhysicalDevice(dev_ipp2)
+    assert p1 != p2
+
+
+@pytest.mark.skipif(cups is None, reason="cups module not available")
+def test_duplicate_device_addition_ignored():
+    """Verify adding duplicate devices does not produce duplicate entries."""
+    dev_usb = cupshelpers.Device(
+        'usb://Xerox/B235%20MFP?serial=34004H030206H&interface=1',
+        **{'device-class': 'direct',
+           'device-make-and-model': 'Xerox B235 MFP',
+           'device-id': 'MFG:Xerox;MDL:B235 MFP;SN:34004H030206H;'})
+
+    dev_ipp = cupshelpers.Device(
+        'ipp://Xerox(R)%20B235%20MFP%20(USB)._ipp._tcp.local/',
+        **{'device-class': 'network',
+           'device-info': 'Xerox(R) B235 MFP (USB)',
+           'device-make-and-model': 'Xerox(R) B235 MFP',
+           'device-id': 'MFG:Xerox;MDL:B235 MFP;SN:34004H030206H;'})
+    dev_ipp.address = '127.0.0.1'
+
+    p = PhysicalDevice(dev_usb)
+    assert len(p.get_devices()) == 1
+    p.add_device(dev_usb)  # Duplicate USB
+    assert len(p.get_devices()) == 1
+
+    p.add_device(dev_ipp)
+    assert len(p.get_devices()) == 2
+    p.add_device(dev_ipp)  # Duplicate IPP
+    assert len(p.get_devices()) == 2
+    p.add_device(dev_usb)  # Duplicate USB after merge
+    assert len(p.get_devices()) == 2
