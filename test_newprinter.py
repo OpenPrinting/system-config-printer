@@ -5536,3 +5536,73 @@ def test_back_during_forward_ppd_loading_unblocks_overlay():
 
     assert np.ppdsloader is None
     assert np._overlay_blocker.get_parent() is None
+
+
+def test_async_discovery_suppresses_legacy_usb_when_ipp_usb_has_usb_ser():
+    """Verify that a legacy USB printer discovered in batch 1 is removed
+    when its IPP-over-USB counterpart arrives in batch 2 with matching usb_SER."""
+    import os
+    os.environ["SYSTEM_CONFIG_PRINTER_UI"] = "ui"
+    from unittest.mock import MagicMock
+    import newprinter
+    import cupshelpers
+    import dnssdresolve
+
+    gui = newprinter.NewPrinterGUI()
+    gui.start_fetching_devices = MagicMock()
+    gui.fillDeviceTab()
+
+    # Batch 1: CUPS discovers legacy USB device
+    usb_dev = cupshelpers.Device(
+        'usb://Xerox/B235%20MFP?serial=34004H030206H&interface=1',
+        **{'device-class': 'direct',
+           'device-info': 'Xerox B235 MFP',
+           'device-make-and-model': 'Xerox B235 MFP',
+           'device-id': 'MANUFACTURER:Xerox;MODEL:B235 MFP;SN:34004H030206H;'})
+    gui.add_devices({usb_dev.uri: usb_dev}, None, no_more=False)
+
+    # Legacy USB is present after batch 1
+    phys_usb = [p for p in gui.devices if p.devices[0].uri == usb_dev.uri]
+    assert len(phys_usb) == 1
+
+    # Batch 2: DNS-SD resolves IPP-over-USB device with usb_SER
+    ipp_dev = cupshelpers.Device(
+        'ipp://Xerox(R)%20B235%20MFP%20(USB)._ipp._tcp.local/',
+        **{'device-class': 'network',
+           'device-info': 'Xerox(R) B235 MFP (USB)',
+           'device-make-and-model': 'Xerox(R) B235 MFP (USB)',
+           'device-id': 'CMD:AppleRaster,URF,PWGRaster,PWG,PCLM,JPEG,PS,TEXT;'})
+    ipp_dev.address = '127.0.0.1'
+
+    # Simulate DNS-SD resolver reply setting usb_SER
+    resolver = dnssdresolve.DNSSDHostNamesResolver.__new__(dnssdresolve.DNSSDHostNamesResolver)
+    resolver._devices = {ipp_dev.uri: ipp_dev}
+    service = dnssdresolve._service_tuple_from_uri(ipp_dev.uri)
+    resolver._device_uri_by_name = {service: ipp_dev.uri}
+    resolver._unresolved = 1
+    resolver._reply_handler = lambda devices: None
+    resolver._reply('iface', 'proto', 'Xerox(R) B235 MFP (USB)', '_ipp._tcp', 'local',
+                    'ayushcod3r.local', 0, '127.0.0.1', 60000,
+                    ['usb_SER=34004H030206H', 'usb_HWID=0924&9d3b'], 0)
+
+    gui.add_devices({ipp_dev.uri: ipp_dev}, None, no_more=True)
+
+    # Legacy USB must be purged; only IPP-over-USB must remain
+    real_devices = [p for p in gui.devices if p.devices[0].uri]
+    assert len(real_devices) == 1
+    assert real_devices[0].devices[0].uri == ipp_dev.uri
+    assert real_devices[0].get_info() == 'Xerox(R) B235 MFP'
+
+    model = gui.tvNPDevices.get_model()
+    row_names = []
+    def scan(it):
+        while it:
+            row_names.append(model.get_value(it, 0) or '')
+            child = model.iter_children(it)
+            if child:
+                scan(child)
+            it = model.iter_next(it)
+    scan(model.get_iter_first())
+
+    assert not any('Xerox B235 MFP (34004H030206H)' in name for name in row_names)
+    assert any('Xerox(R) B235 MFP' in name for name in row_names)

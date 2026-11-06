@@ -39,6 +39,7 @@ class PhysicalDevice:
         self._ppdippstr = ppdippstr.backends
 
     def _canonical_id (self, device):
+        make_and_model = ''
         if hasattr (device, "id_dict"):
             mfg = device.id_dict.get ('MFG', '')
             mdl = device.id_dict.get ('MDL', '')
@@ -47,8 +48,9 @@ class PhysicalDevice:
                 make_and_model = mdl
             else:
                 make_and_model = "%s %s" % (mfg, mdl)
-        else:
-             make_and_model = device.make_and_model
+
+        if not make_and_model:
+            make_and_model = getattr (device, 'make_and_model', '') or getattr (device, 'info', '')
 
         return cupshelpers.ppds.ppdMakeModelSplit (make_and_model)
 
@@ -266,7 +268,8 @@ class PhysicalDevice:
                     info = "%s" % self._network_host
         elif self.mfg == '' or \
            (self.mfg == "HP" and self.mdl.startswith("Fax")):
-            info = self._ppdippstr.get (self.devices[0].info)
+            translated = self._ppdippstr.get (self.devices[0].info)
+            info = translated or self.devices[0].info
         else:
             info = "%s %s" % (self.mfg, self.mdl)
         if self._network_host and not self.dnssd_hostname and not \
