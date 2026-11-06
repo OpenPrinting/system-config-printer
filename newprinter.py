@@ -695,7 +695,7 @@ class NewPrinterGUI(GtkGUI):
             (_("Members of this class"), Gtk.ListStore(str),
              self.tvNCMembers, m),
             (_("Others"), Gtk.ListStore(str), self.tvNCNotMembers, m),
-            (_("Devices"), Gtk.ListStore(str), self.tvNPDevices, s),
+            (_("Devices"), Gtk.ListStore(str, GObject.TYPE_PYOBJECT, bool), self.tvNPDevices, s),
             (_("Connections"), Gtk.ListStore(str), self.tvNPDeviceURIs, s),
             (_("Makes"), Gtk.ListStore(str, str), self.tvNPMakes,s),
             (_("Models"), Gtk.ListStore(str, str), self.tvNPModels,s),
@@ -709,6 +709,11 @@ class NewPrinterGUI(GtkGUI):
             treeview.set_model(model)
             treeview.append_column(column)
             treeview.get_selection().set_mode(selection_mode)
+
+        # Set cell data function for device list to style placeholder rows
+        self.tvNPDevices.get_column(0).set_cell_data_func(
+            self.tvNPDevices.get_column(0).get_cells()[0],
+            self.device_cell_data_func, None)
 
         # Set up filter for Models list
         self.models_liststore = self.tvNPModels.get_model()
@@ -3700,6 +3705,11 @@ class NewPrinterGUI(GtkGUI):
                 column = self.tvNPDevices.get_column (0)
                 self.tvNPDevices.set_cursor (device_select_path, column, False)
 
+        # Add empty-state placeholder for network categories that have no printers
+        for cat_iter in (dnssd_iter, legacy_iter):
+            if model.iter_n_children(cat_iter) == 0:
+                model.append(cat_iter, row=[_("No network printers found"), None, False])
+
         connection_select_path = 0
         if current_uri:
             model = self.tvNPDeviceURIs.get_model ()
@@ -4196,6 +4206,25 @@ class NewPrinterGUI(GtkGUI):
 
     def device_row_separator_fn (self, model, iter, data):
         return model.get_value (iter, 2)
+
+    def device_cell_data_func (self, column, cell, model, iter, data):
+        """
+        Style the placeholder 'No network printers found' row as disabled/greyed out.
+        The placeholder is a child row (has a parent) with None as PhysicalDevice
+        (column 1).  Top-level category rows also have None in column 1 but have
+        no parent, so they must keep their normal styling.
+        """
+        physicaldevice = model.get_value (iter, 1)
+        if physicaldevice is None and model.iter_parent (iter) is not None:
+            # This is an empty-state placeholder child row
+            cell.set_property ('style', 'normal')
+            cell.set_property ('foreground', '#888888')  # Grey color
+            cell.set_property ('xpad', 0)
+        else:
+            # Reset to normal for real printers and category rows
+            cell.set_property ('style', 'normal')
+            cell.set_property ('foreground', None)
+            cell.set_property ('xpad', 2)
 
     def device_row_activated (self, view, path, column):
         if view.row_expanded (path):
