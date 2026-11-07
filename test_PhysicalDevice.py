@@ -358,3 +358,37 @@ def test_multiprotocol_encoded_unicode_instance_grouped():
     assert p_lpd.dnssd_hostname == 'Büro Drucker.local'
     assert p_ipps == p_lpd
 
+
+def test_canonical_id_fallback_when_mfg_mdl_empty():
+    """Test A: A device with empty MFG/MDL in id_dict must fall back to
+    make_and_model instead of returning ('', '')."""
+    dev = cupshelpers.Device(
+        'ipp://Xerox(R)%20B235%20MFP%20(USB)._ipp._tcp.local/',
+        **{'device-class': 'network',
+           'device-info': 'Xerox(R) B235 MFP (USB)',
+           'device-make-and-model': 'Xerox(R) B235 MFP (USB)',
+           'device-id': 'MFG:;MDL:;SN:34004H030206H;'})
+
+    phys = PhysicalDevice(dev)
+    assert phys.mfg != ''
+    assert phys.mdl != ''
+    assert (phys.mfg, phys.mdl) == ('Xerox(R)', 'B235 MFP')
+
+
+def test_get_info_falls_back_to_device_info_when_translation_absent():
+    """Test B: A device whose info string is not present in _ppdippstr
+    must have get_info() return the original device.info rather than None."""
+    dev = cupshelpers.Device(
+        'ipp://Xerox(R)%20B235%20MFP%20(USB)._ipp._tcp.local/',
+        **{'device-class': 'network',
+           'device-info': 'Xerox(R) B235 MFP (USB)',
+           'device-make-and-model': 'Xerox(R) B235 MFP (USB)',
+           'device-id': 'MFG:;MDL:;SN:34004H030206H;'})
+
+    phys = PhysicalDevice(dev)
+    # Manually clear mfg to trigger the backend translation lookup branch
+    phys.mfg = ''
+    info = phys.get_info()
+    assert info is not None
+    assert info == 'Xerox(R) B235 MFP (USB)'
+

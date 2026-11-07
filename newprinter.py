@@ -37,8 +37,10 @@ from timedops import *
 import dbus
 from gi.repository import Gdk
 from gi.repository import Gtk
+from gi.repository import Pango
 import functools
 import urllib.parse
+import ipaddress
 
 import cups
 
@@ -375,6 +377,95 @@ def _get_driver_name_from_ppd(ppd, ppds_cache):
 
     return ""
 
+def _is_literal_ip_host(uri):
+    """
+    Determine whether the host component of a URI is a literal IP address
+    (IPv4 or IPv6). Uses urllib.parse to extract the hostname and ipaddress
+    to validate it. Returns True for literal IPs, False for symbolic hostnames.
+    """
+    if not uri:
+        return False
+
+    try:
+        parsed = urllib.parse.urlsplit(uri)
+        host = parsed.hostname
+    except ValueError:
+        return False
+
+    if not host:
+        return False
+
+    # Remove IPv6 zone ID if present (e.g., fe80::1%eth0 -> fe80::1)
+    if '%' in host:
+        host = host.split('%')[0]
+
+    try:
+        ipaddress.ip_address(host)
+        return True
+    except ValueError:
+        return False
+
+def _classify_network_device(device):
+    """
+    Classify a network device as DNS-SD or Legacy (non-DNS-SD).
+
+    Returns:
+        'DNS_SD' - for DNS-SD discovered printers (symbolic hostnames)
+        'LEGACY' - for literal IP printers, BJNP, Bluetooth, SNMP results
+
+    The classification logic:
+    - BJNP is always Legacy (not DNS-SD)
+    - Bluetooth is always Legacy (not DNS-SD)
+    - If the device has a dnssd/mdns scheme -> DNS-SD
+    - If URI host is a literal IP (IPv4/IPv6) -> Legacy
+    - If URI host is symbolic -> DNS-SD
+    """
+    if not device or not hasattr(device, 'uri') or not device.uri:
+        return 'LEGACY'
+
+    uri = device.uri
+    scheme = uri.split(':', 1)[0].lower() if uri else ''
+
+    # BJNP is NOT DNS-SD regardless of hostname
+    if scheme == 'bjnp':
+        return 'LEGACY'
+
+    # Bluetooth is NOT DNS-SD
+    if scheme == 'bluetooth':
+        return 'LEGACY'
+
+    # dnssd/mdns schemes are explicitly DNS-SD
+    if scheme in ('dnssd', 'mdns'):
+        return 'DNS_SD'
+
+    # For other network schemes (ipp, ipps, socket, lpd, http, https),
+    # classify based on whether the host is a literal IP address
+    if _is_literal_ip_host(uri):
+        return 'LEGACY'
+
+    # Symbolic hostname -> DNS-SD
+    return 'DNS_SD'
+
+
+def _has_netloc(uri):
+    """
+    Check if a URI has a network location (netloc), i.e., a proper host.
+
+    Bare CUPS backend identifiers like 'beh', 'ipp', 'socket', 'lpd', etc.
+    have no netloc and are not real printer URIs. They should be ignored.
+
+    Real printer URIs like 'ipps://printer._ipps._tcp.local/' or
+    'socket://192.168.1.102:9100' have a netloc.
+    """
+    if not uri:
+        return False
+    try:
+        parsed = urllib.parse.urlsplit(uri)
+        return parsed.netloc != ''
+    except ValueError:
+        return False
+
+
 class NewPrinterGUI(GtkGUI):
 
     __gsignals__ = {
@@ -605,7 +696,7 @@ class NewPrinterGUI(GtkGUI):
             (_("Members of this class"), Gtk.ListStore(str),
              self.tvNCMembers, m),
             (_("Others"), Gtk.ListStore(str), self.tvNCNotMembers, m),
-            (_("Devices"), Gtk.ListStore(str), self.tvNPDevices, s),
+            (_("Devices"), Gtk.ListStore(str, GObject.TYPE_PYOBJECT, bool), self.tvNPDevices, s),
             (_("Connections"), Gtk.ListStore(str), self.tvNPDeviceURIs, s),
             (_("Makes"), Gtk.ListStore(str, str), self.tvNPMakes,s),
             (_("Models"), Gtk.ListStore(str, str), self.tvNPModels,s),
@@ -619,6 +710,11 @@ class NewPrinterGUI(GtkGUI):
             treeview.set_model(model)
             treeview.append_column(column)
             treeview.get_selection().set_mode(selection_mode)
+
+        # Set cell data function for device list to style placeholder rows
+        self.tvNPDevices.get_column(0).set_cell_data_func(
+            self.tvNPDevices.get_column(0).get_cells()[0],
+            self.device_cell_data_func, None)
 
         # Set up filter for Models list
         self.models_liststore = self.tvNPModels.get_model()
@@ -735,31 +831,31 @@ class NewPrinterGUI(GtkGUI):
             self._searching_stack = Gtk.Stack()
             self._searching_stack.set_transition_type(Gtk.StackTransitionType.CROSSFADE)
             self._searching_stack.set_homogeneous(True)
-            
+
             vbNPDevices.remove(self.ntbkNPType)
             self._searching_stack.add_named(self.ntbkNPType, "notebook")
-            
+
             self._searching_vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
             self._searching_vbox.set_halign(Gtk.Align.CENTER)
             self._searching_vbox.set_valign(Gtk.Align.CENTER)
             self._searching_vbox.set_vexpand(True)
             self._searching_vbox.set_hexpand(True)
-            
+
             self._searching_spinner = VectorSpinner (size=48)
             self._searching_spinner.set_halign(Gtk.Align.CENTER)
-            
+
             self._searching_label = Gtk.Label()
             self._searching_label.set_use_markup(True)
             self._searching_label.set_halign(Gtk.Align.CENTER)
             self._searching_label.set_justify(Gtk.Justification.CENTER)
             self._searching_vbox.pack_start(self._searching_spinner, False, False, 0)
             self._searching_vbox.pack_start(self._searching_label, False, False, 0)
-            
+
             self._searching_stack.add_named(self._searching_vbox, "spinner")
             vbNPDevices.pack_start(self._searching_stack, True, True, 0)
             vbNPDevices.reorder_child(self._searching_stack, 0)
             self._searching_stack.show_all ()
-            
+
             # Start with the notebook visible
             self._searching_stack.set_visible_child_name("notebook")
         else:
@@ -2967,6 +3063,7 @@ class NewPrinterGUI(GtkGUI):
 
         # Search for Bluetooth printers together with the network printers
         # as the Bluetooth search takes rather long time
+        all_network_schemes = ["dnssd", "snmp", "driverless", "bjnp", "bluetooth"]
         network_schemes = ["dnssd", "snmp", "driverless", "bjnp", "bluetooth"]
         error_handler = self.error_getting_devices
         if network == False:
@@ -2974,7 +3071,7 @@ class NewPrinterGUI(GtkGUI):
                                  self.local_devices_reply (x, y,
                                                            current_uri))
             cupshelpers.getDevices (self.fetchDevices_conn,
-                                    exclude_schemes=network_schemes,
+                                    exclude_schemes=all_network_schemes,
                                     reply_handler=reply_handler,
                                     error_handler=error_handler)
         else:
@@ -3234,26 +3331,37 @@ class NewPrinterGUI(GtkGUI):
         self.devices = [physother]
         uri_iter = model.append (None, row=[physother.get_info (),
                                             physother, False])
-        network_iter = model.append (None, row=[_("Network Printer"),
+
+        # Network Printer (DNS-SD)
+        dnssd_iter = model.append (None, row=[_("Network Printer (DNS-SD)"),
+                                               None,
+                                               False])
+        model.append(dnssd_iter, row=[_("Searching..."), None, False])
+
+        # Network Printer (Legacy)
+        legacy_iter = model.append (None, row=[_("Network Printer (Legacy)"),
                                                 None,
                                                 False])
-        network_dict = { 'device-class': 'network',
+        model.append(legacy_iter, row=[_("Searching..."), None, False])
+
+        # Find Network Printer (separate top-level entry)
+        find_nw_dict = { 'device-class': 'network',
                          'device-info': _("Find Network Printer") }
-        network = cupshelpers.Device ('network', **network_dict)
-        find_nw_iter = model.append (network_iter,
-                                     row=[network_dict['device-info'],
-                                          PhysicalDevice (network), False])
-        model.insert_after (network_iter, find_nw_iter, row=['', None, True])
+        find_nw = cupshelpers.Device ('network', **find_nw_dict)
+        find_nw_iter = model.append (None, row=[find_nw_dict['device-info'],
+                                                  PhysicalDevice (find_nw), False])
+
+        # Windows Printer via SAMBA (separate top-level entry)
         smbdev_dict = { 'device-class': 'network',
                         'device-info': _("Windows Printer via SAMBA") }
         smbdev = cupshelpers.Device ('smb', **smbdev_dict)
-        find_smb_iter = model.append (network_iter,
-                                     row=[smbdev_dict['device-info'],
-                                          PhysicalDevice (smbdev), False])
-        model.insert_after (find_nw_iter, find_smb_iter, row=['', None, True])
+        find_smb_iter = model.append (None, row=[smbdev_dict['device-info'],
+                                                   PhysicalDevice (smbdev), False])
+
         self.devices_uri_iter = uri_iter
+        self.devices_dnssd_iter = dnssd_iter
+        self.devices_legacy_iter = legacy_iter
         self.devices_find_nw_iter = find_nw_iter
-        self.devices_network_iter = network_iter
         self.devices_network_fetched = False
         self._legacy_usb_cache = dnssdresolve.LegacyUSBDeviceCache ()
         self._pending_devices = None
@@ -3473,6 +3581,9 @@ class NewPrinterGUI(GtkGUI):
                                                        "scsi", "http", "bjnp",
                                                        "delete")]
 
+        # Filter out bare CUPS backend entries (no host/netloc = not a real printer URI)
+        devices = [x for x in devices if _has_netloc(x.uri)]
+
         ipp_serials = dnssdresolve.ipp_usb_serials (devices)
         if ipp_serials:
             to_remove = []
@@ -3531,7 +3642,8 @@ class NewPrinterGUI(GtkGUI):
 
         model = self.tvNPDevices.get_model ()
 
-        network_iter = self.devices_network_iter
+        dnssd_iter = self.devices_dnssd_iter
+        legacy_iter = self.devices_legacy_iter
         find_nw_iter = self.devices_find_nw_iter
         for newdevice in newdevices:
             device = None
@@ -3551,12 +3663,17 @@ class NewPrinterGUI(GtkGUI):
                 info += _(" (Current)")
             row=[info, device, False]
             if network:
+                # Classify as DNS-SD or Legacy
+                classification = _classify_network_device(devs[0])
+                if classification == 'DNS_SD':
+                    parent_iter = dnssd_iter
+                else:
+                    parent_iter = legacy_iter
                 if devs[0].uri != devs[0].type:
                     # Show discovered network printers as selectable top-level devices.
-                    iter = model.insert_before (network_iter, find_nw_iter,
-                                                row=row)
+                    iter = model.append (parent_iter, row=row)
                     if device == current_device:
-                        network_path = model.get_path(network_iter)
+                        network_path = model.get_path(parent_iter)
                         child_path = model.get_path(iter)
                         self.tvNPDevices.expand_row(network_path, False)
 
@@ -3569,16 +3686,17 @@ class NewPrinterGUI(GtkGUI):
                                      self.tvNPDevices, child_path)
                 else:
                     # Just a method of finding one.
-                    iter = model.append (network_iter, row=row)
+                    iter = model.append (parent_iter, row=row)
             else:
                 # Insert this local device in order.
-                network_path = model.get_path (network_iter)
+                # We need to insert before the network categories
+                # Find the first network category iterator
+                first_network_iter = dnssd_iter
                 iter = model.get_iter_first ()
-                while model.get_path (iter) != network_path:
+                while iter and model.get_path(iter) != model.get_path(first_network_iter):
                     physdev = model.get_value (iter, 1)
                     if physdev > device:
                         break
-
                     iter = model.iter_next (iter)
 
                 iter = model.insert_before (None, iter, row=row)
@@ -3589,6 +3707,19 @@ class NewPrinterGUI(GtkGUI):
                                                  row_align=0.5)
                 column = self.tvNPDevices.get_column (0)
                 self.tvNPDevices.set_cursor (device_select_path, column, False)
+
+        # Add empty-state placeholder for network categories that have no printers
+        for cat_iter in (dnssd_iter, legacy_iter):
+            child_iter = model.iter_children(cat_iter)
+            while child_iter:
+                child_text = model.get_value(child_iter, 0)
+                if child_text == _("Searching..."):
+                    model.remove(child_iter)
+                    break
+                child_iter = model.iter_next(child_iter)
+
+            if model.iter_n_children(cat_iter) == 0:
+                model.append(cat_iter, row=[_("No network printers found"), None, False])
 
         connection_select_path = 0
         if current_uri:
@@ -4087,6 +4218,23 @@ class NewPrinterGUI(GtkGUI):
     def device_row_separator_fn (self, model, iter, data):
         return model.get_value (iter, 2)
 
+    def device_cell_data_func (self, column, cell, model, iter, data):
+        physicaldevice = model.get_value (iter, 1)
+        if physicaldevice is None and model.iter_parent (iter) is not None:
+            text = model.get_value (iter, 0)
+            if text == _("No network printers found"):
+                cell.set_property ('style', Pango.Style.NORMAL)
+                cell.set_property ('foreground', '#888888')
+                cell.set_property ('xpad', 0)
+            else:
+                cell.set_property ('style', Pango.Style.NORMAL)
+                cell.set_property ('foreground', None)
+                cell.set_property ('xpad', 2)
+        else:
+            cell.set_property ('style', Pango.Style.NORMAL)
+            cell.set_property ('foreground', None)
+            cell.set_property ('xpad', 2)
+
     def device_row_activated (self, view, path, column):
         if view.row_expanded (path):
             view.collapse_row (path)
@@ -4099,9 +4247,10 @@ class NewPrinterGUI(GtkGUI):
         if not model:
             return
 
-        network_path = model.get_path (self.devices_network_iter)
-        if not view.row_expanded (network_path):
-            # 'Network' not expanded
+        dnssd_path = model.get_path (self.devices_dnssd_iter)
+        legacy_path = model.get_path (self.devices_legacy_iter)
+        if not (view.row_expanded (dnssd_path) or view.row_expanded (legacy_path)):
+            # Neither 'Network Printer (DNS-SD)' nor 'Network Printer (Legacy)' expanded
             return
 
         if self.firewall is not None:
@@ -4141,8 +4290,9 @@ class NewPrinterGUI(GtkGUI):
         if not model or not iter:
             return
 
-        network_path = model.get_path (self.devices_network_iter)
-        if path == network_path:
+        dnssd_path = model.get_path (self.devices_dnssd_iter)
+        legacy_path = model.get_path (self.devices_legacy_iter)
+        if path == dnssd_path or path == legacy_path:
             self.check_firewall ()
 
     def device_select_function (self, selection, model, path, *UNUSED):
@@ -4650,8 +4800,15 @@ class NewPrinterGUI(GtkGUI):
                 self.devices.append (dev)
                 self.devices.sort ()
                 model = self.tvNPDevices.get_model ()
-                iter = model.insert_before (None, self.devices_find_nw_iter,
-                                            row=[dev.get_info (), dev, False])
+
+                # Classify and insert under the appropriate category
+                classification = _classify_network_device(new_device)
+                if classification == 'DNS_SD':
+                    parent_iter = self.devices_dnssd_iter
+                else:
+                    parent_iter = self.devices_legacy_iter
+
+                iter = model.append (parent_iter, row=[dev.get_info (), dev, False])
 
                 # If this is the first one we've found, select it.
                 if self.network_found == 1:
