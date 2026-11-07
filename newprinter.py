@@ -37,6 +37,7 @@ from timedops import *
 import dbus
 from gi.repository import Gdk
 from gi.repository import Gtk
+from gi.repository import Pango
 import functools
 import urllib.parse
 import ipaddress
@@ -3335,11 +3336,13 @@ class NewPrinterGUI(GtkGUI):
         dnssd_iter = model.append (None, row=[_("Network Printer (DNS-SD)"),
                                                None,
                                                False])
+        model.append(dnssd_iter, row=[_("Searching..."), None, False])
 
         # Network Printer (Legacy)
         legacy_iter = model.append (None, row=[_("Network Printer (Legacy)"),
                                                 None,
                                                 False])
+        model.append(legacy_iter, row=[_("Searching..."), None, False])
 
         # Find Network Printer (separate top-level entry)
         find_nw_dict = { 'device-class': 'network',
@@ -3707,6 +3710,14 @@ class NewPrinterGUI(GtkGUI):
 
         # Add empty-state placeholder for network categories that have no printers
         for cat_iter in (dnssd_iter, legacy_iter):
+            child_iter = model.iter_children(cat_iter)
+            while child_iter:
+                child_text = model.get_value(child_iter, 0)
+                if child_text == _("Searching..."):
+                    model.remove(child_iter)
+                    break
+                child_iter = model.iter_next(child_iter)
+
             if model.iter_n_children(cat_iter) == 0:
                 model.append(cat_iter, row=[_("No network printers found"), None, False])
 
@@ -4208,21 +4219,19 @@ class NewPrinterGUI(GtkGUI):
         return model.get_value (iter, 2)
 
     def device_cell_data_func (self, column, cell, model, iter, data):
-        """
-        Style the placeholder 'No network printers found' row as disabled/greyed out.
-        The placeholder is a child row (has a parent) with None as PhysicalDevice
-        (column 1).  Top-level category rows also have None in column 1 but have
-        no parent, so they must keep their normal styling.
-        """
         physicaldevice = model.get_value (iter, 1)
         if physicaldevice is None and model.iter_parent (iter) is not None:
-            # This is an empty-state placeholder child row
-            cell.set_property ('style', 'normal')
-            cell.set_property ('foreground', '#888888')  # Grey color
-            cell.set_property ('xpad', 0)
+            text = model.get_value (iter, 0)
+            if text == _("No network printers found"):
+                cell.set_property ('style', Pango.Style.NORMAL)
+                cell.set_property ('foreground', '#888888')
+                cell.set_property ('xpad', 0)
+            else:
+                cell.set_property ('style', Pango.Style.NORMAL)
+                cell.set_property ('foreground', None)
+                cell.set_property ('xpad', 2)
         else:
-            # Reset to normal for real printers and category rows
-            cell.set_property ('style', 'normal')
+            cell.set_property ('style', Pango.Style.NORMAL)
             cell.set_property ('foreground', None)
             cell.set_property ('xpad', 2)
 
