@@ -204,6 +204,16 @@ def _normalize_uri(uri):
 
     return urllib.parse.urlunsplit((scheme, netloc, parsed.path, parsed.query, parsed.fragment))
 
+
+def _protocol_from_dnssd_uri(uri):
+    """Use PhysicalDevice's protocol detection for single source of truth."""
+    return PhysicalDevice._protocol_from_uri(uri)
+
+
+def _canonical_dnssd_uri(uri):
+    """Use PhysicalDevice's canonical URI for single source of truth."""
+    return PhysicalDevice._canonical_uri(uri)
+
 def _device_from_object(dev, is_printer=False):
     if isinstance(dev, cupshelpers.Device):
         return dev
@@ -416,9 +426,15 @@ def _classify_network_device(device):
     The classification logic:
     - BJNP is always Legacy (not DNS-SD)
     - Bluetooth is always Legacy (not DNS-SD)
-    - If the device has a dnssd/mdns scheme -> DNS-SD
-    - If URI host is a literal IP (IPv4/IPv6) -> Legacy
-    - If URI host is symbolic -> DNS-SD
+    - For dnssd/mdns schemes, inspect the service type to determine protocol:
+      - _printer._tcp.local -> LPD (Legacy protocol)
+      - _pdl-datastream._tcp.local -> AppSocket (Legacy protocol)
+      - _ipp._tcp.local -> IPP (DNS-SD protocol)
+      - _ipps._tcp.local -> IPPS (DNS-SD protocol)
+    - For explicit protocol schemes:
+      - lpd, socket -> Legacy (these are legacy protocols)
+      - ipp, ipps -> classify by IP (literal IP -> Legacy, symbolic -> DNS-SD)
+      - http, https, others -> classify by IP (literal IP -> Legacy, symbolic -> DNS-SD)
     """
     if not device or not hasattr(device, 'uri') or not device.uri:
         return 'LEGACY'
@@ -434,11 +450,23 @@ def _classify_network_device(device):
     if scheme == 'bluetooth':
         return 'LEGACY'
 
-    # dnssd/mdns schemes are explicitly DNS-SD
+    # For dnssd/mdns schemes, inspect the service type to determine protocol
     if scheme in ('dnssd', 'mdns'):
+        protocol = _protocol_from_dnssd_uri(uri)
+        if protocol is not None:
+            # Classify based on the protocol
+            if protocol in ('lpd', 'socket'):
+                return 'LEGACY'
+            elif protocol in ('ipp', 'ipps'):
+                return 'DNS_SD'
+        # Unrecognized service type -> DNS-SD
         return 'DNS_SD'
 
-    # For other network schemes (ipp, ipps, socket, lpd, http, https),
+    # For explicit LPD and AppSocket schemes - these are legacy protocols
+    if scheme in ('lpd', 'socket'):
+        return 'LEGACY'
+
+    # For other explicit protocol schemes (ipp, ipps, http, https, etc.),
     # classify based on whether the host is a literal IP address
     if _is_literal_ip_host(uri):
         return 'LEGACY'

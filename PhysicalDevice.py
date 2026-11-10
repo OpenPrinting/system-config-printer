@@ -38,6 +38,91 @@ class PhysicalDevice:
         self._user_data = {}
         self._ppdippstr = ppdippstr.backends
 
+    @staticmethod
+    def _protocol_from_uri(uri):
+        """
+        Determine the actual protocol from a printer URI by inspecting the scheme and DNS-SD service suffix.
+
+        For dnssd:// URIs, the protocol is determined by the service type in the hostname:
+        - _printer._tcp.local -> LPD
+        - _pdl-datastream._tcp.local -> AppSocket (socket)
+        - _ipp._tcp.local -> IPP
+        - _ipps._tcp.local -> IPPS
+
+        For explicit scheme URIs (ipp://, ipps://, lpd://, socket://), the scheme is used directly.
+
+        Returns the canonical protocol scheme: 'ipp', 'ipps', 'lpd', or 'socket'.
+        Returns None if the URI is not a recognized network printer URI.
+        """
+        if not uri:
+            return None
+
+        try:
+            parsed = urllib.parse.urlsplit(uri)
+            scheme = parsed.scheme.lower()
+            netloc = parsed.netloc.lower()
+        except ValueError:
+            return None
+
+        # Explicit protocol schemes - use directly
+        if scheme in ('ipp', 'ipps', 'lpd', 'socket'):
+            return scheme
+
+        # DNS-SD scheme - inspect service type in hostname
+        if scheme in ('dnssd', 'mdns'):
+            # Extract service type from netloc (e.g., "Printer._ipp._tcp.local")
+            # The service type is the part starting with _ and ending with _tcp.local or _udp.local
+            parts = netloc.rsplit('.', 3)
+            if len(parts) >= 4:
+                # parts[-3] is the service type (e.g., "_ipp", "_pdl-datastream", "_printer")
+                # parts[-2] is the protocol ("_tcp" or "_udp")
+                # parts[-1] is the domain ("local")
+                service_type = parts[-3]
+                protocol = parts[-2]
+
+                if protocol in ('_tcp', '_udp'):
+                    if service_type == '_ipp':
+                        return 'ipp'
+                    elif service_type == '_ipps':
+                        return 'ipps'
+                    elif service_type == '_printer':
+                        return 'lpd'
+                    elif service_type == '_pdl-datastream':
+                        return 'socket'
+
+        return None
+
+    @staticmethod
+    def _canonical_uri(uri):
+        """
+        Convert a DNS-SD URI to its canonical explicit protocol form.
+
+        For dnssd:// URIs, converts to the corresponding explicit protocol URI:
+        - dnssd://Name._printer._tcp.local/?uuid=... -> lpd://Name._printer._tcp.local/
+        - dnssd://Name._pdl-datastream._tcp.local/?uuid=... -> socket://Name._pdl-datastream._tcp.local/
+        - dnssd://Name._ipp._tcp.local/?uuid=... -> ipp://Name._ipp._tcp.local/
+        - dnssd://Name._ipps._tcp.local/?uuid=... -> ipps://Name._ipps._tcp.local/
+
+        Strips UUID query parameters and normalizes the URI.
+
+        Returns the canonical URI, or the original URI if not a recognized DNS-SD printer URI.
+        """
+        if not uri:
+            return uri
+
+        protocol = PhysicalDevice._protocol_from_uri(uri)
+        if not protocol:
+            return uri
+
+        try:
+            parsed = urllib.parse.urlsplit(uri)
+            netloc = parsed.netloc
+        except ValueError:
+            return uri
+
+        # Reconstruct URI with canonical scheme, no query/fragment
+        return urllib.parse.urlunsplit((protocol, netloc, '/', '', ''))
+
     def _canonical_id (self, device):
         make_and_model = ''
         if hasattr (device, "id_dict"):
@@ -93,6 +178,7 @@ class PhysicalDevice:
         hostport = None
         host = None
         dnssdhost = None
+        protocol = self._protocol_from_uri(uri)
         (scheme, rest) = urllib.parse.splittype (uri)
         if scheme == 'hp' or scheme == 'hpfax':
             ipparam = None
@@ -107,17 +193,17 @@ class PhysicalDevice:
                 elif ipparam.startswith("zc="):
                     dnssdhost = ipparam[3:]
                 else:
-                    return None, None
+                    return None, None, protocol
             else:
-                return None, None
+                return None, None, protocol
         elif scheme == 'dnssd' or scheme == 'mdns':
             # The URIs of the CUPS "dnssd" backend do not contain the host
             # name of the printer
-            return None, None
+            return None, None, protocol
         else:
             (hostport, rest) = urllib.parse.splithost (rest)
             if hostport is None:
-                return None, None
+                return None, None, protocol
 
         if hostport:
             (host, port) = urllib.parse.splitport (hostport)
@@ -143,11 +229,11 @@ class PhysicalDevice:
                 host = None
 
         return self._add_dot_local_if_needed(host), \
-            self._add_dot_local_if_needed(dnssdhost)
+            self._add_dot_local_if_needed(dnssdhost), protocol
 
     def add_device (self, device):
         if self._network_host or self.dnssd_hostname:
-            host, dnssdhost = self._get_host_from_uri (device.uri)
+            host, dnssdhost, protocol = self._get_host_from_uri (device.uri)
             if (hasattr (device, 'address')):
                 host = self._add_dot_local_if_needed(device.address)
             if (hasattr (device, 'hostname') and dnssdhost is None):
@@ -221,7 +307,7 @@ class PhysicalDevice:
         if (not self._network_host or not self.dnssd_hostname) and \
            device.device_class == "network":
             # We just added a network device.
-            self._network_host, dnssdhost = \
+            self._network_host, dnssdhost, _ = \
                 self._get_host_from_uri (device.uri)
             if dnssdhost:
                 self.dnssd_hostname = dnssdhost;

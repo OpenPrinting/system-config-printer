@@ -177,6 +177,124 @@ def test_filter_configured_devices_same_ip_different_queues_stay_separate():
     assert len(filtered) == 1
     assert filtered[0].uri == dev2.uri
 
+
+
+def test_protocol_from_dnssd_uri():
+    """Test _protocol_from_dnssd_uri correctly identifies protocol from various URIs."""
+    # DNS-SD LPD
+    assert newprinter._protocol_from_dnssd_uri("dnssd://OpenPrinting%20LPD%20Printer._printer._tcp.local/?uuid=123") == "lpd"
+    assert newprinter._protocol_from_dnssd_uri("dnssd://OpenPrinting%20LPD%20Printer._printer._tcp.local/") == "lpd"
+    # Explicit LPD
+    assert newprinter._protocol_from_dnssd_uri("lpd://OpenPrinting%20LPD%20Printer._printer._tcp.local/") == "lpd"
+
+    # DNS-SD AppSocket
+    assert newprinter._protocol_from_dnssd_uri("dnssd://OpenPrinting%20AppSocket%20Printer._pdl-datastream._tcp.local/?uuid=123") == "socket"
+    assert newprinter._protocol_from_dnssd_uri("dnssd://OpenPrinting%20AppSocket%20Printer._pdl-datastream._tcp.local/") == "socket"
+    # Explicit socket
+    assert newprinter._protocol_from_dnssd_uri("socket://OpenPrinting%20AppSocket%20Printer._pdl-datastream._tcp.local/") == "socket"
+    # Socket with IP
+    assert newprinter._protocol_from_dnssd_uri("socket://192.168.1.102") == "socket"
+    assert newprinter._protocol_from_dnssd_uri("socket://printer.example.com") == "socket"
+
+    # DNS-SD IPP
+    assert newprinter._protocol_from_dnssd_uri("dnssd://Xerox%20B235%20MFP._ipp._tcp.local/?uuid=123") == "ipp"
+    assert newprinter._protocol_from_dnssd_uri("dnssd://Xerox%20B235%20MFP._ipp._tcp.local") == "ipp"
+    # Explicit IPP
+    assert newprinter._protocol_from_dnssd_uri("ipp://Xerox%20B235%20MFP._ipp._tcp.local/") == "ipp"
+
+    # DNS-SD IPPS
+    assert newprinter._protocol_from_dnssd_uri("dnssd://Xerox%20B235%20MFP._ipps._tcp.local//?uuid=123") == "ipps"
+    assert newprinter._protocol_from_dnssd_uri("dnssd://Xerox%20B235%20MFP._ipps._tcp.local//") == "ipps"
+    # Explicit IPPS
+    assert newprinter._protocol_from_dnssd_uri("ipps://Xerox%20B235%20MFP._ipps._tcp.local/") == "ipps"
+
+    # Unknown URIs
+    assert newprinter._protocol_from_dnssd_uri("http://printer/") is None
+    assert newprinter._protocol_from_dnssd_uri("") is None
+    assert newprinter._protocol_from_dnssd_uri(None) is None
+
+
+def test_canonical_dnssd_uri():
+    """Test _canonical_dnssd_uri converts DNS-SD URIs to canonical protocol form."""
+    # LPD
+    assert newprinter._canonical_dnssd_uri("dnssd://OpenPrinting%20LPD%20Printer._printer._tcp.local/?uuid=123") == "lpd://OpenPrinting%20LPD%20Printer._printer._tcp.local/"
+    assert newprinter._canonical_dnssd_uri("dnssd://OpenPrinting%20LPD%20Printer._printer._tcp.local/") == "lpd://OpenPrinting%20LPD%20Printer._printer._tcp.local/"
+
+    # AppSocket
+    assert newprinter._canonical_dnssd_uri("dnssd://OpenPrinting%20AppSocket%20Printer._pdl-datastream._tcp.local/?uuid=123") == "socket://OpenPrinting%20AppSocket%20Printer._pdl-datastream._tcp.local/"
+    assert newprinter._canonical_dnssd_uri("dnssd://OpenPrinting%20AppSocket%20Printer._pdl-datastream._tcp.local/") == "socket://OpenPrinting%20AppSocket%20Printer._pdl-datastream._tcp.local/"
+
+    # IPP
+    assert newprinter._canonical_dnssd_uri("dnssd://Xerox%20B235%20MFP._ipp._tcp.local/?uuid=123") == "ipp://Xerox%20B235%20MFP._ipp._tcp.local/"
+    assert newprinter._canonical_dnssd_uri("dnssd://Xerox%20B235%20MFP._ipp._tcp.local") == "ipp://Xerox%20B235%20MFP._ipp._tcp.local/"
+
+    # IPPS
+    assert newprinter._canonical_dnssd_uri("dnssd://Xerox%20B235%20MFP._ipps._tcp.local//?uuid=123") == "ipps://Xerox%20B235%20MFP._ipps._tcp.local/"
+    assert newprinter._canonical_dnssd_uri("dnssd://Xerox%20B235%20MFP._ipps._tcp.local//") == "ipps://Xerox%20B235%20MFP._ipps._tcp.local/"
+
+    # Non-DNS-SD URIs pass through
+    assert newprinter._canonical_dnssd_uri("lpd://Printer._printer._tcp.local/") == "lpd://Printer._printer._tcp.local/"
+    # Non-DNS-SD URIs pass through (with path normalization)
+    assert newprinter._canonical_dnssd_uri("socket://192.168.1.102") == "socket://192.168.1.102/"
+    assert newprinter._canonical_dnssd_uri("ipp://printer/") == "ipp://printer/"
+    assert newprinter._canonical_dnssd_uri("http://printer/") == "http://printer/"
+
+
+def test_classify_network_device():
+    """Test _classify_network_device correctly classifies network devices."""
+    # DNS-SD LPD -> LEGACY
+    dev = cupshelpers.Device("dnssd://Printer._printer._tcp.local/", **{"device-class": "network"})
+    assert newprinter._classify_network_device(dev) == "LEGACY"
+
+    # DNS-SD AppSocket -> LEGACY
+    dev = cupshelpers.Device("dnssd://Printer._pdl-datastream._tcp.local/", **{"device-class": "network"})
+    assert newprinter._classify_network_device(dev) == "LEGACY"
+
+    # DNS-SD IPP -> DNS_SD
+    dev = cupshelpers.Device("dnssd://Printer._ipp._tcp.local/", **{"device-class": "network"})
+    assert newprinter._classify_network_device(dev) == "DNS_SD"
+
+    # DNS-SD IPPS -> DNS_SD
+    dev = cupshelpers.Device("dnssd://Printer._ipps._tcp.local/", **{"device-class": "network"})
+    assert newprinter._classify_network_device(dev) == "DNS_SD"
+
+    # Explicit socket with IP -> LEGACY
+    dev = cupshelpers.Device("socket://192.168.1.102", **{"device-class": "network"})
+    assert newprinter._classify_network_device(dev) == "LEGACY"
+
+    # Explicit socket with hostname -> LEGACY (AppSocket is a legacy protocol, regardless of hostname)
+    dev = cupshelpers.Device("socket://printer.example.com", **{"device-class": "network"})
+    assert newprinter._classify_network_device(dev) == "LEGACY"
+
+    # Explicit LPD with IP -> LEGACY
+    dev = cupshelpers.Device("lpd://192.168.1.102", **{"device-class": "network"})
+    assert newprinter._classify_network_device(dev) == "LEGACY"
+
+    # Explicit IPP with IP -> LEGACY (literal IP)
+    dev = cupshelpers.Device("ipp://192.168.1.102/ipp/print", **{"device-class": "network"})
+    assert newprinter._classify_network_device(dev) == "LEGACY"
+
+    # Explicit IPP with symbolic hostname -> DNS_SD (symbolic hostname)
+    dev = cupshelpers.Device("ipp://printer.example.com/ipp/print", **{"device-class": "network"})
+    assert newprinter._classify_network_device(dev) == "DNS_SD"
+
+    # Explicit IPPS with IP -> LEGACY (literal IP)
+    dev = cupshelpers.Device("ipps://192.168.1.102/ipp/print", **{"device-class": "network"})
+    assert newprinter._classify_network_device(dev) == "LEGACY"
+
+    # Explicit IPPS with symbolic hostname -> DNS_SD (symbolic hostname)
+    dev = cupshelpers.Device("ipps://printer.example.com/ipp/print", **{"device-class": "network"})
+    assert newprinter._classify_network_device(dev) == "DNS_SD"
+
+    # BJNP -> LEGACY
+    dev = cupshelpers.Device("bjnp://printer.example.com", **{"device-class": "network"})
+    assert newprinter._classify_network_device(dev) == "LEGACY"
+
+    # Bluetooth -> LEGACY
+    dev = cupshelpers.Device("bluetooth://XX:XX:XX:XX:XX:XX", **{"device-class": "network"})
+    assert newprinter._classify_network_device(dev) == "LEGACY"
+
+
 def test_device_from_object_explicit_kwargs():
     """Verify _device_from_object passes expected device-* keywords to Device.__init__."""
     class DummyObj:
