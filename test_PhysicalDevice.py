@@ -568,3 +568,83 @@ def test_network_printer_protocols_separation():
             pds.append(pd)
 
     assert len(pds) == 3
+
+
+@pytest.mark.skipif(cups is None, reason="cups module not available")
+def test_kyocera_ipp_dnssd_and_ipps_schemes_merge():
+    uuid1 = "4509a320-00a0-008f-00b6-002507510eca"
+    uuid2 = "98765432-1111-2222-3333-444455556666"
+
+    dev_dnssd = _make_dnssd_device(
+        f"dnssd://Kyocera%20ECOSYS%20M2040dn._ipp._tcp.local/?uuid={uuid1}",
+        make_and_model="Kyocera ECOSYS M2040dn",
+        device_id="MFG:Kyocera;MDL:ECOSYS M2040dn;")
+    dev_ipps = _make_dnssd_device(
+        "ipps://Kyocera%20ECOSYS%20M2040dn._ipps._tcp.local/",
+        make_and_model="Kyocera ECOSYS M2040dn",
+        device_id="MFG:Kyocera;MDL:ECOSYS M2040dn;")
+
+    phys_dnssd = PhysicalDevice(dev_dnssd)
+    phys_ipps = PhysicalDevice(dev_ipps)
+    assert phys_dnssd == phys_ipps
+
+    pds = []
+    for d in [dev_dnssd, dev_ipps]:
+        pd = PhysicalDevice(d)
+        try:
+            i = pds.index(pd)
+            pds[i].add_device(d)
+        except ValueError:
+            pds.append(pd)
+
+    assert len(pds) == 1
+    devices = pds[0].get_devices()
+    assert len(devices) == 2
+    uris = [d.uri for d in devices]
+    assert any("._ipp._tcp.local" in u for u in uris)
+    assert any("._ipps._tcp.local" in u for u in uris)
+
+    dev_dnssd_rev = _make_dnssd_device(
+        f"dnssd://Kyocera%20ECOSYS%20M2040dn._ipp._tcp.local/?uuid={uuid1}",
+        make_and_model="Kyocera ECOSYS M2040dn",
+        device_id="MFG:Kyocera;MDL:ECOSYS M2040dn;")
+    dev_ipps_rev = _make_dnssd_device(
+        "ipps://Kyocera%20ECOSYS%20M2040dn._ipps._tcp.local/",
+        make_and_model="Kyocera ECOSYS M2040dn",
+        device_id="MFG:Kyocera;MDL:ECOSYS M2040dn;")
+
+    pds_rev = []
+    for d in [dev_ipps_rev, dev_dnssd_rev]:
+        pd = PhysicalDevice(d)
+        try:
+            i = pds_rev.index(pd)
+            pds_rev[i].add_device(d)
+        except ValueError:
+            pds_rev.append(pd)
+
+    assert len(pds_rev) == 1
+    devices_rev = pds_rev[0].get_devices()
+    assert len(devices_rev) == 2
+    uris_rev = [d.uri for d in devices_rev]
+    assert any("._ipp._tcp.local" in u for u in uris_rev)
+    assert any("._ipps._tcp.local" in u for u in uris_rev)
+
+    dev_dnssd_diff_uuid = _make_dnssd_device(
+        f"dnssd://Kyocera%20ECOSYS%20M2040dn._ipp._tcp.local/?uuid={uuid2}",
+        make_and_model="Kyocera ECOSYS M2040dn",
+        device_id="MFG:Kyocera;MDL:ECOSYS M2040dn;")
+
+    phys_diff_uuid = PhysicalDevice(dev_dnssd_diff_uuid)
+    assert phys_dnssd == phys_diff_uuid
+
+    pds_uuid = []
+    for d in [dev_dnssd, dev_ipps, dev_dnssd_diff_uuid]:
+        pd = PhysicalDevice(d)
+        try:
+            i = pds_uuid.index(pd)
+            pds_uuid[i].add_device(d)
+        except ValueError:
+            pds_uuid.append(pd)
+
+    assert len(pds_uuid) == 1
+    assert len(pds_uuid[0].get_devices()) == 2

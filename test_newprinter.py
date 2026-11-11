@@ -972,13 +972,13 @@ def test_ipp_connection_labels():
     assert dev_net_driverless.menuentry == "IPP"
     assert getattr(dev_net_driverless, 'driverless', False) is True
 
-    # 6. ipps:// network printer -> "IPP"
-    assert dev_ipps.menuentry == "IPP"
+    # 6. ipps:// network printer -> "IPPS"
+    assert dev_ipps.menuentry == "IPPS"
     assert getattr(dev_ipps, 'driverless', False) is True
 
 
 def test_ipps_network_device_connection_label():
-    """Verify that an ipps://..._ipps._tcp.local device displays 'IPP' and keeps Connection section visible."""
+    """Verify that an ipps://..._ipps._tcp.local device displays 'IPPS' and keeps Connection section visible."""
     np = get_dummy_gui()
     np.device_selected = 0
     np.tvNPDeviceURIs = MagicMock()
@@ -1010,8 +1010,8 @@ def test_ipps_network_device_connection_label():
     np.expNPDeviceURIs.show_all.assert_called_once()
     np.expNPDeviceURIs.hide.assert_not_called()
 
-    # 2. menuentry is "IPP"
-    assert dev_ipps.menuentry == "IPP"
+    # 2. menuentry is "IPPS"
+    assert dev_ipps.menuentry == "IPPS"
     assert getattr(dev_ipps, 'driverless', False) is True
 
 
@@ -5985,3 +5985,77 @@ def test_lpd_dnssd_and_lpd_gui_single_entry():
     assert not any("OpenPrinting LPD" in item for item in legacy_items)
     assert not any("OpenPrinting AppSocket" in item for item in legacy_items)
     assert len(legacy_items) == 2
+
+
+def test_kyocera_ipp_dnssd_and_ipps_gui_single_entry():
+    import os
+    os.environ["SYSTEM_CONFIG_PRINTER_UI"] = "ui"
+    from unittest.mock import MagicMock
+    import gi
+    gi.require_version('Gtk', '3.0')
+    from gi.repository import Gtk
+    import newprinter
+    import cupshelpers
+
+    gui = newprinter.NewPrinterGUI()
+    gui.start_fetching_devices = MagicMock()
+    gui.fillDeviceTab()
+
+    d1 = cupshelpers.Device(
+        "dnssd://Kyocera%20ECOSYS%20M2040dn._ipp._tcp.local/?uuid=4509a320-00a0-008f-00b6-002507510eca",
+        **{"device-class": "network",
+           "device-make-and-model": "Kyocera ECOSYS M2040dn",
+           "device-info": "Kyocera ECOSYS M2040dn"})
+
+    d2 = cupshelpers.Device(
+        "ipps://Kyocera%20ECOSYS%20M2040dn._ipps._tcp.local/",
+        **{"device-class": "network",
+           "device-make-and-model": "Kyocera ECOSYS M2040dn",
+           "device-info": "Kyocera ECOSYS M2040dn"})
+
+    devs = {d.uri: d for d in [d1, d2]}
+    gui.add_devices(devs, None, no_more=True)
+
+    model = gui.tvNPDevices.get_model()
+
+    dnssd_iter = gui.devices_dnssd_iter
+    child = model.iter_children(dnssd_iter)
+    dnssd_items = []
+    phys_devs = []
+    while child:
+        dnssd_items.append(model.get_value(child, 0))
+        phys_devs.append(model.get_value(child, 1))
+        child = model.iter_next(child)
+
+    assert dnssd_items.count("Kyocera ECOSYS M2040dn") == 1
+    assert len(phys_devs) == 1
+    conn_devs = phys_devs[0].get_devices()
+    assert len(conn_devs) == 2
+    uris = [d.uri for d in conn_devs]
+    assert any("._ipp._tcp.local" in u for u in uris)
+    assert any("._ipps._tcp.local" in u for u in uris)
+
+    legacy_iter = gui.devices_legacy_iter
+    child = model.iter_children(legacy_iter)
+    legacy_items = []
+    while child:
+        legacy_items.append(model.get_value(child, 0))
+        child = model.iter_next(child)
+
+    assert "Kyocera ECOSYS M2040dn" not in legacy_items
+
+    child_entry = model.iter_children(dnssd_iter)
+    path = model.get_path(child_entry)
+    gui.tvNPDevices.get_cursor = MagicMock(return_value=(path, None))
+    gui.on_tvNPDevices_cursor_changed(gui.tvNPDevices)
+
+    uri_model = gui.tvNPDeviceURIs.get_model()
+    it = uri_model.get_iter_first()
+    conn_labels = []
+    while it:
+        conn_labels.append(uri_model.get_value(it, 0))
+        it = uri_model.iter_next(it)
+
+    assert "IPP" in conn_labels
+    assert "IPPS" in conn_labels
+    assert len(conn_labels) == 2

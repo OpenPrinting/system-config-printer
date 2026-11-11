@@ -4389,7 +4389,10 @@ class NewPrinterGUI(GtkGUI):
 
                 is_usb = dnssdresolve.is_ipp_over_usb_device (device)
 
-                conn_type = _("IPP over USB") if is_usb else _("IPP")
+                if device.type == "ipps" or scheme == "ipps":
+                    conn_type = _("IPPS over USB") if is_usb else _("IPPS")
+                else:
+                    conn_type = _("IPP over USB") if is_usb else _("IPP")
 
                 if queue != '':
                     device.menuentry = "%s (%s)" % (conn_type, queue)
@@ -4409,17 +4412,19 @@ class NewPrinterGUI(GtkGUI):
                         device.menuentry += " (%s)" % device.info
                 else:
                     protocol = None
-                    if name.find("._ipp") != -1:
+                    if name.find("._ipps") != -1:
+                        protocol = "IPPS"
+                    elif name.find("._ipp") != -1:
                         protocol = "IPP"
                     elif name.find("._printer") != -1:
                         protocol = "LPD"
                     elif name.find("._pdl-datastream") != -1:
                         protocol = "AppSocket/JetDirect"
-                    if protocol == "IPP":
+                    if protocol in ("IPP", "IPPS"):
                         if dnssdresolve.is_ipp_over_usb_device (device):
-                            device.menuentry = _("IPP over USB")
+                            device.menuentry = _("%s over USB") % protocol
                         else:
-                            device.menuentry = _("IPP")
+                            device.menuentry = _(protocol)
                     elif protocol is not None:
                         device.menuentry = (_("%s network printer via DNS-SD")
                                             % protocol)
