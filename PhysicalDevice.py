@@ -116,12 +116,28 @@ class PhysicalDevice:
 
         try:
             parsed = urllib.parse.urlsplit(uri)
+            scheme = parsed.scheme.lower()
             netloc = parsed.netloc
         except ValueError:
             return uri
 
-        # Reconstruct URI with canonical scheme, no query/fragment
-        return urllib.parse.urlunsplit((protocol, netloc, '/', '', ''))
+        path = parsed.path
+        if path in ("", "/", "//"):
+            path = "/"
+
+        # For dnssd/mdns, reconstruct with canonical protocol scheme and no query/fragment
+        if scheme in ("dnssd", "mdns"):
+            return urllib.parse.urlunsplit((protocol, netloc, path, "", ""))
+
+        # For explicit schemes, strip uuid from query if present, normalize path
+        if parsed.query:
+            params = urllib.parse.parse_qsl(parsed.query, keep_blank_values=True)
+            filtered_params = [(k, v) for k, v in params if k.lower() != "uuid"]
+            new_query = urllib.parse.urlencode(filtered_params)
+        else:
+            new_query = ""
+
+        return urllib.parse.urlunsplit((protocol, netloc, path, new_query, parsed.fragment))
 
     def _canonical_id (self, device):
         make_and_model = ''
@@ -179,6 +195,8 @@ class PhysicalDevice:
         host = None
         dnssdhost = None
         protocol = self._protocol_from_uri(uri)
+        if protocol in ('lpd', 'socket'):
+            uri = self._canonical_uri(uri)
         (scheme, rest) = urllib.parse.splittype (uri)
         if scheme == 'hp' or scheme == 'hpfax':
             ipparam = None
@@ -232,6 +250,12 @@ class PhysicalDevice:
             self._add_dot_local_if_needed(dnssdhost), protocol
 
     def add_device (self, device):
+        protocol = self._protocol_from_uri (device.uri)
+        if protocol in ('lpd', 'socket'):
+            canonical_uri = self._canonical_uri (device.uri)
+            device.uri = canonical_uri
+            device.type = protocol
+
         if self._network_host or self.dnssd_hostname:
             host, dnssdhost, protocol = self._get_host_from_uri (device.uri)
             if (hasattr (device, 'address')):

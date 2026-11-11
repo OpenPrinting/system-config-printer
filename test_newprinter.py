@@ -5857,3 +5857,72 @@ def test_cancel_button_disabled_during_apply_and_restored_on_error():
     assert False in cancel_sensitivity_history
     # After error handling and _set_wizard_busy(False), Cancel button is re-enabled
     assert np.btnNPCancel.get_sensitive() is True
+
+
+def test_lpd_dnssd_and_lpd_gui_single_entry():
+    """GUI regression test for Alex's reported bug:
+    For the same physical LPD printer returning both dnssd:// and lpd://,
+    the New Printer dialog must show only ONE 'OpenPrinting LPD' under
+    'Network Printer (Legacy)'.
+    Then verify AppSocket still works and multiple different AppSocket printers
+    remain separate."""
+    import os
+    os.environ["SYSTEM_CONFIG_PRINTER_UI"] = "ui"
+    from unittest.mock import MagicMock
+    import gi
+    gi.require_version('Gtk', '3.0')
+    from gi.repository import Gtk
+    import newprinter
+    import cupshelpers
+
+    gui = newprinter.NewPrinterGUI()
+    gui.start_fetching_devices = MagicMock()
+    gui.fillDeviceTab()
+
+    d1 = cupshelpers.Device(
+        "dnssd://OpenPrinting%20LPD%20Printer._printer._tcp.local/?uuid=cbca9fde-d208-4156-9a2f-82857dd0be5f",
+        **{"device-class": "network",
+           "device-make-and-model": "OpenPrinting LPD Printer",
+           "device-info": "OpenPrinting LPD"})
+    d2 = cupshelpers.Device(
+        "lpd://OpenPrinting%20LPD%20Printer._printer._tcp.local/",
+        **{"device-class": "network",
+           "device-make-and-model": "OpenPrinting LPD Printer",
+           "device-info": "OpenPrinting LPD"})
+
+    d3 = cupshelpers.Device(
+        "dnssd://OpenPrinting%20AppSocket%20Printer._pdl-datastream._tcp.local/?uuid=cbca9fde-d208-4156-9a2f-82857dd0be5f",
+        **{"device-class": "network",
+           "device-make-and-model": "OpenPrinting AppSocket Printer",
+           "device-info": "OpenPrinting AppSocket"})
+    d4 = cupshelpers.Device(
+        "socket://OpenPrinting%20AppSocket%20Printer._pdl-datastream._tcp.local/",
+        **{"device-class": "network",
+           "device-make-and-model": "OpenPrinting AppSocket Printer",
+           "device-info": "OpenPrinting AppSocket"})
+
+    d5 = cupshelpers.Device(
+        "socket://Another%20AppSocket%20Printer._pdl-datastream._tcp.local/",
+        **{"device-class": "network",
+           "device-make-and-model": "Another AppSocket Printer",
+           "device-info": "Another AppSocket"})
+
+    devs = {d.uri: d for d in [d1, d2, d3, d4, d5]}
+    gui.add_devices(devs, None, no_more=True)
+
+    model = gui.tvNPDevices.get_model()
+    legacy_iter = gui.devices_legacy_iter
+
+    child = model.iter_children(legacy_iter)
+    legacy_items = []
+    while child:
+        legacy_items.append(model.get_value(child, 0))
+        child = model.iter_next(child)
+
+    # Must show only ONE OpenPrinting LPD entry under Network Printer (Legacy)
+    assert legacy_items.count("OpenPrinting LPD") == 1
+    # AppSocket still works and shows only ONE OpenPrinting AppSocket
+    assert legacy_items.count("OpenPrinting AppSocket") == 1
+    # Multiple different AppSocket printers remain separate
+    assert "Another AppSocket" in legacy_items
+    assert len(legacy_items) == 3
