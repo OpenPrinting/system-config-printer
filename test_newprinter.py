@@ -268,8 +268,11 @@ def test_classify_network_device():
     dev = cupshelpers.Device("socket://192.168.1.102", **{"device-class": "network"})
     assert newprinter._classify_network_device(dev) == "LEGACY"
 
+    dev = cupshelpers.Device("socket://printer.local", **{"device-class": "network"})
+    assert newprinter._classify_network_device(dev) == "DNS_SD"
+
     dev = cupshelpers.Device("socket://printer.example.com", **{"device-class": "network"})
-    assert newprinter._classify_network_device(dev) == "LEGACY"
+    assert newprinter._classify_network_device(dev) == "DNS_SD"
 
     dev = cupshelpers.Device("lpd://192.168.1.102/", **{"device-class": "network"})
     assert newprinter._classify_network_device(dev) == "LEGACY"
@@ -277,14 +280,32 @@ def test_classify_network_device():
     dev = cupshelpers.Device("lpd://192.168.1.102", **{"device-class": "network"})
     assert newprinter._classify_network_device(dev) == "LEGACY"
 
+    dev = cupshelpers.Device("lpd://192.168.1.102/queue", **{"device-class": "network"})
+    assert newprinter._classify_network_device(dev) == "LEGACY"
+
+    dev = cupshelpers.Device("lpd://printer.local/queue", **{"device-class": "network"})
+    assert newprinter._classify_network_device(dev) == "DNS_SD"
+
     dev = cupshelpers.Device("ipp://192.168.1.102/ipp/print", **{"device-class": "network"})
     assert newprinter._classify_network_device(dev) == "LEGACY"
+
+    dev = cupshelpers.Device("ipp://192.168.1.102/", **{"device-class": "network"})
+    assert newprinter._classify_network_device(dev) == "LEGACY"
+
+    dev = cupshelpers.Device("ipp://printer.local/", **{"device-class": "network"})
+    assert newprinter._classify_network_device(dev) == "DNS_SD"
 
     dev = cupshelpers.Device("ipp://printer.example.com/ipp/print", **{"device-class": "network"})
     assert newprinter._classify_network_device(dev) == "DNS_SD"
 
     dev = cupshelpers.Device("ipps://192.168.1.102/ipp/print", **{"device-class": "network"})
     assert newprinter._classify_network_device(dev) == "LEGACY"
+
+    dev = cupshelpers.Device("ipps://192.168.1.102/", **{"device-class": "network"})
+    assert newprinter._classify_network_device(dev) == "LEGACY"
+
+    dev = cupshelpers.Device("ipps://printer.local/", **{"device-class": "network"})
+    assert newprinter._classify_network_device(dev) == "DNS_SD"
 
     dev = cupshelpers.Device("ipps://printer.example.com/ipp/print", **{"device-class": "network"})
     assert newprinter._classify_network_device(dev) == "DNS_SD"
@@ -6013,7 +6034,13 @@ def test_kyocera_ipp_dnssd_and_ipps_gui_single_entry():
            "device-make-and-model": "Kyocera ECOSYS M2040dn",
            "device-info": "Kyocera ECOSYS M2040dn"})
 
-    devs = {d.uri: d for d in [d1, d2]}
+    d3 = cupshelpers.Device(
+        "socket://192.168.1.102",
+        **{"device-class": "network",
+           "device-make-and-model": "Kyocera ECOSYS M2040dn",
+           "device-info": "Kyocera ECOSYS M2040dn"})
+
+    devs = {d.uri: d for d in [d1, d2, d3]}
     gui.add_devices(devs, None, no_more=True)
 
     model = gui.tvNPDevices.get_model()
@@ -6038,11 +6065,15 @@ def test_kyocera_ipp_dnssd_and_ipps_gui_single_entry():
     legacy_iter = gui.devices_legacy_iter
     child = model.iter_children(legacy_iter)
     legacy_items = []
+    legacy_phys_devs = []
     while child:
         legacy_items.append(model.get_value(child, 0))
+        legacy_phys_devs.append(model.get_value(child, 1))
         child = model.iter_next(child)
 
-    assert "Kyocera ECOSYS M2040dn" not in legacy_items
+    assert any("Kyocera ECOSYS M2040dn" in item for item in legacy_items)
+    assert len(legacy_phys_devs) == 1
+    assert legacy_phys_devs[0].is_literal_ip() is True
 
     child_entry = model.iter_children(dnssd_iter)
     path = model.get_path(child_entry)

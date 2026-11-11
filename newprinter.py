@@ -388,32 +388,7 @@ def _get_driver_name_from_ppd(ppd, ppds_cache):
     return ""
 
 def _is_literal_ip_host(uri):
-    """
-    Determine whether the host component of a URI is a literal IP address
-    (IPv4 or IPv6). Uses urllib.parse to extract the hostname and ipaddress
-    to validate it. Returns True for literal IPs, False for symbolic hostnames.
-    """
-    if not uri:
-        return False
-
-    try:
-        parsed = urllib.parse.urlsplit(uri)
-        host = parsed.hostname
-    except ValueError:
-        return False
-
-    if not host:
-        return False
-
-    # Remove IPv6 zone ID if present (e.g., fe80::1%eth0 -> fe80::1)
-    if '%' in host:
-        host = host.split('%')[0]
-
-    try:
-        ipaddress.ip_address(host)
-        return True
-    except ValueError:
-        return False
+    return PhysicalDevice._is_literal_ip_uri(uri)
 
 def _classify_network_device(device, physdev=None):
     if isinstance(device, PhysicalDevice):
@@ -434,23 +409,6 @@ def _classify_network_device(device, physdev=None):
         return 'DNS_SD'
 
     if _is_literal_ip_host(uri):
-        return 'LEGACY'
-
-    if getattr(device, 'dnssd_hostname', None) or (physdev and getattr(physdev, 'dnssd_hostname', None)):
-        return 'DNS_SD'
-
-    try:
-        parsed = urllib.parse.urlsplit(uri)
-        host = parsed.hostname or parsed.netloc
-        if host and ':' in host:
-            host = host.split(':', 1)[0]
-    except ValueError:
-        host = None
-
-    if host and PhysicalDevice._extract_dnssd_instance(host):
-        return 'DNS_SD'
-
-    if scheme in ('lpd', 'socket'):
         return 'LEGACY'
 
     return 'DNS_SD'

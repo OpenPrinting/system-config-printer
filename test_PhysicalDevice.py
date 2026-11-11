@@ -648,3 +648,103 @@ def test_kyocera_ipp_dnssd_and_ipps_schemes_merge():
 
     assert len(pds_uuid) == 1
     assert len(pds_uuid[0].get_devices()) == 2
+
+
+@pytest.mark.skipif(cups is None, reason="cups module not available")
+def test_cross_namespace_network_printers_never_merge():
+    dev_ip = cupshelpers.Device(
+        "socket://192.168.1.102",
+        **{"device-class": "network",
+           "device-make-and-model": "Kyocera ECOSYS M2040dn",
+           "device-id": "MFG:Kyocera;MDL:ECOSYS M2040dn;"})
+    dev_symbolic = cupshelpers.Device(
+        "socket://printer.local",
+        **{"device-class": "network",
+           "device-make-and-model": "Kyocera ECOSYS M2040dn",
+           "device-id": "MFG:Kyocera;MDL:ECOSYS M2040dn;"})
+
+    phys_ip = PhysicalDevice(dev_ip)
+    phys_symbolic = PhysicalDevice(dev_symbolic)
+
+    assert phys_ip != phys_symbolic
+
+    pds = []
+    for d in [dev_ip, dev_symbolic]:
+        pd = PhysicalDevice(d)
+        try:
+            i = pds.index(pd)
+            pds[i].add_device(d)
+        except ValueError:
+            pds.append(pd)
+
+    assert len(pds) == 2
+
+    with pytest.raises(ValueError):
+        phys_ip.add_device(dev_symbolic)
+
+    with pytest.raises(ValueError):
+        phys_symbolic.add_device(dev_ip)
+
+    dev_dnssd = cupshelpers.Device(
+        "dnssd://Printer._ipp._tcp.local/",
+        **{"device-class": "network",
+           "device-make-and-model": "Printer",
+           "device-id": "MFG:Generic;MDL:Printer;"})
+    dev_ipps_ip = cupshelpers.Device(
+        "ipps://192.168.1.102/",
+        **{"device-class": "network",
+           "device-make-and-model": "Printer",
+           "device-id": "MFG:Generic;MDL:Printer;"})
+
+    phys_dnssd = PhysicalDevice(dev_dnssd)
+    phys_ipps_ip = PhysicalDevice(dev_ipps_ip)
+
+    assert phys_dnssd != phys_ipps_ip
+
+    pds_ipp = []
+    for d in [dev_dnssd, dev_ipps_ip]:
+        pd = PhysicalDevice(d)
+        try:
+            i = pds_ipp.index(pd)
+            pds_ipp[i].add_device(d)
+        except ValueError:
+            pds_ipp.append(pd)
+
+    assert len(pds_ipp) == 2
+
+    with pytest.raises(ValueError):
+        phys_dnssd.add_device(dev_ipps_ip)
+
+    with pytest.raises(ValueError):
+        phys_ipps_ip.add_device(dev_dnssd)
+
+    dev_kyo_dnssd = cupshelpers.Device(
+        "dnssd://Kyocera%20ECOSYS%20M2040dn._ipp._tcp.local/?uuid=4509a320-00a0-008f-00b6-002507510eca",
+        **{"device-class": "network",
+           "device-make-and-model": "Kyocera ECOSYS M2040dn",
+           "device-id": "MFG:Kyocera;MDL:ECOSYS M2040dn;"})
+    dev_kyo_ipps = cupshelpers.Device(
+        "ipps://Kyocera%20ECOSYS%20M2040dn._ipps._tcp.local/",
+        **{"device-class": "network",
+           "device-make-and-model": "Kyocera ECOSYS M2040dn",
+           "device-id": "MFG:Kyocera;MDL:ECOSYS M2040dn;"})
+    dev_kyo_ip = cupshelpers.Device(
+        "socket://192.168.1.102",
+        **{"device-class": "network",
+           "device-make-and-model": "Kyocera ECOSYS M2040dn",
+           "device-id": "MFG:Kyocera;MDL:ECOSYS M2040dn;"})
+
+    pds_kyo = []
+    for d in [dev_kyo_dnssd, dev_kyo_ipps, dev_kyo_ip]:
+        pd = PhysicalDevice(d)
+        try:
+            i = pds_kyo.index(pd)
+            pds_kyo[i].add_device(d)
+        except ValueError:
+            pds_kyo.append(pd)
+
+    assert len(pds_kyo) == 2
+    dnssd_pd = [p for p in pds_kyo if not p.is_literal_ip()][0]
+    legacy_pd = [p for p in pds_kyo if p.is_literal_ip()][0]
+    assert len(dnssd_pd.get_devices()) == 2
+    assert len(legacy_pd.get_devices()) == 1

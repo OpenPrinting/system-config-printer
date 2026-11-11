@@ -25,6 +25,7 @@ import cupshelpers
 import urllib.parse
 import ppdippstr
 import socket
+import ipaddress
 from debug import *
 
 class PhysicalDevice:
@@ -177,6 +178,55 @@ class PhysicalDevice:
         return address
 
     @staticmethod
+    def _is_literal_ip_uri (uri):
+        if not uri:
+            return False
+
+        scheme = uri.split (':', 1)[0].lower ()
+        if scheme in ('dnssd', 'mdns'):
+            return False
+
+        if scheme in ('hp', 'hpfax'):
+            try:
+                query = urllib.parse.urlsplit (uri).query
+                params = urllib.parse.parse_qs (query)
+                if 'ip' in params and params['ip']:
+                    host = params['ip'][0]
+                    if '%' in host:
+                        host = host.split ('%')[0]
+                    try:
+                        ipaddress.ip_address (host)
+                        return True
+                    except ValueError:
+                        return False
+            except Exception:
+                pass
+            return False
+
+        try:
+            parsed = urllib.parse.urlsplit (uri)
+            host = parsed.hostname
+        except ValueError:
+            return False
+
+        if not host:
+            return False
+
+        if '%' in host:
+            host = host.split ('%')[0]
+
+        try:
+            ipaddress.ip_address (host)
+            return True
+        except ValueError:
+            return False
+
+    def is_literal_ip (self):
+        if not self.devices:
+            return False
+        return self._is_literal_ip_uri (self.devices[0].uri)
+
+    @staticmethod
     def _host_matches (h1, h2):
         if not h1 or not h2:
             return False
@@ -238,24 +288,11 @@ class PhysicalDevice:
             (host, port) = urllib.parse.splitport (hostport)
 
         if (host):
-            ip = None
-            try:
-                ip = self._get_address(host)
-                if ip:
-                    host = ip
-            except:
-                pass
-
-            if not ip and dnssdhost is None:
+            if dnssdhost is None:
                 instance = self._extract_dnssd_instance (host)
                 if instance:
                     dnssdhost = instance
                     host = None
-        elif (dnssdhost):
-            try:
-                host = self._get_address(dnssdhost)
-            except:
-                host = None
 
         return self._add_dot_local_if_needed(host), \
             self._add_dot_local_if_needed(dnssdhost), protocol
@@ -266,6 +303,10 @@ class PhysicalDevice:
             canonical_uri = self._canonical_uri (device.uri)
             device.uri = canonical_uri
             device.type = protocol
+
+        if self.devices:
+            if self.is_literal_ip () != self._is_literal_ip_uri (device.uri):
+                raise ValueError
 
         if self._network_host or self.dnssd_hostname:
             host, dnssdhost, protocol = self._get_host_from_uri (device.uri)
@@ -360,12 +401,6 @@ class PhysicalDevice:
             if hostname:
                 self.dnssd_hostname = self._add_dot_local_if_needed(hostname)
 
-        if (self.dnssd_hostname and self._network_host is None):
-            try:
-                self._network_host = self._get_address(hostname);
-            except:
-                self._network_host = None
-
         debugprint("Device %s added to physical device: %s" %
                    (device.uri, repr(self)))
 
@@ -423,6 +458,9 @@ class PhysicalDevice:
 
     def __eq__(self, other):
         if type (other) != type (self):
+            return False
+
+        if self.is_literal_ip () != other.is_literal_ip ():
             return False
 
         if not (((not self._network_host or len (self._network_host) == 0) and
