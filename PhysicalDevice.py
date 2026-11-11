@@ -176,7 +176,8 @@ class PhysicalDevice:
                 address = None
         return address
 
-    def _extract_dnssd_instance (self, host):
+    @staticmethod
+    def _extract_dnssd_instance (host):
         if not host:
             return None
             
@@ -335,6 +336,10 @@ class PhysicalDevice:
                 self._get_host_from_uri (device.uri)
             if dnssdhost:
                 self.dnssd_hostname = dnssdhost;
+                device.dnssd_hostname = dnssdhost
+
+        if self.dnssd_hostname and not getattr (device, 'dnssd_hostname', None):
+            device.dnssd_hostname = self.dnssd_hostname
 
         if (hasattr (device, 'address') and self._network_host is None):
             address = device.address

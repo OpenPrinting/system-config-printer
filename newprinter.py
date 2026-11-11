@@ -415,63 +415,44 @@ def _is_literal_ip_host(uri):
     except ValueError:
         return False
 
-def _classify_network_device(device):
-    """
-    Classify a network device as DNS-SD or Legacy (non-DNS-SD).
+def _classify_network_device(device, physdev=None):
+    if isinstance(device, PhysicalDevice):
+        physdev = device
+        devs = device.get_devices()
+        device = devs[0] if devs else None
 
-    Returns:
-        'DNS_SD' - for DNS-SD discovered printers (symbolic hostnames)
-        'LEGACY' - for literal IP printers, BJNP, Bluetooth, SNMP results
-
-    The classification logic:
-    - BJNP is always Legacy (not DNS-SD)
-    - Bluetooth is always Legacy (not DNS-SD)
-    - For dnssd/mdns schemes, inspect the service type to determine protocol:
-      - _printer._tcp.local -> LPD (Legacy protocol)
-      - _pdl-datastream._tcp.local -> AppSocket (Legacy protocol)
-      - _ipp._tcp.local -> IPP (DNS-SD protocol)
-      - _ipps._tcp.local -> IPPS (DNS-SD protocol)
-    - For explicit protocol schemes:
-      - lpd, socket -> Legacy (these are legacy protocols)
-      - ipp, ipps -> classify by IP (literal IP -> Legacy, symbolic -> DNS-SD)
-      - http, https, others -> classify by IP (literal IP -> Legacy, symbolic -> DNS-SD)
-    """
     if not device or not hasattr(device, 'uri') or not device.uri:
         return 'LEGACY'
 
     uri = device.uri
     scheme = uri.split(':', 1)[0].lower() if uri else ''
 
-    # BJNP is NOT DNS-SD regardless of hostname
-    if scheme == 'bjnp':
+    if scheme in ('bjnp', 'bluetooth'):
         return 'LEGACY'
 
-    # Bluetooth is NOT DNS-SD
-    if scheme == 'bluetooth':
-        return 'LEGACY'
-
-    # For dnssd/mdns schemes, inspect the service type to determine protocol
     if scheme in ('dnssd', 'mdns'):
-        protocol = _protocol_from_dnssd_uri(uri)
-        if protocol is not None:
-            # Classify based on the protocol
-            if protocol in ('lpd', 'socket'):
-                return 'LEGACY'
-            elif protocol in ('ipp', 'ipps'):
-                return 'DNS_SD'
-        # Unrecognized service type -> DNS-SD
         return 'DNS_SD'
 
-    # For explicit LPD and AppSocket schemes - these are legacy protocols
-    if scheme in ('lpd', 'socket'):
-        return 'LEGACY'
-
-    # For other explicit protocol schemes (ipp, ipps, http, https, etc.),
-    # classify based on whether the host is a literal IP address
     if _is_literal_ip_host(uri):
         return 'LEGACY'
 
-    # Symbolic hostname -> DNS-SD
+    if getattr(device, 'dnssd_hostname', None) or (physdev and getattr(physdev, 'dnssd_hostname', None)):
+        return 'DNS_SD'
+
+    try:
+        parsed = urllib.parse.urlsplit(uri)
+        host = parsed.hostname or parsed.netloc
+        if host and ':' in host:
+            host = host.split(':', 1)[0]
+    except ValueError:
+        host = None
+
+    if host and PhysicalDevice._extract_dnssd_instance(host):
+        return 'DNS_SD'
+
+    if scheme in ('lpd', 'socket'):
+        return 'LEGACY'
+
     return 'DNS_SD'
 
 
@@ -3692,7 +3673,7 @@ class NewPrinterGUI(GtkGUI):
             row=[info, device, False]
             if network:
                 # Classify as DNS-SD or Legacy
-                classification = _classify_network_device(devs[0])
+                classification = _classify_network_device(devs[0], device)
                 if classification == 'DNS_SD':
                     parent_iter = dnssd_iter
                 else:
@@ -4830,7 +4811,7 @@ class NewPrinterGUI(GtkGUI):
                 model = self.tvNPDevices.get_model ()
 
                 # Classify and insert under the appropriate category
-                classification = _classify_network_device(new_device)
+                classification = _classify_network_device(new_device, dev)
                 if classification == 'DNS_SD':
                     parent_iter = self.devices_dnssd_iter
                 else:

@@ -241,58 +241,101 @@ def test_canonical_dnssd_uri():
 
 
 def test_classify_network_device():
-    """Test _classify_network_device correctly classifies network devices."""
-    # DNS-SD LPD -> LEGACY
+    dev = cupshelpers.Device("dnssd://OpenPrinting%20LPD%20Printer._printer._tcp.local/?uuid=cbca9fde-d208-4156-9a2f-82857dd0be5f", **{"device-class": "network"})
+    assert newprinter._classify_network_device(dev) == "DNS_SD"
+
+    dev = cupshelpers.Device("lpd://OpenPrinting%20LPD%20Printer._printer._tcp.local/", **{"device-class": "network"})
+    assert newprinter._classify_network_device(dev) == "DNS_SD"
+
     dev = cupshelpers.Device("dnssd://Printer._printer._tcp.local/", **{"device-class": "network"})
-    assert newprinter._classify_network_device(dev) == "LEGACY"
+    assert newprinter._classify_network_device(dev) == "DNS_SD"
 
-    # DNS-SD AppSocket -> LEGACY
     dev = cupshelpers.Device("dnssd://Printer._pdl-datastream._tcp.local/", **{"device-class": "network"})
-    assert newprinter._classify_network_device(dev) == "LEGACY"
+    assert newprinter._classify_network_device(dev) == "DNS_SD"
 
-    # DNS-SD IPP -> DNS_SD
+    dev = cupshelpers.Device("socket://Printer._pdl-datastream._tcp.local/", **{"device-class": "network"})
+    assert newprinter._classify_network_device(dev) == "DNS_SD"
+
     dev = cupshelpers.Device("dnssd://Printer._ipp._tcp.local/", **{"device-class": "network"})
     assert newprinter._classify_network_device(dev) == "DNS_SD"
 
-    # DNS-SD IPPS -> DNS_SD
     dev = cupshelpers.Device("dnssd://Printer._ipps._tcp.local/", **{"device-class": "network"})
     assert newprinter._classify_network_device(dev) == "DNS_SD"
 
-    # Explicit socket with IP -> LEGACY
+    dev = cupshelpers.Device("socket://192.168.1.102:9100", **{"device-class": "network"})
+    assert newprinter._classify_network_device(dev) == "LEGACY"
+
     dev = cupshelpers.Device("socket://192.168.1.102", **{"device-class": "network"})
     assert newprinter._classify_network_device(dev) == "LEGACY"
 
-    # Explicit socket with hostname -> LEGACY (AppSocket is a legacy protocol, regardless of hostname)
     dev = cupshelpers.Device("socket://printer.example.com", **{"device-class": "network"})
     assert newprinter._classify_network_device(dev) == "LEGACY"
 
-    # Explicit LPD with IP -> LEGACY
+    dev = cupshelpers.Device("lpd://192.168.1.102/", **{"device-class": "network"})
+    assert newprinter._classify_network_device(dev) == "LEGACY"
+
     dev = cupshelpers.Device("lpd://192.168.1.102", **{"device-class": "network"})
     assert newprinter._classify_network_device(dev) == "LEGACY"
 
-    # Explicit IPP with IP -> LEGACY (literal IP)
     dev = cupshelpers.Device("ipp://192.168.1.102/ipp/print", **{"device-class": "network"})
     assert newprinter._classify_network_device(dev) == "LEGACY"
 
-    # Explicit IPP with symbolic hostname -> DNS_SD (symbolic hostname)
     dev = cupshelpers.Device("ipp://printer.example.com/ipp/print", **{"device-class": "network"})
     assert newprinter._classify_network_device(dev) == "DNS_SD"
 
-    # Explicit IPPS with IP -> LEGACY (literal IP)
     dev = cupshelpers.Device("ipps://192.168.1.102/ipp/print", **{"device-class": "network"})
     assert newprinter._classify_network_device(dev) == "LEGACY"
 
-    # Explicit IPPS with symbolic hostname -> DNS_SD (symbolic hostname)
     dev = cupshelpers.Device("ipps://printer.example.com/ipp/print", **{"device-class": "network"})
     assert newprinter._classify_network_device(dev) == "DNS_SD"
 
-    # BJNP -> LEGACY
     dev = cupshelpers.Device("bjnp://printer.example.com", **{"device-class": "network"})
     assert newprinter._classify_network_device(dev) == "LEGACY"
 
-    # Bluetooth -> LEGACY
     dev = cupshelpers.Device("bluetooth://XX:XX:XX:XX:XX:XX", **{"device-class": "network"})
     assert newprinter._classify_network_device(dev) == "LEGACY"
+
+
+def test_classify_network_device_with_physical_device():
+    from PhysicalDevice import PhysicalDevice
+
+    d1 = cupshelpers.Device(
+        "dnssd://OpenPrinting%20LPD%20Printer._printer._tcp.local/?uuid=cbca9fde-d208-4156-9a2f-82857dd0be5f",
+        **{"device-class": "network", "device-make-and-model": "OpenPrinting LPD Printer"})
+    d2 = cupshelpers.Device(
+        "lpd://OpenPrinting%20LPD%20Printer._printer._tcp.local/",
+        **{"device-class": "network", "device-make-and-model": "OpenPrinting LPD Printer"})
+    pd = PhysicalDevice(d1)
+    pd.add_device(d2)
+    assert len(pd.get_devices()) == 1
+    assert newprinter._classify_network_device(pd) == "DNS_SD"
+    assert newprinter._classify_network_device(pd.get_devices()[0], pd) == "DNS_SD"
+
+    d_sock1 = cupshelpers.Device(
+        "dnssd://OpenPrinting%20AppSocket%20Printer._pdl-datastream._tcp.local/?uuid=123",
+        **{"device-class": "network", "device-make-and-model": "OpenPrinting AppSocket Printer"})
+    d_sock2 = cupshelpers.Device(
+        "socket://OpenPrinting%20AppSocket%20Printer._pdl-datastream._tcp.local/",
+        **{"device-class": "network", "device-make-and-model": "OpenPrinting AppSocket Printer"})
+    pd_sock = PhysicalDevice(d_sock1)
+    pd_sock.add_device(d_sock2)
+    assert len(pd_sock.get_devices()) == 1
+    assert newprinter._classify_network_device(pd_sock) == "DNS_SD"
+    assert newprinter._classify_network_device(pd_sock.get_devices()[0], pd_sock) == "DNS_SD"
+
+    d_lpd_ip = cupshelpers.Device(
+        "lpd://192.168.1.102/",
+        **{"device-class": "network", "device-make-and-model": "Legacy LPD Printer"})
+    pd_lpd_ip = PhysicalDevice(d_lpd_ip)
+    assert newprinter._classify_network_device(pd_lpd_ip) == "LEGACY"
+    assert newprinter._classify_network_device(pd_lpd_ip.get_devices()[0], pd_lpd_ip) == "LEGACY"
+
+    d_sock_ip = cupshelpers.Device(
+        "socket://192.168.1.102:9100",
+        **{"device-class": "network", "device-make-and-model": "Legacy Socket Printer"})
+    pd_sock_ip = PhysicalDevice(d_sock_ip)
+    assert newprinter._classify_network_device(pd_sock_ip) == "LEGACY"
+    assert newprinter._classify_network_device(pd_sock_ip.get_devices()[0], pd_sock_ip) == "LEGACY"
 
 
 def test_device_from_object_explicit_kwargs():
@@ -5860,12 +5903,6 @@ def test_cancel_button_disabled_during_apply_and_restored_on_error():
 
 
 def test_lpd_dnssd_and_lpd_gui_single_entry():
-    """GUI regression test for Alex's reported bug:
-    For the same physical LPD printer returning both dnssd:// and lpd://,
-    the New Printer dialog must show only ONE 'OpenPrinting LPD' under
-    'Network Printer (Legacy)'.
-    Then verify AppSocket still works and multiple different AppSocket printers
-    remain separate."""
     import os
     os.environ["SYSTEM_CONFIG_PRINTER_UI"] = "ui"
     from unittest.mock import MagicMock
@@ -5907,22 +5944,44 @@ def test_lpd_dnssd_and_lpd_gui_single_entry():
            "device-make-and-model": "Another AppSocket Printer",
            "device-info": "Another AppSocket"})
 
-    devs = {d.uri: d for d in [d1, d2, d3, d4, d5]}
+    d_legacy_lpd = cupshelpers.Device(
+        "lpd://192.168.1.102/",
+        **{"device-class": "network",
+           "device-make-and-model": "Legacy IP LPD Printer",
+           "device-info": "Legacy IP LPD"})
+
+    d_legacy_socket = cupshelpers.Device(
+        "socket://192.168.1.103:9100",
+        **{"device-class": "network",
+           "device-make-and-model": "Legacy IP Socket Printer",
+           "device-info": "Legacy IP Socket"})
+
+    devs = {d.uri: d for d in [d1, d2, d3, d4, d5, d_legacy_lpd, d_legacy_socket]}
     gui.add_devices(devs, None, no_more=True)
 
     model = gui.tvNPDevices.get_model()
-    legacy_iter = gui.devices_legacy_iter
 
+    dnssd_iter = gui.devices_dnssd_iter
+    child = model.iter_children(dnssd_iter)
+    dnssd_items = []
+    while child:
+        dnssd_items.append(model.get_value(child, 0))
+        child = model.iter_next(child)
+
+    assert dnssd_items.count("OpenPrinting LPD") == 1
+    assert dnssd_items.count("OpenPrinting AppSocket") == 1
+    assert "Another AppSocket" in dnssd_items
+    assert len(dnssd_items) == 3
+
+    legacy_iter = gui.devices_legacy_iter
     child = model.iter_children(legacy_iter)
     legacy_items = []
     while child:
         legacy_items.append(model.get_value(child, 0))
         child = model.iter_next(child)
 
-    # Must show only ONE OpenPrinting LPD entry under Network Printer (Legacy)
-    assert legacy_items.count("OpenPrinting LPD") == 1
-    # AppSocket still works and shows only ONE OpenPrinting AppSocket
-    assert legacy_items.count("OpenPrinting AppSocket") == 1
-    # Multiple different AppSocket printers remain separate
-    assert "Another AppSocket" in legacy_items
-    assert len(legacy_items) == 3
+    assert any("Legacy IP LPD" in item for item in legacy_items)
+    assert any("Legacy IP Socket" in item for item in legacy_items)
+    assert not any("OpenPrinting LPD" in item for item in legacy_items)
+    assert not any("OpenPrinting AppSocket" in item for item in legacy_items)
+    assert len(legacy_items) == 2
