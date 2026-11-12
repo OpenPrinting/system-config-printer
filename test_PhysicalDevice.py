@@ -818,3 +818,15 @@ def test_kyocera_resolved_dnssd_and_ipps_merge():
     assert len(pds_rev) == 2
     dnssd_pd_rev = [p for p in pds_rev if not p.is_literal_ip()][0]
     assert len(dnssd_pd_rev.get_devices()) == 3
+
+
+def test_canonical_uri_and_protocol_detection():
+    assert PhysicalDevice._protocol_from_uri("dnssd://Printer._ipp._tcp.local/?uuid=123") == "ipp"
+    assert PhysicalDevice._protocol_from_uri("dnssd://Printer._ipps._tcp.local/?uuid=123") == "ipps"
+    assert PhysicalDevice._protocol_from_uri("dnssd://Printer._printer._tcp.local/?uuid=123") == "lpd"
+    assert PhysicalDevice._protocol_from_uri("dnssd://Printer._pdl-datastream._tcp.local/?uuid=123") == "socket"
+
+    assert PhysicalDevice._canonical_uri("dnssd://Printer._ipp._tcp.local/?uuid=123") == "ipp://Printer._ipp._tcp.local/"
+    assert PhysicalDevice._canonical_uri("dnssd://Printer._ipps._tcp.local/?uuid=123") == "ipps://Printer._ipps._tcp.local/"
+    assert PhysicalDevice._canonical_uri("dnssd://Printer._printer._tcp.local/?uuid=123") == "lpd://Printer._printer._tcp.local/"
+    assert PhysicalDevice._canonical_uri("dnssd://Printer._pdl-datastream._tcp.local/?uuid=123") == "socket://Printer._pdl-datastream._tcp.local/"

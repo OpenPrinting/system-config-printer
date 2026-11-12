@@ -43,73 +43,39 @@ class PhysicalDevice:
 
     @staticmethod
     def _protocol_from_uri(uri):
-        """
-        Determine the actual protocol from a printer URI by inspecting the scheme and DNS-SD service suffix.
-
-        For dnssd:// URIs, the protocol is determined by the service type in the hostname:
-        - _printer._tcp.local -> LPD
-        - _pdl-datastream._tcp.local -> AppSocket (socket)
-        - _ipp._tcp.local -> IPP
-        - _ipps._tcp.local -> IPPS
-
-        For explicit scheme URIs (ipp://, ipps://, lpd://, socket://), the scheme is used directly.
-
-        Returns the canonical protocol scheme: 'ipp', 'ipps', 'lpd', or 'socket'.
-        Returns None if the URI is not a recognized network printer URI.
-        """
         if not uri:
             return None
 
         try:
             parsed = urllib.parse.urlsplit(uri)
             scheme = parsed.scheme.lower()
-            netloc = parsed.netloc.lower()
+            hostname = parsed.hostname or parsed.netloc
+            path = parsed.path
         except ValueError:
             return None
 
-        # Explicit protocol schemes - use directly
         if scheme in ('ipp', 'ipps', 'lpd', 'socket'):
             return scheme
 
-        # DNS-SD scheme - inspect service type in hostname
-        if scheme in ('dnssd', 'mdns'):
-            # Extract service type from netloc (e.g., "Printer._ipp._tcp.local")
-            # The service type is the part starting with _ and ending with _tcp.local or _udp.local
-            parts = netloc.rsplit('.', 3)
-            if len(parts) >= 4:
-                # parts[-3] is the service type (e.g., "_ipp", "_pdl-datastream", "_printer")
-                # parts[-2] is the protocol ("_tcp" or "_udp")
-                # parts[-1] is the domain ("local")
-                service_type = parts[-3]
-                protocol = parts[-2]
-
-                if protocol in ('_tcp', '_udp'):
-                    if service_type == '_ipp':
-                        return 'ipp'
-                    elif service_type == '_ipps':
-                        return 'ipps'
-                    elif service_type == '_printer':
-                        return 'lpd'
-                    elif service_type == '_pdl-datastream':
-                        return 'socket'
+        if scheme in ('dnssd', 'mdns') and hostname:
+            if path and (path.rstrip('/').endswith('/cups') or path == '/cups'):
+                return None
+            if ':' in hostname and not hostname.endswith(']'):
+                hostname = hostname.rsplit(':', 1)[0]
+            h = hostname.lower().rstrip('.')
+            if h.endswith('._ipps._tcp.local') or h.endswith('._ipps._udp.local'):
+                return 'ipps'
+            if h.endswith('._ipp._tcp.local') or h.endswith('._ipp._udp.local'):
+                return 'ipp'
+            if h.endswith('._printer._tcp.local') or h.endswith('._printer._udp.local'):
+                return 'lpd'
+            if h.endswith('._pdl-datastream._tcp.local') or h.endswith('._pdl-datastream._udp.local'):
+                return 'socket'
 
         return None
 
     @staticmethod
     def _canonical_uri(uri):
-        """
-        Convert a DNS-SD URI to its canonical explicit protocol form.
-
-        For dnssd:// URIs, converts to the corresponding explicit protocol URI:
-        - dnssd://Name._printer._tcp.local/?uuid=... -> lpd://Name._printer._tcp.local/
-        - dnssd://Name._pdl-datastream._tcp.local/?uuid=... -> socket://Name._pdl-datastream._tcp.local/
-        - dnssd://Name._ipp._tcp.local/?uuid=... -> ipp://Name._ipp._tcp.local/
-        - dnssd://Name._ipps._tcp.local/?uuid=... -> ipps://Name._ipps._tcp.local/
-
-        Strips UUID query parameters and normalizes the URI.
-
-        Returns the canonical URI, or the original URI if not a recognized DNS-SD printer URI.
-        """
         if not uri:
             return uri
 
@@ -128,11 +94,9 @@ class PhysicalDevice:
         if path in ("", "/", "//"):
             path = "/"
 
-        # For dnssd/mdns, reconstruct with canonical protocol scheme and no query/fragment
         if scheme in ("dnssd", "mdns"):
             return urllib.parse.urlunsplit((protocol, netloc, path, "", ""))
 
-        # For explicit schemes, strip uuid from query if present, normalize path
         if parsed.query:
             params = urllib.parse.parse_qsl(parsed.query, keep_blank_values=True)
             filtered_params = [(k, v) for k, v in params if k.lower() != "uuid"]
@@ -140,7 +104,7 @@ class PhysicalDevice:
         else:
             new_query = ""
 
-        return urllib.parse.urlunsplit((protocol, netloc, path, new_query, parsed.fragment))
+        return urllib.parse.urlunsplit((scheme, netloc, path, new_query, parsed.fragment))
 
     def _canonical_id (self, device):
         make_and_model = ''
@@ -233,7 +197,7 @@ class PhysicalDevice:
         if not uri:
             return None
         protocol = PhysicalDevice._protocol_from_uri (uri)
-        if protocol in ('lpd', 'socket'):
+        if protocol in ('ipp', 'ipps', 'lpd', 'socket'):
             uri = PhysicalDevice._canonical_uri (uri)
         (scheme, rest) = urllib.parse.splittype (uri)
         if scheme == 'hp' or scheme == 'hpfax':
@@ -284,7 +248,7 @@ class PhysicalDevice:
         host = None
         dnssdhost = None
         protocol = self._protocol_from_uri(uri)
-        if protocol in ('lpd', 'socket'):
+        if protocol in ('ipp', 'ipps', 'lpd', 'socket'):
             uri = self._canonical_uri(uri)
         (scheme, rest) = urllib.parse.splittype (uri)
         if scheme == 'hp' or scheme == 'hpfax':
@@ -323,7 +287,7 @@ class PhysicalDevice:
 
     def add_device (self, device):
         protocol = self._protocol_from_uri (device.uri)
-        if protocol in ('lpd', 'socket'):
+        if protocol in ('ipp', 'ipps', 'lpd', 'socket'):
             canonical_uri = self._canonical_uri (device.uri)
             device.uri = canonical_uri
             device.type = protocol

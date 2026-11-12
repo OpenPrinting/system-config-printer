@@ -180,61 +180,35 @@ def test_filter_configured_devices_same_ip_different_queues_stay_separate():
 
 
 def test_protocol_from_dnssd_uri():
-    """Test _protocol_from_dnssd_uri correctly identifies protocol from various URIs."""
-    # DNS-SD LPD
     assert newprinter._protocol_from_dnssd_uri("dnssd://OpenPrinting%20LPD%20Printer._printer._tcp.local/?uuid=123") == "lpd"
     assert newprinter._protocol_from_dnssd_uri("dnssd://OpenPrinting%20LPD%20Printer._printer._tcp.local/") == "lpd"
-    # Explicit LPD
     assert newprinter._protocol_from_dnssd_uri("lpd://OpenPrinting%20LPD%20Printer._printer._tcp.local/") == "lpd"
-
-    # DNS-SD AppSocket
     assert newprinter._protocol_from_dnssd_uri("dnssd://OpenPrinting%20AppSocket%20Printer._pdl-datastream._tcp.local/?uuid=123") == "socket"
     assert newprinter._protocol_from_dnssd_uri("dnssd://OpenPrinting%20AppSocket%20Printer._pdl-datastream._tcp.local/") == "socket"
-    # Explicit socket
     assert newprinter._protocol_from_dnssd_uri("socket://OpenPrinting%20AppSocket%20Printer._pdl-datastream._tcp.local/") == "socket"
-    # Socket with IP
     assert newprinter._protocol_from_dnssd_uri("socket://192.168.1.102") == "socket"
     assert newprinter._protocol_from_dnssd_uri("socket://printer.example.com") == "socket"
-
-    # DNS-SD IPP
     assert newprinter._protocol_from_dnssd_uri("dnssd://Xerox%20B235%20MFP._ipp._tcp.local/?uuid=123") == "ipp"
     assert newprinter._protocol_from_dnssd_uri("dnssd://Xerox%20B235%20MFP._ipp._tcp.local") == "ipp"
-    # Explicit IPP
     assert newprinter._protocol_from_dnssd_uri("ipp://Xerox%20B235%20MFP._ipp._tcp.local/") == "ipp"
-
-    # DNS-SD IPPS
     assert newprinter._protocol_from_dnssd_uri("dnssd://Xerox%20B235%20MFP._ipps._tcp.local//?uuid=123") == "ipps"
     assert newprinter._protocol_from_dnssd_uri("dnssd://Xerox%20B235%20MFP._ipps._tcp.local//") == "ipps"
-    # Explicit IPPS
     assert newprinter._protocol_from_dnssd_uri("ipps://Xerox%20B235%20MFP._ipps._tcp.local/") == "ipps"
-
-    # Unknown URIs
     assert newprinter._protocol_from_dnssd_uri("http://printer/") is None
     assert newprinter._protocol_from_dnssd_uri("") is None
     assert newprinter._protocol_from_dnssd_uri(None) is None
 
 
 def test_canonical_dnssd_uri():
-    """Test _canonical_dnssd_uri converts DNS-SD URIs to canonical protocol form."""
-    # LPD
     assert newprinter._canonical_dnssd_uri("dnssd://OpenPrinting%20LPD%20Printer._printer._tcp.local/?uuid=123") == "lpd://OpenPrinting%20LPD%20Printer._printer._tcp.local/"
     assert newprinter._canonical_dnssd_uri("dnssd://OpenPrinting%20LPD%20Printer._printer._tcp.local/") == "lpd://OpenPrinting%20LPD%20Printer._printer._tcp.local/"
-
-    # AppSocket
     assert newprinter._canonical_dnssd_uri("dnssd://OpenPrinting%20AppSocket%20Printer._pdl-datastream._tcp.local/?uuid=123") == "socket://OpenPrinting%20AppSocket%20Printer._pdl-datastream._tcp.local/"
     assert newprinter._canonical_dnssd_uri("dnssd://OpenPrinting%20AppSocket%20Printer._pdl-datastream._tcp.local/") == "socket://OpenPrinting%20AppSocket%20Printer._pdl-datastream._tcp.local/"
-
-    # IPP
     assert newprinter._canonical_dnssd_uri("dnssd://Xerox%20B235%20MFP._ipp._tcp.local/?uuid=123") == "ipp://Xerox%20B235%20MFP._ipp._tcp.local/"
     assert newprinter._canonical_dnssd_uri("dnssd://Xerox%20B235%20MFP._ipp._tcp.local") == "ipp://Xerox%20B235%20MFP._ipp._tcp.local/"
-
-    # IPPS
     assert newprinter._canonical_dnssd_uri("dnssd://Xerox%20B235%20MFP._ipps._tcp.local//?uuid=123") == "ipps://Xerox%20B235%20MFP._ipps._tcp.local/"
     assert newprinter._canonical_dnssd_uri("dnssd://Xerox%20B235%20MFP._ipps._tcp.local//") == "ipps://Xerox%20B235%20MFP._ipps._tcp.local/"
-
-    # Non-DNS-SD URIs pass through
     assert newprinter._canonical_dnssd_uri("lpd://Printer._printer._tcp.local/") == "lpd://Printer._printer._tcp.local/"
-    # Non-DNS-SD URIs pass through (with path normalization)
     assert newprinter._canonical_dnssd_uri("socket://192.168.1.102") == "socket://192.168.1.102/"
     assert newprinter._canonical_dnssd_uri("ipp://printer/") == "ipp://printer/"
     assert newprinter._canonical_dnssd_uri("http://printer/") == "http://printer/"
@@ -937,27 +911,21 @@ def test_ipp_connection_labels():
     mock_physicaldevice = MagicMock()
     mock_model.get_value.return_value = mock_physicaldevice
 
-    # 1. Normal network DNS-SD IPP printer
     dev_dnssd_net = cupshelpers.Device("dnssd://printer._ipp._tcp.local/", **{'device-info': 'Network Printer'})
     dev_dnssd_net.address = '192.168.1.20'
 
-    # 2. IPP-over-USB printer resolved to 127.0.0.1
     dev_usb_v4 = cupshelpers.Device("ipp://printer%20(USB)._ipp._tcp.local/", **{'device-info': 'ipp-usb (driverless)'})
     dev_usb_v4.address = '127.0.0.1'
 
-    # 3. IPP-over-USB printer resolved to ::1
     dev_usb_v6 = cupshelpers.Device("ipp://printer%20(USB)._ipp._tcp.local/", **{'device-info': 'ipp-usb (driverless)'})
     dev_usb_v6.address = '::1'
 
-    # 4. DNS-SD LPD printer
     dev_dnssd_lpd = cupshelpers.Device("dnssd://printer._printer._tcp.local/", **{'device-info': 'Network LPD Printer'})
     dev_dnssd_lpd.address = '192.168.1.30'
 
-    # 5. DNS-SD AppSocket/JetDirect printer
     dev_dnssd_socket = cupshelpers.Device("dnssd://printer._pdl-datastream._tcp.local/", **{'device-info': 'Network Socket Printer'})
     dev_dnssd_socket.address = '192.168.1.40'
 
-    # 6. Legacy / ipp scheme network printer (non-driverless and driverless)
     dev_net = cupshelpers.Device("ipp://printer.example.com/", **{'device-info': 'Network Printer'})
     dev_net.address = '192.168.1.50'
     dev_net_driverless = cupshelpers.Device("ipp://printer._ipp._tcp.local/", **{'device-info': 'Network Printer (driverless)'})
@@ -976,9 +944,9 @@ def test_ipp_connection_labels():
     assert dev_usb_v6.menuentry == "IPP over USB"
     assert getattr(dev_usb_v6, 'driverless', False) is True
 
-    assert dev_dnssd_lpd.menuentry == "LPD network printer via DNS-SD"
+    assert dev_dnssd_lpd.menuentry == 'LPD/LPR (queue "")'
 
-    assert dev_dnssd_socket.menuentry == "AppSocket/JetDirect network printer via DNS-SD"
+    assert dev_dnssd_socket.menuentry == "AppSocket/HP JetDirect"
 
     assert dev_net.menuentry == "IPP"
     assert not getattr(dev_net, 'driverless', False)
@@ -987,7 +955,6 @@ def test_ipp_connection_labels():
 
 
 def test_ipps_network_device_connection_label():
-    """Verify that an ipps://..._ipps._tcp.local device displays 'IPPS' and keeps Connection section visible."""
     np = get_dummy_gui()
     np.device_selected = 0
     np.tvNPDeviceURIs = MagicMock()
@@ -1015,29 +982,27 @@ def test_ipps_network_device_connection_label():
 
     np.on_tvNPDevices_cursor_changed(mock_widget)
 
-    # 1. Connection section remains visible
     np.expNPDeviceURIs.show_all.assert_called_once()
     np.expNPDeviceURIs.hide.assert_not_called()
 
-    # 2. menuentry is "IPPS"
-    assert dev_ipps.menuentry == "IPPS"
+    assert dev_ipps.menuentry == "IPP with TLS security (recommended)"
     assert getattr(dev_ipps, 'driverless', False) is True
 
 
 def test_dnssd_protocol_suffix_detection():
-    assert newprinter._dnssd_protocol("printer._ipp._tcp.local") == "IPP"
-    assert newprinter._dnssd_protocol("printer._ipps._tcp.local") == "IPPS"
-    assert newprinter._dnssd_protocol("printer._printer._tcp.local") == "LPD"
-    assert newprinter._dnssd_protocol("printer._pdl-datastream._tcp.local") == "AppSocket/JetDirect"
-    assert newprinter._dnssd_protocol("PRINTER._IPP._TCP.LOCAL") == "IPP"
-    assert newprinter._dnssd_protocol("PRINTER._IPPS._TCP.LOCAL.") == "IPPS"
-    assert newprinter._dnssd_protocol("printer._ippXYZ._tcp.local") is None
-    assert newprinter._dnssd_protocol("printer._ippsXYZ._tcp.local") is None
-    assert newprinter._dnssd_protocol("printer._ipp_test._tcp.local") is None
-    assert newprinter._dnssd_protocol("printer.example.com") is None
-    assert newprinter._dnssd_protocol("192.168.1.100") is None
-    assert newprinter._dnssd_protocol(None) is None
-    assert newprinter._dnssd_protocol("") is None
+    assert newprinter.PhysicalDevice._protocol_from_uri("dnssd://printer._ipp._tcp.local/") == "ipp"
+    assert newprinter.PhysicalDevice._protocol_from_uri("dnssd://printer._ipps._tcp.local/") == "ipps"
+    assert newprinter.PhysicalDevice._protocol_from_uri("dnssd://printer._printer._tcp.local/") == "lpd"
+    assert newprinter.PhysicalDevice._protocol_from_uri("dnssd://printer._pdl-datastream._tcp.local/") == "socket"
+    assert newprinter.PhysicalDevice._protocol_from_uri("dnssd://PRINTER._IPP._TCP.LOCAL/") == "ipp"
+    assert newprinter.PhysicalDevice._protocol_from_uri("dnssd://PRINTER._IPPS._TCP.LOCAL./") == "ipps"
+    assert newprinter.PhysicalDevice._protocol_from_uri("dnssd://printer._ippXYZ._tcp.local/") is None
+    assert newprinter.PhysicalDevice._protocol_from_uri("dnssd://printer._ippsXYZ._tcp.local/") is None
+    assert newprinter.PhysicalDevice._protocol_from_uri("dnssd://printer._ipp_test._tcp.local/") is None
+    assert newprinter.PhysicalDevice._protocol_from_uri("dnssd://printer.example.com/") is None
+    assert newprinter.PhysicalDevice._protocol_from_uri("dnssd://192.168.1.100/") is None
+    assert newprinter.PhysicalDevice._protocol_from_uri(None) is None
+    assert newprinter.PhysicalDevice._protocol_from_uri("") is None
 
 
 def test_ipp_and_ipps_peer_connection_labels():
@@ -1071,10 +1036,10 @@ def test_ipp_and_ipps_peer_connection_labels():
 
     np.on_tvNPDevices_cursor_changed(mock_widget)
 
-    assert dev_ipps.menuentry == "IPP (with TLS security, recommended)"
-    assert dev_ipp.menuentry == "IPP (without TLS security)"
+    assert dev_ipps.menuentry == "IPP with TLS security (recommended)"
+    assert dev_ipp.menuentry == "IPP"
     assert dev_usb_ipp.menuentry == "IPP over USB"
-    assert dev_usb_ipps.menuentry == "IPPS over USB"
+    assert dev_usb_ipps.menuentry == "IPP over USB"
 
 
 def test_broken_driverless_skips_openprinting(monkeypatch):
@@ -6102,7 +6067,7 @@ def test_kyocera_ipp_dnssd_and_ipps_gui_single_entry():
     conn_devs = phys_devs[0].get_devices()
     assert len(conn_devs) == 2
     uris = [d.uri for d in conn_devs]
-    assert "dnssd://Kyocera%20ECOSYS%20M2040dn._ipp._tcp.local/?uuid=4509a320-00a0-008f-00b6-002507510eca" in uris
+    assert "ipp://Kyocera%20ECOSYS%20M2040dn._ipp._tcp.local/" in uris
     assert "ipps://Kyocera%20ECOSYS%20M2040dn._ipps._tcp.local/" in uris
 
     legacy_iter = gui.devices_legacy_iter
@@ -6131,7 +6096,7 @@ def test_kyocera_ipp_dnssd_and_ipps_gui_single_entry():
         it = uri_model.iter_next(it)
 
     assert conn_labels == [
-        "IPP (with TLS security, recommended)",
-        "IPP (without TLS security)"
+        "IPP with TLS security (recommended)",
+        "IPP"
     ]
     assert gui.device.uri == d_ipps.uri

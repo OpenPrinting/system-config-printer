@@ -206,12 +206,10 @@ def _normalize_uri(uri):
 
 
 def _protocol_from_dnssd_uri(uri):
-    """Use PhysicalDevice's protocol detection for single source of truth."""
     return PhysicalDevice._protocol_from_uri(uri)
 
 
 def _canonical_dnssd_uri(uri):
-    """Use PhysicalDevice's canonical URI for single source of truth."""
     return PhysicalDevice._canonical_uri(uri)
 
 def _device_from_object(dev, is_printer=False):
@@ -441,59 +439,10 @@ def _has_netloc(uri):
         return False
 
 
-def _dnssd_protocol(hostname):
-    if not hostname:
-        return None
-    if ':' in hostname and not hostname.endswith(']'):
-        hostname = hostname.rsplit(':', 1)[0]
-    h = hostname.lower().rstrip('.')
-    if h.endswith('._ipps._tcp.local'):
-        return 'IPPS'
-    if h.endswith('._ipp._tcp.local'):
-        return 'IPP'
-    if h.endswith('._printer._tcp.local'):
-        return 'LPD'
-    if h.endswith('._pdl-datastream._tcp.local'):
-        return 'AppSocket/JetDirect'
-    return None
-
-
-def _is_ipps_device(device):
-    if dnssdresolve.is_ipp_over_usb_device(device):
-        return False
-    if getattr(device, 'type', None) == 'ipps':
-        return True
-    uri = getattr(device, 'uri', '')
-    if uri.startswith('ipps:'):
-        return True
-    try:
-        host = urllib.parse.urlsplit(uri).hostname
-        return _dnssd_protocol(host) == 'IPPS'
-    except Exception:
-        return False
-
-
-def _is_ipp_device(device):
-    if _is_ipps_device(device):
-        return False
-    if dnssdresolve.is_ipp_over_usb_device(device):
-        return False
-    if getattr(device, 'type', None) == 'ipp':
-        return True
-    uri = getattr(device, 'uri', '')
-    if uri.startswith('ipp:'):
-        return True
-    try:
-        host = urllib.parse.urlsplit(uri).hostname
-        return _dnssd_protocol(host) == 'IPP'
-    except Exception:
-        return False
-
-
 def _device_connection_sort_key(device):
-    if _is_ipps_device(device):
+    if device.type == 'ipps':
         return 0
-    if _is_ipp_device(device):
+    if device.type == 'ipp':
         return 1
     return 2
 
@@ -4361,15 +4310,13 @@ class NewPrinterGUI(GtkGUI):
         if physicaldevice is None:
             return
         show_uris = True
-        def _has_peer_ipps(dev):
-            return any (_is_ipps_device (d) for d in physicaldevice.get_devices ()
-                        if d is not dev and getattr (d, 'uri', None) != getattr (dev, 'uri', None))
-
-        def _has_peer_ipp(dev):
-            return any (_is_ipp_device (d) for d in physicaldevice.get_devices ()
-                        if d is not dev and getattr (d, 'uri', None) != getattr (dev, 'uri', None))
-
         for device in physicaldevice.get_devices ():
+            protocol = PhysicalDevice._protocol_from_uri (device.uri)
+            if protocol in ('ipp', 'ipps', 'lpd', 'socket'):
+                canonical_uri = PhysicalDevice._canonical_uri (device.uri)
+                device.uri = canonical_uri
+                device.type = protocol
+
             if device.type == "parallel":
                 device.menuentry = _("Parallel Port")
             elif device.type == "serial":
@@ -4421,13 +4368,9 @@ class NewPrinterGUI(GtkGUI):
                 is_usb = dnssdresolve.is_ipp_over_usb_device (device)
 
                 if is_usb:
-                    conn_type = _("IPPS over USB") if (device.type == "ipps" or scheme == "ipps") else _("IPP over USB")
-                elif (device.type == "ipps" or scheme == "ipps") and _has_peer_ipp (device):
-                    conn_type = _("IPP (with TLS security, recommended)")
-                elif not (device.type == "ipps" or scheme == "ipps") and _has_peer_ipps (device):
-                    conn_type = _("IPP (without TLS security)")
-                elif device.type == "ipps" or scheme == "ipps":
-                    conn_type = _("IPPS")
+                    conn_type = _("IPP over USB")
+                elif (device.type == "ipps" or scheme == "ipps"):
+                    conn_type = _("IPP with TLS security (recommended)")
                 else:
                     conn_type = _("IPP")
 
@@ -4448,22 +4391,7 @@ class NewPrinterGUI(GtkGUI):
                     if device.info != '':
                         device.menuentry += " (%s)" % device.info
                 else:
-                    protocol = _dnssd_protocol (name)
-                    if protocol in ("IPP", "IPPS"):
-                        if dnssdresolve.is_ipp_over_usb_device (device):
-                            device.menuentry = _("%s over USB") % protocol
-                        elif protocol == "IPPS" and _has_peer_ipp (device):
-                            device.menuentry = _("IPP (with TLS security, recommended)")
-                        elif protocol == "IPP" and _has_peer_ipps (device):
-                            device.menuentry = _("IPP (without TLS security)")
-                        else:
-                            device.menuentry = _(protocol)
-                    elif protocol is not None:
-                        device.menuentry = (_("%s network printer via DNS-SD")
-                                            % protocol)
-                    else:
-                        device.menuentry = \
-                            _("Network printer via DNS-SD")
+                    device.menuentry = _("Network printer via DNS-SD")
             else:
                 show_uris = False
                 device.menuentry = device.uri
@@ -4630,11 +4558,7 @@ class NewPrinterGUI(GtkGUI):
                 if cupsqueue == 'cups':
                     text = _("Remote CUPS printer via DNS-SD")
                 else:
-                    protocol = _dnssd_protocol (name)
-                    if protocol is not None:
-                        text = _("%s network printer via DNS-SD") % protocol
-                    else:
-                        text = _("Network printer via DNS-SD")
+                    text = _("Network printer via DNS-SD")
             else:
                 text = device.uri
 
