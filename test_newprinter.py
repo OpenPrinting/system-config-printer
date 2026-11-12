@@ -963,39 +963,27 @@ def test_ipp_connection_labels():
     dev_net_driverless = cupshelpers.Device("ipp://printer._ipp._tcp.local/", **{'device-info': 'Network Printer (driverless)'})
     dev_net_driverless.address = '192.168.1.10'
 
-    # 7. IPPS network printer (e.g. from simulator publishing _ipps._tcp)
-    dev_ipps = cupshelpers.Device("ipps://Broken%20Xerox%20B235%20MFP._ipps._tcp.local", **{'device-info': 'Broken Xerox B235 MFP (driverless)'})
-
     mock_physicaldevice.get_devices.return_value = [
-        dev_dnssd_net, dev_usb_v4, dev_usb_v6, dev_dnssd_lpd, dev_dnssd_socket, dev_net, dev_net_driverless, dev_ipps
+        dev_dnssd_net, dev_usb_v4, dev_usb_v6, dev_dnssd_lpd, dev_dnssd_socket, dev_net, dev_net_driverless
     ]
 
     np.on_tvNPDevices_cursor_changed(mock_widget)
 
-    # 1. normal network DNS-SD IPP -> "IPP"
     assert dev_dnssd_net.menuentry == "IPP"
 
-    # 2. IPP-over-USB -> "IPP over USB"
     assert dev_usb_v4.menuentry == "IPP over USB"
     assert getattr(dev_usb_v4, 'driverless', False) is True
     assert dev_usb_v6.menuentry == "IPP over USB"
     assert getattr(dev_usb_v6, 'driverless', False) is True
 
-    # 3. DNS-SD LPD -> existing LPD label
     assert dev_dnssd_lpd.menuentry == "LPD network printer via DNS-SD"
 
-    # 4. DNS-SD AppSocket -> existing AppSocket/JetDirect label
     assert dev_dnssd_socket.menuentry == "AppSocket/JetDirect network printer via DNS-SD"
 
-    # 5. ipp:// network printers -> "IPP"
     assert dev_net.menuentry == "IPP"
     assert not getattr(dev_net, 'driverless', False)
     assert dev_net_driverless.menuentry == "IPP"
     assert getattr(dev_net_driverless, 'driverless', False) is True
-
-    # 6. ipps:// network printer -> "IPPS"
-    assert dev_ipps.menuentry == "IPPS"
-    assert getattr(dev_ipps, 'driverless', False) is True
 
 
 def test_ipps_network_device_connection_label():
@@ -1034,6 +1022,59 @@ def test_ipps_network_device_connection_label():
     # 2. menuentry is "IPPS"
     assert dev_ipps.menuentry == "IPPS"
     assert getattr(dev_ipps, 'driverless', False) is True
+
+
+def test_dnssd_protocol_suffix_detection():
+    assert newprinter._dnssd_protocol("printer._ipp._tcp.local") == "IPP"
+    assert newprinter._dnssd_protocol("printer._ipps._tcp.local") == "IPPS"
+    assert newprinter._dnssd_protocol("printer._printer._tcp.local") == "LPD"
+    assert newprinter._dnssd_protocol("printer._pdl-datastream._tcp.local") == "AppSocket/JetDirect"
+    assert newprinter._dnssd_protocol("PRINTER._IPP._TCP.LOCAL") == "IPP"
+    assert newprinter._dnssd_protocol("PRINTER._IPPS._TCP.LOCAL.") == "IPPS"
+    assert newprinter._dnssd_protocol("printer._ippXYZ._tcp.local") is None
+    assert newprinter._dnssd_protocol("printer._ippsXYZ._tcp.local") is None
+    assert newprinter._dnssd_protocol("printer._ipp_test._tcp.local") is None
+    assert newprinter._dnssd_protocol("printer.example.com") is None
+    assert newprinter._dnssd_protocol("192.168.1.100") is None
+    assert newprinter._dnssd_protocol(None) is None
+    assert newprinter._dnssd_protocol("") is None
+
+
+def test_ipp_and_ipps_peer_connection_labels():
+    np = get_dummy_gui()
+    np.device_selected = 0
+    np.tvNPDeviceURIs = MagicMock()
+    np.expNPDeviceURIs = MagicMock()
+    np.lblNPDeviceDescription = MagicMock()
+    np.ntbkNPType = MagicMock()
+    np.new_printer_device_tabs = {}
+    np.PAGE_SELECT_DEVICE = 1
+    np.PAGE_DESCRIBE_PRINTER = 2
+
+    mock_widget = MagicMock()
+    mock_widget.get_cursor.return_value = ("0", 0)
+    mock_model = MagicMock()
+    mock_widget.get_model.return_value = mock_model
+    mock_model.get_iter.return_value = "iter"
+
+    mock_physicaldevice = MagicMock()
+    mock_model.get_value.return_value = mock_physicaldevice
+
+    dev_ipp = cupshelpers.Device("dnssd://printer._ipp._tcp.local/", **{'device-info': 'Printer'})
+    dev_ipps = cupshelpers.Device("ipps://printer._ipps._tcp.local/", **{'device-info': 'Printer (driverless)'})
+    dev_usb_ipp = cupshelpers.Device("ipp://printer%20(USB)._ipp._tcp.local/", **{'device-info': 'ipp-usb'})
+    dev_usb_ipp.address = '127.0.0.1'
+    dev_usb_ipps = cupshelpers.Device("ipps://printer%20(USB)._ipp._tcp.local/", **{'device-info': 'ipp-usb'})
+    dev_usb_ipps.address = '127.0.0.1'
+
+    mock_physicaldevice.get_devices.return_value = [dev_ipp, dev_ipps, dev_usb_ipp, dev_usb_ipps]
+
+    np.on_tvNPDevices_cursor_changed(mock_widget)
+
+    assert dev_ipps.menuentry == "IPP (with TLS security, recommended)"
+    assert dev_ipp.menuentry == "IPP (without TLS security)"
+    assert dev_usb_ipp.menuentry == "IPP over USB"
+    assert dev_usb_ipps.menuentry == "IPPS over USB"
 
 
 def test_broken_driverless_skips_openprinting(monkeypatch):

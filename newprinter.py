@@ -441,6 +441,23 @@ def _has_netloc(uri):
         return False
 
 
+def _dnssd_protocol(hostname):
+    if not hostname:
+        return None
+    if ':' in hostname and not hostname.endswith(']'):
+        hostname = hostname.rsplit(':', 1)[0]
+    h = hostname.lower().rstrip('.')
+    if h.endswith('._ipps._tcp.local'):
+        return 'IPPS'
+    if h.endswith('._ipp._tcp.local'):
+        return 'IPP'
+    if h.endswith('._printer._tcp.local'):
+        return 'LPD'
+    if h.endswith('._pdl-datastream._tcp.local'):
+        return 'AppSocket/JetDirect'
+    return None
+
+
 def _is_ipps_device(device):
     if dnssdresolve.is_ipp_over_usb_device(device):
         return False
@@ -450,12 +467,10 @@ def _is_ipps_device(device):
     if uri.startswith('ipps:'):
         return True
     try:
-        parsed = urllib.parse.urlsplit(uri)
-        if parsed.scheme in ('dnssd', 'mdns') and parsed.hostname and '._ipps' in parsed.hostname:
-            return True
+        host = urllib.parse.urlsplit(uri).hostname
+        return _dnssd_protocol(host) == 'IPPS'
     except Exception:
-        pass
-    return False
+        return False
 
 
 def _is_ipp_device(device):
@@ -469,26 +484,10 @@ def _is_ipp_device(device):
     if uri.startswith('ipp:'):
         return True
     try:
-        parsed = urllib.parse.urlsplit(uri)
-        if parsed.scheme in ('dnssd', 'mdns') and parsed.hostname and '._ipp' in parsed.hostname:
-            return True
+        host = urllib.parse.urlsplit(uri).hostname
+        return _dnssd_protocol(host) == 'IPP'
     except Exception:
-        pass
-    return False
-
-
-def _device_identity(device):
-    uri = getattr(device, 'uri', '')
-    inst = PhysicalDevice._dnssd_instance_from_uri(uri)
-    if inst:
-        return inst
-    try:
-        parsed = urllib.parse.urlsplit(uri)
-        if parsed.hostname:
-            return parsed.hostname
-    except Exception:
-        pass
-    return uri
+        return False
 
 
 def _device_connection_sort_key(device):
@@ -4363,14 +4362,12 @@ class NewPrinterGUI(GtkGUI):
             return
         show_uris = True
         def _has_peer_ipps(dev):
-            dev_id = _device_identity(dev)
-            return any(_is_ipps_device(other) and _device_identity(other) == dev_id
-                       for other in physicaldevice.get_devices())
+            return any (_is_ipps_device (d) for d in physicaldevice.get_devices ()
+                        if d is not dev and getattr (d, 'uri', None) != getattr (dev, 'uri', None))
 
         def _has_peer_ipp(dev):
-            dev_id = _device_identity(dev)
-            return any(_is_ipp_device(other) and _device_identity(other) == dev_id
-                       for other in physicaldevice.get_devices())
+            return any (_is_ipp_device (d) for d in physicaldevice.get_devices ()
+                        if d is not dev and getattr (d, 'uri', None) != getattr (dev, 'uri', None))
 
         for device in physicaldevice.get_devices ():
             if device.type == "parallel":
@@ -4451,15 +4448,7 @@ class NewPrinterGUI(GtkGUI):
                     if device.info != '':
                         device.menuentry += " (%s)" % device.info
                 else:
-                    protocol = None
-                    if name.find("._ipps") != -1:
-                        protocol = "IPPS"
-                    elif name.find("._ipp") != -1:
-                        protocol = "IPP"
-                    elif name.find("._printer") != -1:
-                        protocol = "LPD"
-                    elif name.find("._pdl-datastream") != -1:
-                        protocol = "AppSocket/JetDirect"
+                    protocol = _dnssd_protocol (name)
                     if protocol in ("IPP", "IPPS"):
                         if dnssdresolve.is_ipp_over_usb_device (device):
                             device.menuentry = _("%s over USB") % protocol
@@ -4641,15 +4630,7 @@ class NewPrinterGUI(GtkGUI):
                 if cupsqueue == 'cups':
                     text = _("Remote CUPS printer via DNS-SD")
                 else:
-                    protocol = None
-                    if name.find("._ipps") != -1:
-                        protocol = "IPPS"
-                    elif name.find("._ipp") != -1:
-                        protocol = "IPP"
-                    elif name.find("._printer") != -1:
-                        protocol = "LPD"
-                    elif name.find("._pdl-datastream") != -1:
-                        protocol = "AppSocket/JetDirect"
+                    protocol = _dnssd_protocol (name)
                     if protocol is not None:
                         text = _("%s network printer via DNS-SD") % protocol
                     else:
