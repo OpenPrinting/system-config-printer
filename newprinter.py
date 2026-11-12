@@ -441,6 +441,64 @@ def _has_netloc(uri):
         return False
 
 
+def _is_ipps_device(device):
+    if dnssdresolve.is_ipp_over_usb_device(device):
+        return False
+    if getattr(device, 'type', None) == 'ipps':
+        return True
+    uri = getattr(device, 'uri', '')
+    if uri.startswith('ipps:'):
+        return True
+    try:
+        parsed = urllib.parse.urlsplit(uri)
+        if parsed.scheme in ('dnssd', 'mdns') and parsed.hostname and '._ipps' in parsed.hostname:
+            return True
+    except Exception:
+        pass
+    return False
+
+
+def _is_ipp_device(device):
+    if _is_ipps_device(device):
+        return False
+    if dnssdresolve.is_ipp_over_usb_device(device):
+        return False
+    if getattr(device, 'type', None) == 'ipp':
+        return True
+    uri = getattr(device, 'uri', '')
+    if uri.startswith('ipp:'):
+        return True
+    try:
+        parsed = urllib.parse.urlsplit(uri)
+        if parsed.scheme in ('dnssd', 'mdns') and parsed.hostname and '._ipp' in parsed.hostname:
+            return True
+    except Exception:
+        pass
+    return False
+
+
+def _device_identity(device):
+    uri = getattr(device, 'uri', '')
+    inst = PhysicalDevice._dnssd_instance_from_uri(uri)
+    if inst:
+        return inst
+    try:
+        parsed = urllib.parse.urlsplit(uri)
+        if parsed.hostname:
+            return parsed.hostname
+    except Exception:
+        pass
+    return uri
+
+
+def _device_connection_sort_key(device):
+    if _is_ipps_device(device):
+        return 0
+    if _is_ipp_device(device):
+        return 1
+    return 2
+
+
 class NewPrinterGUI(GtkGUI):
 
     __gsignals__ = {
@@ -4304,6 +4362,16 @@ class NewPrinterGUI(GtkGUI):
         if physicaldevice is None:
             return
         show_uris = True
+        def _has_peer_ipps(dev):
+            dev_id = _device_identity(dev)
+            return any(_is_ipps_device(other) and _device_identity(other) == dev_id
+                       for other in physicaldevice.get_devices())
+
+        def _has_peer_ipp(dev):
+            dev_id = _device_identity(dev)
+            return any(_is_ipp_device(other) and _device_identity(other) == dev_id
+                       for other in physicaldevice.get_devices())
+
         for device in physicaldevice.get_devices ():
             if device.type == "parallel":
                 device.menuentry = _("Parallel Port")
@@ -4355,10 +4423,16 @@ class NewPrinterGUI(GtkGUI):
 
                 is_usb = dnssdresolve.is_ipp_over_usb_device (device)
 
-                if device.type == "ipps" or scheme == "ipps":
-                    conn_type = _("IPPS over USB") if is_usb else _("IPPS")
+                if is_usb:
+                    conn_type = _("IPPS over USB") if (device.type == "ipps" or scheme == "ipps") else _("IPP over USB")
+                elif (device.type == "ipps" or scheme == "ipps") and _has_peer_ipp (device):
+                    conn_type = _("IPP (with TLS security, recommended)")
+                elif not (device.type == "ipps" or scheme == "ipps") and _has_peer_ipps (device):
+                    conn_type = _("IPP (without TLS security)")
+                elif device.type == "ipps" or scheme == "ipps":
+                    conn_type = _("IPPS")
                 else:
-                    conn_type = _("IPP over USB") if is_usb else _("IPP")
+                    conn_type = _("IPP")
 
                 if queue != '':
                     device.menuentry = "%s (%s)" % (conn_type, queue)
@@ -4389,6 +4463,10 @@ class NewPrinterGUI(GtkGUI):
                     if protocol in ("IPP", "IPPS"):
                         if dnssdresolve.is_ipp_over_usb_device (device):
                             device.menuentry = _("%s over USB") % protocol
+                        elif protocol == "IPPS" and _has_peer_ipp (device):
+                            device.menuentry = _("IPP (with TLS security, recommended)")
+                        elif protocol == "IPP" and _has_peer_ipps (device):
+                            device.menuentry = _("IPP (without TLS security)")
                         else:
                             device.menuentry = _(protocol)
                     elif protocol is not None:
@@ -4490,7 +4568,8 @@ class NewPrinterGUI(GtkGUI):
 
         # Fill the list of connections for this device.
         n = 0
-        for device in physicaldevice.get_devices ():
+        devices = sorted (physicaldevice.get_devices (), key=_device_connection_sort_key)
+        for device in devices:
             model.append ((device.menuentry, device))
             n += 1
         column = self.tvNPDeviceURIs.get_column (0)

@@ -6089,4 +6089,8 @@ def test_kyocera_ipp_dnssd_and_ipps_gui_single_entry():
         conn_labels.append(uri_model.get_value(it, 0))
         it = uri_model.iter_next(it)
 
-    assert sorted(conn_labels) == sorted(["IPP", "IPPS"])
+    assert conn_labels == [
+        "IPP (with TLS security, recommended)",
+        "IPP (without TLS security)"
+    ]
+    assert gui.device.uri == d_ipps.uri
