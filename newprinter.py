@@ -264,6 +264,14 @@ def _device_from_object(dev, is_printer=False):
 def _same_physical_device(p1, p2):
     if p1 is None or p2 is None:
         return False
+    if hasattr (p1, 'is_literal_ip') and hasattr (p2, 'is_literal_ip'):
+        if p1.is_literal_ip () != p2.is_literal_ip ():
+            return False
+    if hasattr (p1, '_dnssd_instance') and hasattr (p2, '_dnssd_instance'):
+        if p1._dnssd_instance and p2._dnssd_instance:
+            if p1._dnssd_instance == p2._dnssd_instance:
+                return True
+            return False
     if p1.dnssd_hostname and p2.dnssd_hostname and p1.dnssd_hostname == p2.dnssd_hostname:
         return True
     if p1.sn and p2.sn and p1.sn == p2.sn:
@@ -4555,7 +4563,9 @@ class NewPrinterGUI(GtkGUI):
                     text = _("Remote CUPS printer via DNS-SD")
                 else:
                     protocol = None
-                    if name.find("._ipp") != -1:
+                    if name.find("._ipps") != -1:
+                        protocol = "IPPS"
+                    elif name.find("._ipp") != -1:
                         protocol = "IPP"
                     elif name.find("._printer") != -1:
                         protocol = "LPD"

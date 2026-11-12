@@ -28,11 +28,13 @@ import socket
 import ipaddress
 from debug import *
 
+
 class PhysicalDevice:
     def __init__(self, device):
         self.devices = None
         self._network_host = None
         self.dnssd_hostname = None
+        self._dnssd_instance = None
         self._cupsserver = False
         self.firsturi = None
         self.add_device (device)
@@ -227,6 +229,28 @@ class PhysicalDevice:
         return self._is_literal_ip_uri (self.devices[0].uri)
 
     @staticmethod
+    def _dnssd_instance_from_uri (uri):
+        if not uri:
+            return None
+        protocol = PhysicalDevice._protocol_from_uri (uri)
+        if protocol in ('lpd', 'socket'):
+            uri = PhysicalDevice._canonical_uri (uri)
+        (scheme, rest) = urllib.parse.splittype (uri)
+        if scheme == 'hp' or scheme == 'hpfax':
+            if rest.startswith ("/net/"):
+                (rest, ipparam) = urllib.parse.splitquery (rest[5:])
+                if ipparam and ipparam.startswith ("zc="):
+                    return ipparam[3:]
+            return None
+        (hostport, rest) = urllib.parse.splithost (rest)
+        if not hostport:
+            return None
+        (host, port) = urllib.parse.splitport (hostport)
+        if not host:
+            return None
+        return PhysicalDevice._extract_dnssd_instance (host)
+
+    @staticmethod
     def _host_matches (h1, h2):
         if not h1 or not h2:
             return False
@@ -304,32 +328,38 @@ class PhysicalDevice:
             device.uri = canonical_uri
             device.type = protocol
 
-        if self.devices:
+        dnssd_instance = self._dnssd_instance_from_uri (device.uri)
+
+        if self.devices is None:
+            self._dnssd_instance = dnssd_instance
+            (mfg, mdl) = self._canonical_id (device)
+            self.mfg = mfg
+            self.mdl = mdl
+            self.mfg_lower = mfg.lower ()
+            self.mdl_lower = mdl.lower ()
+            self.sn = device.id_dict.get ('SN', '')
+            self.devices = []
+        else:
             if self.is_literal_ip () != self._is_literal_ip_uri (device.uri):
                 raise ValueError
 
-        if self._network_host or self.dnssd_hostname:
-            host, dnssdhost, protocol = self._get_host_from_uri (device.uri)
-            if (hasattr (device, 'address')):
-                host = self._add_dot_local_if_needed(device.address)
-            if (hasattr (device, 'hostname') and dnssdhost is None):
-                dnssdhost = self._add_dot_local_if_needed(device.hostname)
-            if (host is None and dnssdhost is None) or \
-               not (self._host_matches (host, self._network_host) or
-                    self._host_matches (host, self.dnssd_hostname) or
-                    self._host_matches (dnssdhost, self._network_host) or
-                    self._host_matches (dnssdhost, self.dnssd_hostname)):
-                raise ValueError
-        else:
-            (mfg, mdl) = self._canonical_id (device)
-            if self.devices is None:
-                self.mfg = mfg
-                self.mdl = mdl
-                self.mfg_lower = mfg.lower ()
-                self.mdl_lower = mdl.lower ()
-                self.sn = device.id_dict.get ('SN', '')
-                self.devices = []
+            if self._dnssd_instance and dnssd_instance:
+                if self._dnssd_instance != dnssd_instance:
+                    raise ValueError
+            elif self._network_host or self.dnssd_hostname:
+                host, dnssdhost, protocol = self._get_host_from_uri (device.uri)
+                if (hasattr (device, 'address')):
+                    host = self._add_dot_local_if_needed(device.address)
+                if (hasattr (device, 'hostname') and dnssdhost is None):
+                    dnssdhost = self._add_dot_local_if_needed(device.hostname)
+                if (host is None and dnssdhost is None) or \
+                   not (self._host_matches (host, self._network_host) or
+                        self._host_matches (host, self.dnssd_hostname) or
+                        self._host_matches (dnssdhost, self._network_host) or
+                        self._host_matches (dnssdhost, self.dnssd_hostname)):
+                    raise ValueError
             else:
+                (mfg, mdl) = self._canonical_id (device)
                 def nicest (a, b):
                     def count_lower (s):
                         l = s.lower ()
@@ -348,6 +378,9 @@ class PhysicalDevice:
                 sn = device.id_dict.get ('SN', '')
                 if sn != '' and self.sn != '' and sn != self.sn:
                     raise ValueError
+
+            if dnssd_instance and not self._dnssd_instance:
+                self._dnssd_instance = dnssd_instance
 
         if device.type == "socket":
             # Remove default port to more easily find duplicate URIs
@@ -463,15 +496,18 @@ class PhysicalDevice:
         if self.is_literal_ip () != other.is_literal_ip ():
             return False
 
-        if not (((not self._network_host or len (self._network_host) == 0) and
-                 (not other._network_host or len (other._network_host) == 0) and
-                 (not self.dnssd_hostname or len (self.dnssd_hostname) == 0) and
-                 (not other.dnssd_hostname or
-                  len (other.dnssd_hostname) == 0)) or
-                self._host_matches (self._network_host, other._network_host) or
-                self._host_matches (self.dnssd_hostname, other.dnssd_hostname) or
-                self._host_matches (self._network_host, other.dnssd_hostname) or
-                self._host_matches (self.dnssd_hostname, other._network_host)):
+        if self._dnssd_instance and other._dnssd_instance:
+            if self._dnssd_instance != other._dnssd_instance:
+                return False
+        elif not (((not self._network_host or len (self._network_host) == 0) and
+                   (not other._network_host or len (other._network_host) == 0) and
+                   (not self.dnssd_hostname or len (self.dnssd_hostname) == 0) and
+                   (not other.dnssd_hostname or
+                    len (other.dnssd_hostname) == 0)) or
+                  self._host_matches (self._network_host, other._network_host) or
+                  self._host_matches (self.dnssd_hostname, other.dnssd_hostname) or
+                  self._host_matches (self._network_host, other.dnssd_hostname) or
+                  self._host_matches (self.dnssd_hostname, other._network_host)):
             return False
 
         devs = other.get_devices()

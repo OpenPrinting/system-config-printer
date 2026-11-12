@@ -6022,25 +6022,27 @@ def test_kyocera_ipp_dnssd_and_ipps_gui_single_entry():
     gui.start_fetching_devices = MagicMock()
     gui.fillDeviceTab()
 
-    d1 = cupshelpers.Device(
+    d_ipps = cupshelpers.Device(
+        "ipps://Kyocera%20ECOSYS%20M2040dn._ipps._tcp.local/",
+        **{"device-class": "network",
+           "device-make-and-model": "Kyocera ECOSYS M2040dn (KPDL) (driverless)",
+           "device-info": "Kyocera ECOSYS M2040dn"})
+
+    d_dnssd = cupshelpers.Device(
         "dnssd://Kyocera%20ECOSYS%20M2040dn._ipp._tcp.local/?uuid=4509a320-00a0-008f-00b6-002507510eca",
         **{"device-class": "network",
            "device-make-and-model": "Kyocera ECOSYS M2040dn",
            "device-info": "Kyocera ECOSYS M2040dn"})
+    d_dnssd.hostname = "KM7B6A91"
+    d_dnssd.address = "192.168.1.102"
 
-    d2 = cupshelpers.Device(
-        "ipps://Kyocera%20ECOSYS%20M2040dn._ipps._tcp.local/",
-        **{"device-class": "network",
-           "device-make-and-model": "Kyocera ECOSYS M2040dn",
-           "device-info": "Kyocera ECOSYS M2040dn"})
-
-    d3 = cupshelpers.Device(
+    d_ip = cupshelpers.Device(
         "socket://192.168.1.102",
         **{"device-class": "network",
            "device-make-and-model": "Kyocera ECOSYS M2040dn",
            "device-info": "Kyocera ECOSYS M2040dn"})
 
-    devs = {d.uri: d for d in [d1, d2, d3]}
+    devs = {d.uri: d for d in [d_ipps, d_dnssd, d_ip]}
     gui.add_devices(devs, None, no_more=True)
 
     model = gui.tvNPDevices.get_model()
@@ -6059,8 +6061,8 @@ def test_kyocera_ipp_dnssd_and_ipps_gui_single_entry():
     conn_devs = phys_devs[0].get_devices()
     assert len(conn_devs) == 2
     uris = [d.uri for d in conn_devs]
-    assert any("._ipp._tcp.local" in u for u in uris)
-    assert any("._ipps._tcp.local" in u for u in uris)
+    assert "dnssd://Kyocera%20ECOSYS%20M2040dn._ipp._tcp.local/?uuid=4509a320-00a0-008f-00b6-002507510eca" in uris
+    assert "ipps://Kyocera%20ECOSYS%20M2040dn._ipps._tcp.local/" in uris
 
     legacy_iter = gui.devices_legacy_iter
     child = model.iter_children(legacy_iter)
@@ -6087,6 +6089,4 @@ def test_kyocera_ipp_dnssd_and_ipps_gui_single_entry():
         conn_labels.append(uri_model.get_value(it, 0))
         it = uri_model.iter_next(it)
 
-    assert "IPP" in conn_labels
-    assert "IPPS" in conn_labels
-    assert len(conn_labels) == 2
+    assert sorted(conn_labels) == sorted(["IPP", "IPPS"])

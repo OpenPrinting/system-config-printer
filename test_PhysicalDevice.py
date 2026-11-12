@@ -748,3 +748,73 @@ def test_cross_namespace_network_printers_never_merge():
     legacy_pd = [p for p in pds_kyo if p.is_literal_ip()][0]
     assert len(dnssd_pd.get_devices()) == 2
     assert len(legacy_pd.get_devices()) == 1
+
+
+@pytest.mark.skipif(cups is None, reason="cups module not available")
+def test_kyocera_resolved_dnssd_and_ipps_merge():
+    dev_resolved = cupshelpers.Device(
+        "dnssd://Kyocera%20ECOSYS%20M2040dn._ipp._tcp.local/?uuid=4509a320-00a0-008f-00b6-002507510eca",
+        **{"device-class": "network",
+           "device-make-and-model": "Kyocera ECOSYS M2040dn",
+           "device-id": "MFG:Kyocera;MDL:ECOSYS M2040dn;"})
+    dev_resolved.hostname = "KM7B6A91"
+    dev_resolved.address = "192.168.1.102"
+
+    dev_ipps = cupshelpers.Device(
+        "ipps://Kyocera%20ECOSYS%20M2040dn._ipps._tcp.local/",
+        **{"device-class": "network",
+           "device-make-and-model": "Kyocera ECOSYS M2040dn",
+           "device-id": "MFG:Kyocera;MDL:ECOSYS M2040dn;"})
+
+    dev_socket = cupshelpers.Device(
+        "socket://Kyocera%20ECOSYS%20M2040dn._pdl-datastream._tcp.local/",
+        **{"device-class": "network",
+           "device-make-and-model": "Kyocera ECOSYS M2040dn",
+           "device-id": "MFG:Kyocera;MDL:ECOSYS M2040dn;"})
+
+    dev_ip = cupshelpers.Device(
+        "socket://192.168.1.102",
+        **{"device-class": "network",
+           "device-make-and-model": "Kyocera ECOSYS M2040dn",
+           "device-id": "MFG:Kyocera;MDL:ECOSYS M2040dn;"})
+
+    p_resolved = PhysicalDevice(dev_resolved)
+    p_ipps = PhysicalDevice(dev_ipps)
+    p_socket = PhysicalDevice(dev_socket)
+    p_ip = PhysicalDevice(dev_ip)
+
+    assert p_resolved == p_ipps
+    assert p_resolved == p_socket
+    assert p_ipps == p_socket
+
+    assert p_resolved != p_ip
+    assert p_ipps != p_ip
+    assert p_socket != p_ip
+
+    pds = []
+    for d in [dev_resolved, dev_ipps, dev_socket, dev_ip]:
+        pd = PhysicalDevice(d)
+        try:
+            i = pds.index(pd)
+            pds[i].add_device(d)
+        except ValueError:
+            pds.append(pd)
+
+    assert len(pds) == 2
+    dnssd_pd = [p for p in pds if not p.is_literal_ip()][0]
+    legacy_pd = [p for p in pds if p.is_literal_ip()][0]
+    assert len(dnssd_pd.get_devices()) == 3
+    assert len(legacy_pd.get_devices()) == 1
+
+    pds_rev = []
+    for d in [dev_ipps, dev_resolved, dev_socket, dev_ip]:
+        pd = PhysicalDevice(d)
+        try:
+            i = pds_rev.index(pd)
+            pds_rev[i].add_device(d)
+        except ValueError:
+            pds_rev.append(pd)
+
+    assert len(pds_rev) == 2
+    dnssd_pd_rev = [p for p in pds_rev if not p.is_literal_ip()][0]
+    assert len(dnssd_pd_rev.get_devices()) == 3
