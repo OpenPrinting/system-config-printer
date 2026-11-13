@@ -392,3 +392,441 @@ def test_get_info_falls_back_to_device_info_when_translation_absent():
     assert info is not None
     assert info == 'Xerox(R) B235 MFP (USB)'
 
+
+@pytest.mark.skipif(cups is None, reason="cups module not available")
+def test_lpd_dnssd_and_lpd_schemes_merge():
+    """Alex regression test: dnssd://..._printer._tcp.local/?uuid=UUID and
+    lpd://..._printer._tcp.local/ must resolve to the SAME PhysicalDevice,
+    canonicalize to the appropriate LPD connection representation, and
+    UUID differences must not create another PhysicalDevice.
+    Also tests discovery order both ways."""
+    uuid1 = "cbca9fde-d208-4156-9a2f-82857dd0be5f"
+    uuid2 = "12345678-abcd-ef01-2345-6789abcdef01"
+
+    # 1. Forward order: dnssd first, then lpd
+    dev_dnssd = _make_dnssd_device(
+        f'dnssd://OpenPrinting%20LPD%20Printer._printer._tcp.local/?uuid={uuid1}',
+        make_and_model='OpenPrinting LPD Printer',
+        device_id='MFG:OpenPrinting;MDL:LPD Printer;')
+    dev_lpd = _make_dnssd_device(
+        'lpd://OpenPrinting%20LPD%20Printer._printer._tcp.local/',
+        make_and_model='OpenPrinting LPD Printer',
+        device_id='MFG:OpenPrinting;MDL:LPD Printer;')
+
+    phys_dnssd = PhysicalDevice(dev_dnssd)
+    phys_lpd = PhysicalDevice(dev_lpd)
+    assert phys_dnssd == phys_lpd
+
+    # Merging via grouping loop
+    pds = []
+    for d in [dev_dnssd, dev_lpd]:
+        pd = PhysicalDevice(d)
+        try:
+            i = pds.index(pd)
+            pds[i].add_device(d)
+        except ValueError:
+            pds.append(pd)
+
+    assert len(pds) == 1
+    devices = pds[0].get_devices()
+    assert len(devices) == 1
+    assert devices[0].uri == 'lpd://OpenPrinting%20LPD%20Printer._printer._tcp.local/'
+    assert devices[0].type == 'lpd'
+
+    # 2. Reverse order: lpd first, then dnssd
+    dev_dnssd_rev = _make_dnssd_device(
+        f'dnssd://OpenPrinting%20LPD%20Printer._printer._tcp.local/?uuid={uuid1}',
+        make_and_model='OpenPrinting LPD Printer',
+        device_id='MFG:OpenPrinting;MDL:LPD Printer;')
+    dev_lpd_rev = _make_dnssd_device(
+        'lpd://OpenPrinting%20LPD%20Printer._printer._tcp.local/',
+        make_and_model='OpenPrinting LPD Printer',
+        device_id='MFG:OpenPrinting;MDL:LPD Printer;')
+
+    pds_rev = []
+    for d in [dev_lpd_rev, dev_dnssd_rev]:
+        pd = PhysicalDevice(d)
+        try:
+            i = pds_rev.index(pd)
+            pds_rev[i].add_device(d)
+        except ValueError:
+            pds_rev.append(pd)
+
+    assert len(pds_rev) == 1
+    devices_rev = pds_rev[0].get_devices()
+    assert len(devices_rev) == 1
+    assert devices_rev[0].uri == 'lpd://OpenPrinting%20LPD%20Printer._printer._tcp.local/'
+    assert devices_rev[0].type == 'lpd'
+
+    # 3. UUID differences do not create another PhysicalDevice
+    dev_dnssd_diff_uuid = _make_dnssd_device(
+        f'dnssd://OpenPrinting%20LPD%20Printer._printer._tcp.local/?uuid={uuid2}',
+        make_and_model='OpenPrinting LPD Printer',
+        device_id='MFG:OpenPrinting;MDL:LPD Printer;')
+
+    phys_diff_uuid = PhysicalDevice(dev_dnssd_diff_uuid)
+    assert phys_dnssd == phys_diff_uuid
+    pds[0].add_device(dev_dnssd_diff_uuid)
+    assert len(pds[0].get_devices()) == 1
+
+
+@pytest.mark.skipif(cups is None, reason="cups module not available")
+def test_appsocket_dnssd_and_socket_schemes_merge():
+    """Alex regression test: dnssd://..._pdl-datastream._tcp.local/?uuid=UUID and
+    socket://..._pdl-datastream._tcp.local/ must resolve to the SAME PhysicalDevice,
+    canonicalize to the appropriate AppSocket connection representation.
+    Also tests discovery order both ways."""
+    uuid = "cbca9fde-d208-4156-9a2f-82857dd0be5f"
+
+    # Forward order
+    dev_dnssd = _make_dnssd_device(
+        f'dnssd://OpenPrinting%20AppSocket%20Printer._pdl-datastream._tcp.local/?uuid={uuid}',
+        make_and_model='OpenPrinting AppSocket Printer',
+        device_id='MFG:OpenPrinting;MDL:AppSocket Printer;')
+    dev_socket = _make_dnssd_device(
+        'socket://OpenPrinting%20AppSocket%20Printer._pdl-datastream._tcp.local/',
+        make_and_model='OpenPrinting AppSocket Printer',
+        device_id='MFG:OpenPrinting;MDL:AppSocket Printer;')
+
+    phys_dnssd = PhysicalDevice(dev_dnssd)
+    phys_socket = PhysicalDevice(dev_socket)
+    assert phys_dnssd == phys_socket
+
+    pds = []
+    for d in [dev_dnssd, dev_socket]:
+        pd = PhysicalDevice(d)
+        try:
+            i = pds.index(pd)
+            pds[i].add_device(d)
+        except ValueError:
+            pds.append(pd)
+
+    assert len(pds) == 1
+    devices = pds[0].get_devices()
+    assert len(devices) == 1
+    assert devices[0].uri == 'socket://OpenPrinting%20AppSocket%20Printer._pdl-datastream._tcp.local/'
+    assert devices[0].type == 'socket'
+
+    # Reverse order
+    dev_dnssd_rev = _make_dnssd_device(
+        f'dnssd://OpenPrinting%20AppSocket%20Printer._pdl-datastream._tcp.local/?uuid={uuid}',
+        make_and_model='OpenPrinting AppSocket Printer',
+        device_id='MFG:OpenPrinting;MDL:AppSocket Printer;')
+    dev_socket_rev = _make_dnssd_device(
+        'socket://OpenPrinting%20AppSocket%20Printer._pdl-datastream._tcp.local/',
+        make_and_model='OpenPrinting AppSocket Printer',
+        device_id='MFG:OpenPrinting;MDL:AppSocket Printer;')
+
+    pds_rev = []
+    for d in [dev_socket_rev, dev_dnssd_rev]:
+        pd = PhysicalDevice(d)
+        try:
+            i = pds_rev.index(pd)
+            pds_rev[i].add_device(d)
+        except ValueError:
+            pds_rev.append(pd)
+
+    assert len(pds_rev) == 1
+    devices_rev = pds_rev[0].get_devices()
+    assert len(devices_rev) == 1
+    assert devices_rev[0].uri == 'socket://OpenPrinting%20AppSocket%20Printer._pdl-datastream._tcp.local/'
+    assert devices_rev[0].type == 'socket'
+
+
+@pytest.mark.skipif(cups is None, reason="cups module not available")
+def test_network_printer_protocols_separation():
+    """Verify that OpenPrinting LPD, OpenPrinting AppSocket, and two different
+    AppSocket printer names remain separate PhysicalDevices."""
+    dev_lpd = _make_dnssd_device(
+        'dnssd://OpenPrinting%20LPD%20Printer._printer._tcp.local/?uuid=111',
+        make_and_model='OpenPrinting LPD Printer',
+        device_id='MFG:OpenPrinting;MDL:LPD Printer;')
+    dev_appsocket = _make_dnssd_device(
+        'dnssd://OpenPrinting%20AppSocket%20Printer._pdl-datastream._tcp.local/?uuid=222',
+        make_and_model='OpenPrinting AppSocket Printer',
+        device_id='MFG:OpenPrinting;MDL:AppSocket Printer;')
+    dev_appsocket2 = _make_dnssd_device(
+        'socket://Another%20AppSocket%20Printer._pdl-datastream._tcp.local/',
+        make_and_model='Another AppSocket Printer',
+        device_id='MFG:Another;MDL:AppSocket Printer;')
+
+    p_lpd = PhysicalDevice(dev_lpd)
+    p_appsocket = PhysicalDevice(dev_appsocket)
+    p_appsocket2 = PhysicalDevice(dev_appsocket2)
+
+    assert p_lpd != p_appsocket
+    assert p_lpd != p_appsocket2
+    assert p_appsocket != p_appsocket2
+
+    pds = []
+    for d in [dev_lpd, dev_appsocket, dev_appsocket2]:
+        pd = PhysicalDevice(d)
+        try:
+            i = pds.index(pd)
+            pds[i].add_device(d)
+        except ValueError:
+            pds.append(pd)
+
+    assert len(pds) == 3
+
+
+@pytest.mark.skipif(cups is None, reason="cups module not available")
+def test_kyocera_ipp_dnssd_and_ipps_schemes_merge():
+    uuid1 = "4509a320-00a0-008f-00b6-002507510eca"
+    uuid2 = "98765432-1111-2222-3333-444455556666"
+
+    dev_dnssd = _make_dnssd_device(
+        f"dnssd://Kyocera%20ECOSYS%20M2040dn._ipp._tcp.local/?uuid={uuid1}",
+        make_and_model="Kyocera ECOSYS M2040dn",
+        device_id="MFG:Kyocera;MDL:ECOSYS M2040dn;")
+    dev_ipps = _make_dnssd_device(
+        "ipps://Kyocera%20ECOSYS%20M2040dn._ipps._tcp.local/",
+        make_and_model="Kyocera ECOSYS M2040dn",
+        device_id="MFG:Kyocera;MDL:ECOSYS M2040dn;")
+
+    phys_dnssd = PhysicalDevice(dev_dnssd)
+    phys_ipps = PhysicalDevice(dev_ipps)
+    assert phys_dnssd == phys_ipps
+
+    pds = []
+    for d in [dev_dnssd, dev_ipps]:
+        pd = PhysicalDevice(d)
+        try:
+            i = pds.index(pd)
+            pds[i].add_device(d)
+        except ValueError:
+            pds.append(pd)
+
+    assert len(pds) == 1
+    devices = pds[0].get_devices()
+    assert len(devices) == 2
+    uris = [d.uri for d in devices]
+    assert any("._ipp._tcp.local" in u for u in uris)
+    assert any("._ipps._tcp.local" in u for u in uris)
+
+    dev_dnssd_rev = _make_dnssd_device(
+        f"dnssd://Kyocera%20ECOSYS%20M2040dn._ipp._tcp.local/?uuid={uuid1}",
+        make_and_model="Kyocera ECOSYS M2040dn",
+        device_id="MFG:Kyocera;MDL:ECOSYS M2040dn;")
+    dev_ipps_rev = _make_dnssd_device(
+        "ipps://Kyocera%20ECOSYS%20M2040dn._ipps._tcp.local/",
+        make_and_model="Kyocera ECOSYS M2040dn",
+        device_id="MFG:Kyocera;MDL:ECOSYS M2040dn;")
+
+    pds_rev = []
+    for d in [dev_ipps_rev, dev_dnssd_rev]:
+        pd = PhysicalDevice(d)
+        try:
+            i = pds_rev.index(pd)
+            pds_rev[i].add_device(d)
+        except ValueError:
+            pds_rev.append(pd)
+
+    assert len(pds_rev) == 1
+    devices_rev = pds_rev[0].get_devices()
+    assert len(devices_rev) == 2
+    uris_rev = [d.uri for d in devices_rev]
+    assert any("._ipp._tcp.local" in u for u in uris_rev)
+    assert any("._ipps._tcp.local" in u for u in uris_rev)
+
+    dev_dnssd_diff_uuid = _make_dnssd_device(
+        f"dnssd://Kyocera%20ECOSYS%20M2040dn._ipp._tcp.local/?uuid={uuid2}",
+        make_and_model="Kyocera ECOSYS M2040dn",
+        device_id="MFG:Kyocera;MDL:ECOSYS M2040dn;")
+
+    phys_diff_uuid = PhysicalDevice(dev_dnssd_diff_uuid)
+    assert phys_dnssd == phys_diff_uuid
+
+    pds_uuid = []
+    for d in [dev_dnssd, dev_ipps, dev_dnssd_diff_uuid]:
+        pd = PhysicalDevice(d)
+        try:
+            i = pds_uuid.index(pd)
+            pds_uuid[i].add_device(d)
+        except ValueError:
+            pds_uuid.append(pd)
+
+    assert len(pds_uuid) == 1
+    assert len(pds_uuid[0].get_devices()) == 2
+
+
+@pytest.mark.skipif(cups is None, reason="cups module not available")
+def test_cross_namespace_network_printers_never_merge():
+    dev_ip = cupshelpers.Device(
+        "socket://192.168.1.102",
+        **{"device-class": "network",
+           "device-make-and-model": "Kyocera ECOSYS M2040dn",
+           "device-id": "MFG:Kyocera;MDL:ECOSYS M2040dn;"})
+    dev_symbolic = cupshelpers.Device(
+        "socket://printer.local",
+        **{"device-class": "network",
+           "device-make-and-model": "Kyocera ECOSYS M2040dn",
+           "device-id": "MFG:Kyocera;MDL:ECOSYS M2040dn;"})
+
+    phys_ip = PhysicalDevice(dev_ip)
+    phys_symbolic = PhysicalDevice(dev_symbolic)
+
+    assert phys_ip != phys_symbolic
+
+    pds = []
+    for d in [dev_ip, dev_symbolic]:
+        pd = PhysicalDevice(d)
+        try:
+            i = pds.index(pd)
+            pds[i].add_device(d)
+        except ValueError:
+            pds.append(pd)
+
+    assert len(pds) == 2
+
+    with pytest.raises(ValueError):
+        phys_ip.add_device(dev_symbolic)
+
+    with pytest.raises(ValueError):
+        phys_symbolic.add_device(dev_ip)
+
+    dev_dnssd = cupshelpers.Device(
+        "dnssd://Printer._ipp._tcp.local/",
+        **{"device-class": "network",
+           "device-make-and-model": "Printer",
+           "device-id": "MFG:Generic;MDL:Printer;"})
+    dev_ipps_ip = cupshelpers.Device(
+        "ipps://192.168.1.102/",
+        **{"device-class": "network",
+           "device-make-and-model": "Printer",
+           "device-id": "MFG:Generic;MDL:Printer;"})
+
+    phys_dnssd = PhysicalDevice(dev_dnssd)
+    phys_ipps_ip = PhysicalDevice(dev_ipps_ip)
+
+    assert phys_dnssd != phys_ipps_ip
+
+    pds_ipp = []
+    for d in [dev_dnssd, dev_ipps_ip]:
+        pd = PhysicalDevice(d)
+        try:
+            i = pds_ipp.index(pd)
+            pds_ipp[i].add_device(d)
+        except ValueError:
+            pds_ipp.append(pd)
+
+    assert len(pds_ipp) == 2
+
+    with pytest.raises(ValueError):
+        phys_dnssd.add_device(dev_ipps_ip)
+
+    with pytest.raises(ValueError):
+        phys_ipps_ip.add_device(dev_dnssd)
+
+    dev_kyo_dnssd = cupshelpers.Device(
+        "dnssd://Kyocera%20ECOSYS%20M2040dn._ipp._tcp.local/?uuid=4509a320-00a0-008f-00b6-002507510eca",
+        **{"device-class": "network",
+           "device-make-and-model": "Kyocera ECOSYS M2040dn",
+           "device-id": "MFG:Kyocera;MDL:ECOSYS M2040dn;"})
+    dev_kyo_ipps = cupshelpers.Device(
+        "ipps://Kyocera%20ECOSYS%20M2040dn._ipps._tcp.local/",
+        **{"device-class": "network",
+           "device-make-and-model": "Kyocera ECOSYS M2040dn",
+           "device-id": "MFG:Kyocera;MDL:ECOSYS M2040dn;"})
+    dev_kyo_ip = cupshelpers.Device(
+        "socket://192.168.1.102",
+        **{"device-class": "network",
+           "device-make-and-model": "Kyocera ECOSYS M2040dn",
+           "device-id": "MFG:Kyocera;MDL:ECOSYS M2040dn;"})
+
+    pds_kyo = []
+    for d in [dev_kyo_dnssd, dev_kyo_ipps, dev_kyo_ip]:
+        pd = PhysicalDevice(d)
+        try:
+            i = pds_kyo.index(pd)
+            pds_kyo[i].add_device(d)
+        except ValueError:
+            pds_kyo.append(pd)
+
+    assert len(pds_kyo) == 2
+    dnssd_pd = [p for p in pds_kyo if not p.is_literal_ip()][0]
+    legacy_pd = [p for p in pds_kyo if p.is_literal_ip()][0]
+    assert len(dnssd_pd.get_devices()) == 2
+    assert len(legacy_pd.get_devices()) == 1
+
+
+@pytest.mark.skipif(cups is None, reason="cups module not available")
+def test_kyocera_resolved_dnssd_and_ipps_merge():
+    dev_resolved = cupshelpers.Device(
+        "dnssd://Kyocera%20ECOSYS%20M2040dn._ipp._tcp.local/?uuid=4509a320-00a0-008f-00b6-002507510eca",
+        **{"device-class": "network",
+           "device-make-and-model": "Kyocera ECOSYS M2040dn",
+           "device-id": "MFG:Kyocera;MDL:ECOSYS M2040dn;"})
+    dev_resolved.hostname = "KM7B6A91"
+    dev_resolved.address = "192.168.1.102"
+
+    dev_ipps = cupshelpers.Device(
+        "ipps://Kyocera%20ECOSYS%20M2040dn._ipps._tcp.local/",
+        **{"device-class": "network",
+           "device-make-and-model": "Kyocera ECOSYS M2040dn",
+           "device-id": "MFG:Kyocera;MDL:ECOSYS M2040dn;"})
+
+    dev_socket = cupshelpers.Device(
+        "socket://Kyocera%20ECOSYS%20M2040dn._pdl-datastream._tcp.local/",
+        **{"device-class": "network",
+           "device-make-and-model": "Kyocera ECOSYS M2040dn",
+           "device-id": "MFG:Kyocera;MDL:ECOSYS M2040dn;"})
+
+    dev_ip = cupshelpers.Device(
+        "socket://192.168.1.102",
+        **{"device-class": "network",
+           "device-make-and-model": "Kyocera ECOSYS M2040dn",
+           "device-id": "MFG:Kyocera;MDL:ECOSYS M2040dn;"})
+
+    p_resolved = PhysicalDevice(dev_resolved)
+    p_ipps = PhysicalDevice(dev_ipps)
+    p_socket = PhysicalDevice(dev_socket)
+    p_ip = PhysicalDevice(dev_ip)
+
+    assert p_resolved == p_ipps
+    assert p_resolved == p_socket
+    assert p_ipps == p_socket
+
+    assert p_resolved != p_ip
+    assert p_ipps != p_ip
+    assert p_socket != p_ip
+
+    pds = []
+    for d in [dev_resolved, dev_ipps, dev_socket, dev_ip]:
+        pd = PhysicalDevice(d)
+        try:
+            i = pds.index(pd)
+            pds[i].add_device(d)
+        except ValueError:
+            pds.append(pd)
+
+    assert len(pds) == 2
+    dnssd_pd = [p for p in pds if not p.is_literal_ip()][0]
+    legacy_pd = [p for p in pds if p.is_literal_ip()][0]
+    assert len(dnssd_pd.get_devices()) == 3
+    assert len(legacy_pd.get_devices()) == 1
+
+    pds_rev = []
+    for d in [dev_ipps, dev_resolved, dev_socket, dev_ip]:
+        pd = PhysicalDevice(d)
+        try:
+            i = pds_rev.index(pd)
+            pds_rev[i].add_device(d)
+        except ValueError:
+            pds_rev.append(pd)
+
+    assert len(pds_rev) == 2
+    dnssd_pd_rev = [p for p in pds_rev if not p.is_literal_ip()][0]
+    assert len(dnssd_pd_rev.get_devices()) == 3
+
+
+def test_canonical_uri_and_protocol_detection():
+    assert PhysicalDevice._protocol_from_uri("dnssd://Printer._ipp._tcp.local/?uuid=123") == "ipp"
+    assert PhysicalDevice._protocol_from_uri("dnssd://Printer._ipps._tcp.local/?uuid=123") == "ipps"
+    assert PhysicalDevice._protocol_from_uri("dnssd://Printer._printer._tcp.local/?uuid=123") == "lpd"
+    assert PhysicalDevice._protocol_from_uri("dnssd://Printer._pdl-datastream._tcp.local/?uuid=123") == "socket"
+
+    assert PhysicalDevice._canonical_uri("dnssd://Printer._ipp._tcp.local/?uuid=123") == "ipp://Printer._ipp._tcp.local/"
+    assert PhysicalDevice._canonical_uri("dnssd://Printer._ipps._tcp.local/?uuid=123") == "ipps://Printer._ipps._tcp.local/"
+    assert PhysicalDevice._canonical_uri("dnssd://Printer._printer._tcp.local/?uuid=123") == "lpd://Printer._printer._tcp.local/"
+    assert PhysicalDevice._canonical_uri("dnssd://Printer._pdl-datastream._tcp.local/?uuid=123") == "socket://Printer._pdl-datastream._tcp.local/"

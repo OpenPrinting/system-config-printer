@@ -51,9 +51,13 @@ def _service_tuple_from_uri (uri):
     parsed = urllib.parse.urlparse (uri)
     if parsed.scheme == 'dnssd':
         hostname = parsed.netloc
-    elif parsed.scheme in ('ipp', 'ipps') and \
-         parsed.netloc.find ("._ipp._tcp.local") != -1:
-        hostname = parsed.netloc
+    elif parsed.scheme in ('ipp', 'ipps'):
+        hostname = parsed.netloc.lower().rstrip('.')
+        if (hostname.endswith("._ipp._tcp.local") or
+            hostname.endswith("._ipps._tcp.local")):
+            hostname = parsed.netloc.rstrip('.')
+        else:
+            return None
     else:
         return None
 

@@ -25,18 +25,86 @@ import cupshelpers
 import urllib.parse
 import ppdippstr
 import socket
+import ipaddress
 from debug import *
+
 
 class PhysicalDevice:
     def __init__(self, device):
         self.devices = None
         self._network_host = None
         self.dnssd_hostname = None
+        self._dnssd_instance = None
         self._cupsserver = False
         self.firsturi = None
         self.add_device (device)
         self._user_data = {}
         self._ppdippstr = ppdippstr.backends
+
+    @staticmethod
+    def _protocol_from_uri(uri):
+        if not uri:
+            return None
+
+        try:
+            parsed = urllib.parse.urlsplit(uri)
+            scheme = parsed.scheme.lower()
+            hostname = parsed.hostname or parsed.netloc
+            path = parsed.path
+        except ValueError:
+            return None
+
+        if scheme in ('ipp', 'ipps', 'lpd', 'socket'):
+            return scheme
+
+        if scheme in ('dnssd', 'mdns') and hostname:
+            if path and (path.rstrip('/').endswith('/cups') or path == '/cups'):
+                return None
+            if ':' in hostname and not hostname.endswith(']'):
+                hostname = hostname.rsplit(':', 1)[0]
+            h = hostname.lower().rstrip('.')
+            if h.endswith('._ipps._tcp.local') or h.endswith('._ipps._udp.local'):
+                return 'ipps'
+            if h.endswith('._ipp._tcp.local') or h.endswith('._ipp._udp.local'):
+                return 'ipp'
+            if h.endswith('._printer._tcp.local') or h.endswith('._printer._udp.local'):
+                return 'lpd'
+            if h.endswith('._pdl-datastream._tcp.local') or h.endswith('._pdl-datastream._udp.local'):
+                return 'socket'
+
+        return None
+
+    @staticmethod
+    def _canonical_uri(uri):
+        if not uri:
+            return uri
+
+        protocol = PhysicalDevice._protocol_from_uri(uri)
+        if not protocol:
+            return uri
+
+        try:
+            parsed = urllib.parse.urlsplit(uri)
+            scheme = parsed.scheme.lower()
+            netloc = parsed.netloc
+        except ValueError:
+            return uri
+
+        path = parsed.path
+        if path in ("", "/", "//"):
+            path = "/"
+
+        if scheme in ("dnssd", "mdns"):
+            return urllib.parse.urlunsplit((protocol, netloc, path, "", ""))
+
+        if parsed.query:
+            params = urllib.parse.parse_qsl(parsed.query, keep_blank_values=True)
+            filtered_params = [(k, v) for k, v in params if k.lower() != "uuid"]
+            new_query = urllib.parse.urlencode(filtered_params)
+        else:
+            new_query = ""
+
+        return urllib.parse.urlunsplit((scheme, netloc, path, new_query, parsed.fragment))
 
     def _canonical_id (self, device):
         make_and_model = ''
@@ -75,7 +143,93 @@ class PhysicalDevice:
                 address = None
         return address
 
-    def _extract_dnssd_instance (self, host):
+    @staticmethod
+    def _is_literal_ip_uri (uri):
+        if not uri:
+            return False
+
+        scheme = uri.split (':', 1)[0].lower ()
+        if scheme in ('dnssd', 'mdns'):
+            return False
+
+        if scheme in ('hp', 'hpfax'):
+            try:
+                query = urllib.parse.urlsplit (uri).query
+                params = urllib.parse.parse_qs (query)
+                if 'ip' in params and params['ip']:
+                    host = params['ip'][0]
+                    if '%' in host:
+                        host = host.split ('%')[0]
+                    try:
+                        ipaddress.ip_address (host)
+                        return True
+                    except ValueError:
+                        return False
+            except Exception:
+                pass
+            return False
+
+        try:
+            parsed = urllib.parse.urlsplit (uri)
+            host = parsed.hostname
+        except ValueError:
+            return False
+
+        if not host:
+            return False
+
+        if '%' in host:
+            host = host.split ('%')[0]
+
+        try:
+            ipaddress.ip_address (host)
+            return True
+        except ValueError:
+            return False
+
+    def is_literal_ip (self):
+        if not self.devices:
+            return False
+        return self._is_literal_ip_uri (self.devices[0].uri)
+
+    @staticmethod
+    def _dnssd_instance_from_uri (uri):
+        if not uri:
+            return None
+        protocol = PhysicalDevice._protocol_from_uri (uri)
+        if protocol in ('ipp', 'ipps', 'lpd', 'socket'):
+            uri = PhysicalDevice._canonical_uri (uri)
+        (scheme, rest) = urllib.parse.splittype (uri)
+        if scheme == 'hp' or scheme == 'hpfax':
+            if rest.startswith ("/net/"):
+                (rest, ipparam) = urllib.parse.splitquery (rest[5:])
+                if ipparam and ipparam.startswith ("zc="):
+                    return ipparam[3:]
+            return None
+        (hostport, rest) = urllib.parse.splithost (rest)
+        if not hostport:
+            return None
+        (host, port) = urllib.parse.splitport (hostport)
+        if not host:
+            return None
+        return PhysicalDevice._extract_dnssd_instance (host)
+
+    @staticmethod
+    def _host_matches (h1, h2):
+        if not h1 or not h2:
+            return False
+        if h1 == h2:
+            return True
+        s1 = h1[:-6] if h1.endswith('.local') else h1
+        s2 = h2[:-6] if h2.endswith('.local') else h2
+        if s1 == s2:
+            return True
+        if f'[{s1}]' in h2 or f'[{s2}]' in h1:
+            return True
+        return False
+
+    @staticmethod
+    def _extract_dnssd_instance (host):
         if not host:
             return None
             
@@ -93,6 +247,9 @@ class PhysicalDevice:
         hostport = None
         host = None
         dnssdhost = None
+        protocol = self._protocol_from_uri(uri)
+        if protocol in ('ipp', 'ipps', 'lpd', 'socket'):
+            uri = self._canonical_uri(uri)
         (scheme, rest) = urllib.parse.splittype (uri)
         if scheme == 'hp' or scheme == 'hpfax':
             ipparam = None
@@ -107,73 +264,66 @@ class PhysicalDevice:
                 elif ipparam.startswith("zc="):
                     dnssdhost = ipparam[3:]
                 else:
-                    return None, None
+                    return None, None, protocol
             else:
-                return None, None
-        elif scheme == 'dnssd' or scheme == 'mdns':
-            # The URIs of the CUPS "dnssd" backend do not contain the host
-            # name of the printer
-            return None, None
+                return None, None, protocol
         else:
             (hostport, rest) = urllib.parse.splithost (rest)
             if hostport is None:
-                return None, None
+                return None, None, protocol
 
         if hostport:
             (host, port) = urllib.parse.splitport (hostport)
 
         if (host):
-            ip = None
-            try:
-                ip = self._get_address(host)
-                if ip:
-                    host = ip
-            except:
-                pass
-
-            if not ip and dnssdhost is None:
+            if dnssdhost is None:
                 instance = self._extract_dnssd_instance (host)
                 if instance:
                     dnssdhost = instance
                     host = None
-        elif (dnssdhost):
-            try:
-                host = self._get_address(dnssdhost)
-            except:
-                host = None
 
         return self._add_dot_local_if_needed(host), \
-            self._add_dot_local_if_needed(dnssdhost)
+            self._add_dot_local_if_needed(dnssdhost), protocol
 
     def add_device (self, device):
-        if self._network_host or self.dnssd_hostname:
-            host, dnssdhost = self._get_host_from_uri (device.uri)
-            if (hasattr (device, 'address')):
-                host = self._add_dot_local_if_needed(device.address)
-            if (hasattr (device, 'hostname') and dnssdhost is None):
-                dnssdhost = self._add_dot_local_if_needed(device.hostname)
-            if (host is None and dnssdhost is None) or \
-               not ((host and self._network_host and
-                     host == self._network_host) or
-                    (host and self.dnssd_hostname and
-                     host == self.dnssd_hostname) or
-                    (dnssdhost and self._network_host and
-                     dnssdhost == self._network_host) or
-                    (dnssdhost and self.dnssd_hostname and
-                     dnssdhost == self.dnssd_hostname)) or \
-               (host is None and self.dnssd_hostname is None) or \
-               (dnssdhost is None and self._network_host is None):
-                raise ValueError
-        else:
+        protocol = self._protocol_from_uri (device.uri)
+        if protocol in ('ipp', 'ipps', 'lpd', 'socket'):
+            canonical_uri = self._canonical_uri (device.uri)
+            device.uri = canonical_uri
+            device.type = protocol
+
+        dnssd_instance = self._dnssd_instance_from_uri (device.uri)
+
+        if self.devices is None:
+            self._dnssd_instance = dnssd_instance
             (mfg, mdl) = self._canonical_id (device)
-            if self.devices is None:
-                self.mfg = mfg
-                self.mdl = mdl
-                self.mfg_lower = mfg.lower ()
-                self.mdl_lower = mdl.lower ()
-                self.sn = device.id_dict.get ('SN', '')
-                self.devices = []
+            self.mfg = mfg
+            self.mdl = mdl
+            self.mfg_lower = mfg.lower ()
+            self.mdl_lower = mdl.lower ()
+            self.sn = device.id_dict.get ('SN', '')
+            self.devices = []
+        else:
+            if self.is_literal_ip () != self._is_literal_ip_uri (device.uri):
+                raise ValueError
+
+            if self._dnssd_instance and dnssd_instance:
+                if self._dnssd_instance != dnssd_instance:
+                    raise ValueError
+            elif self._network_host or self.dnssd_hostname:
+                host, dnssdhost, protocol = self._get_host_from_uri (device.uri)
+                if (hasattr (device, 'address')):
+                    host = self._add_dot_local_if_needed(device.address)
+                if (hasattr (device, 'hostname') and dnssdhost is None):
+                    dnssdhost = self._add_dot_local_if_needed(device.hostname)
+                if (host is None and dnssdhost is None) or \
+                   not (self._host_matches (host, self._network_host) or
+                        self._host_matches (host, self.dnssd_hostname) or
+                        self._host_matches (dnssdhost, self._network_host) or
+                        self._host_matches (dnssdhost, self.dnssd_hostname)):
+                    raise ValueError
             else:
+                (mfg, mdl) = self._canonical_id (device)
                 def nicest (a, b):
                     def count_lower (s):
                         l = s.lower ()
@@ -193,6 +343,9 @@ class PhysicalDevice:
                 if sn != '' and self.sn != '' and sn != self.sn:
                     raise ValueError
 
+            if dnssd_instance and not self._dnssd_instance:
+                self._dnssd_instance = dnssd_instance
+
         if device.type == "socket":
             # Remove default port to more easily find duplicate URIs
             device.uri = device.uri.replace (":9100", "")
@@ -207,7 +360,7 @@ class PhysicalDevice:
             # Non-CUPS queue on a CUPS server, drop this one
             return
         for d in self.devices:
-            if d.uri == device.uri:
+            if d.uri == device.uri or self._canonical_uri (d.uri) == self._canonical_uri (device.uri):
                 return
 
         # Use the URI of the very first device added as a kind of identifier
@@ -221,10 +374,19 @@ class PhysicalDevice:
         if (not self._network_host or not self.dnssd_hostname) and \
            device.device_class == "network":
             # We just added a network device.
-            self._network_host, dnssdhost = \
+            self._network_host, dnssdhost, _ = \
                 self._get_host_from_uri (device.uri)
-            if dnssdhost:
-                self.dnssd_hostname = dnssdhost;
+            if hasattr (device, 'hostname') and device.hostname:
+                self.dnssd_hostname = self._add_dot_local_if_needed (device.hostname)
+                device.dnssd_hostname = self.dnssd_hostname
+            elif dnssdhost:
+                self.dnssd_hostname = dnssdhost
+                device.dnssd_hostname = dnssdhost
+
+        if hasattr (device, 'hostname') and device.hostname:
+            self.dnssd_hostname = self._add_dot_local_if_needed (device.hostname)
+        elif self.dnssd_hostname and not getattr (device, 'dnssd_hostname', None):
+            device.dnssd_hostname = self.dnssd_hostname
 
         if (hasattr (device, 'address') and self._network_host is None):
             address = device.address
@@ -235,12 +397,6 @@ class PhysicalDevice:
             hostname = device.hostname
             if hostname:
                 self.dnssd_hostname = self._add_dot_local_if_needed(hostname)
-
-        if (self.dnssd_hostname and self._network_host is None):
-            try:
-                self._network_host = self._get_address(hostname);
-            except:
-                self._network_host = None
 
         debugprint("Device %s added to physical device: %s" %
                    (device.uri, repr(self)))
@@ -301,23 +457,21 @@ class PhysicalDevice:
         if type (other) != type (self):
             return False
 
-        if not (((not self._network_host or len (self._network_host) == 0) and
-                 (not other._network_host or len (other._network_host) == 0) and
-                 (not self.dnssd_hostname or len (self.dnssd_hostname) == 0) and
-                 (not other.dnssd_hostname or
-                  len (other.dnssd_hostname) == 0)) or
-                (self._network_host and len (self._network_host) > 0 and
-                 other._network_host and len (other._network_host) > 0 and
-                 self._network_host == other._network_host) or
-                (self.dnssd_hostname and len (self.dnssd_hostname) > 0 and
-                 other.dnssd_hostname and len (other.dnssd_hostname) > 0 and
-                 self.dnssd_hostname == other.dnssd_hostname) or
-                (self._network_host and len (self._network_host) > 0 and
-                 other.dnssd_hostname and len (other.dnssd_hostname) > 0 and
-                 self._network_host == other.dnssd_hostname) or
-                (self.dnssd_hostname and len (self.dnssd_hostname) > 0 and
-                 other._network_host and len (other._network_host) > 0 and
-                 self.dnssd_hostname == other._network_host)):
+        if self.is_literal_ip () != other.is_literal_ip ():
+            return False
+
+        if self._dnssd_instance and other._dnssd_instance:
+            if self._dnssd_instance != other._dnssd_instance:
+                return False
+        elif not (((not self._network_host or len (self._network_host) == 0) and
+                   (not other._network_host or len (other._network_host) == 0) and
+                   (not self.dnssd_hostname or len (self.dnssd_hostname) == 0) and
+                   (not other.dnssd_hostname or
+                    len (other.dnssd_hostname) == 0)) or
+                  self._host_matches (self._network_host, other._network_host) or
+                  self._host_matches (self.dnssd_hostname, other.dnssd_hostname) or
+                  self._host_matches (self._network_host, other.dnssd_hostname) or
+                  self._host_matches (self.dnssd_hostname, other._network_host)):
             return False
 
         devs = other.get_devices()

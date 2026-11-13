@@ -177,6 +177,162 @@ def test_filter_configured_devices_same_ip_different_queues_stay_separate():
     assert len(filtered) == 1
     assert filtered[0].uri == dev2.uri
 
+
+
+def test_protocol_from_dnssd_uri():
+    assert newprinter._protocol_from_dnssd_uri("dnssd://OpenPrinting%20LPD%20Printer._printer._tcp.local/?uuid=123") == "lpd"
+    assert newprinter._protocol_from_dnssd_uri("dnssd://OpenPrinting%20LPD%20Printer._printer._tcp.local/") == "lpd"
+    assert newprinter._protocol_from_dnssd_uri("lpd://OpenPrinting%20LPD%20Printer._printer._tcp.local/") == "lpd"
+    assert newprinter._protocol_from_dnssd_uri("dnssd://OpenPrinting%20AppSocket%20Printer._pdl-datastream._tcp.local/?uuid=123") == "socket"
+    assert newprinter._protocol_from_dnssd_uri("dnssd://OpenPrinting%20AppSocket%20Printer._pdl-datastream._tcp.local/") == "socket"
+    assert newprinter._protocol_from_dnssd_uri("socket://OpenPrinting%20AppSocket%20Printer._pdl-datastream._tcp.local/") == "socket"
+    assert newprinter._protocol_from_dnssd_uri("socket://192.168.1.102") == "socket"
+    assert newprinter._protocol_from_dnssd_uri("socket://printer.example.com") == "socket"
+    assert newprinter._protocol_from_dnssd_uri("dnssd://Xerox%20B235%20MFP._ipp._tcp.local/?uuid=123") == "ipp"
+    assert newprinter._protocol_from_dnssd_uri("dnssd://Xerox%20B235%20MFP._ipp._tcp.local") == "ipp"
+    assert newprinter._protocol_from_dnssd_uri("ipp://Xerox%20B235%20MFP._ipp._tcp.local/") == "ipp"
+    assert newprinter._protocol_from_dnssd_uri("dnssd://Xerox%20B235%20MFP._ipps._tcp.local//?uuid=123") == "ipps"
+    assert newprinter._protocol_from_dnssd_uri("dnssd://Xerox%20B235%20MFP._ipps._tcp.local//") == "ipps"
+    assert newprinter._protocol_from_dnssd_uri("ipps://Xerox%20B235%20MFP._ipps._tcp.local/") == "ipps"
+    assert newprinter._protocol_from_dnssd_uri("http://printer/") is None
+    assert newprinter._protocol_from_dnssd_uri("") is None
+    assert newprinter._protocol_from_dnssd_uri(None) is None
+
+
+def test_canonical_dnssd_uri():
+    assert newprinter._canonical_dnssd_uri("dnssd://OpenPrinting%20LPD%20Printer._printer._tcp.local/?uuid=123") == "lpd://OpenPrinting%20LPD%20Printer._printer._tcp.local/"
+    assert newprinter._canonical_dnssd_uri("dnssd://OpenPrinting%20LPD%20Printer._printer._tcp.local/") == "lpd://OpenPrinting%20LPD%20Printer._printer._tcp.local/"
+    assert newprinter._canonical_dnssd_uri("dnssd://OpenPrinting%20AppSocket%20Printer._pdl-datastream._tcp.local/?uuid=123") == "socket://OpenPrinting%20AppSocket%20Printer._pdl-datastream._tcp.local/"
+    assert newprinter._canonical_dnssd_uri("dnssd://OpenPrinting%20AppSocket%20Printer._pdl-datastream._tcp.local/") == "socket://OpenPrinting%20AppSocket%20Printer._pdl-datastream._tcp.local/"
+    assert newprinter._canonical_dnssd_uri("dnssd://Xerox%20B235%20MFP._ipp._tcp.local/?uuid=123") == "ipp://Xerox%20B235%20MFP._ipp._tcp.local/"
+    assert newprinter._canonical_dnssd_uri("dnssd://Xerox%20B235%20MFP._ipp._tcp.local") == "ipp://Xerox%20B235%20MFP._ipp._tcp.local/"
+    assert newprinter._canonical_dnssd_uri("dnssd://Xerox%20B235%20MFP._ipps._tcp.local//?uuid=123") == "ipps://Xerox%20B235%20MFP._ipps._tcp.local/"
+    assert newprinter._canonical_dnssd_uri("dnssd://Xerox%20B235%20MFP._ipps._tcp.local//") == "ipps://Xerox%20B235%20MFP._ipps._tcp.local/"
+    assert newprinter._canonical_dnssd_uri("lpd://Printer._printer._tcp.local/") == "lpd://Printer._printer._tcp.local/"
+    assert newprinter._canonical_dnssd_uri("socket://192.168.1.102") == "socket://192.168.1.102/"
+    assert newprinter._canonical_dnssd_uri("ipp://printer/") == "ipp://printer/"
+    assert newprinter._canonical_dnssd_uri("http://printer/") == "http://printer/"
+
+
+def test_classify_network_device():
+    dev = cupshelpers.Device("dnssd://OpenPrinting%20LPD%20Printer._printer._tcp.local/?uuid=cbca9fde-d208-4156-9a2f-82857dd0be5f", **{"device-class": "network"})
+    assert newprinter._classify_network_device(dev) == "DNS_SD"
+
+    dev = cupshelpers.Device("lpd://OpenPrinting%20LPD%20Printer._printer._tcp.local/", **{"device-class": "network"})
+    assert newprinter._classify_network_device(dev) == "DNS_SD"
+
+    dev = cupshelpers.Device("dnssd://Printer._printer._tcp.local/", **{"device-class": "network"})
+    assert newprinter._classify_network_device(dev) == "DNS_SD"
+
+    dev = cupshelpers.Device("dnssd://Printer._pdl-datastream._tcp.local/", **{"device-class": "network"})
+    assert newprinter._classify_network_device(dev) == "DNS_SD"
+
+    dev = cupshelpers.Device("socket://Printer._pdl-datastream._tcp.local/", **{"device-class": "network"})
+    assert newprinter._classify_network_device(dev) == "DNS_SD"
+
+    dev = cupshelpers.Device("dnssd://Printer._ipp._tcp.local/", **{"device-class": "network"})
+    assert newprinter._classify_network_device(dev) == "DNS_SD"
+
+    dev = cupshelpers.Device("dnssd://Printer._ipps._tcp.local/", **{"device-class": "network"})
+    assert newprinter._classify_network_device(dev) == "DNS_SD"
+
+    dev = cupshelpers.Device("socket://192.168.1.102:9100", **{"device-class": "network"})
+    assert newprinter._classify_network_device(dev) == "LEGACY"
+
+    dev = cupshelpers.Device("socket://192.168.1.102", **{"device-class": "network"})
+    assert newprinter._classify_network_device(dev) == "LEGACY"
+
+    dev = cupshelpers.Device("socket://printer.local", **{"device-class": "network"})
+    assert newprinter._classify_network_device(dev) == "DNS_SD"
+
+    dev = cupshelpers.Device("socket://printer.example.com", **{"device-class": "network"})
+    assert newprinter._classify_network_device(dev) == "DNS_SD"
+
+    dev = cupshelpers.Device("lpd://192.168.1.102/", **{"device-class": "network"})
+    assert newprinter._classify_network_device(dev) == "LEGACY"
+
+    dev = cupshelpers.Device("lpd://192.168.1.102", **{"device-class": "network"})
+    assert newprinter._classify_network_device(dev) == "LEGACY"
+
+    dev = cupshelpers.Device("lpd://192.168.1.102/queue", **{"device-class": "network"})
+    assert newprinter._classify_network_device(dev) == "LEGACY"
+
+    dev = cupshelpers.Device("lpd://printer.local/queue", **{"device-class": "network"})
+    assert newprinter._classify_network_device(dev) == "DNS_SD"
+
+    dev = cupshelpers.Device("ipp://192.168.1.102/ipp/print", **{"device-class": "network"})
+    assert newprinter._classify_network_device(dev) == "LEGACY"
+
+    dev = cupshelpers.Device("ipp://192.168.1.102/", **{"device-class": "network"})
+    assert newprinter._classify_network_device(dev) == "LEGACY"
+
+    dev = cupshelpers.Device("ipp://printer.local/", **{"device-class": "network"})
+    assert newprinter._classify_network_device(dev) == "DNS_SD"
+
+    dev = cupshelpers.Device("ipp://printer.example.com/ipp/print", **{"device-class": "network"})
+    assert newprinter._classify_network_device(dev) == "DNS_SD"
+
+    dev = cupshelpers.Device("ipps://192.168.1.102/ipp/print", **{"device-class": "network"})
+    assert newprinter._classify_network_device(dev) == "LEGACY"
+
+    dev = cupshelpers.Device("ipps://192.168.1.102/", **{"device-class": "network"})
+    assert newprinter._classify_network_device(dev) == "LEGACY"
+
+    dev = cupshelpers.Device("ipps://printer.local/", **{"device-class": "network"})
+    assert newprinter._classify_network_device(dev) == "DNS_SD"
+
+    dev = cupshelpers.Device("ipps://printer.example.com/ipp/print", **{"device-class": "network"})
+    assert newprinter._classify_network_device(dev) == "DNS_SD"
+
+    dev = cupshelpers.Device("bjnp://printer.example.com", **{"device-class": "network"})
+    assert newprinter._classify_network_device(dev) == "LEGACY"
+
+    dev = cupshelpers.Device("bluetooth://XX:XX:XX:XX:XX:XX", **{"device-class": "network"})
+    assert newprinter._classify_network_device(dev) == "LEGACY"
+
+
+def test_classify_network_device_with_physical_device():
+    from PhysicalDevice import PhysicalDevice
+
+    d1 = cupshelpers.Device(
+        "dnssd://OpenPrinting%20LPD%20Printer._printer._tcp.local/?uuid=cbca9fde-d208-4156-9a2f-82857dd0be5f",
+        **{"device-class": "network", "device-make-and-model": "OpenPrinting LPD Printer"})
+    d2 = cupshelpers.Device(
+        "lpd://OpenPrinting%20LPD%20Printer._printer._tcp.local/",
+        **{"device-class": "network", "device-make-and-model": "OpenPrinting LPD Printer"})
+    pd = PhysicalDevice(d1)
+    pd.add_device(d2)
+    assert len(pd.get_devices()) == 1
+    assert newprinter._classify_network_device(pd) == "DNS_SD"
+    assert newprinter._classify_network_device(pd.get_devices()[0], pd) == "DNS_SD"
+
+    d_sock1 = cupshelpers.Device(
+        "dnssd://OpenPrinting%20AppSocket%20Printer._pdl-datastream._tcp.local/?uuid=123",
+        **{"device-class": "network", "device-make-and-model": "OpenPrinting AppSocket Printer"})
+    d_sock2 = cupshelpers.Device(
+        "socket://OpenPrinting%20AppSocket%20Printer._pdl-datastream._tcp.local/",
+        **{"device-class": "network", "device-make-and-model": "OpenPrinting AppSocket Printer"})
+    pd_sock = PhysicalDevice(d_sock1)
+    pd_sock.add_device(d_sock2)
+    assert len(pd_sock.get_devices()) == 1
+    assert newprinter._classify_network_device(pd_sock) == "DNS_SD"
+    assert newprinter._classify_network_device(pd_sock.get_devices()[0], pd_sock) == "DNS_SD"
+
+    d_lpd_ip = cupshelpers.Device(
+        "lpd://192.168.1.102/",
+        **{"device-class": "network", "device-make-and-model": "Legacy LPD Printer"})
+    pd_lpd_ip = PhysicalDevice(d_lpd_ip)
+    assert newprinter._classify_network_device(pd_lpd_ip) == "LEGACY"
+    assert newprinter._classify_network_device(pd_lpd_ip.get_devices()[0], pd_lpd_ip) == "LEGACY"
+
+    d_sock_ip = cupshelpers.Device(
+        "socket://192.168.1.102:9100",
+        **{"device-class": "network", "device-make-and-model": "Legacy Socket Printer"})
+    pd_sock_ip = PhysicalDevice(d_sock_ip)
+    assert newprinter._classify_network_device(pd_sock_ip) == "LEGACY"
+    assert newprinter._classify_network_device(pd_sock_ip.get_devices()[0], pd_sock_ip) == "LEGACY"
+
+
 def test_device_from_object_explicit_kwargs():
     """Verify _device_from_object passes expected device-* keywords to Device.__init__."""
     class DummyObj:
@@ -755,69 +911,50 @@ def test_ipp_connection_labels():
     mock_physicaldevice = MagicMock()
     mock_model.get_value.return_value = mock_physicaldevice
 
-    # 1. Normal network DNS-SD IPP printer
     dev_dnssd_net = cupshelpers.Device("dnssd://printer._ipp._tcp.local/", **{'device-info': 'Network Printer'})
     dev_dnssd_net.address = '192.168.1.20'
 
-    # 2. IPP-over-USB printer resolved to 127.0.0.1
     dev_usb_v4 = cupshelpers.Device("ipp://printer%20(USB)._ipp._tcp.local/", **{'device-info': 'ipp-usb (driverless)'})
     dev_usb_v4.address = '127.0.0.1'
 
-    # 3. IPP-over-USB printer resolved to ::1
     dev_usb_v6 = cupshelpers.Device("ipp://printer%20(USB)._ipp._tcp.local/", **{'device-info': 'ipp-usb (driverless)'})
     dev_usb_v6.address = '::1'
 
-    # 4. DNS-SD LPD printer
     dev_dnssd_lpd = cupshelpers.Device("dnssd://printer._printer._tcp.local/", **{'device-info': 'Network LPD Printer'})
     dev_dnssd_lpd.address = '192.168.1.30'
 
-    # 5. DNS-SD AppSocket/JetDirect printer
     dev_dnssd_socket = cupshelpers.Device("dnssd://printer._pdl-datastream._tcp.local/", **{'device-info': 'Network Socket Printer'})
     dev_dnssd_socket.address = '192.168.1.40'
 
-    # 6. Legacy / ipp scheme network printer (non-driverless and driverless)
     dev_net = cupshelpers.Device("ipp://printer.example.com/", **{'device-info': 'Network Printer'})
     dev_net.address = '192.168.1.50'
     dev_net_driverless = cupshelpers.Device("ipp://printer._ipp._tcp.local/", **{'device-info': 'Network Printer (driverless)'})
     dev_net_driverless.address = '192.168.1.10'
 
-    # 7. IPPS network printer (e.g. from simulator publishing _ipps._tcp)
-    dev_ipps = cupshelpers.Device("ipps://Broken%20Xerox%20B235%20MFP._ipps._tcp.local", **{'device-info': 'Broken Xerox B235 MFP (driverless)'})
-
     mock_physicaldevice.get_devices.return_value = [
-        dev_dnssd_net, dev_usb_v4, dev_usb_v6, dev_dnssd_lpd, dev_dnssd_socket, dev_net, dev_net_driverless, dev_ipps
+        dev_dnssd_net, dev_usb_v4, dev_usb_v6, dev_dnssd_lpd, dev_dnssd_socket, dev_net, dev_net_driverless
     ]
 
     np.on_tvNPDevices_cursor_changed(mock_widget)
 
-    # 1. normal network DNS-SD IPP -> "IPP"
     assert dev_dnssd_net.menuentry == "IPP"
 
-    # 2. IPP-over-USB -> "IPP over USB"
     assert dev_usb_v4.menuentry == "IPP over USB"
     assert getattr(dev_usb_v4, 'driverless', False) is True
     assert dev_usb_v6.menuentry == "IPP over USB"
     assert getattr(dev_usb_v6, 'driverless', False) is True
 
-    # 3. DNS-SD LPD -> existing LPD label
-    assert dev_dnssd_lpd.menuentry == "LPD network printer via DNS-SD"
+    assert dev_dnssd_lpd.menuentry == 'LPD/LPR (queue "")'
 
-    # 4. DNS-SD AppSocket -> existing AppSocket/JetDirect label
-    assert dev_dnssd_socket.menuentry == "AppSocket/JetDirect network printer via DNS-SD"
+    assert dev_dnssd_socket.menuentry == "AppSocket/HP JetDirect"
 
-    # 5. ipp:// network printers -> "IPP"
     assert dev_net.menuentry == "IPP"
     assert not getattr(dev_net, 'driverless', False)
     assert dev_net_driverless.menuentry == "IPP"
     assert getattr(dev_net_driverless, 'driverless', False) is True
 
-    # 6. ipps:// network printer -> "IPP"
-    assert dev_ipps.menuentry == "IPP"
-    assert getattr(dev_ipps, 'driverless', False) is True
-
 
 def test_ipps_network_device_connection_label():
-    """Verify that an ipps://..._ipps._tcp.local device displays 'IPP' and keeps Connection section visible."""
     np = get_dummy_gui()
     np.device_selected = 0
     np.tvNPDeviceURIs = MagicMock()
@@ -845,13 +982,64 @@ def test_ipps_network_device_connection_label():
 
     np.on_tvNPDevices_cursor_changed(mock_widget)
 
-    # 1. Connection section remains visible
     np.expNPDeviceURIs.show_all.assert_called_once()
     np.expNPDeviceURIs.hide.assert_not_called()
 
-    # 2. menuentry is "IPP"
-    assert dev_ipps.menuentry == "IPP"
+    assert dev_ipps.menuentry == "IPP with TLS security (recommended)"
     assert getattr(dev_ipps, 'driverless', False) is True
+
+
+def test_dnssd_protocol_suffix_detection():
+    assert newprinter.PhysicalDevice._protocol_from_uri("dnssd://printer._ipp._tcp.local/") == "ipp"
+    assert newprinter.PhysicalDevice._protocol_from_uri("dnssd://printer._ipps._tcp.local/") == "ipps"
+    assert newprinter.PhysicalDevice._protocol_from_uri("dnssd://printer._printer._tcp.local/") == "lpd"
+    assert newprinter.PhysicalDevice._protocol_from_uri("dnssd://printer._pdl-datastream._tcp.local/") == "socket"
+    assert newprinter.PhysicalDevice._protocol_from_uri("dnssd://PRINTER._IPP._TCP.LOCAL/") == "ipp"
+    assert newprinter.PhysicalDevice._protocol_from_uri("dnssd://PRINTER._IPPS._TCP.LOCAL./") == "ipps"
+    assert newprinter.PhysicalDevice._protocol_from_uri("dnssd://printer._ippXYZ._tcp.local/") is None
+    assert newprinter.PhysicalDevice._protocol_from_uri("dnssd://printer._ippsXYZ._tcp.local/") is None
+    assert newprinter.PhysicalDevice._protocol_from_uri("dnssd://printer._ipp_test._tcp.local/") is None
+    assert newprinter.PhysicalDevice._protocol_from_uri("dnssd://printer.example.com/") is None
+    assert newprinter.PhysicalDevice._protocol_from_uri("dnssd://192.168.1.100/") is None
+    assert newprinter.PhysicalDevice._protocol_from_uri(None) is None
+    assert newprinter.PhysicalDevice._protocol_from_uri("") is None
+
+
+def test_ipp_and_ipps_peer_connection_labels():
+    np = get_dummy_gui()
+    np.device_selected = 0
+    np.tvNPDeviceURIs = MagicMock()
+    np.expNPDeviceURIs = MagicMock()
+    np.lblNPDeviceDescription = MagicMock()
+    np.ntbkNPType = MagicMock()
+    np.new_printer_device_tabs = {}
+    np.PAGE_SELECT_DEVICE = 1
+    np.PAGE_DESCRIBE_PRINTER = 2
+
+    mock_widget = MagicMock()
+    mock_widget.get_cursor.return_value = ("0", 0)
+    mock_model = MagicMock()
+    mock_widget.get_model.return_value = mock_model
+    mock_model.get_iter.return_value = "iter"
+
+    mock_physicaldevice = MagicMock()
+    mock_model.get_value.return_value = mock_physicaldevice
+
+    dev_ipp = cupshelpers.Device("dnssd://printer._ipp._tcp.local/", **{'device-info': 'Printer'})
+    dev_ipps = cupshelpers.Device("ipps://printer._ipps._tcp.local/", **{'device-info': 'Printer (driverless)'})
+    dev_usb_ipp = cupshelpers.Device("ipp://printer%20(USB)._ipp._tcp.local/", **{'device-info': 'ipp-usb'})
+    dev_usb_ipp.address = '127.0.0.1'
+    dev_usb_ipps = cupshelpers.Device("ipps://printer%20(USB)._ipp._tcp.local/", **{'device-info': 'ipp-usb'})
+    dev_usb_ipps.address = '127.0.0.1'
+
+    mock_physicaldevice.get_devices.return_value = [dev_ipp, dev_ipps, dev_usb_ipp, dev_usb_ipps]
+
+    np.on_tvNPDevices_cursor_changed(mock_widget)
+
+    assert dev_ipps.menuentry == "IPP with TLS security (recommended)"
+    assert dev_ipp.menuentry == "IPP"
+    assert dev_usb_ipp.menuentry == "IPP over USB"
+    assert dev_usb_ipps.menuentry == "IPP over USB"
 
 
 def test_broken_driverless_skips_openprinting(monkeypatch):
@@ -5739,3 +5927,176 @@ def test_cancel_button_disabled_during_apply_and_restored_on_error():
     assert False in cancel_sensitivity_history
     # After error handling and _set_wizard_busy(False), Cancel button is re-enabled
     assert np.btnNPCancel.get_sensitive() is True
+
+
+def test_lpd_dnssd_and_lpd_gui_single_entry():
+    import os
+    os.environ["SYSTEM_CONFIG_PRINTER_UI"] = "ui"
+    from unittest.mock import MagicMock
+    import gi
+    gi.require_version('Gtk', '3.0')
+    from gi.repository import Gtk
+    import newprinter
+    import cupshelpers
+
+    gui = newprinter.NewPrinterGUI()
+    gui.start_fetching_devices = MagicMock()
+    gui.fillDeviceTab()
+
+    d1 = cupshelpers.Device(
+        "dnssd://OpenPrinting%20LPD%20Printer._printer._tcp.local/?uuid=cbca9fde-d208-4156-9a2f-82857dd0be5f",
+        **{"device-class": "network",
+           "device-make-and-model": "OpenPrinting LPD Printer",
+           "device-info": "OpenPrinting LPD"})
+    d2 = cupshelpers.Device(
+        "lpd://OpenPrinting%20LPD%20Printer._printer._tcp.local/",
+        **{"device-class": "network",
+           "device-make-and-model": "OpenPrinting LPD Printer",
+           "device-info": "OpenPrinting LPD"})
+
+    d3 = cupshelpers.Device(
+        "dnssd://OpenPrinting%20AppSocket%20Printer._pdl-datastream._tcp.local/?uuid=cbca9fde-d208-4156-9a2f-82857dd0be5f",
+        **{"device-class": "network",
+           "device-make-and-model": "OpenPrinting AppSocket Printer",
+           "device-info": "OpenPrinting AppSocket"})
+    d4 = cupshelpers.Device(
+        "socket://OpenPrinting%20AppSocket%20Printer._pdl-datastream._tcp.local/",
+        **{"device-class": "network",
+           "device-make-and-model": "OpenPrinting AppSocket Printer",
+           "device-info": "OpenPrinting AppSocket"})
+
+    d5 = cupshelpers.Device(
+        "socket://Another%20AppSocket%20Printer._pdl-datastream._tcp.local/",
+        **{"device-class": "network",
+           "device-make-and-model": "Another AppSocket Printer",
+           "device-info": "Another AppSocket"})
+
+    d_legacy_lpd = cupshelpers.Device(
+        "lpd://192.168.1.102/",
+        **{"device-class": "network",
+           "device-make-and-model": "Legacy IP LPD Printer",
+           "device-info": "Legacy IP LPD"})
+
+    d_legacy_socket = cupshelpers.Device(
+        "socket://192.168.1.103:9100",
+        **{"device-class": "network",
+           "device-make-and-model": "Legacy IP Socket Printer",
+           "device-info": "Legacy IP Socket"})
+
+    devs = {d.uri: d for d in [d1, d2, d3, d4, d5, d_legacy_lpd, d_legacy_socket]}
+    gui.add_devices(devs, None, no_more=True)
+
+    model = gui.tvNPDevices.get_model()
+
+    dnssd_iter = gui.devices_dnssd_iter
+    child = model.iter_children(dnssd_iter)
+    dnssd_items = []
+    while child:
+        dnssd_items.append(model.get_value(child, 0))
+        child = model.iter_next(child)
+
+    assert dnssd_items.count("OpenPrinting LPD") == 1
+    assert dnssd_items.count("OpenPrinting AppSocket") == 1
+    assert "Another AppSocket" in dnssd_items
+    assert len(dnssd_items) == 3
+
+    legacy_iter = gui.devices_legacy_iter
+    child = model.iter_children(legacy_iter)
+    legacy_items = []
+    while child:
+        legacy_items.append(model.get_value(child, 0))
+        child = model.iter_next(child)
+
+    assert any("Legacy IP LPD" in item for item in legacy_items)
+    assert any("Legacy IP Socket" in item for item in legacy_items)
+    assert not any("OpenPrinting LPD" in item for item in legacy_items)
+    assert not any("OpenPrinting AppSocket" in item for item in legacy_items)
+    assert len(legacy_items) == 2
+
+
+def test_kyocera_ipp_dnssd_and_ipps_gui_single_entry():
+    import os
+    os.environ["SYSTEM_CONFIG_PRINTER_UI"] = "ui"
+    from unittest.mock import MagicMock
+    import gi
+    gi.require_version('Gtk', '3.0')
+    from gi.repository import Gtk
+    import newprinter
+    import cupshelpers
+
+    gui = newprinter.NewPrinterGUI()
+    gui.start_fetching_devices = MagicMock()
+    gui.fillDeviceTab()
+
+    d_ipps = cupshelpers.Device(
+        "ipps://Kyocera%20ECOSYS%20M2040dn._ipps._tcp.local/",
+        **{"device-class": "network",
+           "device-make-and-model": "Kyocera ECOSYS M2040dn (KPDL) (driverless)",
+           "device-info": "Kyocera ECOSYS M2040dn"})
+
+    d_dnssd = cupshelpers.Device(
+        "dnssd://Kyocera%20ECOSYS%20M2040dn._ipp._tcp.local/?uuid=4509a320-00a0-008f-00b6-002507510eca",
+        **{"device-class": "network",
+           "device-make-and-model": "Kyocera ECOSYS M2040dn",
+           "device-info": "Kyocera ECOSYS M2040dn"})
+    d_dnssd.hostname = "KM7B6A91"
+    d_dnssd.address = "192.168.1.102"
+
+    d_ip = cupshelpers.Device(
+        "socket://192.168.1.102",
+        **{"device-class": "network",
+           "device-make-and-model": "Kyocera ECOSYS M2040dn",
+           "device-info": "Kyocera ECOSYS M2040dn"})
+
+    devs = {d.uri: d for d in [d_ipps, d_dnssd, d_ip]}
+    gui.add_devices(devs, None, no_more=True)
+
+    model = gui.tvNPDevices.get_model()
+
+    dnssd_iter = gui.devices_dnssd_iter
+    child = model.iter_children(dnssd_iter)
+    dnssd_items = []
+    phys_devs = []
+    while child:
+        dnssd_items.append(model.get_value(child, 0))
+        phys_devs.append(model.get_value(child, 1))
+        child = model.iter_next(child)
+
+    assert dnssd_items.count("Kyocera ECOSYS M2040dn") == 1
+    assert len(phys_devs) == 1
+    conn_devs = phys_devs[0].get_devices()
+    assert len(conn_devs) == 2
+    uris = [d.uri for d in conn_devs]
+    assert "ipp://Kyocera%20ECOSYS%20M2040dn._ipp._tcp.local/" in uris
+    assert "ipps://Kyocera%20ECOSYS%20M2040dn._ipps._tcp.local/" in uris
+
+    legacy_iter = gui.devices_legacy_iter
+    child = model.iter_children(legacy_iter)
+    legacy_items = []
+    legacy_phys_devs = []
+    while child:
+        legacy_items.append(model.get_value(child, 0))
+        legacy_phys_devs.append(model.get_value(child, 1))
+        child = model.iter_next(child)
+
+    assert any("Kyocera ECOSYS M2040dn" in item for item in legacy_items)
+    assert len(legacy_phys_devs) == 1
+    assert legacy_phys_devs[0].is_literal_ip() is True
+
+    child_entry = model.iter_children(dnssd_iter)
+    path = model.get_path(child_entry)
+    gui.tvNPDevices.get_cursor = MagicMock(return_value=(path, None))
+    gui.on_tvNPDevices_cursor_changed(gui.tvNPDevices)
+
+    uri_model = gui.tvNPDeviceURIs.get_model()
+    it = uri_model.get_iter_first()
+    conn_labels = []
+    while it:
+        conn_labels.append(uri_model.get_value(it, 0))
+        it = uri_model.iter_next(it)
+
+    assert conn_labels == [
+        "IPP with TLS security (recommended)",
+        "IPP"
+    ]
+    assert gui.device.uri == d_ipps.uri

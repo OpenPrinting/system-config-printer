@@ -204,6 +204,14 @@ def _normalize_uri(uri):
 
     return urllib.parse.urlunsplit((scheme, netloc, parsed.path, parsed.query, parsed.fragment))
 
+
+def _protocol_from_dnssd_uri(uri):
+    return PhysicalDevice._protocol_from_uri(uri)
+
+
+def _canonical_dnssd_uri(uri):
+    return PhysicalDevice._canonical_uri(uri)
+
 def _device_from_object(dev, is_printer=False):
     if isinstance(dev, cupshelpers.Device):
         return dev
@@ -254,6 +262,14 @@ def _device_from_object(dev, is_printer=False):
 def _same_physical_device(p1, p2):
     if p1 is None or p2 is None:
         return False
+    if hasattr (p1, 'is_literal_ip') and hasattr (p2, 'is_literal_ip'):
+        if p1.is_literal_ip () != p2.is_literal_ip ():
+            return False
+    if hasattr (p1, '_dnssd_instance') and hasattr (p2, '_dnssd_instance'):
+        if p1._dnssd_instance and p2._dnssd_instance:
+            if p1._dnssd_instance == p2._dnssd_instance:
+                return True
+            return False
     if p1.dnssd_hostname and p2.dnssd_hostname and p1.dnssd_hostname == p2.dnssd_hostname:
         return True
     if p1.sn and p2.sn and p1.sn == p2.sn:
@@ -378,72 +394,29 @@ def _get_driver_name_from_ppd(ppd, ppds_cache):
     return ""
 
 def _is_literal_ip_host(uri):
-    """
-    Determine whether the host component of a URI is a literal IP address
-    (IPv4 or IPv6). Uses urllib.parse to extract the hostname and ipaddress
-    to validate it. Returns True for literal IPs, False for symbolic hostnames.
-    """
-    if not uri:
-        return False
+    return PhysicalDevice._is_literal_ip_uri(uri)
 
-    try:
-        parsed = urllib.parse.urlsplit(uri)
-        host = parsed.hostname
-    except ValueError:
-        return False
+def _classify_network_device(device, physdev=None):
+    if isinstance(device, PhysicalDevice):
+        physdev = device
+        devs = device.get_devices()
+        device = devs[0] if devs else None
 
-    if not host:
-        return False
-
-    # Remove IPv6 zone ID if present (e.g., fe80::1%eth0 -> fe80::1)
-    if '%' in host:
-        host = host.split('%')[0]
-
-    try:
-        ipaddress.ip_address(host)
-        return True
-    except ValueError:
-        return False
-
-def _classify_network_device(device):
-    """
-    Classify a network device as DNS-SD or Legacy (non-DNS-SD).
-
-    Returns:
-        'DNS_SD' - for DNS-SD discovered printers (symbolic hostnames)
-        'LEGACY' - for literal IP printers, BJNP, Bluetooth, SNMP results
-
-    The classification logic:
-    - BJNP is always Legacy (not DNS-SD)
-    - Bluetooth is always Legacy (not DNS-SD)
-    - If the device has a dnssd/mdns scheme -> DNS-SD
-    - If URI host is a literal IP (IPv4/IPv6) -> Legacy
-    - If URI host is symbolic -> DNS-SD
-    """
     if not device or not hasattr(device, 'uri') or not device.uri:
         return 'LEGACY'
 
     uri = device.uri
     scheme = uri.split(':', 1)[0].lower() if uri else ''
 
-    # BJNP is NOT DNS-SD regardless of hostname
-    if scheme == 'bjnp':
+    if scheme in ('bjnp', 'bluetooth'):
         return 'LEGACY'
 
-    # Bluetooth is NOT DNS-SD
-    if scheme == 'bluetooth':
-        return 'LEGACY'
-
-    # dnssd/mdns schemes are explicitly DNS-SD
     if scheme in ('dnssd', 'mdns'):
         return 'DNS_SD'
 
-    # For other network schemes (ipp, ipps, socket, lpd, http, https),
-    # classify based on whether the host is a literal IP address
     if _is_literal_ip_host(uri):
         return 'LEGACY'
 
-    # Symbolic hostname -> DNS-SD
     return 'DNS_SD'
 
 
@@ -464,6 +437,14 @@ def _has_netloc(uri):
         return parsed.netloc != ''
     except ValueError:
         return False
+
+
+def _device_connection_sort_key(device):
+    if device.type == 'ipps':
+        return 0
+    if device.type == 'ipp':
+        return 1
+    return 2
 
 
 class NewPrinterGUI(GtkGUI):
@@ -3664,7 +3645,7 @@ class NewPrinterGUI(GtkGUI):
             row=[info, device, False]
             if network:
                 # Classify as DNS-SD or Legacy
-                classification = _classify_network_device(devs[0])
+                classification = _classify_network_device(devs[0], device)
                 if classification == 'DNS_SD':
                     parent_iter = dnssd_iter
                 else:
@@ -4330,6 +4311,12 @@ class NewPrinterGUI(GtkGUI):
             return
         show_uris = True
         for device in physicaldevice.get_devices ():
+            protocol = PhysicalDevice._protocol_from_uri (device.uri)
+            if protocol in ('ipp', 'ipps', 'lpd', 'socket'):
+                canonical_uri = PhysicalDevice._canonical_uri (device.uri)
+                device.uri = canonical_uri
+                device.type = protocol
+
             if device.type == "parallel":
                 device.menuentry = _("Parallel Port")
             elif device.type == "serial":
@@ -4380,7 +4367,12 @@ class NewPrinterGUI(GtkGUI):
 
                 is_usb = dnssdresolve.is_ipp_over_usb_device (device)
 
-                conn_type = _("IPP over USB") if is_usb else _("IPP")
+                if is_usb:
+                    conn_type = _("IPP over USB")
+                elif (device.type == "ipps" or scheme == "ipps"):
+                    conn_type = _("IPP with TLS security (recommended)")
+                else:
+                    conn_type = _("IPP")
 
                 if queue != '':
                     device.menuentry = "%s (%s)" % (conn_type, queue)
@@ -4399,24 +4391,7 @@ class NewPrinterGUI(GtkGUI):
                     if device.info != '':
                         device.menuentry += " (%s)" % device.info
                 else:
-                    protocol = None
-                    if name.find("._ipp") != -1:
-                        protocol = "IPP"
-                    elif name.find("._printer") != -1:
-                        protocol = "LPD"
-                    elif name.find("._pdl-datastream") != -1:
-                        protocol = "AppSocket/JetDirect"
-                    if protocol == "IPP":
-                        if dnssdresolve.is_ipp_over_usb_device (device):
-                            device.menuentry = _("IPP over USB")
-                        else:
-                            device.menuentry = _("IPP")
-                    elif protocol is not None:
-                        device.menuentry = (_("%s network printer via DNS-SD")
-                                            % protocol)
-                    else:
-                        device.menuentry = \
-                            _("Network printer via DNS-SD")
+                    device.menuentry = _("Network printer via DNS-SD")
             else:
                 show_uris = False
                 device.menuentry = device.uri
@@ -4510,7 +4485,8 @@ class NewPrinterGUI(GtkGUI):
 
         # Fill the list of connections for this device.
         n = 0
-        for device in physicaldevice.get_devices ():
+        devices = sorted (physicaldevice.get_devices (), key=_device_connection_sort_key)
+        for device in devices:
             model.append ((device.menuentry, device))
             n += 1
         column = self.tvNPDeviceURIs.get_column (0)
@@ -4582,17 +4558,7 @@ class NewPrinterGUI(GtkGUI):
                 if cupsqueue == 'cups':
                     text = _("Remote CUPS printer via DNS-SD")
                 else:
-                    protocol = None
-                    if name.find("._ipp") != -1:
-                        protocol = "IPP"
-                    elif name.find("._printer") != -1:
-                        protocol = "LPD"
-                    elif name.find("._pdl-datastream") != -1:
-                        protocol = "AppSocket/JetDirect"
-                    if protocol is not None:
-                        text = _("%s network printer via DNS-SD") % protocol
-                    else:
-                        text = _("Network printer via DNS-SD")
+                    text = _("Network printer via DNS-SD")
             else:
                 text = device.uri
 
@@ -4802,7 +4768,7 @@ class NewPrinterGUI(GtkGUI):
                 model = self.tvNPDevices.get_model ()
 
                 # Classify and insert under the appropriate category
-                classification = _classify_network_device(new_device)
+                classification = _classify_network_device(new_device, dev)
                 if classification == 'DNS_SD':
                     parent_iter = self.devices_dnssd_iter
                 else:
