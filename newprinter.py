@@ -486,7 +486,7 @@ class NewPrinterGUI(GtkGUI):
         "dnssd" : 0,
         "ipp" : 0,
         "ipps" : 0,
-        "socket": 2,
+        "socket": 0,
         "lpd" : 3,
         "scsi" : 4,
         "serial" : 5,
@@ -4560,7 +4560,7 @@ class NewPrinterGUI(GtkGUI):
                 else:
                     text = _("Network printer via DNS-SD")
             else:
-                text = device.uri
+                text = urllib.parse.unquote (device.uri)
 
             self.lblNPDeviceDescription.set_text (text)
         elif device.type=="socket":
