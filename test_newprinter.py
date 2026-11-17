@@ -6100,3 +6100,63 @@ def test_kyocera_ipp_dnssd_and_ipps_gui_single_entry():
         "IPP"
     ]
     assert gui.device.uri == d_ipps.uri
+
+
+def test_printer_url_display_unquoted_and_socket_consistency():
+    import os
+    os.environ["SYSTEM_CONFIG_PRINTER_UI"] = "ui"
+    from unittest.mock import MagicMock
+    import gi
+    gi.require_version('Gtk', '3.0')
+    from gi.repository import Gtk
+    import newprinter
+    import cupshelpers
+
+    gui = newprinter.NewPrinterGUI()
+    gui.start_fetching_devices = MagicMock()
+    gui.fillDeviceTab()
+
+    d_ipps = cupshelpers.Device(
+        "ipps://Xerox(R)%20B235%20MFP._ipps._tcp.local/",
+        **{"device-class": "network",
+           "device-make-and-model": "Xerox B235 MFP (driverless)",
+           "device-info": "Xerox(R) B235 MFP"})
+
+    d_socket = cupshelpers.Device(
+        "socket://Kyocera%20ECOSYS%20M2040dn._pdl-datastream._tcp.local/",
+        **{"device-class": "network",
+           "device-make-and-model": "Kyocera ECOSYS M2040dn",
+           "device-info": "Kyocera ECOSYS M2040dn"})
+
+    devs = {d_ipps.uri: d_ipps, d_socket.uri: d_socket}
+    gui.add_devices(devs, None, no_more=True)
+
+    model = gui.tvNPDevices.get_model()
+    dnssd_iter = gui.devices_dnssd_iter
+
+    xerox_path = None
+    kyocera_path = None
+    child = model.iter_children(dnssd_iter)
+    while child:
+        name = model.get_value(child, 0)
+        if "Xerox" in name:
+            xerox_path = model.get_path(child)
+        elif "Kyocera" in name:
+            kyocera_path = model.get_path(child)
+        child = model.iter_next(child)
+
+    assert xerox_path is not None
+    assert kyocera_path is not None
+
+    gui.tvNPDevices.get_cursor = MagicMock(return_value=(xerox_path, None))
+    gui.on_tvNPDevices_cursor_changed(gui.tvNPDevices)
+    assert gui.ntbkNPType.get_current_page() == 0
+    assert gui.lblNPDeviceDescription.get_text() == "ipps://Xerox(R) B235 MFP._ipps._tcp.local/"
+    assert gui.device.uri == "ipps://Xerox(R)%20B235%20MFP._ipps._tcp.local/"
+
+    gui.tvNPDevices.get_cursor = MagicMock(return_value=(kyocera_path, None))
+    gui.on_tvNPDevices_cursor_changed(gui.tvNPDevices)
+    assert gui.ntbkNPType.get_current_page() == 0
+    assert gui.lblNPDeviceDescription.get_text() == "socket://Kyocera ECOSYS M2040dn._pdl-datastream._tcp.local/"
+    assert gui.device.uri == "socket://Kyocera%20ECOSYS%20M2040dn._pdl-datastream._tcp.local/"
+    assert gui.getDeviceURI() == "socket://Kyocera%20ECOSYS%20M2040dn._pdl-datastream._tcp.local/"
