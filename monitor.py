@@ -54,6 +54,7 @@ def collect_printer_state_reasons (connection, ppdcache):
 
     for name, printer in printers.items ():
         reasons = printer["printer-state-reasons"]
+        printer_state = printer.get ("printer-state")
         for reason in reasons:
             if reason == "none":
                 break
@@ -61,7 +62,8 @@ def collect_printer_state_reasons (connection, ppdcache):
                 continue
             if name not in result:
                 result[name] = []
-            result[name].append (StateReason (name, reason, ppdcache))
+            result[name].append (StateReason (name, reason, ppdcache,
+                                              printer_state=printer_state))
     return result
 
 class Monitor(GObject.GObject):
@@ -411,6 +413,7 @@ class Monitor(GObject.GObject):
                     self.emit ('printer-removed', name)
                 elif name in self.printers:
                     printer_state_reasons = event['printer-state-reasons']
+                    printer_state = event.get ('printer-state')
                     reasons = []
                     for reason in printer_state_reasons:
                         if reason == "none":
@@ -418,7 +421,8 @@ class Monitor(GObject.GObject):
                         if state_reason_is_harmless (reason):
                             continue
                         reasons.append (StateReason (name, reason,
-                                                     self.ppdcache))
+                                                     self.ppdcache,
+                                                     printer_state=printer_state))
                     self.printer_state_reasons[name] = reasons
 
                     self.emit ('printer-event', name, nse, event)

@@ -36,12 +36,13 @@ class StateReason:
         ERROR: "dialog-error"
         }
 
-    def __init__(self, printer, reason, ppdcache=None):
+    def __init__(self, printer, reason, ppdcache=None, printer_state=None):
         self.printer = printer
         self.reason = reason
         self.level = None
         self.canonical_reason = None
         self._ppd = None
+        self._printer_state = printer_state
         if ppdcache:
             ppdcache.fetch_ppd (printer, self._got_ppd)
 
@@ -74,7 +75,16 @@ class StateReason:
         elif self.reason.endswith ("-warning"):
             self.level = self.WARNING
         else:
-            self.level = self.ERROR
+            # Use the printer-state enum (RFC 8011, 4.4.11) to infer
+            # severity: only a stopped printer (5) indicates a real
+            # problem; idle (3) / processing (4) reasons are
+            # informational.  This avoids maintaining a growing list
+            # of individual reason keywords.
+            if (self._printer_state is not None and
+                self._printer_state != 5):  # not IPP_PRINTER_STOPPED
+                self.level = self.REPORT
+            else:
+                self.level = self.ERROR
 
         return self.level
 
