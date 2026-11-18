@@ -530,6 +530,7 @@ def test_nested_blocking_resumes_firewall_gate_at_outer_exit(
         assert busy.call_args_list == [
             call(True, "Outer", cancelable=False),
             call(True, "Inner", cancelable=False),
+            call(True, "Outer", cancelable=False),
         ]
         resume.assert_not_called()
         assert not _firewall_dialogs()
@@ -545,6 +546,36 @@ def test_nested_blocking_resumes_firewall_gate_at_outer_exit(
     get_devices.assert_called_once()
 
 
+@pytest.mark.parametrize("outer_cancelable,inner_cancelable",
+                         [(True, False), (False, True)])
+def test_nested_blocking_restores_outer_cancelable(
+        ui, monkeypatch, outer_cancelable, inner_cancelable):
+    monkeypatch.setattr(newprinter.authconn, "Connection", type(ui.cups))
+    ui.cups.run_on_worker.side_effect = lambda op: lambda **kwargs: op()
+    busy = MagicMock()
+    monkeypatch.setattr(ui, "_set_wizard_busy", busy)
+    resume = MagicMock()
+    monkeypatch.setattr(ui, "_resume_deferred_network_discovery", resume)
+    expected_calls = [
+        call(True, "Outer", cancelable=outer_cancelable),
+        call(True, "Inner", cancelable=inner_cancelable),
+        call(True, "Outer", cancelable=outer_cancelable),
+    ]
+
+    def outer():
+        ui._run_blocking(lambda: None, spinner_text="Inner",
+                         cancelable=inner_cancelable)
+        assert ui._blocking_operation_in_flight
+        assert busy.call_args_list == expected_calls
+        resume.assert_not_called()
+
+    ui._run_blocking(outer, spinner_text="Outer", cancelable=outer_cancelable)
+    assert not ui._blocking_operation_in_flight
+    assert ui._blocking_busy_stack == []
+    assert busy.call_args_list == expected_calls + [call(False)]
+    resume.assert_called_once_with()
+
+
 def test_nested_blocking_busy_setup_error_allows_later_discovery(
         ui, network_gate, monkeypatch):
     firewall, get_devices = network_gate
@@ -558,15 +589,28 @@ def test_nested_blocking_busy_setup_error_allows_later_discovery(
         if busy and spinner_text == "Inner":
             raise TypeError("busy setup failed")
 
-    monkeypatch.setattr(ui, "_set_wizard_busy", set_busy)
+    busy = MagicMock(side_effect=set_busy)
+    monkeypatch.setattr(ui, "_set_wizard_busy", busy)
 
     def outer():
-        ui._run_blocking(lambda: None, spinner_text="Inner")
+        with pytest.raises(TypeError, match="busy setup failed"):
+            ui._run_blocking(lambda: None, spinner_text="Inner", cancelable=True)
+        assert ui._blocking_operation_depth == 1
+        assert ui._blocking_operation_in_flight
+        assert ui._blocking_busy_stack == [("Outer", False)]
+        assert busy.call_args_list == [
+            call(True, "Outer", cancelable=False),
+            call(True, "Inner", cancelable=True),
+            call(True, "Outer", cancelable=False),
+        ]
+        resume.assert_not_called()
 
-    with pytest.raises(TypeError, match="busy setup failed"):
-        ui._run_blocking(outer, spinner_text="Outer")
+    ui._run_blocking(outer, spinner_text="Outer")
     assert ui._blocking_operation_depth == 0
     assert ui._blocking_operation_in_flight is False
+    assert ui._blocking_busy_stack == []
+    assert busy.call_args_list[-1] == call(False)
+    resume.assert_called_once_with()
 
     resume.reset_mock()
     ui.local_devices_reply(conn, {}, None)

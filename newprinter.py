@@ -518,6 +518,7 @@ class NewPrinterGUI(GtkGUI):
         self._cached_driverless_ppd_name = None
         self._cancelled = False
         self._blocking_operation_depth = 0
+        self._blocking_busy_stack = []
         self._pending_network_discovery = None
         self._deferred_network_discovery = None
         self.nextnptab_rerun = False
@@ -3633,6 +3634,8 @@ class NewPrinterGUI(GtkGUI):
         if cancelable is None:
             cancelable = (op == getattr(getattr(self, 'cups', None), 'getServerPPD', None) or
                           getattr(op, '__name__', '') == 'getServerPPD')
+        self._blocking_busy_stack = getattr(self, '_blocking_busy_stack', [])
+        self._blocking_busy_stack.append((spinner_text, cancelable))
         self._blocking_operation_depth = getattr(self, '_blocking_operation_depth', 0) + 1
         self._blocking_operation_in_flight = True
         try:
@@ -3648,6 +3651,8 @@ class NewPrinterGUI(GtkGUI):
             else:
                 return op(*args, **kwargs)
         finally:
+            if self._blocking_busy_stack:
+                self._blocking_busy_stack.pop()
             self._blocking_operation_depth = max(0, self._blocking_operation_depth - 1)
             if self._blocking_operation_depth == 0:
                 self._blocking_operation_in_flight = False
@@ -3658,6 +3663,9 @@ class NewPrinterGUI(GtkGUI):
                     except AttributeError:
                         pass
                 self._resume_deferred_network_discovery ()
+            elif self._blocking_busy_stack:
+                outer_spinner_text, outer_cancelable = self._blocking_busy_stack[-1]
+                self._set_wizard_busy(True, outer_spinner_text, cancelable=outer_cancelable)
 
     def add_devices (self, devices, current_uri, no_more=False):
         if no_more:
