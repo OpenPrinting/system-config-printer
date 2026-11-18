@@ -517,6 +517,10 @@ class NewPrinterGUI(GtkGUI):
         self._cached_driverless_ppd = None
         self._cached_driverless_ppd_name = None
         self._cancelled = False
+        self._blocking_operation_depth = 0
+        self._blocking_busy_stack = []
+        self._pending_network_discovery = None
+        self._deferred_network_discovery = None
         self.nextnptab_rerun = False
         self.printers = {} # set in init()
         self.recommended_model_selected = False
@@ -3085,8 +3089,7 @@ class NewPrinterGUI(GtkGUI):
         # IPP-over-USB counterpart discovered during the network/DNS-SD phase.
         self._pending_devices = result.copy()
 
-        # Now start a request for the network devices.
-        self.fetchDevices (network=True, current_uri=current_uri)
+        self.check_firewall_before_network_discovery (current_uri)
 
     def network_devices_reply (self, conn, result, current_uri):
         self.fetchDevices_conn._end_operation ()
@@ -3346,6 +3349,8 @@ class NewPrinterGUI(GtkGUI):
         self.devices_network_fetched = False
         self._legacy_usb_cache = dnssdresolve.LegacyUSBDeviceCache ()
         self._pending_devices = None
+        self._pending_network_discovery = None
+        self._deferred_network_discovery = None
         self.tvNPDevices.set_model (model)
         self.entNPTDevice.set_text ('')
         self.expNPDeviceURIs.hide ()
@@ -3357,15 +3362,122 @@ class NewPrinterGUI(GtkGUI):
         debugprint ("Fetching devices")
         self.start_fetching_devices ()
 
-    def on_firewall_read (self, data):
-        f = self.firewall
-        mdns_allowed = False
+    def check_firewall_before_network_discovery (self, current_uri):
+        host = getattr (self, '_host', '') or ''
+        if (getattr (self, 'firewall', None) is not None or
+            not (host == 'localhost' or host.startswith ('/')) or
+            getattr (self, '_blocking_operation_in_flight', False) or
+            getattr (self, '_cancelled', False)):
+            self.fetchDevices (network=True, current_uri=current_uri)
+            return
+
+        pending = (self.fetchDevices_conn, current_uri)
+        self._pending_network_discovery = pending
+        firewall = None
+        delivered = False
+
+        def first_delivery ():
+            nonlocal delivered
+            if delivered:
+                return False
+            delivered = True
+            return (getattr (self, 'firewall', None) is firewall and
+                    getattr (self, '_pending_network_discovery', None) is pending)
+
+        def reply (data):
+            if first_delivery ():
+                self.on_firewall_read (data, pending)
+
+        def error (exc):
+            if first_delivery ():
+                debugprint ("Error reading firewall: %r" % exc)
+                self.firewall = None
+                self._finish_pending_network_discovery ()
 
         try:
-            mdns_allowed = f.check_mdns_allowed ()
+            firewall = self.firewall = self._get_firewall ()
+            firewall.read (reply_handler=reply, error_handler=error)
+        except Exception as exc:
+            error (exc)
 
-            if mdns_allowed:
+    def _firewall_reply_is_stale (self):
+        notebook = getattr (self, 'ntbkNewPrinter', None)
+        return (getattr (self, '_blocking_operation_in_flight', False) or
+                getattr (self, '_cancelled', False) or
+                (notebook is not None and
+                 notebook.get_current_page () != self.PAGE_SELECT_DEVICE))
+
+    def _finish_pending_network_discovery (self):
+        pending = getattr (self, '_pending_network_discovery', None)
+        if pending is None:
+            return
+
+        self._pending_network_discovery = None
+        conn, current_uri = pending
+        if self.fetchDevices_conn is not conn:
+            # Cancellation or device selection already destroyed this connection.
+            return
+        if self._firewall_reply_is_stale ():
+            self.firewall = None
+            if (getattr (self, '_blocking_operation_in_flight', False) and
+                self._can_resume_network_discovery (conn)):
+                self._deferred_network_discovery = pending
+                return
+            self._drop_network_discovery (conn)
+            return
+
+        # The local fetch already started the spinner and the CUPS operation.
+        # Reuse that connection until the network reply or error closes it.
+        try:
+            self.fetchDevices (network=True, current_uri=current_uri)
+        except Exception as exc:
+            self.error_getting_devices (conn, exc)
+
+    def _can_resume_network_discovery (self, conn):
+        notebook = getattr (self, 'ntbkNewPrinter', None)
+        return (self.fetchDevices_conn is conn and
+                not getattr (self, '_cancelled', False) and
+                notebook is not None and
+                notebook.get_current_page () == self.PAGE_SELECT_DEVICE)
+
+    def _drop_network_discovery (self, conn):
+        active_conn = self.fetchDevices_conn
+        if active_conn is not None and active_conn is not conn:
+            return
+        self._pending_devices = None
+        if active_conn is conn:
+            conn._end_operation ()
+            conn.destroy ()
+            self.fetchDevices_conn = None
+        self._hide_searching_spinner ()
+
+    def _resume_deferred_network_discovery (self):
+        deferred = getattr (self, '_deferred_network_discovery', None)
+        if deferred is None:
+            return
+
+        self._deferred_network_discovery = None
+        conn, current_uri = deferred
+        if self._can_resume_network_discovery (conn):
+            self._show_searching_spinner (_("Searching for printers"))
+            self.check_firewall_before_network_discovery (current_uri)
+        else:
+            self._drop_network_discovery (conn)
+
+    def on_firewall_read (self, data, pending=None):
+        # A delayed reply must not interrupt blocking work or prompt a user
+        # who has left device selection. Clearing the firewall permits a retry.
+        if self._firewall_reply_is_stale ():
+            self.firewall = None
+            if pending is not None:
+                self._finish_pending_network_discovery ()
+            return
+        f = getattr (self, 'firewall', None)
+        try:
+            if f.check_mdns_allowed ():
                 debugprint("Firewall all OK, no changes needed")
+                if pending is not None:
+                    self._finish_pending_network_discovery ()
                 return
 
             secondary_text = TEXT_adjust_firewall + "\n\n"
@@ -3383,16 +3495,49 @@ class NewPrinterGUI(GtkGUI):
             dialog.format_secondary_markup (secondary_text)
             dialog.add_buttons (_("Do It Later"), Gtk.ResponseType.NO,
                                 _("Adjust Firewall"), Gtk.ResponseType.YES)
+            dialog.firewall = f
+            dialog.network_discovery = pending
             dialog.connect ('response', self.adjust_firewall_response)
             dialog.show ()
         except (dbus.DBusException, Exception):
             nonfatalException ()
+            if (pending is not None and
+                getattr (self, '_pending_network_discovery', None) is pending):
+                self.firewall = None
+                self._finish_pending_network_discovery ()
 
 
     def adjust_firewall_response (self, dialog, response):
+        firewall = getattr (dialog, 'firewall', None)
+        pending = getattr (dialog, 'network_discovery', None)
         dialog.destroy ()
         if response == Gtk.ResponseType.YES:
-            self.firewall.write ()
+            try:
+                if firewall is None:
+                    firewall = getattr (self, 'firewall', None)
+                firewall.write ()
+            except Exception:
+                nonfatalException ()
+
+        if pending is not None:
+            if getattr (self, '_pending_network_discovery', None) is pending:
+                self._finish_pending_network_discovery ()
+            return
+
+        if firewall is not getattr (self, 'firewall', None):
+            return
+
+        # Defense in depth: a dialog shown before a blocking operation
+        # started must not refresh devices mid-operation if it is answered
+        # while one is in flight (normally unreachable, as the dialog is
+        # modal over the wizard, but the nested MainLoop can deliver the
+        # response late). The firewall write above is still honoured; only
+        # the device refresh is skipped, and clearing self.firewall lets
+        # check_firewall() re-run the read later.
+        if (getattr (self, '_blocking_operation_in_flight', False) or
+            getattr (self, '_cancelled', False)):
+            self.firewall = None
+            return
 
         debugprint ("Fetching network devices after firewall dialog response")
         self._show_searching_spinner (_("Searching for printers"))
@@ -3489,9 +3634,13 @@ class NewPrinterGUI(GtkGUI):
         if cancelable is None:
             cancelable = (op == getattr(getattr(self, 'cups', None), 'getServerPPD', None) or
                           getattr(op, '__name__', '') == 'getServerPPD')
+        stack = getattr(self, '_blocking_busy_stack', [])
+        self._blocking_busy_stack = stack
+        stack.append((spinner_text, cancelable))
+        self._blocking_operation_depth = len(stack)
         self._blocking_operation_in_flight = True
-        self._set_wizard_busy(True, spinner_text, cancelable=cancelable)
         try:
+            self._set_wizard_busy(True, spinner_text, cancelable=cancelable)
             if isinstance(getattr(self, 'cups', None), authconn.Connection):
                 wrapper = self.cups.run_on_worker(op)
                 try:
@@ -3503,13 +3652,21 @@ class NewPrinterGUI(GtkGUI):
             else:
                 return op(*args, **kwargs)
         finally:
-            self._blocking_operation_in_flight = False
-            self._set_wizard_busy(False)
-            if getattr(self, 'cups', None) is not None and not getattr(self, '_cancelled', False):
-                try:
-                    self.cups._cancel = False
-                except AttributeError:
-                    pass
+            if stack:
+                stack.pop()
+            self._blocking_operation_depth = len(stack)
+            if self._blocking_operation_depth == 0:
+                self._blocking_operation_in_flight = False
+                self._set_wizard_busy(False)
+                if getattr(self, 'cups', None) is not None and not getattr(self, '_cancelled', False):
+                    try:
+                        self.cups._cancel = False
+                    except AttributeError:
+                        pass
+                self._resume_deferred_network_discovery ()
+            else:
+                outer_spinner_text, outer_cancelable = stack[-1]
+                self._set_wizard_busy(True, outer_spinner_text, cancelable=outer_cancelable)
 
     def add_devices (self, devices, current_uri, no_more=False):
         if no_more:
@@ -4222,6 +4379,12 @@ class NewPrinterGUI(GtkGUI):
         else:
             view.expand_row (path, False)
 
+    def _get_firewall (self):
+        firewall = firewallsettings.FirewallD ()
+        if not firewall.running:
+            firewall = firewallsettings.SystemConfigFirewall ()
+        return firewall
+
     def check_firewall (self):
         view = self.tvNPDevices
         model = view.get_model ()
@@ -4257,12 +4420,14 @@ class NewPrinterGUI(GtkGUI):
         try:
             if (self._host == 'localhost' or
                 self._host[0] == '/'):
-                self.firewall = firewallsettings.FirewallD ()
-                if not self.firewall.running:
-                    self.firewall = firewallsettings.SystemConfigFirewall ()
+                firewall = self.firewall = self._get_firewall ()
+
+                def reply (data):
+                    if self.firewall is firewall:
+                        self.on_firewall_read (data)
 
                 debugprint ("Examining firewall")
-                self.firewall.read (reply_handler=self.on_firewall_read)
+                firewall.read (reply_handler=reply)
         except (dbus.DBusException, Exception):
             nonfatalException ()
 
