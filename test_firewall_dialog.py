@@ -312,7 +312,7 @@ def test_network_discovery_proceeds_on_firewall_read_failure(
     assert ui.firewall is None
 
 
-@pytest.mark.parametrize("state", ["cancelled", "blocking", "off-page"])
+@pytest.mark.parametrize("state", ["cancelled", "off-page"])
 @pytest.mark.parametrize("dialog_open", [False, True])
 def test_stale_firewall_gate_abandons_network_discovery(
         ui, network_gate, state, dialog_open):
@@ -325,8 +325,6 @@ def test_stale_firewall_gate_abandons_network_discovery(
 
     if state == "cancelled":
         ui._cancelled = True
-    elif state == "blocking":
-        ui._blocking_operation_in_flight = True
     else:
         ui.ntbkNewPrinter.set_current_page(ui.PAGE_DESCRIBE_PRINTER)
 
@@ -343,3 +341,176 @@ def test_stale_firewall_gate_abandons_network_discovery(
     conn._end_operation.assert_called_once_with()
     conn.destroy.assert_called_once_with()
     assert ui.fetchDevices_conn is None
+
+
+@pytest.mark.parametrize("response", [Gtk.ResponseType.NO, Gtk.ResponseType.YES])
+def test_firewall_error_after_dialog_is_ignored(ui, network_gate, response):
+    firewall, get_devices = network_gate
+    conn = ui.fetchDevices_conn
+    ui.local_devices_reply(conn, {}, None)
+    firewall.deliver_reply()
+    dialog, = _firewall_dialogs()
+
+    firewall.error_handler(RuntimeError("Late firewall error"))
+    get_devices.assert_not_called()
+    assert ui.firewall is firewall
+
+    dialog.response(response)
+    get_devices.assert_called_once()
+    assert get_devices.call_args.args == (conn,)
+    newprinter.asyncconn.Connection.assert_not_called()
+    if response == Gtk.ResponseType.YES:
+        firewall.write.assert_called_once_with()
+    else:
+        firewall.write.assert_not_called()
+
+
+@pytest.mark.parametrize("response", [Gtk.ResponseType.NO, Gtk.ResponseType.YES])
+def test_firewall_dialog_response_after_gate_finishes(ui, network_gate, response):
+    firewall, get_devices = network_gate
+    conn = ui.fetchDevices_conn
+    ui.local_devices_reply(conn, {}, None)
+    firewall.deliver_reply()
+    dialog, = _firewall_dialogs()
+
+    ui._finish_pending_network_discovery()
+    assert get_devices.call_count == 1
+    ui.firewall = None
+    dialog.response(response)
+
+    get_devices.assert_called_once()
+    newprinter.asyncconn.Connection.assert_not_called()
+    if response == Gtk.ResponseType.YES:
+        firewall.write.assert_called_once_with()
+    else:
+        firewall.write.assert_not_called()
+
+
+def test_duplicate_denied_firewall_replies_open_one_dialog(ui, network_gate):
+    firewall, get_devices = network_gate
+    ui.local_devices_reply(ui.fetchDevices_conn, {}, None)
+    firewall.deliver_reply()
+    firewall.deliver_reply()
+
+    assert len(_firewall_dialogs()) == 1
+    firewall.add_service.assert_called_once()
+    get_devices.assert_not_called()
+
+
+@pytest.mark.parametrize("dialog_open", [False, True])
+def test_blocking_firewall_gate_defers_network_discovery(
+        ui, network_gate, monkeypatch, dialog_open):
+    firewall, get_devices = network_gate
+    conn = ui.fetchDevices_conn
+    uri = "usb://printer"
+    local_devices = {uri: object()}
+    ui.local_devices_reply(conn, local_devices, uri)
+    original_reply = firewall.reply_handler
+    if dialog_open:
+        firewall.deliver_reply()
+        dialog, = _firewall_dialogs()
+
+    ui._blocking_operation_in_flight = True
+    if dialog_open:
+        dialog.response(Gtk.ResponseType.YES)
+        firewall.write.assert_called_once_with()
+    else:
+        firewall.deliver_reply()
+
+    get_devices.assert_not_called()
+    conn._end_operation.assert_not_called()
+    conn.destroy.assert_not_called()
+    assert ui.fetchDevices_conn is conn
+    assert ui._pending_devices == local_devices
+    assert ui.firewall is None
+
+    monkeypatch.setattr(newprinter.authconn, "Connection", type(ui.cups))
+    ui.cups.run_on_worker.side_effect = lambda op: lambda **kwargs: op()
+    assert ui._run_blocking(lambda: "done") == "done"
+    assert not ui._blocking_operation_in_flight
+    assert firewall.reply_handler is not original_reply
+    assert ui._deferred_network_discovery is None
+    get_devices.assert_not_called()
+
+    firewall.check_mdns_allowed = lambda: True
+    original_reply(None)
+    get_devices.assert_not_called()
+    firewall.deliver_reply()
+    get_devices.assert_called_once()
+    assert get_devices.call_args.args == (conn,)
+    assert "dnssd" in get_devices.call_args.kwargs["include_schemes"]
+    assert ui._pending_devices == local_devices
+
+
+def test_deferred_firewall_gate_is_dropped_after_leaving_device_page(
+        ui, network_gate, monkeypatch):
+    firewall, get_devices = network_gate
+    conn = ui.fetchDevices_conn
+    ui.local_devices_reply(conn, {"usb://printer": object()}, None)
+    monkeypatch.setattr(newprinter.authconn, "Connection", type(ui.cups))
+    ui.cups.run_on_worker.side_effect = lambda op: lambda **kwargs: op()
+
+    def leave_device_page():
+        firewall.deliver_reply()
+        conn.destroy.assert_not_called()
+        ui.ntbkNewPrinter.set_current_page(ui.PAGE_DESCRIBE_PRINTER)
+
+    ui._run_blocking(leave_device_page)
+
+    get_devices.assert_not_called()
+    conn._end_operation.assert_called_once_with()
+    conn.destroy.assert_called_once_with()
+    assert ui.fetchDevices_conn is None
+    assert ui._pending_devices is None
+    assert ui._deferred_network_discovery is None
+
+
+def test_synchronous_network_dispatch_error_displays_local_devices(
+        ui, network_gate, monkeypatch):
+    firewall, get_devices = network_gate
+    conn = ui.fetchDevices_conn
+    local_devices = {"usb://printer": newprinter.cupshelpers.Device("usb://printer")}
+    ui.add_devices = MagicMock(wraps=ui.add_devices)
+    hide_spinner = MagicMock()
+    monkeypatch.setattr(ui, "_hide_searching_spinner", hide_spinner)
+    firewall.check_mdns_allowed = lambda: True
+    get_devices.side_effect = RuntimeError("Network dispatch failed")
+    ui.local_devices_reply(conn, local_devices, None)
+    firewall.deliver_reply()
+
+    get_devices.assert_called_once()
+    conn._end_operation.assert_called_once_with()
+    conn.destroy.assert_called_once_with()
+    assert ui.fetchDevices_conn is None
+    assert ui._pending_devices is None
+    ui.add_devices.assert_called_once_with(local_devices, None, no_more=True)
+    hide_spinner.assert_called_once_with()
+
+
+def test_firewall_write_error_still_releases_gate(ui, network_gate, monkeypatch):
+    firewall, get_devices = network_gate
+    report_error = MagicMock()
+    monkeypatch.setattr(newprinter, "nonfatalException", report_error)
+    firewall.write.side_effect = RuntimeError("Firewall write failed")
+    ui.local_devices_reply(ui.fetchDevices_conn, {}, None)
+    firewall.deliver_reply()
+    dialog, = _firewall_dialogs()
+    dialog.response(Gtk.ResponseType.YES)
+
+    firewall.write.assert_called_once_with()
+    report_error.assert_called_once_with()
+    get_devices.assert_called_once()
+    newprinter.asyncconn.Connection.assert_not_called()
+    assert ui._pending_network_discovery is None
+
+
+def test_missing_firewall_gate_host_fetches_directly(ui, network_gate):
+    _, get_devices = network_gate
+    ui._host = None
+    conn = ui.fetchDevices_conn
+    ui.local_devices_reply(conn, {}, None)
+
+    get_devices.assert_called_once()
+    assert get_devices.call_args.args == (conn,)
+    assert "dnssd" in get_devices.call_args.kwargs["include_schemes"]
+    assert ui._pending_network_discovery is None

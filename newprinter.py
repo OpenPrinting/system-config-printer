@@ -517,6 +517,8 @@ class NewPrinterGUI(GtkGUI):
         self._cached_driverless_ppd = None
         self._cached_driverless_ppd_name = None
         self._cancelled = False
+        self._pending_network_discovery = None
+        self._deferred_network_discovery = None
         self.nextnptab_rerun = False
         self.printers = {} # set in init()
         self.recommended_model_selected = False
@@ -3346,6 +3348,7 @@ class NewPrinterGUI(GtkGUI):
         self._legacy_usb_cache = dnssdresolve.LegacyUSBDeviceCache ()
         self._pending_devices = None
         self._pending_network_discovery = None
+        self._deferred_network_discovery = None
         self.tvNPDevices.set_model (model)
         self.entNPTDevice.set_text ('')
         self.expNPDeviceURIs.hide ()
@@ -3358,24 +3361,33 @@ class NewPrinterGUI(GtkGUI):
         self.start_fetching_devices ()
 
     def check_firewall_before_network_discovery (self, current_uri):
-        if (self.firewall is not None or
-            not (self._host == 'localhost' or self._host.startswith ('/')) or
+        host = getattr (self, '_host', '') or ''
+        if (getattr (self, 'firewall', None) is not None or
+            not (host == 'localhost' or host.startswith ('/')) or
             getattr (self, '_blocking_operation_in_flight', False) or
             getattr (self, '_cancelled', False)):
             self.fetchDevices (network=True, current_uri=current_uri)
             return
 
-        self._pending_network_discovery = (self.fetchDevices_conn, current_uri)
+        pending = (self.fetchDevices_conn, current_uri)
+        self._pending_network_discovery = pending
         firewall = None
+        delivered = False
+
+        def first_delivery ():
+            nonlocal delivered
+            if delivered:
+                return False
+            delivered = True
+            return (getattr (self, 'firewall', None) is firewall and
+                    getattr (self, '_pending_network_discovery', None) is pending)
 
         def reply (data):
-            if (self.firewall is firewall and
-                self._pending_network_discovery is not None):
-                self.on_firewall_read (data)
+            if first_delivery ():
+                self.on_firewall_read (data, pending)
 
         def error (exc):
-            if (self.firewall is firewall and
-                self._pending_network_discovery is not None):
+            if first_delivery ():
                 debugprint ("Error reading firewall: %r" % exc)
                 self.firewall = None
                 self._finish_pending_network_discovery ()
@@ -3394,39 +3406,76 @@ class NewPrinterGUI(GtkGUI):
                  notebook.get_current_page () != self.PAGE_SELECT_DEVICE))
 
     def _finish_pending_network_discovery (self):
-        pending = self._pending_network_discovery
-        self._pending_network_discovery = None
+        pending = getattr (self, '_pending_network_discovery', None)
         if pending is None:
             return
 
+        self._pending_network_discovery = None
         conn, current_uri = pending
         if self.fetchDevices_conn is not conn:
             # Cancellation or device selection already destroyed this connection.
             return
         if self._firewall_reply_is_stale ():
-            self._pending_devices = None
-            conn._end_operation ()
-            conn.destroy ()
-            self.fetchDevices_conn = None
-            self._hide_searching_spinner ()
+            self.firewall = None
+            if (getattr (self, '_blocking_operation_in_flight', False) and
+                self._can_resume_network_discovery (conn)):
+                self._deferred_network_discovery = pending
+                return
+            self._drop_network_discovery (conn)
             return
 
         # The local fetch already started the spinner and the CUPS operation.
         # Reuse that connection until the network reply or error closes it.
-        self.fetchDevices (network=True, current_uri=current_uri)
+        try:
+            self.fetchDevices (network=True, current_uri=current_uri)
+        except Exception as exc:
+            self.error_getting_devices (conn, exc)
 
-    def on_firewall_read (self, data):
+    def _can_resume_network_discovery (self, conn):
+        notebook = getattr (self, 'ntbkNewPrinter', None)
+        return (self.fetchDevices_conn is conn and
+                not getattr (self, '_cancelled', False) and
+                notebook is not None and
+                notebook.get_current_page () == self.PAGE_SELECT_DEVICE)
+
+    def _drop_network_discovery (self, conn):
+        active_conn = self.fetchDevices_conn
+        if active_conn is not None and active_conn is not conn:
+            return
+        self._pending_devices = None
+        if active_conn is conn:
+            conn._end_operation ()
+            conn.destroy ()
+            self.fetchDevices_conn = None
+        self._hide_searching_spinner ()
+
+    def _resume_deferred_network_discovery (self):
+        deferred = getattr (self, '_deferred_network_discovery', None)
+        if deferred is None:
+            return
+
+        self._deferred_network_discovery = None
+        conn, current_uri = deferred
+        if self._can_resume_network_discovery (conn):
+            self._show_searching_spinner (_("Searching for printers"))
+            self.check_firewall_before_network_discovery (current_uri)
+        else:
+            self._drop_network_discovery (conn)
+
+    def on_firewall_read (self, data, pending=None):
         # A delayed reply must not interrupt blocking work or prompt a user
         # who has left device selection. Clearing the firewall permits a retry.
         if self._firewall_reply_is_stale ():
             self.firewall = None
-            self._finish_pending_network_discovery ()
+            if pending is not None:
+                self._finish_pending_network_discovery ()
             return
-        f = self.firewall
+        f = getattr (self, 'firewall', None)
         try:
             if f.check_mdns_allowed ():
                 debugprint("Firewall all OK, no changes needed")
-                self._finish_pending_network_discovery ()
+                if pending is not None:
+                    self._finish_pending_network_discovery ()
                 return
 
             secondary_text = TEXT_adjust_firewall + "\n\n"
@@ -3444,19 +3493,34 @@ class NewPrinterGUI(GtkGUI):
             dialog.format_secondary_markup (secondary_text)
             dialog.add_buttons (_("Do It Later"), Gtk.ResponseType.NO,
                                 _("Adjust Firewall"), Gtk.ResponseType.YES)
+            dialog.firewall = f
+            dialog.network_discovery = pending
             dialog.connect ('response', self.adjust_firewall_response)
             dialog.show ()
         except (dbus.DBusException, Exception):
             nonfatalException ()
-            if self._pending_network_discovery is not None:
+            if (pending is not None and
+                getattr (self, '_pending_network_discovery', None) is pending):
                 self.firewall = None
                 self._finish_pending_network_discovery ()
 
 
     def adjust_firewall_response (self, dialog, response):
+        firewall = getattr (dialog, 'firewall', None)
+        pending = getattr (dialog, 'network_discovery', None)
         dialog.destroy ()
         if response == Gtk.ResponseType.YES:
-            self.firewall.write ()
+            try:
+                if firewall is None:
+                    firewall = getattr (self, 'firewall', None)
+                firewall.write ()
+            except Exception:
+                nonfatalException ()
+
+        if pending is not None:
+            if getattr (self, '_pending_network_discovery', None) is pending:
+                self._finish_pending_network_discovery ()
+            return
 
         # Defense in depth: a dialog shown before a blocking operation
         # started must not refresh devices mid-operation if it is answered
@@ -3468,13 +3532,6 @@ class NewPrinterGUI(GtkGUI):
         if (getattr (self, '_blocking_operation_in_flight', False) or
             getattr (self, '_cancelled', False)):
             self.firewall = None
-            self._finish_pending_network_discovery ()
-            return
-
-        if self._pending_network_discovery is not None:
-            if self._firewall_reply_is_stale ():
-                self.firewall = None
-            self._finish_pending_network_discovery ()
             return
 
         debugprint ("Fetching network devices after firewall dialog response")
@@ -3593,6 +3650,7 @@ class NewPrinterGUI(GtkGUI):
                     self.cups._cancel = False
                 except AttributeError:
                     pass
+            self._resume_deferred_network_discovery ()
 
     def add_devices (self, devices, current_uri, no_more=False):
         if no_more:
