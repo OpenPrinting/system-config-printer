@@ -4,7 +4,7 @@ Bug: a delayed on_firewall_read landing while _run_blocking pumps the
 nested MainLoop opens a modal "Adjust Firewall" dialog mid-validation, and
 adjust_firewall_response then fires fetchDevices(network=True) unconditionally.
 """
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, call
 
 import gi
 import pytest
@@ -22,7 +22,7 @@ class FakeFirewall:
         self.write = MagicMock()
         self.add_service = MagicMock()
 
-    def read(self, reply_handler, error_handler):
+    def read(self, reply_handler, error_handler=None):
         self.reply_handler = reply_handler
         self.error_handler = error_handler
 
@@ -241,6 +241,67 @@ def network_gate(ui, monkeypatch):
     return firewall, get_devices
 
 
+def test_superseded_legacy_reply_leaves_new_gate_pending(
+        ui, network_gate, monkeypatch):
+    gate_firewall, get_devices = network_gate
+    legacy_firewall = FakeFirewall()
+    conn = ui.fetchDevices_conn
+    ui.fetchDevices_conn = None
+    ui.firewall = None
+    view = MagicMock()
+    view.row_expanded.return_value = True
+    monkeypatch.setattr(ui, "tvNPDevices", view)
+    monkeypatch.setattr(ui, "_get_firewall",
+                        MagicMock(side_effect=[legacy_firewall, gate_firewall]))
+    newprinter.NewPrinterGUI.check_firewall(ui)
+    assert ui.firewall is legacy_firewall
+
+    # A new device scan resets the legacy firewall before local discovery.
+    ui.firewall = None
+    ui.fetchDevices_conn = conn
+    ui.local_devices_reply(conn, {}, None)
+    pending = ui._pending_network_discovery
+    assert pending is not None
+
+    ui._blocking_operation_in_flight = True
+    legacy_firewall.deliver_reply()
+    assert ui.firewall is gate_firewall
+    assert ui._pending_network_discovery is pending
+    assert ui.fetchDevices_conn is conn
+    assert not _firewall_dialogs()
+    get_devices.assert_not_called()
+
+    ui._blocking_operation_in_flight = False
+    gate_firewall.check_mdns_allowed = lambda: True
+    gate_firewall.deliver_reply()
+    assert ui._pending_network_discovery is None
+    get_devices.assert_called_once()
+    assert get_devices.call_args.args == (conn,)
+
+
+def test_superseded_legacy_dialog_writes_without_replacing_gate(ui, network_gate):
+    gate_firewall, get_devices = network_gate
+    legacy_firewall = FakeFirewall()
+    ui.firewall = legacy_firewall
+    ui.on_firewall_read(None)
+    dialog, = _firewall_dialogs()
+
+    conn = ui.fetchDevices_conn
+    ui.firewall = None
+    ui.local_devices_reply(conn, {}, None)
+    pending = ui._pending_network_discovery
+    assert pending is not None
+
+    dialog.response(Gtk.ResponseType.YES)
+    legacy_firewall.write.assert_called_once_with()
+    gate_firewall.write.assert_not_called()
+    assert ui.firewall is gate_firewall
+    assert ui._pending_network_discovery is pending
+    assert ui.fetchDevices_conn is conn
+    get_devices.assert_not_called()
+    newprinter.asyncconn.Connection.assert_not_called()
+
+
 @pytest.mark.parametrize("response", [Gtk.ResponseType.NO, Gtk.ResponseType.YES])
 def test_network_discovery_waits_for_firewall_dialog(ui, network_gate, response):
     firewall, get_devices = network_gate
@@ -440,6 +501,48 @@ def test_blocking_firewall_gate_defers_network_discovery(
     assert get_devices.call_args.args == (conn,)
     assert "dnssd" in get_devices.call_args.kwargs["include_schemes"]
     assert ui._pending_devices == local_devices
+
+
+def test_nested_blocking_resumes_firewall_gate_at_outer_exit(
+        ui, network_gate, monkeypatch):
+    firewall, get_devices = network_gate
+    ui.local_devices_reply(ui.fetchDevices_conn, {}, None)
+    ui._blocking_operation_in_flight = True
+    firewall.deliver_reply()
+    deferred = ui._deferred_network_discovery
+    assert deferred is not None
+
+    monkeypatch.setattr(newprinter.authconn, "Connection", type(ui.cups))
+    ui.cups.run_on_worker.side_effect = lambda op: lambda **kwargs: op()
+    resume = MagicMock(wraps=ui._resume_deferred_network_discovery)
+    monkeypatch.setattr(ui, "_resume_deferred_network_discovery", resume)
+    busy = MagicMock()
+    monkeypatch.setattr(ui, "_set_wizard_busy", busy)
+    monkeypatch.setattr(firewall, "read",
+                        lambda reply_handler, error_handler: reply_handler(None))
+    ui.cups._cancel = True
+
+    def outer():
+        assert ui._run_blocking(lambda: "inner", spinner_text="Inner") == "inner"
+        assert ui._blocking_operation_in_flight
+        assert ui._deferred_network_discovery is deferred
+        assert ui.cups._cancel is True
+        assert busy.call_args_list == [
+            call(True, "Outer", cancelable=False),
+            call(True, "Inner", cancelable=False),
+        ]
+        resume.assert_not_called()
+        assert not _firewall_dialogs()
+
+    ui._run_blocking(outer, spinner_text="Outer")
+    assert not ui._blocking_operation_in_flight
+    assert ui._deferred_network_discovery is None
+    assert ui.cups._cancel is False
+    assert busy.call_args_list[-1] == call(False)
+    resume.assert_called_once_with()
+    dialog, = _firewall_dialogs()
+    dialog.response(Gtk.ResponseType.NO)
+    get_devices.assert_called_once()
 
 
 def test_deferred_firewall_gate_is_dropped_after_leaving_device_page(

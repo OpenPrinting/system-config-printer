@@ -517,6 +517,7 @@ class NewPrinterGUI(GtkGUI):
         self._cached_driverless_ppd = None
         self._cached_driverless_ppd_name = None
         self._cancelled = False
+        self._blocking_operation_depth = 0
         self._pending_network_discovery = None
         self._deferred_network_discovery = None
         self.nextnptab_rerun = False
@@ -3522,6 +3523,9 @@ class NewPrinterGUI(GtkGUI):
                 self._finish_pending_network_discovery ()
             return
 
+        if firewall is not getattr (self, 'firewall', None):
+            return
+
         # Defense in depth: a dialog shown before a blocking operation
         # started must not refresh devices mid-operation if it is answered
         # while one is in flight (normally unreachable, as the dialog is
@@ -3629,6 +3633,7 @@ class NewPrinterGUI(GtkGUI):
         if cancelable is None:
             cancelable = (op == getattr(getattr(self, 'cups', None), 'getServerPPD', None) or
                           getattr(op, '__name__', '') == 'getServerPPD')
+        self._blocking_operation_depth = getattr(self, '_blocking_operation_depth', 0) + 1
         self._blocking_operation_in_flight = True
         self._set_wizard_busy(True, spinner_text, cancelable=cancelable)
         try:
@@ -3643,14 +3648,16 @@ class NewPrinterGUI(GtkGUI):
             else:
                 return op(*args, **kwargs)
         finally:
-            self._blocking_operation_in_flight = False
-            self._set_wizard_busy(False)
-            if getattr(self, 'cups', None) is not None and not getattr(self, '_cancelled', False):
-                try:
-                    self.cups._cancel = False
-                except AttributeError:
-                    pass
-            self._resume_deferred_network_discovery ()
+            self._blocking_operation_depth = max(0, self._blocking_operation_depth - 1)
+            if self._blocking_operation_depth == 0:
+                self._blocking_operation_in_flight = False
+                self._set_wizard_busy(False)
+                if getattr(self, 'cups', None) is not None and not getattr(self, '_cancelled', False):
+                    try:
+                        self.cups._cancel = False
+                    except AttributeError:
+                        pass
+                self._resume_deferred_network_discovery ()
 
     def add_devices (self, devices, current_uri, no_more=False):
         if no_more:
@@ -4404,10 +4411,14 @@ class NewPrinterGUI(GtkGUI):
         try:
             if (self._host == 'localhost' or
                 self._host[0] == '/'):
-                self.firewall = self._get_firewall ()
+                firewall = self.firewall = self._get_firewall ()
+
+                def reply (data):
+                    if self.firewall is firewall:
+                        self.on_firewall_read (data)
 
                 debugprint ("Examining firewall")
-                self.firewall.read (reply_handler=self.on_firewall_read)
+                firewall.read (reply_handler=reply)
         except (dbus.DBusException, Exception):
             nonfatalException ()
 
