@@ -3635,8 +3635,8 @@ class NewPrinterGUI(GtkGUI):
                           getattr(op, '__name__', '') == 'getServerPPD')
         self._blocking_operation_depth = getattr(self, '_blocking_operation_depth', 0) + 1
         self._blocking_operation_in_flight = True
-        self._set_wizard_busy(True, spinner_text, cancelable=cancelable)
         try:
+            self._set_wizard_busy(True, spinner_text, cancelable=cancelable)
             if isinstance(getattr(self, 'cups', None), authconn.Connection):
                 wrapper = self.cups.run_on_worker(op)
                 try:

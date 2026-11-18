@@ -545,6 +545,46 @@ def test_nested_blocking_resumes_firewall_gate_at_outer_exit(
     get_devices.assert_called_once()
 
 
+def test_nested_blocking_busy_setup_error_allows_later_discovery(
+        ui, network_gate, monkeypatch):
+    firewall, get_devices = network_gate
+    conn = ui.fetchDevices_conn
+    monkeypatch.setattr(newprinter.authconn, "Connection", type(ui.cups))
+    ui.cups.run_on_worker.side_effect = lambda op: lambda **kwargs: op()
+    resume = MagicMock(wraps=ui._resume_deferred_network_discovery)
+    monkeypatch.setattr(ui, "_resume_deferred_network_discovery", resume)
+
+    def set_busy(busy, spinner_text="", *, cancelable=True):
+        if busy and spinner_text == "Inner":
+            raise TypeError("busy setup failed")
+
+    monkeypatch.setattr(ui, "_set_wizard_busy", set_busy)
+
+    def outer():
+        ui._run_blocking(lambda: None, spinner_text="Inner")
+
+    with pytest.raises(TypeError, match="busy setup failed"):
+        ui._run_blocking(outer, spinner_text="Outer")
+    assert ui._blocking_operation_depth == 0
+    assert ui._blocking_operation_in_flight is False
+
+    resume.reset_mock()
+    ui.local_devices_reply(conn, {}, None)
+
+    def defer_scan():
+        firewall.deliver_reply()
+        assert ui._deferred_network_discovery is not None
+        get_devices.assert_not_called()
+        return "done"
+
+    assert ui._run_blocking(defer_scan) == "done"
+    resume.assert_called_once_with()
+    assert ui._deferred_network_discovery is None
+    monkeypatch.setattr(firewall, "check_mdns_allowed", lambda: True)
+    firewall.deliver_reply()
+    get_devices.assert_called_once()
+
+
 def test_deferred_firewall_gate_is_dropped_after_leaving_device_page(
         ui, network_gate, monkeypatch):
     firewall, get_devices = network_gate
