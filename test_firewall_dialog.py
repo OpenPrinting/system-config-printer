@@ -593,7 +593,7 @@ def test_nested_blocking_busy_setup_error_allows_later_discovery(
     monkeypatch.setattr(ui, "_set_wizard_busy", busy)
 
     def outer():
-        with pytest.raises(TypeError, match="busy setup failed"):
+        with pytest.raises(TypeError, match="busy setup failed") as setup_error:
             ui._run_blocking(lambda: None, spinner_text="Inner", cancelable=True)
         assert ui._blocking_operation_depth == 1
         assert ui._blocking_operation_in_flight
@@ -604,8 +604,10 @@ def test_nested_blocking_busy_setup_error_allows_later_discovery(
             call(True, "Outer", cancelable=False),
         ]
         resume.assert_not_called()
+        raise setup_error.value
 
-    ui._run_blocking(outer, spinner_text="Outer")
+    with pytest.raises(TypeError, match="busy setup failed"):
+        ui._run_blocking(outer, spinner_text="Outer")
     assert ui._blocking_operation_depth == 0
     assert ui._blocking_operation_in_flight is False
     assert ui._blocking_busy_stack == []

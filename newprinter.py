@@ -3634,9 +3634,10 @@ class NewPrinterGUI(GtkGUI):
         if cancelable is None:
             cancelable = (op == getattr(getattr(self, 'cups', None), 'getServerPPD', None) or
                           getattr(op, '__name__', '') == 'getServerPPD')
-        self._blocking_busy_stack = getattr(self, '_blocking_busy_stack', [])
-        self._blocking_busy_stack.append((spinner_text, cancelable))
-        self._blocking_operation_depth = getattr(self, '_blocking_operation_depth', 0) + 1
+        stack = getattr(self, '_blocking_busy_stack', [])
+        self._blocking_busy_stack = stack
+        stack.append((spinner_text, cancelable))
+        self._blocking_operation_depth = len(stack)
         self._blocking_operation_in_flight = True
         try:
             self._set_wizard_busy(True, spinner_text, cancelable=cancelable)
@@ -3651,9 +3652,9 @@ class NewPrinterGUI(GtkGUI):
             else:
                 return op(*args, **kwargs)
         finally:
-            if self._blocking_busy_stack:
-                self._blocking_busy_stack.pop()
-            self._blocking_operation_depth = max(0, self._blocking_operation_depth - 1)
+            if stack:
+                stack.pop()
+            self._blocking_operation_depth = len(stack)
             if self._blocking_operation_depth == 0:
                 self._blocking_operation_in_flight = False
                 self._set_wizard_busy(False)
@@ -3663,8 +3664,8 @@ class NewPrinterGUI(GtkGUI):
                     except AttributeError:
                         pass
                 self._resume_deferred_network_discovery ()
-            elif self._blocking_busy_stack:
-                outer_spinner_text, outer_cancelable = self._blocking_busy_stack[-1]
+            else:
+                outer_spinner_text, outer_cancelable = stack[-1]
                 self._set_wizard_busy(True, outer_spinner_text, cancelable=outer_cancelable)
 
     def add_devices (self, devices, current_uri, no_more=False):
