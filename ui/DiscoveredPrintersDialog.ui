@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk+" version="3.0"/>
+  
+  <object class="GtkDialog" id="DiscoveredPrintersDialog">
+    <property name="title" translatable="yes">Discovered Printers</property>
+    <property name="modal">True</property>
+    <property name="window_position">center-on-parent</property>
+    <property name="default_width">400</property>
+    <property name="default_height">300</property>
+
+    <!-- VBox for the entire dialog content -->
+    <child internal-child="vbox">
+      <object class="GtkBox" id="dialog-vbox">
+        <property name="visible">True</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">6</property>
+
+        <!-- Scrollable area for the list of printers -->
+        <child>
+          <object class="GtkScrolledWindow" id="printer-scrolled-window">
+            <property name="visible">True</property>
+            <property name="hexpand">True</property>
+            <property name="vexpand">True</property>
+            <child>
+              <!-- FlowBox for single-column printer items -->
+              <object class="GtkFlowBox" id="printers-flowbox">
+                <property name="visible">True</property>
+                <property name="max_children_per_line">1</property>
+                <property name="selection_mode">none</property>
+                <property name="hexpand">True</property>
+                <property name="vexpand">True</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+
+    <!-- OK Button -->
+    <child internal-child="action_area">
+      <object class="GtkButtonBox" id="dialog-action_area">
+        <property name="visible">True</property>
+        <property name="layout_style">end</property>
+        <child>
+          <object class="GtkButton" id="buttonOk">
+            <property name="label" translatable="yes">_OK</property>
+            <property name="visible">True</property>
+            <signal name="clicked" handler="on_discovered_printers_dialog_close"/>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>
