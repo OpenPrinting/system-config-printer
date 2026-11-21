@@ -193,3 +193,23 @@ def test_is_ipp_over_usb_device_lan_ip():
 def test_is_ipp_over_usb_device_non_ipp_uri():
     dev = DummyIPPUSBDevice('socket://printer._printer._tcp.local/', 'network', '', address='127.0.0.1')
     assert dnssdresolve.is_ipp_over_usb_device(dev) is False
+
+
+def test_dns_sd_resolver_reply_loopback_interface(monkeypatch):
+    import socket
+    monkeypatch.setattr(socket, "if_indextoname", lambda idx: "lo")
+    uri = 'ipp://Xerox(R)%20B235%20MFP%20(USB)._ipp._tcp.local/'
+    resolver = dnssdresolve.DNSSDHostNamesResolver.__new__(dnssdresolve.DNSSDHostNamesResolver)
+    device = DummyIPPUSBDevice(uri, 'network', '')
+    resolver._devices = {uri: device}
+    service = dnssdresolve._service_tuple_from_uri(uri)
+    resolver._device_uri_by_name = {service: uri}
+    resolver._unresolved = 1
+    resolver._reply_handler = lambda devices: None
+
+    resolver._reply(1, 0, 'Xerox(R) B235 MFP (USB)', '_ipp._tcp', 'local',
+                    'host.local', 0, '10.255.255.254', 60000,
+                    ['usb_SER=34004H030206H'], 0)
+
+    assert getattr(device, 'is_ipp_over_usb', False) is True
+    assert dnssdresolve.is_ipp_over_usb_device(device) is True

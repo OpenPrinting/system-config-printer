@@ -5726,8 +5726,8 @@ def test_back_during_forward_ppd_loading_unblocks_overlay():
     assert np._overlay_blocker.get_parent() is None
 
 
-def test_async_discovery_suppresses_legacy_usb_when_ipp_usb_has_usb_ser():
-    """Verify that a legacy USB printer discovered in batch 1 is removed
+def test_async_discovery_groups_legacy_usb_when_ipp_usb_has_usb_ser():
+    """Verify that a legacy USB printer discovered in batch 1 groups
     when its IPP-over-USB counterpart arrives in batch 2 with matching usb_SER."""
     import os
     os.environ["SYSTEM_CONFIG_PRINTER_UI"] = "ui"
@@ -5775,11 +5775,12 @@ def test_async_discovery_suppresses_legacy_usb_when_ipp_usb_has_usb_ser():
 
     gui.add_devices({ipp_dev.uri: ipp_dev}, None, no_more=True)
 
-    # Legacy USB must be purged; only IPP-over-USB must remain
+    # Legacy USB and IPP-over-USB merge into one PhysicalDevice with both connections
     real_devices = [p for p in gui.devices if p.devices[0].uri]
     assert len(real_devices) == 1
+    assert len(real_devices[0].devices) == 2
     assert real_devices[0].devices[0].uri == ipp_dev.uri
-    assert real_devices[0].get_info() == 'Xerox(R) B235 MFP'
+    assert real_devices[0].get_info() == 'Xerox B235 MFP'
 
     model = gui.tvNPDevices.get_model()
     row_names = []
@@ -5792,8 +5793,81 @@ def test_async_discovery_suppresses_legacy_usb_when_ipp_usb_has_usb_ser():
             it = model.iter_next(it)
     scan(model.get_iter_first())
 
-    assert not any('Xerox B235 MFP (34004H030206H)' in name for name in row_names)
-    assert any('Xerox(R) B235 MFP' in name for name in row_names)
+    assert any('Xerox B235 MFP' in name for name in row_names)
+
+
+def test_async_discovery_groups_legacy_usb_wsl_loopback(monkeypatch):
+    """Verify that a legacy USB printer groups with IPP-over-USB when resolved
+    on a loopback interface ('lo') with non-127 address like WSL2."""
+    import os
+    os.environ["SYSTEM_CONFIG_PRINTER_UI"] = "ui"
+    import socket
+    from unittest.mock import MagicMock
+    import newprinter
+    import cupshelpers
+    import dnssdresolve
+
+    monkeypatch.setattr(socket, "if_indextoname", lambda idx: "lo" if idx == 1 else "eth0")
+
+    gui = newprinter.NewPrinterGUI()
+    gui.start_fetching_devices = MagicMock()
+    gui.fillDeviceTab()
+
+    # Batch 1: Legacy USB device
+    usb_dev = cupshelpers.Device(
+        'usb://Xerox/B235%20MFP?serial=34004H030206H&interface=1',
+        **{'device-class': 'direct',
+           'device-info': 'Xerox B235 MFP',
+           'device-make-and-model': 'Xerox B235 MFP',
+           'device-id': 'MANUFACTURER:Xerox;MODEL:B235 MFP;SN:34004H030206H;'})
+    gui.add_devices({usb_dev.uri: usb_dev}, None, no_more=False)
+
+    # Batch 2: DNS-SD resolves on 10.255.255.254 with usb_SER
+    ipp_dev = cupshelpers.Device(
+        'ipp://Xerox(R)%20B235%20MFP%20(USB)._ipp._tcp.local/',
+        **{'device-class': 'network',
+           'device-info': 'Xerox(R) B235 MFP (USB)',
+           'device-make-and-model': 'Xerox(R) B235 MFP (USB)',
+           'device-id': 'CMD:AppleRaster,URF,PWGRaster,PWG,PCLM,JPEG,PS,TEXT;'})
+
+    resolver = dnssdresolve.DNSSDHostNamesResolver.__new__(dnssdresolve.DNSSDHostNamesResolver)
+    resolver._devices = {ipp_dev.uri: ipp_dev}
+    service = dnssdresolve._service_tuple_from_uri(ipp_dev.uri)
+    resolver._device_uri_by_name = {service: ipp_dev.uri}
+    resolver._unresolved = 1
+    resolver._reply_handler = lambda devices: None
+    resolver._reply(1, 0, 'Xerox(R) B235 MFP (USB)', '_ipp._tcp', 'local',
+                    'host.local', 0, '10.255.255.254', 60000,
+                    ['usb_SER=34004H030206H'], 0)
+
+    gui.add_devices({ipp_dev.uri: ipp_dev}, None, no_more=True)
+
+    # Must be merged into 1 PhysicalDevice with 2 connections
+    real_devices = [p for p in gui.devices if p.devices[0].uri]
+    assert len(real_devices) == 1
+    assert len(real_devices[0].devices) == 2
+    assert real_devices[0].devices[0].uri == ipp_dev.uri
+
+    # Verify GUI TreeView
+    model = gui.tvNPDevices.get_model()
+    target_iter = None
+    it = model.get_iter_first()
+    while it:
+        if model.get_value(it, 1) == real_devices[0]:
+            target_iter = it
+            break
+        it = model.iter_next(it)
+    assert target_iter is not None
+
+    path = model.get_path(target_iter)
+    gui.tvNPDevices.set_cursor(path, gui.tvNPDevices.get_column(0), False)
+    gui.on_tvNPDevices_cursor_changed(gui.tvNPDevices)
+
+    uri_model = gui.tvNPDeviceURIs.get_model()
+    conn_entries = [uri_model.get_value(uri_model.get_iter(Gtk.TreePath(i)), 0)
+                    for i in range(len(uri_model))]
+    assert conn_entries == ["IPP over USB", "USB"]
+    assert gui.device.uri == ipp_dev.uri
 
 
 def test_btnNPCancel_loaded_in_getWidgets():
@@ -5927,6 +6001,7 @@ def test_cancel_button_disabled_during_apply_and_restored_on_error():
     assert False in cancel_sensitivity_history
     # After error handling and _set_wizard_busy(False), Cancel button is re-enabled
     assert np.btnNPCancel.get_sensitive() is True
+
 
 
 def test_lpd_dnssd_and_lpd_gui_single_entry():
@@ -6160,3 +6235,655 @@ def test_printer_url_display_unquoted_and_socket_consistency():
     assert gui.lblNPDeviceDescription.get_text() == "socket://Kyocera ECOSYS M2040dn._pdl-datastream._tcp.local/"
     assert gui.device.uri == "socket://Kyocera%20ECOSYS%20M2040dn._pdl-datastream._tcp.local/"
     assert gui.getDeviceURI() == "socket://Kyocera%20ECOSYS%20M2040dn._pdl-datastream._tcp.local/"
+
+
+def _make_sample_usb_devices():
+    dev_usb = cupshelpers.Device(
+        "usb://Xerox/B235?serial=XYZ123",
+        **{'device-info': 'Xerox B235 MFP', 'device-class': 'direct'})
+    dev_usb.type = "usb"
+    dev_usb.address = ''
+
+    dev_ipp_usb = cupshelpers.Device(
+        "ipp://Xerox%20B235._ipp._tcp.local/",
+        **{'device-info': 'ipp-usb (driverless)', 'device-class': 'network'})
+    dev_ipp_usb.type = "ipp"
+    dev_ipp_usb.address = '127.0.0.1'
+
+    return dev_usb, dev_ipp_usb
+
+
+def _setup_physicaldevice_gui(devices):
+    np = get_dummy_gui()
+    np.device_selected = 0
+    np.tvNPDeviceURIs = MagicMock()
+    np.expNPDeviceURIs = MagicMock()
+    np.lblNPDeviceDescription = MagicMock()
+    np.ntbkNPType = MagicMock()
+    np.new_printer_device_tabs = {}
+    np.PAGE_SELECT_DEVICE = 1
+    np.PAGE_DESCRIBE_PRINTER = 2
+
+    mock_widget = MagicMock()
+    mock_widget.get_cursor.return_value = ("0", 0)
+    mock_model = MagicMock()
+    mock_widget.get_model.return_value = mock_model
+    mock_model.get_iter.return_value = "iter"
+
+    mock_physicaldevice = MagicMock()
+    mock_model.get_value.return_value = mock_physicaldevice
+    mock_physicaldevice.get_devices.return_value = devices
+
+    captured_models = []
+    np.tvNPDeviceURIs.set_model.side_effect = captured_models.append
+
+    return np, mock_widget, captured_models
+
+
+def _setup_uri_selection_gui(monkeypatch, dialog_response=Gtk.ResponseType.YES):
+    np = get_dummy_gui()
+    del np.getDeviceURI  # Use real getDeviceURI implementation
+    np.tvNPDeviceURIs = MagicMock()
+    np.NewPrinterWindow = MagicMock()
+    np.lblNPDeviceDescription = MagicMock()
+    np.ntbkNPType = MagicMock()
+    np.ntbkNewPrinter = MagicMock()
+    np.new_printer_device_tabs = {"usb": 0, "ipp": 0}
+    np.PAGE_SELECT_DEVICE = 1
+    np.PAGE_DESCRIBE_PRINTER = 0
+    np.entNPTDevice = MagicMock()
+    np.entNPLocation = MagicMock()
+    np._host = "localhost"
+    np.setNPButtons = MagicMock()
+
+    dialog_responses = []
+
+    def mock_MessageDialog(*args, **kwargs):
+        dialog = MagicMock()
+        dialog.run = lambda: (dialog_responses.append(dialog_response) or dialog_response)
+        dialog.destroy = MagicMock()
+        return dialog
+
+    monkeypatch.setattr(Gtk, "MessageDialog", mock_MessageDialog)
+
+    dev_usb, dev_ipp_usb = _make_sample_usb_devices()
+
+    model = Gtk.ListStore(str, object)
+    model.append(("IPP over USB", dev_ipp_usb))
+    model.append(("USB", dev_usb))
+
+    np.tvNPDeviceURIs.get_model.return_value = model
+    mock_column = MagicMock()
+    np.tvNPDeviceURIs.get_column.return_value = mock_column
+
+    np._physicaldevice_has_both_connections = True
+    np.device = dev_ipp_usb
+
+    return np, dev_usb, dev_ipp_usb, model, mock_column, dialog_responses
+
+
+def test_connection_order_ipp_over_usb_first():
+    """Verify that IPP-over-USB connections appear before legacy USB regardless of discovery order."""
+    dev_usb, dev_ipp_usb = _make_sample_usb_devices()
+
+    for devices in ([dev_usb, dev_ipp_usb], [dev_ipp_usb, dev_usb]):
+        np, mock_widget, captured_models = _setup_physicaldevice_gui(devices)
+        np.on_tvNPDevices_cursor_changed(mock_widget)
+
+        assert len(captured_models) == 1
+        items = [r[0] for r in captured_models[0]]
+        assert "IPP over USB" in items[0], f"Expected 'IPP over USB' first, got: {items}"
+        assert "USB" in items[1], f"Expected 'USB' second, got: {items}"
+
+
+def test_connection_default_selection_ipp_over_usb():
+    """Verify that IPP-over-USB is selected by default when both connections exist."""
+    dev_usb, dev_ipp_usb = _make_sample_usb_devices()
+    np, mock_widget, _ = _setup_physicaldevice_gui([dev_usb, dev_ipp_usb])
+
+    np.on_tvNPDevices_cursor_changed(mock_widget)
+
+    np.tvNPDeviceURIs.set_cursor.assert_called()
+    call_args = np.tvNPDeviceURIs.set_cursor.call_args
+    path_arg = call_args[0][0]
+    assert str(path_arg) == "0" or path_arg == Gtk.TreePath(0)
+
+
+def test_usb_only_printer_no_warning():
+    """Verify USB-only printer works without warning and shows USB connection."""
+    dev_usb, _ = _make_sample_usb_devices()
+    np, mock_widget, captured_models = _setup_physicaldevice_gui([dev_usb])
+
+    np.on_tvNPDevices_cursor_changed(mock_widget)
+
+    assert len(captured_models) == 1
+    items = [r[0] for r in captured_models[0]]
+    assert len(items) == 1
+    assert "USB" in items[0]
+    assert getattr(np, '_physicaldevice_has_both_connections', False) is False
+
+
+def test_ipp_over_usb_only_printer_no_warning():
+    """Verify IPP-over-USB-only printer works without warning."""
+    _, dev_ipp_usb = _make_sample_usb_devices()
+    np, mock_widget, captured_models = _setup_physicaldevice_gui([dev_ipp_usb])
+
+    np.on_tvNPDevices_cursor_changed(mock_widget)
+
+    assert len(captured_models) == 1
+    items = [r[0] for r in captured_models[0]]
+    assert len(items) == 1
+    assert "IPP over USB" in items[0]
+    assert getattr(np, '_physicaldevice_has_both_connections', False) is False
+
+
+def test_legacy_usb_selection_triggers_warning(monkeypatch):
+    """Verify that selecting legacy USB while IPP-over-USB is available triggers warning and updates URI."""
+    np, dev_usb, dev_ipp_usb, model, mock_column, dialog_responses = _setup_uri_selection_gui(
+        monkeypatch, dialog_response=Gtk.ResponseType.YES)
+
+    np.tvNPDeviceURIs.get_cursor.return_value = (Gtk.TreePath(1), mock_column)
+
+    assert np.device == dev_ipp_usb
+    assert np.device.uri == dev_ipp_usb.uri
+
+    np.on_tvNPDeviceURIs_cursor_changed(np.tvNPDeviceURIs)
+
+    assert len(dialog_responses) == 1
+    assert dialog_responses[0] == Gtk.ResponseType.YES
+
+    assert np.device == dev_usb
+    assert np.device.uri == dev_usb.uri
+    assert np.getDeviceURI() == dev_usb.uri
+
+
+def test_legacy_usb_warning_cancel_restores_ipp_over_usb(monkeypatch):
+    """Verify that cancelling the USB warning restores IPP-over-USB selection and prevents recursion."""
+    np, dev_usb, dev_ipp_usb, model, mock_column, dialog_responses = _setup_uri_selection_gui(
+        monkeypatch, dialog_response=Gtk.ResponseType.NO)
+
+    np.tvNPDeviceURIs.get_cursor.return_value = (Gtk.TreePath(1), mock_column)
+
+    cursor_calls = []
+
+    def mock_set_cursor(path, column, expand):
+        cursor_calls.append((path, column, expand))
+        np.tvNPDeviceURIs.get_cursor.return_value = (path, column)
+        np.on_tvNPDeviceURIs_cursor_changed(np.tvNPDeviceURIs)
+
+    np.tvNPDeviceURIs.set_cursor = mock_set_cursor
+
+    np.on_tvNPDeviceURIs_cursor_changed(np.tvNPDeviceURIs)
+
+    assert len(dialog_responses) == 1
+    assert dialog_responses[0] == Gtk.ResponseType.NO
+
+    assert len(cursor_calls) >= 1
+    assert str(cursor_calls[-1][0]) == "0" or cursor_calls[-1][0] == Gtk.TreePath(0)
+
+    assert np.device == dev_ipp_usb
+    assert np.device.uri == dev_ipp_usb.uri
+    assert np.getDeviceURI() == dev_ipp_usb.uri
+
+
+def test_add_devices_both_connections_survive_and_group():
+    """Verify that when both legacy USB and IPP-over-USB are discovered, both survive
+    suppression/filtering, group into a single PhysicalDevice, and display both connections."""
+    import os
+    os.environ["SYSTEM_CONFIG_PRINTER_UI"] = "ui"
+    gi.require_version('Gtk', '3.0')
+    from gi.repository import Gtk
+    import newprinter
+    import cupshelpers
+
+    gui = newprinter.NewPrinterGUI()
+    gui.start_fetching_devices = MagicMock()
+    gui.fillDeviceTab()
+
+    dev_usb = cupshelpers.Device(
+        'usb://Xerox/B235%20MFP?serial=34004H030206H&interface=1',
+        **{'device-class': 'direct',
+           'device-info': 'Xerox B235 MFP',
+           'device-make-and-model': 'Xerox B235 MFP',
+           'device-id': 'MFG:Xerox;MDL:B235 MFP;SN:34004H030206H;'})
+
+    dev_ipp = cupshelpers.Device(
+        'ipp://Xerox(R)%20B235%20MFP%20(USB)._ipp._tcp.local/',
+        **{'device-class': 'network',
+           'device-info': 'Xerox(R) B235 MFP (USB)',
+           'device-make-and-model': 'Xerox(R) B235 MFP',
+           'device-id': 'MFG:Xerox;MDL:B235 MFP;SN:34004H030206H;'})
+    dev_ipp.address = '127.0.0.1'
+
+    devices_dict = {dev_usb.uri: dev_usb, dev_ipp.uri: dev_ipp}
+    gui.add_devices(devices_dict, None, no_more=True)
+
+    xerox_phys = [p for p in gui.devices if p.sn == '34004H030206H']
+    assert len(xerox_phys) == 1
+    phys = xerox_phys[0]
+    assert len(phys.get_devices()) == 2
+    uris = [d.uri for d in phys.get_devices()]
+    assert dev_usb.uri in uris
+    assert dev_ipp.uri in uris
+
+    model = gui.tvNPDevices.get_model()
+    target_iter = None
+    it = model.get_iter_first()
+    while it:
+        if model.get_value(it, 1) == phys:
+            target_iter = it
+            break
+        it = model.iter_next(it)
+
+    assert target_iter is not None
+    path = model.get_path(target_iter)
+    gui.tvNPDevices.set_cursor(path, gui.tvNPDevices.get_column(0), False)
+    gui.on_tvNPDevices_cursor_changed(gui.tvNPDevices)
+
+    uri_model = gui.tvNPDeviceURIs.get_model()
+    assert uri_model is not None
+    conn_entries = [uri_model.get_value(uri_model.get_iter(Gtk.TreePath(i)), 0)
+                    for i in range(len(uri_model))]
+    assert conn_entries == ["IPP over USB", "USB"]
+
+
+def test_add_devices_batches_usb_then_ipp_over_usb():
+    """Verify that if USB arrives in batch 1 and IPP-over-USB in batch 2, they merge."""
+    import os
+    os.environ["SYSTEM_CONFIG_PRINTER_UI"] = "ui"
+    gi.require_version('Gtk', '3.0')
+    from gi.repository import Gtk
+    import newprinter
+    import cupshelpers
+
+    gui = newprinter.NewPrinterGUI()
+    gui.start_fetching_devices = MagicMock()
+    gui.fillDeviceTab()
+
+    dev_usb = cupshelpers.Device(
+        'usb://Xerox/B235%20MFP?serial=34004H030206H&interface=1',
+        **{'device-class': 'direct',
+           'device-info': 'Xerox B235 MFP',
+           'device-make-and-model': 'Xerox B235 MFP',
+           'device-id': 'MFG:Xerox;MDL:B235 MFP;SN:34004H030206H;'})
+
+    dev_ipp = cupshelpers.Device(
+        'ipp://Xerox(R)%20B235%20MFP%20(USB)._ipp._tcp.local/',
+        **{'device-class': 'network',
+           'device-info': 'Xerox(R) B235 MFP (USB)',
+           'device-make-and-model': 'Xerox(R) B235 MFP',
+           'device-id': 'MFG:Xerox;MDL:B235 MFP;SN:34004H030206H;'})
+    dev_ipp.address = '127.0.0.1'
+
+    gui.add_devices({dev_usb.uri: dev_usb}, None, no_more=False)
+    xerox_phys = [p for p in gui.devices if p.sn == '34004H030206H']
+    assert len(xerox_phys) == 1
+    assert len(xerox_phys[0].get_devices()) == 1
+
+    gui.add_devices({dev_ipp.uri: dev_ipp}, None, no_more=True)
+    xerox_phys = [p for p in gui.devices if p.sn == '34004H030206H']
+    assert len(xerox_phys) == 1
+    assert len(xerox_phys[0].get_devices()) == 2
+
+
+def test_add_devices_batches_ipp_over_usb_then_usb():
+    """Verify that if IPP-over-USB arrives in batch 1 and USB in batch 2, they merge."""
+    import os
+    os.environ["SYSTEM_CONFIG_PRINTER_UI"] = "ui"
+    gi.require_version('Gtk', '3.0')
+    from gi.repository import Gtk
+    import newprinter
+    import cupshelpers
+
+    gui = newprinter.NewPrinterGUI()
+    gui.start_fetching_devices = MagicMock()
+    gui.fillDeviceTab()
+
+    dev_usb = cupshelpers.Device(
+        'usb://Xerox/B235%20MFP?serial=34004H030206H&interface=1',
+        **{'device-class': 'direct',
+           'device-info': 'Xerox B235 MFP',
+           'device-make-and-model': 'Xerox B235 MFP',
+           'device-id': 'MFG:Xerox;MDL:B235 MFP;SN:34004H030206H;'})
+
+    dev_ipp = cupshelpers.Device(
+        'ipp://Xerox(R)%20B235%20MFP%20(USB)._ipp._tcp.local/',
+        **{'device-class': 'network',
+           'device-info': 'Xerox(R) B235 MFP (USB)',
+           'device-make-and-model': 'Xerox(R) B235 MFP',
+           'device-id': 'MFG:Xerox;MDL:B235 MFP;SN:34004H030206H;'})
+    dev_ipp.address = '127.0.0.1'
+
+    # Batch 1: IPP-over-USB device arrives
+    gui.add_devices({dev_ipp.uri: dev_ipp}, None, no_more=False)
+    xerox_phys = [p for p in gui.devices if p.sn == '34004H030206H']
+    assert len(xerox_phys) == 1
+    assert len(xerox_phys[0].get_devices()) == 1
+
+    # Batch 2: USB device arrives
+    gui.add_devices({dev_usb.uri: dev_usb}, None, no_more=True)
+    xerox_phys = [p for p in gui.devices if p.sn == '34004H030206H']
+    assert len(xerox_phys) == 1
+    assert len(xerox_phys[0].get_devices()) == 2
+
+
+def test_add_devices_duplicate_discovery_ignored():
+    """Verify that receiving the same devices multiple times does not create duplicates."""
+    import os
+    os.environ["SYSTEM_CONFIG_PRINTER_UI"] = "ui"
+    gi.require_version('Gtk', '3.0')
+    from gi.repository import Gtk
+    import newprinter
+    import cupshelpers
+
+    gui = newprinter.NewPrinterGUI()
+    gui.start_fetching_devices = MagicMock()
+    gui.fillDeviceTab()
+
+    dev_usb = cupshelpers.Device(
+        'usb://Xerox/B235%20MFP?serial=34004H030206H&interface=1',
+        **{'device-class': 'direct',
+           'device-info': 'Xerox B235 MFP',
+           'device-make-and-model': 'Xerox B235 MFP',
+           'device-id': 'MFG:Xerox;MDL:B235 MFP;SN:34004H030206H;'})
+
+    dev_ipp = cupshelpers.Device(
+        'ipp://Xerox(R)%20B235%20MFP%20(USB)._ipp._tcp.local/',
+        **{'device-class': 'network',
+           'device-info': 'Xerox(R) B235 MFP (USB)',
+           'device-make-and-model': 'Xerox(R) B235 MFP',
+           'device-id': 'MFG:Xerox;MDL:B235 MFP;SN:34004H030206H;'})
+    dev_ipp.address = '127.0.0.1'
+
+    devices_dict = {dev_usb.uri: dev_usb, dev_ipp.uri: dev_ipp}
+    gui.add_devices(devices_dict, None, no_more=False)
+    # Second batch with same devices
+    gui.add_devices(devices_dict, None, no_more=True)
+
+    xerox_phys = [p for p in gui.devices if p.sn == '34004H030206H']
+    assert len(xerox_phys) == 1
+    assert len(xerox_phys[0].get_devices()) == 2
+
+
+def test_add_devices_unrelated_printers_remain_separate():
+    """Verify unrelated printers remain separate PhysicalDevices."""
+    import os
+    os.environ["SYSTEM_CONFIG_PRINTER_UI"] = "ui"
+    gi.require_version('Gtk', '3.0')
+    from gi.repository import Gtk
+    import newprinter
+    import cupshelpers
+
+    gui = newprinter.NewPrinterGUI()
+    gui.start_fetching_devices = MagicMock()
+    gui.fillDeviceTab()
+
+    # USB printer
+    dev_usb = cupshelpers.Device(
+        'usb://Xerox/B235%20MFP?serial=SN_A&interface=1',
+        **{'device-class': 'direct',
+           'device-info': 'Xerox B235 MFP',
+           'device-make-and-model': 'Xerox B235 MFP',
+           'device-id': 'MFG:Xerox;MDL:B235 MFP;SN:SN_A;'})
+
+    # Normal LAN IPP printer with the SAME serial SN_A
+    dev_ipp_lan = cupshelpers.Device(
+        'ipp://Xerox%20LAN._ipp._tcp.local/',
+        **{'device-class': 'network',
+           'device-info': 'Xerox B235 MFP (LAN)',
+           'device-make-and-model': 'Xerox B235 MFP',
+           'device-id': 'MFG:Xerox;MDL:B235 MFP;SN:SN_A;'})
+    dev_ipp_lan.address = '192.168.1.100'
+
+    # A second USB printer with different serial SN_B
+    dev_usb_b = cupshelpers.Device(
+        'usb://Xerox/B235%20MFP?serial=SN_B&interface=1',
+        **{'device-class': 'direct',
+           'device-info': 'Xerox B235 MFP B',
+           'device-make-and-model': 'Xerox B235 MFP',
+           'device-id': 'MFG:Xerox;MDL:B235 MFP;SN:SN_B;'})
+
+    # A second IPP-over-USB printer with different serial SN_C
+    dev_ipp_c = cupshelpers.Device(
+        'ipp://Xerox%20C%20(USB)._ipp._tcp.local/',
+        **{'device-class': 'network',
+           'device-info': 'Xerox B235 MFP C',
+           'device-make-and-model': 'Xerox B235 MFP',
+           'device-id': 'MFG:Xerox;MDL:B235 MFP;SN:SN_C;'})
+    dev_ipp_c.address = '127.0.0.1'
+
+    all_devs = {d.uri: d for d in [dev_usb, dev_ipp_lan, dev_usb_b, dev_ipp_c]}
+    gui.add_devices(all_devs, None, no_more=True)
+
+    # Must produce 4 separate PhysicalDevices (excluding the '' manual placeholder)
+    actual_printers = [p for p in gui.devices if p.firsturi != '']
+    assert len(actual_printers) == 4
+
+
+def test_add_devices_missing_serial_not_grouped():
+    """Verify that USB and IPP-over-USB without serial numbers remain separate PhysicalDevices."""
+    import os
+    os.environ["SYSTEM_CONFIG_PRINTER_UI"] = "ui"
+    gi.require_version('Gtk', '3.0')
+    from gi.repository import Gtk
+    import newprinter
+    import cupshelpers
+
+    gui = newprinter.NewPrinterGUI()
+    gui.start_fetching_devices = MagicMock()
+    gui.fillDeviceTab()
+
+    dev_usb_no_sn = cupshelpers.Device(
+        'usb://Xerox/B235%20MFP?interface=1',
+        **{'device-class': 'direct',
+           'device-info': 'Xerox B235 MFP',
+           'device-make-and-model': 'Xerox B235 MFP',
+           'device-id': 'MFG:Xerox;MDL:B235 MFP;'})
+
+    dev_ipp_no_sn = cupshelpers.Device(
+        'ipp://Xerox(R)%20B235%20MFP%20(USB)._ipp._tcp.local/',
+        **{'device-class': 'network',
+           'device-info': 'Xerox(R) B235 MFP (USB)',
+           'device-make-and-model': 'Xerox(R) B235 MFP',
+           'device-id': 'MFG:Xerox;MDL:B235 MFP;'})
+    dev_ipp_no_sn.address = '127.0.0.1'
+
+    devices_dict = {dev_usb_no_sn.uri: dev_usb_no_sn, dev_ipp_no_sn.uri: dev_ipp_no_sn}
+    gui.add_devices(devices_dict, None, no_more=True)
+
+    # Without serial numbers, they must NOT be assumed to be the same printer
+    actual_printers = [p for p in gui.devices if p.firsturi != '']
+    assert len(actual_printers) == 2
+
+
+def test_add_devices_usb_only_single_connection():
+    """Verify that a USB-only printer creates 1 PhysicalDevice and shows USB connection."""
+    import os
+    os.environ["SYSTEM_CONFIG_PRINTER_UI"] = "ui"
+    gi.require_version('Gtk', '3.0')
+    from gi.repository import Gtk
+    import newprinter
+    import cupshelpers
+
+    gui = newprinter.NewPrinterGUI()
+    gui.start_fetching_devices = MagicMock()
+    gui.fillDeviceTab()
+
+    dev_usb = cupshelpers.Device(
+        'usb://Xerox/B235%20MFP?serial=34004H030206H&interface=1',
+        **{'device-class': 'direct',
+           'device-info': 'Xerox B235 MFP',
+           'device-make-and-model': 'Xerox B235 MFP',
+           'device-id': 'MFG:Xerox;MDL:B235 MFP;SN:34004H030206H;'})
+
+    gui.add_devices({dev_usb.uri: dev_usb}, None, no_more=True)
+    xerox_phys = [p for p in gui.devices if p.sn == '34004H030206H']
+    assert len(xerox_phys) == 1
+    assert len(xerox_phys[0].get_devices()) == 1
+
+    model = gui.tvNPDevices.get_model()
+    target_iter = None
+    it = model.get_iter_first()
+    while it:
+        if model.get_value(it, 1) == xerox_phys[0]:
+            target_iter = it
+            break
+        it = model.iter_next(it)
+
+    assert target_iter is not None
+    path = model.get_path(target_iter)
+    gui.tvNPDevices.set_cursor(path, gui.tvNPDevices.get_column(0), False)
+    gui.on_tvNPDevices_cursor_changed(gui.tvNPDevices)
+
+    uri_model = gui.tvNPDeviceURIs.get_model()
+    conn_entries = [uri_model.get_value(uri_model.get_iter(Gtk.TreePath(i)), 0)
+                    for i in range(len(uri_model))]
+    assert conn_entries == ["USB"]
+
+
+def test_add_devices_ipp_over_usb_only_single_connection():
+    """Verify that an IPP-over-USB-only printer creates 1 PhysicalDevice and shows IPP over USB connection."""
+    import os
+    os.environ["SYSTEM_CONFIG_PRINTER_UI"] = "ui"
+    gi.require_version('Gtk', '3.0')
+    from gi.repository import Gtk
+    import newprinter
+    import cupshelpers
+
+    gui = newprinter.NewPrinterGUI()
+    gui.start_fetching_devices = MagicMock()
+    gui.fillDeviceTab()
+
+    dev_ipp = cupshelpers.Device(
+        'ipp://Xerox(R)%20B235%20MFP%20(USB)._ipp._tcp.local/',
+        **{'device-class': 'network',
+           'device-info': 'Xerox(R) B235 MFP (USB)',
+           'device-make-and-model': 'Xerox(R) B235 MFP',
+           'device-id': 'MFG:Xerox;MDL:B235 MFP;SN:34004H030206H;'})
+    dev_ipp.address = '127.0.0.1'
+
+    gui.add_devices({dev_ipp.uri: dev_ipp}, None, no_more=True)
+    xerox_phys = [p for p in gui.devices if p.sn == '34004H030206H']
+    assert len(xerox_phys) == 1
+    assert len(xerox_phys[0].get_devices()) == 1
+
+    model = gui.tvNPDevices.get_model()
+    target_iter = None
+    it = model.get_iter_first()
+    while it:
+        if model.get_value(it, 1) == xerox_phys[0]:
+            target_iter = it
+            break
+        it = model.iter_next(it)
+
+    assert target_iter is not None
+    path = model.get_path(target_iter)
+    gui.tvNPDevices.set_cursor(path, gui.tvNPDevices.get_column(0), False)
+    gui.on_tvNPDevices_cursor_changed(gui.tvNPDevices)
+
+    uri_model = gui.tvNPDeviceURIs.get_model()
+    conn_entries = [uri_model.get_value(uri_model.get_iter(Gtk.TreePath(i)), 0)
+                    for i in range(len(uri_model))]
+    assert conn_entries == ["IPP over USB"]
+
+
+def test_ipp_usb_apply_legacy_usb_disables_ipp_usb(monkeypatch):
+    """Verify that committing with Legacy USB requests disabled=True from ippusb."""
+    import ippusb
+    np, dev_usb, dev_ipp_usb, model, mock_column, _ = _setup_uri_selection_gui(
+        monkeypatch, dialog_response=Gtk.ResponseType.YES)
+
+    calls = []
+    def mock_set_device_disabled(device_uri=None, disabled=True, **kwargs):
+        calls.append((device_uri, disabled, kwargs))
+        return True
+
+    monkeypatch.setattr(ippusb, "set_device_disabled", mock_set_device_disabled)
+
+    np.device = dev_usb
+    np._physicaldevice_has_both_connections = True
+
+    np._apply_ipp_usb_configuration()
+
+    assert len(calls) == 1
+    assert calls[0][0] == dev_usb.uri
+    assert calls[0][1] is True
+
+
+def test_ipp_usb_apply_ipp_over_usb_enables_ipp_usb(monkeypatch):
+    """Verify that committing with IPP-over-USB requests disabled=False from ippusb."""
+    import ippusb
+    from PhysicalDevice import PhysicalDevice
+
+    np, dev_usb, dev_ipp_usb, model, mock_column, _ = _setup_uri_selection_gui(
+        monkeypatch, dialog_response=Gtk.ResponseType.YES)
+
+    calls = []
+    def mock_set_device_disabled(device_uri=None, disabled=False, **kwargs):
+        calls.append((device_uri, disabled, kwargs))
+        return True
+
+    monkeypatch.setattr(ippusb, "set_device_disabled", mock_set_device_disabled)
+
+    dev_ipp_usb.id_dict = {'SN': 'XYZ123'}
+    phys = PhysicalDevice(dev_usb)
+    phys.add_device(dev_ipp_usb)
+    np.physicaldevice = phys
+    np.device = dev_ipp_usb
+    np._physicaldevice_has_both_connections = True
+
+    np._apply_ipp_usb_configuration()
+
+    assert len(calls) == 1
+    assert calls[0][0] == dev_usb.uri
+    assert calls[0][1] is False
+
+
+def test_ipp_usb_api_unavailable_does_not_call_setconf(monkeypatch):
+    """Verify that when the ipp-usb control API is unavailable, no setconf is attempted and no error is raised."""
+    import ippusb
+    np, dev_usb, dev_ipp_usb, model, mock_column, _ = _setup_uri_selection_gui(
+        monkeypatch, dialog_response=Gtk.ResponseType.YES)
+
+    monkeypatch.setattr(ippusb, "is_control_api_available", lambda **kwargs: False)
+
+    setconf_called = []
+    monkeypatch.setattr(ippusb, "_request", lambda *args, **kwargs: setconf_called.append(args))
+
+    np.device = dev_usb
+    np._physicaldevice_has_both_connections = True
+
+    np._apply_ipp_usb_configuration()
+    assert len(setconf_called) == 0
+
+
+def test_on_btnNPApply_invokes_ipp_usb_configuration():
+    """Verify that on_btnNPApply_clicked calls _apply_ipp_usb_configuration when adding a printer."""
+    np = get_dummy_gui()
+    np.dialog_mode = "printer"
+    np.device = MagicMock()
+    np.device.uri = "usb://HP/LaserJet"
+    np.getDeviceURI = lambda: "usb://HP/LaserJet"
+    np.ppd = "drv:///sample.drv/generic.ppd"
+    np.options = {}
+    np.entNPName = MagicMock()
+    np.entNPName.get_text.return_value = "TestPrinter"
+    np.entNPLocation = MagicMock()
+    np.entNPLocation.get_text.return_value = ""
+    np.entNPDescription = MagicMock()
+    np.entNPDescription.get_text.return_value = ""
+    np.isSharedCbx = MagicMock()
+    np.isSharedCbx.get_active.return_value = False
+    np.btnNPApply = MagicMock()
+    np.cups = MagicMock()
+    np._run_blocking = MagicMock()
+    np.language = ["en_US"]
+    np.emit = MagicMock()
+    np.NewPrinterWindow = MagicMock()
+
+    apply_calls = []
+    np._apply_ipp_usb_configuration = lambda: apply_calls.append(True)
+
+    np.on_btnNPApply_clicked(np.btnNPApply)
+
+    assert len(apply_calls) == 1
