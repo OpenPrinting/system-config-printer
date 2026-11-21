@@ -5796,6 +5796,80 @@ def test_async_discovery_groups_legacy_usb_when_ipp_usb_has_usb_ser():
     assert any('Xerox B235 MFP' in name for name in row_names)
 
 
+def test_async_discovery_groups_legacy_usb_wsl_loopback(monkeypatch):
+    """Verify that a legacy USB printer groups with IPP-over-USB when resolved
+    on a loopback interface ('lo') with non-127 address like WSL2."""
+    import os
+    os.environ["SYSTEM_CONFIG_PRINTER_UI"] = "ui"
+    import socket
+    from unittest.mock import MagicMock
+    import newprinter
+    import cupshelpers
+    import dnssdresolve
+
+    monkeypatch.setattr(socket, "if_indextoname", lambda idx: "lo" if idx == 1 else "eth0")
+
+    gui = newprinter.NewPrinterGUI()
+    gui.start_fetching_devices = MagicMock()
+    gui.fillDeviceTab()
+
+    # Batch 1: Legacy USB device
+    usb_dev = cupshelpers.Device(
+        'usb://Xerox/B235%20MFP?serial=34004H030206H&interface=1',
+        **{'device-class': 'direct',
+           'device-info': 'Xerox B235 MFP',
+           'device-make-and-model': 'Xerox B235 MFP',
+           'device-id': 'MANUFACTURER:Xerox;MODEL:B235 MFP;SN:34004H030206H;'})
+    gui.add_devices({usb_dev.uri: usb_dev}, None, no_more=False)
+
+    # Batch 2: DNS-SD resolves on 10.255.255.254 with usb_SER
+    ipp_dev = cupshelpers.Device(
+        'ipp://Xerox(R)%20B235%20MFP%20(USB)._ipp._tcp.local/',
+        **{'device-class': 'network',
+           'device-info': 'Xerox(R) B235 MFP (USB)',
+           'device-make-and-model': 'Xerox(R) B235 MFP (USB)',
+           'device-id': 'CMD:AppleRaster,URF,PWGRaster,PWG,PCLM,JPEG,PS,TEXT;'})
+
+    resolver = dnssdresolve.DNSSDHostNamesResolver.__new__(dnssdresolve.DNSSDHostNamesResolver)
+    resolver._devices = {ipp_dev.uri: ipp_dev}
+    service = dnssdresolve._service_tuple_from_uri(ipp_dev.uri)
+    resolver._device_uri_by_name = {service: ipp_dev.uri}
+    resolver._unresolved = 1
+    resolver._reply_handler = lambda devices: None
+    resolver._reply(1, 0, 'Xerox(R) B235 MFP (USB)', '_ipp._tcp', 'local',
+                    'host.local', 0, '10.255.255.254', 60000,
+                    ['usb_SER=34004H030206H'], 0)
+
+    gui.add_devices({ipp_dev.uri: ipp_dev}, None, no_more=True)
+
+    # Must be merged into 1 PhysicalDevice with 2 connections
+    real_devices = [p for p in gui.devices if p.devices[0].uri]
+    assert len(real_devices) == 1
+    assert len(real_devices[0].devices) == 2
+    assert real_devices[0].devices[0].uri == ipp_dev.uri
+
+    # Verify GUI TreeView
+    model = gui.tvNPDevices.get_model()
+    target_iter = None
+    it = model.get_iter_first()
+    while it:
+        if model.get_value(it, 1) == real_devices[0]:
+            target_iter = it
+            break
+        it = model.iter_next(it)
+    assert target_iter is not None
+
+    path = model.get_path(target_iter)
+    gui.tvNPDevices.set_cursor(path, gui.tvNPDevices.get_column(0), False)
+    gui.on_tvNPDevices_cursor_changed(gui.tvNPDevices)
+
+    uri_model = gui.tvNPDeviceURIs.get_model()
+    conn_entries = [uri_model.get_value(uri_model.get_iter(Gtk.TreePath(i)), 0)
+                    for i in range(len(uri_model))]
+    assert conn_entries == ["IPP over USB", "USB"]
+    assert gui.device.uri == ipp_dev.uri
+
+
 def test_btnNPCancel_loaded_in_getWidgets():
     """Verify that btnNPCancel is properly bound as a widget when NewPrinterGUI initializes."""
     import os
@@ -6711,3 +6785,105 @@ def test_add_devices_ipp_over_usb_only_single_connection():
     conn_entries = [uri_model.get_value(uri_model.get_iter(Gtk.TreePath(i)), 0)
                     for i in range(len(uri_model))]
     assert conn_entries == ["IPP over USB"]
+
+
+def test_ipp_usb_apply_legacy_usb_disables_ipp_usb(monkeypatch):
+    """Verify that committing with Legacy USB requests disabled=True from ippusb."""
+    import ippusb
+    np, dev_usb, dev_ipp_usb, model, mock_column, _ = _setup_uri_selection_gui(
+        monkeypatch, dialog_response=Gtk.ResponseType.YES)
+
+    calls = []
+    def mock_set_device_disabled(device_uri=None, disabled=True, **kwargs):
+        calls.append((device_uri, disabled, kwargs))
+        return True
+
+    monkeypatch.setattr(ippusb, "set_device_disabled", mock_set_device_disabled)
+
+    np.device = dev_usb
+    np._physicaldevice_has_both_connections = True
+
+    np._apply_ipp_usb_configuration()
+
+    assert len(calls) == 1
+    assert calls[0][0] == dev_usb.uri
+    assert calls[0][1] is True
+
+
+def test_ipp_usb_apply_ipp_over_usb_enables_ipp_usb(monkeypatch):
+    """Verify that committing with IPP-over-USB requests disabled=False from ippusb."""
+    import ippusb
+    from PhysicalDevice import PhysicalDevice
+
+    np, dev_usb, dev_ipp_usb, model, mock_column, _ = _setup_uri_selection_gui(
+        monkeypatch, dialog_response=Gtk.ResponseType.YES)
+
+    calls = []
+    def mock_set_device_disabled(device_uri=None, disabled=False, **kwargs):
+        calls.append((device_uri, disabled, kwargs))
+        return True
+
+    monkeypatch.setattr(ippusb, "set_device_disabled", mock_set_device_disabled)
+
+    dev_ipp_usb.id_dict = {'SN': 'XYZ123'}
+    phys = PhysicalDevice(dev_usb)
+    phys.add_device(dev_ipp_usb)
+    np.physicaldevice = phys
+    np.device = dev_ipp_usb
+    np._physicaldevice_has_both_connections = True
+
+    np._apply_ipp_usb_configuration()
+
+    assert len(calls) == 1
+    assert calls[0][0] == dev_usb.uri
+    assert calls[0][1] is False
+
+
+def test_ipp_usb_api_unavailable_does_not_call_setconf(monkeypatch):
+    """Verify that when the ipp-usb control API is unavailable, no setconf is attempted and no error is raised."""
+    import ippusb
+    np, dev_usb, dev_ipp_usb, model, mock_column, _ = _setup_uri_selection_gui(
+        monkeypatch, dialog_response=Gtk.ResponseType.YES)
+
+    monkeypatch.setattr(ippusb, "is_control_api_available", lambda **kwargs: False)
+
+    setconf_called = []
+    monkeypatch.setattr(ippusb, "_request", lambda *args, **kwargs: setconf_called.append(args))
+
+    np.device = dev_usb
+    np._physicaldevice_has_both_connections = True
+
+    np._apply_ipp_usb_configuration()
+    assert len(setconf_called) == 0
+
+
+def test_on_btnNPApply_invokes_ipp_usb_configuration():
+    """Verify that on_btnNPApply_clicked calls _apply_ipp_usb_configuration when adding a printer."""
+    np = get_dummy_gui()
+    np.dialog_mode = "printer"
+    np.device = MagicMock()
+    np.device.uri = "usb://HP/LaserJet"
+    np.getDeviceURI = lambda: "usb://HP/LaserJet"
+    np.ppd = "drv:///sample.drv/generic.ppd"
+    np.options = {}
+    np.entNPName = MagicMock()
+    np.entNPName.get_text.return_value = "TestPrinter"
+    np.entNPLocation = MagicMock()
+    np.entNPLocation.get_text.return_value = ""
+    np.entNPDescription = MagicMock()
+    np.entNPDescription.get_text.return_value = ""
+    np.isSharedCbx = MagicMock()
+    np.isSharedCbx.get_active.return_value = False
+    np.btnNPApply = MagicMock()
+    np.cups = MagicMock()
+    np._run_blocking = MagicMock()
+    np.language = ["en_US"]
+    np.emit = MagicMock()
+    np.NewPrinterWindow = MagicMock()
+
+    apply_calls = []
+    np._apply_ipp_usb_configuration = lambda: apply_calls.append(True)
+
+    np.on_btnNPApply_clicked(np.btnNPApply)
+
+    assert len(apply_calls) == 1

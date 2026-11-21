@@ -65,6 +65,7 @@ import firewallsettings
 import asyncconn
 import ppdsloader
 import dnssdresolve
+import ippusb
 import installpackage
 from vectorspinner import VectorSpinner
 
@@ -516,6 +517,7 @@ class NewPrinterGUI(GtkGUI):
         self.downloadable_printers = []
         self._cached_driverless_ppd = None
         self._cached_driverless_ppd_name = None
+        self.physicaldevice = None
         self._physicaldevice_has_both_connections = False
         self._cancelled = False
         self.nextnptab_rerun = False
@@ -1011,6 +1013,7 @@ class NewPrinterGUI(GtkGUI):
         self.printer_finder = None
         self._cached_driverless_ppd = None
         self._cached_driverless_ppd_name = None
+        self.physicaldevice = None
         self._physicaldevice_has_both_connections = False
         self._cancelled = False
         self._op_abandoned = False
@@ -3471,6 +3474,40 @@ class NewPrinterGUI(GtkGUI):
 
         return response == Gtk.ResponseType.YES
 
+    def _apply_ipp_usb_configuration(self):
+        device = getattr(self, 'device', None)
+        if not device:
+            return
+
+        is_ipp = dnssdresolve.is_ipp_over_usb_device(device)
+        is_usb = (getattr(device, 'type', '') == 'usb' or getattr(device, 'uri', '').startswith('usb:')) and not is_ipp
+        if not (is_ipp or is_usb):
+            return
+
+        phys_dev = getattr(self, 'physicaldevice', None)
+        has_both = getattr(self, '_physicaldevice_has_both_connections', False)
+        if not has_both and phys_dev:
+            devs = phys_dev.get_devices()
+            has_both = (any(dnssdresolve.is_ipp_over_usb_device(d) for d in devs) and
+                        any((getattr(d, 'type', '') == 'usb' or getattr(d, 'uri', '').startswith('usb:'))
+                            and not dnssdresolve.is_ipp_over_usb_device(d) for d in devs))
+
+        if is_usb and not has_both:
+            return
+
+        usb_uri = getattr(device, 'uri', None) if is_usb else None
+        if not usb_uri and phys_dev:
+            for d in phys_dev.get_devices():
+                if (getattr(d, 'type', '') == 'usb' or getattr(d, 'uri', '').startswith('usb:')) and not dnssdresolve.is_ipp_over_usb_device(d):
+                    usb_uri = getattr(d, 'uri', None)
+                    break
+
+        sn = getattr(phys_dev, 'sn', None) or dnssdresolve._device_serial(device) or None
+        try:
+            ippusb.set_device_disabled(device_uri=usb_uri, disabled=is_usb, sn=sn)
+        except Exception as e:
+            debugprint(f"ipp-usb: failed to apply configuration: {e}")
+
     def _set_wizard_busy (self, busy, spinner_text="", cancelable=True):
         if busy:
             try:
@@ -4315,6 +4352,7 @@ class NewPrinterGUI(GtkGUI):
         physicaldevice = model.get_value (iter, 1)
         if physicaldevice is None:
             return
+        self.physicaldevice = physicaldevice
         show_uris = True
         for device in physicaldevice.get_devices ():
             protocol = PhysicalDevice._protocol_from_uri (device.uri)
@@ -5793,6 +5831,8 @@ class NewPrinterGUI(GtkGUI):
                 self.nextNPTab(-1)
                 return
 
+            self._apply_ipp_usb_configuration()
+
             # write Installable Options to ppd
             for option in self.options.values():
                 option.writeback()
@@ -5854,6 +5894,7 @@ class NewPrinterGUI(GtkGUI):
             self.btnNPApply.set_sensitive(False)
             if hasattr(self, 'btnNPCancel'):
                 self.btnNPCancel.set_sensitive(False)
+            self._apply_ipp_usb_configuration()
             self.cups._begin_operation (_("modifying printer %s") % name)
             try:
                 uri = self.getDeviceURI()
