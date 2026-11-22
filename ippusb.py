@@ -125,3 +125,39 @@ def set_device_disabled(device_uri=None, disabled=True, sn=None,
                 pass
         return True
     return False
+
+
+def get_conf(search_criteria=None, socket_path=DEFAULT_CTRL_SOCKET, timeout=2.0):
+    if not is_control_api_available(socket_path=socket_path, timeout=timeout):
+        return []
+    payload = search_criteria if isinstance(search_criteria, dict) else {}
+    status, resp_body = _request("POST", "/get/conf", body=payload,
+                                 socket_path=socket_path, timeout=timeout)
+    if status == 200 and resp_body:
+        try:
+            res = json.loads(resp_body)
+            if isinstance(res, dict) and "data" in res and isinstance(res["data"], list):
+                return res["data"]
+        except ValueError:
+            pass
+    return []
+
+
+def get_disabled_devices(socket_path=DEFAULT_CTRL_SOCKET, timeout=2.0):
+    return [dev for dev in get_conf(socket_path=socket_path, timeout=timeout)
+            if isinstance(dev, dict) and dev.get("disabled")]
+
+
+def get_disabled_device(device_uri=None, sn=None,
+                        socket_path=DEFAULT_CTRL_SOCKET, timeout=2.0):
+    if not (device_uri or sn):
+        return None
+    normalized_dev_uri = _normalize_usb_uri(device_uri) if device_uri else None
+    for dev in get_disabled_devices(socket_path=socket_path, timeout=timeout):
+        dev_uri = dev.get("usb_URI")
+        if normalized_dev_uri and dev_uri and normalized_dev_uri.lower() == dev_uri.lower():
+            return dev
+        dev_sn = dev.get("usb_SN")
+        if sn and dev_sn and sn.strip() == dev_sn.strip():
+            return dev
+    return None

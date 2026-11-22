@@ -222,3 +222,125 @@ def test_set_device_disabled_api_unavailable(tmp_path):
         assert res is False
     finally:
         server.close()
+
+
+def test_get_conf_success(tmp_path):
+    sock_path = str(tmp_path / "ctrl.sock")
+    data_payload = {
+        "data": [
+            {
+                "usb_MFG": "Xerox",
+                "usb_MDL": "B235 MFP",
+                "usb_SN": "34004H030206H",
+                "usb_HWID": "0924&9d3b",
+                "usb_URI": "usb://Xerox/B235%20MFP?serial=34004H030206H",
+                "disabled": True
+            }
+        ]
+    }
+
+    def handler(method, path, body):
+        if path == "/version":
+            return 200, {"Content-Type": "text/plain"}, "0.9.35"
+        if path == "/get/conf":
+            return 200, {"Content-Type": "application/json"}, json.dumps(data_payload)
+        return 404, {}, ""
+
+    server = _MockUnixSocketServer(sock_path, handler)
+    try:
+        conf = ippusb.get_conf(socket_path=sock_path)
+        assert len(conf) == 1
+        assert conf[0]["usb_SN"] == "34004H030206H"
+        assert conf[0]["disabled"] is True
+
+        disabled_devs = ippusb.get_disabled_devices(socket_path=sock_path)
+        assert len(disabled_devs) == 1
+    finally:
+        server.close()
+
+
+def test_get_conf_api_unavailable(tmp_path):
+    sock_path = str(tmp_path / "ctrl.sock")
+    server = _MockUnixSocketServer(sock_path, lambda m, p, b: (404, {}, "Not Found"))
+    try:
+        assert ippusb.get_conf(socket_path=sock_path) == []
+        assert ippusb.get_disabled_devices(socket_path=sock_path) == []
+        assert ippusb.get_disabled_device(device_uri="usb://HP/LaserJet", socket_path=sock_path) is None
+    finally:
+        server.close()
+
+
+def test_get_disabled_device_matches_uri_and_serial(tmp_path):
+    sock_path = str(tmp_path / "ctrl.sock")
+    data_payload = {
+        "data": [
+            {
+                "usb_MFG": "Xerox",
+                "usb_MDL": "B235 MFP",
+                "usb_SN": "34004H030206H",
+                "usb_HWID": "0924&9d3b",
+                "usb_URI": "usb://Xerox/B235%20MFP?serial=34004H030206H",
+                "disabled": True
+            }
+        ]
+    }
+
+    def handler(method, path, body):
+        if path == "/version":
+            return 200, {"Content-Type": "text/plain"}, "0.9.35"
+        if path == "/get/conf":
+            return 200, {"Content-Type": "application/json"}, json.dumps(data_payload)
+        return 404, {}, ""
+
+    server = _MockUnixSocketServer(sock_path, handler)
+    try:
+        match_by_uri = ippusb.get_disabled_device(
+            device_uri="usb://Xerox/B235%20MFP?serial=34004H030206H&interface=1",
+            socket_path=sock_path)
+        assert match_by_uri is not None
+        assert match_by_uri["usb_SN"] == "34004H030206H"
+
+        match_by_sn = ippusb.get_disabled_device(
+            sn="34004H030206H",
+            socket_path=sock_path)
+        assert match_by_sn is not None
+
+        no_match = ippusb.get_disabled_device(
+            device_uri="usb://Brother/HL-L2350DW?serial=XYZ999",
+            sn="XYZ999",
+            socket_path=sock_path)
+        assert no_match is None
+    finally:
+        server.close()
+
+
+def test_get_disabled_device_not_disabled(tmp_path):
+    sock_path = str(tmp_path / "ctrl.sock")
+    data_payload = {
+        "data": [
+            {
+                "usb_MFG": "Xerox",
+                "usb_MDL": "B235 MFP",
+                "usb_SN": "34004H030206H",
+                "usb_HWID": "0924&9d3b",
+                "usb_URI": "usb://Xerox/B235%20MFP?serial=34004H030206H",
+                "disabled": False
+            }
+        ]
+    }
+
+    def handler(method, path, body):
+        if path == "/version":
+            return 200, {"Content-Type": "text/plain"}, "0.9.35"
+        if path == "/get/conf":
+            return 200, {"Content-Type": "application/json"}, json.dumps(data_payload)
+        return 404, {}, ""
+
+    server = _MockUnixSocketServer(sock_path, handler)
+    try:
+        dev = ippusb.get_disabled_device(
+            device_uri="usb://Xerox/B235%20MFP?serial=34004H030206H",
+            socket_path=sock_path)
+        assert dev is None
+    finally:
+        server.close()

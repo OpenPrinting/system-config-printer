@@ -84,13 +84,13 @@ def _device_serial (device):
 
 
 def is_ipp_over_usb_device (device):
+    if getattr (device, 'is_ipp_over_usb', None) is True:
+        return True
     parsed = urllib.parse.urlparse (device.uri)
     if parsed.scheme not in ('ipp', 'ipps'):
         return False
     if _service_tuple_from_uri (device.uri) is None:
         return False
-    if getattr (device, 'is_ipp_over_usb', False):
-        return True
     return getattr(device, 'address', '') in ('127.0.0.1', '::1')
 
 

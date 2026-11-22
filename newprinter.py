@@ -2107,6 +2107,12 @@ class NewPrinterGUI(GtkGUI):
         return result
 
     def _handlePrinterInstallationStage (self, page_nr, step):
+        if getattr(self.device, '_disabled_ipp_usb', None) is True:
+            real_dev = self._enable_and_resolve_disabled_ipp_usb_device()
+            if not real_dev:
+                return self.INSTALL_RESULT_OPS_PENDING
+            self.device = real_dev
+
         if self.dialog_mode != "download_driver":
             uri = self.device.uri
             if uri and uri.startswith ("smb"):
@@ -3508,6 +3514,99 @@ class NewPrinterGUI(GtkGUI):
         except Exception as e:
             debugprint(f"ipp-usb: failed to apply configuration: {e}")
 
+    def _enable_and_resolve_disabled_ipp_usb_device(self):
+        device = getattr(self, 'device', None)
+        if not device or getattr(device, '_disabled_ipp_usb', None) is not True:
+            return device
+
+        self._set_wizard_busy(True, spinner_text=_("Enabling IPP over USB..."))
+        try:
+            usb_dev = getattr(device, '_legacy_usb_device', None)
+            usb_uri = getattr(usb_dev, 'uri', None) if usb_dev else None
+            phys_dev = getattr(self, 'physicaldevice', None)
+            sn = (getattr(phys_dev, 'sn', None) or
+                  dnssdresolve._device_serial(device) or
+                  (dnssdresolve._device_serial(usb_dev) if usb_dev else None))
+
+            ippusb.set_device_disabled(device_uri=usb_uri, disabled=False, sn=sn)
+
+            timeout = 8.0
+            poll_start = time.time()
+            real_dev = None
+
+            while time.time() - poll_start < timeout:
+                while Gtk.events_pending():
+                    Gtk.main_iteration_do(False)
+
+                try:
+                    devs = cupshelpers.getDevices(self.cups)
+                    for u, d in devs.items():
+                        unquoted = urllib.parse.unquote(u)
+                        if u.startswith(("ipp:", "ipps:")) and "(USB)" in unquoted:
+                            real_dev = d
+                            break
+                        if dnssdresolve.is_ipp_over_usb_device(d):
+                            real_dev = d
+                            break
+                        if sn and dnssdresolve._device_serial(d) == sn and u.startswith(("ipp:", "ipps:")):
+                            real_dev = d
+                            break
+                except Exception as e:
+                    debugprint(f"ipp-usb: error polling CUPS: {e}")
+
+                if real_dev is not None:
+                    break
+                time.sleep(0.3)
+
+            if real_dev is None:
+                debugprint("ipp-usb: re-enabled device did not appear in CUPS")
+                return None
+
+            if dnssdresolve.needs_service_resolution(real_dev.uri):
+                resolved = []
+                resolver = dnssdresolve.DNSSDHostNamesResolver({real_dev.uri: real_dev})
+                resolver.resolve(reply_handler=lambda r: resolved.append(r))
+                res_start = time.time()
+                while time.time() - res_start < 4.0 and not resolved:
+                    while Gtk.events_pending():
+                        Gtk.main_iteration_do(False)
+                    time.sleep(0.05)
+
+            real_dev.menuentry = _("IPP over USB")
+            real_dev.is_ipp_over_usb = True
+            if not getattr(real_dev, 'id', None) and getattr(usb_dev, 'id', None):
+                real_dev.id = usb_dev.id
+            if getattr(real_dev, 'id_dict', None) and sn and not real_dev.id_dict.get('SN'):
+                real_dev.id_dict['SN'] = sn
+
+            self.device = real_dev
+            if phys_dev:
+                if hasattr(phys_dev, 'devices') and phys_dev.devices:
+                    for idx, d in enumerate(phys_dev.devices):
+                        if getattr(d, '_disabled_ipp_usb', None) is True:
+                            phys_dev.devices[idx] = real_dev
+                            break
+                    else:
+                        try:
+                            phys_dev.add_device(real_dev)
+                        except Exception:
+                            pass
+
+            if hasattr(self, 'tvNPDeviceURIs') and self.tvNPDeviceURIs:
+                model = self.tvNPDeviceURIs.get_model()
+                if model:
+                    model_iter = model.get_iter_first()
+                    while model_iter:
+                        dev = model.get_value(model_iter, 1)
+                        if getattr(dev, '_disabled_ipp_usb', None) is True:
+                            model.set_value(model_iter, 1, real_dev)
+                            break
+                        model_iter = model.iter_next(model_iter)
+
+            return real_dev
+        finally:
+            self._set_wizard_busy(False)
+
     def _set_wizard_busy (self, busy, spinner_text="", cancelable=True):
         if busy:
             try:
@@ -4543,6 +4642,35 @@ class NewPrinterGUI(GtkGUI):
                 ipp_over_usb_devices.append(device)
             else:
                 other_devices.append(device)
+
+        if not ipp_over_usb_devices and legacy_usb_devices:
+            for usb_dev in legacy_usb_devices:
+                sn = getattr(physicaldevice, 'sn', None) or dnssdresolve._device_serial(usb_dev) or None
+                disabled_info = ippusb.get_disabled_device(device_uri=usb_dev.uri, sn=sn)
+                if disabled_info:
+                    mdl = disabled_info.get("usb_MDL") or usb_dev.info or "printer"
+                    mfg = disabled_info.get("usb_MFG") or ""
+                    dev_dict = {
+                        'device-class': 'network',
+                        'device-info': usb_dev.info or mdl,
+                        'device-make-and-model': usb_dev.make_and_model or f"{mfg} {mdl}".strip(),
+                        'device-id': getattr(usb_dev, 'id', ''),
+                        'device-location': getattr(usb_dev, 'location', ''),
+                    }
+                    placeholder = cupshelpers.Device(
+                        f"ipp://{urllib.parse.quote(mdl)}%20(USB)._ipp._tcp.local/",
+                        **dev_dict
+                    )
+                    placeholder.type = "ipp"
+                    placeholder.menuentry = _("IPP over USB")
+                    placeholder.is_ipp_over_usb = True
+                    placeholder._disabled_ipp_usb = True
+                    placeholder._legacy_usb_device = usb_dev
+                    if sn:
+                        placeholder.id_dict['SN'] = sn
+                    ipp_over_usb_devices.append(placeholder)
+                    show_uris = True
+                    break
 
         # Build the ordered list: IPP over USB first, then USB, then others
         ipp_over_usb_devices = sorted (ipp_over_usb_devices, key=_device_connection_sort_key)
@@ -5894,6 +6022,8 @@ class NewPrinterGUI(GtkGUI):
             self.btnNPApply.set_sensitive(False)
             if hasattr(self, 'btnNPCancel'):
                 self.btnNPCancel.set_sensitive(False)
+            if getattr(self.device, '_disabled_ipp_usb', None) is True:
+                self._enable_and_resolve_disabled_ipp_usb_device()
             self._apply_ipp_usb_configuration()
             self.cups._begin_operation (_("modifying printer %s") % name)
             try:

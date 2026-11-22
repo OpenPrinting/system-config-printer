@@ -6887,3 +6887,126 @@ def test_on_btnNPApply_invokes_ipp_usb_configuration():
     np.on_btnNPApply_clicked(np.btnNPApply)
 
     assert len(apply_calls) == 1
+
+
+def test_disabled_ipp_usb_printer_exposes_both_connections(monkeypatch):
+    """Verify that a legacy USB printer with disabled ipp-usb exposes both IPP-over-USB and USB."""
+    import ippusb
+    import cupshelpers
+
+    dev_usb = cupshelpers.Device(
+        "usb://Xerox/B235%20MFP?serial=34004H030206H&interface=1",
+        **{'device-info': 'Xerox B235 MFP', 'device-class': 'direct'})
+    dev_usb.type = "usb"
+
+    monkeypatch.setattr(ippusb, "get_disabled_device", lambda **kwargs: {
+        "usb_MFG": "Xerox",
+        "usb_MDL": "B235 MFP",
+        "usb_SN": "34004H030206H",
+        "disabled": True
+    })
+
+    np, mock_widget, captured_models = _setup_physicaldevice_gui([dev_usb])
+    np.on_tvNPDevices_cursor_changed(mock_widget)
+
+    assert len(captured_models) == 1
+    model = captured_models[0]
+    entries = [model.get_value(model.get_iter(Gtk.TreePath(i)), 0) for i in range(len(model))]
+    assert entries == ["IPP over USB", "USB"]
+    assert np._physicaldevice_has_both_connections is True
+
+    placeholder = model.get_value(model.get_iter(Gtk.TreePath(0)), 1)
+    assert getattr(placeholder, '_disabled_ipp_usb', False) is True
+    assert getattr(placeholder, 'is_ipp_over_usb', False) is True
+    assert placeholder._legacy_usb_device == dev_usb
+
+
+def test_disabled_ipp_usb_printer_selecting_usb_warns(monkeypatch):
+    """Verify that selecting legacy USB when printer was disabled still triggers warning."""
+    import cupshelpers
+
+    dev_usb = cupshelpers.Device(
+        "usb://Xerox/B235?serial=XYZ123",
+        **{'device-info': 'Xerox B235 MFP', 'device-class': 'direct'})
+    dev_usb.type = "usb"
+
+    placeholder = cupshelpers.Device("ipp://dummy._ipp._tcp.local/")
+    placeholder.type = "ipp"
+    placeholder.is_ipp_over_usb = True
+    placeholder._disabled_ipp_usb = True
+    placeholder._legacy_usb_device = dev_usb
+
+    np, _, _, model, mock_column, dialog_responses = _setup_uri_selection_gui(
+        monkeypatch, dialog_response=Gtk.ResponseType.YES)
+
+    model.clear()
+    model.append(("IPP over USB", placeholder))
+    model.append(("USB", dev_usb))
+
+    np.device = placeholder
+    np._physicaldevice_has_both_connections = True
+
+    np.tvNPDeviceURIs.get_cursor.return_value = (Gtk.TreePath(1), mock_column)
+    np.on_tvNPDeviceURIs_cursor_changed(np.tvNPDeviceURIs)
+
+    assert len(dialog_responses) == 1
+    assert dialog_responses[0] == Gtk.ResponseType.YES
+    assert np.device == dev_usb
+
+
+def test_forward_on_disabled_ipp_usb_enables_and_resolves_real_device(monkeypatch):
+    """Verify that advancing on a disabled IPP-over-USB placeholder re-enables and swaps device."""
+    import cupshelpers
+
+    np = get_dummy_gui()
+    np.dialog_mode = "printer"
+    np.PAGE_SELECT_DEVICE = 1
+    np.PAGE_SELECT_INSTALL_METHOD = 2
+    np.PAGE_DOWNLOAD_DRIVER = 3
+    np.PAGE_CHOOSE_DRIVER_FROM_DB = 4
+    np.ppds = None
+    np.devid = None
+    np.remotecupsqueue = None
+    np._host = "localhost"
+    np._encryption = None
+    np.NewPrinterWindow = MagicMock()
+    np.ntbkNewPrinter = MagicMock()
+    np.ntbkNewPrinter.get_current_page.return_value = np.PAGE_SELECT_DEVICE
+
+    dev_usb = cupshelpers.Device("usb://Xerox/B235?serial=XYZ123")
+    dev_usb.type = "usb"
+    dev_usb.id = "MFG:Xerox;MDL:B235;"
+
+    placeholder = cupshelpers.Device("ipp://placeholder._ipp._tcp.local/")
+    placeholder.type = "ipp"
+    placeholder.is_ipp_over_usb = True
+    placeholder._disabled_ipp_usb = True
+    placeholder._legacy_usb_device = dev_usb
+    placeholder.id_dict = {'SN': 'XYZ123'}
+
+    real_ipp_dev = cupshelpers.Device("ipp://Xerox%20B235._ipp._tcp.local/")
+    real_ipp_dev.type = "ipp"
+    real_ipp_dev.id = "MFG:Xerox;MDL:B235;"
+    real_ipp_dev.is_ipp_over_usb = True
+
+    np.device = placeholder
+    np.physicaldevice = MagicMock()
+    np.physicaldevice.sn = "XYZ123"
+    np.physicaldevice.devices = [dev_usb]
+
+    enable_calls = []
+    def mock_enable():
+        enable_calls.append(True)
+        return real_ipp_dev
+
+    monkeypatch.setattr(np, "_enable_and_resolve_disabled_ipp_usb_device", mock_enable)
+    load_ppd_calls = []
+    monkeypatch.setattr(np, "_loadPPDsForDevice", lambda devid, uri: load_ppd_calls.append((devid, uri)))
+    monkeypatch.setattr(np, "_selectDeviceForInstallation", lambda uri: None)
+
+    res = np._handlePrinterInstallationStage(np.PAGE_SELECT_DEVICE, 1)
+
+    assert len(enable_calls) == 1
+    assert np.device == real_ipp_dev
+    assert len(load_ppd_calls) == 1
+    assert load_ppd_calls[0][1] == real_ipp_dev.uri
