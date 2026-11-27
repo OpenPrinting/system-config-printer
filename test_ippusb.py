@@ -344,3 +344,59 @@ def test_get_disabled_device_not_disabled(tmp_path):
         assert dev is None
     finally:
         server.close()
+
+
+def test_get_devices_success_and_kyocera_txt_fallback(tmp_path):
+    sock_path = str(tmp_path / "ctrl.sock")
+    data_payload = {
+        "data": [
+            {
+                "usb_HWID": "0482&069d",
+                "usb_URI": "usb:///?serial=",
+                "port": 60001,
+                "status": "OK",
+                "_ipp._tcp": {
+                    "TXT": [
+                        "usb_MFG=Kyocera",
+                        "usb_MDL=ECOSYS M2040dn",
+                        "usb_SER=VCF9192281",
+                        "usb_HWID=0482&069d"
+                    ],
+                    "printer": True
+                }
+            }
+        ]
+    }
+
+    def handler(method, path, body):
+        if path == "/version":
+            return 200, {"Content-Type": "text/plain"}, "0.9.35"
+        if path == "/get/devices":
+            return 200, {"Content-Type": "application/json"}, json.dumps(data_payload)
+        return 404, {}, ""
+
+    server = _MockUnixSocketServer(sock_path, handler)
+    try:
+        devs = ippusb.get_devices(socket_path=sock_path)
+        assert len(devs) == 1
+
+        active = ippusb.get_active_device(sn="VCF9192281", socket_path=sock_path)
+        assert active is not None
+        assert active["usb_MFG"] == "Kyocera"
+        assert active["usb_MDL"] == "ECOSYS M2040dn"
+        assert active["usb_SN"] == "VCF9192281"
+        assert active["usb_URI"] == "usb://Kyocera/ECOSYS%20M2040dn?serial=VCF9192281"
+
+        assert ippusb.get_active_device(sn="OTHER", socket_path=sock_path) is None
+    finally:
+        server.close()
+
+
+def test_get_devices_api_unavailable(tmp_path):
+    sock_path = str(tmp_path / "ctrl.sock")
+    server = _MockUnixSocketServer(sock_path, lambda m, p, b: (404, {}, "Not Found"))
+    try:
+        assert ippusb.get_devices(socket_path=sock_path) == []
+        assert ippusb.get_active_device(sn="VCF9192281", socket_path=sock_path) is None
+    finally:
+        server.close()

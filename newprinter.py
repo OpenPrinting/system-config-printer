@@ -4671,6 +4671,30 @@ class NewPrinterGUI(GtkGUI):
                     ipp_over_usb_devices.append(placeholder)
                     show_uris = True
                     break
+        elif ipp_over_usb_devices and not legacy_usb_devices:
+            for ipp_dev in ipp_over_usb_devices:
+                sn = getattr(physicaldevice, 'sn', None) or dnssdresolve._device_serial(ipp_dev) or None
+                mfg = getattr(physicaldevice, 'mfg', None) or (ipp_dev.id_dict.get('MFG', '') if hasattr(ipp_dev, 'id_dict') else '')
+                mdl = getattr(physicaldevice, 'mdl', None) or (ipp_dev.id_dict.get('MDL', '') if hasattr(ipp_dev, 'id_dict') else '')
+                active_info = ippusb.get_active_device(sn=sn, mfg=mfg, mdl=mdl)
+                if active_info and active_info.get("usb_URI"):
+                    usb_dev = cupshelpers.Device(
+                        active_info["usb_URI"],
+                        **{
+                            'device-class': 'direct',
+                            'device-info': ipp_dev.info or active_info.get("usb_MDL", ""),
+                            'device-make-and-model': ipp_dev.make_and_model or f"{active_info.get('usb_MFG', '')} {active_info.get('usb_MDL', '')}".strip(),
+                            'device-id': getattr(ipp_dev, 'id', ''),
+                            'device-location': getattr(ipp_dev, 'location', ''),
+                        }
+                    )
+                    usb_dev.type = "usb"
+                    usb_dev.menuentry = _("USB")
+                    if sn:
+                        usb_dev.id_dict['SN'] = sn
+                    legacy_usb_devices.append(usb_dev)
+                    show_uris = True
+                    break
 
         # Build the ordered list: IPP over USB first, then USB, then others
         ipp_over_usb_devices = sorted (ipp_over_usb_devices, key=_device_connection_sort_key)

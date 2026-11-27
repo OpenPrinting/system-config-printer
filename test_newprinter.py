@@ -7010,3 +7010,37 @@ def test_forward_on_disabled_ipp_usb_enables_and_resolves_real_device(monkeypatc
     assert np.device == real_ipp_dev
     assert len(load_ppd_calls) == 1
     assert load_ppd_calls[0][1] == real_ipp_dev.uri
+
+
+def test_active_ipp_usb_device_without_cups_usb_exposes_both_connections(monkeypatch):
+    """Verify that when CUPS only sees IPP-over-USB (e.g., Kyocera ECOSYS M2040dn),
+    consulting ippusb POST /get/devices still exposes both IPP over USB (default) and USB."""
+    import ippusb
+    import cupshelpers
+
+    dev_ipp_usb = cupshelpers.Device(
+        "ipp://Kyocera%20ECOSYS%20M2040dn%20(USB)._ipp._tcp.local/",
+        **{'device-info': 'Kyocera ECOSYS M2040dn (driverless)', 'device-class': 'network'})
+    dev_ipp_usb.type = "ipp"
+    dev_ipp_usb.is_ipp_over_usb = True
+    dev_ipp_usb.id_dict = {'MFG': 'Kyocera', 'MDL': 'ECOSYS M2040dn', 'SN': 'VCF9192281'}
+
+    monkeypatch.setattr(ippusb, "get_active_device", lambda **kwargs: {
+        "usb_MFG": "Kyocera",
+        "usb_MDL": "ECOSYS M2040dn",
+        "usb_SN": "VCF9192281",
+        "usb_URI": "usb://Kyocera/ECOSYS%20M2040dn?serial=VCF9192281",
+    })
+
+    np, mock_widget, captured_models = _setup_physicaldevice_gui([dev_ipp_usb])
+    np.on_tvNPDevices_cursor_changed(mock_widget)
+
+    assert len(captured_models) == 1
+    model = captured_models[0]
+    entries = [model.get_value(model.get_iter(Gtk.TreePath(i)), 0) for i in range(len(model))]
+    assert entries == ["IPP over USB", "USB"]
+    assert np._physicaldevice_has_both_connections is True
+
+    usb_dev = model.get_value(model.get_iter(Gtk.TreePath(1)), 1)
+    assert usb_dev.type == "usb"
+    assert usb_dev.uri == "usb://Kyocera/ECOSYS%20M2040dn?serial=VCF9192281"

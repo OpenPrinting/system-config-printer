@@ -127,20 +127,80 @@ def set_device_disabled(device_uri=None, disabled=True, sn=None,
     return False
 
 
-def get_conf(search_criteria=None, socket_path=DEFAULT_CTRL_SOCKET, timeout=2.0):
+def _post_get_list(path, body=None, socket_path=DEFAULT_CTRL_SOCKET, timeout=2.0):
     if not is_control_api_available(socket_path=socket_path, timeout=timeout):
         return []
-    payload = search_criteria if isinstance(search_criteria, dict) else {}
-    status, resp_body = _request("POST", "/get/conf", body=payload,
+    payload = body if isinstance(body, dict) else {}
+    status, resp_body = _request("POST", path, body=payload,
                                  socket_path=socket_path, timeout=timeout)
     if status == 200 and resp_body:
         try:
             res = json.loads(resp_body)
-            if isinstance(res, dict) and "data" in res and isinstance(res["data"], list):
+            if isinstance(res, dict) and isinstance(res.get("data"), list):
                 return res["data"]
         except ValueError:
             pass
     return []
+
+
+def get_conf(search_criteria=None, socket_path=DEFAULT_CTRL_SOCKET, timeout=2.0):
+    return _post_get_list("/get/conf", body=search_criteria,
+                          socket_path=socket_path, timeout=timeout)
+
+
+def get_devices(socket_path=DEFAULT_CTRL_SOCKET, timeout=2.0):
+    return _post_get_list("/get/devices", socket_path=socket_path, timeout=timeout)
+
+
+def _txt_dict(dev):
+    txt = {}
+    for svc_key in ("_ipp._tcp", "_uscan._tcp"):
+        svc = dev.get(svc_key)
+        if isinstance(svc, dict) and isinstance(svc.get("TXT"), list):
+            for entry in svc["TXT"]:
+                if isinstance(entry, str) and "=" in entry:
+                    k, v = entry.split("=", 1)
+                    txt.setdefault(k, v)
+    return txt
+
+
+def _device_fields(dev):
+    txt = _txt_dict(dev)
+    mfg = dev.get("usb_MFG") or txt.get("usb_MFG") or ""
+    mdl = dev.get("usb_MDL") or txt.get("usb_MDL") or ""
+    sn = dev.get("usb_SN") or txt.get("usb_SER") or ""
+    uri = dev.get("usb_URI") or ""
+    if not uri or uri == "usb:///?serial=":
+        if mfg or mdl:
+            path = f"//{urllib.parse.quote(mfg)}/{urllib.parse.quote(mdl)}"
+            query = f"?serial={urllib.parse.quote(sn)}" if sn else ""
+            uri = f"usb:{path}{query}"
+        else:
+            uri = ""
+    return {"usb_MFG": mfg, "usb_MDL": mdl, "usb_SN": sn, "usb_URI": uri}
+
+
+def get_active_device(device_uri=None, sn=None, mfg=None, mdl=None,
+                      socket_path=DEFAULT_CTRL_SOCKET, timeout=2.0):
+    if not (device_uri or sn or (mfg and mdl)):
+        return None
+    normalized_dev_uri = _normalize_usb_uri(device_uri) if device_uri else None
+    for dev in get_devices(socket_path=socket_path, timeout=timeout):
+        if not isinstance(dev, dict):
+            continue
+        fields = _device_fields(dev)
+        dev_uri = fields["usb_URI"]
+        if normalized_dev_uri and dev_uri and normalized_dev_uri.lower() == dev_uri.lower():
+            return fields
+        dev_sn = fields["usb_SN"]
+        if sn and dev_sn and sn.strip() == dev_sn.strip():
+            return fields
+        if not sn and mfg and mdl and (
+            mfg.strip().lower() == fields["usb_MFG"].strip().lower() and
+            mdl.strip().lower() == fields["usb_MDL"].strip().lower()
+        ):
+            return fields
+    return None
 
 
 def get_disabled_devices(socket_path=DEFAULT_CTRL_SOCKET, timeout=2.0):
