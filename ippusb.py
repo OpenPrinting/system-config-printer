@@ -148,8 +148,16 @@ def get_conf(search_criteria=None, socket_path=DEFAULT_CTRL_SOCKET, timeout=2.0)
                           socket_path=socket_path, timeout=timeout)
 
 
+def is_printing_device(dev):
+    if not isinstance(dev, dict):
+        return False
+    ipp_svc = dev.get("_ipp._tcp")
+    return isinstance(ipp_svc, dict) and ipp_svc.get("printer") is True
+
+
 def get_devices(socket_path=DEFAULT_CTRL_SOCKET, timeout=2.0):
-    return _post_get_list("/get/devices", socket_path=socket_path, timeout=timeout)
+    return [dev for dev in _post_get_list("/get/devices", socket_path=socket_path, timeout=timeout)
+            if is_printing_device(dev)]
 
 
 def _txt_dict(dev):

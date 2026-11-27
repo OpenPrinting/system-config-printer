@@ -400,3 +400,58 @@ def test_get_devices_api_unavailable(tmp_path):
         assert ippusb.get_active_device(sn="VCF9192281", socket_path=sock_path) is None
     finally:
         server.close()
+
+
+def test_get_devices_ignores_non_printing_scanners(tmp_path):
+    sock_path = str(tmp_path / "ctrl.sock")
+    data_payload = {
+        "data": [
+            {
+                "usb_HWID": "1d6b&eeff",
+                "usb_URI": "usb:///?serial=",
+                "port": 60002,
+                "status": "OK",
+                "_uscan._tcp": {
+                    "TXT": [
+                        "usb_MFG=OpenPrinting",
+                        "usb_MDL=eSCL Scanner",
+                        "usb_SER=SN-ESCL-ONLY"
+                    ],
+                    "printer": False,
+                    "scanner": True
+                }
+            },
+            {
+                "usb_MFG": "OpenPrinting",
+                "usb_MDL": "IPP Scanner",
+                "usb_SN": "SN-IPP-SCAN-ONLY",
+                "usb_URI": "usb://OpenPrinting/IPP%20Scanner?serial=SN-IPP-SCAN-ONLY",
+                "port": 60003,
+                "status": "OK",
+                "_ipp._tcp": {
+                    "TXT": [
+                        "usb_MFG=OpenPrinting",
+                        "usb_MDL=IPP Scanner",
+                        "usb_SER=SN-IPP-SCAN-ONLY"
+                    ],
+                    "printer": False,
+                    "scanner": True
+                }
+            }
+        ]
+    }
+
+    def handler(method, path, body):
+        if path == "/version":
+            return 200, {"Content-Type": "text/plain"}, "0.9.35"
+        if path == "/get/devices":
+            return 200, {"Content-Type": "application/json"}, json.dumps(data_payload)
+        return 404, {}, ""
+
+    server = _MockUnixSocketServer(sock_path, handler)
+    try:
+        assert ippusb.get_devices(socket_path=sock_path) == []
+        assert ippusb.get_active_device(sn="SN-ESCL-ONLY", socket_path=sock_path) is None
+        assert ippusb.get_active_device(sn="SN-IPP-SCAN-ONLY", socket_path=sock_path) is None
+    finally:
+        server.close()
