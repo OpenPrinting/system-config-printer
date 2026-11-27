@@ -111,6 +111,7 @@ nobase_pkgdata_DATA=					\
 	firewallsettings.py					\
 	gui.py						\
 	gtkinklevel.py					\
+	ippusb.py					\
 	installpackage.py				\
 	jobviewer.py					\
 	killtimer.py					\

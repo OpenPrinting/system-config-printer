@@ -18,7 +18,7 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-import dbus, re
+import dbus, re, socket
 import urllib.parse
 from debug import *
 
@@ -84,6 +84,8 @@ def _device_serial (device):
 
 
 def is_ipp_over_usb_device (device):
+    if getattr (device, 'is_ipp_over_usb', None) is True:
+        return True
     parsed = urllib.parse.urlparse (device.uri)
     if parsed.scheme not in ('ipp', 'ipps'):
         return False
@@ -219,6 +221,11 @@ class DNSSDHostNamesResolver:
             serial = _txt_value (txt, 'usb_SER')
             if serial != '':
                 device.id_dict['SN'] = serial
+        try:
+            if isinstance (interface, int) and socket.if_indextoname (interface) == 'lo':
+                device.is_ipp_over_usb = True
+        except Exception:
+            pass
         self._resolved ()
 
     def _error (self, uri, error):

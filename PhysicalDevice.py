@@ -25,6 +25,7 @@ import cupshelpers
 import urllib.parse
 import ppdippstr
 import socket
+import dnssdresolve
 import ipaddress
 from debug import *
 
@@ -40,6 +41,17 @@ class PhysicalDevice:
         self.add_device (device)
         self._user_data = {}
         self._ppdippstr = ppdippstr.backends
+
+    def _is_ipp_over_usb (self):
+        if self.devices:
+            return any (dnssdresolve.is_ipp_over_usb_device (d) for d in self.devices)
+        return False
+
+    def _is_legacy_usb (self):
+        if self.devices:
+            return any ((getattr (d, 'type', '') == 'usb' or d.uri.startswith ('usb:'))
+                        for d in self.devices)
+        return False
 
     @staticmethod
     def _protocol_from_uri(uri):
@@ -294,6 +306,15 @@ class PhysicalDevice:
 
         dnssd_instance = self._dnssd_instance_from_uri (device.uri)
 
+        dev_serial = dnssdresolve._device_serial (device)
+        if not dev_serial and hasattr (device, 'uri') and device.uri:
+            try:
+                q = urllib.parse.parse_qs (urllib.parse.urlsplit (device.uri).query)
+                if 'serial' in q and q['serial']:
+                    dev_serial = q['serial'][0]
+            except Exception:
+                pass
+
         if self.devices is None:
             self._dnssd_instance = dnssd_instance
             (mfg, mdl) = self._canonical_id (device)
@@ -301,30 +322,23 @@ class PhysicalDevice:
             self.mdl = mdl
             self.mfg_lower = mfg.lower ()
             self.mdl_lower = mdl.lower ()
-            self.sn = device.id_dict.get ('SN', '')
+            self.sn = dev_serial if dev_serial else device.id_dict.get ('SN', '')
             self.devices = []
         else:
-            if self.is_literal_ip () != self._is_literal_ip_uri (device.uri):
-                raise ValueError
+            is_ipp_usb_add = (
+                self.sn != '' and dev_serial != '' and self.sn == dev_serial and (
+                    (self._is_ipp_over_usb () and (getattr (device, 'type', '') == 'usb' or device.uri.startswith ('usb:'))) or
+                    (self._is_legacy_usb () and dnssdresolve.is_ipp_over_usb_device (device))
+                )
+            )
 
-            if self._dnssd_instance and dnssd_instance:
-                if self._dnssd_instance != dnssd_instance:
-                    raise ValueError
-            elif self._network_host or self.dnssd_hostname:
-                host, dnssdhost, protocol = self._get_host_from_uri (device.uri)
-                if (hasattr (device, 'address')):
-                    host = self._add_dot_local_if_needed(device.address)
-                if (hasattr (device, 'hostname') and dnssdhost is None):
-                    dnssdhost = self._add_dot_local_if_needed(device.hostname)
-                if (host is None and dnssdhost is None) or \
-                   not (self._host_matches (host, self._network_host) or
-                        self._host_matches (host, self.dnssd_hostname) or
-                        self._host_matches (dnssdhost, self._network_host) or
-                        self._host_matches (dnssdhost, self.dnssd_hostname)):
-                    raise ValueError
-            else:
+            if is_ipp_usb_add:
                 (mfg, mdl) = self._canonical_id (device)
                 def nicest (a, b):
+                    if not a:
+                        return b
+                    if not b:
+                        return a
                     def count_lower (s):
                         l = s.lower ()
                         n = 0
@@ -339,9 +353,56 @@ class PhysicalDevice:
                 self.mfg = nicest (self.mfg, mfg)
                 self.mdl = nicest (self.mdl, mdl)
 
-                sn = device.id_dict.get ('SN', '')
+                sn = dev_serial if dev_serial else device.id_dict.get ('SN', '')
                 if sn != '' and self.sn != '' and sn != self.sn:
                     raise ValueError
+            else:
+                if self._is_legacy_usb () and not self._is_ipp_over_usb () and \
+                   (getattr (device, 'device_class', '') == 'network' or hasattr (device, 'address')):
+                    raise ValueError
+
+                if self.is_literal_ip () != self._is_literal_ip_uri (device.uri):
+                    raise ValueError
+
+                if self._dnssd_instance and dnssd_instance:
+                    if self._dnssd_instance != dnssd_instance:
+                        raise ValueError
+                elif self._network_host or self.dnssd_hostname:
+                    host, dnssdhost, protocol = self._get_host_from_uri (device.uri)
+                    if (hasattr (device, 'address')):
+                        host = self._add_dot_local_if_needed(device.address)
+                    if (hasattr (device, 'hostname') and dnssdhost is None):
+                        dnssdhost = self._add_dot_local_if_needed(device.hostname)
+                    if (host is None and dnssdhost is None) or \
+                       not (self._host_matches (host, self._network_host) or
+                            self._host_matches (host, self.dnssd_hostname) or
+                            self._host_matches (dnssdhost, self._network_host) or
+                            self._host_matches (dnssdhost, self.dnssd_hostname)):
+                        raise ValueError
+                else:
+                    (mfg, mdl) = self._canonical_id (device)
+                    def nicest (a, b):
+                        if not a:
+                            return b
+                        if not b:
+                            return a
+                        def count_lower (s):
+                            l = s.lower ()
+                            n = 0
+                            for i in range (len (s)):
+                                if l[i] != s[i]:
+                                    n += 1
+                            return n
+                        if count_lower (b) < count_lower (a):
+                            return b
+                        return a
+
+                    self.mfg = nicest (self.mfg, mfg)
+                    self.mdl = nicest (self.mdl, mdl)
+
+                    sn = dev_serial if dev_serial else device.id_dict.get ('SN', '')
+                    if sn != '' and self.sn != '' and sn != self.sn:
+                        raise ValueError
 
             if dnssd_instance and not self._dnssd_instance:
                 self._dnssd_instance = dnssd_instance
@@ -428,7 +489,7 @@ class PhysicalDevice:
             info = translated or self.devices[0].info
         else:
             info = "%s %s" % (self.mfg, self.mdl)
-        if self._network_host and not self.dnssd_hostname and not \
+        if self._network_host and not self.dnssd_hostname and not self._is_ipp_over_usb() and not \
             ((self.devices[0].uri.startswith('dnssd:') or \
               self.devices[0].uri.startswith('mdns:')) and \
               self.devices[0].uri.endswith('/cups')) and \
@@ -457,22 +518,29 @@ class PhysicalDevice:
         if type (other) != type (self):
             return False
 
-        if self.is_literal_ip () != other.is_literal_ip ():
-            return False
+        is_ipp_usb_pair = False
+        if self.sn != '' and other.sn != '' and self.sn == other.sn:
+            if (self._is_ipp_over_usb () and other._is_legacy_usb ()) or \
+               (self._is_legacy_usb () and other._is_ipp_over_usb ()):
+                is_ipp_usb_pair = True
 
-        if self._dnssd_instance and other._dnssd_instance:
-            if self._dnssd_instance != other._dnssd_instance:
+        if not is_ipp_usb_pair:
+            if self.is_literal_ip () != other.is_literal_ip ():
                 return False
-        elif not (((not self._network_host or len (self._network_host) == 0) and
-                   (not other._network_host or len (other._network_host) == 0) and
-                   (not self.dnssd_hostname or len (self.dnssd_hostname) == 0) and
-                   (not other.dnssd_hostname or
-                    len (other.dnssd_hostname) == 0)) or
-                  self._host_matches (self._network_host, other._network_host) or
-                  self._host_matches (self.dnssd_hostname, other.dnssd_hostname) or
-                  self._host_matches (self._network_host, other.dnssd_hostname) or
-                  self._host_matches (self.dnssd_hostname, other._network_host)):
-            return False
+
+            if self._dnssd_instance and other._dnssd_instance:
+                if self._dnssd_instance != other._dnssd_instance:
+                    return False
+            elif not (((not self._network_host or len (self._network_host) == 0) and
+                       (not other._network_host or len (other._network_host) == 0) and
+                       (not self.dnssd_hostname or len (self.dnssd_hostname) == 0) and
+                       (not other.dnssd_hostname or
+                        len (other.dnssd_hostname) == 0)) or
+                      self._host_matches (self._network_host, other._network_host) or
+                      self._host_matches (self.dnssd_hostname, other.dnssd_hostname) or
+                      self._host_matches (self._network_host, other.dnssd_hostname) or
+                      self._host_matches (self.dnssd_hostname, other._network_host)):
+                return False
 
         devs = other.get_devices()
         if devs:
@@ -481,6 +549,9 @@ class PhysicalDevice:
                 if dev.uri in uris:
                     # URI match
                     return True
+
+        if is_ipp_usb_pair:
+            return True
 
         if ((other.mfg == '' and other.mdl == '') or
             (self.mfg == ''  and self.mdl == '')):
